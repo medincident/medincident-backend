@@ -7,6 +7,7 @@ package organization
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -41,8 +42,8 @@ func New(
 	legalAddress *geo.Address,
 	now time.Time,
 ) (*Organization, error) {
-	name = trim(name)
-	description = trim(description)
+	name = strings.TrimSpace(name)
+	description = strings.TrimSpace(description)
 
 	var errs []error
 	if err := validateName(name); err != nil {
@@ -111,7 +112,7 @@ func (o *Organization) AggregateID() string { return o.ID.String() }
 // Rename changes the organization's name. Validates the new name,
 // no-ops if identical, raises Renamed on successful change.
 func (o *Organization) Rename(name string, now time.Time) error {
-	name = trim(name)
+	name = strings.TrimSpace(name)
 	if err := validateName(name); err != nil {
 		return err
 	}
@@ -127,7 +128,7 @@ func (o *Organization) Rename(name string, now time.Time) error {
 // No-ops if the new description equals the current one. Raises
 // DescriptionUpdated on successful change.
 func (o *Organization) UpdateDescription(description string, now time.Time) error {
-	description = trim(description)
+	description = strings.TrimSpace(description)
 	if err := validateDescription(description); err != nil {
 		return err
 	}

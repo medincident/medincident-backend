@@ -137,13 +137,13 @@ func TestRenameAppendsOutboxRowInSameTransaction(t *testing.T) {
 	svc := newService(t)
 
 	createRes, err := svc.Create(context.Background(), organizationapp.CreateCommand{
-		Name: "Old",
+		Name: "OldOrg",
 	})
 	require.NoError(t, err)
 
 	_, err = svc.Rename(context.Background(), organizationapp.RenameCommand{
 		ID:      createRes.ID,
-		NewName: "New",
+		NewName: "NewOrg",
 	})
 	require.NoError(t, err)
 
@@ -152,7 +152,7 @@ func TestRenameAppendsOutboxRowInSameTransaction(t *testing.T) {
 	require.NoError(t, testPool.QueryRow(context.Background(),
 		`SELECT name FROM domain.organizations WHERE id = $1`, createRes.ID,
 	).Scan(&name))
-	require.Equal(t, "New", name)
+	require.Equal(t, "NewOrg", name)
 
 	// Two outbox rows: Created + Renamed, both for the same aggregate.
 	var rowCount int

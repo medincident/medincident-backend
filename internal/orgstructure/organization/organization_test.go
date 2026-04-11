@@ -67,6 +67,22 @@ func TestNewRejectsEmptyName(t *testing.T) {
 	require.Equal(t, "name", oe.Context()["field"])
 }
 
+func TestNewRejectsShortName(t *testing.T) {
+	_, err := organization.New("abc", "", nil, time.Now())
+	require.Error(t, err)
+	oe, ok := oops.AsOops(err)
+	require.True(t, ok)
+	require.Equal(t, organization.ErrCodeOrganizationNameTooShort, oe.Code())
+}
+
+func TestNewRejectsShortDescription(t *testing.T) {
+	_, err := organization.New("Acme", "abc", nil, time.Now())
+	require.Error(t, err)
+	oe, ok := oops.AsOops(err)
+	require.True(t, ok)
+	require.Equal(t, organization.ErrCodeOrganizationDescriptionTooShort, oe.Code())
+}
+
 func TestNewCollectsNameAndDescriptionErrors(t *testing.T) {
 	_, err := organization.New("", strings.Repeat("x", 2001), nil, time.Now())
 	require.Error(t, err)
