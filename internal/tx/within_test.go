@@ -127,8 +127,9 @@ func TestWithinPrefersFnErrorOverCloseError(t *testing.T) {
 		return fnErr
 	})
 	require.Error(t, err)
-	// fnErr is the primary: we returned from the error path before the
-	// deferred Close ran, so Close's error is silently dropped.
+	// fnErr is the primary: Within's deferred Close runs (all defers do),
+	// but it intentionally ignores its Close error when a real error is
+	// already set, so Close's error is silently dropped.
 	require.ErrorIs(t, err, fnErr)
 	require.NotErrorIs(t, err, closeErr)
 }
