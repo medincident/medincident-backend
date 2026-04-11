@@ -7,6 +7,12 @@ tasks:
       - go tool buf generate
       - go tool sqlc generate -f sqlc.yaml
 
+  gen:check:
+    desc: Verify generated code is up to date (fails if `task gen` would produce changes)
+    cmds:
+      - task: gen
+      - git diff --exit-code -- gen/ internal/storage/postgres/sqlc/gen/
+
   lint:
     desc: Lint Go code
     cmds:
