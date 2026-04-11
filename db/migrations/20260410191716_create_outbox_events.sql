@@ -2,7 +2,7 @@
 CREATE TABLE outbox.events (
     id             UUID PRIMARY KEY,
     aggregate_type TEXT NOT NULL,
-    aggregate_id   UUID NOT NULL,
+    aggregate_id   TEXT NOT NULL,
     event_type     TEXT NOT NULL,
     payload        JSONB NOT NULL,
     created_at     TIMESTAMPTZ NOT NULL,
