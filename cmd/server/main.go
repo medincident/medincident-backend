@@ -42,7 +42,7 @@ func main() {
 	}
 
 	// Eager-invoke the top of the service graph to fail fast on wiring errors.
-	_ = do.MustInvoke[*organizationapp.Service](container)
+	_ = do.MustInvoke[organizationapp.Service](container)
 
 	logger := do.MustInvoke[*zerolog.Logger](container)
 	logger.Info().Str("config", configPath).Msg("command-service started")
