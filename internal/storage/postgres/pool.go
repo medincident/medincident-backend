@@ -13,11 +13,15 @@ import (
 	"github.com/medincident/medincident-command-service/internal/config"
 )
 
+// poolInitCtx is passed to pgxpool during construction. pgx's lazy
+// connection model means no connections are dialled at construction time, so
+// a background context is correct — the ctx argument is essentially unused.
+var poolInitCtx = context.Background()
+
 // Error codes emitted by the pool lifecycle helpers in this file.
 const (
 	CodePoolParseConfigFailed = "postgres_pool_parse_config_failed"
 	CodePoolNewFailed         = "postgres_pool_new_failed"
-	CodePoolPingFailed        = "postgres_pool_ping_failed"
 )
 
 // Pool wraps *pgxpool.Pool with a Shutdown method so it can participate
@@ -26,9 +30,10 @@ type Pool struct {
 	*pgxpool.Pool
 }
 
-// NewPool constructs a pgxpool from config, applies pool tuning, and
-// pings the database. A failed ping closes the pool before returning.
-func NewPool(ctx context.Context, cfg config.PostgresConfig) (*Pool, error) {
+// NewPool constructs a pgxpool from config and applies pool tuning.
+// Liveness is a healthcheck concern — it belongs in the /health handler,
+// not here.
+func NewPool(cfg config.PostgresConfig) (*Pool, error) {
 	pcfg, err := pgxpool.ParseConfig(cfg.DSN)
 	if err != nil {
 		return nil, oops.
@@ -49,18 +54,11 @@ func NewPool(ctx context.Context, cfg config.PostgresConfig) (*Pool, error) {
 		pcfg.MaxConnIdleTime = cfg.Pool.MaxConnIdleTime
 	}
 
-	pool, err := pgxpool.NewWithConfig(ctx, pcfg)
+	pool, err := pgxpool.NewWithConfig(poolInitCtx, pcfg)
 	if err != nil {
 		return nil, oops.
 			In("storage.postgres").
 			Code(CodePoolNewFailed).
-			Wrap(err)
-	}
-	if err := pool.Ping(ctx); err != nil {
-		pool.Close()
-		return nil, oops.
-			In("storage.postgres").
-			Code(CodePoolPingFailed).
 			Wrap(err)
 	}
 	return &Pool{Pool: pool}, nil

@@ -40,7 +40,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	container, err := di.NewContainer(ctx, cfg)
+	container, err := di.NewContainer(cfg)
 	if err != nil {
 		bootLogger.Fatal().Err(err).Msg("failed to build DI container")
 	}
