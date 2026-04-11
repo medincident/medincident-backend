@@ -1,0 +1,23 @@
+version: v2
+
+inputs:
+  - git_repo: https://github.com/medincident/medincident-proto.git
+    subdir: api/proto
+    paths:
+      - medincident/events/v1
+      - medincident/orgstructure/v1
+      - medincident/shared/geo/v1
+
+plugins:
+  - local:
+      - go
+      - tool
+      - protoc-gen-go
+    out: gen
+    opt:
+      - paths=source_relative
+      # Go import paths provided via M-mappings so proto files stay
+      # language-agnostic in the medincident-proto monorepo.
+      - Mmedincident/events/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/medincident/events/v1
+      - Mmedincident/orgstructure/v1/events.proto=github.com/medincident/medincident-command-service/gen/medincident/orgstructure/v1
+      - Mmedincident/shared/geo/v1/types.proto=github.com/medincident/medincident-command-service/gen/medincident/shared/geo/v1

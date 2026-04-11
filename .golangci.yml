@@ -1,0 +1,46 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - revive
+    - gocritic
+    - bodyclose
+    - misspell
+    - unparam
+    - nolintlint
+
+  settings:
+    revive:
+      rules:
+        - name: exported
+        - name: var-naming
+        - name: package-comments
+          disabled: true
+
+  exclusions:
+    paths:
+      - gen
+      - internal/storage/postgres/sqlc/gen
+
+formatters:
+  enable:
+    - gofumpt
+    - goimports
+
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/medincident/medincident-command-service
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

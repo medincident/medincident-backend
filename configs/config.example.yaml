@@ -1,0 +1,62 @@
+# medincident-command-service — configuration reference.
+# ${VAR} and $VAR references are expanded from the process environment
+# before YAML parsing. Durations accept Go duration strings: "5m", "200ms".
+
+server:
+  grpc:
+    address: ":9090"
+    max_recv_msg_size: 4194304 # 4 MiB
+
+postgres:
+  # Full libpq-style DSN. Example: postgres://user:pass@host:5432/db?sslmode=disable
+  dsn: "${DATABASE_URL}"
+  pool:
+    max_conns: 20
+    min_conns: 2
+    max_conn_lifetime: "30m"
+    max_conn_idle_time: "5m"
+
+nats:
+  url: "${NATS_URL}"
+  stream: "medincident"
+  # -1 means infinite reconnect attempts (recommended for server components).
+  # Use 0 to disable reconnection entirely or a positive integer for a cap.
+  max_reconnects: -1
+  reconnect_wait: "2s"
+
+zitadel:
+  # Fully-qualified host:port for the Zitadel gRPC Management API.
+  grpc_address: "${ZITADEL_GRPC_ADDRESS}"
+  # URL of the JWKS endpoint used to validate inbound access tokens.
+  jwks_url: "${ZITADEL_JWKS_URL}"
+  # Expected 'iss' (issuer) claim in incoming JWTs.
+  issuer: "${ZITADEL_ISSUER}"
+  # Expected 'aud' (audience) claim in incoming JWTs.
+  audience: "${ZITADEL_AUDIENCE}"
+
+outbox:
+  poll_interval: "500ms"
+  batch_size: 100
+  publish_timeout: "5s"
+
+zerolog:
+  # Global minimum log level (trace|debug|info|warn|error|fatal|panic).
+  level: "info"
+  # Include file:line caller info on every log entry.
+  caller: false
+  # Add automatic timestamp field.
+  timestamp: true
+  # Timestamp format for all outputs (per-output override below).
+  time_format: "2006-01-02T15:04:05.000Z07:00"
+  # Force UTC for all timestamps.
+  time_utc: false
+  # Static fields added to every log entry.
+  # fields:
+  #   service: "command-service"
+  outputs:
+    - type: "console"
+      target: "stdout"
+      pretty: true
+      no_color: false
+      time_format: "15:04:05"
+      parts_order: ["time", "level", "caller", "message"]

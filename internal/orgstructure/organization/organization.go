@@ -1,0 +1,184 @@
+// Package organization is the Organization aggregate within the
+// orgstructure bounded context. It exposes the aggregate root, its
+// domain events, and its validators. Application-layer types (commands,
+// results, service, repository interface) live in the app sub-package;
+// infra adapters (proto mappers) live in the infra sub-package.
+package organization
+
+import (
+	"errors"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-command-service/internal/shared/aggregate"
+	"github.com/medincident/medincident-command-service/internal/shared/geo"
+)
+
+// ErrCodeOrganizationIDGenerationFailed is emitted when uuid.NewV7 fails
+// inside the lifecycle constructor. Declared next to the only place it
+// is produced. Constant name keeps the model prefix for unique grep;
+// string value drops it — the emitting package already conveys it.
+const ErrCodeOrganizationIDGenerationFailed = "id_generation_failed"
+
+// Organization is the aggregate root.
+//
+// It embeds aggregate.Root, which provides CreatedAt/UpdatedAt and the
+// hidden event buffer. Direct writes to CreatedAt or UpdatedAt are a
+// contract violation — the only legitimate way to move UpdatedAt is
+// through Raise(event, now) from inside a mutating method.
+type Organization struct {
+	aggregate.Root
+
+	ID           uuid.UUID
+	Name         string
+	Description  string       // "" = not set
+	LegalAddress *geo.Address // nil = not set
+}
+
+// New is the primary lifecycle constructor. It validates name and
+// description (multi-error via errors.Join) and trusts legalAddress as
+// already-built (the caller is expected to have constructed it via
+// geo.NewAddress or decided it's nil).
+func New(
+	name string,
+	description string,
+	legalAddress *geo.Address,
+	now time.Time,
+) (*Organization, error) {
+	name = trim(name)
+	description = trim(description)
+
+	var errs []error
+	if err := validateName(name); err != nil {
+		errs = append(errs, err)
+	}
+	if err := validateDescription(description); err != nil {
+		errs = append(errs, err)
+	}
+	if len(errs) > 0 {
+		return nil, errors.Join(errs...)
+	}
+
+	id, err := uuid.NewV7()
+	if err != nil {
+		return nil, oops.In("orgstructure.organization").
+			Code(ErrCodeOrganizationIDGenerationFailed).
+			Public("Failed to create organization. Please try again.").
+			Hint("uuid.NewV7 returned an error — check system clock / entropy source").
+			Wrap(err)
+	}
+
+	o := &Organization{
+		Root:         aggregate.NewRoot(now),
+		ID:           id,
+		Name:         name,
+		Description:  description,
+		LegalAddress: legalAddress,
+	}
+	o.Raise(&Created{
+		ID:           id,
+		Name:         name,
+		Description:  description,
+		LegalAddress: legalAddress,
+		At:           now,
+	}, now)
+	return o, nil
+}
+
+// Hydrate restores an Organization from persisted state. It does NOT
+// validate (the repository is trusted) and does NOT raise events.
+// Repositories reach it via the app.Repository interface.
+func Hydrate(
+	id uuid.UUID,
+	name string,
+	description string,
+	legalAddress *geo.Address,
+	createdAt, updatedAt time.Time,
+) *Organization {
+	return &Organization{
+		Root:         aggregate.HydrateRoot(createdAt, updatedAt),
+		ID:           id,
+		Name:         name,
+		Description:  description,
+		LegalAddress: legalAddress,
+	}
+}
+
+// AggregateType is the BC-level short name used in the outbox envelope.
+// Stable identifier — renaming is a breaking change for consumers that
+// filter events by aggregate type.
+func (o *Organization) AggregateType() string { return "organization" }
+
+// AggregateID exposes the organization's id as a string under the
+// outbox.EventSource contract. The domain keeps uuid.UUID internally;
+// the string conversion happens here at the outbox boundary.
+// PullEvents is inherited from the embedded aggregate.Root.
+func (o *Organization) AggregateID() string { return o.ID.String() }
+
+// Rename changes the organization's name. Validates the new name,
+// no-ops if identical, raises Renamed on successful change.
+func (o *Organization) Rename(newName string, now time.Time) error {
+	newName = trim(newName)
+	if err := validateName(newName); err != nil {
+		return err
+	}
+	if o.Name == newName {
+		return nil
+	}
+	o.Name = newName
+	o.Raise(&Renamed{ID: o.ID, Name: newName, At: now}, now)
+	return nil
+}
+
+// UpdateDescription replaces the description. Empty string clears it.
+// No-ops if the new description equals the current one. Raises
+// DescriptionUpdated on successful change.
+func (o *Organization) UpdateDescription(newDescription string, now time.Time) error {
+	newDescription = trim(newDescription)
+	if err := validateDescription(newDescription); err != nil {
+		return err
+	}
+	if o.Description == newDescription {
+		return nil
+	}
+	o.Description = newDescription
+	o.Raise(&DescriptionUpdated{
+		ID:          o.ID,
+		Description: newDescription,
+		At:          now,
+	}, now)
+	return nil
+}
+
+// RelocateLegalAddress replaces the legal address wholesale. nil is a
+// valid input meaning "remove the address". No-ops if the new value is
+// equal to the current one. Raises LegalAddressRelocated on successful
+// change. The VO is trusted: the caller built it via geo.NewAddress or
+// decided it's nil.
+func (o *Organization) RelocateLegalAddress(newAddress *geo.Address, now time.Time) error {
+	if addressEqual(o.LegalAddress, newAddress) {
+		return nil
+	}
+	o.LegalAddress = newAddress
+	o.Raise(&LegalAddressRelocated{ID: o.ID, LegalAddress: newAddress, At: now}, now)
+	return nil
+}
+
+func addressEqual(a, b *geo.Address) bool {
+	if a == nil || b == nil {
+		return a == b
+	}
+	if a.Text != b.Text {
+		return false
+	}
+	return pointEqual(a.Point, b.Point)
+}
+
+func pointEqual(a, b *geo.Point) bool {
+	if a == nil || b == nil {
+		return a == b
+	}
+	return a.Longitude == b.Longitude && a.Latitude == b.Latitude
+}
