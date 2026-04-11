@@ -10,7 +10,7 @@ import (
 	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
-func providePostgres(i do.Injector, ctx context.Context) {
+func providePostgres(ctx context.Context, i do.Injector) {
 	do.Provide(i, func(inj do.Injector) (*postgres.Pool, error) {
 		cfg := do.MustInvoke[*config.Config](inj)
 		return postgres.NewPool(ctx, cfg.Postgres)

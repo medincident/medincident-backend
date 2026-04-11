@@ -41,5 +41,5 @@ type Record struct {
 // explicit forces the invariant at compile time: a caller cannot pass
 // nil or forget the tx.
 type Store interface {
-	Append(ctx context.Context, t tx.Tx, record Record) error
+	Append(ctx context.Context, t tx.Tx, record *Record) error
 }

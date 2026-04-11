@@ -10,8 +10,12 @@ import (
 )
 
 // CodeOutboxInsertFailed is emitted by OutboxStore.Append when the
-// insert into outbox.events fails.
-const CodeOutboxInsertFailed = "postgres_outbox_insert_failed"
+// insert into outbox.events fails. CodeOutboxNilRecord is emitted when
+// a caller passes a nil *outbox.Record.
+const (
+	CodeOutboxInsertFailed = "postgres_outbox_insert_failed"
+	CodeOutboxNilRecord    = "postgres_outbox_nil_record"
+)
 
 // OutboxStore persists outbox rows into outbox.events.
 type OutboxStore struct{}
@@ -29,7 +33,12 @@ VALUES ($1, $2, $3, $4, $5, $6)
 `
 
 // Append inserts one outbox row in the given transaction.
-func (s *OutboxStore) Append(ctx context.Context, t tx.Tx, rec outbox.Record) error {
+func (s *OutboxStore) Append(ctx context.Context, t tx.Tx, rec *outbox.Record) error {
+	if rec == nil {
+		return oops.In("storage.postgres").
+			Code(CodeOutboxNilRecord).
+			Errorf("nil outbox record")
+	}
 	pg, err := unwrap(t)
 	if err != nil {
 		return err

@@ -82,10 +82,13 @@ func (b noopBeginner) Begin(context.Context) (tx.Tx, error) {
 }
 
 type memStore struct {
-	rows []outbox.Record
+	rows []*outbox.Record
 }
 
-func (s *memStore) Append(_ context.Context, _ tx.Tx, r outbox.Record) error {
+func (s *memStore) Append(_ context.Context, _ tx.Tx, r *outbox.Record) error {
+	if r == nil {
+		return errors.New("nil record")
+	}
 	s.rows = append(s.rows, r)
 	return nil
 }

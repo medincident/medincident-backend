@@ -84,7 +84,7 @@ func Publish(
 					Wrap(err)
 			}
 
-			rec := Record{
+			rec := &Record{
 				ID:            id,
 				AggregateType: aggType,
 				AggregateID:   aggID,

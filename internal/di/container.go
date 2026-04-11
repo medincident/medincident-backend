@@ -27,7 +27,7 @@ func NewContainer(ctx context.Context, cfg *config.Config) (do.Injector, error) 
 	do.Provide(i, ProvideLoggerWrapper)
 	do.Provide(i, ProvideZerolog)
 
-	providePostgres(i, ctx)
+	providePostgres(ctx, i)
 	provideOutbox(i)
 	provideOrganization(i)
 

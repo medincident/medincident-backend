@@ -35,11 +35,14 @@ func (s *stubSource) PullEvents() []any {
 }
 
 type stubStore struct {
-	records []outbox.Record
+	records []*outbox.Record
 	err     error
 }
 
-func (s *stubStore) Append(_ context.Context, _ tx.Tx, r outbox.Record) error {
+func (s *stubStore) Append(_ context.Context, _ tx.Tx, r *outbox.Record) error {
+	if r == nil {
+		return errors.New("nil record")
+	}
 	if s.err != nil {
 		return s.err
 	}

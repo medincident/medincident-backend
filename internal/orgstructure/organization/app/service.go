@@ -72,12 +72,18 @@ func NewService(
 //  2. If validation succeeded, open a transaction, save the aggregate,
 //     publish its events to the outbox in the same tx, commit.
 func (s *Service) Create(ctx context.Context, cmd CreateCommand) (CreateResult, error) {
-	var errs []error
+	var (
+		errs         []error
+		legalAddress *geo.Address
+	)
 
-	legalAddress, addrErr := buildAddress(cmd.LegalAddress)
-	if addrErr != nil {
-		errs = append(errs, addrErr)
-		legalAddress = nil
+	if cmd.LegalAddress != nil {
+		addr, addrErr := buildAddress(cmd.LegalAddress)
+		if addrErr != nil {
+			errs = append(errs, addrErr)
+		} else {
+			legalAddress = addr
+		}
 	}
 
 	now := s.clock.Now().UTC()
@@ -116,11 +122,15 @@ func (s *Service) UpdateDescription(ctx context.Context, cmd UpdateDescriptionCo
 // RelocateLegalAddress handles the RelocateLegalAddress command. A nil
 // Address input means "remove the address".
 func (s *Service) RelocateLegalAddress(ctx context.Context, cmd RelocateLegalAddressCommand) (RelocateLegalAddressResult, error) {
-	newAddr, err := buildAddress(cmd.Address)
-	if err != nil {
-		return RelocateLegalAddressResult{}, err
+	var newAddr *geo.Address
+	if cmd.Address != nil {
+		addr, err := buildAddress(cmd.Address)
+		if err != nil {
+			return RelocateLegalAddressResult{}, err
+		}
+		newAddr = addr
 	}
-	err = s.mutate(ctx, cmd.ID, func(o *organization.Organization) error {
+	err := s.mutate(ctx, cmd.ID, func(o *organization.Organization) error {
 		return o.RelocateLegalAddress(newAddr, s.clock.Now().UTC())
 	})
 	return RelocateLegalAddressResult{}, err
@@ -173,11 +183,10 @@ func (s *Service) persistAndPublish(ctx context.Context, org *organization.Organ
 // and the domain *geo.Address VO. It runs BOTH NewPoint and NewAddress
 // regardless of individual failures so that every field violation in
 // the address tree is surfaced in one go — no fail-fast.
+//
+// Callers must pre-check for a nil input and skip the call entirely
+// when the address is absent — buildAddress always builds a real VO.
 func buildAddress(in *AddressInput) (*geo.Address, error) {
-	if in == nil {
-		return nil, nil
-	}
-
 	var (
 		errs  []error
 		point *geo.Point
