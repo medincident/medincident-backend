@@ -13,8 +13,8 @@ import (
 	"github.com/medincident/medincident-command-service/internal/orgstructure/organization"
 	organizationapp "github.com/medincident/medincident-command-service/internal/orgstructure/organization/app"
 	"github.com/medincident/medincident-command-service/internal/shared/geo"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 	sqlcgen "github.com/medincident/medincident-command-service/internal/storage/postgres/sqlc/gen"
-	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
 // Error codes emitted by the Organization repository in this file.

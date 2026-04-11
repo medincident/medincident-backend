@@ -3,49 +3,36 @@ package organizationapp
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
 	"github.com/medincident/medincident-command-service/internal/orgstructure/organization"
 	"github.com/medincident/medincident-command-service/internal/outbox"
+	"github.com/medincident/medincident-command-service/internal/shared/clock"
 	"github.com/medincident/medincident-command-service/internal/shared/geo"
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
-
-// Clock is the injection point for time.Now so a single request sees a
-// single "now" and tests can run deterministically.
-type Clock interface {
-	Now() time.Time
-}
-
-// beginner is the consumer-side interface for opening transactions;
-// implemented by storage/postgres.Beginner. Declared locally so the
-// service does not import the postgres package.
-type beginner interface {
-	Begin(ctx context.Context) (tx.Tx, error)
-}
 
 // Service orchestrates the Organization aggregate, its repository, and
 // the outbox in a single transaction.
 type Service struct {
 	logger      *zerolog.Logger
-	beginner    beginner
+	beginner    tx.Beginner
 	repo        Repository
 	outboxStore outbox.Store
 	outboxReg   outbox.Registry
-	clock       Clock
+	clk         clock.Clock
 }
 
 // NewService wires up an Organization application service.
 func NewService(
 	logger *zerolog.Logger,
-	bg beginner,
+	bg tx.Beginner,
 	repo Repository,
 	store outbox.Store,
 	reg outbox.Registry,
-	clock Clock,
+	clk clock.Clock,
 ) *Service {
 	return &Service{
 		logger:      logger,
@@ -53,7 +40,7 @@ func NewService(
 		repo:        repo,
 		outboxStore: store,
 		outboxReg:   reg,
-		clock:       clock,
+		clk:         clk,
 	}
 }
 
@@ -76,7 +63,7 @@ func (s *Service) Create(ctx context.Context, cmd CreateCommand) (CreateResult, 
 		}
 	}
 
-	now := s.clock.Now().UTC()
+	now := s.clk.Now().UTC()
 	org, orgErr := organization.New(cmd.Name, cmd.Description, legalAddress, now)
 	if orgErr != nil {
 		errs = append(errs, orgErr)
@@ -95,7 +82,7 @@ func (s *Service) Create(ctx context.Context, cmd CreateCommand) (CreateResult, 
 // Rename handles the RenameOrganization command.
 func (s *Service) Rename(ctx context.Context, cmd RenameCommand) (RenameResult, error) {
 	err := s.mutate(ctx, cmd.ID, func(o *organization.Organization) error {
-		return o.Rename(cmd.NewName, s.clock.Now().UTC())
+		return o.Rename(cmd.NewName, s.clk.Now().UTC())
 	})
 	return RenameResult{}, err
 }
@@ -104,7 +91,7 @@ func (s *Service) Rename(ctx context.Context, cmd RenameCommand) (RenameResult, 
 // new description clears the stored description.
 func (s *Service) UpdateDescription(ctx context.Context, cmd UpdateDescriptionCommand) (UpdateDescriptionResult, error) {
 	err := s.mutate(ctx, cmd.ID, func(o *organization.Organization) error {
-		return o.UpdateDescription(cmd.NewDescription, s.clock.Now().UTC())
+		return o.UpdateDescription(cmd.NewDescription, s.clk.Now().UTC())
 	})
 	return UpdateDescriptionResult{}, err
 }
@@ -121,7 +108,7 @@ func (s *Service) RelocateLegalAddress(ctx context.Context, cmd RelocateLegalAdd
 		newAddr = addr
 	}
 	err := s.mutate(ctx, cmd.ID, func(o *organization.Organization) error {
-		return o.RelocateLegalAddress(newAddr, s.clock.Now().UTC())
+		return o.RelocateLegalAddress(newAddr, s.clk.Now().UTC())
 	})
 	return RelocateLegalAddressResult{}, err
 }

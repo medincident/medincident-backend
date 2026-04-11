@@ -6,7 +6,7 @@ import (
 	"github.com/samber/oops"
 	"github.com/stretchr/testify/require"
 
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
 func TestQuoteSavepointNameAccepts(t *testing.T) {

@@ -6,7 +6,7 @@ import (
 	"github.com/samber/oops"
 
 	"github.com/medincident/medincident-command-service/internal/outbox"
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
 // Error codes emitted by OutboxStore.Append.

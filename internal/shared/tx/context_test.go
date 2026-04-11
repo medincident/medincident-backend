@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
 type fakeTx struct{ tx.Tx }

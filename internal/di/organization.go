@@ -1,22 +1,15 @@
 package di
 
 import (
-	"time"
-
 	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
 
 	organizationapp "github.com/medincident/medincident-command-service/internal/orgstructure/organization/app"
 	"github.com/medincident/medincident-command-service/internal/outbox"
+	"github.com/medincident/medincident-command-service/internal/shared/clock"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 	"github.com/medincident/medincident-command-service/internal/storage/postgres"
-	"github.com/medincident/medincident-command-service/internal/tx"
 )
-
-// wallClock is the default Clock implementation used in production. Tests
-// inject their own clock directly when constructing the Service.
-type wallClock struct{}
-
-func (wallClock) Now() time.Time { return time.Now() }
 
 // ProvideOrganizationRepository is a samber/do provider for
 // organizationapp.Repository.
@@ -51,5 +44,5 @@ func ProvideOrganizationService(injector do.Injector) (*organizationapp.Service,
 	if err != nil {
 		return nil, err
 	}
-	return organizationapp.NewService(logger, bg, repo, store, reg, wallClock{}), nil
+	return organizationapp.NewService(logger, bg, repo, store, reg, clock.System{}), nil
 }

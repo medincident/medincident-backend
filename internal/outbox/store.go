@@ -10,7 +10,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
 // Record is the infrastructure form of one outbox row. AggregateType

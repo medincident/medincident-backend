@@ -4,8 +4,8 @@ import (
 	"github.com/samber/do/v2"
 
 	"github.com/medincident/medincident-command-service/internal/config"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 	"github.com/medincident/medincident-command-service/internal/storage/postgres"
-	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
 // ProvidePostgresPool is a samber/do provider for *postgres.Pool.

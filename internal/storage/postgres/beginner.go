@@ -6,7 +6,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/samber/oops"
 
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
 // Beginner implements tx.Beginner on top of a Pool. DI provides it as

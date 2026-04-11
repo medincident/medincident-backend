@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
 // Error codes emitted by Publish.

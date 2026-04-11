@@ -13,7 +13,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/medincident/medincident-command-service/internal/outbox"
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
 type stubEvent struct {

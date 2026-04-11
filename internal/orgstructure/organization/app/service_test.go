@@ -18,7 +18,7 @@ import (
 	organizationapp "github.com/medincident/medincident-command-service/internal/orgstructure/organization/app"
 	"github.com/medincident/medincident-command-service/internal/outbox"
 	"github.com/medincident/medincident-command-service/internal/shared/geo"
-	"github.com/medincident/medincident-command-service/internal/tx"
+	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
 type fixedClock struct{ now time.Time }
@@ -248,16 +248,16 @@ func TestServiceRenameHappyPath(t *testing.T) {
 	svc, repo, store := newTestService(t, now)
 
 	// seed
-	createRes, err := svc.Create(context.Background(), organizationapp.CreateCommand{Name: "Old"})
+	createRes, err := svc.Create(context.Background(), organizationapp.CreateCommand{Name: "OldOrg"})
 	require.NoError(t, err)
 	require.Len(t, store.rows, 1)
 
 	_, err = svc.Rename(context.Background(), organizationapp.RenameCommand{
 		ID:      createRes.ID,
-		NewName: "New",
+		NewName: "NewOrg",
 	})
 	require.NoError(t, err)
-	require.Equal(t, "New", repo.saved[createRes.ID].Name)
+	require.Equal(t, "NewOrg", repo.saved[createRes.ID].Name)
 	require.Len(t, store.rows, 2)
 	require.Equal(t, "medincident.orgstructure.v1.OrganizationRenamed", store.rows[1].EventType)
 }
