@@ -79,33 +79,29 @@ var eventInfos = []struct {
 	{
 		Type: reflect.TypeOf(&organization.Created{}),
 		Info: outbox.EventInfo{
-			TypeName: "medincident.orgstructure.v1.OrganizationCreated",
-			Zero:     func() any { return &organization.Created{} },
-			ToProto:  createdToProto,
+			Subject: "medincident.orgstructure.v1.organization.created",
+			ToProto: createdToProto,
 		},
 	},
 	{
 		Type: reflect.TypeOf(&organization.Renamed{}),
 		Info: outbox.EventInfo{
-			TypeName: "medincident.orgstructure.v1.OrganizationRenamed",
-			Zero:     func() any { return &organization.Renamed{} },
-			ToProto:  renamedToProto,
+			Subject: "medincident.orgstructure.v1.organization.renamed",
+			ToProto: renamedToProto,
 		},
 	},
 	{
 		Type: reflect.TypeOf(&organization.DescriptionUpdated{}),
 		Info: outbox.EventInfo{
-			TypeName: "medincident.orgstructure.v1.OrganizationDescriptionUpdated",
-			Zero:     func() any { return &organization.DescriptionUpdated{} },
-			ToProto:  descriptionUpdatedToProto,
+			Subject: "medincident.orgstructure.v1.organization.description_updated",
+			ToProto: descriptionUpdatedToProto,
 		},
 	},
 	{
 		Type: reflect.TypeOf(&organization.LegalAddressRelocated{}),
 		Info: outbox.EventInfo{
-			TypeName: "medincident.orgstructure.v1.OrganizationLegalAddressRelocated",
-			Zero:     func() any { return &organization.LegalAddressRelocated{} },
-			ToProto:  legalAddressRelocatedToProto,
+			Subject: "medincident.orgstructure.v1.organization.legal_address_relocated",
+			ToProto: legalAddressRelocatedToProto,
 		},
 	},
 }

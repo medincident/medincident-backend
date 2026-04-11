@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	sq "github.com/Masterminds/squirrel"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -15,15 +14,6 @@ import (
 	"github.com/medincident/medincident-command-service/internal/shared/geo"
 	"github.com/medincident/medincident-command-service/internal/shared/tx"
 	sqlcgen "github.com/medincident/medincident-command-service/internal/storage/postgres/sqlc/gen"
-)
-
-// Error codes emitted by the Organization repository in this file.
-const (
-	CodeOrganizationNotFound        = "postgres_organization_not_found"
-	CodeOrganizationGetFailed       = "postgres_organization_get_failed"
-	CodeOrganizationSaveFailed      = "postgres_organization_save_failed"
-	CodeOrganizationListFailed      = "postgres_organization_list_failed"
-	CodeOrganizationListBuildFailed = "postgres_organization_list_build_failed"
 )
 
 // OrganizationRepo implements organizationapp.Repository on Postgres.
@@ -50,10 +40,9 @@ func (r *OrganizationRepo) executor(ctx context.Context) (sqlcgen.DBTX, error) {
 	return r.pool.Pool, nil
 }
 
-// GetByID loads an Organization by primary key via the sqlc-generated
-// query, then calls organization.Hydrate to build the aggregate
-// (no validation, no events).
-func (r *OrganizationRepo) GetByID(ctx context.Context, id uuid.UUID) (*organization.Organization, error) {
+// Find loads an Organization by primary key via the sqlc-generated
+// query, then calls organization.Hydrate to build the aggregate.
+func (r *OrganizationRepo) Find(ctx context.Context, id uuid.UUID) (*organization.Organization, error) {
 	exec, err := r.executor(ctx)
 	if err != nil {
 		return nil, err
@@ -63,13 +52,13 @@ func (r *OrganizationRepo) GetByID(ctx context.Context, id uuid.UUID) (*organiza
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, oops.In("storage.postgres").
-				Code(CodeOrganizationNotFound).
+				Code(organizationapp.ErrCodeNotFound).
 				Public("Organization not found.").
 				With("id", id).
 				Errorf("no rows")
 		}
 		return nil, oops.In("storage.postgres").
-			Code(CodeOrganizationGetFailed).
+			Code(organizationapp.ErrCodeFindFailed).
 			With("id", id).
 			Wrap(err)
 	}
@@ -107,93 +96,11 @@ func (r *OrganizationRepo) Save(ctx context.Context, o *organization.Organizatio
 		UpdatedAt:        pgtype.Timestamptz{Time: o.UpdatedAt, Valid: true},
 	}); err != nil {
 		return oops.In("storage.postgres").
-			Code(CodeOrganizationSaveFailed).
+			Code(organizationapp.ErrCodeSaveFailed).
 			With("id", o.ID).
 			Wrap(err)
 	}
 	return nil
-}
-
-// List returns organizations matching the filter. Uses squirrel to
-// build the optional WHERE / LIMIT / OFFSET fragments; sqlc is not a
-// fit here because the query shape varies with the filter.
-func (r *OrganizationRepo) List(ctx context.Context, f organizationapp.ListFilter) ([]*organization.Organization, error) {
-	exec, err := r.executor(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	qb := sq.StatementBuilder.PlaceholderFormat(sq.Dollar).
-		Select(
-			"id",
-			"name",
-			"description",
-			"legal_address_text",
-			"legal_address_lng",
-			"legal_address_lat",
-			"created_at",
-			"updated_at",
-		).
-		From("domain.organizations").
-		OrderBy("created_at DESC")
-
-	if f.NameLike != "" {
-		qb = qb.Where(sq.ILike{"name": "%" + f.NameLike + "%"})
-	}
-	if f.Limit > 0 {
-		qb = qb.Limit(uint64(f.Limit))
-	}
-	if f.Offset > 0 {
-		qb = qb.Offset(uint64(f.Offset))
-	}
-
-	sqlStr, args, err := qb.ToSql()
-	if err != nil {
-		return nil, oops.In("storage.postgres").
-			Code(CodeOrganizationListBuildFailed).
-			Wrap(err)
-	}
-
-	rows, err := exec.Query(ctx, sqlStr, args...)
-	if err != nil {
-		return nil, oops.In("storage.postgres").
-			Code(CodeOrganizationListFailed).
-			Wrap(err)
-	}
-	defer rows.Close()
-
-	var out []*organization.Organization
-	for rows.Next() {
-		var (
-			id          pgtype.UUID
-			name        string
-			descPtr     *string
-			addrTextPtr *string
-			addrLngPtr  *float64
-			addrLatPtr  *float64
-			createdAt   pgtype.Timestamptz
-			updatedAt   pgtype.Timestamptz
-		)
-		if err := rows.Scan(&id, &name, &descPtr, &addrTextPtr, &addrLngPtr, &addrLatPtr, &createdAt, &updatedAt); err != nil {
-			return nil, oops.In("storage.postgres").
-				Code(CodeOrganizationListFailed).
-				Wrap(err)
-		}
-		out = append(out, organization.Hydrate(
-			pgToUUID(id),
-			name,
-			derefStr(descPtr),
-			addressFromRow(addrTextPtr, addrLngPtr, addrLatPtr),
-			createdAt.Time,
-			updatedAt.Time,
-		))
-	}
-	if err := rows.Err(); err != nil {
-		return nil, oops.In("storage.postgres").
-			Code(CodeOrganizationListFailed).
-			Wrap(err)
-	}
-	return out, nil
 }
 
 var _ organizationapp.Repository = (*OrganizationRepo)(nil)
@@ -249,9 +156,7 @@ func uuidToPg(id uuid.UUID) pgtype.UUID {
 	return pgtype.UUID{Bytes: id, Valid: true}
 }
 
-// pgToUUID converts a pgtype.UUID back into a uuid.UUID. A NULL pg value
-// returns uuid.Nil — caller is responsible for null handling, but in
-// practice every id column we read is NOT NULL.
+// pgToUUID converts a pgtype.UUID back into a uuid.UUID.
 func pgToUUID(p pgtype.UUID) uuid.UUID {
 	if !p.Valid {
 		return uuid.Nil

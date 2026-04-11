@@ -5,11 +5,13 @@ import (
 	"errors"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"github.com/medincident/medincident-command-service/internal/outbox"
@@ -52,13 +54,16 @@ func (s *stubStore) Append(_ context.Context, _ tx.Tx, r *outbox.Record) error {
 
 type stubTx struct{ tx.Tx }
 
+type fixedClock struct{ t time.Time }
+
+func (c fixedClock) Now() time.Time { return c.t }
+
 func registryWithStub(t *testing.T) outbox.Registry {
 	t.Helper()
 	reg := outbox.NewRegistry()
 	reg.Register(reflect.TypeOf(&stubEvent{}), outbox.EventInfo{
-		TypeName: "test.v1.StubEvent",
-		Zero:     func() any { return &stubEvent{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+		Subject: "test.v1.stub_event",
+		ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
 	})
 	return reg
 }
@@ -68,7 +73,11 @@ const (
 	stubAggIDB = "01910000-0000-0000-0000-00000000000b"
 )
 
-func TestPublishWritesAllEventsWithAggregateMetadata(t *testing.T) {
+func newPublisher(store outbox.Store, reg outbox.Registry) outbox.Publisher {
+	return outbox.NewPublisher(store, reg, fixedClock{t: time.Unix(1_700_000_000, 0).UTC()})
+}
+
+func TestPublisherWritesAllEventsWithEnvelopeMetadata(t *testing.T) {
 	reg := registryWithStub(t)
 	store := &stubStore{}
 	src := &stubSource{
@@ -77,23 +86,27 @@ func TestPublishWritesAllEventsWithAggregateMetadata(t *testing.T) {
 		events:  []any{&stubEvent{Label: "a"}, &stubEvent{Label: "b"}},
 	}
 
-	err := outbox.Publish(context.Background(), &stubTx{}, store, reg, src)
-	require.NoError(t, err)
+	pub := newPublisher(store, reg)
+	require.NoError(t, pub.Publish(context.Background(), &stubTx{}, src))
 	require.Len(t, store.records, 2)
 
 	for _, rec := range store.records {
 		require.Equal(t, "stub", rec.AggregateType)
 		require.Equal(t, stubAggIDA, rec.AggregateID)
-		require.Equal(t, "test.v1.StubEvent", rec.EventType)
-		require.NotEqual(t, uuid.Nil, rec.ID)
+		require.Equal(t, "test.v1.stub_event", rec.Subject)
+		require.NotEqual(t, uuid.Nil, rec.EventID)
+		require.Equal(t, rec.EventID.String(), rec.Headers["Nats-Msg-Id"])
 		require.False(t, rec.CreatedAt.IsZero())
+		require.Equal(t, rec.CreatedAt, rec.OccurredAt)
+
+		var wrapped anypb.Any
+		require.NoError(t, proto.Unmarshal(rec.Payload, &wrapped))
+		require.Equal(t, "type.googleapis.com/google.protobuf.Empty", wrapped.TypeUrl)
 	}
-	require.JSONEq(t, `{"Label":"a"}`, string(store.records[0].Payload))
-	require.JSONEq(t, `{"Label":"b"}`, string(store.records[1].Payload))
 	require.Empty(t, src.events, "source should be drained after publish")
 }
 
-func TestPublishReturnsErrorWhenMapperMissing(t *testing.T) {
+func TestPublisherReturnsErrorWhenMapperMissing(t *testing.T) {
 	reg := outbox.NewRegistry() // no mappers registered
 	store := &stubStore{}
 	src := &stubSource{
@@ -102,17 +115,17 @@ func TestPublishReturnsErrorWhenMapperMissing(t *testing.T) {
 		events:  []any{&stubEvent{Label: "a"}},
 	}
 
-	err := outbox.Publish(context.Background(), &stubTx{}, store, reg, src)
+	err := newPublisher(store, reg).Publish(context.Background(), &stubTx{}, src)
 	require.Error(t, err)
 	oe, ok := oops.AsOops(err)
 	require.True(t, ok)
-	require.Equal(t, outbox.CodeNoMapper, oe.Code())
+	require.Equal(t, outbox.ErrCodeNoMapper, oe.Code())
 	require.Empty(t, store.records)
 }
 
-func TestPublishWrapsStoreError(t *testing.T) {
+func TestPublisherWrapsStoreError(t *testing.T) {
 	reg := registryWithStub(t)
-	storeErr := errors.New("plain store failure") // simulate a non-oops driver error
+	storeErr := errors.New("plain store failure")
 	store := &stubStore{err: storeErr}
 	src := &stubSource{
 		aggType: "stub",
@@ -120,15 +133,15 @@ func TestPublishWrapsStoreError(t *testing.T) {
 		events:  []any{&stubEvent{Label: "a"}},
 	}
 
-	err := outbox.Publish(context.Background(), &stubTx{}, store, reg, src)
+	err := newPublisher(store, reg).Publish(context.Background(), &stubTx{}, src)
 	require.Error(t, err)
 	oe, ok := oops.AsOops(err)
 	require.True(t, ok)
-	require.Equal(t, outbox.CodeStoreAppendFailed, oe.Code())
+	require.Equal(t, outbox.ErrCodeStoreAppend, oe.Code())
 	require.ErrorIs(t, err, storeErr)
 }
 
-func TestPublishDoesNothingForEmptySource(t *testing.T) {
+func TestPublisherDoesNothingForEmptySource(t *testing.T) {
 	reg := registryWithStub(t)
 	store := &stubStore{}
 	src := &stubSource{
@@ -136,12 +149,11 @@ func TestPublishDoesNothingForEmptySource(t *testing.T) {
 		aggID:   stubAggIDA,
 	}
 
-	err := outbox.Publish(context.Background(), &stubTx{}, store, reg, src)
-	require.NoError(t, err)
+	require.NoError(t, newPublisher(store, reg).Publish(context.Background(), &stubTx{}, src))
 	require.Empty(t, store.records)
 }
 
-func TestPublishMultipleSourcesKeepsTheirMetadataSeparate(t *testing.T) {
+func TestPublisherMultipleSourcesKeepMetadataSeparate(t *testing.T) {
 	reg := registryWithStub(t)
 	store := &stubStore{}
 	srcA := &stubSource{
@@ -155,8 +167,7 @@ func TestPublishMultipleSourcesKeepsTheirMetadataSeparate(t *testing.T) {
 		events:  []any{&stubEvent{Label: "from b"}},
 	}
 
-	err := outbox.Publish(context.Background(), &stubTx{}, store, reg, srcA, srcB)
-	require.NoError(t, err)
+	require.NoError(t, newPublisher(store, reg).Publish(context.Background(), &stubTx{}, srcA, srcB))
 	require.Len(t, store.records, 2)
 	require.Equal(t, "a", store.records[0].AggregateType)
 	require.Equal(t, "b", store.records[1].AggregateType)

@@ -26,10 +26,9 @@ func TestRegisterOutboxMappersCoversAllEvents(t *testing.T) {
 		reflect.TypeOf(&organization.DescriptionUpdated{}),
 		reflect.TypeOf(&organization.LegalAddressRelocated{}),
 	} {
-		info, ok := reg.ByGoType(tp)
+		info, ok := reg.Lookup(tp)
 		require.True(t, ok, "missing mapper for %s", tp)
-		require.NotEmpty(t, info.TypeName)
-		require.NotNil(t, info.Zero)
+		require.NotEmpty(t, info.Subject)
 		require.NotNil(t, info.ToProto)
 	}
 }
@@ -38,7 +37,7 @@ func TestCreatedMapperFullAddress(t *testing.T) {
 	reg := outbox.NewRegistry()
 	organizationinfra.RegisterOutboxMappers(reg)
 
-	info, ok := reg.ByGoType(reflect.TypeOf(&organization.Created{}))
+	info, ok := reg.Lookup(reflect.TypeOf(&organization.Created{}))
 	require.True(t, ok)
 
 	addr := &geo.Address{Text: "Main 1", Point: &geo.Point{Longitude: 30.5, Latitude: 50.5}}
@@ -66,7 +65,7 @@ func TestCreatedMapperFullAddress(t *testing.T) {
 func TestCreatedMapperOmitsEmptyDescription(t *testing.T) {
 	reg := outbox.NewRegistry()
 	organizationinfra.RegisterOutboxMappers(reg)
-	info, _ := reg.ByGoType(reflect.TypeOf(&organization.Created{}))
+	info, _ := reg.Lookup(reflect.TypeOf(&organization.Created{}))
 
 	msg, err := info.ToProto(&organization.Created{Name: "Acme"})
 	require.NoError(t, err)
@@ -78,7 +77,7 @@ func TestCreatedMapperOmitsEmptyDescription(t *testing.T) {
 func TestRenamedMapper(t *testing.T) {
 	reg := outbox.NewRegistry()
 	organizationinfra.RegisterOutboxMappers(reg)
-	info, _ := reg.ByGoType(reflect.TypeOf(&organization.Renamed{}))
+	info, _ := reg.Lookup(reflect.TypeOf(&organization.Renamed{}))
 
 	msg, err := info.ToProto(&organization.Renamed{Name: "AcmeCo"})
 	require.NoError(t, err)
@@ -88,7 +87,7 @@ func TestRenamedMapper(t *testing.T) {
 func TestDescriptionUpdatedMapperClearsWhenEmpty(t *testing.T) {
 	reg := outbox.NewRegistry()
 	organizationinfra.RegisterOutboxMappers(reg)
-	info, _ := reg.ByGoType(reflect.TypeOf(&organization.DescriptionUpdated{}))
+	info, _ := reg.Lookup(reflect.TypeOf(&organization.DescriptionUpdated{}))
 
 	msg, err := info.ToProto(&organization.DescriptionUpdated{Description: ""})
 	require.NoError(t, err)
@@ -102,7 +101,7 @@ func TestDescriptionUpdatedMapperClearsWhenEmpty(t *testing.T) {
 func TestLegalAddressRelocatedMapperClearsWhenNil(t *testing.T) {
 	reg := outbox.NewRegistry()
 	organizationinfra.RegisterOutboxMappers(reg)
-	info, _ := reg.ByGoType(reflect.TypeOf(&organization.LegalAddressRelocated{}))
+	info, _ := reg.Lookup(reflect.TypeOf(&organization.LegalAddressRelocated{}))
 
 	msg, err := info.ToProto(&organization.LegalAddressRelocated{LegalAddress: nil})
 	require.NoError(t, err)

@@ -27,7 +27,7 @@ func (f fixedClock) Now() time.Time { return f.now }
 
 type inMemoryRepo struct {
 	saved   map[uuid.UUID]*organization.Organization
-	getErr  error
+	findErr error
 	saveErr error
 }
 
@@ -35,9 +35,9 @@ func newInMemoryRepo() *inMemoryRepo {
 	return &inMemoryRepo{saved: make(map[uuid.UUID]*organization.Organization)}
 }
 
-func (r *inMemoryRepo) GetByID(_ context.Context, id uuid.UUID) (*organization.Organization, error) {
-	if r.getErr != nil {
-		return nil, r.getErr
+func (r *inMemoryRepo) Find(_ context.Context, id uuid.UUID) (*organization.Organization, error) {
+	if r.findErr != nil {
+		return nil, r.findErr
 	}
 	o, ok := r.saved[id]
 	if !ok {
@@ -52,10 +52,6 @@ func (r *inMemoryRepo) Save(_ context.Context, o *organization.Organization) err
 	}
 	r.saved[o.ID] = o
 	return nil
-}
-
-func (r *inMemoryRepo) List(context.Context, organizationapp.ListFilter) ([]*organization.Organization, error) {
-	panic("List not used in service tests")
 }
 
 // noopTx satisfies tx.Tx without touching any DB.
@@ -95,35 +91,33 @@ func registryForOrganization(t *testing.T) outbox.Registry {
 	t.Helper()
 	reg := outbox.NewRegistry()
 	reg.Register(reflect.TypeOf(&organization.Created{}), outbox.EventInfo{
-		TypeName: "medincident.orgstructure.v1.OrganizationCreated",
-		Zero:     func() any { return &organization.Created{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+		Subject: "medincident.orgstructure.v1.organization.created",
+		ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
 	})
 	reg.Register(reflect.TypeOf(&organization.Renamed{}), outbox.EventInfo{
-		TypeName: "medincident.orgstructure.v1.OrganizationRenamed",
-		Zero:     func() any { return &organization.Renamed{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+		Subject: "medincident.orgstructure.v1.organization.renamed",
+		ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
 	})
 	reg.Register(reflect.TypeOf(&organization.DescriptionUpdated{}), outbox.EventInfo{
-		TypeName: "medincident.orgstructure.v1.OrganizationDescriptionUpdated",
-		Zero:     func() any { return &organization.DescriptionUpdated{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+		Subject: "medincident.orgstructure.v1.organization.description_updated",
+		ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
 	})
 	reg.Register(reflect.TypeOf(&organization.LegalAddressRelocated{}), outbox.EventInfo{
-		TypeName: "medincident.orgstructure.v1.OrganizationLegalAddressRelocated",
-		Zero:     func() any { return &organization.LegalAddressRelocated{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+		Subject: "medincident.orgstructure.v1.organization.legal_address_relocated",
+		ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
 	})
 	return reg
 }
 
-func newTestService(t *testing.T, clockNow time.Time) (*organizationapp.Service, *inMemoryRepo, *memStore) {
+func newTestService(t *testing.T, clockNow time.Time) (organizationapp.Service, *inMemoryRepo, *memStore) {
 	t.Helper()
 	log := zerolog.Nop()
 	repo := newInMemoryRepo()
 	store := &memStore{}
 	reg := registryForOrganization(t)
-	svc := organizationapp.NewService(&log, noopBeginner{}, repo, store, reg, fixedClock{now: clockNow})
+	clk := fixedClock{now: clockNow}
+	pub := outbox.NewPublisher(store, reg, clk)
+	svc := organizationapp.NewService(&log, noopBeginner{}, repo, pub, clk)
 	return svc, repo, store
 }
 
@@ -152,7 +146,7 @@ func TestServiceCreateHappyPath(t *testing.T) {
 	require.Len(t, store.rows, 1)
 	require.Equal(t, "organization", store.rows[0].AggregateType)
 	require.Equal(t, res.ID.String(), store.rows[0].AggregateID)
-	require.Equal(t, "medincident.orgstructure.v1.OrganizationCreated", store.rows[0].EventType)
+	require.Equal(t, "medincident.orgstructure.v1.organization.created", store.rows[0].Subject)
 }
 
 func TestServiceCreateNilAddressAccepted(t *testing.T) {
@@ -195,10 +189,10 @@ func TestServiceCreateRejectsInvalidPoint(t *testing.T) {
 func TestServiceCreateCollectsAllErrorsAcrossAddressAndAggregate(t *testing.T) {
 	svc, repo, store := newTestService(t, time.Now().UTC())
 	_, err := svc.Create(context.Background(), organizationapp.CreateCommand{
-		Name:        "", // organization_name_empty
+		Name:        "",
 		Description: "",
 		LegalAddress: &organizationapp.AddressInput{
-			Text:  "", // address_text_empty
+			Text:  "",
 			Point: &organizationapp.PointInput{Longitude: 999, Latitude: 999},
 		},
 	})
@@ -211,10 +205,6 @@ func TestServiceCreateCollectsAllErrorsAcrossAddressAndAggregate(t *testing.T) {
 	require.Empty(t, store.rows)
 }
 
-// requireLeafCode walks the joined error tree and asserts that at least
-// one leaf carries the given oops Code. This is what the future gRPC
-// error interceptor's flattenErrors will do to build BadRequest field
-// violations.
 func requireLeafCode(t *testing.T, err error, code string) {
 	t.Helper()
 	if hasLeafCode(err, code) {
@@ -247,19 +237,18 @@ func TestServiceRenameHappyPath(t *testing.T) {
 	now := time.Date(2026, 4, 10, 12, 0, 0, 0, time.UTC)
 	svc, repo, store := newTestService(t, now)
 
-	// seed
 	createRes, err := svc.Create(context.Background(), organizationapp.CreateCommand{Name: "OldOrg"})
 	require.NoError(t, err)
 	require.Len(t, store.rows, 1)
 
 	_, err = svc.Rename(context.Background(), organizationapp.RenameCommand{
-		ID:      createRes.ID,
-		NewName: "NewOrg",
+		ID:   createRes.ID,
+		Name: "NewOrg",
 	})
 	require.NoError(t, err)
 	require.Equal(t, "NewOrg", repo.saved[createRes.ID].Name)
 	require.Len(t, store.rows, 2)
-	require.Equal(t, "medincident.orgstructure.v1.OrganizationRenamed", store.rows[1].EventType)
+	require.Equal(t, "medincident.orgstructure.v1.organization.renamed", store.rows[1].Subject)
 }
 
 func TestServiceRenameRejectsEmpty(t *testing.T) {
@@ -269,8 +258,8 @@ func TestServiceRenameRejectsEmpty(t *testing.T) {
 	rowsBefore := len(store.rows)
 
 	_, err = svc.Rename(context.Background(), organizationapp.RenameCommand{
-		ID:      createRes.ID,
-		NewName: "   ",
+		ID:   createRes.ID,
+		Name: "   ",
 	})
 	require.Error(t, err)
 	require.Len(t, store.rows, rowsBefore, "failed mutation must not append to outbox")
@@ -284,13 +273,13 @@ func TestServiceUpdateDescriptionHappyPath(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = svc.UpdateDescription(context.Background(), organizationapp.UpdateDescriptionCommand{
-		ID:             createRes.ID,
-		NewDescription: "after",
+		ID:          createRes.ID,
+		Description: "after",
 	})
 	require.NoError(t, err)
 	require.Equal(t, "after", repo.saved[createRes.ID].Description)
 	require.Len(t, store.rows, 2)
-	require.Equal(t, "medincident.orgstructure.v1.OrganizationDescriptionUpdated", store.rows[1].EventType)
+	require.Equal(t, "medincident.orgstructure.v1.organization.description_updated", store.rows[1].Subject)
 }
 
 func TestServiceRelocateLegalAddressToNilClears(t *testing.T) {
@@ -312,5 +301,5 @@ func TestServiceRelocateLegalAddressToNilClears(t *testing.T) {
 	require.NoError(t, err)
 	require.Nil(t, repo.saved[createRes.ID].LegalAddress)
 	require.Len(t, store.rows, 2)
-	require.Equal(t, "medincident.orgstructure.v1.OrganizationLegalAddressRelocated", store.rows[1].EventType)
+	require.Equal(t, "medincident.orgstructure.v1.organization.legal_address_relocated", store.rows[1].Subject)
 }

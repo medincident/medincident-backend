@@ -14,33 +14,42 @@ import (
 	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
-// Service orchestrates the Organization aggregate, its repository, and
-// the outbox in a single transaction.
-type Service struct {
-	logger      *zerolog.Logger
-	beginner    tx.Beginner
-	repo        Repository
-	outboxStore outbox.Store
-	outboxReg   outbox.Registry
-	clk         clock.Clock
+// Service is the public port of the Organization application layer.
+// All consumers (HTTP handlers, gRPC handlers, tests) depend on this
+// interface. The concrete implementation is unexported.
+type Service interface {
+	Create(ctx context.Context, cmd CreateCommand) (CreateResult, error)
+	Rename(ctx context.Context, cmd RenameCommand) (RenameResult, error)
+	UpdateDescription(ctx context.Context, cmd UpdateDescriptionCommand) (UpdateDescriptionResult, error)
+	RelocateLegalAddress(ctx context.Context, cmd RelocateLegalAddressCommand) (RelocateLegalAddressResult, error)
 }
 
-// NewService wires up an Organization application service.
+type service struct {
+	logger    *zerolog.Logger
+	beginner  tx.Beginner
+	repo      Repository
+	publisher outbox.Publisher
+	clk       clock.Clock
+}
+
+var _ Service = (*service)(nil)
+
+// NewService wires up an Organization application service. Returns the
+// concrete *service; the DI provider exposes it under the Service
+// interface to consumers.
 func NewService(
 	logger *zerolog.Logger,
 	bg tx.Beginner,
 	repo Repository,
-	store outbox.Store,
-	reg outbox.Registry,
+	pub outbox.Publisher,
 	clk clock.Clock,
-) *Service {
-	return &Service{
-		logger:      logger,
-		beginner:    bg,
-		repo:        repo,
-		outboxStore: store,
-		outboxReg:   reg,
-		clk:         clk,
+) *service {
+	return &service{
+		logger:    logger,
+		beginner:  bg,
+		repo:      repo,
+		publisher: pub,
+		clk:       clk,
 	}
 }
 
@@ -48,7 +57,7 @@ func NewService(
 // collecting every validation failure via errors.Join so the client
 // sees all field violations in one response, then persists and
 // publishes atomically.
-func (s *Service) Create(ctx context.Context, cmd CreateCommand) (CreateResult, error) {
+func (s *service) Create(ctx context.Context, cmd CreateCommand) (CreateResult, error) {
 	var (
 		errs         []error
 		legalAddress *geo.Address
@@ -79,26 +88,25 @@ func (s *Service) Create(ctx context.Context, cmd CreateCommand) (CreateResult, 
 	return CreateResult{ID: org.ID}, nil
 }
 
-// Rename handles the RenameOrganization command.
-func (s *Service) Rename(ctx context.Context, cmd RenameCommand) (RenameResult, error) {
+func (s *service) Rename(ctx context.Context, cmd RenameCommand) (RenameResult, error) {
 	err := s.mutate(ctx, cmd.ID, func(o *organization.Organization) error {
-		return o.Rename(cmd.NewName, s.clk.Now().UTC())
+		return o.Rename(cmd.Name, s.clk.Now().UTC())
 	})
 	return RenameResult{}, err
 }
 
 // UpdateDescription handles the UpdateDescription command. An empty
 // new description clears the stored description.
-func (s *Service) UpdateDescription(ctx context.Context, cmd UpdateDescriptionCommand) (UpdateDescriptionResult, error) {
+func (s *service) UpdateDescription(ctx context.Context, cmd UpdateDescriptionCommand) (UpdateDescriptionResult, error) {
 	err := s.mutate(ctx, cmd.ID, func(o *organization.Organization) error {
-		return o.UpdateDescription(cmd.NewDescription, s.clk.Now().UTC())
+		return o.UpdateDescription(cmd.Description, s.clk.Now().UTC())
 	})
 	return UpdateDescriptionResult{}, err
 }
 
 // RelocateLegalAddress handles the RelocateLegalAddress command. A nil
 // Address input means "remove the address".
-func (s *Service) RelocateLegalAddress(ctx context.Context, cmd RelocateLegalAddressCommand) (RelocateLegalAddressResult, error) {
+func (s *service) RelocateLegalAddress(ctx context.Context, cmd RelocateLegalAddressCommand) (RelocateLegalAddressResult, error) {
 	var newAddr *geo.Address
 	if cmd.Address != nil {
 		addr, err := buildAddress(cmd.Address)
@@ -116,7 +124,7 @@ func (s *Service) RelocateLegalAddress(ctx context.Context, cmd RelocateLegalAdd
 // mutate is the shared load-mutate-save-publish skeleton used by every
 // command that targets an existing aggregate. Everything runs inside a
 // single transaction.
-func (s *Service) mutate(
+func (s *service) mutate(
 	ctx context.Context,
 	id uuid.UUID,
 	apply func(*organization.Organization) error,
@@ -126,7 +134,7 @@ func (s *Service) mutate(
 		return err
 	}
 	return tx.Within(ctx, t, func(ctx context.Context, t tx.Tx) error {
-		org, err := s.repo.GetByID(ctx, id)
+		org, err := s.repo.Find(ctx, id)
 		if err != nil {
 			return err
 		}
@@ -136,13 +144,13 @@ func (s *Service) mutate(
 		if err := s.repo.Save(ctx, org); err != nil {
 			return err
 		}
-		return outbox.Publish(ctx, t, s.outboxStore, s.outboxReg, org)
+		return s.publisher.Publish(ctx, t, org)
 	})
 }
 
 // persistAndPublish is the Create-specific atomic path: save a fresh
 // aggregate and publish its Created event in a single transaction.
-func (s *Service) persistAndPublish(ctx context.Context, org *organization.Organization) error {
+func (s *service) persistAndPublish(ctx context.Context, org *organization.Organization) error {
 	t, err := s.beginner.Begin(ctx)
 	if err != nil {
 		return err
@@ -151,7 +159,7 @@ func (s *Service) persistAndPublish(ctx context.Context, org *organization.Organ
 		if err := s.repo.Save(ctx, org); err != nil {
 			return err
 		}
-		return outbox.Publish(ctx, t, s.outboxStore, s.outboxReg, org)
+		return s.publisher.Publish(ctx, t, org)
 	})
 }
 

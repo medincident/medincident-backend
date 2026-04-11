@@ -1,7 +1,3 @@
-// Package organizationapp is the application layer for the Organization
-// aggregate. It exposes commands (XCommand structs), results (XResult
-// structs), the Repository port, and the Service that orchestrates
-// aggregate loading, mutation, persistence, and outbox publishing.
 package organizationapp
 
 import "github.com/google/uuid"
@@ -24,20 +20,18 @@ type CreateResult struct {
 
 // RenameCommand is the input of Service.Rename.
 type RenameCommand struct {
-	ID      uuid.UUID
-	NewName string
+	ID   uuid.UUID
+	Name string
 }
 
-// RenameResult is the output of Service.Rename. Empty for now; returned
-// as a typed struct anyway so the signature is stable across future
-// additions (e.g., an updated_at timestamp).
+// RenameResult is the output of Service.Rename.
 type RenameResult struct{}
 
 // UpdateDescriptionCommand is the input of Service.UpdateDescription.
-// An empty NewDescription clears the description.
+// An empty Description clears the description.
 type UpdateDescriptionCommand struct {
-	ID             uuid.UUID
-	NewDescription string
+	ID          uuid.UUID
+	Description string
 }
 
 // UpdateDescriptionResult is the output of Service.UpdateDescription.
@@ -58,15 +52,11 @@ type RelocateLegalAddressResult struct{}
 // domain geo.Address from it, which is the boundary where the input
 // is validated (via geo.NewAddress and geo.NewPoint).
 type AddressInput struct {
-	// Text is the free-form postal text. Required when AddressInput is
-	// present; validated by geo.NewAddress.
-	Text string
-	// Point is optional. nil means "no coordinates".
+	Text  string
 	Point *PointInput
 }
 
-// PointInput carries optional geographic coordinates. Validated by
-// geo.NewPoint when present.
+// PointInput carries optional geographic coordinates.
 type PointInput struct {
 	Longitude float64
 	Latitude  float64

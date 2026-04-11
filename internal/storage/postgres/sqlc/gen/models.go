@@ -20,10 +20,14 @@ type DomainOrganization struct {
 }
 
 type OutboxEvent struct {
-	ID            pgtype.UUID
+	ID            int64
+	EventID       pgtype.UUID
+	OccurredAt    pgtype.Timestamptz
 	AggregateType string
 	AggregateID   string
-	EventType     string
+	CorrelationID string
+	Subject       string
+	Headers       []byte
 	Payload       []byte
 	CreatedAt     pgtype.Timestamptz
 	PublishedAt   pgtype.Timestamptz

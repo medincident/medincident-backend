@@ -20,10 +20,12 @@ func NewContainer(cfg *config.Config) (do.Injector, error) {
 
 	do.Provide(injector, ProvideLoggerWrapper)
 	do.Provide(injector, ProvideZerolog)
+	do.Provide(injector, ProvideClock)
 	do.Provide(injector, ProvidePostgresPool)
 	do.Provide(injector, ProvideTxBeginner)
 	do.Provide(injector, ProvideOutboxStore)
 	do.Provide(injector, ProvideOutboxRegistry)
+	do.Provide(injector, ProvideOutboxPublisher)
 	do.Provide(injector, ProvideOrganizationRepository)
 	do.Provide(injector, ProvideOrganizationService)
 

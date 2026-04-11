@@ -11,8 +11,7 @@ import (
 	"github.com/medincident/medincident-command-service/internal/storage/postgres"
 )
 
-// ProvideOrganizationRepository is a samber/do provider for
-// organizationapp.Repository.
+// ProvideOrganizationRepository provides organizationapp.Repository.
 func ProvideOrganizationRepository(injector do.Injector) (organizationapp.Repository, error) {
 	pool, err := do.Invoke[*postgres.Pool](injector)
 	if err != nil {
@@ -21,9 +20,10 @@ func ProvideOrganizationRepository(injector do.Injector) (organizationapp.Reposi
 	return postgres.NewOrganizationRepo(pool), nil
 }
 
-// ProvideOrganizationService is a samber/do provider for
-// *organizationapp.Service.
-func ProvideOrganizationService(injector do.Injector) (*organizationapp.Service, error) {
+// ProvideOrganizationService provides organizationapp.Service. Body
+// constructs the unexported *service via NewService and returns it as
+// the Service interface.
+func ProvideOrganizationService(injector do.Injector) (organizationapp.Service, error) {
 	logger, err := do.Invoke[*zerolog.Logger](injector)
 	if err != nil {
 		return nil, err
@@ -36,13 +36,13 @@ func ProvideOrganizationService(injector do.Injector) (*organizationapp.Service,
 	if err != nil {
 		return nil, err
 	}
-	store, err := do.Invoke[outbox.Store](injector)
+	pub, err := do.Invoke[outbox.Publisher](injector)
 	if err != nil {
 		return nil, err
 	}
-	reg, err := do.Invoke[outbox.Registry](injector)
+	clk, err := do.Invoke[clock.Clock](injector)
 	if err != nil {
 		return nil, err
 	}
-	return organizationapp.NewService(logger, bg, repo, store, reg, clock.System{}), nil
+	return organizationapp.NewService(logger, bg, repo, pub, clk), nil
 }

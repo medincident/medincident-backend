@@ -27,7 +27,7 @@ func (wallClock) Now() time.Time { return time.Now() }
 // newService builds a Service bound to the shared testPool. Shared
 // across test functions so each test exercises the real full pipeline
 // (aggregate → repository → outbox → commit) without re-wiring.
-func newService(t *testing.T) *organizationapp.Service {
+func newService(t *testing.T) organizationapp.Service {
 	t.Helper()
 	log := zerolog.Nop()
 	pool := &postgres.Pool{Pool: testPool}
@@ -36,7 +36,9 @@ func newService(t *testing.T) *organizationapp.Service {
 	reg := outbox.NewRegistry()
 	organizationinfra.RegisterOutboxMappers(reg)
 	beg := postgres.NewBeginner(pool)
-	return organizationapp.NewService(&log, beg, repo, store, reg, wallClock{})
+	clk := wallClock{}
+	pub := outbox.NewPublisher(store, reg, clk)
+	return organizationapp.NewService(&log, beg, repo, pub, clk)
 }
 
 // cleanup truncates the two tables this test suite writes to, so each
@@ -89,23 +91,27 @@ func TestCreateOrganizationFullPipeline(t *testing.T) {
 	require.NotNil(t, lat)
 	require.InDelta(t, 50.4501, *lat, 1e-9)
 
-	// Verify outbox.events has a matching row with all metadata populated.
+	// Verify outbox.events has a matching row with all envelope metadata populated.
 	var (
-		aggType   string
-		aggID     uuid.UUID
-		eventType string
-		payload   []byte
+		aggType     string
+		aggID       string
+		subject     string
+		eventID     uuid.UUID
+		headersJSON []byte
+		payload     []byte
 	)
 	err = testPool.QueryRow(context.Background(), `
-		SELECT aggregate_type, aggregate_id, event_type, payload
+		SELECT aggregate_type, aggregate_id, subject, event_id, headers, payload
 		FROM outbox.events
 		ORDER BY created_at DESC
 		LIMIT 1
-	`).Scan(&aggType, &aggID, &eventType, &payload)
+	`).Scan(&aggType, &aggID, &subject, &eventID, &headersJSON, &payload)
 	require.NoError(t, err)
 	require.Equal(t, "organization", aggType)
-	require.Equal(t, res.ID, aggID)
-	require.Equal(t, "medincident.orgstructure.v1.OrganizationCreated", eventType)
+	require.Equal(t, res.ID.String(), aggID)
+	require.Equal(t, "medincident.orgstructure.v1.organization.created", subject)
+	require.NotEqual(t, uuid.Nil, eventID)
+	require.Contains(t, string(headersJSON), eventID.String(), "Nats-Msg-Id header should carry the event id")
 	require.NotEmpty(t, payload)
 }
 
@@ -122,7 +128,6 @@ func TestCreateOrganizationRejectsInvalidCoordinatesBeforeWrite(t *testing.T) {
 	})
 	require.Error(t, err)
 
-	// Nothing should have been written.
 	var count int
 	require.NoError(t, testPool.QueryRow(context.Background(),
 		`SELECT COUNT(*) FROM domain.organizations`).Scan(&count))
@@ -142,12 +147,11 @@ func TestRenameAppendsOutboxRowInSameTransaction(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = svc.Rename(context.Background(), organizationapp.RenameCommand{
-		ID:      createRes.ID,
-		NewName: "NewOrg",
+		ID:   createRes.ID,
+		Name: "NewOrg",
 	})
 	require.NoError(t, err)
 
-	// Aggregate name updated.
 	var name string
 	require.NoError(t, testPool.QueryRow(context.Background(),
 		`SELECT name FROM domain.organizations WHERE id = $1`, createRes.ID,
@@ -157,7 +161,7 @@ func TestRenameAppendsOutboxRowInSameTransaction(t *testing.T) {
 	// Two outbox rows: Created + Renamed, both for the same aggregate.
 	var rowCount int
 	require.NoError(t, testPool.QueryRow(context.Background(),
-		`SELECT COUNT(*) FROM outbox.events WHERE aggregate_id = $1`, createRes.ID,
+		`SELECT COUNT(*) FROM outbox.events WHERE aggregate_id = $1`, createRes.ID.String(),
 	).Scan(&rowCount))
 	require.Equal(t, 2, rowCount)
 }

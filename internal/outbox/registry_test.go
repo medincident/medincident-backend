@@ -16,38 +16,30 @@ type (
 	regStubB struct{}
 )
 
-func TestRegistryRegisterAndLookupBothKeys(t *testing.T) {
+func TestRegistryRegisterAndLookup(t *testing.T) {
 	reg := outbox.NewRegistry()
 	info := outbox.EventInfo{
-		TypeName: "test.v1.A",
-		Zero:     func() any { return &regStubA{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+		Subject: "test.v1.a",
+		ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
 	}
 	reg.Register(reflect.TypeOf(&regStubA{}), info)
 
-	byType, ok := reg.ByGoType(reflect.TypeOf(&regStubA{}))
+	got, ok := reg.Lookup(reflect.TypeOf(&regStubA{}))
 	require.True(t, ok)
-	require.Equal(t, "test.v1.A", byType.TypeName)
-
-	byName, ok := reg.ByTypeName("test.v1.A")
-	require.True(t, ok)
-	require.Equal(t, "test.v1.A", byName.TypeName)
+	require.Equal(t, "test.v1.a", got.Subject)
 }
 
 func TestRegistryMissingLookup(t *testing.T) {
 	reg := outbox.NewRegistry()
-	_, ok := reg.ByGoType(reflect.TypeOf(&regStubA{}))
-	require.False(t, ok)
-	_, ok = reg.ByTypeName("nope")
+	_, ok := reg.Lookup(reflect.TypeOf(&regStubA{}))
 	require.False(t, ok)
 }
 
 func TestRegistryPanicsOnDuplicateGoType(t *testing.T) {
 	reg := outbox.NewRegistry()
 	info := outbox.EventInfo{
-		TypeName: "test.v1.A",
-		Zero:     func() any { return &regStubA{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+		Subject: "test.v1.a",
+		ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
 	}
 	reg.Register(reflect.TypeOf(&regStubA{}), info)
 
@@ -56,22 +48,17 @@ func TestRegistryPanicsOnDuplicateGoType(t *testing.T) {
 	})
 }
 
-func TestRegistryPanicsOnDuplicateTypeName(t *testing.T) {
+// Different Go types registered with different subjects do not conflict.
+func TestRegistryAllowsDifferentTypesWithDifferentSubjects(t *testing.T) {
 	reg := outbox.NewRegistry()
-	shared := outbox.EventInfo{
-		TypeName: "test.v1.A",
-		Zero:     func() any { return &regStubA{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
-	}
-	reg.Register(reflect.TypeOf(&regStubA{}), shared)
-
-	// Different Go type, same TypeName string.
-	conflicting := outbox.EventInfo{
-		TypeName: "test.v1.A",
-		Zero:     func() any { return &regStubB{} },
-		ToProto:  func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
-	}
-	require.Panics(t, func() {
-		reg.Register(reflect.TypeOf(&regStubB{}), conflicting)
+	reg.Register(reflect.TypeOf(&regStubA{}), outbox.EventInfo{
+		Subject: "test.v1.a",
+		ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+	})
+	require.NotPanics(t, func() {
+		reg.Register(reflect.TypeOf(&regStubB{}), outbox.EventInfo{
+			Subject: "test.v1.b",
+			ToProto: func(any) (proto.Message, error) { return &emptypb.Empty{}, nil },
+		})
 	})
 }

@@ -1,12 +1,16 @@
 -- migrate:up
 CREATE TABLE outbox.events (
-    id             UUID PRIMARY KEY,
-    aggregate_type TEXT NOT NULL,
-    aggregate_id   TEXT NOT NULL,
-    event_type     TEXT NOT NULL,
-    payload        JSONB NOT NULL,
-    created_at     TIMESTAMPTZ NOT NULL,
-    published_at   TIMESTAMPTZ
+    id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    event_id        UUID        NOT NULL,
+    occurred_at     TIMESTAMPTZ NOT NULL,
+    aggregate_type  TEXT        NOT NULL,
+    aggregate_id    TEXT        NOT NULL,
+    correlation_id  TEXT        NOT NULL DEFAULT '',
+    subject         TEXT        NOT NULL,
+    headers         JSONB       NOT NULL,
+    payload         BYTEA       NOT NULL,
+    created_at      TIMESTAMPTZ NOT NULL,
+    published_at    TIMESTAMPTZ
 );
 
 -- Publisher drives through unpublished rows in created_at order.

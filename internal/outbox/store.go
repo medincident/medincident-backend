@@ -1,7 +1,6 @@
-// Package outbox implements the transactional outbox pattern. The write
-// side (Publish + Store) is in this package; a separate publisher binary
-// will consume rows via LISTEN/NOTIFY + poll fallback and emit them to
-// NATS JetStream (out of scope for this milestone).
+// Package outbox implements the transactional outbox pattern. Records
+// are written in the same transaction as the aggregate state. A separate
+// publisher service drains the table and ships rows to NATS JetStream.
 package outbox
 
 import (
@@ -13,15 +12,25 @@ import (
 	"github.com/medincident/medincident-command-service/internal/shared/tx"
 )
 
-// Record is the infrastructure form of one outbox row. AggregateType
-// and AggregateID cross from the domain as strings; EventType is the
-// stable identifier used to look up EventInfo at read time; Payload is
-// json.Marshal of the domain event struct (no proto at write time).
+// Error codes emitted by Store implementations.
+const (
+	ErrCodeAppendFailed = "outbox_append_failed"
+	ErrCodeNilRecord    = "outbox_nil_record"
+)
+
+// Record is the infrastructure form of one outbox row. It mirrors a
+// medincident.events.v1.Envelope: every envelope field is a column;
+// the inner proto message is marshaled into a google.protobuf.Any whose
+// bytes go into Payload. Headers carry transport-level metadata such as
+// the JetStream Nats-Msg-Id used for deduplication.
 type Record struct {
-	ID            uuid.UUID
+	EventID       uuid.UUID
+	OccurredAt    time.Time
 	AggregateType string
 	AggregateID   string
-	EventType     string
+	CorrelationID string
+	Subject       string
+	Headers       map[string]string
 	Payload       []byte
 	CreatedAt     time.Time
 }
