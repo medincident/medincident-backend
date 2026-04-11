@@ -22,26 +22,18 @@ const (
 )
 
 // EventSource is the contract Publish expects from each aggregate source.
-//
-// AggregateType is a short BC-level name (e.g. "organization") that
-// becomes envelope.aggregate_type on the wire. AggregateID is the
-// aggregate's own id rendered as a string — the domain keeps its uuid.UUID
-// type internally but crosses into outbox-land as a string because
-// envelope.aggregate_id, the outbox column, and every downstream consumer
-// treat it as opaque text. Both values are captured ONCE per source
-// inside Publish and applied to every outbox row produced for that source.
-// PullEvents drains and clears the event buffer (inherited from embedded
-// aggregate.Root).
+// AggregateType and AggregateID are captured once per source and stamped
+// on every row produced for it; PullEvents drains the event buffer
+// (inherited from embedded aggregate.Root).
 type EventSource interface {
 	AggregateType() string
 	AggregateID() string
 	PullEvents() []any
 }
 
-// Publish collects all domain events from the given sources and writes
-// them as JSONB rows into the outbox store. The transaction is REQUIRED
-// and passed explicitly — outbox writes must share a transaction with
-// aggregate writes, and the function signature enforces that.
+// Publish drains every source's event buffer and writes one outbox row
+// per event inside t. The transaction must be the same one used for the
+// aggregate write.
 func Publish(
 	ctx context.Context,
 	t tx.Tx,

@@ -14,27 +14,21 @@ import (
 	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
-// Clock is a minimal injection point for time.Now. Injected via the
-// constructor so tests can run with a deterministic clock and so
-// aggregates see a single "now" for a single request.
+// Clock is the injection point for time.Now so a single request sees a
+// single "now" and tests can run deterministically.
 type Clock interface {
 	Now() time.Time
 }
 
-// beginner is the local interface the service depends on for opening
-// transactions. The concrete implementation (storage/postgres.Beginner)
-// satisfies it. Declaring the interface at the consumer is idiomatic
-// Go — the service does not import the postgres package at all.
+// beginner is the consumer-side interface for opening transactions;
+// implemented by storage/postgres.Beginner. Declared locally so the
+// service does not import the postgres package.
 type beginner interface {
 	Begin(ctx context.Context) (tx.Tx, error)
 }
 
-// Service is the Organization application service. It orchestrates the
-// aggregate, its repository, and the outbox in a single transaction.
-//
-// Every public method takes an XCommand and returns an XResult —
-// MANDATORY per project convention. Domain constructors use positional
-// parameters; the application-layer boundary always uses structs.
+// Service orchestrates the Organization aggregate, its repository, and
+// the outbox in a single transaction.
 type Service struct {
 	logger      *zerolog.Logger
 	beginner    beginner
@@ -63,14 +57,10 @@ func NewService(
 	}
 }
 
-// Create handles the CreateOrganization command end to end:
-//
-//  1. Build the *geo.Address VO from the input and run the Organization
-//     aggregate constructor, collecting ALL validation errors in one
-//     pass via errors.Join. Operation-level validation never stops at
-//     the first failure — the client must see every field violation.
-//  2. If validation succeeded, open a transaction, save the aggregate,
-//     publish its events to the outbox in the same tx, commit.
+// Create builds the address VO and the Organization aggregate,
+// collecting every validation failure via errors.Join so the client
+// sees all field violations in one response, then persists and
+// publishes atomically.
 func (s *Service) Create(ctx context.Context, cmd CreateCommand) (CreateResult, error) {
 	var (
 		errs         []error
@@ -136,10 +126,9 @@ func (s *Service) RelocateLegalAddress(ctx context.Context, cmd RelocateLegalAdd
 	return RelocateLegalAddressResult{}, err
 }
 
-// mutate is the shared "load + mutate + save + publish-events" skeleton
-// used by every command that targets an existing aggregate. It opens a
-// transaction, loads the aggregate, runs the mutator, saves, publishes
-// the drained events to the outbox, and commits — all atomically.
+// mutate is the shared load-mutate-save-publish skeleton used by every
+// command that targets an existing aggregate. Everything runs inside a
+// single transaction.
 func (s *Service) mutate(
 	ctx context.Context,
 	id uuid.UUID,
@@ -179,13 +168,9 @@ func (s *Service) persistAndPublish(ctx context.Context, org *organization.Organ
 	})
 }
 
-// buildAddress is the glue between the transport-shaped AddressInput
-// and the domain *geo.Address VO. It runs BOTH NewPoint and NewAddress
-// regardless of individual failures so that every field violation in
-// the address tree is surfaced in one go — no fail-fast.
-//
-// Callers must pre-check for a nil input and skip the call entirely
-// when the address is absent — buildAddress always builds a real VO.
+// buildAddress constructs the domain VO from a non-nil AddressInput,
+// running both NewPoint and NewAddress unconditionally so every field
+// violation surfaces in one joined error.
 func buildAddress(in *AddressInput) (*geo.Address, error) {
 	var (
 		errs  []error

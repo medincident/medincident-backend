@@ -21,8 +21,6 @@ import (
 	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
-// --- fakes ---
-
 type fixedClock struct{ now time.Time }
 
 func (f fixedClock) Now() time.Time { return f.now }
@@ -128,8 +126,6 @@ func newTestService(t *testing.T, clockNow time.Time) (*organizationapp.Service,
 	svc := organizationapp.NewService(&log, noopBeginner{}, repo, store, reg, fixedClock{now: clockNow})
 	return svc, repo, store
 }
-
-// --- Create ---
 
 func TestServiceCreateHappyPath(t *testing.T) {
 	now := time.Date(2026, 4, 10, 12, 0, 0, 0, time.UTC)
@@ -247,8 +243,6 @@ func hasLeafCode(err error, code string) bool {
 	return false
 }
 
-// --- Rename ---
-
 func TestServiceRenameHappyPath(t *testing.T) {
 	now := time.Date(2026, 4, 10, 12, 0, 0, 0, time.UTC)
 	svc, repo, store := newTestService(t, now)
@@ -282,8 +276,6 @@ func TestServiceRenameRejectsEmpty(t *testing.T) {
 	require.Len(t, store.rows, rowsBefore, "failed mutation must not append to outbox")
 }
 
-// --- UpdateDescription ---
-
 func TestServiceUpdateDescriptionHappyPath(t *testing.T) {
 	svc, repo, store := newTestService(t, time.Now().UTC())
 	createRes, err := svc.Create(context.Background(), organizationapp.CreateCommand{
@@ -300,8 +292,6 @@ func TestServiceUpdateDescriptionHappyPath(t *testing.T) {
 	require.Len(t, store.rows, 2)
 	require.Equal(t, "medincident.orgstructure.v1.OrganizationDescriptionUpdated", store.rows[1].EventType)
 }
-
-// --- RelocateLegalAddress ---
 
 func TestServiceRelocateLegalAddressToNilClears(t *testing.T) {
 	svc, repo, store := newTestService(t, time.Now().UTC())

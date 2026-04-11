@@ -14,30 +14,20 @@ const (
 	MaxLatitude  = 90.0
 )
 
-// Error codes emitted by the Point validators. Specific per violation
-// and declared next to the emitting validators. Constant names keep the
-// model prefix so they stay unique across the codebase; the string
-// values drop it because the emitting package (`shared.geo`) and field
-// (`longitude` / `latitude`) already convey the model context.
+// Error codes emitted by the Point validators.
 const (
 	ErrCodePointLongitudeOutOfRange = "longitude_out_of_range"
 	ErrCodePointLatitudeOutOfRange  = "latitude_out_of_range"
 )
 
-// Point is an immutable geographic point. It is created only via NewPoint.
-// Exported fields enable trusted struct-literal construction in the
-// persistence path. No struct tags — the domain layer does not know about
-// serialisation formats; the outbox layer calls encoding/json on these
-// types using their exported field names directly, which is acceptable
-// because the domain type is the sole source of truth for both writers
-// and readers of outbox JSONB payloads.
+// Point is an immutable geographic point in WGS84 decimal degrees.
 type Point struct {
 	Longitude float64
 	Latitude  float64
 }
 
-// NewPoint is the ONE constructor of Point. It validates both coordinates
-// and collects errors via errors.Join (multi-error inside this single VO).
+// NewPoint validates both coordinates and collects failures via
+// errors.Join so a single call surfaces every violation at once.
 func NewPoint(longitude, latitude float64) (Point, error) {
 	var errs []error
 	if err := validateLongitude(longitude); err != nil {

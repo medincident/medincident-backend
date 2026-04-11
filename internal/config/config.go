@@ -12,20 +12,15 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Error codes emitted by Read. File-local per project convention —
-// constant names carry the component prefix for grep uniqueness;
-// string values drop it because oops.In("config") already conveys
-// the component.
+// Error codes emitted by Read.
 const (
 	ErrCodeConfigReadFailed      = "read_failed"
 	ErrCodeConfigUnmarshalFailed = "unmarshal_failed"
 	ErrCodeConfigValidateFailed  = "validate_failed"
 )
 
-// validate is the single app-scope validator instance. A package-level
-// var rather than a builder function — there is no hidden state to
-// reason about (validator.Validate is safe for concurrent use) and
-// every Read call reuses the same cached struct metadata.
+// validate is the single app-scope validator instance; reused so
+// struct metadata is cached across Read calls.
 var validate = validator.New(validator.WithRequiredStructEnabled())
 
 // Config is the root application configuration.
@@ -102,9 +97,7 @@ type OutboxConfig struct {
 }
 
 // Default values applied by defaultConfig when a field is absent from
-// the loaded YAML. Every constant here is a named value referenced both
-// by the config defaults and by tests, so that any tuning change is one
-// edit with no magic-number drift.
+// the loaded YAML.
 const (
 	defaultGRPCAddress        = ":9090"
 	defaultGRPCMaxRecvMsgSize = 4 * 1024 * 1024 // 4 MiB
@@ -125,10 +118,8 @@ const (
 )
 
 // defaultConfig returns a Config pre-populated with the package-level
-// default constants above. yaml.Unmarshal then merges the loaded file
-// on top, so any field the file sets wins, and anything it omits
-// inherits the default. This is the single source of truth for
-// "what does the service do if this field is missing from YAML".
+// default constants. yaml.Unmarshal merges the loaded file on top, so
+// fields set in YAML win and omitted fields inherit these defaults.
 func defaultConfig() Config {
 	return Config{
 		Server: ServerConfig{

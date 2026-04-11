@@ -9,20 +9,17 @@ import (
 	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
-// CodeOutboxInsertFailed is emitted by OutboxStore.Append when the
-// insert into outbox.events fails. CodeOutboxNilRecord is emitted when
-// a caller passes a nil *outbox.Record.
+// Error codes emitted by OutboxStore.Append.
 const (
 	CodeOutboxInsertFailed = "postgres_outbox_insert_failed"
 	CodeOutboxNilRecord    = "postgres_outbox_nil_record"
 )
 
-// OutboxStore persists outbox rows into outbox.events.
+// OutboxStore persists outbox rows into outbox.events. Stateless — the
+// transaction passed to Append already carries the connection.
 type OutboxStore struct{}
 
-// NewOutboxStore returns a new OutboxStore. The store is stateless; it
-// does not hold a pool — Append takes the transaction as a parameter and
-// the transaction already carries the connection.
+// NewOutboxStore returns a new OutboxStore.
 func NewOutboxStore() *OutboxStore { return &OutboxStore{} }
 
 const insertOutboxSQL = `

@@ -8,23 +8,14 @@ import (
 	"github.com/medincident/medincident-command-service/internal/shared/geo"
 )
 
-// Domain events are plain Go structs with NO struct tags. The outbox
+// Domain events are plain Go structs with no struct tags: the outbox
 // layer marshals them via encoding/json using exported field names
-// directly; the resulting JSONB keys are CamelCase (e.g. "NewName",
-// "LegalAddress"). Because the Go type is the sole source of truth for
-// both write (outbox.Publish) and read (publisher) sides, there is no
-// cross-party contract to negotiate.
+// directly. Renaming an exported field is a BREAKING CHANGE for any
+// outbox rows already persisted under the old shape and must be paired
+// with an outbox drain or a payload-rewrite migration.
 //
-// Caveat: renaming a Go field on a domain event is a BREAKING CHANGE for
-// already-persisted outbox rows. Any such rename must be accompanied by
-// a drain of the outbox (all rows published before the new code ships)
-// or a data migration that rewrites existing payloads.
-
-// Events describe the NEW state after a mutation. They never carry the
-// "before" value — a consumer that needs a diff has its own previous
-// state to compare against. This keeps payloads small and avoids
-// duplicating information that is already implicit in the consumer's
-// local view of the aggregate.
+// Events carry the NEW state only. Consumers compute diffs from their
+// own prior projection.
 
 // Created is raised when an Organization is first constructed via New.
 type Created struct {

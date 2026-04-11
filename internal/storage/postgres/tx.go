@@ -13,8 +13,7 @@ import (
 	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
-// Error codes emitted by the pgxTx savepoint machinery and the
-// unwrap() helper in this file.
+// Error codes emitted by the savepoint machinery and the unwrap helper.
 const (
 	CodeSavepointFailed         = "postgres_savepoint_failed"
 	CodeSavepointRollbackFailed = "postgres_savepoint_rollback_failed"
@@ -25,10 +24,8 @@ const (
 	CodeForeignTx = "postgres_foreign_tx"
 )
 
-// pgxTx wraps pgx.Tx and implements tx.Tx. Unexported on purpose:
-// repositories in this package recover the underlying pgx.Tx via the
-// package-private unwrap() helper, and nothing outside this package
-// should ever see the concrete type.
+// pgxTx wraps pgx.Tx and implements tx.Tx. Repositories in this package
+// recover the underlying pgx.Tx via the package-private unwrap helper.
 type pgxTx struct {
 	raw      pgx.Tx
 	finished atomic.Bool

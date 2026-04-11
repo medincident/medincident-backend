@@ -13,19 +13,10 @@ import (
 	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
-// Record is the infrastructure form of one outbox row.
-//
-// AggregateType and AggregateID are captured from the EventSource at
-// Publish time and become envelope.aggregate_type / envelope.aggregate_id
-// on the wire. Both are transport-level identifiers and are stored as
-// strings here (the domain keeps its own uuid.UUID types; the boundary
-// between domain and outbox is the string conversion).
-//
-// EventType is the stable identifier used to look up EventInfo for
-// deserialisation.
-//
-// Payload is json.Marshal of the domain event struct (no proto
-// involvement at write time).
+// Record is the infrastructure form of one outbox row. AggregateType
+// and AggregateID cross from the domain as strings; EventType is the
+// stable identifier used to look up EventInfo at read time; Payload is
+// json.Marshal of the domain event struct (no proto at write time).
 type Record struct {
 	ID            uuid.UUID
 	AggregateType string
@@ -36,10 +27,9 @@ type Record struct {
 }
 
 // Store persists outbox rows. The transaction is an explicit parameter
-// (not picked up from ctx like regular repositories) because an outbox
-// write MUST share a transaction with the aggregate write. Making it
-// explicit forces the invariant at compile time: a caller cannot pass
-// nil or forget the tx.
+// (not pulled from ctx) because an outbox write MUST share a
+// transaction with the aggregate write; making it explicit enforces
+// that invariant at the call site.
 type Store interface {
 	Append(ctx context.Context, t tx.Tx, record *Record) error
 }

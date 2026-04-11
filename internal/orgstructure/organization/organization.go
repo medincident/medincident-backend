@@ -16,18 +16,12 @@ import (
 	"github.com/medincident/medincident-command-service/internal/shared/geo"
 )
 
-// ErrCodeOrganizationIDGenerationFailed is emitted when uuid.NewV7 fails
-// inside the lifecycle constructor. Declared next to the only place it
-// is produced. Constant name keeps the model prefix for unique grep;
-// string value drops it — the emitting package already conveys it.
+// ErrCodeOrganizationIDGenerationFailed is emitted when uuid.NewV7
+// fails inside the lifecycle constructor.
 const ErrCodeOrganizationIDGenerationFailed = "id_generation_failed"
 
-// Organization is the aggregate root.
-//
-// It embeds aggregate.Root, which provides CreatedAt/UpdatedAt and the
-// hidden event buffer. Direct writes to CreatedAt or UpdatedAt are a
-// contract violation — the only legitimate way to move UpdatedAt is
-// through Raise(event, now) from inside a mutating method.
+// Organization is the aggregate root. UpdatedAt is only ever moved via
+// Root.Raise — direct writes are a contract violation.
 type Organization struct {
 	aggregate.Root
 
@@ -106,15 +100,12 @@ func Hydrate(
 	}
 }
 
-// AggregateType is the BC-level short name used in the outbox envelope.
-// Stable identifier — renaming is a breaking change for consumers that
-// filter events by aggregate type.
+// AggregateType is the stable short name used in the outbox envelope.
+// Renaming is a breaking change for consumers that filter by it.
 func (o *Organization) AggregateType() string { return "organization" }
 
-// AggregateID exposes the organization's id as a string under the
-// outbox.EventSource contract. The domain keeps uuid.UUID internally;
-// the string conversion happens here at the outbox boundary.
-// PullEvents is inherited from the embedded aggregate.Root.
+// AggregateID renders the organization id as a string for the
+// outbox.EventSource contract; PullEvents is inherited from aggregate.Root.
 func (o *Organization) AggregateID() string { return o.ID.String() }
 
 // Rename changes the organization's name. Validates the new name,

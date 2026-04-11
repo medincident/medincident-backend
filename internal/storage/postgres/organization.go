@@ -198,8 +198,6 @@ func (r *OrganizationRepo) List(ctx context.Context, f organizationapp.ListFilte
 
 var _ organizationapp.Repository = (*OrganizationRepo)(nil)
 
-// --- scalar <-> VO conversion helpers (flat columns, no composite types) ---
-
 // addressFromRow builds a *geo.Address from the three flat columns.
 // Returns nil when text is nil (no address stored at all). If text is
 // present but the coordinates are not, returns an Address with Point=nil.

@@ -21,8 +21,6 @@ import (
 	"github.com/medincident/medincident-command-service/internal/shared/geo"
 )
 
-// --- per-event mappers ---
-
 func createdToProto(ev any) (proto.Message, error) {
 	e := ev.(*organization.Created)
 	out := &orgstructurev1.OrganizationCreated{
@@ -71,12 +69,9 @@ func addressToProto(a *geo.Address) *geov1.Address {
 	return out
 }
 
-// --- registry entries ---
-
 // eventInfos is the canonical list of Organization events with their
-// outbox registry metadata. Keeping it as a var slice (rather than
-// inlining each Register call) lets the test suite iterate over it to
-// assert coverage.
+// outbox registry metadata. A var slice (rather than inline Register
+// calls) lets the test suite iterate over it to assert coverage.
 var eventInfos = []struct {
 	Type reflect.Type
 	Info outbox.EventInfo

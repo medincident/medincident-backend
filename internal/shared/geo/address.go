@@ -10,30 +10,21 @@ import (
 // MaxAddressTextLen is the maximum length of an address text in runes.
 const MaxAddressTextLen = 500
 
-// Error codes emitted by the Address validators. Each code is specific
-// to a single violation and declared in the same file as the validator
-// that emits it — per project convention, codes live next to the point
-// of application, not in a central codes file. Constant names keep the
-// model prefix for unique grep; string values drop it — the emitting
-// package (`shared.geo`) and field already convey the model context.
+// Error codes emitted by the Address validators.
 const (
 	ErrCodeAddressTextEmpty   = "text_empty"
 	ErrCodeAddressTextTooLong = "text_too_long"
 )
 
-// Address is an immutable value object. It holds the free-form text of
-// a postal address and an optional geographic point. Use NewAddress to
-// construct; direct struct literals are only permitted in the trusted
-// persistence path. No struct tags — the domain layer does not know
-// about serialisation formats.
+// Address is an immutable value object carrying the free-form postal
+// text and an optional geographic point.
 type Address struct {
 	Text  string
 	Point *Point
 }
 
-// NewAddress is the ONE constructor of Address. It validates text.
-// The Point parameter is accepted as trusted (already built via NewPoint
-// or explicitly nil).
+// NewAddress validates text and constructs an Address. The Point
+// parameter is accepted as trusted (built via NewPoint or explicitly nil).
 func NewAddress(text string, point *Point) (Address, error) {
 	text = strings.TrimSpace(text)
 	if err := validateAddressText(text); err != nil {

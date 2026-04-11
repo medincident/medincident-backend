@@ -17,9 +17,7 @@ import (
 )
 
 // shutdownTimeout caps how long the DI container has to release its
-// resources during graceful termination. 10s is generous for pool
-// draining and log flushing without making SIGKILL the normal path
-// under real pressure.
+// resources during graceful termination.
 const shutdownTimeout = 10 * time.Second
 
 func main() {
@@ -27,9 +25,7 @@ func main() {
 	flag.StringVar(&configPath, "config", "config.yaml", "path to the YAML configuration file")
 	flag.Parse()
 
-	// Bootstrap logger used only until the DI container provides the
-	// fully-configured zerolog.Logger. Kept minimal so there is a path
-	// to log config/DI errors even when the real logger never came up.
+	// bootLogger handles config/DI errors before the configured logger exists.
 	bootLogger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
 	cfg, err := config.Read(configPath)
@@ -45,10 +41,7 @@ func main() {
 		bootLogger.Fatal().Err(err).Msg("failed to build DI container")
 	}
 
-	// Eager-invoke the service graph to fail fast on wiring errors
-	// (bad DSN, unreachable pool, malformed zerolog config, etc.). We
-	// intentionally invoke the top-of-graph types; lower layers come
-	// along for the ride.
+	// Eager-invoke the top of the service graph to fail fast on wiring errors.
 	_ = do.MustInvoke[*organizationapp.Service](container)
 
 	logger := do.MustInvoke[*zerolog.Logger](container)

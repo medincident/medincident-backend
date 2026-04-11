@@ -7,17 +7,13 @@ import (
 	"github.com/samber/oops"
 )
 
-// Invariant limits — package-level constants, no inline literals anywhere
-// in the validators that reference them.
+// Invariant limits for the Organization aggregate's text fields.
 const (
 	maxNameLen        = 255
 	maxDescriptionLen = 2000
 )
 
-// Error codes emitted by this file's validators. Specific per violation
-// and declared next to the emitting code. Constant names keep the
-// model prefix for unique grep; string values drop it — the emitting
-// package and field already convey the model context.
+// Error codes emitted by the Organization field validators.
 const (
 	ErrCodeOrganizationNameEmpty          = "name_empty"
 	ErrCodeOrganizationNameTooLong        = "name_too_long"
@@ -60,7 +56,4 @@ func validateDescription(desc string) error {
 	return nil
 }
 
-// trim is a tiny internal alias for strings.TrimSpace, kept here so the
-// aggregate's mutation methods read uniformly and so this file is the
-// single place that imports the strings package.
 func trim(s string) string { return strings.TrimSpace(s) }
