@@ -22,6 +22,12 @@ const (
 	ErrCodeConfigValidateFailed  = "validate_failed"
 )
 
+// validate is the single app-scope validator instance. A package-level
+// var rather than a builder function — there is no hidden state to
+// reason about (validator.Validate is safe for concurrent use) and
+// every Read call reuses the same cached struct metadata.
+var validate = validator.New(validator.WithRequiredStructEnabled())
+
 // Config is the root application configuration.
 type Config struct {
 	Server   ServerConfig   `yaml:"server"   validate:"required"`
@@ -180,11 +186,14 @@ func formatValidationErrors(err error) []string {
 	for _, fe := range ve {
 		// StructNamespace gives e.g. "Config.Postgres.DSN"; drop the root
 		// "Config." prefix so the path is relative to the config struct.
-		ns := fe.StructNamespace()
-		if idx := strings.IndexByte(ns, '.'); idx >= 0 {
-			ns = ns[idx+1:]
+		ns := strings.TrimPrefix(fe.StructNamespace(), "Config.")
+
+		tag := fe.Tag()
+		if param := fe.Param(); param != "" {
+			tag = tag + "=" + param
 		}
-		msgs = append(msgs, ns+": "+fe.Tag())
+
+		msgs = append(msgs, ns+": "+tag)
 	}
 	sort.Strings(msgs)
 	return msgs
@@ -213,7 +222,7 @@ func Read(path string) (*Config, error) {
 			Wrap(err)
 	}
 
-	if err := validator.New(validator.WithRequiredStructEnabled()).Struct(&cfg); err != nil {
+	if err := validate.Struct(&cfg); err != nil {
 		return nil, oops.
 			In("config").
 			Code(ErrCodeConfigValidateFailed).
