@@ -1,8 +1,6 @@
 package di
 
 import (
-	"context"
-
 	"github.com/samber/do/v2"
 
 	"github.com/medincident/medincident-command-service/internal/config"
@@ -10,13 +8,20 @@ import (
 	"github.com/medincident/medincident-command-service/internal/tx"
 )
 
-func providePostgres(ctx context.Context, i do.Injector) {
-	do.Provide(i, func(inj do.Injector) (*postgres.Pool, error) {
-		cfg := do.MustInvoke[*config.Config](inj)
-		return postgres.NewPool(ctx, cfg.Postgres)
-	})
-	do.Provide(i, func(inj do.Injector) (tx.Beginner, error) {
-		pool := do.MustInvoke[*postgres.Pool](inj)
-		return postgres.NewBeginner(pool), nil
-	})
+// ProvidePostgresPool is a samber/do provider for *postgres.Pool.
+func ProvidePostgresPool(injector do.Injector) (*postgres.Pool, error) {
+	cfg, err := do.Invoke[*config.Config](injector)
+	if err != nil {
+		return nil, err
+	}
+	return postgres.NewPool(cfg.Postgres)
+}
+
+// ProvideTxBeginner is a samber/do provider for tx.Beginner.
+func ProvideTxBeginner(injector do.Injector) (tx.Beginner, error) {
+	pool, err := do.Invoke[*postgres.Pool](injector)
+	if err != nil {
+		return nil, err
+	}
+	return postgres.NewBeginner(pool), nil
 }
