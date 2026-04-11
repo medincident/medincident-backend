@@ -28,7 +28,6 @@ type Record struct {
 	OccurredAt    time.Time
 	AggregateType string
 	AggregateID   string
-	CorrelationID string
 	Subject       string
 	Headers       map[string]string
 	Payload       []byte

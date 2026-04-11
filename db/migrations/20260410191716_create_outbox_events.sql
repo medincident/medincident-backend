@@ -5,7 +5,6 @@ CREATE TABLE outbox.events (
     occurred_at     TIMESTAMPTZ NOT NULL,
     aggregate_type  TEXT        NOT NULL,
     aggregate_id    TEXT        NOT NULL,
-    correlation_id  TEXT        NOT NULL DEFAULT '',
     subject         TEXT        NOT NULL,
     headers         JSONB       NOT NULL,
     payload         BYTEA       NOT NULL,

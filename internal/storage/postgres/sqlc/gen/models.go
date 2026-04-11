@@ -25,7 +25,6 @@ type OutboxEvent struct {
 	OccurredAt    pgtype.Timestamptz
 	AggregateType string
 	AggregateID   string
-	CorrelationID string
 	Subject       string
 	Headers       []byte
 	Payload       []byte

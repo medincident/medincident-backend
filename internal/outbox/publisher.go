@@ -62,7 +62,6 @@ func NewPublisher(store Store, registry Registry, clk clock.Clock) *publisher {
 // write; that's the whole point of the outbox pattern.
 func (p *publisher) Publish(ctx context.Context, t tx.Tx, sources ...EventSource) error {
 	now := p.clock.Now().UTC()
-	correlationID := correlationIDFromContext(ctx)
 
 	for _, src := range sources {
 		aggType := src.AggregateType()
@@ -112,7 +111,6 @@ func (p *publisher) Publish(ctx context.Context, t tx.Tx, sources ...EventSource
 				OccurredAt:    now,
 				AggregateType: aggType,
 				AggregateID:   aggID,
-				CorrelationID: correlationID,
 				Subject:       info.Subject,
 				Headers:       map[string]string{natsMsgIDHeader: eventID.String()},
 				Payload:       payload,
@@ -129,11 +127,4 @@ func (p *publisher) Publish(ctx context.Context, t tx.Tx, sources ...EventSource
 		}
 	}
 	return nil
-}
-
-// correlationIDFromContext returns the correlation id stored in ctx, if
-// any. The project does not yet have a request-id middleware; once it
-// does, this helper is the single place to thread it into the outbox.
-func correlationIDFromContext(_ context.Context) string {
-	return ""
 }

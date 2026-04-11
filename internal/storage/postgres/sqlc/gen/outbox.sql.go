@@ -17,13 +17,12 @@ INSERT INTO outbox.events (
     occurred_at,
     aggregate_type,
     aggregate_id,
-    correlation_id,
     subject,
     headers,
     payload,
     created_at
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9
+    $1, $2, $3, $4, $5, $6, $7, $8
 )
 `
 
@@ -32,7 +31,6 @@ type AppendOutboxEventParams struct {
 	OccurredAt    pgtype.Timestamptz
 	AggregateType string
 	AggregateID   string
-	CorrelationID string
 	Subject       string
 	Headers       []byte
 	Payload       []byte
@@ -45,7 +43,6 @@ func (q *Queries) AppendOutboxEvent(ctx context.Context, arg AppendOutboxEventPa
 		arg.OccurredAt,
 		arg.AggregateType,
 		arg.AggregateID,
-		arg.CorrelationID,
 		arg.Subject,
 		arg.Headers,
 		arg.Payload,

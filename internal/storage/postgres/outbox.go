@@ -45,7 +45,6 @@ func (s *OutboxStore) Append(ctx context.Context, t tx.Tx, rec *outbox.Record) e
 		OccurredAt:    pgtype.Timestamptz{Time: rec.OccurredAt, Valid: true},
 		AggregateType: rec.AggregateType,
 		AggregateID:   rec.AggregateID,
-		CorrelationID: rec.CorrelationID,
 		Subject:       rec.Subject,
 		Headers:       headersJSON,
 		Payload:       rec.Payload,
