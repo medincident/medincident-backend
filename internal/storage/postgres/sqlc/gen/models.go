@@ -22,7 +22,7 @@ type DomainOrganization struct {
 type OutboxEvent struct {
 	ID            pgtype.UUID
 	AggregateType string
-	AggregateID   pgtype.UUID
+	AggregateID   string
 	EventType     string
 	Payload       []byte
 	CreatedAt     pgtype.Timestamptz
