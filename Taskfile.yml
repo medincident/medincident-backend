@@ -1,0 +1,60 @@
+version: "3"
+
+tasks:
+  gen:
+    desc: Generate Go code from protobuf definitions and sqlc queries
+    cmds:
+      - go tool buf generate
+      - go tool sqlc generate -f sqlc.yaml
+
+  gen:check:
+    desc: Verify generated code is up to date (fails if `task gen` would produce changes)
+    cmds:
+      - task: gen
+      - git diff --exit-code -- gen/ internal/storage/postgres/sqlc/gen/
+
+  lint:
+    desc: Lint Go code
+    cmds:
+      - go tool golangci-lint run
+
+  fmt:
+    desc: Format Go code via golangci-lint formatters
+    cmds:
+      - go tool golangci-lint fmt
+
+  fmt:check:
+    desc: Verify Go formatting (dry-run, no file changes)
+    cmds:
+      - go tool golangci-lint fmt --diff
+
+  test:unit:
+    desc: Run unit tests only
+    cmds:
+      - go test -race -count=1 ./...
+
+  test:integration:
+    desc: Run integration tests (requires Docker)
+    cmds:
+      - go test -tags=integration -count=1 -timeout=10m -v ./test/integration/...
+
+  test:
+    desc: Run the full test suite (unit + integration)
+    cmds:
+      - task: test:unit
+      - task: test:integration
+
+  vuln:
+    desc: Run Go vulnerability check
+    cmds:
+      - go tool govulncheck ./...
+
+  migrate:
+    desc: Apply dbmate migrations (requires DATABASE_URL in env or .env)
+    cmds:
+      - go tool dbmate up
+
+  migrate:new:
+    desc: "Create a new dbmate migration. Usage: task migrate:new -- <name>"
+    cmds:
+      - go tool dbmate new {{.CLI_ARGS}}

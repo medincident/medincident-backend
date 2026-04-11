@@ -30,3 +30,31 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+.claude/*.lock
+drafts/
+/docs/superpowers/
+
+# Build output
+/bin/
+/dist/
+/tmp/
+
+# Env files
+.env
+.env.local
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/settings.json
+
+# Generated
+# gen/ is committed (buf output). sqlc gen/ is committed too.
+
+# Coverage
+coverage.out
+coverage.html
+
+# Superpowers internal docs — never committed
+docs/superpowers/
