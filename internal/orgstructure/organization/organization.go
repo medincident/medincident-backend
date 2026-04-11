@@ -110,34 +110,34 @@ func (o *Organization) AggregateID() string { return o.ID.String() }
 
 // Rename changes the organization's name. Validates the new name,
 // no-ops if identical, raises Renamed on successful change.
-func (o *Organization) Rename(newName string, now time.Time) error {
-	newName = trim(newName)
-	if err := validateName(newName); err != nil {
+func (o *Organization) Rename(name string, now time.Time) error {
+	name = trim(name)
+	if err := validateName(name); err != nil {
 		return err
 	}
-	if o.Name == newName {
+	if o.Name == name {
 		return nil
 	}
-	o.Name = newName
-	o.Raise(&Renamed{ID: o.ID, Name: newName, At: now}, now)
+	o.Name = name
+	o.Raise(&Renamed{ID: o.ID, Name: name, At: now}, now)
 	return nil
 }
 
 // UpdateDescription replaces the description. Empty string clears it.
 // No-ops if the new description equals the current one. Raises
 // DescriptionUpdated on successful change.
-func (o *Organization) UpdateDescription(newDescription string, now time.Time) error {
-	newDescription = trim(newDescription)
-	if err := validateDescription(newDescription); err != nil {
+func (o *Organization) UpdateDescription(description string, now time.Time) error {
+	description = trim(description)
+	if err := validateDescription(description); err != nil {
 		return err
 	}
-	if o.Description == newDescription {
+	if o.Description == description {
 		return nil
 	}
-	o.Description = newDescription
+	o.Description = description
 	o.Raise(&DescriptionUpdated{
 		ID:          o.ID,
-		Description: newDescription,
+		Description: description,
 		At:          now,
 	}, now)
 	return nil
@@ -148,28 +148,14 @@ func (o *Organization) UpdateDescription(newDescription string, now time.Time) e
 // equal to the current one. Raises LegalAddressRelocated on successful
 // change. The VO is trusted: the caller built it via geo.NewAddress or
 // decided it's nil.
-func (o *Organization) RelocateLegalAddress(newAddress *geo.Address, now time.Time) error {
-	if addressEqual(o.LegalAddress, newAddress) {
+func (o *Organization) RelocateLegalAddress(address *geo.Address, now time.Time) error {
+	if o.LegalAddress == nil && address == nil {
 		return nil
 	}
-	o.LegalAddress = newAddress
-	o.Raise(&LegalAddressRelocated{ID: o.ID, LegalAddress: newAddress, At: now}, now)
+	if o.LegalAddress != nil && address != nil && o.LegalAddress.Equal(*address) {
+		return nil
+	}
+	o.LegalAddress = address
+	o.Raise(&LegalAddressRelocated{ID: o.ID, LegalAddress: address, At: now}, now)
 	return nil
-}
-
-func addressEqual(a, b *geo.Address) bool {
-	if a == nil || b == nil {
-		return a == b
-	}
-	if a.Text != b.Text {
-		return false
-	}
-	return pointEqual(a.Point, b.Point)
-}
-
-func pointEqual(a, b *geo.Point) bool {
-	if a == nil || b == nil {
-		return a == b
-	}
-	return a.Longitude == b.Longitude && a.Latitude == b.Latitude
 }

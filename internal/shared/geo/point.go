@@ -42,6 +42,11 @@ func NewPoint(longitude, latitude float64) (Point, error) {
 	return Point{Longitude: longitude, Latitude: latitude}, nil
 }
 
+// Equal reports whether p and other represent the same geographic point.
+func (p Point) Equal(other Point) bool {
+	return p.Longitude == other.Longitude && p.Latitude == other.Latitude
+}
+
 func validateLongitude(longitude float64) error {
 	if longitude < MinLongitude || longitude > MaxLongitude {
 		return oops.In("shared.geo").

@@ -33,6 +33,20 @@ func NewAddress(text string, point *Point) (Address, error) {
 	return Address{Text: text, Point: point}, nil
 }
 
+// Equal reports whether a and other represent the same address.
+func (a Address) Equal(other Address) bool {
+	if a.Text != other.Text {
+		return false
+	}
+	if a.Point == nil && other.Point == nil {
+		return true
+	}
+	if a.Point == nil || other.Point == nil {
+		return false
+	}
+	return a.Point.Equal(*other.Point)
+}
+
 func validateAddressText(text string) error {
 	if text == "" {
 		return oops.In("shared.geo").
