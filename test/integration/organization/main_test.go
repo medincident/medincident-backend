@@ -24,10 +24,14 @@ import (
 var testPool *pgxpool.Pool
 
 func TestMain(m *testing.M) {
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancel()
+	os.Exit(runTests(m))
+}
 
-	container, err := tcpg.Run(ctx,
+func runTests(m *testing.M) int {
+	setupCtx, setupCancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer setupCancel()
+
+	container, err := tcpg.Run(setupCtx,
 		"postgres:16",
 		tcpg.WithDatabase("medincident"),
 		tcpg.WithUsername("medincident"),
@@ -40,30 +44,35 @@ func TestMain(m *testing.M) {
 	)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "testcontainers postgres run: %v\n", err)
-		os.Exit(1)
+		return 1
 	}
-	defer func() { _ = container.Terminate(ctx) }()
+	defer func() {
+		// Teardown runs on a fresh context so it is not affected by
+		// setupCtx having fired (2m) during a long integration run.
+		teardownCtx, teardownCancel := context.WithTimeout(context.Background(), 30*time.Second)
+		defer teardownCancel()
+		_ = container.Terminate(teardownCtx)
+	}()
 
-	dsn, err := container.ConnectionString(ctx, "sslmode=disable")
+	dsn, err := container.ConnectionString(setupCtx, "sslmode=disable")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "container ConnectionString: %v\n", err)
-		os.Exit(1)
+		return 1
 	}
 
 	if err := applyMigrations(dsn); err != nil {
 		fmt.Fprintf(os.Stderr, "applyMigrations: %v\n", err)
-		os.Exit(1)
+		return 1
 	}
 
-	testPool, err = pgxpool.New(ctx, dsn)
+	testPool, err = pgxpool.New(setupCtx, dsn)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "pgxpool.New: %v\n", err)
-		os.Exit(1)
+		return 1
 	}
 	defer testPool.Close()
 
-	code := m.Run()
-	os.Exit(code)
+	return m.Run()
 }
 
 // applyMigrations runs dbmate up against the given DSN. dbmate is
