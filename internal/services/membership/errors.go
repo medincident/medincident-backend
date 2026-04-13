@@ -44,8 +44,8 @@ const (
 	pgErrCodeUniqueViolation = "23505"
 )
 
-// Additional SQLSTATE codes reserved for future commands.
+// Additional SQLSTATE codes used by vacation commands.
 const (
-	pgErrCodeForeignKeyViolation = "23503" //nolint:unused // consumed by future commands
-	pgErrCodeExclusionViolation  = "23P01" //nolint:unused // consumed by future commands
+	pgErrCodeForeignKeyViolation = "23503"
+	pgErrCodeExclusionViolation  = "23P01"
 )
