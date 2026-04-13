@@ -7,8 +7,10 @@ import (
 	"github.com/samber/do/v2"
 	"google.golang.org/grpc"
 
+	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
 	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
 	"github.com/medincident/medincident-command-service/internal/config"
+	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
 )
 
@@ -58,5 +60,12 @@ func ProvideGRPCServer(injector do.Injector) (*GRPCServer, error) {
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
 	)
 	orgstructurev1.RegisterOrgStructureServiceServer(server, handler)
+
+	membershipHandler, err := do.Invoke[*membershiphandler.MembershipHandler](injector)
+	if err != nil {
+		return nil, err
+	}
+	membershipv1.RegisterMembershipServiceServer(server, membershipHandler)
+
 	return &GRPCServer{Server: server}, nil
 }

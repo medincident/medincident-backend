@@ -26,13 +26,23 @@ func NewContainer(cfg *config.Config) (do.Injector, error) {
 	do.Provide(injector, ProvidePostgresDB)
 	do.Provide(injector, ProvideGormDB)
 
+	// Zitadel
+	do.Provide(injector, ProvideUserVerifier)
+
 	// Services
 	do.Provide(injector, ProvideOrganizationService)
 	do.Provide(injector, ProvideClinicService)
 	do.Provide(injector, ProvideDepartmentService)
 
+	// Membership services
+	do.Provide(injector, ProvideEmployeeService)
+
 	// Handler + gRPC server
 	do.Provide(injector, ProvideOrgStructureHandler)
+
+	// Membership handler
+	do.Provide(injector, ProvideMembershipHandler)
+
 	do.Provide(injector, ProvideGRPCServer)
 
 	return injector, nil
