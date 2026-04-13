@@ -26,6 +26,7 @@ type Config struct {
 	Server   ServerConfig   `yaml:"server"   validate:"required"`
 	Postgres PostgresConfig `yaml:"postgres" validate:"required"`
 	Zerolog  ZerologConfig  `yaml:"zerolog"  validate:"required"`
+	Zitadel  ZitadelConfig  `yaml:"zitadel"  validate:"required"`
 }
 
 type ServerConfig struct {
@@ -47,6 +48,11 @@ type PostgresPoolConfig struct {
 	MaxIdleConns    int           `yaml:"max_idle_conns"     validate:"min=0,ltefield=MaxOpenConns"`
 	ConnMaxLifetime time.Duration `yaml:"conn_max_lifetime"  validate:"required,min=1s"`
 	ConnMaxIdleTime time.Duration `yaml:"conn_max_idle_time" validate:"required,min=1s"`
+}
+
+type ZitadelConfig struct {
+	Domain  string `yaml:"domain"   validate:"required,url"`
+	KeyPath string `yaml:"key_path" validate:"required,file"`
 }
 
 // Default values applied by defaultConfig when a field is absent from
