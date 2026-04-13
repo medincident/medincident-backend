@@ -15,23 +15,23 @@ plugins:
       - go
       - tool
       - protoc-gen-go
-    out: gen
+    out: gen/api
     opt:
       - paths=source_relative
-      - Mmedincident/event/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/medincident/event/v1
-      - Mmedincident/event/organization/v1/events.proto=github.com/medincident/medincident-command-service/gen/medincident/event/organization/v1
-      - Mmedincident/event/clinic/v1/events.proto=github.com/medincident/medincident-command-service/gen/medincident/event/clinic/v1
-      - Mmedincident/event/department/v1/events.proto=github.com/medincident/medincident-command-service/gen/medincident/event/department/v1
-      - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/medincident/service/orgstructure/v1
+      - Mmedincident/event/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/v1
+      - Mmedincident/event/organization/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1
+      - Mmedincident/event/clinic/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1
+      - Mmedincident/event/department/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1
+      - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1
   - local:
       - go
       - tool
       - protoc-gen-go-grpc
-    out: gen
+    out: gen/api
     opt:
       - paths=source_relative
-      - Mmedincident/event/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/medincident/event/v1
-      - Mmedincident/event/organization/v1/events.proto=github.com/medincident/medincident-command-service/gen/medincident/event/organization/v1
-      - Mmedincident/event/clinic/v1/events.proto=github.com/medincident/medincident-command-service/gen/medincident/event/clinic/v1
-      - Mmedincident/event/department/v1/events.proto=github.com/medincident/medincident-command-service/gen/medincident/event/department/v1
-      - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/medincident/service/orgstructure/v1
+      - Mmedincident/event/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/v1
+      - Mmedincident/event/organization/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1
+      - Mmedincident/event/clinic/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1
+      - Mmedincident/event/department/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1
+      - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1
