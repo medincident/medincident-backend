@@ -10,8 +10,8 @@ import (
 
 // Position length limits.
 const (
-	positionMinLen = 2   //nolint:unused // consumed in Phase F
-	positionMaxLen = 256 //nolint:unused // consumed in Phase F
+	positionMinLen = 2
+	positionMaxLen = 256
 )
 
 // normalisePosition turns a free-form optional position input into a
@@ -21,8 +21,6 @@ const (
 //   - otherwise → trimmed value
 //
 // Assumes validatePosition has already been called.
-//
-//nolint:unused // consumed in Phase F
 func normalisePosition(in *string) null.String {
 	if in == nil {
 		return null.String{}
@@ -36,8 +34,6 @@ func normalisePosition(in *string) null.String {
 
 // validatePosition enforces min/max length on a trimmed position.
 // nil and trim-to-empty are explicitly allowed (= not set).
-//
-//nolint:unused // consumed in Phase F
 func validatePosition(in *string) error {
 	if in == nil {
 		return nil
@@ -53,7 +49,7 @@ func validatePosition(in *string) error {
 			Public("Position is too short.").
 			With("position_length", n).
 			With("min_length", positionMinLen).
-			Errorf("position too short")
+			Errorf(ErrCodeEmployeePositionTooShort)
 	}
 	if n > positionMaxLen {
 		return oops.In("services.membership.employee").
@@ -61,7 +57,7 @@ func validatePosition(in *string) error {
 			Public("Position is too long.").
 			With("position_length", n).
 			With("max_length", positionMaxLen).
-			Errorf("position too long")
+			Errorf(ErrCodeEmployeePositionTooLong)
 	}
 	return nil
 }

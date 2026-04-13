@@ -41,7 +41,11 @@ const (
 
 // Postgres SQLSTATE codes we match against.
 const (
-	pgErrCodeUniqueViolation     = "23505" //nolint:unused // consumed in Phase F
-	pgErrCodeForeignKeyViolation = "23503" //nolint:unused // consumed in Phase F
-	pgErrCodeExclusionViolation  = "23P01" //nolint:unused // consumed in Phase F
+	pgErrCodeUniqueViolation = "23505"
+)
+
+// Additional SQLSTATE codes reserved for future commands.
+const (
+	pgErrCodeForeignKeyViolation = "23503" //nolint:unused // consumed by future commands
+	pgErrCodeExclusionViolation  = "23P01" //nolint:unused // consumed by future commands
 )
