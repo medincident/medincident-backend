@@ -13,11 +13,8 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/config"
 	"github.com/medincident/medincident-command-service/internal/di"
-	organizationapp "github.com/medincident/medincident-command-service/internal/orgstructure/organization/app"
 )
 
-// shutdownTimeout caps how long the DI container has to release its
-// resources during graceful termination.
 const shutdownTimeout = 10 * time.Second
 
 func main() {
@@ -25,7 +22,6 @@ func main() {
 	flag.StringVar(&configPath, "config", "config.yaml", "path to the YAML configuration file")
 	flag.Parse()
 
-	// bootLogger handles config/DI errors before the configured logger exists.
 	bootLogger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
 	cfg, err := config.Read(configPath)
@@ -41,11 +37,8 @@ func main() {
 		bootLogger.Fatal().Err(err).Msg("failed to build DI container")
 	}
 
-	// Eager-invoke the top of the service graph to fail fast on wiring errors.
-	_ = do.MustInvoke[organizationapp.Service](container)
-
 	logger := do.MustInvoke[*zerolog.Logger](container)
-	logger.Info().Str("config", configPath).Msg("command-service started")
+	logger.Info().Str("config", configPath).Msg("command-service started (stub)")
 
 	<-ctx.Done()
 	logger.Info().Msg("command-service stopping")
