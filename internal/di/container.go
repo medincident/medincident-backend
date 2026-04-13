@@ -17,8 +17,23 @@ func NewContainer(cfg *config.Config) (do.Injector, error) {
 	injector := do.New()
 
 	do.ProvideValue(injector, cfg)
+
+	// Logging
 	do.Provide(injector, ProvideLoggerWrapper)
 	do.Provide(injector, ProvideZerolog)
+
+	// Persistence
+	do.Provide(injector, ProvidePostgresDB)
+	do.Provide(injector, ProvideGormDB)
+
+	// Services
+	do.Provide(injector, ProvideOrganizationService)
+	do.Provide(injector, ProvideClinicService)
+	do.Provide(injector, ProvideDepartmentService)
+
+	// Handler + gRPC server
+	do.Provide(injector, ProvideOrgStructureHandler)
+	do.Provide(injector, ProvideGRPCServer)
 
 	return injector, nil
 }

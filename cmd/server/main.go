@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
+	"net"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,6 +12,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
+	"google.golang.org/grpc"
 
 	"github.com/medincident/medincident-command-service/internal/config"
 	"github.com/medincident/medincident-command-service/internal/di"
@@ -38,7 +41,27 @@ func main() {
 	}
 
 	logger := do.MustInvoke[*zerolog.Logger](container)
-	logger.Info().Str("config", configPath).Msg("command-service started (stub)")
+	grpcWrapper, err := do.Invoke[*di.GRPCServer](container)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("failed to resolve grpc server")
+	}
+	// grpcWrapper embeds *grpc.Server; container.Shutdown will call
+	// grpcWrapper.Shutdown for graceful teardown via the samber/do
+	// Shutdowner protocol.
+	server := grpcWrapper.Server
+
+	lc := &net.ListenConfig{}
+	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)
+	if err != nil {
+		logger.Fatal().Err(err).Str("addr", cfg.Server.GRPC.Address).Msg("failed to listen")
+	}
+
+	go func() {
+		logger.Info().Str("addr", cfg.Server.GRPC.Address).Msg("grpc server starting")
+		if err := server.Serve(listener); err != nil && !errors.Is(err, grpc.ErrServerStopped) {
+			logger.Error().Err(err).Msg("grpc serve error")
+		}
+	}()
 
 	<-ctx.Done()
 	logger.Info().Msg("command-service stopping")
