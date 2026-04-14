@@ -207,7 +207,7 @@ func setup(ctx context.Context) error {
 	fmt.Printf("Test users: alice=%s bob=%s carol=%s\n", testUserAliceID, testUserBobID, testUserCarolID)
 
 	// 7. Wire the zitadel.Service (PAT auth, test-only).
-	zsvc, err := zitadel.NewServiceFromPAT(ctx, zitadelBaseURL, zitadelPAT)
+	zsvc, err := zitadel.NewServiceFromPAT(ctx, &testLogger, zitadelBaseURL, zitadelPAT)
 	if err != nil {
 		return fmt.Errorf("build zitadel service: %w", err)
 	}

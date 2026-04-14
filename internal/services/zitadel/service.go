@@ -9,6 +9,7 @@ import (
 	"net"
 	"net/url"
 
+	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"github.com/zitadel/oidc/v3/pkg/oidc"
 	"github.com/zitadel/zitadel-go/v3/pkg/client"
@@ -47,14 +48,15 @@ type Service struct {
 // zitadel-go client.New implicitly hits the OIDC discovery endpoint
 // while wiring the JWT Profile token source — callers must pass a
 // bounded ctx so DI bootstrap cannot hang on an unreachable Zitadel.
-func NewServiceFromKeyFile(ctx context.Context, domain, keyPath string) (*Service, error) {
-	hostname, port, tls, err := parseDomain(domain)
+func NewServiceFromKeyFile(ctx context.Context, logger *zerolog.Logger, domain, keyPath string) (*Service, error) {
+	hostname, port, tls, tlsDefaulted, err := parseDomain(domain)
 	if err != nil {
 		return nil, oops.In("services.zitadel").
 			Code(ErrCodeZitadelClientBuildFailed).
 			With("domain", domain).
 			Wrap(err)
 	}
+	warnIfTLSDefaulted(logger, domain, tlsDefaulted)
 	opts := zitadelOptsFromParsed(hostname, port, tls)
 	cl, err := client.New(
 		ctx,
@@ -78,14 +80,15 @@ func NewServiceFromKeyFile(ctx context.Context, domain, keyPath string) (*Servic
 // NewServiceFromPAT builds a Service authenticated with a PAT. Used
 // only by integration tests — production uses NewServiceFromKeyFile.
 // domain may be an http(s) URL or a bare host:port string.
-func NewServiceFromPAT(ctx context.Context, domain, pat string) (*Service, error) {
-	hostname, port, tls, err := parseDomain(domain)
+func NewServiceFromPAT(ctx context.Context, logger *zerolog.Logger, domain, pat string) (*Service, error) {
+	hostname, port, tls, tlsDefaulted, err := parseDomain(domain)
 	if err != nil {
 		return nil, oops.In("services.zitadel").
 			Code(ErrCodeZitadelClientBuildFailed).
 			With("domain", domain).
 			Wrap(err)
 	}
+	warnIfTLSDefaulted(logger, domain, tlsDefaulted)
 	opts := zitadelOptsFromParsed(hostname, port, tls)
 	cl, err := client.New(
 		ctx,
@@ -103,12 +106,15 @@ func NewServiceFromPAT(ctx context.Context, domain, pat string) (*Service, error
 
 // parseDomain parses a domain string that may be a full URL
 // (http://localhost:8080) or a bare host:port (localhost:8080).
-// Returns (hostname, port, isTLS, error). Port is the string form
-// (e.g. "8080"); "" means use the scheme default.
-func parseDomain(domain string) (hostname, port string, tls bool, err error) {
+// Returns (hostname, port, isTLS, tlsDefaulted, error). Port is the
+// string form (e.g. "8080"); "" means use the scheme default.
+// tlsDefaulted is true only on the bare-hostname branch where we had
+// no explicit scheme and no colon — see warnIfTLSDefaulted for the
+// matching advisory log.
+func parseDomain(domain string) (hostname, port string, tls, tlsDefaulted bool, err error) {
 	u, parseErr := url.Parse(domain)
 	if parseErr != nil {
-		return "", "", false, parseErr
+		return "", "", false, false, parseErr
 	}
 
 	switch u.Scheme {
@@ -125,16 +131,32 @@ func parseDomain(domain string) (hostname, port string, tls bool, err error) {
 		tls = false
 		h, p, splitErr := net.SplitHostPort(domain)
 		if splitErr != nil {
-			// No colon at all — plain hostname, use 443 TLS default.
+			// No colon at all — plain hostname, assume TLS on 443 and
+			// surface the assumption via tlsDefaulted so the caller can
+			// warn about it. Misconfigured dev setups that meant
+			// http://host would fail loudly rather than silently hang.
 			hostname = domain
 			port = ""
 			tls = true
+			tlsDefaulted = true
 		} else {
 			hostname = h
 			port = p
 		}
 	}
-	return hostname, port, tls, nil
+	return hostname, port, tls, tlsDefaulted, nil
+}
+
+// warnIfTLSDefaulted logs a warning whenever parseDomain had to fall
+// back to TLS-on-443 because the caller gave it a bare hostname with
+// no scheme. Silent in the happy path; no-ops if the logger is nil.
+func warnIfTLSDefaulted(logger *zerolog.Logger, domain string, tlsDefaulted bool) {
+	if !tlsDefaulted || logger == nil {
+		return
+	}
+	logger.Warn().
+		Str("domain", domain).
+		Msg("zitadel: no scheme in domain, assuming https://<host>:443 — add explicit http:// or https:// to silence this")
 }
 
 // zitadelOptsFromParsed returns the zitadelcfg options that match the

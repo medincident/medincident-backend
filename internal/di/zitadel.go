@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
 
 	"github.com/medincident/medincident-command-service/internal/config"
@@ -20,7 +21,11 @@ func provideZitadelService(injector do.Injector) (*zitadel.Service, error) {
 	if err != nil {
 		return nil, err
 	}
+	logger, err := do.Invoke[*zerolog.Logger](injector)
+	if err != nil {
+		return nil, err
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), zitadelInitTimeout)
 	defer cancel()
-	return zitadel.NewServiceFromKeyFile(ctx, cfg.Zitadel.Domain, cfg.Zitadel.KeyPath)
+	return zitadel.NewServiceFromKeyFile(ctx, logger, cfg.Zitadel.Domain, cfg.Zitadel.KeyPath)
 }
