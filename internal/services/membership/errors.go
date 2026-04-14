@@ -12,6 +12,7 @@ const (
 	ErrCodeVacationIDEmpty            = "vacation_id_empty"
 	ErrCodeVacationEndBeforeStart     = "vacation_end_before_start"
 	ErrCodeVacationEndInPast          = "vacation_end_in_past"
+	ErrCodeVacationStartRequired      = "vacation_start_required"
 	ErrCodeVacationStartInPast        = "vacation_start_in_past"
 
 	// Business preconditions — 409/422-class.

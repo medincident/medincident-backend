@@ -37,7 +37,7 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 		now := time.Now().UTC()
 
 		var vac model.EmployeeVacation
-		err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
+		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			Where("id = ?", cmd.VacationID).
 			First(&vac).Error
 		if err != nil {

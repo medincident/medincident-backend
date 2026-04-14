@@ -34,12 +34,26 @@ type ScheduleVacationResult struct {
 // strictly after StartsAt. Overlap with existing vacations of the same
 // employee is rejected by the exclusion constraint on the table.
 func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVacationCommand) (ScheduleVacationResult, error) {
+	now := time.Now().UTC()
+
 	var errs []error
 	if cmd.EmployeeID == uuid.Nil {
 		errs = append(errs, oops.In(scopeVacation).
 			Code(ErrCodeEmployeeIDEmpty).
 			Public("Employee ID is required.").
 			Errorf(ErrCodeEmployeeIDEmpty))
+	}
+	if cmd.StartsAt.IsZero() {
+		errs = append(errs, oops.In(scopeVacation).
+			Code(ErrCodeVacationStartRequired).
+			Public("Vacation start is required.").
+			Errorf(ErrCodeVacationStartRequired))
+	}
+	if !cmd.StartsAt.IsZero() && !cmd.StartsAt.After(now) {
+		errs = append(errs, oops.In(scopeVacation).
+			Code(ErrCodeVacationStartInPast).
+			Public("Scheduled vacation must start in the future.").
+			Errorf(ErrCodeVacationStartInPast))
 	}
 	if cmd.EndsAt != nil && !cmd.EndsAt.After(cmd.StartsAt) {
 		errs = append(errs, oops.In(scopeVacation).
@@ -53,26 +67,6 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 
 	var result ScheduleVacationResult
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		now := time.Now().UTC()
-		if !cmd.StartsAt.After(now) {
-			return oops.In(scopeVacation).
-				Code(ErrCodeVacationStartInPast).
-				Public("Scheduled vacation must start in the future.").
-				Errorf(ErrCodeVacationStartInPast)
-		}
-
-		var exists int64
-		if err := tx.Raw(`SELECT count(*) FROM domain.employees WHERE id = ?`, cmd.EmployeeID).Scan(&exists).Error; err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
-		}
-		if exists == 0 {
-			return oops.In(scopeVacation).
-				Code(ErrCodeEmployeeNotFound).
-				Public("Employee not found.").
-				With("employee_id", cmd.EmployeeID).
-				Errorf(ErrCodeEmployeeNotFound)
-		}
-
 		id, err := uuid.NewV7()
 		if err != nil {
 			return oops.In(scopeVacation).Code(ErrCodeVacationIDGenerationFailed).Wrap(err)
@@ -84,7 +78,8 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 			EndsAt:     nullTimeFromPtr(cmd.EndsAt),
 		}
 		if err := tx.Create(&vac).Error; err != nil {
-			return mapVacationInsertError(err)
+			mapped := mapVacationInsertError(err, cmd.EmployeeID)
+			return mapped
 		}
 
 		ev := &employeev1.VacationScheduled{

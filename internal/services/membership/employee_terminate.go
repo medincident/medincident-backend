@@ -10,6 +10,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
@@ -34,8 +35,13 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		now := time.Now().UTC()
+
 		var emp model.Employee
-		if err := tx.First(&emp, "id = ?", cmd.ID).Error; err != nil {
+		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			Where("id = ?", cmd.ID).
+			First(&emp).Error
+		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeEmployee).
 					Code(ErrCodeEmployeeNotFound).
@@ -46,8 +52,16 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
 		}
 
-		if err := tx.Delete(&model.Employee{}, "id = ?", cmd.ID).Error; err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
+		res := tx.Delete(&model.Employee{}, "id = ?", cmd.ID)
+		if res.Error != nil {
+			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(res.Error)
+		}
+		if res.RowsAffected == 0 {
+			return oops.In(scopeEmployee).
+				Code(ErrCodeEmployeeNotFound).
+				Public("Employee not found.").
+				With("employee_id", cmd.ID).
+				Errorf(ErrCodeEmployeeNotFound)
 		}
 
 		ev := &employeev1.EmployeeTerminated{}
@@ -56,7 +70,7 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(time.Now().UTC()),
+			OccurredAt:    timestamppb.New(now),
 			AggregateType: AggregateTypeEmployee,
 			AggregateId:   emp.ID.String(),
 			Payload:       payload,

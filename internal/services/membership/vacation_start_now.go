@@ -47,19 +47,6 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		now := time.Now().UTC()
 
-		// Pre-check employee exists for a clean error code.
-		var exists int64
-		if err := tx.Raw(`SELECT count(*) FROM domain.employees WHERE id = ?`, cmd.EmployeeID).Scan(&exists).Error; err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
-		}
-		if exists == 0 {
-			return oops.In(scopeVacation).
-				Code(ErrCodeEmployeeNotFound).
-				Public("Employee not found.").
-				With("employee_id", cmd.EmployeeID).
-				Errorf(ErrCodeEmployeeNotFound)
-		}
-
 		if cmd.EndsAt != nil && !cmd.EndsAt.After(now) {
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationEndBeforeStart).
@@ -78,7 +65,7 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 			EndsAt:     nullTimeFromPtr(cmd.EndsAt),
 		}
 		if err := tx.Create(&vac).Error; err != nil {
-			return mapVacationInsertError(err)
+			return mapVacationInsertError(err, cmd.EmployeeID)
 		}
 
 		ev := &employeev1.VacationStarted{
@@ -118,8 +105,9 @@ func nullTimeFromPtr(t *time.Time) null.Time {
 
 // mapVacationInsertError translates Postgres constraint errors on
 // employee_vacations INSERT/UPDATE into domain error codes. Used by
-// all vacation write operations.
-func mapVacationInsertError(err error) error {
+// all vacation write operations. employeeID is attached to the
+// NotFound branch so operators can identify which employee was missing.
+func mapVacationInsertError(err error, employeeID uuid.UUID) error {
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) {
 		switch pgErr.Code {
@@ -132,6 +120,7 @@ func mapVacationInsertError(err error) error {
 			return oops.In(scopeVacation).
 				Code(ErrCodeEmployeeNotFound).
 				Public("Employee not found.").
+				With("employee_id", employeeID).
 				Wrap(err)
 		}
 	}

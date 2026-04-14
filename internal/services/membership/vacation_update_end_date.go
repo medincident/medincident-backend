@@ -52,7 +52,7 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 		now := time.Now().UTC()
 
 		var vac model.EmployeeVacation
-		err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
+		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			Where("id = ?", cmd.VacationID).
 			First(&vac).Error
 		if err != nil {
@@ -99,7 +99,7 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 
 		vac.EndsAt = null.TimeFrom(cmd.EndsAt)
 		if err := tx.Save(&vac).Error; err != nil {
-			return mapVacationInsertError(err)
+			return mapVacationInsertError(err, vac.EmployeeID)
 		}
 
 		ev := &employeev1.VacationEndDateChanged{
