@@ -5,6 +5,7 @@ import (
 	"github.com/samber/do/v2"
 	"gorm.io/gorm"
 
+	classifiersvc "github.com/medincident/medincident-command-service/internal/services/incident/classifier"
 	"github.com/medincident/medincident-command-service/internal/services/membership"
 	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
 	"github.com/medincident/medincident-command-service/internal/services/zitadel"
@@ -44,6 +45,30 @@ func provideDepartmentService(injector do.Injector) (*orgsvc.DepartmentService, 
 		return nil, err
 	}
 	return orgsvc.NewDepartmentService(db, logger), nil
+}
+
+func provideIncidentCategoryService(injector do.Injector) (*classifiersvc.IncidentCategoryService, error) {
+	db, err := do.Invoke[*gorm.DB](injector)
+	if err != nil {
+		return nil, err
+	}
+	logger, err := do.Invoke[*zerolog.Logger](injector)
+	if err != nil {
+		return nil, err
+	}
+	return classifiersvc.NewIncidentCategoryService(db, logger), nil
+}
+
+func provideIncidentTypeService(injector do.Injector) (*classifiersvc.IncidentTypeService, error) {
+	db, err := do.Invoke[*gorm.DB](injector)
+	if err != nil {
+		return nil, err
+	}
+	logger, err := do.Invoke[*zerolog.Logger](injector)
+	if err != nil {
+		return nil, err
+	}
+	return classifiersvc.NewIncidentTypeService(db, logger), nil
 }
 
 func provideEmployeeService(injector do.Injector) (*membership.EmployeeService, error) {

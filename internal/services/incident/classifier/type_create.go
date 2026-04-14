@@ -1,0 +1,141 @@
+package classifier
+
+import (
+	"context"
+	"errors"
+	"strings"
+
+	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"gorm.io/gorm"
+
+	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
+	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
+	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
+)
+
+const (
+	ErrCodeIncidentTypeIDGenerationFailed = "incident_type_id_generation_failed"
+	ErrCodeIncidentTypeSaveFailed         = "incident_type_save_failed"
+	ErrCodeIncidentTypeLoadFailed         = "incident_type_load_failed"
+	ErrCodeIncidentTypeNotFound           = "incident_type_not_found"
+	ErrCodeIncidentTypeCategoryNotFound   = "incident_type_category_not_found"
+	ErrCodeIncidentTypeNameConflict       = "incident_type_name_conflict"
+	ErrCodeIncidentTypeEventBuildFailed   = "incident_type_event_build_failed"
+)
+
+type CreateIncidentTypeCommand struct {
+	CategoryID  uuid.UUID
+	Name        string
+	Description *string
+}
+
+type CreateIncidentTypeResult struct {
+	ID uuid.UUID
+}
+
+func buildIncidentTypeCreatedEvent(t *model.IncidentType) *typeeventv1.IncidentTypeCreated {
+	ev := &typeeventv1.IncidentTypeCreated{
+		OrganizationId: t.OrganizationID.String(),
+		CategoryId:     t.CategoryID.String(),
+		Name:           t.Name,
+	}
+	if t.Description.Valid {
+		d := t.Description.String
+		ev.Description = &d
+	}
+	return ev
+}
+
+func (s *IncidentTypeService) Create(
+	ctx context.Context,
+	cmd CreateIncidentTypeCommand,
+) (CreateIncidentTypeResult, error) {
+	var errs []error
+	if err := validateIncidentTypeName(cmd.Name); err != nil {
+		errs = append(errs, err)
+	}
+	if err := validateIncidentTypeDescription(cmd.Description); err != nil {
+		errs = append(errs, err)
+	}
+	if len(errs) > 0 {
+		return CreateIncidentTypeResult{}, errors.Join(errs...)
+	}
+
+	id, err := uuid.NewV7()
+	if err != nil {
+		return CreateIncidentTypeResult{}, oops.In("services.incident.classifier.type").
+			Code(ErrCodeIncidentTypeIDGenerationFailed).
+			Public("Failed to create incident type.").
+			Wrap(err)
+	}
+
+	var result CreateIncidentTypeResult
+	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var cat model.IncidentCategory
+		if err := tx.First(&cat, "id = ?", cmd.CategoryID).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return oops.In("services.incident.classifier.type").
+					Code(ErrCodeIncidentTypeCategoryNotFound).
+					Public("Incident category not found.").
+					With("incident_category_id", cmd.CategoryID).
+					Wrap(err)
+			}
+			return oops.In("services.incident.classifier.type").
+				Code(ErrCodeIncidentTypeLoadFailed).
+				With("incident_category_id", cmd.CategoryID).
+				Wrap(err)
+		}
+
+		row := model.IncidentType{
+			ID:             id,
+			OrganizationID: cat.OrganizationID,
+			CategoryID:     cat.ID,
+			Name:           strings.TrimSpace(cmd.Name),
+			Description:    null.StringFromPtr(trimmedStringPtr(cmd.Description)),
+			IsActive:       true,
+		}
+
+		if err := tx.Create(&row).Error; err != nil {
+			var pgErr *pgconn.PgError
+			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+				return oops.In("services.incident.classifier.type").
+					Code(ErrCodeIncidentTypeNameConflict).
+					Public("An active incident type with this name already exists.").
+					With("organization_id", cat.OrganizationID).
+					With("name", row.Name).
+					Wrap(err)
+			}
+			return oops.In("services.incident.classifier.type").
+				Code(ErrCodeIncidentTypeSaveFailed).
+				With("incident_type_id", id).
+				Wrap(err)
+		}
+
+		event := buildIncidentTypeCreatedEvent(&row)
+		payload, err := anypb.New(event)
+		if err != nil {
+			return oops.In("services.incident.classifier.type").
+				Code(ErrCodeIncidentTypeEventBuildFailed).
+				With("incident_type_id", id).
+				Wrap(err)
+		}
+		envelope := &envelopev1.Envelope{
+			OccurredAt:    timestamppb.New(row.UpdatedAt),
+			AggregateType: AggregateTypeIncidentType,
+			AggregateId:   row.ID.String(),
+			Payload:       payload,
+		}
+		if err := outbox.AppendEvent(tx, SubjectIncidentTypeCreated, envelope, nil); err != nil {
+			return err
+		}
+		result.ID = id
+		return nil
+	})
+	return result, err
+}

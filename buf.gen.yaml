@@ -12,6 +12,9 @@ inputs:
       - api/proto/medincident/event/employee/v1
       - api/proto/medincident/service/membership/v1
       - api/proto/medincident/event/system_admin/v1
+      - api/proto/medincident/event/incident/category/v1
+      - api/proto/medincident/event/incident/type/v1
+      - api/proto/medincident/service/incident/classifier/v1
 
 plugins:
   - local:
@@ -29,6 +32,9 @@ plugins:
       - Mmedincident/event/employee/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1
       - Mmedincident/service/membership/v1/membership.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1
       - Mmedincident/event/system_admin/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1
+      - Mmedincident/event/incident/category/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1
+      - Mmedincident/event/incident/type/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1
+      - Mmedincident/service/incident/classifier/v1/incident_classifier.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1
   - local:
       - go
       - tool
@@ -44,3 +50,6 @@ plugins:
       - Mmedincident/event/employee/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1
       - Mmedincident/service/membership/v1/membership.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1
       - Mmedincident/event/system_admin/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1
+      - Mmedincident/event/incident/category/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1
+      - Mmedincident/event/incident/type/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1
+      - Mmedincident/service/incident/classifier/v1/incident_classifier.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1

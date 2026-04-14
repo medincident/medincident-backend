@@ -39,10 +39,13 @@ func NewContainer(cfg *config.Config) (do.Injector, error) {
 	do.Provide(injector, provideClinicService)
 	do.Provide(injector, provideDepartmentService)
 	do.Provide(injector, provideEmployeeService)
+	do.Provide(injector, provideIncidentCategoryService)
+	do.Provide(injector, provideIncidentTypeService)
 
 	// Handlers
 	do.Provide(injector, provideOrgStructureHandler)
 	do.Provide(injector, provideMembershipHandler)
+	do.Provide(injector, provideIncidentClassifierHandler)
 
 	// gRPC server
 	do.Provide(injector, provideGRPCServerWrapper)

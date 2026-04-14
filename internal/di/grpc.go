@@ -6,9 +6,11 @@ import (
 	"github.com/samber/do/v2"
 	"google.golang.org/grpc"
 
+	incidentclassifierv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1"
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
 	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
 	"github.com/medincident/medincident-command-service/internal/config"
+	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
 )
@@ -55,6 +57,12 @@ func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) 
 		return nil, err
 	}
 	membershipv1.RegisterMembershipServiceServer(server, membershipHandler)
+
+	incidentClassifierHandler, err := do.Invoke[*classifierhandler.IncidentClassifierHandler](injector)
+	if err != nil {
+		return nil, err
+	}
+	incidentclassifierv1.RegisterIncidentClassifierServiceServer(server, incidentClassifierHandler)
 
 	return &grpcServerWrapper{Server: server}, nil
 }
