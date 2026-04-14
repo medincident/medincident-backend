@@ -5,12 +5,35 @@
 package membership
 
 import (
+	"errors"
+
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
 	"github.com/medincident/medincident-command-service/internal/services/membership"
 )
+
+// idErrs collects UUID-parse errors from a handler so the transport
+// can emit every violation in one response instead of fail-fast on
+// the first bad field. Used via the parse method and joined at the
+// end with err().
+type idErrs []error
+
+func (e *idErrs) parse(raw string, fn func(string) (uuid.UUID, error)) uuid.UUID {
+	id, err := fn(raw)
+	if err != nil {
+		*e = append(*e, err)
+	}
+	return id
+}
+
+func (e idErrs) err() error {
+	if len(e) == 0 {
+		return nil
+	}
+	return errors.Join(e...)
+}
 
 // MembershipHandler implements membershipv1.MembershipServiceServer.
 type MembershipHandler struct {

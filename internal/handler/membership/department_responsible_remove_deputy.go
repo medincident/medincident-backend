@@ -10,12 +10,10 @@ import (
 // RemoveDepartmentResponsibleDeputy translates a gRPC request into a
 // service command and clears the deputy slot on a DR role.
 func (h *MembershipHandler) RemoveDepartmentResponsibleDeputy(ctx context.Context, req *membershipv1.RemoveDepartmentResponsibleDeputyRequest) (*membershipv1.RemoveDepartmentResponsibleDeputyResponse, error) {
-	depID, err := parseDepartmentID(req.GetDepartmentId())
-	if err != nil {
-		return nil, err
-	}
-	empID, err := parseEmployeeID(req.GetEmployeeId())
-	if err != nil {
+	var ids idErrs
+	depID := ids.parse(req.GetDepartmentId(), parseDepartmentID)
+	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
+	if err := ids.err(); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RemoveDepartmentResponsibleDeputy(ctx, membership.RemoveDepartmentResponsibleDeputyCommand{

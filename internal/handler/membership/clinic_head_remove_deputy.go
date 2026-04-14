@@ -10,12 +10,10 @@ import (
 // RemoveClinicHeadDeputy translates a gRPC request into a service
 // command and clears the deputy slot on a CH role.
 func (h *MembershipHandler) RemoveClinicHeadDeputy(ctx context.Context, req *membershipv1.RemoveClinicHeadDeputyRequest) (*membershipv1.RemoveClinicHeadDeputyResponse, error) {
-	clinicID, err := parseClinicID(req.GetClinicId())
-	if err != nil {
-		return nil, err
-	}
-	empID, err := parseEmployeeID(req.GetEmployeeId())
-	if err != nil {
+	var ids idErrs
+	clinicID := ids.parse(req.GetClinicId(), parseClinicID)
+	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
+	if err := ids.err(); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RemoveClinicHeadDeputy(ctx, membership.RemoveClinicHeadDeputyCommand{

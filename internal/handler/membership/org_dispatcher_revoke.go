@@ -10,12 +10,10 @@ import (
 // RevokeOrganizationDispatcher translates a gRPC request into a service
 // command and removes the employee's organization dispatcher role.
 func (h *MembershipHandler) RevokeOrganizationDispatcher(ctx context.Context, req *membershipv1.RevokeOrganizationDispatcherRequest) (*membershipv1.RevokeOrganizationDispatcherResponse, error) {
-	orgID, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
-	empID, err := parseEmployeeID(req.GetEmployeeId())
-	if err != nil {
+	var ids idErrs
+	orgID := ids.parse(req.GetOrganizationId(), parseOrganizationID)
+	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
+	if err := ids.err(); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RevokeOrganizationDispatcher(ctx, membership.RevokeOrganizationDispatcherCommand{

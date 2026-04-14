@@ -10,12 +10,10 @@ import (
 // RemoveOrganizationAdminDeputy translates a gRPC request into a
 // service command and clears the deputy slot on an OrgAdmin role.
 func (h *MembershipHandler) RemoveOrganizationAdminDeputy(ctx context.Context, req *membershipv1.RemoveOrganizationAdminDeputyRequest) (*membershipv1.RemoveOrganizationAdminDeputyResponse, error) {
-	orgID, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
-	empID, err := parseEmployeeID(req.GetEmployeeId())
-	if err != nil {
+	var ids idErrs
+	orgID := ids.parse(req.GetOrganizationId(), parseOrganizationID)
+	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
+	if err := ids.err(); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RemoveOrganizationAdminDeputy(ctx, membership.RemoveOrganizationAdminDeputyCommand{

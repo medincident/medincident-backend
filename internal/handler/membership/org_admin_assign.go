@@ -10,12 +10,10 @@ import (
 // AssignOrganizationAdmin translates a gRPC request into a service
 // command and links the employee to the organization as its admin.
 func (h *MembershipHandler) AssignOrganizationAdmin(ctx context.Context, req *membershipv1.AssignOrganizationAdminRequest) (*membershipv1.AssignOrganizationAdminResponse, error) {
-	orgID, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
-	empID, err := parseEmployeeID(req.GetEmployeeId())
-	if err != nil {
+	var ids idErrs
+	orgID := ids.parse(req.GetOrganizationId(), parseOrganizationID)
+	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
+	if err := ids.err(); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.AssignOrganizationAdmin(ctx, membership.AssignOrganizationAdminCommand{
