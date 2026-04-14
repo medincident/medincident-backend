@@ -15,6 +15,7 @@ import (
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 type UpdateDepartmentDetailsCommand struct {
@@ -87,10 +88,10 @@ func (s *DepartmentService) UpdateDetails(
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(dept.UpdatedAt),
-			AggregateType: "department",
+			AggregateType: AggregateTypeDepartment,
 			AggregateId:   dept.ID.String(),
 			Payload:       payload,
 		}
-		return AppendOutboxEvent(tx, SubjectDepartmentDetailsChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectDepartmentDetailsChanged, envelope, nil)
 	})
 }

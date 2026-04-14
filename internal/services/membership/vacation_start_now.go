@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/guregu/null/v6"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"google.golang.org/protobuf/types/known/anypb"
@@ -16,9 +15,8 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
-
-const scopeVacation = "services.membership.vacation"
 
 // StartVacationNowCommand carries everything the service needs to
 // start a vacation at the current time.
@@ -40,7 +38,7 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 		return StartVacationNowResult{}, oops.In(scopeVacation).
 			Code(ErrCodeEmployeeIDEmpty).
 			Public("Employee ID is required.").
-			Errorf(ErrCodeEmployeeIDEmpty)
+			Errorf("employee id is empty")
 	}
 
 	var result StartVacationNowResult
@@ -51,7 +49,7 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationEndBeforeStart).
 				Public("Vacation end must be after its start.").
-				Errorf(ErrCodeVacationEndBeforeStart)
+				Errorf("vacation end must be after start")
 		}
 
 		id, err := uuid.NewV7()
@@ -77,7 +75,7 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 		}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
+			return oops.In(scopeVacation).Code(ErrCodeVacationEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(now),
@@ -85,7 +83,7 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 			AggregateId:   cmd.EmployeeID.String(),
 			Payload:       payload,
 		}
-		if err := AppendMembershipOutboxEvent(tx, SubjectVacationStarted, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectVacationStarted, envelope, nil); err != nil {
 			return err
 		}
 
@@ -93,14 +91,6 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 		return nil
 	})
 	return result, err
-}
-
-// nullTimeFromPtr is a shared helper used by vacation commands.
-func nullTimeFromPtr(t *time.Time) null.Time {
-	if t == nil {
-		return null.Time{}
-	}
-	return null.TimeFrom(*t)
 }
 
 // mapVacationInsertError translates Postgres constraint errors on

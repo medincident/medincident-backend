@@ -52,15 +52,22 @@ func main() {
 		logger.Fatal().Err(err).Str("addr", cfg.Server.GRPC.Address).Msg("failed to listen")
 	}
 
+	serveErr := make(chan error, 1)
 	go func() {
 		logger.Info().Str("addr", cfg.Server.GRPC.Address).Msg("grpc server starting")
 		if err := server.Serve(listener); err != nil && !errors.Is(err, grpc.ErrServerStopped) {
-			logger.Error().Err(err).Msg("grpc serve error")
+			serveErr <- err
+			return
 		}
+		close(serveErr)
 	}()
 
-	<-ctx.Done()
-	logger.Info().Msg("command-service stopping")
+	select {
+	case <-ctx.Done():
+		logger.Info().Msg("command-service stopping (signal)")
+	case err := <-serveErr:
+		logger.Error().Err(err).Msg("grpc serve error, shutting down")
+	}
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 	defer cancel()

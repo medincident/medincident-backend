@@ -14,6 +14,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // ScheduleVacationCommand carries everything the service needs to
@@ -41,25 +42,25 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 		errs = append(errs, oops.In(scopeVacation).
 			Code(ErrCodeEmployeeIDEmpty).
 			Public("Employee ID is required.").
-			Errorf(ErrCodeEmployeeIDEmpty))
+			Errorf("employee id is empty"))
 	}
 	if cmd.StartsAt.IsZero() {
 		errs = append(errs, oops.In(scopeVacation).
 			Code(ErrCodeVacationStartRequired).
 			Public("Vacation start is required.").
-			Errorf(ErrCodeVacationStartRequired))
+			Errorf("vacation start is required"))
 	}
 	if !cmd.StartsAt.IsZero() && !cmd.StartsAt.After(now) {
 		errs = append(errs, oops.In(scopeVacation).
 			Code(ErrCodeVacationStartInPast).
 			Public("Scheduled vacation must start in the future.").
-			Errorf(ErrCodeVacationStartInPast))
+			Errorf("vacation start is in the past"))
 	}
 	if cmd.EndsAt != nil && !cmd.EndsAt.After(cmd.StartsAt) {
 		errs = append(errs, oops.In(scopeVacation).
 			Code(ErrCodeVacationEndBeforeStart).
 			Public("Vacation end must be after its start.").
-			Errorf(ErrCodeVacationEndBeforeStart))
+			Errorf("vacation end must be after start"))
 	}
 	if len(errs) > 0 {
 		return ScheduleVacationResult{}, errors.Join(errs...)
@@ -91,7 +92,7 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 		}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
+			return oops.In(scopeVacation).Code(ErrCodeVacationEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(now),
@@ -99,7 +100,7 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 			AggregateId:   cmd.EmployeeID.String(),
 			Payload:       payload,
 		}
-		if err := AppendMembershipOutboxEvent(tx, SubjectVacationScheduled, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectVacationScheduled, envelope, nil); err != nil {
 			return err
 		}
 		result.ID = id

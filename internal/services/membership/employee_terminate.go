@@ -15,6 +15,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // TerminateEmployeeCommand carries the ID of the employee to remove.
@@ -31,7 +32,7 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 		return oops.In(scopeEmployee).
 			Code(ErrCodeEmployeeIDEmpty).
 			Public("Employee ID is required.").
-			Errorf(ErrCodeEmployeeIDEmpty)
+			Errorf("employee id is empty")
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -47,7 +48,7 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 					Code(ErrCodeEmployeeNotFound).
 					Public("Employee not found.").
 					With("employee_id", cmd.ID).
-					Errorf(ErrCodeEmployeeNotFound)
+					Errorf("employee not found")
 			}
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
 		}
@@ -61,13 +62,13 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 				Code(ErrCodeEmployeeNotFound).
 				Public("Employee not found.").
 				With("employee_id", cmd.ID).
-				Errorf(ErrCodeEmployeeNotFound)
+				Errorf("employee not found")
 		}
 
 		ev := &employeev1.EmployeeTerminated{}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
+			return oops.In(scopeEmployee).Code(ErrCodeEmployeeEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(now),
@@ -75,6 +76,6 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			AggregateId:   emp.ID.String(),
 			Payload:       payload,
 		}
-		return AppendMembershipOutboxEvent(tx, SubjectEmployeeTerminated, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectEmployeeTerminated, envelope, nil)
 	})
 }

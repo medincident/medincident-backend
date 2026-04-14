@@ -16,6 +16,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // UpdateVacationEndDateCommand carries the vacation to update and the
@@ -36,13 +37,13 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 		errs = append(errs, oops.In(scopeVacation).
 			Code(ErrCodeVacationIDEmpty).
 			Public("Vacation ID is required.").
-			Errorf(ErrCodeVacationIDEmpty))
+			Errorf("vacation id is empty"))
 	}
 	if cmd.EndsAt.IsZero() {
 		errs = append(errs, oops.In(scopeVacation).
 			Code(ErrCodeVacationEndBeforeStart).
 			Public("Vacation end is required.").
-			Errorf(ErrCodeVacationEndBeforeStart))
+			Errorf("vacation end must be after start"))
 	}
 	if len(errs) > 0 {
 		return errors.Join(errs...)
@@ -61,7 +62,7 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 					Code(ErrCodeVacationNotFound).
 					Public("Vacation not found.").
 					With("vacation_id", cmd.VacationID).
-					Errorf(ErrCodeVacationNotFound)
+					Errorf("vacation not found")
 			}
 			return oops.In(scopeVacation).Code(ErrCodeVacationLoadFailed).Wrap(err)
 		}
@@ -73,7 +74,7 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 				Code(ErrCodeVacationAlreadyEnded).
 				Public("Vacation has already ended.").
 				With("vacation_id", cmd.VacationID).
-				Errorf(ErrCodeVacationAlreadyEnded)
+				Errorf("vacation has already ended")
 		}
 
 		// "New end in future."
@@ -81,7 +82,7 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationEndInPast).
 				Public("New end date must be in the future.").
-				Errorf(ErrCodeVacationEndInPast)
+				Errorf("vacation end is in the past")
 		}
 
 		// "New end after start."
@@ -89,7 +90,7 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationEndBeforeStart).
 				Public("New end date must be after the vacation's start.").
-				Errorf(ErrCodeVacationEndBeforeStart)
+				Errorf("vacation end must be after start")
 		}
 
 		// No-op: same end already set.
@@ -98,8 +99,8 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 		}
 
 		vac.EndsAt = null.TimeFrom(cmd.EndsAt)
-		if err := tx.Save(&vac).Error; err != nil {
-			return mapVacationInsertError(err, vac.EmployeeID)
+		if saveErr := tx.Save(&vac).Error; saveErr != nil {
+			return oops.In(scopeVacation).With("vacation_id", vac.ID).Wrap(mapVacationInsertError(saveErr, vac.EmployeeID))
 		}
 
 		ev := &employeev1.VacationEndDateChanged{
@@ -108,7 +109,7 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 		}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
+			return oops.In(scopeVacation).Code(ErrCodeVacationEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(now),
@@ -116,6 +117,6 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 			AggregateId:   vac.EmployeeID.String(),
 			Payload:       payload,
 		}
-		return AppendMembershipOutboxEvent(tx, SubjectVacationEndDateChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectVacationEndDateChanged, envelope, nil)
 	})
 }

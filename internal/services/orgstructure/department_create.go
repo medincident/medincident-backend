@@ -17,6 +17,7 @@ import (
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 const (
@@ -183,11 +184,11 @@ func (s *DepartmentService) Create(
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(dept.UpdatedAt),
-			AggregateType: "department",
+			AggregateType: AggregateTypeDepartment,
 			AggregateId:   dept.ID.String(),
 			Payload:       payload,
 		}
-		if err := AppendOutboxEvent(tx, SubjectDepartmentCreated, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectDepartmentCreated, envelope, nil); err != nil {
 			return err
 		}
 		result.ID = id

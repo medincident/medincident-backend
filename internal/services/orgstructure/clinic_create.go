@@ -17,6 +17,7 @@ import (
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 const (
@@ -210,11 +211,11 @@ func (s *ClinicService) Create(
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(clinic.UpdatedAt),
-			AggregateType: "clinic",
+			AggregateType: AggregateTypeClinic,
 			AggregateId:   clinic.ID.String(),
 			Payload:       payload,
 		}
-		if err := AppendOutboxEvent(tx, SubjectClinicCreated, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectClinicCreated, envelope, nil); err != nil {
 			return err
 		}
 		result.ID = id

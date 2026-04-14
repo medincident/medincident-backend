@@ -137,9 +137,8 @@ func TestHireEmployee_MultiErrorReturnsAllViolations(t *testing.T) {
 		ZitadelUserID: "",
 		Position:      &tooShort,
 	})
-	require.Error(t, err)
-	msg := err.Error()
-	assert.Contains(t, msg, "employee_zitadel_user_id_empty")
-	assert.Contains(t, msg, "employee_department_id_empty")
-	assert.Contains(t, msg, "employee_position_too_short")
+	codes := oopsCodes(t, err)
+	assert.Contains(t, codes, membership.ErrCodeEmployeeZitadelUserIDEmpty)
+	assert.Contains(t, codes, membership.ErrCodeEmployeeDepartmentIDEmpty)
+	assert.Contains(t, codes, membership.ErrCodeEmployeePositionTooShort)
 }

@@ -15,6 +15,10 @@ import (
 // Headers are create-only; published_at is not modelled at all here
 // because this service has no business reading or writing it.
 type OutboxEvent struct {
+	// ID is assigned by Postgres via GENERATED ALWAYS AS IDENTITY. Do NOT
+	// set this field on INSERT — GORM omits zero-value primary keys from
+	// the INSERT and Postgres generates the value. Hand-setting it will
+	// fail at runtime with "cannot insert into a generated-always column".
 	ID        int64          `gorm:"primaryKey"`
 	Subject   string         `gorm:"<-:create"`
 	Payload   []byte         `gorm:"<-:create"`

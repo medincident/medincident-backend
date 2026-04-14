@@ -15,6 +15,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // UpdateEmployeeDepartmentCommand carries the inputs required to move
@@ -33,13 +34,13 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 		errs = append(errs, oops.In(scopeEmployee).
 			Code(ErrCodeEmployeeIDEmpty).
 			Public("Employee ID is required.").
-			Errorf(ErrCodeEmployeeIDEmpty))
+			Errorf("employee id is empty"))
 	}
 	if cmd.DepartmentID == uuid.Nil {
 		errs = append(errs, oops.In(scopeEmployee).
 			Code(ErrCodeEmployeeDepartmentIDEmpty).
 			Public("Department ID is required.").
-			Errorf(ErrCodeEmployeeDepartmentIDEmpty))
+			Errorf("department id is empty"))
 	}
 	if len(errs) > 0 {
 		return errors.Join(errs...)
@@ -55,7 +56,7 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 					Code(ErrCodeEmployeeNotFound).
 					Public("Employee not found.").
 					With("employee_id", cmd.ID).
-					Errorf(ErrCodeEmployeeNotFound)
+					Errorf("employee not found")
 			}
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
 		}
@@ -76,7 +77,7 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 					Code(ErrCodeDepartmentNotFound).
 					Public("Department not found.").
 					With("department_id", cmd.DepartmentID).
-					Errorf(ErrCodeDepartmentNotFound)
+					Errorf("department not found")
 			}
 			return oops.In(scopeEmployee).
 				Code(ErrCodeDepartmentLookupFailed).
@@ -89,7 +90,7 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 				Public("Target department belongs to a different organization.").
 				With("employee_organization_id", emp.OrganizationID).
 				With("target_organization_id", targetOrgID).
-				Errorf(ErrCodeDepartmentNotInSameOrganization)
+				Errorf("department is in a different organization")
 		}
 
 		emp.DepartmentID = cmd.DepartmentID
@@ -100,7 +101,7 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 		ev := &employeev1.EmployeeDepartmentChanged{DepartmentId: cmd.DepartmentID.String()}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
+			return oops.In(scopeEmployee).Code(ErrCodeEmployeeEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(emp.UpdatedAt),
@@ -108,6 +109,6 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 			AggregateId:   emp.ID.String(),
 			Payload:       payload,
 		}
-		return AppendMembershipOutboxEvent(tx, SubjectEmployeeDepartmentChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectEmployeeDepartmentChanged, envelope, nil)
 	})
 }

@@ -14,6 +14,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // UpdateEmployeePositionCommand carries the inputs required to change an
@@ -34,7 +35,7 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 		errs = append(errs, oops.In(scopeEmployee).
 			Code(ErrCodeEmployeeIDEmpty).
 			Public("Employee ID is required.").
-			Errorf(ErrCodeEmployeeIDEmpty))
+			Errorf("employee id is empty"))
 	}
 	if err := validatePosition(cmd.Position); err != nil {
 		errs = append(errs, err)
@@ -55,7 +56,7 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 					Code(ErrCodeEmployeeNotFound).
 					Public("Employee not found.").
 					With("employee_id", cmd.ID).
-					Errorf(ErrCodeEmployeeNotFound)
+					Errorf("employee not found")
 			}
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
 		}
@@ -75,7 +76,7 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 		}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
+			return oops.In(scopeEmployee).Code(ErrCodeEmployeeEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(emp.UpdatedAt),
@@ -83,6 +84,6 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 			AggregateId:   emp.ID.String(),
 			Payload:       payload,
 		}
-		return AppendMembershipOutboxEvent(tx, SubjectEmployeePositionChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectEmployeePositionChanged, envelope, nil)
 	})
 }

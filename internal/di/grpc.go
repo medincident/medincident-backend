@@ -2,7 +2,6 @@ package di
 
 import (
 	"context"
-	"time"
 
 	"github.com/samber/do/v2"
 	"google.golang.org/grpc"
@@ -13,10 +12,6 @@ import (
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
 )
-
-// forceStopGracePeriod gives Stop() a brief window to flush after a
-// GracefulStop deadline expiry before Shutdown returns.
-const forceStopGracePeriod = 50 * time.Millisecond
 
 // grpcServerWrapper owns the *grpc.Server lifecycle. Private to di —
 // consumers invoke *grpc.Server directly via ProvideGRPCServer.
@@ -37,7 +32,6 @@ func (g *grpcServerWrapper) Shutdown(ctx context.Context) error {
 		return nil
 	case <-ctx.Done():
 		g.Stop()
-		time.Sleep(forceStopGracePeriod)
 		return ctx.Err()
 	}
 }

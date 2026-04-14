@@ -16,6 +16,7 @@ import (
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // Organization name and description invariant limits.
@@ -46,6 +47,13 @@ const (
 	SubjectOrganizationCreated             = "medincident.event.organization.v1.created"
 	SubjectOrganizationDetailsChanged      = "medincident.event.organization.v1.details_changed"
 	SubjectOrganizationLegalAddressChanged = "medincident.event.organization.v1.legal_address_changed"
+)
+
+// Aggregate type constants used in event envelopes.
+const (
+	AggregateTypeOrganization = "organization"
+	AggregateTypeClinic       = "clinic"
+	AggregateTypeDepartment   = "department"
 )
 
 // CreateOrganizationCommand is the input of OrganizationService.Create.
@@ -209,11 +217,11 @@ func (s *OrganizationService) Create(
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(org.UpdatedAt),
-			AggregateType: "organization",
+			AggregateType: AggregateTypeOrganization,
 			AggregateId:   org.ID.String(),
 			Payload:       payload,
 		}
-		if err := AppendOutboxEvent(tx, SubjectOrganizationCreated, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectOrganizationCreated, envelope, nil); err != nil {
 			return err
 		}
 		result.ID = id

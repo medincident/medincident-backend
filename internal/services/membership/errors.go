@@ -32,10 +32,12 @@ const (
 	ErrCodeEmployeeSaveFailed         = "employee_save_failed"
 	ErrCodeEmployeeLoadFailed         = "employee_load_failed"
 	ErrCodeEmployeeDeleteFailed       = "employee_delete_failed"
+	ErrCodeEmployeeEventBuildFailed   = "employee_event_build_failed"
 	ErrCodeVacationIDGenerationFailed = "vacation_id_generation_failed"
 	ErrCodeVacationSaveFailed         = "vacation_save_failed"
 	ErrCodeVacationLoadFailed         = "vacation_load_failed"
 	ErrCodeVacationDeleteFailed       = "vacation_delete_failed"
+	ErrCodeVacationEventBuildFailed   = "vacation_event_build_failed"
 	ErrCodeDepartmentLookupFailed     = "department_lookup_failed"
 	ErrCodeZitadelVerifyFailed        = "zitadel_verify_failed"
 )

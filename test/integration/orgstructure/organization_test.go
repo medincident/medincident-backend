@@ -59,7 +59,7 @@ func TestOrganization_Create_HappyPath(t *testing.T) {
 	assert.True(t, row.LegalAddress.Point.Longitude.Valid)
 	assert.InDelta(t, 37.6, row.LegalAddress.Point.Longitude.Float64, 0.0001)
 
-	assert.Equal(t, int64(1), countRows(t, "outbox.events"))
+	assert.Equal(t, 1, countOutboxEvents(t))
 
 	var event model.OutboxEvent
 	require.NoError(t, testDB.First(&event, "subject = ?", orgsvc.SubjectOrganizationCreated).Error)
@@ -119,8 +119,8 @@ func TestOrganization_Create_MultiFieldViolations(t *testing.T) {
 	assert.True(t, codes[orgsvc.ErrCodeAddressLongitudeOutOfRange], "longitude_out_of_range expected")
 	assert.True(t, codes[orgsvc.ErrCodeAddressLatitudeOutOfRange], "latitude_out_of_range expected")
 
-	assert.Equal(t, int64(0), countRows(t, "domain.organizations"))
-	assert.Equal(t, int64(0), countRows(t, "outbox.events"))
+	assert.Equal(t, 0, countOrganizations(t))
+	assert.Equal(t, 0, countOutboxEvents(t))
 }
 
 func TestOrganization_UpdateDetails_NoOp(t *testing.T) {
@@ -134,7 +134,7 @@ func TestOrganization_UpdateDetails_NoOp(t *testing.T) {
 		LegalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
 	})
 	require.NoError(t, err)
-	assert.Equal(t, int64(1), countRows(t, "outbox.events"))
+	assert.Equal(t, 1, countOutboxEvents(t))
 
 	// Re-send the same values. Should be a no-op: no new outbox row.
 	require.NoError(t, orgSvc.UpdateDetails(ctx, orgsvc.UpdateOrganizationDetailsCommand{
@@ -142,7 +142,7 @@ func TestOrganization_UpdateDetails_NoOp(t *testing.T) {
 		Name:        "Тестовая организация",
 		Description: &desc,
 	}))
-	assert.Equal(t, int64(1), countRows(t, "outbox.events"))
+	assert.Equal(t, 1, countOutboxEvents(t))
 }
 
 func TestOrganization_UpdateDetails_RealChange(t *testing.T) {
@@ -163,7 +163,7 @@ func TestOrganization_UpdateDetails_RealChange(t *testing.T) {
 		Name:        "Орг А обновлённая",
 		Description: &changed,
 	}))
-	assert.Equal(t, int64(2), countRows(t, "outbox.events"),
+	assert.Equal(t, 2, countOutboxEvents(t),
 		"expected create + details_changed rows")
 
 	var latest model.OutboxEvent

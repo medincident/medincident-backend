@@ -15,6 +15,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // CancelScheduledVacationCommand identifies the future vacation to remove.
@@ -30,7 +31,7 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 		return oops.In(scopeVacation).
 			Code(ErrCodeVacationIDEmpty).
 			Public("Vacation ID is required.").
-			Errorf(ErrCodeVacationIDEmpty)
+			Errorf("vacation id is empty")
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -46,7 +47,7 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 					Code(ErrCodeVacationNotFound).
 					Public("Vacation not found.").
 					With("vacation_id", cmd.VacationID).
-					Errorf(ErrCodeVacationNotFound)
+					Errorf("vacation not found")
 			}
 			return oops.In(scopeVacation).Code(ErrCodeVacationLoadFailed).Wrap(err)
 		}
@@ -56,7 +57,7 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 				Code(ErrCodeVacationAlreadyStarted).
 				Public("Vacation has already started — force-end it instead.").
 				Hint("Use ForceEndVacation for running vacations.").
-				Errorf(ErrCodeVacationAlreadyStarted)
+				Errorf("vacation has already started")
 		}
 
 		if err := tx.Delete(&model.EmployeeVacation{}, "id = ?", cmd.VacationID).Error; err != nil {
@@ -66,7 +67,7 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 		ev := &employeev1.VacationCancelled{VacationId: vac.ID.String()}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeVacationDeleteFailed).Wrap(err)
+			return oops.In(scopeVacation).Code(ErrCodeVacationEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(now),
@@ -74,6 +75,6 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 			AggregateId:   vac.EmployeeID.String(),
 			Payload:       payload,
 		}
-		return AppendMembershipOutboxEvent(tx, SubjectVacationCancelled, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectVacationCancelled, envelope, nil)
 	})
 }

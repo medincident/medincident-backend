@@ -119,3 +119,33 @@ func oopsCode(t *testing.T, err error) string {
 	require.True(t, ok, "oops.Code() returned non-string: %T %v", oe.Code(), oe.Code())
 	return code
 }
+
+// oopsCodes walks a joined error chain (errors.Join output) and
+// collects the oops .Code() string from every oops error in the tree.
+// Used by tests that assert multiple field-level violations are all
+// surfaced by a single multi-error return.
+func oopsCodes(t *testing.T, err error) []string {
+	t.Helper()
+	require.Error(t, err)
+	var out []string
+	var walk func(error)
+	walk = func(e error) {
+		if e == nil {
+			return
+		}
+		if joined, ok := e.(interface{ Unwrap() []error }); ok {
+			for _, child := range joined.Unwrap() {
+				walk(child)
+			}
+			return
+		}
+		var oe oops.OopsError
+		if errors.As(e, &oe) {
+			if code, ok := oe.Code().(string); ok && code != "" {
+				out = append(out, code)
+			}
+		}
+	}
+	walk(err)
+	return out
+}

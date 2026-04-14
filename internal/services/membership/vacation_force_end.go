@@ -16,6 +16,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // ForceEndVacationCommand identifies the running vacation to close.
@@ -31,7 +32,7 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 		return oops.In(scopeVacation).
 			Code(ErrCodeVacationIDEmpty).
 			Public("Vacation ID is required.").
-			Errorf(ErrCodeVacationIDEmpty)
+			Errorf("vacation id is empty")
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -47,7 +48,7 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 					Code(ErrCodeVacationNotFound).
 					Public("Vacation not found.").
 					With("vacation_id", cmd.VacationID).
-					Errorf(ErrCodeVacationNotFound)
+					Errorf("vacation not found")
 			}
 			return oops.In(scopeVacation).Code(ErrCodeVacationLoadFailed).Wrap(err)
 		}
@@ -57,18 +58,18 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 				Code(ErrCodeVacationNotStarted).
 				Public("Vacation has not started yet — cancel it instead.").
 				Hint("Use CancelScheduledVacation for scheduled vacations.").
-				Errorf(ErrCodeVacationNotStarted)
+				Errorf("vacation has not started yet")
 		}
 		if vac.EndsAt.Valid && !vac.EndsAt.Time.After(now) {
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationAlreadyEnded).
 				Public("Vacation has already ended.").
-				Errorf(ErrCodeVacationAlreadyEnded)
+				Errorf("vacation has already ended")
 		}
 
 		vac.EndsAt = null.TimeFrom(now)
 		if err := tx.Save(&vac).Error; err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
+			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).With("vacation_id", vac.ID).Wrap(err)
 		}
 
 		ev := &employeev1.VacationEnded{
@@ -77,7 +78,7 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 		}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
+			return oops.In(scopeVacation).Code(ErrCodeVacationEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(now),
@@ -85,6 +86,6 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 			AggregateId:   vac.EmployeeID.String(),
 			Payload:       payload,
 		}
-		return AppendMembershipOutboxEvent(tx, SubjectVacationEnded, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectVacationEnded, envelope, nil)
 	})
 }

@@ -15,6 +15,7 @@ import (
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 type UpdateClinicPhysicalAddressCommand struct {
@@ -94,10 +95,10 @@ func (s *ClinicService) UpdatePhysicalAddress(
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(clinic.UpdatedAt),
-			AggregateType: "clinic",
+			AggregateType: AggregateTypeClinic,
 			AggregateId:   clinic.ID.String(),
 			Payload:       payload,
 		}
-		return AppendOutboxEvent(tx, SubjectClinicPhysicalAddressChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectClinicPhysicalAddressChanged, envelope, nil)
 	})
 }

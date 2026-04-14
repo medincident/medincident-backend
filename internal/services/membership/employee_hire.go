@@ -16,6 +16,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 	"github.com/medincident/medincident-command-service/internal/services/zitadel"
 )
 
@@ -33,8 +34,6 @@ type HireEmployeeResult struct {
 	ID uuid.UUID
 }
 
-const scopeEmployee = "services.membership.employee"
-
 // Hire creates a new Employee row in the given department, deriving
 // the organisation via a JOIN on domain.departments → domain.clinics.
 // Invariants and error codes are spelled out in the spec.
@@ -45,13 +44,13 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 		errs = append(errs, oops.In(scopeEmployee).
 			Code(ErrCodeEmployeeZitadelUserIDEmpty).
 			Public("Zitadel user ID is required.").
-			Errorf(ErrCodeEmployeeZitadelUserIDEmpty))
+			Errorf("zitadel user id is empty"))
 	}
 	if cmd.DepartmentID == uuid.Nil {
 		errs = append(errs, oops.In(scopeEmployee).
 			Code(ErrCodeEmployeeDepartmentIDEmpty).
 			Public("Department ID is required.").
-			Errorf(ErrCodeEmployeeDepartmentIDEmpty))
+			Errorf("department id is empty"))
 	}
 	if err := validatePosition(cmd.Position); err != nil {
 		errs = append(errs, err)
@@ -141,7 +140,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 		}
 		payload, err := anypb.New(ev)
 		if err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
+			return oops.In(scopeEmployee).Code(ErrCodeEmployeeEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(emp.UpdatedAt),
@@ -149,7 +148,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			AggregateId:   id.String(),
 			Payload:       payload,
 		}
-		if err := AppendMembershipOutboxEvent(tx, SubjectEmployeeHired, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectEmployeeHired, envelope, nil); err != nil {
 			return err
 		}
 

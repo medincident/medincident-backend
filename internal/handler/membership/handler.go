@@ -5,7 +5,8 @@
 package membership
 
 import (
-	"github.com/rs/zerolog"
+	"github.com/google/uuid"
+	"github.com/samber/oops"
 
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
 	"github.com/medincident/medincident-command-service/internal/services/membership"
@@ -16,10 +17,42 @@ type MembershipHandler struct {
 	membershipv1.UnimplementedMembershipServiceServer
 
 	empSvc *membership.EmployeeService
-	logger *zerolog.Logger
 }
 
-// NewMembershipHandler wires the handler with EmployeeService and a logger.
-func NewMembershipHandler(empSvc *membership.EmployeeService, logger *zerolog.Logger) *MembershipHandler {
-	return &MembershipHandler{empSvc: empSvc, logger: logger}
+// NewMembershipHandler wires the handler with EmployeeService.
+func NewMembershipHandler(empSvc *membership.EmployeeService) *MembershipHandler {
+	return &MembershipHandler{empSvc: empSvc}
+}
+
+func parseEmployeeID(raw string) (uuid.UUID, error) {
+	id, err := uuid.Parse(raw)
+	if err != nil {
+		return uuid.Nil, oops.In("handler.membership").
+			Code(ErrCodeHandlerInvalidEmployeeID).
+			Public("employee_id is not a valid UUID.").
+			Wrap(err)
+	}
+	return id, nil
+}
+
+func parseDepartmentID(raw string) (uuid.UUID, error) {
+	id, err := uuid.Parse(raw)
+	if err != nil {
+		return uuid.Nil, oops.In("handler.membership").
+			Code(ErrCodeHandlerInvalidDepartmentID).
+			Public("department_id is not a valid UUID.").
+			Wrap(err)
+	}
+	return id, nil
+}
+
+func parseVacationID(raw string) (uuid.UUID, error) {
+	id, err := uuid.Parse(raw)
+	if err != nil {
+		return uuid.Nil, oops.In("handler.membership").
+			Code(ErrCodeHandlerInvalidVacationID).
+			Public("vacation_id is not a valid UUID.").
+			Wrap(err)
+	}
+	return id, nil
 }

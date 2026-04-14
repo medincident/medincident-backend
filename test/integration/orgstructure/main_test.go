@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/require"
 	"github.com/testcontainers/testcontainers-go"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
@@ -110,17 +111,30 @@ func resetDB(t *testing.T) {
 	}
 }
 
-// countRows returns SELECT COUNT(*) FROM <table>.
-func countRows(t *testing.T, table string) int64 {
+func countOrganizations(t *testing.T) int {
 	t.Helper()
-	raw, err := testDB.DB()
-	if err != nil {
-		t.Fatalf("get raw db: %v", err)
-	}
-	var n int64
-	row := raw.QueryRow(fmt.Sprintf("SELECT COUNT(*) FROM %s", table))
-	if err := row.Scan(&n); err != nil {
-		t.Fatalf("count %s: %v", table, err)
-	}
+	var n int
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.organizations`).Scan(&n).Error)
+	return n
+}
+
+func countClinics(t *testing.T) int {
+	t.Helper()
+	var n int
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.clinics`).Scan(&n).Error)
+	return n
+}
+
+func countDepartments(t *testing.T) int {
+	t.Helper()
+	var n int
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.departments`).Scan(&n).Error)
+	return n
+}
+
+func countOutboxEvents(t *testing.T) int {
+	t.Helper()
+	var n int
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM outbox.events`).Scan(&n).Error)
 	return n
 }

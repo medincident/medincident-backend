@@ -38,9 +38,9 @@ func TestDepartment_Create_HappyPath(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEqual(t, uuid.Nil, res.ID)
 
-	assert.Equal(t, int64(1), countRows(t, "domain.departments"))
+	assert.Equal(t, 1, countDepartments(t))
 	// organization + clinic + department = 3 outbox rows
-	assert.Equal(t, int64(3), countRows(t, "outbox.events"))
+	assert.Equal(t, 3, countOutboxEvents(t))
 }
 
 func TestDepartment_Create_ClinicNotFound(t *testing.T) {
@@ -52,6 +52,6 @@ func TestDepartment_Create_ClinicNotFound(t *testing.T) {
 	})
 	require.Error(t, err)
 	assert.Equal(t, orgsvc.ErrCodeDepartmentClinicNotFound, codeOf(t, err))
-	assert.Equal(t, int64(0), countRows(t, "domain.departments"))
-	assert.Equal(t, int64(0), countRows(t, "outbox.events"))
+	assert.Equal(t, 0, countDepartments(t))
+	assert.Equal(t, 0, countOutboxEvents(t))
 }

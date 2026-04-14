@@ -49,7 +49,7 @@ func validatePosition(in *string) error {
 			Public("Position is too short.").
 			With("position_length", n).
 			With("min_length", positionMinLen).
-			Errorf(ErrCodeEmployeePositionTooShort)
+			Errorf("position too short")
 	}
 	if n > positionMaxLen {
 		return oops.In("services.membership.employee").
@@ -57,7 +57,7 @@ func validatePosition(in *string) error {
 			Public("Position is too long.").
 			With("position_length", n).
 			With("max_length", positionMaxLen).
-			Errorf(ErrCodeEmployeePositionTooLong)
+			Errorf("position too long")
 	}
 	return nil
 }

@@ -1,7 +1,6 @@
 package di
 
 import (
-	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
 
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
@@ -23,11 +22,7 @@ func provideOrgStructureHandler(injector do.Injector) (*orghandler.OrgStructureH
 	if err != nil {
 		return nil, err
 	}
-	logger, err := do.Invoke[*zerolog.Logger](injector)
-	if err != nil {
-		return nil, err
-	}
-	return orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc, logger), nil
+	return orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc), nil
 }
 
 func provideMembershipHandler(injector do.Injector) (*membershiphandler.MembershipHandler, error) {
@@ -35,9 +30,5 @@ func provideMembershipHandler(injector do.Injector) (*membershiphandler.Membersh
 	if err != nil {
 		return nil, err
 	}
-	logger, err := do.Invoke[*zerolog.Logger](injector)
-	if err != nil {
-		return nil, err
-	}
-	return membershiphandler.NewMembershipHandler(empSvc, logger), nil
+	return membershiphandler.NewMembershipHandler(empSvc), nil
 }

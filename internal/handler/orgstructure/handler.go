@@ -1,8 +1,8 @@
+// Package orgstructure is the gRPC transport for the OrgStructureService.
 package orgstructure
 
 import (
 	"github.com/google/uuid"
-	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 
 	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
@@ -23,22 +23,18 @@ type OrgStructureHandler struct {
 	orgSvc  *orgsvc.OrganizationService
 	clinSvc *orgsvc.ClinicService
 	deptSvc *orgsvc.DepartmentService
-	logger  *zerolog.Logger
 }
 
-// NewOrgStructureHandler wires the handler with the three services and
-// a logger.
+// NewOrgStructureHandler wires the handler with the three services.
 func NewOrgStructureHandler(
 	orgSvc *orgsvc.OrganizationService,
 	clinSvc *orgsvc.ClinicService,
 	deptSvc *orgsvc.DepartmentService,
-	logger *zerolog.Logger,
 ) *OrgStructureHandler {
 	return &OrgStructureHandler{
 		orgSvc:  orgSvc,
 		clinSvc: clinSvc,
 		deptSvc: deptSvc,
-		logger:  logger,
 	}
 }
 

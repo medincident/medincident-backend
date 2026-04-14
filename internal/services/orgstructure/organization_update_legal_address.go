@@ -15,6 +15,7 @@ import (
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // UpdateOrganizationLegalAddressCommand carries the new legal address.
@@ -102,10 +103,10 @@ func (s *OrganizationService) UpdateLegalAddress(
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(org.UpdatedAt),
-			AggregateType: "organization",
+			AggregateType: AggregateTypeOrganization,
 			AggregateId:   org.ID.String(),
 			Payload:       payload,
 		}
-		return AppendOutboxEvent(tx, SubjectOrganizationLegalAddressChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectOrganizationLegalAddressChanged, envelope, nil)
 	})
 }

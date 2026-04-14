@@ -48,7 +48,7 @@ type Service struct {
 func NewServiceFromKeyFile(ctx context.Context, domain, keyPath string) (*Service, error) {
 	hostname, port, tls, err := parseDomain(domain)
 	if err != nil {
-		return nil, oops.In("zitadel").
+		return nil, oops.In("services.zitadel").
 			Code(ErrCodeZitadelClientBuildFailed).
 			With("domain", domain).
 			Wrap(err)
@@ -64,7 +64,7 @@ func NewServiceFromKeyFile(ctx context.Context, domain, keyPath string) (*Servic
 		)),
 	)
 	if err != nil {
-		return nil, oops.In("zitadel").
+		return nil, oops.In("services.zitadel").
 			Code(ErrCodeZitadelClientBuildFailed).
 			With("domain", domain).
 			With("key_path", keyPath).
@@ -79,7 +79,7 @@ func NewServiceFromKeyFile(ctx context.Context, domain, keyPath string) (*Servic
 func NewServiceFromPAT(ctx context.Context, domain, pat string) (*Service, error) {
 	hostname, port, tls, err := parseDomain(domain)
 	if err != nil {
-		return nil, oops.In("zitadel").
+		return nil, oops.In("services.zitadel").
 			Code(ErrCodeZitadelClientBuildFailed).
 			With("domain", domain).
 			Wrap(err)
@@ -91,7 +91,7 @@ func NewServiceFromPAT(ctx context.Context, domain, pat string) (*Service, error
 		client.WithAuth(client.PAT(pat)),
 	)
 	if err != nil {
-		return nil, oops.In("zitadel").
+		return nil, oops.In("services.zitadel").
 			Code(ErrCodeZitadelClientBuildFailed).
 			With("domain", domain).
 			Wrap(err)
@@ -169,7 +169,7 @@ func (s *Service) Verify(ctx context.Context, zitadelUserID string) error {
 	if st, ok := status.FromError(err); ok && st.Code() == codes.NotFound {
 		return ErrUserNotFound
 	}
-	return oops.In("zitadel").
+	return oops.In("services.zitadel").
 		Code(ErrCodeZitadelVerifyFailed).
 		With("zitadel_user_id", zitadelUserID).
 		Wrap(err)

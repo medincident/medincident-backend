@@ -15,6 +15,7 @@ import (
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
 // UpdateOrganizationDetailsCommand carries the new name and (optional)
@@ -95,10 +96,10 @@ func (s *OrganizationService) UpdateDetails(
 		}
 		envelope := &envelopev1.Envelope{
 			OccurredAt:    timestamppb.New(org.UpdatedAt),
-			AggregateType: "organization",
+			AggregateType: AggregateTypeOrganization,
 			AggregateId:   org.ID.String(),
 			Payload:       payload,
 		}
-		return AppendOutboxEvent(tx, SubjectOrganizationDetailsChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectOrganizationDetailsChanged, envelope, nil)
 	})
 }
