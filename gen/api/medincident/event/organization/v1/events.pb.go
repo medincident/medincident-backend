@@ -284,6 +284,558 @@ func (x *OrganizationLegalAddressChanged) GetLegalAddress() *Address {
 	return nil
 }
 
+type OrganizationAdminAssigned struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationAdminAssigned) Reset() {
+	*x = OrganizationAdminAssigned{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationAdminAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationAdminAssigned) ProtoMessage() {}
+
+func (x *OrganizationAdminAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationAdminAssigned.ProtoReflect.Descriptor instead.
+func (*OrganizationAdminAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *OrganizationAdminAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type OrganizationAdminRevoked struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationAdminRevoked) Reset() {
+	*x = OrganizationAdminRevoked{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationAdminRevoked) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationAdminRevoked) ProtoMessage() {}
+
+func (x *OrganizationAdminRevoked) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationAdminRevoked.ProtoReflect.Descriptor instead.
+func (*OrganizationAdminRevoked) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *OrganizationAdminRevoked) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type OrganizationAdminDeputyAssigned struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	DeputyEmployeeId string                 `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3" json:"deputy_employee_id,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *OrganizationAdminDeputyAssigned) Reset() {
+	*x = OrganizationAdminDeputyAssigned{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationAdminDeputyAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationAdminDeputyAssigned) ProtoMessage() {}
+
+func (x *OrganizationAdminDeputyAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationAdminDeputyAssigned.ProtoReflect.Descriptor instead.
+func (*OrganizationAdminDeputyAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *OrganizationAdminDeputyAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrganizationAdminDeputyAssigned) GetDeputyEmployeeId() string {
+	if x != nil {
+		return x.DeputyEmployeeId
+	}
+	return ""
+}
+
+type OrganizationAdminDeputyRemoved struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationAdminDeputyRemoved) Reset() {
+	*x = OrganizationAdminDeputyRemoved{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationAdminDeputyRemoved) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationAdminDeputyRemoved) ProtoMessage() {}
+
+func (x *OrganizationAdminDeputyRemoved) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationAdminDeputyRemoved.ProtoReflect.Descriptor instead.
+func (*OrganizationAdminDeputyRemoved) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *OrganizationAdminDeputyRemoved) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type OrganizationHeadAssigned struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationHeadAssigned) Reset() {
+	*x = OrganizationHeadAssigned{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationHeadAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationHeadAssigned) ProtoMessage() {}
+
+func (x *OrganizationHeadAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationHeadAssigned.ProtoReflect.Descriptor instead.
+func (*OrganizationHeadAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *OrganizationHeadAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type OrganizationHeadRevoked struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationHeadRevoked) Reset() {
+	*x = OrganizationHeadRevoked{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationHeadRevoked) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationHeadRevoked) ProtoMessage() {}
+
+func (x *OrganizationHeadRevoked) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationHeadRevoked.ProtoReflect.Descriptor instead.
+func (*OrganizationHeadRevoked) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *OrganizationHeadRevoked) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type OrganizationHeadDeputyAssigned struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	DeputyEmployeeId string                 `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3" json:"deputy_employee_id,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *OrganizationHeadDeputyAssigned) Reset() {
+	*x = OrganizationHeadDeputyAssigned{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationHeadDeputyAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationHeadDeputyAssigned) ProtoMessage() {}
+
+func (x *OrganizationHeadDeputyAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationHeadDeputyAssigned.ProtoReflect.Descriptor instead.
+func (*OrganizationHeadDeputyAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *OrganizationHeadDeputyAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrganizationHeadDeputyAssigned) GetDeputyEmployeeId() string {
+	if x != nil {
+		return x.DeputyEmployeeId
+	}
+	return ""
+}
+
+type OrganizationHeadDeputyRemoved struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationHeadDeputyRemoved) Reset() {
+	*x = OrganizationHeadDeputyRemoved{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationHeadDeputyRemoved) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationHeadDeputyRemoved) ProtoMessage() {}
+
+func (x *OrganizationHeadDeputyRemoved) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationHeadDeputyRemoved.ProtoReflect.Descriptor instead.
+func (*OrganizationHeadDeputyRemoved) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *OrganizationHeadDeputyRemoved) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type OrganizationDispatcherAssigned struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationDispatcherAssigned) Reset() {
+	*x = OrganizationDispatcherAssigned{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationDispatcherAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationDispatcherAssigned) ProtoMessage() {}
+
+func (x *OrganizationDispatcherAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationDispatcherAssigned.ProtoReflect.Descriptor instead.
+func (*OrganizationDispatcherAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *OrganizationDispatcherAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type OrganizationDispatcherRevoked struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationDispatcherRevoked) Reset() {
+	*x = OrganizationDispatcherRevoked{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationDispatcherRevoked) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationDispatcherRevoked) ProtoMessage() {}
+
+func (x *OrganizationDispatcherRevoked) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationDispatcherRevoked.ProtoReflect.Descriptor instead.
+func (*OrganizationDispatcherRevoked) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *OrganizationDispatcherRevoked) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type OrganizationDispatcherDeputyAssigned struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	DeputyEmployeeId string                 `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3" json:"deputy_employee_id,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *OrganizationDispatcherDeputyAssigned) Reset() {
+	*x = OrganizationDispatcherDeputyAssigned{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationDispatcherDeputyAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationDispatcherDeputyAssigned) ProtoMessage() {}
+
+func (x *OrganizationDispatcherDeputyAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationDispatcherDeputyAssigned.ProtoReflect.Descriptor instead.
+func (*OrganizationDispatcherDeputyAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *OrganizationDispatcherDeputyAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrganizationDispatcherDeputyAssigned) GetDeputyEmployeeId() string {
+	if x != nil {
+		return x.DeputyEmployeeId
+	}
+	return ""
+}
+
+type OrganizationDispatcherDeputyRemoved struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrganizationDispatcherDeputyRemoved) Reset() {
+	*x = OrganizationDispatcherDeputyRemoved{}
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrganizationDispatcherDeputyRemoved) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrganizationDispatcherDeputyRemoved) ProtoMessage() {}
+
+func (x *OrganizationDispatcherDeputyRemoved) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_organization_v1_events_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrganizationDispatcherDeputyRemoved.ProtoReflect.Descriptor instead.
+func (*OrganizationDispatcherDeputyRemoved) Descriptor() ([]byte, []int) {
+	return file_medincident_event_organization_v1_events_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *OrganizationDispatcherDeputyRemoved) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
 var File_medincident_event_organization_v1_events_proto protoreflect.FileDescriptor
 
 const file_medincident_event_organization_v1_events_proto_rawDesc = "" +
@@ -306,7 +858,46 @@ const file_medincident_event_organization_v1_events_proto_rawDesc = "" +
 	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"r\n" +
 	"\x1fOrganizationLegalAddressChanged\x12O\n" +
-	"\rlegal_address\x18\x01 \x01(\v2*.medincident.event.organization.v1.AddressR\flegalAddressb\x06proto3"
+	"\rlegal_address\x18\x01 \x01(\v2*.medincident.event.organization.v1.AddressR\flegalAddress\"<\n" +
+	"\x19OrganizationAdminAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\";\n" +
+	"\x18OrganizationAdminRevoked\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"p\n" +
+	"\x1fOrganizationAdminDeputyAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12,\n" +
+	"\x12deputy_employee_id\x18\x02 \x01(\tR\x10deputyEmployeeId\"A\n" +
+	"\x1eOrganizationAdminDeputyRemoved\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\";\n" +
+	"\x18OrganizationHeadAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\":\n" +
+	"\x17OrganizationHeadRevoked\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"o\n" +
+	"\x1eOrganizationHeadDeputyAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12,\n" +
+	"\x12deputy_employee_id\x18\x02 \x01(\tR\x10deputyEmployeeId\"@\n" +
+	"\x1dOrganizationHeadDeputyRemoved\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"A\n" +
+	"\x1eOrganizationDispatcherAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"@\n" +
+	"\x1dOrganizationDispatcherRevoked\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"u\n" +
+	"$OrganizationDispatcherDeputyAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12,\n" +
+	"\x12deputy_employee_id\x18\x02 \x01(\tR\x10deputyEmployeeId\"F\n" +
+	"#OrganizationDispatcherDeputyRemoved\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeIdb\x06proto3"
 
 var (
 	file_medincident_event_organization_v1_events_proto_rawDescOnce sync.Once
@@ -320,13 +911,25 @@ func file_medincident_event_organization_v1_events_proto_rawDescGZIP() []byte {
 	return file_medincident_event_organization_v1_events_proto_rawDescData
 }
 
-var file_medincident_event_organization_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_medincident_event_organization_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_medincident_event_organization_v1_events_proto_goTypes = []any{
-	(*Point)(nil),                           // 0: medincident.event.organization.v1.Point
-	(*Address)(nil),                         // 1: medincident.event.organization.v1.Address
-	(*OrganizationCreated)(nil),             // 2: medincident.event.organization.v1.OrganizationCreated
-	(*OrganizationDetailsChanged)(nil),      // 3: medincident.event.organization.v1.OrganizationDetailsChanged
-	(*OrganizationLegalAddressChanged)(nil), // 4: medincident.event.organization.v1.OrganizationLegalAddressChanged
+	(*Point)(nil),                                // 0: medincident.event.organization.v1.Point
+	(*Address)(nil),                              // 1: medincident.event.organization.v1.Address
+	(*OrganizationCreated)(nil),                  // 2: medincident.event.organization.v1.OrganizationCreated
+	(*OrganizationDetailsChanged)(nil),           // 3: medincident.event.organization.v1.OrganizationDetailsChanged
+	(*OrganizationLegalAddressChanged)(nil),      // 4: medincident.event.organization.v1.OrganizationLegalAddressChanged
+	(*OrganizationAdminAssigned)(nil),            // 5: medincident.event.organization.v1.OrganizationAdminAssigned
+	(*OrganizationAdminRevoked)(nil),             // 6: medincident.event.organization.v1.OrganizationAdminRevoked
+	(*OrganizationAdminDeputyAssigned)(nil),      // 7: medincident.event.organization.v1.OrganizationAdminDeputyAssigned
+	(*OrganizationAdminDeputyRemoved)(nil),       // 8: medincident.event.organization.v1.OrganizationAdminDeputyRemoved
+	(*OrganizationHeadAssigned)(nil),             // 9: medincident.event.organization.v1.OrganizationHeadAssigned
+	(*OrganizationHeadRevoked)(nil),              // 10: medincident.event.organization.v1.OrganizationHeadRevoked
+	(*OrganizationHeadDeputyAssigned)(nil),       // 11: medincident.event.organization.v1.OrganizationHeadDeputyAssigned
+	(*OrganizationHeadDeputyRemoved)(nil),        // 12: medincident.event.organization.v1.OrganizationHeadDeputyRemoved
+	(*OrganizationDispatcherAssigned)(nil),       // 13: medincident.event.organization.v1.OrganizationDispatcherAssigned
+	(*OrganizationDispatcherRevoked)(nil),        // 14: medincident.event.organization.v1.OrganizationDispatcherRevoked
+	(*OrganizationDispatcherDeputyAssigned)(nil), // 15: medincident.event.organization.v1.OrganizationDispatcherDeputyAssigned
+	(*OrganizationDispatcherDeputyRemoved)(nil),  // 16: medincident.event.organization.v1.OrganizationDispatcherDeputyRemoved
 }
 var file_medincident_event_organization_v1_events_proto_depIdxs = []int32{
 	0, // 0: medincident.event.organization.v1.Address.point:type_name -> medincident.event.organization.v1.Point
@@ -353,7 +956,7 @@ func file_medincident_event_organization_v1_events_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_medincident_event_organization_v1_events_proto_rawDesc), len(file_medincident_event_organization_v1_events_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

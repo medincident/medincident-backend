@@ -11,6 +11,7 @@ inputs:
       - api/proto/medincident/service/orgstructure/v1
       - api/proto/medincident/event/employee/v1
       - api/proto/medincident/service/membership/v1
+      - api/proto/medincident/event/system_admin/v1
 
 plugins:
   - local:
@@ -27,6 +28,7 @@ plugins:
       - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1
       - Mmedincident/event/employee/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1
       - Mmedincident/service/membership/v1/membership.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1
+      - Mmedincident/event/system_admin/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1
   - local:
       - go
       - tool
@@ -41,3 +43,4 @@ plugins:
       - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1
       - Mmedincident/event/employee/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1
       - Mmedincident/service/membership/v1/membership.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1
+      - Mmedincident/event/system_admin/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1

@@ -289,6 +289,198 @@ func (x *ClinicPhysicalAddressChanged) GetPhysicalAddress() *Address {
 	return nil
 }
 
+// ClinicHeadAssigned — an employee became the head of this clinic.
+// Payload carries the holder; aggregate_id in the envelope is
+// clinic_id.
+type ClinicHeadAssigned struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClinicHeadAssigned) Reset() {
+	*x = ClinicHeadAssigned{}
+	mi := &file_medincident_event_clinic_v1_events_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClinicHeadAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClinicHeadAssigned) ProtoMessage() {}
+
+func (x *ClinicHeadAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_clinic_v1_events_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClinicHeadAssigned.ProtoReflect.Descriptor instead.
+func (*ClinicHeadAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_clinic_v1_events_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ClinicHeadAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+// ClinicHeadRevoked — role revoked (explicit or cascade from
+// cross-clinic transfer / termination).
+type ClinicHeadRevoked struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClinicHeadRevoked) Reset() {
+	*x = ClinicHeadRevoked{}
+	mi := &file_medincident_event_clinic_v1_events_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClinicHeadRevoked) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClinicHeadRevoked) ProtoMessage() {}
+
+func (x *ClinicHeadRevoked) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_clinic_v1_events_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClinicHeadRevoked.ProtoReflect.Descriptor instead.
+func (*ClinicHeadRevoked) Descriptor() ([]byte, []int) {
+	return file_medincident_event_clinic_v1_events_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ClinicHeadRevoked) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+// ClinicHeadDeputyAssigned — a deputy was attached. The deputy must
+// currently work in any department of this clinic.
+type ClinicHeadDeputyAssigned struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	DeputyEmployeeId string                 `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3" json:"deputy_employee_id,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *ClinicHeadDeputyAssigned) Reset() {
+	*x = ClinicHeadDeputyAssigned{}
+	mi := &file_medincident_event_clinic_v1_events_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClinicHeadDeputyAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClinicHeadDeputyAssigned) ProtoMessage() {}
+
+func (x *ClinicHeadDeputyAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_clinic_v1_events_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClinicHeadDeputyAssigned.ProtoReflect.Descriptor instead.
+func (*ClinicHeadDeputyAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_clinic_v1_events_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ClinicHeadDeputyAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *ClinicHeadDeputyAssigned) GetDeputyEmployeeId() string {
+	if x != nil {
+		return x.DeputyEmployeeId
+	}
+	return ""
+}
+
+// ClinicHeadDeputyRemoved — the deputy slot was cleared.
+type ClinicHeadDeputyRemoved struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClinicHeadDeputyRemoved) Reset() {
+	*x = ClinicHeadDeputyRemoved{}
+	mi := &file_medincident_event_clinic_v1_events_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClinicHeadDeputyRemoved) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClinicHeadDeputyRemoved) ProtoMessage() {}
+
+func (x *ClinicHeadDeputyRemoved) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_clinic_v1_events_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClinicHeadDeputyRemoved.ProtoReflect.Descriptor instead.
+func (*ClinicHeadDeputyRemoved) Descriptor() ([]byte, []int) {
+	return file_medincident_event_clinic_v1_events_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ClinicHeadDeputyRemoved) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
 var File_medincident_event_clinic_v1_events_proto protoreflect.FileDescriptor
 
 const file_medincident_event_clinic_v1_events_proto_rawDesc = "" +
@@ -312,7 +504,20 @@ const file_medincident_event_clinic_v1_events_proto_rawDesc = "" +
 	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"o\n" +
 	"\x1cClinicPhysicalAddressChanged\x12O\n" +
-	"\x10physical_address\x18\x01 \x01(\v2$.medincident.event.clinic.v1.AddressR\x0fphysicalAddressb\x06proto3"
+	"\x10physical_address\x18\x01 \x01(\v2$.medincident.event.clinic.v1.AddressR\x0fphysicalAddress\"5\n" +
+	"\x12ClinicHeadAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"4\n" +
+	"\x11ClinicHeadRevoked\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"i\n" +
+	"\x18ClinicHeadDeputyAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12,\n" +
+	"\x12deputy_employee_id\x18\x02 \x01(\tR\x10deputyEmployeeId\":\n" +
+	"\x17ClinicHeadDeputyRemoved\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeIdb\x06proto3"
 
 var (
 	file_medincident_event_clinic_v1_events_proto_rawDescOnce sync.Once
@@ -326,13 +531,17 @@ func file_medincident_event_clinic_v1_events_proto_rawDescGZIP() []byte {
 	return file_medincident_event_clinic_v1_events_proto_rawDescData
 }
 
-var file_medincident_event_clinic_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_medincident_event_clinic_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_medincident_event_clinic_v1_events_proto_goTypes = []any{
 	(*Point)(nil),                        // 0: medincident.event.clinic.v1.Point
 	(*Address)(nil),                      // 1: medincident.event.clinic.v1.Address
 	(*ClinicCreated)(nil),                // 2: medincident.event.clinic.v1.ClinicCreated
 	(*ClinicDetailsChanged)(nil),         // 3: medincident.event.clinic.v1.ClinicDetailsChanged
 	(*ClinicPhysicalAddressChanged)(nil), // 4: medincident.event.clinic.v1.ClinicPhysicalAddressChanged
+	(*ClinicHeadAssigned)(nil),           // 5: medincident.event.clinic.v1.ClinicHeadAssigned
+	(*ClinicHeadRevoked)(nil),            // 6: medincident.event.clinic.v1.ClinicHeadRevoked
+	(*ClinicHeadDeputyAssigned)(nil),     // 7: medincident.event.clinic.v1.ClinicHeadDeputyAssigned
+	(*ClinicHeadDeputyRemoved)(nil),      // 8: medincident.event.clinic.v1.ClinicHeadDeputyRemoved
 }
 var file_medincident_event_clinic_v1_events_proto_depIdxs = []int32{
 	0, // 0: medincident.event.clinic.v1.Address.point:type_name -> medincident.event.clinic.v1.Point
@@ -359,7 +568,7 @@ func file_medincident_event_clinic_v1_events_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_medincident_event_clinic_v1_events_proto_rawDesc), len(file_medincident_event_clinic_v1_events_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

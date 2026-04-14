@@ -133,6 +133,201 @@ func (x *DepartmentDetailsChanged) GetDescription() string {
 	return ""
 }
 
+// DepartmentResponsibleAssigned — an employee became the "responsible"
+// of this department. Payload carries the holder; aggregate_id in the
+// envelope is department_id.
+type DepartmentResponsibleAssigned struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DepartmentResponsibleAssigned) Reset() {
+	*x = DepartmentResponsibleAssigned{}
+	mi := &file_medincident_event_department_v1_events_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DepartmentResponsibleAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DepartmentResponsibleAssigned) ProtoMessage() {}
+
+func (x *DepartmentResponsibleAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_department_v1_events_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DepartmentResponsibleAssigned.ProtoReflect.Descriptor instead.
+func (*DepartmentResponsibleAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_department_v1_events_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DepartmentResponsibleAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+// DepartmentResponsibleRevoked — role revoked (either explicitly or
+// as a cascade from transfer/termination).
+type DepartmentResponsibleRevoked struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DepartmentResponsibleRevoked) Reset() {
+	*x = DepartmentResponsibleRevoked{}
+	mi := &file_medincident_event_department_v1_events_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DepartmentResponsibleRevoked) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DepartmentResponsibleRevoked) ProtoMessage() {}
+
+func (x *DepartmentResponsibleRevoked) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_department_v1_events_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DepartmentResponsibleRevoked.ProtoReflect.Descriptor instead.
+func (*DepartmentResponsibleRevoked) Descriptor() ([]byte, []int) {
+	return file_medincident_event_department_v1_events_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DepartmentResponsibleRevoked) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+// DepartmentResponsibleDeputyAssigned — a deputy was attached to the
+// role held by employee_id. The deputy must currently work in the
+// same department.
+type DepartmentResponsibleDeputyAssigned struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	DeputyEmployeeId string                 `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3" json:"deputy_employee_id,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *DepartmentResponsibleDeputyAssigned) Reset() {
+	*x = DepartmentResponsibleDeputyAssigned{}
+	mi := &file_medincident_event_department_v1_events_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DepartmentResponsibleDeputyAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DepartmentResponsibleDeputyAssigned) ProtoMessage() {}
+
+func (x *DepartmentResponsibleDeputyAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_department_v1_events_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DepartmentResponsibleDeputyAssigned.ProtoReflect.Descriptor instead.
+func (*DepartmentResponsibleDeputyAssigned) Descriptor() ([]byte, []int) {
+	return file_medincident_event_department_v1_events_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *DepartmentResponsibleDeputyAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *DepartmentResponsibleDeputyAssigned) GetDeputyEmployeeId() string {
+	if x != nil {
+		return x.DeputyEmployeeId
+	}
+	return ""
+}
+
+// DepartmentResponsibleDeputyRemoved — the deputy slot was cleared
+// (explicit removal, cascade from role revocation, or cascade from
+// deputy employee's termination or department transfer).
+type DepartmentResponsibleDeputyRemoved struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DepartmentResponsibleDeputyRemoved) Reset() {
+	*x = DepartmentResponsibleDeputyRemoved{}
+	mi := &file_medincident_event_department_v1_events_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DepartmentResponsibleDeputyRemoved) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DepartmentResponsibleDeputyRemoved) ProtoMessage() {}
+
+func (x *DepartmentResponsibleDeputyRemoved) ProtoReflect() protoreflect.Message {
+	mi := &file_medincident_event_department_v1_events_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DepartmentResponsibleDeputyRemoved.ProtoReflect.Descriptor instead.
+func (*DepartmentResponsibleDeputyRemoved) Descriptor() ([]byte, []int) {
+	return file_medincident_event_department_v1_events_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DepartmentResponsibleDeputyRemoved) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
 var File_medincident_event_department_v1_events_proto protoreflect.FileDescriptor
 
 const file_medincident_event_department_v1_events_proto_rawDesc = "" +
@@ -146,7 +341,20 @@ const file_medincident_event_department_v1_events_proto_rawDesc = "" +
 	"\x18DepartmentDetailsChanged\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
-	"\f_descriptionb\x06proto3"
+	"\f_description\"@\n" +
+	"\x1dDepartmentResponsibleAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"?\n" +
+	"\x1cDepartmentResponsibleRevoked\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"t\n" +
+	"#DepartmentResponsibleDeputyAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12,\n" +
+	"\x12deputy_employee_id\x18\x02 \x01(\tR\x10deputyEmployeeId\"E\n" +
+	"\"DepartmentResponsibleDeputyRemoved\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeIdb\x06proto3"
 
 var (
 	file_medincident_event_department_v1_events_proto_rawDescOnce sync.Once
@@ -160,10 +368,14 @@ func file_medincident_event_department_v1_events_proto_rawDescGZIP() []byte {
 	return file_medincident_event_department_v1_events_proto_rawDescData
 }
 
-var file_medincident_event_department_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_medincident_event_department_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_medincident_event_department_v1_events_proto_goTypes = []any{
-	(*DepartmentCreated)(nil),        // 0: medincident.event.department.v1.DepartmentCreated
-	(*DepartmentDetailsChanged)(nil), // 1: medincident.event.department.v1.DepartmentDetailsChanged
+	(*DepartmentCreated)(nil),                   // 0: medincident.event.department.v1.DepartmentCreated
+	(*DepartmentDetailsChanged)(nil),            // 1: medincident.event.department.v1.DepartmentDetailsChanged
+	(*DepartmentResponsibleAssigned)(nil),       // 2: medincident.event.department.v1.DepartmentResponsibleAssigned
+	(*DepartmentResponsibleRevoked)(nil),        // 3: medincident.event.department.v1.DepartmentResponsibleRevoked
+	(*DepartmentResponsibleDeputyAssigned)(nil), // 4: medincident.event.department.v1.DepartmentResponsibleDeputyAssigned
+	(*DepartmentResponsibleDeputyRemoved)(nil),  // 5: medincident.event.department.v1.DepartmentResponsibleDeputyRemoved
 }
 var file_medincident_event_department_v1_events_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
@@ -186,7 +398,7 @@ func file_medincident_event_department_v1_events_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_medincident_event_department_v1_events_proto_rawDesc), len(file_medincident_event_department_v1_events_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

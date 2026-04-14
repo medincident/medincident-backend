@@ -19,15 +19,37 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MembershipService_HireEmployee_FullMethodName             = "/medincident.service.membership.v1.MembershipService/HireEmployee"
-	MembershipService_UpdateEmployeePosition_FullMethodName   = "/medincident.service.membership.v1.MembershipService/UpdateEmployeePosition"
-	MembershipService_UpdateEmployeeDepartment_FullMethodName = "/medincident.service.membership.v1.MembershipService/UpdateEmployeeDepartment"
-	MembershipService_TerminateEmployee_FullMethodName        = "/medincident.service.membership.v1.MembershipService/TerminateEmployee"
-	MembershipService_StartVacationNow_FullMethodName         = "/medincident.service.membership.v1.MembershipService/StartVacationNow"
-	MembershipService_ScheduleVacation_FullMethodName         = "/medincident.service.membership.v1.MembershipService/ScheduleVacation"
-	MembershipService_UpdateVacationEndDate_FullMethodName    = "/medincident.service.membership.v1.MembershipService/UpdateVacationEndDate"
-	MembershipService_ForceEndVacation_FullMethodName         = "/medincident.service.membership.v1.MembershipService/ForceEndVacation"
-	MembershipService_CancelScheduledVacation_FullMethodName  = "/medincident.service.membership.v1.MembershipService/CancelScheduledVacation"
+	MembershipService_HireEmployee_FullMethodName                       = "/medincident.service.membership.v1.MembershipService/HireEmployee"
+	MembershipService_UpdateEmployeePosition_FullMethodName             = "/medincident.service.membership.v1.MembershipService/UpdateEmployeePosition"
+	MembershipService_UpdateEmployeeDepartment_FullMethodName           = "/medincident.service.membership.v1.MembershipService/UpdateEmployeeDepartment"
+	MembershipService_TerminateEmployee_FullMethodName                  = "/medincident.service.membership.v1.MembershipService/TerminateEmployee"
+	MembershipService_StartVacationNow_FullMethodName                   = "/medincident.service.membership.v1.MembershipService/StartVacationNow"
+	MembershipService_ScheduleVacation_FullMethodName                   = "/medincident.service.membership.v1.MembershipService/ScheduleVacation"
+	MembershipService_UpdateVacationEndDate_FullMethodName              = "/medincident.service.membership.v1.MembershipService/UpdateVacationEndDate"
+	MembershipService_ForceEndVacation_FullMethodName                   = "/medincident.service.membership.v1.MembershipService/ForceEndVacation"
+	MembershipService_CancelScheduledVacation_FullMethodName            = "/medincident.service.membership.v1.MembershipService/CancelScheduledVacation"
+	MembershipService_AssignDepartmentResponsible_FullMethodName        = "/medincident.service.membership.v1.MembershipService/AssignDepartmentResponsible"
+	MembershipService_RevokeDepartmentResponsible_FullMethodName        = "/medincident.service.membership.v1.MembershipService/RevokeDepartmentResponsible"
+	MembershipService_AssignDepartmentResponsibleDeputy_FullMethodName  = "/medincident.service.membership.v1.MembershipService/AssignDepartmentResponsibleDeputy"
+	MembershipService_RemoveDepartmentResponsibleDeputy_FullMethodName  = "/medincident.service.membership.v1.MembershipService/RemoveDepartmentResponsibleDeputy"
+	MembershipService_AssignClinicHead_FullMethodName                   = "/medincident.service.membership.v1.MembershipService/AssignClinicHead"
+	MembershipService_RevokeClinicHead_FullMethodName                   = "/medincident.service.membership.v1.MembershipService/RevokeClinicHead"
+	MembershipService_AssignClinicHeadDeputy_FullMethodName             = "/medincident.service.membership.v1.MembershipService/AssignClinicHeadDeputy"
+	MembershipService_RemoveClinicHeadDeputy_FullMethodName             = "/medincident.service.membership.v1.MembershipService/RemoveClinicHeadDeputy"
+	MembershipService_AssignOrganizationAdmin_FullMethodName            = "/medincident.service.membership.v1.MembershipService/AssignOrganizationAdmin"
+	MembershipService_RevokeOrganizationAdmin_FullMethodName            = "/medincident.service.membership.v1.MembershipService/RevokeOrganizationAdmin"
+	MembershipService_AssignOrganizationAdminDeputy_FullMethodName      = "/medincident.service.membership.v1.MembershipService/AssignOrganizationAdminDeputy"
+	MembershipService_RemoveOrganizationAdminDeputy_FullMethodName      = "/medincident.service.membership.v1.MembershipService/RemoveOrganizationAdminDeputy"
+	MembershipService_AssignOrganizationHead_FullMethodName             = "/medincident.service.membership.v1.MembershipService/AssignOrganizationHead"
+	MembershipService_RevokeOrganizationHead_FullMethodName             = "/medincident.service.membership.v1.MembershipService/RevokeOrganizationHead"
+	MembershipService_AssignOrganizationHeadDeputy_FullMethodName       = "/medincident.service.membership.v1.MembershipService/AssignOrganizationHeadDeputy"
+	MembershipService_RemoveOrganizationHeadDeputy_FullMethodName       = "/medincident.service.membership.v1.MembershipService/RemoveOrganizationHeadDeputy"
+	MembershipService_AssignOrganizationDispatcher_FullMethodName       = "/medincident.service.membership.v1.MembershipService/AssignOrganizationDispatcher"
+	MembershipService_RevokeOrganizationDispatcher_FullMethodName       = "/medincident.service.membership.v1.MembershipService/RevokeOrganizationDispatcher"
+	MembershipService_AssignOrganizationDispatcherDeputy_FullMethodName = "/medincident.service.membership.v1.MembershipService/AssignOrganizationDispatcherDeputy"
+	MembershipService_RemoveOrganizationDispatcherDeputy_FullMethodName = "/medincident.service.membership.v1.MembershipService/RemoveOrganizationDispatcherDeputy"
+	MembershipService_GrantSystemAdmin_FullMethodName                   = "/medincident.service.membership.v1.MembershipService/GrantSystemAdmin"
+	MembershipService_RevokeSystemAdmin_FullMethodName                  = "/medincident.service.membership.v1.MembershipService/RevokeSystemAdmin"
 )
 
 // MembershipServiceClient is the client API for MembershipService service.
@@ -50,6 +72,34 @@ type MembershipServiceClient interface {
 	UpdateVacationEndDate(ctx context.Context, in *UpdateVacationEndDateRequest, opts ...grpc.CallOption) (*UpdateVacationEndDateResponse, error)
 	ForceEndVacation(ctx context.Context, in *ForceEndVacationRequest, opts ...grpc.CallOption) (*ForceEndVacationResponse, error)
 	CancelScheduledVacation(ctx context.Context, in *CancelScheduledVacationRequest, opts ...grpc.CallOption) (*CancelScheduledVacationResponse, error)
+	// ------ DepartmentResponsible ------
+	AssignDepartmentResponsible(ctx context.Context, in *AssignDepartmentResponsibleRequest, opts ...grpc.CallOption) (*AssignDepartmentResponsibleResponse, error)
+	RevokeDepartmentResponsible(ctx context.Context, in *RevokeDepartmentResponsibleRequest, opts ...grpc.CallOption) (*RevokeDepartmentResponsibleResponse, error)
+	AssignDepartmentResponsibleDeputy(ctx context.Context, in *AssignDepartmentResponsibleDeputyRequest, opts ...grpc.CallOption) (*AssignDepartmentResponsibleDeputyResponse, error)
+	RemoveDepartmentResponsibleDeputy(ctx context.Context, in *RemoveDepartmentResponsibleDeputyRequest, opts ...grpc.CallOption) (*RemoveDepartmentResponsibleDeputyResponse, error)
+	// ------ ClinicHead ------
+	AssignClinicHead(ctx context.Context, in *AssignClinicHeadRequest, opts ...grpc.CallOption) (*AssignClinicHeadResponse, error)
+	RevokeClinicHead(ctx context.Context, in *RevokeClinicHeadRequest, opts ...grpc.CallOption) (*RevokeClinicHeadResponse, error)
+	AssignClinicHeadDeputy(ctx context.Context, in *AssignClinicHeadDeputyRequest, opts ...grpc.CallOption) (*AssignClinicHeadDeputyResponse, error)
+	RemoveClinicHeadDeputy(ctx context.Context, in *RemoveClinicHeadDeputyRequest, opts ...grpc.CallOption) (*RemoveClinicHeadDeputyResponse, error)
+	// ------ OrganizationAdmin ------
+	AssignOrganizationAdmin(ctx context.Context, in *AssignOrganizationAdminRequest, opts ...grpc.CallOption) (*AssignOrganizationAdminResponse, error)
+	RevokeOrganizationAdmin(ctx context.Context, in *RevokeOrganizationAdminRequest, opts ...grpc.CallOption) (*RevokeOrganizationAdminResponse, error)
+	AssignOrganizationAdminDeputy(ctx context.Context, in *AssignOrganizationAdminDeputyRequest, opts ...grpc.CallOption) (*AssignOrganizationAdminDeputyResponse, error)
+	RemoveOrganizationAdminDeputy(ctx context.Context, in *RemoveOrganizationAdminDeputyRequest, opts ...grpc.CallOption) (*RemoveOrganizationAdminDeputyResponse, error)
+	// ------ OrganizationHead ------
+	AssignOrganizationHead(ctx context.Context, in *AssignOrganizationHeadRequest, opts ...grpc.CallOption) (*AssignOrganizationHeadResponse, error)
+	RevokeOrganizationHead(ctx context.Context, in *RevokeOrganizationHeadRequest, opts ...grpc.CallOption) (*RevokeOrganizationHeadResponse, error)
+	AssignOrganizationHeadDeputy(ctx context.Context, in *AssignOrganizationHeadDeputyRequest, opts ...grpc.CallOption) (*AssignOrganizationHeadDeputyResponse, error)
+	RemoveOrganizationHeadDeputy(ctx context.Context, in *RemoveOrganizationHeadDeputyRequest, opts ...grpc.CallOption) (*RemoveOrganizationHeadDeputyResponse, error)
+	// ------ OrganizationDispatcher ------
+	AssignOrganizationDispatcher(ctx context.Context, in *AssignOrganizationDispatcherRequest, opts ...grpc.CallOption) (*AssignOrganizationDispatcherResponse, error)
+	RevokeOrganizationDispatcher(ctx context.Context, in *RevokeOrganizationDispatcherRequest, opts ...grpc.CallOption) (*RevokeOrganizationDispatcherResponse, error)
+	AssignOrganizationDispatcherDeputy(ctx context.Context, in *AssignOrganizationDispatcherDeputyRequest, opts ...grpc.CallOption) (*AssignOrganizationDispatcherDeputyResponse, error)
+	RemoveOrganizationDispatcherDeputy(ctx context.Context, in *RemoveOrganizationDispatcherDeputyRequest, opts ...grpc.CallOption) (*RemoveOrganizationDispatcherDeputyResponse, error)
+	// ------ SystemAdmin ------
+	GrantSystemAdmin(ctx context.Context, in *GrantSystemAdminRequest, opts ...grpc.CallOption) (*GrantSystemAdminResponse, error)
+	RevokeSystemAdmin(ctx context.Context, in *RevokeSystemAdminRequest, opts ...grpc.CallOption) (*RevokeSystemAdminResponse, error)
 }
 
 type membershipServiceClient struct {
@@ -150,6 +200,226 @@ func (c *membershipServiceClient) CancelScheduledVacation(ctx context.Context, i
 	return out, nil
 }
 
+func (c *membershipServiceClient) AssignDepartmentResponsible(ctx context.Context, in *AssignDepartmentResponsibleRequest, opts ...grpc.CallOption) (*AssignDepartmentResponsibleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignDepartmentResponsibleResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignDepartmentResponsible_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RevokeDepartmentResponsible(ctx context.Context, in *RevokeDepartmentResponsibleRequest, opts ...grpc.CallOption) (*RevokeDepartmentResponsibleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeDepartmentResponsibleResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RevokeDepartmentResponsible_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignDepartmentResponsibleDeputy(ctx context.Context, in *AssignDepartmentResponsibleDeputyRequest, opts ...grpc.CallOption) (*AssignDepartmentResponsibleDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignDepartmentResponsibleDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignDepartmentResponsibleDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RemoveDepartmentResponsibleDeputy(ctx context.Context, in *RemoveDepartmentResponsibleDeputyRequest, opts ...grpc.CallOption) (*RemoveDepartmentResponsibleDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RemoveDepartmentResponsibleDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RemoveDepartmentResponsibleDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignClinicHead(ctx context.Context, in *AssignClinicHeadRequest, opts ...grpc.CallOption) (*AssignClinicHeadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignClinicHeadResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignClinicHead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RevokeClinicHead(ctx context.Context, in *RevokeClinicHeadRequest, opts ...grpc.CallOption) (*RevokeClinicHeadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeClinicHeadResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RevokeClinicHead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignClinicHeadDeputy(ctx context.Context, in *AssignClinicHeadDeputyRequest, opts ...grpc.CallOption) (*AssignClinicHeadDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignClinicHeadDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignClinicHeadDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RemoveClinicHeadDeputy(ctx context.Context, in *RemoveClinicHeadDeputyRequest, opts ...grpc.CallOption) (*RemoveClinicHeadDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RemoveClinicHeadDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RemoveClinicHeadDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignOrganizationAdmin(ctx context.Context, in *AssignOrganizationAdminRequest, opts ...grpc.CallOption) (*AssignOrganizationAdminResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignOrganizationAdminResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignOrganizationAdmin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RevokeOrganizationAdmin(ctx context.Context, in *RevokeOrganizationAdminRequest, opts ...grpc.CallOption) (*RevokeOrganizationAdminResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeOrganizationAdminResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RevokeOrganizationAdmin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignOrganizationAdminDeputy(ctx context.Context, in *AssignOrganizationAdminDeputyRequest, opts ...grpc.CallOption) (*AssignOrganizationAdminDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignOrganizationAdminDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignOrganizationAdminDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RemoveOrganizationAdminDeputy(ctx context.Context, in *RemoveOrganizationAdminDeputyRequest, opts ...grpc.CallOption) (*RemoveOrganizationAdminDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RemoveOrganizationAdminDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RemoveOrganizationAdminDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignOrganizationHead(ctx context.Context, in *AssignOrganizationHeadRequest, opts ...grpc.CallOption) (*AssignOrganizationHeadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignOrganizationHeadResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignOrganizationHead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RevokeOrganizationHead(ctx context.Context, in *RevokeOrganizationHeadRequest, opts ...grpc.CallOption) (*RevokeOrganizationHeadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeOrganizationHeadResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RevokeOrganizationHead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignOrganizationHeadDeputy(ctx context.Context, in *AssignOrganizationHeadDeputyRequest, opts ...grpc.CallOption) (*AssignOrganizationHeadDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignOrganizationHeadDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignOrganizationHeadDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RemoveOrganizationHeadDeputy(ctx context.Context, in *RemoveOrganizationHeadDeputyRequest, opts ...grpc.CallOption) (*RemoveOrganizationHeadDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RemoveOrganizationHeadDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RemoveOrganizationHeadDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignOrganizationDispatcher(ctx context.Context, in *AssignOrganizationDispatcherRequest, opts ...grpc.CallOption) (*AssignOrganizationDispatcherResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignOrganizationDispatcherResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignOrganizationDispatcher_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RevokeOrganizationDispatcher(ctx context.Context, in *RevokeOrganizationDispatcherRequest, opts ...grpc.CallOption) (*RevokeOrganizationDispatcherResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeOrganizationDispatcherResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RevokeOrganizationDispatcher_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) AssignOrganizationDispatcherDeputy(ctx context.Context, in *AssignOrganizationDispatcherDeputyRequest, opts ...grpc.CallOption) (*AssignOrganizationDispatcherDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AssignOrganizationDispatcherDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_AssignOrganizationDispatcherDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RemoveOrganizationDispatcherDeputy(ctx context.Context, in *RemoveOrganizationDispatcherDeputyRequest, opts ...grpc.CallOption) (*RemoveOrganizationDispatcherDeputyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RemoveOrganizationDispatcherDeputyResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RemoveOrganizationDispatcherDeputy_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) GrantSystemAdmin(ctx context.Context, in *GrantSystemAdminRequest, opts ...grpc.CallOption) (*GrantSystemAdminResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GrantSystemAdminResponse)
+	err := c.cc.Invoke(ctx, MembershipService_GrantSystemAdmin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipServiceClient) RevokeSystemAdmin(ctx context.Context, in *RevokeSystemAdminRequest, opts ...grpc.CallOption) (*RevokeSystemAdminResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RevokeSystemAdminResponse)
+	err := c.cc.Invoke(ctx, MembershipService_RevokeSystemAdmin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MembershipServiceServer is the server API for MembershipService service.
 // All implementations must embed UnimplementedMembershipServiceServer
 // for forward compatibility.
@@ -170,6 +440,34 @@ type MembershipServiceServer interface {
 	UpdateVacationEndDate(context.Context, *UpdateVacationEndDateRequest) (*UpdateVacationEndDateResponse, error)
 	ForceEndVacation(context.Context, *ForceEndVacationRequest) (*ForceEndVacationResponse, error)
 	CancelScheduledVacation(context.Context, *CancelScheduledVacationRequest) (*CancelScheduledVacationResponse, error)
+	// ------ DepartmentResponsible ------
+	AssignDepartmentResponsible(context.Context, *AssignDepartmentResponsibleRequest) (*AssignDepartmentResponsibleResponse, error)
+	RevokeDepartmentResponsible(context.Context, *RevokeDepartmentResponsibleRequest) (*RevokeDepartmentResponsibleResponse, error)
+	AssignDepartmentResponsibleDeputy(context.Context, *AssignDepartmentResponsibleDeputyRequest) (*AssignDepartmentResponsibleDeputyResponse, error)
+	RemoveDepartmentResponsibleDeputy(context.Context, *RemoveDepartmentResponsibleDeputyRequest) (*RemoveDepartmentResponsibleDeputyResponse, error)
+	// ------ ClinicHead ------
+	AssignClinicHead(context.Context, *AssignClinicHeadRequest) (*AssignClinicHeadResponse, error)
+	RevokeClinicHead(context.Context, *RevokeClinicHeadRequest) (*RevokeClinicHeadResponse, error)
+	AssignClinicHeadDeputy(context.Context, *AssignClinicHeadDeputyRequest) (*AssignClinicHeadDeputyResponse, error)
+	RemoveClinicHeadDeputy(context.Context, *RemoveClinicHeadDeputyRequest) (*RemoveClinicHeadDeputyResponse, error)
+	// ------ OrganizationAdmin ------
+	AssignOrganizationAdmin(context.Context, *AssignOrganizationAdminRequest) (*AssignOrganizationAdminResponse, error)
+	RevokeOrganizationAdmin(context.Context, *RevokeOrganizationAdminRequest) (*RevokeOrganizationAdminResponse, error)
+	AssignOrganizationAdminDeputy(context.Context, *AssignOrganizationAdminDeputyRequest) (*AssignOrganizationAdminDeputyResponse, error)
+	RemoveOrganizationAdminDeputy(context.Context, *RemoveOrganizationAdminDeputyRequest) (*RemoveOrganizationAdminDeputyResponse, error)
+	// ------ OrganizationHead ------
+	AssignOrganizationHead(context.Context, *AssignOrganizationHeadRequest) (*AssignOrganizationHeadResponse, error)
+	RevokeOrganizationHead(context.Context, *RevokeOrganizationHeadRequest) (*RevokeOrganizationHeadResponse, error)
+	AssignOrganizationHeadDeputy(context.Context, *AssignOrganizationHeadDeputyRequest) (*AssignOrganizationHeadDeputyResponse, error)
+	RemoveOrganizationHeadDeputy(context.Context, *RemoveOrganizationHeadDeputyRequest) (*RemoveOrganizationHeadDeputyResponse, error)
+	// ------ OrganizationDispatcher ------
+	AssignOrganizationDispatcher(context.Context, *AssignOrganizationDispatcherRequest) (*AssignOrganizationDispatcherResponse, error)
+	RevokeOrganizationDispatcher(context.Context, *RevokeOrganizationDispatcherRequest) (*RevokeOrganizationDispatcherResponse, error)
+	AssignOrganizationDispatcherDeputy(context.Context, *AssignOrganizationDispatcherDeputyRequest) (*AssignOrganizationDispatcherDeputyResponse, error)
+	RemoveOrganizationDispatcherDeputy(context.Context, *RemoveOrganizationDispatcherDeputyRequest) (*RemoveOrganizationDispatcherDeputyResponse, error)
+	// ------ SystemAdmin ------
+	GrantSystemAdmin(context.Context, *GrantSystemAdminRequest) (*GrantSystemAdminResponse, error)
+	RevokeSystemAdmin(context.Context, *RevokeSystemAdminRequest) (*RevokeSystemAdminResponse, error)
 	mustEmbedUnimplementedMembershipServiceServer()
 }
 
@@ -206,6 +504,72 @@ func (UnimplementedMembershipServiceServer) ForceEndVacation(context.Context, *F
 }
 func (UnimplementedMembershipServiceServer) CancelScheduledVacation(context.Context, *CancelScheduledVacationRequest) (*CancelScheduledVacationResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CancelScheduledVacation not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignDepartmentResponsible(context.Context, *AssignDepartmentResponsibleRequest) (*AssignDepartmentResponsibleResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignDepartmentResponsible not implemented")
+}
+func (UnimplementedMembershipServiceServer) RevokeDepartmentResponsible(context.Context, *RevokeDepartmentResponsibleRequest) (*RevokeDepartmentResponsibleResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeDepartmentResponsible not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignDepartmentResponsibleDeputy(context.Context, *AssignDepartmentResponsibleDeputyRequest) (*AssignDepartmentResponsibleDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignDepartmentResponsibleDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) RemoveDepartmentResponsibleDeputy(context.Context, *RemoveDepartmentResponsibleDeputyRequest) (*RemoveDepartmentResponsibleDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveDepartmentResponsibleDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignClinicHead(context.Context, *AssignClinicHeadRequest) (*AssignClinicHeadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignClinicHead not implemented")
+}
+func (UnimplementedMembershipServiceServer) RevokeClinicHead(context.Context, *RevokeClinicHeadRequest) (*RevokeClinicHeadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeClinicHead not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignClinicHeadDeputy(context.Context, *AssignClinicHeadDeputyRequest) (*AssignClinicHeadDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignClinicHeadDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) RemoveClinicHeadDeputy(context.Context, *RemoveClinicHeadDeputyRequest) (*RemoveClinicHeadDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveClinicHeadDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignOrganizationAdmin(context.Context, *AssignOrganizationAdminRequest) (*AssignOrganizationAdminResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignOrganizationAdmin not implemented")
+}
+func (UnimplementedMembershipServiceServer) RevokeOrganizationAdmin(context.Context, *RevokeOrganizationAdminRequest) (*RevokeOrganizationAdminResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeOrganizationAdmin not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignOrganizationAdminDeputy(context.Context, *AssignOrganizationAdminDeputyRequest) (*AssignOrganizationAdminDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignOrganizationAdminDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) RemoveOrganizationAdminDeputy(context.Context, *RemoveOrganizationAdminDeputyRequest) (*RemoveOrganizationAdminDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveOrganizationAdminDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignOrganizationHead(context.Context, *AssignOrganizationHeadRequest) (*AssignOrganizationHeadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignOrganizationHead not implemented")
+}
+func (UnimplementedMembershipServiceServer) RevokeOrganizationHead(context.Context, *RevokeOrganizationHeadRequest) (*RevokeOrganizationHeadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeOrganizationHead not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignOrganizationHeadDeputy(context.Context, *AssignOrganizationHeadDeputyRequest) (*AssignOrganizationHeadDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignOrganizationHeadDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) RemoveOrganizationHeadDeputy(context.Context, *RemoveOrganizationHeadDeputyRequest) (*RemoveOrganizationHeadDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveOrganizationHeadDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignOrganizationDispatcher(context.Context, *AssignOrganizationDispatcherRequest) (*AssignOrganizationDispatcherResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignOrganizationDispatcher not implemented")
+}
+func (UnimplementedMembershipServiceServer) RevokeOrganizationDispatcher(context.Context, *RevokeOrganizationDispatcherRequest) (*RevokeOrganizationDispatcherResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeOrganizationDispatcher not implemented")
+}
+func (UnimplementedMembershipServiceServer) AssignOrganizationDispatcherDeputy(context.Context, *AssignOrganizationDispatcherDeputyRequest) (*AssignOrganizationDispatcherDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignOrganizationDispatcherDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) RemoveOrganizationDispatcherDeputy(context.Context, *RemoveOrganizationDispatcherDeputyRequest) (*RemoveOrganizationDispatcherDeputyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RemoveOrganizationDispatcherDeputy not implemented")
+}
+func (UnimplementedMembershipServiceServer) GrantSystemAdmin(context.Context, *GrantSystemAdminRequest) (*GrantSystemAdminResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GrantSystemAdmin not implemented")
+}
+func (UnimplementedMembershipServiceServer) RevokeSystemAdmin(context.Context, *RevokeSystemAdminRequest) (*RevokeSystemAdminResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeSystemAdmin not implemented")
 }
 func (UnimplementedMembershipServiceServer) mustEmbedUnimplementedMembershipServiceServer() {}
 func (UnimplementedMembershipServiceServer) testEmbeddedByValue()                           {}
@@ -390,6 +754,402 @@ func _MembershipService_CancelScheduledVacation_Handler(srv interface{}, ctx con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MembershipService_AssignDepartmentResponsible_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignDepartmentResponsibleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignDepartmentResponsible(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignDepartmentResponsible_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignDepartmentResponsible(ctx, req.(*AssignDepartmentResponsibleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RevokeDepartmentResponsible_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeDepartmentResponsibleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RevokeDepartmentResponsible(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RevokeDepartmentResponsible_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RevokeDepartmentResponsible(ctx, req.(*RevokeDepartmentResponsibleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignDepartmentResponsibleDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignDepartmentResponsibleDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignDepartmentResponsibleDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignDepartmentResponsibleDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignDepartmentResponsibleDeputy(ctx, req.(*AssignDepartmentResponsibleDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RemoveDepartmentResponsibleDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveDepartmentResponsibleDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RemoveDepartmentResponsibleDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RemoveDepartmentResponsibleDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RemoveDepartmentResponsibleDeputy(ctx, req.(*RemoveDepartmentResponsibleDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignClinicHead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignClinicHeadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignClinicHead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignClinicHead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignClinicHead(ctx, req.(*AssignClinicHeadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RevokeClinicHead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeClinicHeadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RevokeClinicHead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RevokeClinicHead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RevokeClinicHead(ctx, req.(*RevokeClinicHeadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignClinicHeadDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignClinicHeadDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignClinicHeadDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignClinicHeadDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignClinicHeadDeputy(ctx, req.(*AssignClinicHeadDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RemoveClinicHeadDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveClinicHeadDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RemoveClinicHeadDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RemoveClinicHeadDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RemoveClinicHeadDeputy(ctx, req.(*RemoveClinicHeadDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignOrganizationAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignOrganizationAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignOrganizationAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignOrganizationAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignOrganizationAdmin(ctx, req.(*AssignOrganizationAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RevokeOrganizationAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeOrganizationAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RevokeOrganizationAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RevokeOrganizationAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RevokeOrganizationAdmin(ctx, req.(*RevokeOrganizationAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignOrganizationAdminDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignOrganizationAdminDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignOrganizationAdminDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignOrganizationAdminDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignOrganizationAdminDeputy(ctx, req.(*AssignOrganizationAdminDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RemoveOrganizationAdminDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveOrganizationAdminDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RemoveOrganizationAdminDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RemoveOrganizationAdminDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RemoveOrganizationAdminDeputy(ctx, req.(*RemoveOrganizationAdminDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignOrganizationHead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignOrganizationHeadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignOrganizationHead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignOrganizationHead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignOrganizationHead(ctx, req.(*AssignOrganizationHeadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RevokeOrganizationHead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeOrganizationHeadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RevokeOrganizationHead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RevokeOrganizationHead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RevokeOrganizationHead(ctx, req.(*RevokeOrganizationHeadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignOrganizationHeadDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignOrganizationHeadDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignOrganizationHeadDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignOrganizationHeadDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignOrganizationHeadDeputy(ctx, req.(*AssignOrganizationHeadDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RemoveOrganizationHeadDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveOrganizationHeadDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RemoveOrganizationHeadDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RemoveOrganizationHeadDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RemoveOrganizationHeadDeputy(ctx, req.(*RemoveOrganizationHeadDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignOrganizationDispatcher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignOrganizationDispatcherRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignOrganizationDispatcher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignOrganizationDispatcher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignOrganizationDispatcher(ctx, req.(*AssignOrganizationDispatcherRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RevokeOrganizationDispatcher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeOrganizationDispatcherRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RevokeOrganizationDispatcher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RevokeOrganizationDispatcher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RevokeOrganizationDispatcher(ctx, req.(*RevokeOrganizationDispatcherRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_AssignOrganizationDispatcherDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AssignOrganizationDispatcherDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).AssignOrganizationDispatcherDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_AssignOrganizationDispatcherDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).AssignOrganizationDispatcherDeputy(ctx, req.(*AssignOrganizationDispatcherDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RemoveOrganizationDispatcherDeputy_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveOrganizationDispatcherDeputyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RemoveOrganizationDispatcherDeputy(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RemoveOrganizationDispatcherDeputy_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RemoveOrganizationDispatcherDeputy(ctx, req.(*RemoveOrganizationDispatcherDeputyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_GrantSystemAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GrantSystemAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).GrantSystemAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_GrantSystemAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).GrantSystemAdmin(ctx, req.(*GrantSystemAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipService_RevokeSystemAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RevokeSystemAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipServiceServer).RevokeSystemAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipService_RevokeSystemAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipServiceServer).RevokeSystemAdmin(ctx, req.(*RevokeSystemAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MembershipService_ServiceDesc is the grpc.ServiceDesc for MembershipService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -432,6 +1192,94 @@ var MembershipService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CancelScheduledVacation",
 			Handler:    _MembershipService_CancelScheduledVacation_Handler,
+		},
+		{
+			MethodName: "AssignDepartmentResponsible",
+			Handler:    _MembershipService_AssignDepartmentResponsible_Handler,
+		},
+		{
+			MethodName: "RevokeDepartmentResponsible",
+			Handler:    _MembershipService_RevokeDepartmentResponsible_Handler,
+		},
+		{
+			MethodName: "AssignDepartmentResponsibleDeputy",
+			Handler:    _MembershipService_AssignDepartmentResponsibleDeputy_Handler,
+		},
+		{
+			MethodName: "RemoveDepartmentResponsibleDeputy",
+			Handler:    _MembershipService_RemoveDepartmentResponsibleDeputy_Handler,
+		},
+		{
+			MethodName: "AssignClinicHead",
+			Handler:    _MembershipService_AssignClinicHead_Handler,
+		},
+		{
+			MethodName: "RevokeClinicHead",
+			Handler:    _MembershipService_RevokeClinicHead_Handler,
+		},
+		{
+			MethodName: "AssignClinicHeadDeputy",
+			Handler:    _MembershipService_AssignClinicHeadDeputy_Handler,
+		},
+		{
+			MethodName: "RemoveClinicHeadDeputy",
+			Handler:    _MembershipService_RemoveClinicHeadDeputy_Handler,
+		},
+		{
+			MethodName: "AssignOrganizationAdmin",
+			Handler:    _MembershipService_AssignOrganizationAdmin_Handler,
+		},
+		{
+			MethodName: "RevokeOrganizationAdmin",
+			Handler:    _MembershipService_RevokeOrganizationAdmin_Handler,
+		},
+		{
+			MethodName: "AssignOrganizationAdminDeputy",
+			Handler:    _MembershipService_AssignOrganizationAdminDeputy_Handler,
+		},
+		{
+			MethodName: "RemoveOrganizationAdminDeputy",
+			Handler:    _MembershipService_RemoveOrganizationAdminDeputy_Handler,
+		},
+		{
+			MethodName: "AssignOrganizationHead",
+			Handler:    _MembershipService_AssignOrganizationHead_Handler,
+		},
+		{
+			MethodName: "RevokeOrganizationHead",
+			Handler:    _MembershipService_RevokeOrganizationHead_Handler,
+		},
+		{
+			MethodName: "AssignOrganizationHeadDeputy",
+			Handler:    _MembershipService_AssignOrganizationHeadDeputy_Handler,
+		},
+		{
+			MethodName: "RemoveOrganizationHeadDeputy",
+			Handler:    _MembershipService_RemoveOrganizationHeadDeputy_Handler,
+		},
+		{
+			MethodName: "AssignOrganizationDispatcher",
+			Handler:    _MembershipService_AssignOrganizationDispatcher_Handler,
+		},
+		{
+			MethodName: "RevokeOrganizationDispatcher",
+			Handler:    _MembershipService_RevokeOrganizationDispatcher_Handler,
+		},
+		{
+			MethodName: "AssignOrganizationDispatcherDeputy",
+			Handler:    _MembershipService_AssignOrganizationDispatcherDeputy_Handler,
+		},
+		{
+			MethodName: "RemoveOrganizationDispatcherDeputy",
+			Handler:    _MembershipService_RemoveOrganizationDispatcherDeputy_Handler,
+		},
+		{
+			MethodName: "GrantSystemAdmin",
+			Handler:    _MembershipService_GrantSystemAdmin_Handler,
+		},
+		{
+			MethodName: "RevokeSystemAdmin",
+			Handler:    _MembershipService_RevokeSystemAdmin_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
