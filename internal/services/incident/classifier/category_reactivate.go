@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -80,6 +81,11 @@ func (s *IncidentCategoryService) Reactivate(
 				With("incident_category_id", cmd.CategoryID).
 				Wrap(err)
 		}
+
+		if err := lockClassifierOrg(tx, cat.OrganizationID); err != nil {
+			return err
+		}
+
 		if cat.IsActive {
 			return nil
 		}
@@ -100,9 +106,15 @@ func (s *IncidentCategoryService) Reactivate(
 				Errorf("inactive ancestor blocks reactivation")
 		}
 
-		if err := tx.Model(&model.IncidentCategory{}).
-			Where("id = ?", cat.ID).
-			Updates(map[string]any{"is_active": true}).Error; err != nil {
+		// Use RETURNING to get the updated_at in the same roundtrip so
+		// the outbox envelope's OccurredAt matches the DB clock.
+		var updatedAt time.Time
+		if err := tx.Raw(`
+			UPDATE domain.incident_categories
+			SET is_active = TRUE, updated_at = now()
+			WHERE id = ?
+			RETURNING updated_at`, cat.ID,
+		).Row().Scan(&updatedAt); err != nil {
 			var pgErr *pgconn.PgError
 			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
 				return oops.In("services.incident.classifier.category").
@@ -126,7 +138,7 @@ func (s *IncidentCategoryService) Reactivate(
 				Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.Now(),
+			OccurredAt:    timestamppb.New(updatedAt),
 			AggregateType: AggregateTypeIncidentCategory,
 			AggregateId:   cat.ID.String(),
 			Payload:       payload,

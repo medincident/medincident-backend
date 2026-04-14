@@ -93,6 +93,11 @@ func (s *IncidentTypeService) Create(
 				Wrap(err)
 		}
 
+		// Serialise classifier mutations for this organisation.
+		if err := lockClassifierOrg(tx, cat.OrganizationID); err != nil {
+			return err
+		}
+
 		row := model.IncidentType{
 			ID:             id,
 			OrganizationID: cat.OrganizationID,

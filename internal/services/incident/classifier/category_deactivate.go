@@ -3,6 +3,7 @@ package classifier
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
@@ -33,6 +34,8 @@ func (s *IncidentCategoryService) Deactivate(
 	cmd DeactivateIncidentCategoryCommand,
 ) (DeactivateIncidentCategoryResult, error) {
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		now := time.Now().UTC()
+
 		var root model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			First(&root, "id = ?", cmd.CategoryID).Error; err != nil {
@@ -49,6 +52,10 @@ func (s *IncidentCategoryService) Deactivate(
 				Wrap(err)
 		}
 
+		if err := lockClassifierOrg(tx, root.OrganizationID); err != nil {
+			return err
+		}
+
 		deactivatedCategoryIDs, err := deactivateCategorySubtree(tx, root.ID)
 		if err != nil {
 			return err
@@ -59,12 +66,12 @@ func (s *IncidentCategoryService) Deactivate(
 		}
 
 		for _, id := range deactivatedCategoryIDs {
-			if err := appendCategoryDeactivatedEvent(tx, id); err != nil {
+			if err := appendCategoryDeactivatedEvent(tx, id, now); err != nil {
 				return err
 			}
 		}
 		for _, id := range deactivatedTypeIDs {
-			if err := appendTypeDeactivatedEvent(tx, id); err != nil {
+			if err := appendTypeDeactivatedEvent(tx, id, now); err != nil {
 				return err
 			}
 		}
@@ -121,7 +128,7 @@ func deactivateTypesInSubtree(tx *gorm.DB, root uuid.UUID) ([]uuid.UUID, error) 
 	return ids, nil
 }
 
-func appendCategoryDeactivatedEvent(tx *gorm.DB, categoryID uuid.UUID) error {
+func appendCategoryDeactivatedEvent(tx *gorm.DB, categoryID uuid.UUID, now time.Time) error {
 	payload, err := anypb.New(&categoryeventv1.IncidentCategoryDeactivated{})
 	if err != nil {
 		return oops.In("services.incident.classifier.category").
@@ -130,7 +137,7 @@ func appendCategoryDeactivatedEvent(tx *gorm.DB, categoryID uuid.UUID) error {
 			Wrap(err)
 	}
 	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.Now(),
+		OccurredAt:    timestamppb.New(now),
 		AggregateType: AggregateTypeIncidentCategory,
 		AggregateId:   categoryID.String(),
 		Payload:       payload,
@@ -138,7 +145,7 @@ func appendCategoryDeactivatedEvent(tx *gorm.DB, categoryID uuid.UUID) error {
 	return outbox.AppendEvent(tx, SubjectIncidentCategoryDeactivated, envelope)
 }
 
-func appendTypeDeactivatedEvent(tx *gorm.DB, typeID uuid.UUID) error {
+func appendTypeDeactivatedEvent(tx *gorm.DB, typeID uuid.UUID, now time.Time) error {
 	payload, err := anypb.New(&typeeventv1.IncidentTypeDeactivated{})
 	if err != nil {
 		return oops.In("services.incident.classifier.type").
@@ -147,7 +154,7 @@ func appendTypeDeactivatedEvent(tx *gorm.DB, typeID uuid.UUID) error {
 			Wrap(err)
 	}
 	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.Now(),
+		OccurredAt:    timestamppb.New(now),
 		AggregateType: AggregateTypeIncidentType,
 		AggregateId:   typeID.String(),
 		Payload:       payload,

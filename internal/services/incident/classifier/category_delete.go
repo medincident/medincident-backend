@@ -97,6 +97,12 @@ func (s *IncidentCategoryService) Delete(
 				Wrap(err)
 		}
 
+		// Serialise classifier mutations for this org so a concurrent
+		// Move can't reparent a node out from under our subtree walk.
+		if err := lockClassifierOrg(tx, root.OrganizationID); err != nil {
+			return err
+		}
+
 		categoryIDs, err := lockCategorySubtreeIDs(tx, root.ID)
 		if err != nil {
 			return oops.In("services.incident.classifier.category").

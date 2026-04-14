@@ -69,6 +69,10 @@ func (s *IncidentCategoryService) UpdateDetails(
 				Wrap(err)
 		}
 
+		if err := lockClassifierOrg(tx, cat.OrganizationID); err != nil {
+			return err
+		}
+
 		newName := strings.TrimSpace(cmd.Name)
 		newDescription := null.StringFromPtr(trimmedStringPtr(cmd.Description))
 		if cat.Name == newName && cat.Description == newDescription {

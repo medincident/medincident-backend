@@ -122,6 +122,13 @@ func (s *IncidentCategoryService) Create(
 
 	var result CreateIncidentCategoryResult
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		// Serialise all classifier tree mutations for this organisation so
+		// concurrent Create/Move/Delete in the same org can't race the
+		// depth / cycle / uniqueness checks.
+		if err := lockClassifierOrg(tx, cmd.OrganizationID); err != nil {
+			return err
+		}
+
 		if cmd.ParentCategoryID != nil {
 			var parent model.IncidentCategory
 			if err := tx.First(&parent, "id = ?", *cmd.ParentCategoryID).Error; err != nil {

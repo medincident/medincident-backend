@@ -3,6 +3,7 @@ package classifier
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
@@ -49,6 +50,10 @@ func (s *IncidentTypeService) Move(
 				Wrap(err)
 		}
 
+		if err := lockClassifierOrg(tx, moving.OrganizationID); err != nil {
+			return err
+		}
+
 		var newCategory model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthShare}).
 			First(&newCategory, "id = ?", cmd.NewCategoryID).Error; err != nil {
@@ -74,9 +79,13 @@ func (s *IncidentTypeService) Move(
 				Errorf("organization mismatch on type move")
 		}
 
-		if err := tx.Model(&model.IncidentType{}).
-			Where("id = ?", moving.ID).
-			Update("category_id", newCategory.ID).Error; err != nil {
+		var updatedAt time.Time
+		if err := tx.Raw(`
+			UPDATE domain.incident_types
+			SET category_id = ?, updated_at = now()
+			WHERE id = ?
+			RETURNING updated_at`, newCategory.ID, moving.ID,
+		).Row().Scan(&updatedAt); err != nil {
 			return oops.In("services.incident.classifier.type").
 				Code(ErrCodeIncidentTypeSaveFailed).
 				With("incident_type_id", moving.ID).
@@ -93,7 +102,7 @@ func (s *IncidentTypeService) Move(
 				Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.Now(),
+			OccurredAt:    timestamppb.New(updatedAt),
 			AggregateType: AggregateTypeIncidentType,
 			AggregateId:   moving.ID.String(),
 			Payload:       payload,

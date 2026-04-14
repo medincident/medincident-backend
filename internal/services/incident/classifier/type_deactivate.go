@@ -3,6 +3,7 @@ package classifier
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
@@ -23,6 +24,8 @@ func (s *IncidentTypeService) Deactivate(
 	cmd DeactivateIncidentTypeCommand,
 ) (DeactivateIncidentTypeResult, error) {
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		now := time.Now().UTC()
+
 		var row model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
@@ -38,6 +41,11 @@ func (s *IncidentTypeService) Deactivate(
 				With("incident_type_id", cmd.TypeID).
 				Wrap(err)
 		}
+
+		if err := lockClassifierOrg(tx, row.OrganizationID); err != nil {
+			return err
+		}
+
 		if !row.IsActive {
 			return nil
 		}
@@ -49,7 +57,7 @@ func (s *IncidentTypeService) Deactivate(
 				With("incident_type_id", row.ID).
 				Wrap(err)
 		}
-		return appendTypeDeactivatedEvent(tx, row.ID)
+		return appendTypeDeactivatedEvent(tx, row.ID, now)
 	})
 	return DeactivateIncidentTypeResult{}, err
 }

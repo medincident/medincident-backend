@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -81,6 +82,11 @@ func (s *IncidentTypeService) Reactivate(
 				With("incident_type_id", cmd.TypeID).
 				Wrap(err)
 		}
+
+		if err := lockClassifierOrg(tx, row.OrganizationID); err != nil {
+			return err
+		}
+
 		if row.IsActive {
 			return nil
 		}
@@ -101,9 +107,13 @@ func (s *IncidentTypeService) Reactivate(
 				Errorf("inactive ancestor blocks type reactivation")
 		}
 
-		if err := tx.Model(&model.IncidentType{}).
-			Where("id = ?", row.ID).
-			Updates(map[string]any{"is_active": true}).Error; err != nil {
+		var updatedAt time.Time
+		if err := tx.Raw(`
+			UPDATE domain.incident_types
+			SET is_active = TRUE, updated_at = now()
+			WHERE id = ?
+			RETURNING updated_at`, row.ID,
+		).Row().Scan(&updatedAt); err != nil {
 			var pgErr *pgconn.PgError
 			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
 				return oops.In("services.incident.classifier.type").
@@ -127,7 +137,7 @@ func (s *IncidentTypeService) Reactivate(
 				Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.Now(),
+			OccurredAt:    timestamppb.New(updatedAt),
 			AggregateType: AggregateTypeIncidentType,
 			AggregateId:   row.ID.String(),
 			Payload:       payload,

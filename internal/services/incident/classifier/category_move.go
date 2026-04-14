@@ -104,6 +104,13 @@ func (s *IncidentCategoryService) Move(
 				Wrap(err)
 		}
 
+		// Serialise classifier mutations for this org: depth / cycle
+		// checks on concurrent moves of unrelated categories in the
+		// same organisation would otherwise race.
+		if err := lockClassifierOrg(tx, moving.OrganizationID); err != nil {
+			return err
+		}
+
 		var newParent uuid.NullUUID
 		if cmd.NewParentCategoryID != nil {
 			var parent model.IncidentCategory

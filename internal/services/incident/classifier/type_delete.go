@@ -3,6 +3,7 @@ package classifier
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
@@ -28,6 +29,8 @@ func (s *IncidentTypeService) Delete(
 	cmd DeleteIncidentTypeCommand,
 ) (DeleteIncidentTypeResult, error) {
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		now := time.Now().UTC()
+
 		var row model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
@@ -44,6 +47,10 @@ func (s *IncidentTypeService) Delete(
 				Wrap(err)
 		}
 
+		if err := lockClassifierOrg(tx, row.OrganizationID); err != nil {
+			return err
+		}
+
 		payload, err := anypb.New(&typeeventv1.IncidentTypeDeleted{})
 		if err != nil {
 			return oops.In("services.incident.classifier.type").
@@ -52,7 +59,7 @@ func (s *IncidentTypeService) Delete(
 				Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.Now(),
+			OccurredAt:    timestamppb.New(now),
 			AggregateType: AggregateTypeIncidentType,
 			AggregateId:   row.ID.String(),
 			Payload:       payload,
