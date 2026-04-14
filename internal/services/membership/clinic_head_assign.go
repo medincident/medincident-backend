@@ -8,7 +8,6 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
@@ -45,52 +44,15 @@ func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinic
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var clinicExists int64
-		if err := tx.Raw(`SELECT count(*) FROM domain.clinics WHERE id = ?`, cmd.ClinicID).
-			Scan(&clinicExists).Error; err != nil {
-			return oops.In(scopeClinicHead).Code(ErrCodeClinicLookupFailed).Wrap(err)
+		if err := requireClinicExists(tx, scopeClinicHead, cmd.ClinicID); err != nil {
+			return err
 		}
-		if clinicExists == 0 {
-			return oops.In(scopeClinicHead).
-				Code(ErrCodeClinicNotFound).
-				Public("Clinic not found.").
-				With("clinic_id", cmd.ClinicID).
-				Errorf("clinic not found")
-		}
-
-		var emp model.Employee
-		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.EmployeeID).
-			First(&emp).Error
+		emp, err := loadEmployeeForRoleAssignment(tx, scopeClinicHead, cmd.EmployeeID)
 		if err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return oops.In(scopeClinicHead).
-					Code(ErrCodeEmployeeNotFound).
-					Public("Employee not found.").
-					With("employee_id", cmd.EmployeeID).
-					Errorf("employee not found")
-			}
-			return oops.In(scopeClinicHead).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
+			return err
 		}
-
-		// Scope check: does this employee's current department belong to the
-		// target clinic? There is no denormalized clinic_id on employees, so
-		// we look up the department row.
-		var inClinic int64
-		if err := tx.Raw(
-			`SELECT count(*) FROM domain.departments WHERE id = ? AND clinic_id = ?`,
-			emp.DepartmentID, cmd.ClinicID,
-		).Scan(&inClinic).Error; err != nil {
-			return oops.In(scopeClinicHead).Code(ErrCodeDepartmentLookupFailed).Wrap(err)
-		}
-		if inClinic == 0 {
-			return oops.In(scopeClinicHead).
-				Code(ErrCodeEmployeeNotInClinic).
-				Public("Employee does not belong to this clinic.").
-				With("employee_id", cmd.EmployeeID).
-				With("employee_department_id", emp.DepartmentID).
-				With("target_clinic_id", cmd.ClinicID).
-				Errorf("employee not in target clinic")
+		if err := requireEmployeeInClinic(tx, scopeClinicHead, emp, cmd.ClinicID); err != nil {
+			return err
 		}
 
 		row := model.ClinicHead{

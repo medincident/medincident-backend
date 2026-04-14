@@ -8,7 +8,6 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
@@ -45,42 +44,15 @@ func (s *EmployeeService) AssignDepartmentResponsible(ctx context.Context, cmd A
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var deptExists int64
-		if err := tx.Raw(`SELECT count(*) FROM domain.departments WHERE id = ?`, cmd.DepartmentID).
-			Scan(&deptExists).Error; err != nil {
-			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentLookupFailed).Wrap(err)
+		if err := requireDepartmentExists(tx, scopeDepartmentResponsible, cmd.DepartmentID); err != nil {
+			return err
 		}
-		if deptExists == 0 {
-			return oops.In(scopeDepartmentResponsible).
-				Code(ErrCodeDepartmentNotFound).
-				Public("Department not found.").
-				With("department_id", cmd.DepartmentID).
-				Errorf("department not found")
-		}
-
-		var emp model.Employee
-		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.EmployeeID).
-			First(&emp).Error
+		emp, err := loadEmployeeForRoleAssignment(tx, scopeDepartmentResponsible, cmd.EmployeeID)
 		if err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return oops.In(scopeDepartmentResponsible).
-					Code(ErrCodeEmployeeNotFound).
-					Public("Employee not found.").
-					With("employee_id", cmd.EmployeeID).
-					Errorf("employee not found")
-			}
-			return oops.In(scopeDepartmentResponsible).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
+			return err
 		}
-
-		if emp.DepartmentID != cmd.DepartmentID {
-			return oops.In(scopeDepartmentResponsible).
-				Code(ErrCodeEmployeeNotInDepartment).
-				Public("Employee does not belong to this department.").
-				With("employee_id", cmd.EmployeeID).
-				With("employee_department_id", emp.DepartmentID).
-				With("target_department_id", cmd.DepartmentID).
-				Errorf("employee not in target department")
+		if err := requireEmployeeInDepartment(scopeDepartmentResponsible, emp, cmd.DepartmentID); err != nil {
+			return err
 		}
 
 		row := model.DepartmentResponsible{

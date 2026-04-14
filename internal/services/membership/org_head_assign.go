@@ -8,7 +8,6 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
@@ -27,61 +26,20 @@ type AssignOrganizationHeadCommand struct {
 // head. The employee must currently belong to that organization
 // (organization_id is denormalized on employees). See spec §8.2 (OrgHead variant).
 func (s *EmployeeService) AssignOrganizationHead(ctx context.Context, cmd AssignOrganizationHeadCommand) error {
-	var errs []error
-	if cmd.OrganizationID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgHead).
-			Code(ErrCodeOrganizationIDEmpty).
-			Public("Organization ID is required.").
-			Errorf("organization id empty"))
-	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgHead).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validateOrgRoleKeys(scopeOrgHead, cmd.OrganizationID, cmd.EmployeeID); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var orgExists int64
-		if err := tx.Raw(`SELECT count(*) FROM domain.organizations WHERE id = ?`, cmd.OrganizationID).
-			Scan(&orgExists).Error; err != nil {
-			return oops.In(scopeOrgHead).Code(ErrCodeOrganizationLookupFailed).Wrap(err)
+		if err := requireOrganizationExists(tx, scopeOrgHead, cmd.OrganizationID); err != nil {
+			return err
 		}
-		if orgExists == 0 {
-			return oops.In(scopeOrgHead).
-				Code(ErrCodeOrganizationNotFound).
-				Public("Organization not found.").
-				With("organization_id", cmd.OrganizationID).
-				Errorf("organization not found")
-		}
-
-		var emp model.Employee
-		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.EmployeeID).
-			First(&emp).Error
+		emp, err := loadEmployeeForRoleAssignment(tx, scopeOrgHead, cmd.EmployeeID)
 		if err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return oops.In(scopeOrgHead).
-					Code(ErrCodeEmployeeNotFound).
-					Public("Employee not found.").
-					With("employee_id", cmd.EmployeeID).
-					Errorf("employee not found")
-			}
-			return oops.In(scopeOrgHead).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
+			return err
 		}
-
-		// Scope check: organization_id is denormalized on employees — direct compare.
-		if emp.OrganizationID != cmd.OrganizationID {
-			return oops.In(scopeOrgHead).
-				Code(ErrCodeEmployeeNotInOrganization).
-				Public("Employee does not belong to this organization.").
-				With("employee_id", cmd.EmployeeID).
-				With("employee_organization_id", emp.OrganizationID).
-				With("target_organization_id", cmd.OrganizationID).
-				Errorf("employee not in target organization")
+		if err := requireEmployeeInOrganization(scopeOrgHead, emp, cmd.OrganizationID); err != nil {
+			return err
 		}
 
 		row := model.OrgHead{
