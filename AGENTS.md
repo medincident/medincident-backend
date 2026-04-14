@@ -47,12 +47,14 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
     exact proto type and assembles it inline. Each proto event file
     duplicates its own `Address`/`Point` messages so aggregates evolve
     independently.
-11. **Outbox writes go through `AppendOutboxEvent(tx, subject,
-    envelope, headers)`.** The caller builds the
+11. **Outbox writes go through `outbox.AppendEvent(tx, subject,
+    envelope)`.** The caller builds the
     `*medincident.event.v1.Envelope` explicitly. The outbox table has
-    exactly `id, subject, payload, headers, created_at, published_at`
-    — nothing more. Command-service never writes or reads
-    `published_at`; the publisher service owns that column.
+    `id, subject, payload, headers, created_at, published_at` on the
+    DB side, but the command service only writes `subject` and
+    `payload` — the `headers` column is owned by the publisher
+    service (dedup keys derived from `outbox.events.id`) and
+    `published_at` is the publisher's bookkeeping column.
 12. **Events carry NEW state only.**
     `OrganizationDetailsChanged.Name` is the new name; consumers
     compute diffs from their own prior projection.
