@@ -13,6 +13,16 @@ import (
 	"github.com/medincident/medincident-command-service/internal/services/membership"
 )
 
+func hireBob(t *testing.T, f fixture) (employeeID string) {
+	t.Helper()
+	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
+		ZitadelUserID: testUserBobID,
+		DepartmentID:  f.DeptA1a,
+	})
+	require.NoError(t, err)
+	return res.ID.String()
+}
+
 func TestHireEmployee_Success_WithPosition(t *testing.T) {
 	f := takeFixture(t)
 	truncateOutbox(t)

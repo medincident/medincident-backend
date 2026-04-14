@@ -57,6 +57,15 @@ func takeFixture(t *testing.T) fixture {
 	must(testDB.Exec(`INSERT INTO domain.departments (id, clinic_id, name) VALUES (?, ?, ?)`, f.DeptB1a, f.ClinicB1, "Dept B1a").Error)
 
 	t.Cleanup(func() {
+		// Role tables first — they have FK RESTRICT on employees, so
+		// every employee delete downstream fails silently if any role
+		// row survives. Child-to-parent order mirrors the FK chain.
+		_ = testDB.Exec(`DELETE FROM domain.department_responsibles`).Error
+		_ = testDB.Exec(`DELETE FROM domain.clinic_heads`).Error
+		_ = testDB.Exec(`DELETE FROM domain.org_admins`).Error
+		_ = testDB.Exec(`DELETE FROM domain.org_heads`).Error
+		_ = testDB.Exec(`DELETE FROM domain.org_dispatchers`).Error
+		_ = testDB.Exec(`DELETE FROM domain.system_admins`).Error
 		_ = testDB.Exec(`DELETE FROM domain.employee_vacations`).Error
 		_ = testDB.Exec(`DELETE FROM domain.employees`).Error
 		_ = testDB.Exec(`DELETE FROM domain.departments WHERE id IN (?, ?, ?, ?)`, f.DeptA1a, f.DeptA1b, f.DeptA2a, f.DeptB1a).Error

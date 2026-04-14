@@ -4,7 +4,8 @@ package membership
 // These cover request-parsing failures (invalid UUIDs, malformed
 // fields) before the service layer takes over.
 const (
-	ErrCodeHandlerInvalidEmployeeID   = "employee_id_invalid"
-	ErrCodeHandlerInvalidDepartmentID = "department_id_invalid"
-	ErrCodeHandlerInvalidVacationID   = "vacation_id_invalid"
+	ErrCodeHandlerInvalidEmployeeID       = "employee_id_invalid"
+	ErrCodeHandlerInvalidDepartmentID     = "department_id_invalid"
+	ErrCodeHandlerInvalidVacationID       = "vacation_id_invalid"
+	ErrCodeHandlerInvalidDeputyEmployeeID = "deputy_employee_id_invalid"
 )

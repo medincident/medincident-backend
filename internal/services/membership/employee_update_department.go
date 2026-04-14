@@ -65,6 +65,8 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 			return nil
 		}
 
+		oldDepartmentID := emp.DepartmentID
+
 		var targetOrgID uuid.UUID
 		err := tx.Raw(`
 			SELECT c.organization_id
@@ -109,6 +111,12 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 			AggregateId:   emp.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectEmployeeDepartmentChanged, envelope, nil)
+		if err := outbox.AppendEvent(tx, SubjectEmployeeDepartmentChanged, envelope, nil); err != nil {
+			return err
+		}
+
+		// Rule 1: cause first — DepartmentChanged is already in the outbox.
+		// Cascade-revoke any DR roles the employee held in the old department.
+		return cascadeRevokeDepartmentResponsible(tx, emp.ID, oldDepartmentID, emp.UpdatedAt)
 	})
 }
