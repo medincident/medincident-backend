@@ -71,9 +71,31 @@ func cascadeRevokeDepartmentResponsibleAll(tx *gorm.DB, employeeID uuid.UUID, no
 // TerminateEmployee to handle rows where the terminating employee was
 // the deputy of someone else's role.
 func cascadeClearDepartmentResponsibleDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	return clearDepartmentResponsibleDeputyRows(tx, "deputy_employee_id = ?", []any{employeeID}, now)
+}
+
+// cascadeClearDepartmentResponsibleDeputyInDepartment clears the deputy
+// slot on DR rows where the given employee is the deputy AND the row
+// lives in the given department. Used by UpdateEmployeeDepartment: the
+// DR-deputy invariant is "deputy must belong to the same department as
+// the holder", so when an employee leaves a department every DR row in
+// that department which used to hold them as deputy must be cleared.
+func cascadeClearDepartmentResponsibleDeputyInDepartment(tx *gorm.DB, employeeID, departmentID uuid.UUID, now time.Time) error {
+	return clearDepartmentResponsibleDeputyRows(
+		tx,
+		"deputy_employee_id = ? AND department_id = ?",
+		[]any{employeeID, departmentID},
+		now,
+	)
+}
+
+// clearDepartmentResponsibleDeputyRows is the shared body of every
+// cascadeClearDepartmentResponsibleDeputy* helper: load the rows
+// matching `where`, null the deputy slot on each, and emit
+// DepartmentResponsibleDeputyRemoved for every affected row.
+func clearDepartmentResponsibleDeputyRows(tx *gorm.DB, where string, args []any, now time.Time) error {
 	var rows []model.DepartmentResponsible
-	err := tx.Where("deputy_employee_id = ?", employeeID).Find(&rows).Error
-	if err != nil {
+	if err := tx.Where(where, args...).Find(&rows).Error; err != nil {
 		return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {
@@ -148,9 +170,30 @@ func cascadeRevokeClinicHeadAll(tx *gorm.DB, employeeID uuid.UUID, now time.Time
 // to handle rows where the terminating employee was the deputy of
 // someone else's role.
 func cascadeClearClinicHeadDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	return clearClinicHeadDeputyRows(tx, "deputy_employee_id = ?", []any{employeeID}, now)
+}
+
+// cascadeClearClinicHeadDeputyInClinic clears the deputy slot on CH
+// rows where the given employee is the deputy AND the row lives in
+// the given clinic. Used by UpdateEmployeeDepartment on cross-clinic
+// moves: the CH-deputy invariant is "deputy must belong to the same
+// clinic as the holder", so when an employee leaves a clinic every
+// CH row in that clinic which used to hold them as deputy must be
+// cleared.
+func cascadeClearClinicHeadDeputyInClinic(tx *gorm.DB, employeeID, clinicID uuid.UUID, now time.Time) error {
+	return clearClinicHeadDeputyRows(
+		tx,
+		"deputy_employee_id = ? AND clinic_id = ?",
+		[]any{employeeID, clinicID},
+		now,
+	)
+}
+
+// clearClinicHeadDeputyRows is the shared body of every
+// cascadeClearClinicHeadDeputy* helper.
+func clearClinicHeadDeputyRows(tx *gorm.DB, where string, args []any, now time.Time) error {
 	var rows []model.ClinicHead
-	err := tx.Where("deputy_employee_id = ?", employeeID).Find(&rows).Error
-	if err != nil {
+	if err := tx.Where(where, args...).Find(&rows).Error; err != nil {
 		return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {

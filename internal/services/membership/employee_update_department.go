@@ -67,24 +67,25 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 
 		oldDepartmentID := emp.DepartmentID
 
-		// Resolve the old and new clinic IDs via JOIN — needed for CH
-		// cascade logic later. We do this before the save so both JOINs
-		// operate on the pre-change state.
-		var oldClinicID uuid.UUID
-		if err := tx.Raw(`
-			SELECT c.id FROM domain.departments d
-			JOIN domain.clinics c ON c.id = d.clinic_id
-			WHERE d.id = ?`, emp.DepartmentID,
-		).Row().Scan(&oldClinicID); err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeDepartmentLookupFailed).Wrap(err)
+		// Resolve both the old and new clinic IDs (plus the new department's
+		// organization) in a single round-trip. We need all three values to
+		// decide whether the move is cross-clinic and to validate that the
+		// target department belongs to the employee's organisation.
+		var lookup struct {
+			OldClinicID uuid.UUID
+			NewClinicID uuid.UUID
+			NewOrgID    uuid.UUID
 		}
-
-		var targetOrgID, newClinicID uuid.UUID
 		err := tx.Raw(`
-			SELECT c.organization_id, c.id
-			FROM domain.departments d
-			JOIN domain.clinics c ON c.id = d.clinic_id
-			WHERE d.id = ?`, cmd.DepartmentID).Row().Scan(&targetOrgID, &newClinicID)
+			SELECT old_c.id           AS old_clinic_id,
+			       new_c.id           AS new_clinic_id,
+			       new_c.organization_id AS new_org_id
+			FROM domain.departments old_d
+			JOIN domain.clinics     old_c ON old_c.id = old_d.clinic_id
+			JOIN domain.departments new_d ON new_d.id = ?
+			JOIN domain.clinics     new_c ON new_c.id = new_d.clinic_id
+			WHERE old_d.id = ?`, cmd.DepartmentID, oldDepartmentID,
+		).Row().Scan(&lookup.OldClinicID, &lookup.NewClinicID, &lookup.NewOrgID)
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
 				return oops.In(scopeEmployee).
@@ -98,12 +99,12 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 				With("department_id", cmd.DepartmentID).
 				Wrap(err)
 		}
-		if targetOrgID != emp.OrganizationID {
+		if lookup.NewOrgID != emp.OrganizationID {
 			return oops.In(scopeEmployee).
 				Code(ErrCodeDepartmentNotInSameOrganization).
 				Public("Target department belongs to a different organization.").
 				With("employee_organization_id", emp.OrganizationID).
-				With("target_organization_id", targetOrgID).
+				With("target_organization_id", lookup.NewOrgID).
 				Errorf("department is in a different organization")
 		}
 
@@ -128,15 +129,26 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 		}
 
 		// Rule 1: cause first — DepartmentChanged is already in the outbox.
-		// Cascade-revoke any DR roles the employee held in the old department.
+		// Cascade-revoke any DR roles the employee held in the old
+		// department, and clear any DR deputy slots in the old department
+		// that still reference this employee. The DR-deputy invariant is
+		// same-department, so leaving the old department always invalidates
+		// those slots.
 		if err := cascadeRevokeDepartmentResponsible(tx, emp.ID, oldDepartmentID, emp.UpdatedAt); err != nil {
 			return err
 		}
+		if err := cascadeClearDepartmentResponsibleDeputyInDepartment(tx, emp.ID, oldDepartmentID, emp.UpdatedAt); err != nil {
+			return err
+		}
 
-		// Cascade-revoke any CH roles the employee held in the old clinic,
-		// but only when the new department belongs to a different clinic.
-		if newClinicID != oldClinicID {
-			if err := cascadeRevokeClinicHead(tx, emp.ID, oldClinicID, emp.UpdatedAt); err != nil {
+		// Cross-clinic moves additionally invalidate CH roles and CH
+		// deputy slots in the old clinic. Same-clinic moves leave CH
+		// alone because the holder/deputy invariant is per-clinic.
+		if lookup.NewClinicID != lookup.OldClinicID {
+			if err := cascadeRevokeClinicHead(tx, emp.ID, lookup.OldClinicID, emp.UpdatedAt); err != nil {
+				return err
+			}
+			if err := cascadeClearClinicHeadDeputyInClinic(tx, emp.ID, lookup.OldClinicID, emp.UpdatedAt); err != nil {
 				return err
 			}
 		}
