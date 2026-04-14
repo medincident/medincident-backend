@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -92,16 +93,15 @@ func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context,
 				Errorf("deputy is holder")
 		}
 
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			return oops.In(scopeDepartmentResponsible).
 				Code(ErrCodeDeputyAlreadyAssigned).
 				Public("Deputy slot is already occupied.").
-				With("current_deputy_employee_id", *row.DeputyEmployeeID).
+				With("current_deputy_employee_id", row.DeputyEmployeeID.V).
 				Errorf("deputy already assigned")
 		}
 
-		deputyID := cmd.DeputyEmployeeID
-		row.DeputyEmployeeID = &deputyID
+		row.DeputyEmployeeID = null.ValueFrom(cmd.DeputyEmployeeID)
 		if err := tx.Save(&row).Error; err != nil {
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleSaveFailed).Wrap(err)
 		}

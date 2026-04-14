@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -55,7 +56,7 @@ func (s *EmployeeService) RemoveOrganizationAdminDeputy(ctx context.Context, cmd
 			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminLoadFailed).Wrap(err)
 		}
 
-		if row.DeputyEmployeeID == nil {
+		if !row.DeputyEmployeeID.Valid {
 			return oops.In(scopeOrgAdmin).
 				Code(ErrCodeDeputyNotAssigned).
 				Public("No deputy is assigned to this role.").
@@ -64,7 +65,7 @@ func (s *EmployeeService) RemoveOrganizationAdminDeputy(ctx context.Context, cmd
 				Errorf("deputy not assigned")
 		}
 
-		row.DeputyEmployeeID = nil
+		row.DeputyEmployeeID = null.Value[uuid.UUID]{}
 		if err := tx.Save(&row).Error; err != nil {
 			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminSaveFailed).Wrap(err)
 		}

@@ -24,7 +24,7 @@ func cascadeRevokeDepartmentResponsible(tx *gorm.DB, employeeID, departmentID uu
 		return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishDepartmentResponsibleDeputyRemoved(tx, row.DepartmentID, row.EmployeeID, now); err != nil {
 				return err
 			}
@@ -50,7 +50,7 @@ func cascadeRevokeDepartmentResponsibleAll(tx *gorm.DB, employeeID uuid.UUID, no
 		return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishDepartmentResponsibleDeputyRemoved(tx, row.DepartmentID, row.EmployeeID, now); err != nil {
 				return err
 			}
@@ -102,7 +102,7 @@ func cascadeRevokeClinicHead(tx *gorm.DB, employeeID, clinicID uuid.UUID, now ti
 		return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishClinicHeadDeputyRemoved(tx, row.ClinicID, row.EmployeeID, now); err != nil {
 				return err
 			}
@@ -127,7 +127,7 @@ func cascadeRevokeClinicHeadAll(tx *gorm.DB, employeeID uuid.UUID, now time.Time
 		return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishClinicHeadDeputyRemoved(tx, row.ClinicID, row.EmployeeID, now); err != nil {
 				return err
 			}
@@ -176,7 +176,7 @@ func cascadeRevokeOrgAdminAll(tx *gorm.DB, employeeID uuid.UUID, now time.Time) 
 		return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishOrgAdminDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
 				return err
 			}
@@ -225,7 +225,7 @@ func cascadeRevokeOrgHeadAll(tx *gorm.DB, employeeID uuid.UUID, now time.Time) e
 		return oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishOrgHeadDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
 				return err
 			}
@@ -274,7 +274,7 @@ func cascadeRevokeOrgDispatcherAll(tx *gorm.DB, employeeID uuid.UUID, now time.T
 		return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherLoadFailed).Wrap(err)
 	}
 	for _, row := range rows {
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishOrgDispatcherDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
 				return err
 			}

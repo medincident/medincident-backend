@@ -62,7 +62,7 @@ func (s *EmployeeService) RevokeOrganizationAdmin(ctx context.Context, cmd Revok
 		}
 
 		// Rule 2 — cleanup before terminate.
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishOrgAdminDeputyRemoved(tx, cmd.OrganizationID, cmd.EmployeeID, now); err != nil {
 				return err
 			}

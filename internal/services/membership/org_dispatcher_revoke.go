@@ -62,7 +62,7 @@ func (s *EmployeeService) RevokeOrganizationDispatcher(ctx context.Context, cmd 
 		}
 
 		// Rule 2 — cleanup before terminate.
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishOrgDispatcherDeputyRemoved(tx, cmd.OrganizationID, cmd.EmployeeID, now); err != nil {
 				return err
 			}

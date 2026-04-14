@@ -62,7 +62,7 @@ func (s *EmployeeService) RevokeClinicHead(ctx context.Context, cmd RevokeClinic
 		}
 
 		// Rule 2 — cleanup before terminate.
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishClinicHeadDeputyRemoved(tx, cmd.ClinicID, cmd.EmployeeID, now); err != nil {
 				return err
 			}

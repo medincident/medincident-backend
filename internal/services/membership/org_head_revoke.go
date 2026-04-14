@@ -62,7 +62,7 @@ func (s *EmployeeService) RevokeOrganizationHead(ctx context.Context, cmd Revoke
 		}
 
 		// Rule 2 — cleanup before terminate.
-		if row.DeputyEmployeeID != nil {
+		if row.DeputyEmployeeID.Valid {
 			if err := publishOrgHeadDeputyRemoved(tx, cmd.OrganizationID, cmd.EmployeeID, now); err != nil {
 				return err
 			}
