@@ -25,6 +25,7 @@ const (
 	ErrCodeEmployeeAlreadyHired            = "employee_already_hired"
 	ErrCodeEmployeeNotFound                = "employee_not_found"
 	ErrCodeDepartmentNotFound              = "department_not_found"
+	ErrCodeClinicNotFound                  = "clinic_not_found"
 	ErrCodeDepartmentNotInSameOrganization = "department_not_in_same_organization"
 	ErrCodeVacationNotFound                = "vacation_not_found"
 	ErrCodeVacationOverlap                 = "vacation_overlap"
@@ -68,6 +69,7 @@ const (
 	ErrCodeVacationDeleteFailed       = "vacation_delete_failed"
 	ErrCodeVacationEventBuildFailed   = "vacation_event_build_failed"
 	ErrCodeDepartmentLookupFailed     = "department_lookup_failed"
+	ErrCodeClinicLookupFailed         = "clinic_lookup_failed"
 	ErrCodeZitadelVerifyFailed        = "zitadel_verify_failed"
 
 	ErrCodeDepartmentResponsibleSaveFailed        = "department_responsible_save_failed"

@@ -33,6 +33,28 @@ func TestTerminateEmployee_CascadeRevokesDRAsHolder(t *testing.T) {
 	assert.Equal(t, "medincident.event.employee.v1.terminated", rows[1].Subject)
 }
 
+func TestTerminateEmployee_CascadeRevokesCHAsHolder(t *testing.T) {
+	f := takeFixture(t)
+	aliceID := mustParseUUID(t, hireAlice(t, f))
+	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
+		ClinicID: f.ClinicA1, EmployeeID: aliceID,
+	}))
+	truncateOutbox(t)
+
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: aliceID}))
+
+	var count int64
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM domain.clinic_heads WHERE employee_id = ?`, aliceID,
+	).Scan(&count).Error)
+	assert.Equal(t, int64(0), count)
+
+	rows := latestOutbox(t)
+	require.Len(t, rows, 2)
+	assert.Equal(t, membership.SubjectClinicHeadRevoked, rows[0].Subject)
+	assert.Equal(t, "medincident.event.employee.v1.terminated", rows[1].Subject)
+}
+
 func TestTerminateEmployee_CascadeClearsDRDeputy(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))

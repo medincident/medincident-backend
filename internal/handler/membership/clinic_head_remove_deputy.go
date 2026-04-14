@@ -1,0 +1,28 @@
+package membership
+
+import (
+	"context"
+
+	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
+	"github.com/medincident/medincident-command-service/internal/services/membership"
+)
+
+// RemoveClinicHeadDeputy translates a gRPC request into a service
+// command and clears the deputy slot on a CH role.
+func (h *MembershipHandler) RemoveClinicHeadDeputy(ctx context.Context, req *membershipv1.RemoveClinicHeadDeputyRequest) (*membershipv1.RemoveClinicHeadDeputyResponse, error) {
+	clinicID, err := parseClinicID(req.GetClinicId())
+	if err != nil {
+		return nil, err
+	}
+	empID, err := parseEmployeeID(req.GetEmployeeId())
+	if err != nil {
+		return nil, err
+	}
+	if err := h.empSvc.RemoveClinicHeadDeputy(ctx, membership.RemoveClinicHeadDeputyCommand{
+		ClinicID:   clinicID,
+		EmployeeID: empID,
+	}); err != nil {
+		return nil, err
+	}
+	return &membershipv1.RemoveClinicHeadDeputyResponse{}, nil
+}

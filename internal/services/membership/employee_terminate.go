@@ -53,13 +53,19 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
 		}
 
-		// Cascade: revoke any DR roles where this employee is the holder,
-		// and clear any DR roles where this employee is a deputy.
+		// Cascade: revoke any DR/CH roles where this employee is the holder,
+		// and clear any DR/CH roles where this employee is a deputy.
 		// Both must run BEFORE the employee row is deleted (FK constraints).
 		if err := cascadeRevokeDepartmentResponsibleAll(tx, emp.ID, now); err != nil {
 			return err
 		}
 		if err := cascadeClearDepartmentResponsibleDeputy(tx, emp.ID, now); err != nil {
+			return err
+		}
+		if err := cascadeRevokeClinicHeadAll(tx, emp.ID, now); err != nil {
+			return err
+		}
+		if err := cascadeClearClinicHeadDeputy(tx, emp.ID, now); err != nil {
 			return err
 		}
 

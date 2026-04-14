@@ -89,3 +89,80 @@ func cascadeClearDepartmentResponsibleDeputy(tx *gorm.DB, employeeID uuid.UUID, 
 	}
 	return nil
 }
+
+// cascadeRevokeClinicHead revokes every CH role where the employee is
+// the holder on the given clinic_id. For each revoked row:
+//   - if it carries a deputy, publish ClinicHeadDeputyRemoved first
+//   - delete the row
+//   - publish ClinicHeadRevoked
+func cascadeRevokeClinicHead(tx *gorm.DB, employeeID, clinicID uuid.UUID, now time.Time) error {
+	var rows []model.ClinicHead
+	err := tx.Where("employee_id = ? AND clinic_id = ?", employeeID, clinicID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if row.DeputyEmployeeID != nil {
+			if err := publishClinicHeadDeputyRemoved(tx, row.ClinicID, row.EmployeeID, now); err != nil {
+				return err
+			}
+		}
+		if err := tx.Delete(&model.ClinicHead{}, "clinic_id = ? AND employee_id = ?",
+			row.ClinicID, row.EmployeeID).Error; err != nil {
+			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadDeleteFailed).Wrap(err)
+		}
+		if err := publishClinicHeadRevoked(tx, row.ClinicID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// cascadeRevokeClinicHeadAll is the same as cascadeRevokeClinicHead,
+// but unconstrained by clinic_id. Used by TerminateEmployee.
+func cascadeRevokeClinicHeadAll(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	var rows []model.ClinicHead
+	err := tx.Where("employee_id = ?", employeeID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if row.DeputyEmployeeID != nil {
+			if err := publishClinicHeadDeputyRemoved(tx, row.ClinicID, row.EmployeeID, now); err != nil {
+				return err
+			}
+		}
+		if err := tx.Delete(&model.ClinicHead{}, "clinic_id = ? AND employee_id = ?",
+			row.ClinicID, row.EmployeeID).Error; err != nil {
+			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadDeleteFailed).Wrap(err)
+		}
+		if err := publishClinicHeadRevoked(tx, row.ClinicID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// cascadeClearClinicHeadDeputy clears the deputy slot on every CH
+// role where the given employee is the deputy. Used by TerminateEmployee
+// to handle rows where the terminating employee was the deputy of
+// someone else's role.
+func cascadeClearClinicHeadDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	var rows []model.ClinicHead
+	err := tx.Where("deputy_employee_id = ?", employeeID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if err := tx.Exec(
+			`UPDATE domain.clinic_heads SET deputy_employee_id = NULL, updated_at = now() WHERE clinic_id = ? AND employee_id = ?`,
+			row.ClinicID, row.EmployeeID,
+		).Error; err != nil {
+			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
+		}
+		if err := publishClinicHeadDeputyRemoved(tx, row.ClinicID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}

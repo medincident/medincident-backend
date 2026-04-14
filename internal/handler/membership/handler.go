@@ -46,6 +46,17 @@ func parseDepartmentID(raw string) (uuid.UUID, error) {
 	return id, nil
 }
 
+func parseClinicID(raw string) (uuid.UUID, error) {
+	id, err := uuid.Parse(raw)
+	if err != nil {
+		return uuid.Nil, oops.In("handler.membership").
+			Code(ErrCodeHandlerInvalidClinicID).
+			Public("clinic_id is not a valid UUID.").
+			Wrap(err)
+	}
+	return id, nil
+}
+
 func parseVacationID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {

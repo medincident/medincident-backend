@@ -67,12 +67,24 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 
 		oldDepartmentID := emp.DepartmentID
 
-		var targetOrgID uuid.UUID
+		// Resolve the old and new clinic IDs via JOIN — needed for CH
+		// cascade logic later. We do this before the save so both JOINs
+		// operate on the pre-change state.
+		var oldClinicID uuid.UUID
+		if err := tx.Raw(`
+			SELECT c.id FROM domain.departments d
+			JOIN domain.clinics c ON c.id = d.clinic_id
+			WHERE d.id = ?`, emp.DepartmentID,
+		).Row().Scan(&oldClinicID); err != nil {
+			return oops.In(scopeEmployee).Code(ErrCodeDepartmentLookupFailed).Wrap(err)
+		}
+
+		var targetOrgID, newClinicID uuid.UUID
 		err := tx.Raw(`
-			SELECT c.organization_id
+			SELECT c.organization_id, c.id
 			FROM domain.departments d
 			JOIN domain.clinics c ON c.id = d.clinic_id
-			WHERE d.id = ?`, cmd.DepartmentID).Row().Scan(&targetOrgID)
+			WHERE d.id = ?`, cmd.DepartmentID).Row().Scan(&targetOrgID, &newClinicID)
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
 				return oops.In(scopeEmployee).
@@ -117,6 +129,17 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 
 		// Rule 1: cause first — DepartmentChanged is already in the outbox.
 		// Cascade-revoke any DR roles the employee held in the old department.
-		return cascadeRevokeDepartmentResponsible(tx, emp.ID, oldDepartmentID, emp.UpdatedAt)
+		if err := cascadeRevokeDepartmentResponsible(tx, emp.ID, oldDepartmentID, emp.UpdatedAt); err != nil {
+			return err
+		}
+
+		// Cascade-revoke any CH roles the employee held in the old clinic,
+		// but only when the new department belongs to a different clinic.
+		if newClinicID != oldClinicID {
+			if err := cascadeRevokeClinicHead(tx, emp.ID, oldClinicID, emp.UpdatedAt); err != nil {
+				return err
+			}
+		}
+		return nil
 	})
 }

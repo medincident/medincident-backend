@@ -37,6 +37,47 @@ func TestUpdateEmployeeDepartment_CascadeRevokesDR_SameClinic(t *testing.T) {
 	assert.Equal(t, membership.SubjectDepartmentResponsibleRevoked, rows[1].Subject)
 }
 
+func TestUpdateEmployeeDepartment_CascadeRevokesCH_CrossClinic(t *testing.T) {
+	f := takeFixture(t)
+	aliceID := mustParseUUID(t, hireAlice(t, f))
+	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
+		ClinicID: f.ClinicA1, EmployeeID: aliceID,
+	}))
+	truncateOutbox(t)
+
+	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
+		ID: aliceID, DepartmentID: f.DeptA2a,
+	}))
+
+	var count int64
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM domain.clinic_heads WHERE clinic_id = ? AND employee_id = ?`, f.ClinicA1, aliceID,
+	).Scan(&count).Error)
+	assert.Equal(t, int64(0), count)
+
+	rows := latestOutbox(t)
+	require.GreaterOrEqual(t, len(rows), 2)
+	assert.Equal(t, "medincident.event.employee.v1.department_changed", rows[0].Subject)
+}
+
+func TestUpdateEmployeeDepartment_CHUnaffected_SameClinic(t *testing.T) {
+	f := takeFixture(t)
+	aliceID := mustParseUUID(t, hireAlice(t, f))
+	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
+		ClinicID: f.ClinicA1, EmployeeID: aliceID,
+	}))
+
+	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
+		ID: aliceID, DepartmentID: f.DeptA1b,
+	}))
+
+	var count int64
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM domain.clinic_heads WHERE clinic_id = ? AND employee_id = ?`, f.ClinicA1, aliceID,
+	).Scan(&count).Error)
+	assert.Equal(t, int64(1), count, "ClinicHead must survive same-clinic moves")
+}
+
 func TestUpdateEmployeeDepartment_CascadeRevokesDRWithDeputy_EmitsDeputyRemovedFirst(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
