@@ -264,3 +264,52 @@ func cascadeClearOrgHeadDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time)
 	}
 	return nil
 }
+
+// cascadeRevokeOrgDispatcherAll revokes every OrgDispatcher role where the
+// employee is the holder. Used by TerminateEmployee.
+func cascadeRevokeOrgDispatcherAll(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	var rows []model.OrgDispatcher
+	err := tx.Where("employee_id = ?", employeeID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if row.DeputyEmployeeID != nil {
+			if err := publishOrgDispatcherDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+				return err
+			}
+		}
+		if err := tx.Delete(&model.OrgDispatcher{}, "organization_id = ? AND employee_id = ?",
+			row.OrganizationID, row.EmployeeID).Error; err != nil {
+			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherDeleteFailed).Wrap(err)
+		}
+		if err := publishOrgDispatcherRevoked(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// cascadeClearOrgDispatcherDeputy clears the deputy slot on every OrgDispatcher
+// role where the given employee is the deputy. Used by TerminateEmployee
+// to handle rows where the terminating employee was the deputy of
+// someone else's role.
+func cascadeClearOrgDispatcherDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	var rows []model.OrgDispatcher
+	err := tx.Where("deputy_employee_id = ?", employeeID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if err := tx.Exec(
+			`UPDATE domain.org_dispatchers SET deputy_employee_id = NULL, updated_at = now() WHERE organization_id = ? AND employee_id = ?`,
+			row.OrganizationID, row.EmployeeID,
+		).Error; err != nil {
+			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherSaveFailed).Wrap(err)
+		}
+		if err := publishOrgDispatcherDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}

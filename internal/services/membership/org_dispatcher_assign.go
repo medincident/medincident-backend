@@ -1,0 +1,123 @@
+package membership
+
+import (
+	"context"
+	"errors"
+
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
+
+	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
+	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
+	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/services/outbox"
+)
+
+const scopeOrgDispatcher = "services.membership.org_dispatcher"
+
+// AssignOrganizationDispatcherCommand carries the identifiers needed to link
+// an employee to an organization as its dispatcher.
+type AssignOrganizationDispatcherCommand struct {
+	OrganizationID uuid.UUID
+	EmployeeID     uuid.UUID
+}
+
+// AssignOrganizationDispatcher links the employee to the organization as its
+// dispatcher. The employee must currently belong to that organization
+// (organization_id is denormalized on employees). See spec §8.2 (OrgDispatcher variant).
+func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd AssignOrganizationDispatcherCommand) error {
+	var errs []error
+	if cmd.OrganizationID == uuid.Nil {
+		errs = append(errs, oops.In(scopeOrgDispatcher).
+			Code(ErrCodeOrganizationIDEmpty).
+			Public("Organization ID is required.").
+			Errorf("organization id empty"))
+	}
+	if cmd.EmployeeID == uuid.Nil {
+		errs = append(errs, oops.In(scopeOrgDispatcher).
+			Code(ErrCodeEmployeeIDEmpty).
+			Public("Employee ID is required.").
+			Errorf("employee id empty"))
+	}
+	if len(errs) > 0 {
+		return errors.Join(errs...)
+	}
+
+	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var orgExists int64
+		if err := tx.Raw(`SELECT count(*) FROM domain.organizations WHERE id = ?`, cmd.OrganizationID).
+			Scan(&orgExists).Error; err != nil {
+			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherLoadFailed).Wrap(err)
+		}
+		if orgExists == 0 {
+			return oops.In(scopeOrgDispatcher).
+				Code(ErrCodeOrganizationNotFound).
+				Public("Organization not found.").
+				With("organization_id", cmd.OrganizationID).
+				Errorf("organization not found")
+		}
+
+		var emp model.Employee
+		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			Where("id = ?", cmd.EmployeeID).
+			First(&emp).Error
+		if err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return oops.In(scopeOrgDispatcher).
+					Code(ErrCodeEmployeeNotFound).
+					Public("Employee not found.").
+					With("employee_id", cmd.EmployeeID).
+					Errorf("employee not found")
+			}
+			return oops.In(scopeOrgDispatcher).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
+		}
+
+		// Scope check: organization_id is denormalized on employees — direct compare.
+		if emp.OrganizationID != cmd.OrganizationID {
+			return oops.In(scopeOrgDispatcher).
+				Code(ErrCodeEmployeeNotInOrganization).
+				Public("Employee does not belong to this organization.").
+				With("employee_id", cmd.EmployeeID).
+				With("employee_organization_id", emp.OrganizationID).
+				With("target_organization_id", cmd.OrganizationID).
+				Errorf("employee not in target organization")
+		}
+
+		row := model.OrgDispatcher{
+			OrganizationID: cmd.OrganizationID,
+			EmployeeID:     cmd.EmployeeID,
+		}
+		if err := tx.Create(&row).Error; err != nil {
+			var pgErr *pgconn.PgError
+			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+				return oops.In(scopeOrgDispatcher).
+					Code(ErrCodeOrganizationDispatcherAlreadyAssigned).
+					Public("This employee is already an organization dispatcher.").
+					With("organization_id", cmd.OrganizationID).
+					With("employee_id", cmd.EmployeeID).
+					Wrap(err)
+			}
+			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherSaveFailed).Wrap(err)
+		}
+
+		ev := &organizationv1.OrganizationDispatcherAssigned{
+			EmployeeId: cmd.EmployeeID.String(),
+		}
+		payload, err := anypb.New(ev)
+		if err != nil {
+			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherEventBuildFailed).Wrap(err)
+		}
+		envelope := &envelopev1.Envelope{
+			OccurredAt:    timestamppb.New(row.CreatedAt),
+			AggregateType: AggregateTypeOrganization,
+			AggregateId:   cmd.OrganizationID.String(),
+			Payload:       payload,
+		}
+		return outbox.AppendEvent(tx, SubjectOrganizationDispatcherAssigned, envelope, nil)
+	})
+}
