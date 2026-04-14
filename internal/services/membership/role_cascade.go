@@ -215,3 +215,52 @@ func cascadeClearOrgAdminDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time
 	}
 	return nil
 }
+
+// cascadeRevokeOrgHeadAll revokes every OrgHead role where the
+// employee is the holder. Used by TerminateEmployee.
+func cascadeRevokeOrgHeadAll(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	var rows []model.OrgHead
+	err := tx.Where("employee_id = ?", employeeID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if row.DeputyEmployeeID != nil {
+			if err := publishOrgHeadDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+				return err
+			}
+		}
+		if err := tx.Delete(&model.OrgHead{}, "organization_id = ? AND employee_id = ?",
+			row.OrganizationID, row.EmployeeID).Error; err != nil {
+			return oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadDeleteFailed).Wrap(err)
+		}
+		if err := publishOrgHeadRevoked(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// cascadeClearOrgHeadDeputy clears the deputy slot on every OrgHead
+// role where the given employee is the deputy. Used by TerminateEmployee
+// to handle rows where the terminating employee was the deputy of
+// someone else's role.
+func cascadeClearOrgHeadDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	var rows []model.OrgHead
+	err := tx.Where("deputy_employee_id = ?", employeeID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if err := tx.Exec(
+			`UPDATE domain.org_heads SET deputy_employee_id = NULL, updated_at = now() WHERE organization_id = ? AND employee_id = ?`,
+			row.OrganizationID, row.EmployeeID,
+		).Error; err != nil {
+			return oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadSaveFailed).Wrap(err)
+		}
+		if err := publishOrgHeadDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}

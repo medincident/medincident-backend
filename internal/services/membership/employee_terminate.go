@@ -75,6 +75,12 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 		if err := cascadeClearOrgAdminDeputy(tx, emp.ID, now); err != nil {
 			return err
 		}
+		if err := cascadeRevokeOrgHeadAll(tx, emp.ID, now); err != nil {
+			return err
+		}
+		if err := cascadeClearOrgHeadDeputy(tx, emp.ID, now); err != nil {
+			return err
+		}
 
 		res := tx.Delete(&model.Employee{}, "id = ?", cmd.ID)
 		if res.Error != nil {
