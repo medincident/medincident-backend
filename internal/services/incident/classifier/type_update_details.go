@@ -12,6 +12,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
@@ -41,6 +42,13 @@ func (s *IncidentTypeService) UpdateDetails(
 	cmd UpdateIncidentTypeDetailsCommand,
 ) (UpdateIncidentTypeDetailsResult, error) {
 	var errs []error
+	if cmd.TypeID == uuid.Nil {
+		errs = append(errs, oops.In("services.incident.classifier.type").
+			Code(ErrCodeIncidentTypeIDEmpty).
+			Public("Incident type ID is required.").
+			With("field", "type_id").
+			Errorf("type id empty"))
+	}
 	if err := validateIncidentTypeName(cmd.Name); err != nil {
 		errs = append(errs, err)
 	}
@@ -53,7 +61,8 @@ func (s *IncidentTypeService) UpdateDetails(
 
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var row model.IncidentType
-		if err := tx.First(&row, "id = ?", cmd.TypeID).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeNotFound).

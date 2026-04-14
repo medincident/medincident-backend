@@ -9,6 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
@@ -33,7 +34,8 @@ func (s *IncidentTypeService) Move(
 ) (MoveIncidentTypeResult, error) {
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var moving model.IncidentType
-		if err := tx.First(&moving, "id = ?", cmd.TypeID).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&moving, "id = ?", cmd.TypeID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeNotFound).
@@ -48,7 +50,8 @@ func (s *IncidentTypeService) Move(
 		}
 
 		var newCategory model.IncidentCategory
-		if err := tx.First(&newCategory, "id = ?", cmd.NewCategoryID).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthShare}).
+			First(&newCategory, "id = ?", cmd.NewCategoryID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeCategoryNotFound).

@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
 )
@@ -23,7 +24,8 @@ func (s *IncidentTypeService) Deactivate(
 ) (DeactivateIncidentTypeResult, error) {
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var row model.IncidentType
-		if err := tx.First(&row, "id = ?", cmd.TypeID).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeNotFound).

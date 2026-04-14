@@ -12,6 +12,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
@@ -53,7 +54,8 @@ func (s *IncidentCategoryService) UpdateDetails(
 
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var cat model.IncidentCategory
-		if err := tx.First(&cat, "id = ?", cmd.CategoryID).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&cat, "id = ?", cmd.CategoryID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryNotFound).

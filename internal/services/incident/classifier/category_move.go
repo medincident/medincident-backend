@@ -9,6 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
@@ -88,7 +89,8 @@ func (s *IncidentCategoryService) Move(
 ) (MoveIncidentCategoryResult, error) {
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var moving model.IncidentCategory
-		if err := tx.First(&moving, "id = ?", cmd.CategoryID).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&moving, "id = ?", cmd.CategoryID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryNotFound).
@@ -105,7 +107,8 @@ func (s *IncidentCategoryService) Move(
 		var newParent uuid.NullUUID
 		if cmd.NewParentCategoryID != nil {
 			var parent model.IncidentCategory
-			if err := tx.First(&parent, "id = ?", *cmd.NewParentCategoryID).Error; err != nil {
+			if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthShare}).
+				First(&parent, "id = ?", *cmd.NewParentCategoryID).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return oops.In("services.incident.classifier.category").
 						Code(ErrCodeIncidentCategoryParentNotFound).

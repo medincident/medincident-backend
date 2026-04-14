@@ -48,6 +48,8 @@ func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context,
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		now := time.Now().UTC()
+
 		var row model.DepartmentResponsible
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			Where("department_id = ? AND employee_id = ?", cmd.DepartmentID, cmd.EmployeeID).
@@ -115,7 +117,7 @@ func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context,
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleEventBuildFailed).Wrap(err)
 		}
 		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(time.Now().UTC()),
+			OccurredAt:    timestamppb.New(now),
 			AggregateType: AggregateTypeDepartment,
 			AggregateId:   cmd.DepartmentID.String(),
 			Payload:       payload,

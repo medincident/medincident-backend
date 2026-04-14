@@ -21,6 +21,7 @@ import (
 
 const (
 	ErrCodeIncidentTypeIDGenerationFailed = "incident_type_id_generation_failed"
+	ErrCodeIncidentTypeIDEmpty            = "incident_type_id_empty"
 	ErrCodeIncidentTypeSaveFailed         = "incident_type_save_failed"
 	ErrCodeIncidentTypeLoadFailed         = "incident_type_load_failed"
 	ErrCodeIncidentTypeNotFound           = "incident_type_not_found"
