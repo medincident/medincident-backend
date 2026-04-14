@@ -118,6 +118,6 @@ func (s *EmployeeService) AssignOrganizationHead(ctx context.Context, cmd Assign
 			AggregateId:   cmd.OrganizationID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectOrganizationHeadAssigned, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectOrganizationHeadAssigned, envelope)
 	})
 }

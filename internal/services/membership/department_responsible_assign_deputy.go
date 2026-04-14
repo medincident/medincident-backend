@@ -122,6 +122,6 @@ func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context,
 			AggregateId:   cmd.DepartmentID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectDepartmentResponsibleDeputyAssigned, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectDepartmentResponsibleDeputyAssigned, envelope)
 	})
 }

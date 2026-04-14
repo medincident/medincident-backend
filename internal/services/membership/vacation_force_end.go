@@ -86,6 +86,6 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 			AggregateId:   vac.EmployeeID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectVacationEnded, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectVacationEnded, envelope)
 	})
 }

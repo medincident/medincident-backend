@@ -57,7 +57,7 @@ func (s *IncidentTypeService) Delete(
 			AggregateId:   row.ID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectIncidentTypeDeleted, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectIncidentTypeDeleted, envelope); err != nil {
 			return err
 		}
 		if err := tx.Delete(&model.IncidentType{}, "id = ?", row.ID).Error; err != nil {

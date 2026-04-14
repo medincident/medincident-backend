@@ -100,7 +100,7 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 			AggregateId:   cmd.EmployeeID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectVacationScheduled, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectVacationScheduled, envelope); err != nil {
 			return err
 		}
 		result.ID = id

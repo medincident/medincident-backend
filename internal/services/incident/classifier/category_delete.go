@@ -126,7 +126,7 @@ func (s *IncidentCategoryService) Delete(
 				AggregateId:   id.String(),
 				Payload:       payload,
 			}
-			if err := outbox.AppendEvent(tx, SubjectIncidentTypeDeleted, envelope, nil); err != nil {
+			if err := outbox.AppendEvent(tx, SubjectIncidentTypeDeleted, envelope); err != nil {
 				return err
 			}
 		}
@@ -144,7 +144,7 @@ func (s *IncidentCategoryService) Delete(
 				AggregateId:   id.String(),
 				Payload:       payload,
 			}
-			if err := outbox.AppendEvent(tx, SubjectIncidentCategoryDeleted, envelope, nil); err != nil {
+			if err := outbox.AppendEvent(tx, SubjectIncidentCategoryDeleted, envelope); err != nil {
 				return err
 			}
 		}

@@ -188,7 +188,7 @@ func (s *DepartmentService) Create(
 			AggregateId:   dept.ID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectDepartmentCreated, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectDepartmentCreated, envelope); err != nil {
 			return err
 		}
 		result.ID = id

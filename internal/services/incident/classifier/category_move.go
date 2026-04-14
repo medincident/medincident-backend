@@ -201,7 +201,7 @@ func (s *IncidentCategoryService) Move(
 			AggregateId:   moving.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectIncidentCategoryMoved, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectIncidentCategoryMoved, envelope)
 	})
 	return MoveIncidentCategoryResult{}, err
 }

@@ -201,7 +201,7 @@ func (s *IncidentCategoryService) Create(
 			AggregateId:   cat.ID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectIncidentCategoryCreated, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectIncidentCategoryCreated, envelope); err != nil {
 			return err
 		}
 		result.ID = id

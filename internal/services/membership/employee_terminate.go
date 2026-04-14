@@ -111,6 +111,6 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			AggregateId:   emp.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectEmployeeTerminated, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectEmployeeTerminated, envelope)
 	})
 }

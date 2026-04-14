@@ -75,6 +75,6 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 			AggregateId:   vac.EmployeeID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectVacationCancelled, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectVacationCancelled, envelope)
 	})
 }

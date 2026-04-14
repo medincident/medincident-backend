@@ -100,6 +100,6 @@ func (s *OrganizationService) UpdateDetails(
 			AggregateId:   org.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectOrganizationDetailsChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectOrganizationDetailsChanged, envelope)
 	})
 }

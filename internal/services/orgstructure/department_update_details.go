@@ -92,6 +92,6 @@ func (s *DepartmentService) UpdateDetails(
 			AggregateId:   dept.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectDepartmentDetailsChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectDepartmentDetailsChanged, envelope)
 	})
 }

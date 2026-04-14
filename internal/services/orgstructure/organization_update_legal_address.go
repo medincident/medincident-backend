@@ -107,6 +107,6 @@ func (s *OrganizationService) UpdateLegalAddress(
 			AggregateId:   org.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectOrganizationLegalAddressChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectOrganizationLegalAddressChanged, envelope)
 	})
 }

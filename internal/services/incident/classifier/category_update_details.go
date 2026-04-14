@@ -107,7 +107,7 @@ func (s *IncidentCategoryService) UpdateDetails(
 			AggregateId:   cat.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectIncidentCategoryDetailsChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectIncidentCategoryDetailsChanged, envelope)
 	})
 	return UpdateIncidentCategoryDetailsResult{}, err
 }

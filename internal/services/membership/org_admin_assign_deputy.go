@@ -123,6 +123,6 @@ func (s *EmployeeService) AssignOrganizationAdminDeputy(ctx context.Context, cmd
 			AggregateId:   cmd.OrganizationID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectOrganizationAdminDeputyAssigned, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectOrganizationAdminDeputyAssigned, envelope)
 	})
 }

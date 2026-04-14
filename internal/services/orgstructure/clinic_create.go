@@ -215,7 +215,7 @@ func (s *ClinicService) Create(
 			AggregateId:   clinic.ID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectClinicCreated, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectClinicCreated, envelope); err != nil {
 			return err
 		}
 		result.ID = id

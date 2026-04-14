@@ -132,7 +132,7 @@ func (s *IncidentTypeService) Reactivate(
 			AggregateId:   row.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectIncidentTypeReactivated, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectIncidentTypeReactivated, envelope)
 	})
 	return ReactivateIncidentTypeResult{}, err
 }

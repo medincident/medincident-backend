@@ -57,6 +57,6 @@ func (s *EmployeeService) RevokeSystemAdmin(ctx context.Context, cmd RevokeSyste
 			AggregateId:   id,
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectSystemAdminRevoked, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectSystemAdminRevoked, envelope)
 	})
 }

@@ -131,7 +131,7 @@ func (s *IncidentCategoryService) Reactivate(
 			AggregateId:   cat.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectIncidentCategoryReactivated, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectIncidentCategoryReactivated, envelope)
 	})
 	return ReactivateIncidentCategoryResult{}, err
 }

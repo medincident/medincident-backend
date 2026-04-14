@@ -99,6 +99,6 @@ func (s *ClinicService) UpdatePhysicalAddress(
 			AggregateId:   clinic.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectClinicPhysicalAddressChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectClinicPhysicalAddressChanged, envelope)
 	})
 }

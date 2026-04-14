@@ -75,6 +75,6 @@ func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemA
 			AggregateId:   id,
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectSystemAdminGranted, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectSystemAdminGranted, envelope)
 	})
 }

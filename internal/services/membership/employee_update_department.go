@@ -124,7 +124,7 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 			AggregateId:   emp.ID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectEmployeeDepartmentChanged, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectEmployeeDepartmentChanged, envelope); err != nil {
 			return err
 		}
 

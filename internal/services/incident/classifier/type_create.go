@@ -132,7 +132,7 @@ func (s *IncidentTypeService) Create(
 			AggregateId:   row.ID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectIncidentTypeCreated, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectIncidentTypeCreated, envelope); err != nil {
 			return err
 		}
 		result.ID = id

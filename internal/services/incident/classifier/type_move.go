@@ -98,7 +98,7 @@ func (s *IncidentTypeService) Move(
 			AggregateId:   moving.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectIncidentTypeMoved, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectIncidentTypeMoved, envelope)
 	})
 	return MoveIncidentTypeResult{}, err
 }

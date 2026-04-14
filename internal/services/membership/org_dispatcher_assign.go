@@ -118,6 +118,6 @@ func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd 
 			AggregateId:   cmd.OrganizationID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectOrganizationDispatcherAssigned, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectOrganizationDispatcherAssigned, envelope)
 	})
 }

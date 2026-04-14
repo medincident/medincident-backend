@@ -148,7 +148,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			AggregateId:   id.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectEmployeeHired, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectEmployeeHired, envelope); err != nil {
 			return err
 		}
 

@@ -94,7 +94,7 @@ func publishOrgHeadRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, no
 		AggregateId:   organizationID.String(),
 		Payload:       payload,
 	}
-	return outbox.AppendEvent(tx, SubjectOrganizationHeadRevoked, envelope, nil)
+	return outbox.AppendEvent(tx, SubjectOrganizationHeadRevoked, envelope)
 }
 
 // publishOrgHeadDeputyRemoved is a shared helper; it publishes the
@@ -113,5 +113,5 @@ func publishOrgHeadDeputyRemoved(tx *gorm.DB, organizationID, employeeID uuid.UU
 		AggregateId:   organizationID.String(),
 		Payload:       payload,
 	}
-	return outbox.AppendEvent(tx, SubjectOrganizationHeadDeputyRemoved, envelope, nil)
+	return outbox.AppendEvent(tx, SubjectOrganizationHeadDeputyRemoved, envelope)
 }

@@ -130,6 +130,6 @@ func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd Assign
 			AggregateId:   cmd.ClinicID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectClinicHeadDeputyAssigned, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectClinicHeadDeputyAssigned, envelope)
 	})
 }

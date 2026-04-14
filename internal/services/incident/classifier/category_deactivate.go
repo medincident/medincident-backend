@@ -135,7 +135,7 @@ func appendCategoryDeactivatedEvent(tx *gorm.DB, categoryID uuid.UUID) error {
 		AggregateId:   categoryID.String(),
 		Payload:       payload,
 	}
-	return outbox.AppendEvent(tx, SubjectIncidentCategoryDeactivated, envelope, nil)
+	return outbox.AppendEvent(tx, SubjectIncidentCategoryDeactivated, envelope)
 }
 
 func appendTypeDeactivatedEvent(tx *gorm.DB, typeID uuid.UUID) error {
@@ -152,5 +152,5 @@ func appendTypeDeactivatedEvent(tx *gorm.DB, typeID uuid.UUID) error {
 		AggregateId:   typeID.String(),
 		Payload:       payload,
 	}
-	return outbox.AppendEvent(tx, SubjectIncidentTypeDeactivated, envelope, nil)
+	return outbox.AppendEvent(tx, SubjectIncidentTypeDeactivated, envelope)
 }

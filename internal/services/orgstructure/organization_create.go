@@ -221,7 +221,7 @@ func (s *OrganizationService) Create(
 			AggregateId:   org.ID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectOrganizationCreated, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectOrganizationCreated, envelope); err != nil {
 			return err
 		}
 		result.ID = id

@@ -113,7 +113,7 @@ func (s *IncidentTypeService) UpdateDetails(
 			AggregateId:   row.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectIncidentTypeDetailsChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectIncidentTypeDetailsChanged, envelope)
 	})
 	return UpdateIncidentTypeDetailsResult{}, err
 }

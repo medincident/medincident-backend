@@ -84,6 +84,6 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 			AggregateId:   emp.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectEmployeePositionChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectEmployeePositionChanged, envelope)
 	})
 }

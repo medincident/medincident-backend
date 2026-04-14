@@ -83,7 +83,7 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 			AggregateId:   cmd.EmployeeID.String(),
 			Payload:       payload,
 		}
-		if err := outbox.AppendEvent(tx, SubjectVacationStarted, envelope, nil); err != nil {
+		if err := outbox.AppendEvent(tx, SubjectVacationStarted, envelope); err != nil {
 			return err
 		}
 

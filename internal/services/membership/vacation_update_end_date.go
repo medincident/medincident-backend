@@ -121,6 +121,6 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 			AggregateId:   vac.EmployeeID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectVacationEndDateChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectVacationEndDateChanged, envelope)
 	})
 }

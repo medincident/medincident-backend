@@ -92,6 +92,6 @@ func (s *ClinicService) UpdateDetails(
 			AggregateId:   clinic.ID.String(),
 			Payload:       payload,
 		}
-		return outbox.AppendEvent(tx, SubjectClinicDetailsChanged, envelope, nil)
+		return outbox.AppendEvent(tx, SubjectClinicDetailsChanged, envelope)
 	})
 }
