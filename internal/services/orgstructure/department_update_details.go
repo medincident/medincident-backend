@@ -11,6 +11,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
@@ -50,7 +51,8 @@ func (s *DepartmentService) UpdateDetails(
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var dept model.Department
-		if err := tx.First(&dept, "id = ?", cmd.ID).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&dept, "id = ?", cmd.ID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.orgstructure.department").
 					Code(ErrCodeDepartmentNotFound).

@@ -11,6 +11,7 @@ import (
 	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
@@ -50,7 +51,8 @@ func (s *ClinicService) UpdateDetails(
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var clinic model.Clinic
-		if err := tx.First(&clinic, "id = ?", cmd.ID).Error; err != nil {
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&clinic, "id = ?", cmd.ID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.orgstructure.clinic").
 					Code(ErrCodeClinicNotFound).
