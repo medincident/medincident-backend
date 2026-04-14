@@ -76,8 +76,13 @@ func (s *IncidentTypeService) UpdateDetails(
 				Wrap(err)
 		}
 
-		row.Name = strings.TrimSpace(cmd.Name)
-		row.Description = null.StringFromPtr(trimmedStringPtr(cmd.Description))
+		newName := strings.TrimSpace(cmd.Name)
+		newDescription := null.StringFromPtr(trimmedStringPtr(cmd.Description))
+		if row.Name == newName && row.Description == newDescription {
+			return nil
+		}
+		row.Name = newName
+		row.Description = newDescription
 		if err := tx.Save(&row).Error; err != nil {
 			var pgErr *pgconn.PgError
 			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {

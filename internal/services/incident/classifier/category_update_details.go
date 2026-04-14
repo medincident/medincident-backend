@@ -69,8 +69,13 @@ func (s *IncidentCategoryService) UpdateDetails(
 				Wrap(err)
 		}
 
-		cat.Name = strings.TrimSpace(cmd.Name)
-		cat.Description = null.StringFromPtr(trimmedStringPtr(cmd.Description))
+		newName := strings.TrimSpace(cmd.Name)
+		newDescription := null.StringFromPtr(trimmedStringPtr(cmd.Description))
+		if cat.Name == newName && cat.Description == newDescription {
+			return nil
+		}
+		cat.Name = newName
+		cat.Description = newDescription
 
 		if err := tx.Save(&cat).Error; err != nil {
 			var pgErr *pgconn.PgError

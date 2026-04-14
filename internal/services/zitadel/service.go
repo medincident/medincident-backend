@@ -43,8 +43,10 @@ type Service struct {
 // production constructor. domain must be an https URL such as
 // https://auth.example.com, with TLS.
 //
-// Does NOT ping Zitadel — per project convention DI factories don't
-// health-check.
+// Does not perform an explicit health-check, but the underlying
+// zitadel-go client.New implicitly hits the OIDC discovery endpoint
+// while wiring the JWT Profile token source — callers must pass a
+// bounded ctx so DI bootstrap cannot hang on an unreachable Zitadel.
 func NewServiceFromKeyFile(ctx context.Context, domain, keyPath string) (*Service, error) {
 	hostname, port, tls, err := parseDomain(domain)
 	if err != nil {
