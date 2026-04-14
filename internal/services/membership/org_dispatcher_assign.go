@@ -15,10 +15,9 @@ import (
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
-
-const scopeOrgDispatcher = "services.membership.org_dispatcher"
 
 // AssignOrganizationDispatcherCommand carries the identifiers needed to link
 // an employee to an organization as its dispatcher.
@@ -94,7 +93,7 @@ func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd 
 		}
 		if err := tx.Create(&row).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
 				return oops.In(scopeOrgDispatcher).
 					Code(ErrCodeOrganizationDispatcherAlreadyAssigned).
 					Public("This employee is already an organization dispatcher.").

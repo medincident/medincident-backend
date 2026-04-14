@@ -15,10 +15,9 @@ import (
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
-
-const scopeOrgAdmin = "services.membership.org_admin"
 
 // AssignOrganizationAdminCommand carries the identifiers needed to link
 // an employee to an organization as its admin.
@@ -94,7 +93,7 @@ func (s *EmployeeService) AssignOrganizationAdmin(ctx context.Context, cmd Assig
 		}
 		if err := tx.Create(&row).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
 				return oops.In(scopeOrgAdmin).
 					Code(ErrCodeOrganizationAdminAlreadyAssigned).
 					Public("This employee is already an organization admin.").

@@ -15,10 +15,9 @@ import (
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
-
-const scopeDepartmentResponsible = "services.membership.department_responsible"
 
 // AssignDepartmentResponsibleCommand carries the identifiers needed to
 // link an employee to a department as its responsible.
@@ -93,7 +92,7 @@ func (s *EmployeeService) AssignDepartmentResponsible(ctx context.Context, cmd A
 		}
 		if err := tx.Create(&row).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
 				return oops.In(scopeDepartmentResponsible).
 					Code(ErrCodeDepartmentResponsibleAlreadyAssigned).
 					Public("This employee is already a department responsible.").

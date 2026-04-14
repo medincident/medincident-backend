@@ -17,6 +17,7 @@ import (
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
@@ -47,9 +48,6 @@ const (
 	SubjectClinicDetailsChanged         = "medincident.event.clinic.v1.details_changed"
 	SubjectClinicPhysicalAddressChanged = "medincident.event.clinic.v1.physical_address_changed"
 )
-
-// pgErrCodeForeignKeyViolation is Postgres error code 23503.
-const pgErrCodeForeignKeyViolation = "23503"
 
 type CreateClinicCommand struct {
 	OrganizationID  uuid.UUID
@@ -188,7 +186,7 @@ func (s *ClinicService) Create(
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&clinic).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeForeignKeyViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeForeignKeyViolation {
 				return oops.In("services.orgstructure.clinic").
 					Code(ErrCodeClinicOrganizationNotFound).
 					Public("Organization not found.").

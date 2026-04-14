@@ -17,6 +17,7 @@ import (
 	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
@@ -116,7 +117,7 @@ func (s *IncidentCategoryService) Reactivate(
 			RETURNING updated_at`, cat.ID,
 		).Row().Scan(&updatedAt); err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryReactivateNameConflict).
 					Public("Cannot reactivate: another active incident category uses this name.").

@@ -16,6 +16,7 @@ import (
 	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
@@ -121,7 +122,7 @@ func (s *IncidentTypeService) Create(
 
 		if err := tx.Create(&row).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeNameConflict).
 					Public("An active incident type with this name already exists.").

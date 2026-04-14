@@ -15,10 +15,9 @@ import (
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
-
-const scopeClinicHead = "services.membership.clinic_head"
 
 // AssignClinicHeadCommand carries the identifiers needed to link an
 // employee to a clinic as its head.
@@ -103,7 +102,7 @@ func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinic
 		}
 		if err := tx.Create(&row).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
 				return oops.In(scopeClinicHead).
 					Code(ErrCodeClinicHeadAlreadyAssigned).
 					Public("This employee is already a clinic head.").

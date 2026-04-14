@@ -11,6 +11,11 @@ CREATE TABLE domain.clinic_heads (
     PRIMARY KEY (clinic_id, employee_id)
 );
 
+-- Load-bearing invariant: an employee can hold at most one ClinicHead
+-- row across the whole table. The service layer relies on this to
+-- detect 'already assigned' via the unique-violation SQLSTATE. Do not
+-- drop this index without also rewriting the duplicate-detection logic
+-- in services/membership/clinic_head_assign.go.
 CREATE UNIQUE INDEX clinic_heads_holder_uniq
     ON domain.clinic_heads (employee_id);
 

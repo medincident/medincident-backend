@@ -15,6 +15,7 @@ import (
 	systemadminv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 	"github.com/medincident/medincident-command-service/internal/services/zitadel"
 )
@@ -54,7 +55,7 @@ func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemA
 		row := model.SystemAdmin{ZitadelUserID: id}
 		if err := tx.Create(&row).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
 				return oops.In(scopeSystemAdmin).
 					Code(ErrCodeSystemAdminAlreadyGranted).
 					Public("User is already a system admin.").

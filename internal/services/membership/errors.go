@@ -100,14 +100,3 @@ const (
 	ErrCodeSystemAdminDeleteFailed                = "system_admin_delete_failed"
 	ErrCodeSystemAdminEventBuildFailed            = "system_admin_event_build_failed"
 )
-
-// Postgres SQLSTATE codes we match against.
-const (
-	pgErrCodeUniqueViolation = "23505"
-)
-
-// Additional SQLSTATE codes used by vacation commands.
-const (
-	pgErrCodeForeignKeyViolation = "23503"
-	pgErrCodeExclusionViolation  = "23P01"
-)

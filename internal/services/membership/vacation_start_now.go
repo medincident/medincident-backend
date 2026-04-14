@@ -15,6 +15,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
@@ -101,12 +102,12 @@ func mapVacationInsertError(err error, employeeID uuid.UUID) error {
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) {
 		switch pgErr.Code {
-		case pgErrCodeExclusionViolation:
+		case pgerr.CodeExclusionViolation:
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationOverlap).
 				Public("Vacation overlaps with an existing one.").
 				Wrap(err)
-		case pgErrCodeForeignKeyViolation:
+		case pgerr.CodeForeignKeyViolation:
 			return oops.In(scopeVacation).
 				Code(ErrCodeEmployeeNotFound).
 				Public("Employee not found.").

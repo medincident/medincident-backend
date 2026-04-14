@@ -17,6 +17,7 @@ import (
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
@@ -161,7 +162,7 @@ func (s *DepartmentService) Create(
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&dept).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeForeignKeyViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeForeignKeyViolation {
 				return oops.In("services.orgstructure.department").
 					Code(ErrCodeDepartmentClinicNotFound).
 					Public("Clinic not found.").

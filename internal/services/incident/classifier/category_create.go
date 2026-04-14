@@ -16,6 +16,7 @@ import (
 	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
 
@@ -187,14 +188,14 @@ func (s *IncidentCategoryService) Create(
 			var pgErr *pgconn.PgError
 			if errors.As(err, &pgErr) {
 				switch pgErr.Code {
-				case pgErrCodeUniqueViolation:
+				case pgerr.CodeUniqueViolation:
 					return oops.In("services.incident.classifier.category").
 						Code(ErrCodeIncidentCategoryNameConflict).
 						Public("An active incident category with this name already exists.").
 						With("organization_id", cmd.OrganizationID).
 						With("name", cat.Name).
 						Wrap(err)
-				case pgErrCodeForeignKeyViolation:
+				case pgerr.CodeForeignKeyViolation:
 					return oops.In("services.incident.classifier.category").
 						Code(ErrCodeIncidentCategoryParentNotFound).
 						Public("Parent incident category or organization not found.").

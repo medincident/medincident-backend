@@ -16,6 +16,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 	"github.com/medincident/medincident-command-service/internal/services/zitadel"
 )
@@ -116,7 +117,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 		}
 		if err := tx.Create(&emp).Error; err != nil {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgErrCodeUniqueViolation {
+			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
 				return oops.In(scopeEmployee).
 					Code(ErrCodeEmployeeAlreadyHired).
 					Public("Employee is already hired in this organization.").
