@@ -35,8 +35,7 @@ func (w *loggerWrapper) Shutdown(_ context.Context) error {
 	return nil
 }
 
-// ProvideLoggerWrapper is a samber/do provider for *loggerWrapper.
-func ProvideLoggerWrapper(injector do.Injector) (*loggerWrapper, error) {
+func provideLoggerWrapper(injector do.Injector) (*loggerWrapper, error) {
 	cfg, err := do.Invoke[*config.Config](injector)
 	if err != nil {
 		return nil, err
@@ -48,8 +47,7 @@ func ProvideLoggerWrapper(injector do.Injector) (*loggerWrapper, error) {
 	return &loggerWrapper{logger: logger, cleanup: cleanup}, nil
 }
 
-// ProvideZerolog is a samber/do provider for *zerolog.Logger.
-func ProvideZerolog(injector do.Injector) (*zerolog.Logger, error) {
+func provideZerolog(injector do.Injector) (*zerolog.Logger, error) {
 	w, err := do.Invoke[*loggerWrapper](injector)
 	if err != nil {
 		return nil, err

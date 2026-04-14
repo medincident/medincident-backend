@@ -13,21 +13,19 @@ import (
 	"github.com/medincident/medincident-command-service/internal/config"
 )
 
-// Error codes emitted by ProvidePostgresDB.
 const (
 	ErrCodePostgresOpenFailed = "postgres_open_failed"
 	ErrCodePostgresTuneFailed = "postgres_tune_failed"
 )
 
-// PostgresDB wraps *gorm.DB so samber/do can call Shutdown on it.
-// The type is exported only so callers in the same package can use it;
-// services and handlers invoke *gorm.DB directly (see ProvideGormDB).
-type PostgresDB struct {
+// postgresDBWrapper owns the *gorm.DB lifecycle so samber/do can Close
+// the underlying sql.DB pool on injector shutdown. Private to di —
+// consumers invoke *gorm.DB directly via ProvideGormDB.
+type postgresDBWrapper struct {
 	*gorm.DB
 }
 
-// Shutdown closes the underlying sql.DB pool.
-func (p *PostgresDB) Shutdown(_ context.Context) error {
+func (p *postgresDBWrapper) Shutdown(_ context.Context) error {
 	sqlDB, err := p.DB.DB()
 	if err != nil {
 		return err
@@ -35,12 +33,7 @@ func (p *PostgresDB) Shutdown(_ context.Context) error {
 	return sqlDB.Close()
 }
 
-// ProvidePostgresDB opens a gorm connection to Postgres, applies pool
-// tunables from config, and returns a Shutdown-aware wrapper.
-//
-// No Ping, no warm-up, no connectivity probe — the factory only wires.
-// Connection failures surface lazily on the first query from a service.
-func ProvidePostgresDB(injector do.Injector) (*PostgresDB, error) {
+func providePostgresDBWrapper(injector do.Injector) (*postgresDBWrapper, error) {
 	cfg, err := do.Invoke[*config.Config](injector)
 	if err != nil {
 		return nil, err
@@ -72,15 +65,15 @@ func ProvidePostgresDB(injector do.Injector) (*PostgresDB, error) {
 	sqlDB.SetConnMaxIdleTime(cfg.Postgres.Pool.ConnMaxIdleTime)
 
 	logger.Info().Msg("postgres pool wired")
-	return &PostgresDB{DB: db}, nil
+	return &postgresDBWrapper{DB: db}, nil
 }
 
-// ProvideGormDB resolves the *gorm.DB pointer from the wrapper so
-// services can Invoke it directly without knowing about the wrapper.
-func ProvideGormDB(injector do.Injector) (*gorm.DB, error) {
-	p, err := do.Invoke[*PostgresDB](injector)
+// provideGormDB resolves the real *gorm.DB for services and handlers —
+// they don't know about the wrapper.
+func provideGormDB(injector do.Injector) (*gorm.DB, error) {
+	w, err := do.Invoke[*postgresDBWrapper](injector)
 	if err != nil {
 		return nil, err
 	}
-	return p.DB, nil
+	return w.DB, nil
 }

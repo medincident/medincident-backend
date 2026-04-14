@@ -18,16 +18,15 @@ import (
 // GracefulStop deadline expiry before Shutdown returns.
 const forceStopGracePeriod = 50 * time.Millisecond
 
-// GRPCServer wraps *grpc.Server for Shutdown semantics. The type is
-// exported so cmd/server/main.go can Invoke it and access the
-// embedded *grpc.Server to call Serve on the listener.
-type GRPCServer struct {
+// grpcServerWrapper owns the *grpc.Server lifecycle. Private to di —
+// consumers invoke *grpc.Server directly via ProvideGRPCServer.
+type grpcServerWrapper struct {
 	*grpc.Server
 }
 
 // Shutdown issues GracefulStop bounded by the ctx deadline; on
 // deadline expiry, it falls back to Stop to force-close.
-func (g *GRPCServer) Shutdown(ctx context.Context) error {
+func (g *grpcServerWrapper) Shutdown(ctx context.Context) error {
 	done := make(chan struct{})
 	go func() {
 		g.GracefulStop()
@@ -38,16 +37,12 @@ func (g *GRPCServer) Shutdown(ctx context.Context) error {
 		return nil
 	case <-ctx.Done():
 		g.Stop()
-		// Brief moment for forced-close to flush.
 		time.Sleep(forceStopGracePeriod)
 		return ctx.Err()
 	}
 }
 
-// ProvideGRPCServer constructs the gRPC server and registers the
-// OrgStructureService handler on it. No interceptors — error mapping
-// is deferred to a future middleware spec.
-func ProvideGRPCServer(injector do.Injector) (*GRPCServer, error) {
+func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) {
 	cfg, err := do.Invoke[*config.Config](injector)
 	if err != nil {
 		return nil, err
@@ -67,5 +62,16 @@ func ProvideGRPCServer(injector do.Injector) (*GRPCServer, error) {
 	}
 	membershipv1.RegisterMembershipServiceServer(server, membershipHandler)
 
-	return &GRPCServer{Server: server}, nil
+	return &grpcServerWrapper{Server: server}, nil
+}
+
+// provideGRPCServer resolves the real *grpc.Server for main.go — it
+// doesn't know about the wrapper. The wrapper is still registered in
+// the container so samber/do invokes its Shutdown on teardown.
+func provideGRPCServer(injector do.Injector) (*grpc.Server, error) {
+	w, err := do.Invoke[*grpcServerWrapper](injector)
+	if err != nil {
+		return nil, err
+	}
+	return w.Server, nil
 }

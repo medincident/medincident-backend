@@ -10,8 +10,7 @@ import (
 	"github.com/medincident/medincident-command-service/internal/services/zitadel"
 )
 
-// ProvideOrganizationService wires OrganizationService.
-func ProvideOrganizationService(injector do.Injector) (*orgsvc.OrganizationService, error) {
+func provideOrganizationService(injector do.Injector) (*orgsvc.OrganizationService, error) {
 	db, err := do.Invoke[*gorm.DB](injector)
 	if err != nil {
 		return nil, err
@@ -23,8 +22,7 @@ func ProvideOrganizationService(injector do.Injector) (*orgsvc.OrganizationServi
 	return orgsvc.NewOrganizationService(db, logger), nil
 }
 
-// ProvideClinicService wires ClinicService.
-func ProvideClinicService(injector do.Injector) (*orgsvc.ClinicService, error) {
+func provideClinicService(injector do.Injector) (*orgsvc.ClinicService, error) {
 	db, err := do.Invoke[*gorm.DB](injector)
 	if err != nil {
 		return nil, err
@@ -36,8 +34,7 @@ func ProvideClinicService(injector do.Injector) (*orgsvc.ClinicService, error) {
 	return orgsvc.NewClinicService(db, logger), nil
 }
 
-// ProvideDepartmentService wires DepartmentService.
-func ProvideDepartmentService(injector do.Injector) (*orgsvc.DepartmentService, error) {
+func provideDepartmentService(injector do.Injector) (*orgsvc.DepartmentService, error) {
 	db, err := do.Invoke[*gorm.DB](injector)
 	if err != nil {
 		return nil, err
@@ -49,8 +46,7 @@ func ProvideDepartmentService(injector do.Injector) (*orgsvc.DepartmentService, 
 	return orgsvc.NewDepartmentService(db, logger), nil
 }
 
-// ProvideEmployeeService wires EmployeeService.
-func ProvideEmployeeService(injector do.Injector) (*membership.EmployeeService, error) {
+func provideEmployeeService(injector do.Injector) (*membership.EmployeeService, error) {
 	db, err := do.Invoke[*gorm.DB](injector)
 	if err != nil {
 		return nil, err

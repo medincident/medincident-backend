@@ -2,8 +2,13 @@
 //
 // The container is built once from a loaded *config.Config. Providers
 // are lifecycle-aware: anything that holds external resources (gorm
-// pool, log file handles, gRPC server) implements the do Shutdowner
-// protocol so injector.ShutdownWithContext cleans up on exit.
+// pool, log file handles, gRPC server) is held by a private wrapper
+// that implements the do Shutdowner protocol. Consumers depend on the
+// real type (e.g. *gorm.DB, *grpc.Server), not the wrapper.
+//
+// Provider functions are all unexported — NewContainer is the only
+// public entry point. Consumers resolve dependencies via do.Invoke on
+// the returned injector, keyed by the real type.
 package di
 
 import (
@@ -19,31 +24,29 @@ func NewContainer(cfg *config.Config) (do.Injector, error) {
 	do.ProvideValue(injector, cfg)
 
 	// Logging
-	do.Provide(injector, ProvideLoggerWrapper)
-	do.Provide(injector, ProvideZerolog)
+	do.Provide(injector, provideLoggerWrapper)
+	do.Provide(injector, provideZerolog)
 
 	// Persistence
-	do.Provide(injector, ProvidePostgresDB)
-	do.Provide(injector, ProvideGormDB)
+	do.Provide(injector, providePostgresDBWrapper)
+	do.Provide(injector, provideGormDB)
 
 	// Zitadel
-	do.Provide(injector, ProvideZitadelService)
+	do.Provide(injector, provideZitadelService)
 
 	// Services
-	do.Provide(injector, ProvideOrganizationService)
-	do.Provide(injector, ProvideClinicService)
-	do.Provide(injector, ProvideDepartmentService)
+	do.Provide(injector, provideOrganizationService)
+	do.Provide(injector, provideClinicService)
+	do.Provide(injector, provideDepartmentService)
+	do.Provide(injector, provideEmployeeService)
 
-	// Membership services
-	do.Provide(injector, ProvideEmployeeService)
+	// Handlers
+	do.Provide(injector, provideOrgStructureHandler)
+	do.Provide(injector, provideMembershipHandler)
 
-	// Handler + gRPC server
-	do.Provide(injector, ProvideOrgStructureHandler)
-
-	// Membership handler
-	do.Provide(injector, ProvideMembershipHandler)
-
-	do.Provide(injector, ProvideGRPCServer)
+	// gRPC server
+	do.Provide(injector, provideGRPCServerWrapper)
+	do.Provide(injector, provideGRPCServer)
 
 	return injector, nil
 }

@@ -41,14 +41,10 @@ func main() {
 	}
 
 	logger := do.MustInvoke[*zerolog.Logger](container)
-	grpcWrapper, err := do.Invoke[*di.GRPCServer](container)
+	server, err := do.Invoke[*grpc.Server](container)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("failed to resolve grpc server")
 	}
-	// grpcWrapper embeds *grpc.Server; container.Shutdown will call
-	// grpcWrapper.Shutdown for graceful teardown via the samber/do
-	// Shutdowner protocol.
-	server := grpcWrapper.Server
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)

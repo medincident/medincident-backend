@@ -10,8 +10,7 @@ import (
 	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
 )
 
-// ProvideOrgStructureHandler wires the gRPC handler for OrgStructureService.
-func ProvideOrgStructureHandler(injector do.Injector) (*orghandler.OrgStructureHandler, error) {
+func provideOrgStructureHandler(injector do.Injector) (*orghandler.OrgStructureHandler, error) {
 	orgSvc, err := do.Invoke[*orgsvc.OrganizationService](injector)
 	if err != nil {
 		return nil, err
@@ -31,8 +30,7 @@ func ProvideOrgStructureHandler(injector do.Injector) (*orghandler.OrgStructureH
 	return orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc, logger), nil
 }
 
-// ProvideMembershipHandler wires the gRPC handler for MembershipService.
-func ProvideMembershipHandler(injector do.Injector) (*membershiphandler.MembershipHandler, error) {
+func provideMembershipHandler(injector do.Injector) (*membershiphandler.MembershipHandler, error) {
 	empSvc, err := do.Invoke[*membership.EmployeeService](injector)
 	if err != nil {
 		return nil, err
