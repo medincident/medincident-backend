@@ -3,6 +3,7 @@ package di
 import (
 	"context"
 
+	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
 	"google.golang.org/grpc"
 
@@ -13,6 +14,7 @@ import (
 	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
+	"github.com/medincident/medincident-command-service/internal/middlewares"
 )
 
 // grpcServerWrapper owns the *grpc.Server lifecycle. Private to di —
@@ -43,12 +45,17 @@ func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) 
 	if err != nil {
 		return nil, err
 	}
+	logger, err := do.Invoke[*zerolog.Logger](injector)
+	if err != nil {
+		return nil, err
+	}
 	handler, err := do.Invoke[*orghandler.OrgStructureHandler](injector)
 	if err != nil {
 		return nil, err
 	}
 	server := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
+		grpc.ChainUnaryInterceptor(middlewares.ErrorInterceptor(logger)),
 	)
 	orgstructurev1.RegisterOrgStructureServiceServer(server, handler)
 
