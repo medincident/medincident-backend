@@ -3,6 +3,7 @@ package classifier
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
@@ -174,25 +175,21 @@ func (s *IncidentCategoryService) Move(
 			newParent = uuid.NullUUID{UUID: parent.ID, Valid: true}
 		}
 
-		if err := tx.Model(&model.IncidentCategory{}).
-			Where("id = ?", moving.ID).
-			Update("parent_category_id", newParent).Error; err != nil {
+		var updatedAt time.Time
+		if err := tx.Raw(`
+			UPDATE domain.incident_categories
+			SET parent_category_id = ?, updated_at = now()
+			WHERE id = ?
+			RETURNING updated_at`, newParent, moving.ID,
+		).Row().Scan(&updatedAt); err != nil {
 			return oops.In("services.incident.classifier.category").
 				Code(ErrCodeIncidentCategorySaveFailed).
 				With("incident_category_id", moving.ID).
 				Wrap(err)
 		}
 
-		var updated model.IncidentCategory
-		if err := tx.First(&updated, "id = ?", moving.ID).Error; err != nil {
-			return oops.In("services.incident.classifier.category").
-				Code(ErrCodeIncidentCategoryLoadFailed).
-				With("incident_category_id", moving.ID).
-				Wrap(err)
-		}
-
-		event := buildIncidentCategoryMovedEvent(updated.ParentCategoryID)
-		return outbox.Publish(tx, SubjectIncidentCategoryMoved, AggregateTypeIncidentCategory, moving.ID.String(), updated.UpdatedAt, event)
+		event := buildIncidentCategoryMovedEvent(newParent)
+		return outbox.Publish(tx, SubjectIncidentCategoryMoved, AggregateTypeIncidentCategory, moving.ID.String(), updatedAt, event)
 	})
 	return MoveIncidentCategoryResult{}, err
 }

@@ -1,10 +1,7 @@
 package config
 
 import (
-	"errors"
 	"os"
-	"sort"
-	"strings"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -100,24 +97,6 @@ func defaultConfig() Config {
 	}
 }
 
-func formatValidationErrors(err error) []string {
-	var ve validator.ValidationErrors
-	if !errors.As(err, &ve) {
-		return []string{err.Error()}
-	}
-	msgs := make([]string, 0, len(ve))
-	for _, fe := range ve {
-		ns := strings.TrimPrefix(fe.StructNamespace(), "Config.")
-		tag := fe.Tag()
-		if param := fe.Param(); param != "" {
-			tag = tag + "=" + param
-		}
-		msgs = append(msgs, ns+": "+tag)
-	}
-	sort.Strings(msgs)
-	return msgs
-}
-
 // Read loads a YAML config file from path and expands ${VAR} / $VAR
 // references in its content using the current process environment.
 func Read(path string) (*Config, error) {
@@ -143,7 +122,7 @@ func Read(path string) (*Config, error) {
 			In("config").
 			Code(ErrCodeConfigValidateFailed).
 			With("path", path).
-			With("violations", formatValidationErrors(err)).
+			With("violations", err.Error()).
 			Wrap(err)
 	}
 	return &cfg, nil

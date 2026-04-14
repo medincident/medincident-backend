@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
@@ -74,7 +75,7 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 			ID:         id,
 			EmployeeID: cmd.EmployeeID,
 			StartsAt:   cmd.StartsAt,
-			EndsAt:     nullTimeFromPtr(cmd.EndsAt),
+			EndsAt:     null.TimeFromPtr(cmd.EndsAt),
 		}
 		if err := tx.Create(&vac).Error; err != nil {
 			mapped := mapVacationInsertError(err, cmd.EmployeeID)
