@@ -52,7 +52,7 @@ func (s *EmployeeService) AssignOrganizationAdmin(ctx context.Context, cmd Assig
 		var orgExists int64
 		if err := tx.Raw(`SELECT count(*) FROM domain.organizations WHERE id = ?`, cmd.OrganizationID).
 			Scan(&orgExists).Error; err != nil {
-			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminLoadFailed).Wrap(err)
+			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationLookupFailed).Wrap(err)
 		}
 		if orgExists == 0 {
 			return oops.In(scopeOrgAdmin).

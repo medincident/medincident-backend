@@ -71,7 +71,10 @@ const (
 	ErrCodeVacationEventBuildFailed   = "vacation_event_build_failed"
 	ErrCodeDepartmentLookupFailed     = "department_lookup_failed"
 	ErrCodeClinicLookupFailed         = "clinic_lookup_failed"
-	ErrCodeZitadelVerifyFailed        = "zitadel_verify_failed"
+	ErrCodeOrganizationLookupFailed   = "organization_lookup_failed"
+	// Zitadel verify failures are emitted via
+	// services/zitadel.ErrCodeZitadelVerifyFailed — do not re-declare
+	// the string here so the two constants can't drift apart.
 
 	ErrCodeDepartmentResponsibleSaveFailed        = "department_responsible_save_failed"
 	ErrCodeDepartmentResponsibleLoadFailed        = "department_responsible_load_failed"

@@ -72,7 +72,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 				Wrap(err)
 		}
 		return HireEmployeeResult{}, oops.In(scopeEmployee).
-			Code(ErrCodeZitadelVerifyFailed).
+			Code(zitadel.ErrCodeZitadelVerifyFailed).
 			With("zitadel_user_id", zitadelUserID).
 			Wrap(err)
 	}

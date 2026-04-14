@@ -45,7 +45,7 @@ func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemA
 				Wrap(err)
 		}
 		return oops.In(scopeSystemAdmin).
-			Code(ErrCodeZitadelVerifyFailed).
+			Code(zitadel.ErrCodeZitadelVerifyFailed).
 			With("zitadel_user_id", id).
 			Wrap(err)
 	}

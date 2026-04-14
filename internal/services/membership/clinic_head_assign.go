@@ -79,13 +79,13 @@ func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinic
 
 		// Scope check: does this employee's current department belong to the
 		// target clinic? There is no denormalized clinic_id on employees, so
-		// we JOIN through departments.
+		// we look up the department row.
 		var inClinic int64
 		if err := tx.Raw(
 			`SELECT count(*) FROM domain.departments WHERE id = ? AND clinic_id = ?`,
 			emp.DepartmentID, cmd.ClinicID,
 		).Scan(&inClinic).Error; err != nil {
-			return oops.In(scopeClinicHead).Code(ErrCodeClinicLookupFailed).Wrap(err)
+			return oops.In(scopeClinicHead).Code(ErrCodeDepartmentLookupFailed).Wrap(err)
 		}
 		if inClinic == 0 {
 			return oops.In(scopeClinicHead).

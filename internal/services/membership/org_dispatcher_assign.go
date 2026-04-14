@@ -52,7 +52,7 @@ func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd 
 		var orgExists int64
 		if err := tx.Raw(`SELECT count(*) FROM domain.organizations WHERE id = ?`, cmd.OrganizationID).
 			Scan(&orgExists).Error; err != nil {
-			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherLoadFailed).Wrap(err)
+			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationLookupFailed).Wrap(err)
 		}
 		if orgExists == 0 {
 			return oops.In(scopeOrgDispatcher).
