@@ -26,6 +26,7 @@ const (
 	ErrCodeIncidentTypeLoadFailed         = "incident_type_load_failed"
 	ErrCodeIncidentTypeNotFound           = "incident_type_not_found"
 	ErrCodeIncidentTypeCategoryNotFound   = "incident_type_category_not_found"
+	ErrCodeIncidentTypeCategoryInactive   = "incident_type_category_inactive"
 	ErrCodeIncidentTypeNameConflict       = "incident_type_name_conflict"
 	ErrCodeIncidentTypeEventBuildFailed   = "incident_type_event_build_failed"
 )
@@ -96,6 +97,17 @@ func (s *IncidentTypeService) Create(
 		// Serialise classifier mutations for this organisation.
 		if err := lockClassifierOrg(tx, cat.OrganizationID); err != nil {
 			return err
+		}
+
+		// Forbid creating a type under an inactive category. The type
+		// would be born-inactive-by-ancestor and Reactivate would refuse
+		// to promote it until the category chain is reactivated.
+		if !cat.IsActive {
+			return oops.In("services.incident.classifier.type").
+				Code(ErrCodeIncidentTypeCategoryInactive).
+				Public("Owning incident category is inactive.").
+				With("incident_category_id", cat.ID).
+				Errorf("category inactive")
 		}
 
 		row := model.IncidentType{

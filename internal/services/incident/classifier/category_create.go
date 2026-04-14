@@ -28,6 +28,7 @@ const (
 	ErrCodeIncidentCategoryNotFound                   = "incident_category_not_found"
 	ErrCodeIncidentCategoryParentNotFound             = "incident_category_parent_not_found"
 	ErrCodeIncidentCategoryParentOrganizationMismatch = "incident_category_parent_organization_mismatch"
+	ErrCodeIncidentCategoryParentInactive             = "incident_category_parent_inactive"
 	ErrCodeIncidentCategoryNameConflict               = "incident_category_name_conflict"
 	ErrCodeIncidentCategoryEventBuildFailed           = "incident_category_event_build_failed"
 	ErrCodeIncidentCategoryMaxDepthExceeded           = "incident_category_max_depth_exceeded"
@@ -152,6 +153,18 @@ func (s *IncidentCategoryService) Create(
 					With("parent_organization_id", parent.OrganizationID).
 					With("organization_id", cmd.OrganizationID).
 					Errorf("organization mismatch")
+			}
+			// Creating under an inactive parent is forbidden: the child
+			// would be born-inactive-by-ancestor and Reactivate would
+			// refuse to promote it (see category_reactivate.go's
+			// firstInactiveAncestor check), leaving the row permanently
+			// stuck until the whole ancestor chain is reactivated.
+			if !parent.IsActive {
+				return oops.In("services.incident.classifier.category").
+					Code(ErrCodeIncidentCategoryParentInactive).
+					Public("Parent incident category is inactive.").
+					With("parent_category_id", parent.ID).
+					Errorf("parent inactive")
 			}
 			depth, err := categoryDepth(tx, parent.ID)
 			if err != nil {

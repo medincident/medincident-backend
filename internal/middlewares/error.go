@@ -319,6 +319,8 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_parent_organization_mismatch", grpcCode: codes.FailedPrecondition},
 	{suffix: "_reactivate_inactive_ancestor", grpcCode: codes.FailedPrecondition},
 	{suffix: "_reactivate_name_conflict", grpcCode: codes.FailedPrecondition},
+	{suffix: "_parent_inactive", grpcCode: codes.FailedPrecondition},
+	{suffix: "_category_inactive", grpcCode: codes.FailedPrecondition},
 
 	// Fallback buckets kept last so the specific rules above win.
 	{suffix: "_required", grpcCode: codes.InvalidArgument},
