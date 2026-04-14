@@ -57,9 +57,12 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // MembershipService is the command-side contract for who-works-where
-// data. Currently covers Employee + Vacation; future revisions will
-// add department heads, clinic heads, and other membership-style
-// entities without renaming the service.
+// data. It covers the Employee lifecycle (hire / update / terminate),
+// Vacation lifecycle (start / schedule / end / cancel / change),
+// role grants with deputy management for DepartmentResponsible,
+// ClinicHead, OrganizationAdmin, OrganizationHead, and
+// OrganizationDispatcher, plus the global SystemAdmin grant that
+// operates directly on Zitadel user identifiers.
 type MembershipServiceClient interface {
 	// Employee lifecycle
 	HireEmployee(ctx context.Context, in *HireEmployeeRequest, opts ...grpc.CallOption) (*HireEmployeeResponse, error)
@@ -425,9 +428,12 @@ func (c *membershipServiceClient) RevokeSystemAdmin(ctx context.Context, in *Rev
 // for forward compatibility.
 //
 // MembershipService is the command-side contract for who-works-where
-// data. Currently covers Employee + Vacation; future revisions will
-// add department heads, clinic heads, and other membership-style
-// entities without renaming the service.
+// data. It covers the Employee lifecycle (hire / update / terminate),
+// Vacation lifecycle (start / schedule / end / cancel / change),
+// role grants with deputy management for DepartmentResponsible,
+// ClinicHead, OrganizationAdmin, OrganizationHead, and
+// OrganizationDispatcher, plus the global SystemAdmin grant that
+// operates directly on Zitadel user identifiers.
 type MembershipServiceServer interface {
 	// Employee lifecycle
 	HireEmployee(context.Context, *HireEmployeeRequest) (*HireEmployeeResponse, error)

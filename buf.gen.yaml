@@ -2,7 +2,7 @@ version: v2
 
 inputs:
   - git_repo: https://github.com/medincident/medincident-proto.git
-    branch: feat/medincident-v1-restructure
+    branch: main
     paths:
       - api/proto/medincident/event/v1
       - api/proto/medincident/event/organization/v1

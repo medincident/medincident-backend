@@ -2961,17 +2961,17 @@ const file_medincident_service_membership_v1_membership_proto_rawDesc = "" +
 	"\x18GrantSystemAdminResponse\"G\n" +
 	"\x18RevokeSystemAdminRequest\x12+\n" +
 	"\x0fzitadel_user_id\x18\x01 \x01(\tB\x03\xe0A\x02R\rzitadelUserId\"\x1b\n" +
-	"\x19RevokeSystemAdminResponse2\x8c6\n" +
+	"\x19RevokeSystemAdminResponse2\x8a6\n" +
 	"\x11MembershipService\x12\x99\x01\n" +
 	"\fHireEmployee\x126.medincident.service.membership.v1.HireEmployeeRequest\x1a7.medincident.service.membership.v1.HireEmployeeResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/employees\x12\xce\x01\n" +
 	"\x16UpdateEmployeePosition\x12@.medincident.service.membership.v1.UpdateEmployeePositionRequest\x1aA.medincident.service.membership.v1.UpdateEmployeePositionResponse\"/\x82\xd3\xe4\x93\x02):\x01*2$/v1/employees/{employee_id}/position\x12\xd6\x01\n" +
 	"\x18UpdateEmployeeDepartment\x12B.medincident.service.membership.v1.UpdateEmployeeDepartmentRequest\x1aC.medincident.service.membership.v1.UpdateEmployeeDepartmentResponse\"1\x82\xd3\xe4\x93\x02+:\x01*2&/v1/employees/{employee_id}/department\x12\xb3\x01\n" +
-	"\x11TerminateEmployee\x12;.medincident.service.membership.v1.TerminateEmployeeRequest\x1a<.medincident.service.membership.v1.TerminateEmployeeResponse\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/employees/{employee_id}\x12\xc7\x01\n" +
-	"\x10StartVacationNow\x12:.medincident.service.membership.v1.StartVacationNowRequest\x1a;.medincident.service.membership.v1.StartVacationNowResponse\":\x82\xd3\xe4\x93\x024:\x01*\"//v1/employees/{employee_id}/vacations:start-now\x12\xc6\x01\n" +
-	"\x10ScheduleVacation\x12:.medincident.service.membership.v1.ScheduleVacationRequest\x1a;.medincident.service.membership.v1.ScheduleVacationResponse\"9\x82\xd3\xe4\x93\x023:\x01*\"./v1/employees/{employee_id}/vacations:schedule\x12\xcb\x01\n" +
-	"\x15UpdateVacationEndDate\x12?.medincident.service.membership.v1.UpdateVacationEndDateRequest\x1a@.medincident.service.membership.v1.UpdateVacationEndDateResponse\"/\x82\xd3\xe4\x93\x02):\x01*2$/v1/vacations/{vacation_id}/end-date\x12\xba\x01\n" +
-	"\x10ForceEndVacation\x12:.medincident.service.membership.v1.ForceEndVacationRequest\x1a;.medincident.service.membership.v1.ForceEndVacationResponse\"-\x82\xd3\xe4\x93\x02'\"%/v1/vacations/{vacation_id}:force-end\x12\xcc\x01\n" +
-	"\x17CancelScheduledVacation\x12A.medincident.service.membership.v1.CancelScheduledVacationRequest\x1aB.medincident.service.membership.v1.CancelScheduledVacationResponse\"*\x82\xd3\xe4\x93\x02$\"\"/v1/vacations/{vacation_id}:cancel\x12\xe5\x01\n" +
+	"\x11TerminateEmployee\x12;.medincident.service.membership.v1.TerminateEmployeeRequest\x1a<.medincident.service.membership.v1.TerminateEmployeeResponse\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/employees/{employee_id}\x12\xc4\x01\n" +
+	"\x10StartVacationNow\x12:.medincident.service.membership.v1.StartVacationNowRequest\x1a;.medincident.service.membership.v1.StartVacationNowResponse\"7\x82\xd3\xe4\x93\x021:\x01*\",/v1/employees/{employee_id}/current-vacation\x12\xbd\x01\n" +
+	"\x10ScheduleVacation\x12:.medincident.service.membership.v1.ScheduleVacationRequest\x1a;.medincident.service.membership.v1.ScheduleVacationResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\"%/v1/employees/{employee_id}/vacations\x12\xcb\x01\n" +
+	"\x15UpdateVacationEndDate\x12?.medincident.service.membership.v1.UpdateVacationEndDateRequest\x1a@.medincident.service.membership.v1.UpdateVacationEndDateResponse\"/\x82\xd3\xe4\x93\x02):\x01*2$/v1/vacations/{vacation_id}/end-date\x12\xbd\x01\n" +
+	"\x10ForceEndVacation\x12:.medincident.service.membership.v1.ForceEndVacationRequest\x1a;.medincident.service.membership.v1.ForceEndVacationResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/vacations/{vacation_id}/terminations\x12\xd3\x01\n" +
+	"\x17CancelScheduledVacation\x12A.medincident.service.membership.v1.CancelScheduledVacationRequest\x1aB.medincident.service.membership.v1.CancelScheduledVacationResponse\"1\x82\xd3\xe4\x93\x02+\")/v1/vacations/{vacation_id}/cancellations\x12\xe5\x01\n" +
 	"\x1bAssignDepartmentResponsible\x12E.medincident.service.membership.v1.AssignDepartmentResponsibleRequest\x1aF.medincident.service.membership.v1.AssignDepartmentResponsibleResponse\"7\x82\xd3\xe4\x93\x021:\x01*\",/v1/departments/{department_id}/responsibles\x12\xf0\x01\n" +
 	"\x1bRevokeDepartmentResponsible\x12E.medincident.service.membership.v1.RevokeDepartmentResponsibleRequest\x1aF.medincident.service.membership.v1.RevokeDepartmentResponsibleResponse\"B\x82\xd3\xe4\x93\x02<*:/v1/departments/{department_id}/responsibles/{employee_id}\x12\x8c\x02\n" +
 	"!AssignDepartmentResponsibleDeputy\x12K.medincident.service.membership.v1.AssignDepartmentResponsibleDeputyRequest\x1aL.medincident.service.membership.v1.AssignDepartmentResponsibleDeputyResponse\"L\x82\xd3\xe4\x93\x02F:\x01*\"A/v1/departments/{department_id}/responsibles/{employee_id}/deputy\x12\x89\x02\n" +

@@ -1152,19 +1152,19 @@ const file_medincident_service_incident_classifier_v1_incident_classifier_proto_
 	"\x1eReactivateIncidentTypeResponse\"9\n" +
 	"\x19DeleteIncidentTypeRequest\x12\x1c\n" +
 	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\"\x1c\n" +
-	"\x1aDeleteIncidentTypeResponse2\xf6\x15\n" +
+	"\x1aDeleteIncidentTypeResponse2\x82\x16\n" +
 	"\x19IncidentClassifierService\x12\xf3\x01\n" +
 	"\x16CreateIncidentCategory\x12I.medincident.service.incident.classifier.v1.CreateIncidentCategoryRequest\x1aJ.medincident.service.incident.classifier.v1.CreateIncidentCategoryResponse\"B\x82\xd3\xe4\x93\x02<:\x01*\"7/v1/organizations/{organization_id}/incident-categories\x12\xfe\x01\n" +
 	"\x1dUpdateIncidentCategoryDetails\x12P.medincident.service.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest\x1aQ.medincident.service.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse\"8\x82\xd3\xe4\x93\x022:\x01*2-/v1/incident-categories/{category_id}/details\x12\xe2\x01\n" +
-	"\x14MoveIncidentCategory\x12G.medincident.service.incident.classifier.v1.MoveIncidentCategoryRequest\x1aH.medincident.service.incident.classifier.v1.MoveIncidentCategoryResponse\"7\x82\xd3\xe4\x93\x021:\x01*2,/v1/incident-categories/{category_id}/parent\x12\xf5\x01\n" +
-	"\x1aDeactivateIncidentCategory\x12M.medincident.service.incident.classifier.v1.DeactivateIncidentCategoryRequest\x1aN.medincident.service.incident.classifier.v1.DeactivateIncidentCategoryResponse\"8\x82\xd3\xe4\x93\x022\"0/v1/incident-categories/{category_id}:deactivate\x12\xf5\x01\n" +
-	"\x1aReactivateIncidentCategory\x12M.medincident.service.incident.classifier.v1.ReactivateIncidentCategoryRequest\x1aN.medincident.service.incident.classifier.v1.ReactivateIncidentCategoryResponse\"8\x82\xd3\xe4\x93\x022\"0/v1/incident-categories/{category_id}:reactivate\x12\xde\x01\n" +
+	"\x14MoveIncidentCategory\x12G.medincident.service.incident.classifier.v1.MoveIncidentCategoryRequest\x1aH.medincident.service.incident.classifier.v1.MoveIncidentCategoryResponse\"7\x82\xd3\xe4\x93\x021:\x01*2,/v1/incident-categories/{category_id}/parent\x12\xf8\x01\n" +
+	"\x1aDeactivateIncidentCategory\x12M.medincident.service.incident.classifier.v1.DeactivateIncidentCategoryRequest\x1aN.medincident.service.incident.classifier.v1.DeactivateIncidentCategoryResponse\";\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/deactivations\x12\xf8\x01\n" +
+	"\x1aReactivateIncidentCategory\x12M.medincident.service.incident.classifier.v1.ReactivateIncidentCategoryRequest\x1aN.medincident.service.incident.classifier.v1.ReactivateIncidentCategoryResponse\";\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/reactivations\x12\xde\x01\n" +
 	"\x16DeleteIncidentCategory\x12I.medincident.service.incident.classifier.v1.DeleteIncidentCategoryRequest\x1aJ.medincident.service.incident.classifier.v1.DeleteIncidentCategoryResponse\"-\x82\xd3\xe4\x93\x02'*%/v1/incident-categories/{category_id}\x12\xdb\x01\n" +
 	"\x12CreateIncidentType\x12E.medincident.service.incident.classifier.v1.CreateIncidentTypeRequest\x1aF.medincident.service.incident.classifier.v1.CreateIncidentTypeResponse\"6\x82\xd3\xe4\x93\x020:\x01*\"+/v1/incident-categories/{category_id}/types\x12\xe9\x01\n" +
 	"\x19UpdateIncidentTypeDetails\x12L.medincident.service.incident.classifier.v1.UpdateIncidentTypeDetailsRequest\x1aM.medincident.service.incident.classifier.v1.UpdateIncidentTypeDetailsResponse\"/\x82\xd3\xe4\x93\x02):\x01*2$/v1/incident-types/{type_id}/details\x12\xcf\x01\n" +
-	"\x10MoveIncidentType\x12C.medincident.service.incident.classifier.v1.MoveIncidentTypeRequest\x1aD.medincident.service.incident.classifier.v1.MoveIncidentTypeResponse\"0\x82\xd3\xe4\x93\x02*:\x01*2%/v1/incident-types/{type_id}/category\x12\xe0\x01\n" +
-	"\x16DeactivateIncidentType\x12I.medincident.service.incident.classifier.v1.DeactivateIncidentTypeRequest\x1aJ.medincident.service.incident.classifier.v1.DeactivateIncidentTypeResponse\"/\x82\xd3\xe4\x93\x02)\"'/v1/incident-types/{type_id}:deactivate\x12\xe0\x01\n" +
-	"\x16ReactivateIncidentType\x12I.medincident.service.incident.classifier.v1.ReactivateIncidentTypeRequest\x1aJ.medincident.service.incident.classifier.v1.ReactivateIncidentTypeResponse\"/\x82\xd3\xe4\x93\x02)\"'/v1/incident-types/{type_id}:reactivate\x12\xc9\x01\n" +
+	"\x10MoveIncidentType\x12C.medincident.service.incident.classifier.v1.MoveIncidentTypeRequest\x1aD.medincident.service.incident.classifier.v1.MoveIncidentTypeResponse\"0\x82\xd3\xe4\x93\x02*:\x01*2%/v1/incident-types/{type_id}/category\x12\xe3\x01\n" +
+	"\x16DeactivateIncidentType\x12I.medincident.service.incident.classifier.v1.DeactivateIncidentTypeRequest\x1aJ.medincident.service.incident.classifier.v1.DeactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/deactivations\x12\xe3\x01\n" +
+	"\x16ReactivateIncidentType\x12I.medincident.service.incident.classifier.v1.ReactivateIncidentTypeRequest\x1aJ.medincident.service.incident.classifier.v1.ReactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/reactivations\x12\xc9\x01\n" +
 	"\x12DeleteIncidentType\x12E.medincident.service.incident.classifier.v1.DeleteIncidentTypeRequest\x1aF.medincident.service.incident.classifier.v1.DeleteIncidentTypeResponse\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/incident-types/{type_id}b\x06proto3"
 
 var (

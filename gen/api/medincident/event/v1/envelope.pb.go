@@ -31,11 +31,16 @@ const (
 type Envelope struct {
 	state      protoimpl.MessageState `protogen:"open.v1"`
 	OccurredAt *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=occurred_at,json=occurredAt,proto3" json:"occurred_at,omitempty"`
-	// Aggregate type the event belongs to: "organization", "clinic",
-	// "department". Consumers use this to pick a projection without
-	// unpacking payload.
+	// Aggregate type the event belongs to — a short lowercase token
+	// identifying the aggregate root (e.g. "organization", "clinic",
+	// "department", "employee", "system_admin", "incident_category",
+	// "incident_type"). Consumers use this to pick a projection without
+	// unpacking payload. New aggregates are added as new values; this
+	// field is intentionally an open string rather than an enum so
+	// adding an aggregate does not require a proto revision.
 	AggregateType string `protobuf:"bytes,2,opt,name=aggregate_type,json=aggregateType,proto3" json:"aggregate_type,omitempty"`
-	// Aggregate id in text form (UUID string).
+	// Aggregate id in text form. For most aggregates this is a UUID
+	// string; for system_admin it is the Zitadel user id (opaque).
 	AggregateId   string     `protobuf:"bytes,3,opt,name=aggregate_id,json=aggregateId,proto3" json:"aggregate_id,omitempty"`
 	Payload       *anypb.Any `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
