@@ -93,8 +93,12 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 				Errorf("vacation end must be after start")
 		}
 
-		// No-op: same end already set.
-		if vac.EndsAt.Valid && vac.EndsAt.Time.Equal(cmd.EndsAt) {
+		// No-op: same end already set. Compare at microsecond resolution
+		// — Postgres TIMESTAMPTZ stores microseconds, so a caller that
+		// passes a Go time with sub-microsecond nanoseconds would
+		// otherwise see spurious updates after the value round-trips
+		// through the database.
+		if vac.EndsAt.Valid && vac.EndsAt.Time.Equal(cmd.EndsAt.Truncate(time.Microsecond)) {
 			return nil
 		}
 
