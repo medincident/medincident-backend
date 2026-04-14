@@ -16,7 +16,7 @@ import (
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/zitadel"
+	"github.com/medincident/medincident-command-service/internal/services/zitadel"
 )
 
 // HireEmployeeCommand carries everything the service needs to create

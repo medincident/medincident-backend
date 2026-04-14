@@ -7,7 +7,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/services/membership"
 	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
-	"github.com/medincident/medincident-command-service/internal/zitadel"
+	"github.com/medincident/medincident-command-service/internal/services/zitadel"
 )
 
 // ProvideOrganizationService wires OrganizationService.
@@ -55,7 +55,7 @@ func ProvideEmployeeService(injector do.Injector) (*membership.EmployeeService, 
 	if err != nil {
 		return nil, err
 	}
-	verifier, err := do.Invoke[zitadel.UserVerifier](injector)
+	verifier, err := do.Invoke[*zitadel.Service](injector)
 	if err != nil {
 		return nil, err
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/zitadel"
+	"github.com/medincident/medincident-command-service/internal/services/zitadel"
 )
 
 // EmployeeService holds the command-side methods for managing
@@ -17,12 +17,12 @@ import (
 // that same transaction.
 type EmployeeService struct {
 	db       *gorm.DB
-	verifier zitadel.UserVerifier
+	verifier *zitadel.Service
 	logger   *zerolog.Logger
 }
 
 // NewEmployeeService wires an EmployeeService. The verifier is called
 // exactly once inside HireEmployee, before the DB transaction.
-func NewEmployeeService(db *gorm.DB, verifier zitadel.UserVerifier, logger *zerolog.Logger) *EmployeeService {
+func NewEmployeeService(db *gorm.DB, verifier *zitadel.Service, logger *zerolog.Logger) *EmployeeService {
 	return &EmployeeService{db: db, verifier: verifier, logger: logger}
 }

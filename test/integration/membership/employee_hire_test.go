@@ -18,7 +18,7 @@ func TestHireEmployee_Success_WithPosition(t *testing.T) {
 	truncateOutbox(t)
 	pos := "Senior nurse"
 	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAlice,
+		ZitadelUserID: testUserAliceID,
 		DepartmentID:  f.DeptA1a,
 		Position:      &pos,
 	})
@@ -36,7 +36,7 @@ func TestHireEmployee_Success_WithPosition(t *testing.T) {
 	env := decodePayload(t, rows[0], ev)
 	assert.Equal(t, "employee", env.AggregateType)
 	assert.Equal(t, res.ID.String(), env.AggregateId)
-	assert.Equal(t, testUserAlice, ev.ZitadelUserId)
+	assert.Equal(t, testUserAliceID, ev.ZitadelUserId)
 	assert.Equal(t, f.DeptA1a.String(), ev.DepartmentId)
 	assert.Equal(t, f.OrgA.String(), ev.OrganizationId)
 	require.NotNil(t, ev.Position)
@@ -47,7 +47,7 @@ func TestHireEmployee_Success_NoPosition(t *testing.T) {
 	f := takeFixture(t)
 	truncateOutbox(t)
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserBob,
+		ZitadelUserID: testUserBobID,
 		DepartmentID:  f.DeptA1a,
 	})
 	require.NoError(t, err)
@@ -62,7 +62,7 @@ func TestHireEmployee_Success_EmptyPositionTreatedAsUnset(t *testing.T) {
 	f := takeFixture(t)
 	empty := "   "
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAlice,
+		ZitadelUserID: testUserAliceID,
 		DepartmentID:  f.DeptA1a,
 		Position:      &empty,
 	})
@@ -85,7 +85,7 @@ func TestHireEmployee_ZitadelUserNotFound(t *testing.T) {
 func TestHireEmployee_DepartmentNotFound(t *testing.T) {
 	_ = takeFixture(t)
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAlice,
+		ZitadelUserID: testUserAliceID,
 		DepartmentID:  uuidMustV7(),
 	})
 	require.Error(t, err)
@@ -95,12 +95,12 @@ func TestHireEmployee_DepartmentNotFound(t *testing.T) {
 func TestHireEmployee_AlreadyHired(t *testing.T) {
 	f := takeFixture(t)
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAlice,
+		ZitadelUserID: testUserAliceID,
 		DepartmentID:  f.DeptA1a,
 	})
 	require.NoError(t, err)
 	_, err = empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAlice,
+		ZitadelUserID: testUserAliceID,
 		DepartmentID:  f.DeptA1a,
 	})
 	require.Error(t, err)
@@ -111,7 +111,7 @@ func TestHireEmployee_PositionTooShort(t *testing.T) {
 	f := takeFixture(t)
 	short := "A"
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAlice,
+		ZitadelUserID: testUserAliceID,
 		DepartmentID:  f.DeptA1a,
 		Position:      &short,
 	})
@@ -123,7 +123,7 @@ func TestHireEmployee_PositionTooLong(t *testing.T) {
 	f := takeFixture(t)
 	long := strings.Repeat("x", 257)
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAlice,
+		ZitadelUserID: testUserAliceID,
 		DepartmentID:  f.DeptA1a,
 		Position:      &long,
 	})

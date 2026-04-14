@@ -1,0 +1,19 @@
+FirstInstance:
+  InstanceName: Integration
+  DefaultLanguage: en
+  Org:
+    Name: Integration
+    Human:
+      UserName: zitadel-admin
+      FirstName: Admin
+      LastName: User
+      Password: "Password1!"
+    Machine:
+      Machine:
+        Username: integration-sa
+        Name: Integration Service Account
+      MachineKey:
+        Type: 1
+        ExpirationDate: "2030-01-01T00:00:00Z"
+      Pat:
+        ExpirationDate: "2030-01-01T00:00:00Z"

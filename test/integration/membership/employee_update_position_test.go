@@ -16,7 +16,7 @@ import (
 func hireAlice(t *testing.T, f fixture) (employeeID string) {
 	t.Helper()
 	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAlice,
+		ZitadelUserID: testUserAliceID,
 		DepartmentID:  f.DeptA1a,
 	})
 	require.NoError(t, err)

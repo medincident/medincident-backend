@@ -27,7 +27,7 @@ func NewContainer(cfg *config.Config) (do.Injector, error) {
 	do.Provide(injector, ProvideGormDB)
 
 	// Zitadel
-	do.Provide(injector, ProvideUserVerifier)
+	do.Provide(injector, ProvideZitadelService)
 
 	// Services
 	do.Provide(injector, ProvideOrganizationService)
