@@ -166,3 +166,52 @@ func cascadeClearClinicHeadDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Ti
 	}
 	return nil
 }
+
+// cascadeRevokeOrgAdminAll revokes every OrgAdmin role where the
+// employee is the holder. Used by TerminateEmployee.
+func cascadeRevokeOrgAdminAll(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	var rows []model.OrgAdmin
+	err := tx.Where("employee_id = ?", employeeID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if row.DeputyEmployeeID != nil {
+			if err := publishOrgAdminDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+				return err
+			}
+		}
+		if err := tx.Delete(&model.OrgAdmin{}, "organization_id = ? AND employee_id = ?",
+			row.OrganizationID, row.EmployeeID).Error; err != nil {
+			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminDeleteFailed).Wrap(err)
+		}
+		if err := publishOrgAdminRevoked(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// cascadeClearOrgAdminDeputy clears the deputy slot on every OrgAdmin
+// role where the given employee is the deputy. Used by TerminateEmployee
+// to handle rows where the terminating employee was the deputy of
+// someone else's role.
+func cascadeClearOrgAdminDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	var rows []model.OrgAdmin
+	err := tx.Where("deputy_employee_id = ?", employeeID).Find(&rows).Error
+	if err != nil {
+		return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminLoadFailed).Wrap(err)
+	}
+	for _, row := range rows {
+		if err := tx.Exec(
+			`UPDATE domain.org_admins SET deputy_employee_id = NULL, updated_at = now() WHERE organization_id = ? AND employee_id = ?`,
+			row.OrganizationID, row.EmployeeID,
+		).Error; err != nil {
+			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminSaveFailed).Wrap(err)
+		}
+		if err := publishOrgAdminDeputyRemoved(tx, row.OrganizationID, row.EmployeeID, now); err != nil {
+			return err
+		}
+	}
+	return nil
+}

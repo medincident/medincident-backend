@@ -78,3 +78,14 @@ func parseDeputyEmployeeID(raw string) (uuid.UUID, error) {
 	}
 	return id, nil
 }
+
+func parseOrganizationID(raw string) (uuid.UUID, error) {
+	id, err := uuid.Parse(raw)
+	if err != nil {
+		return uuid.Nil, oops.In("handler.membership").
+			Code(ErrCodeHandlerInvalidOrganizationID).
+			Public("organization_id is not a valid UUID.").
+			Wrap(err)
+	}
+	return id, nil
+}

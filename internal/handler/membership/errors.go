@@ -9,4 +9,5 @@ const (
 	ErrCodeHandlerInvalidClinicID         = "clinic_id_invalid"
 	ErrCodeHandlerInvalidVacationID       = "vacation_id_invalid"
 	ErrCodeHandlerInvalidDeputyEmployeeID = "deputy_employee_id_invalid"
+	ErrCodeHandlerInvalidOrganizationID   = "organization_id_invalid"
 )
