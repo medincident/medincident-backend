@@ -7,13 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -114,17 +111,7 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 		}
 
 		ev := &employeev1.EmployeeDepartmentChanged{DepartmentId: cmd.DepartmentID.String()}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(emp.UpdatedAt),
-			AggregateType: AggregateTypeEmployee,
-			AggregateId:   emp.ID.String(),
-			Payload:       payload,
-		}
-		if err := outbox.AppendEvent(tx, SubjectEmployeeDepartmentChanged, envelope); err != nil {
+		if err := outbox.Publish(tx, SubjectEmployeeDepartmentChanged, AggregateTypeEmployee, emp.ID.String(), emp.UpdatedAt, ev); err != nil {
 			return err
 		}
 

@@ -7,13 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -84,17 +81,7 @@ func publishOrgAdminRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, n
 	ev := &organizationv1.OrganizationAdminRevoked{
 		EmployeeId: employeeID.String(),
 	}
-	payload, err := anypb.New(ev)
-	if err != nil {
-		return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminEventBuildFailed).Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeOrganization,
-		AggregateId:   organizationID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectOrganizationAdminRevoked, envelope)
+	return outbox.Publish(tx, SubjectOrganizationAdminRevoked, AggregateTypeOrganization, organizationID.String(), now, ev)
 }
 
 // publishOrgAdminDeputyRemoved is a shared helper; it publishes the
@@ -103,15 +90,5 @@ func publishOrgAdminDeputyRemoved(tx *gorm.DB, organizationID, employeeID uuid.U
 	ev := &organizationv1.OrganizationAdminDeputyRemoved{
 		EmployeeId: employeeID.String(),
 	}
-	payload, err := anypb.New(ev)
-	if err != nil {
-		return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminEventBuildFailed).Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeOrganization,
-		AggregateId:   organizationID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectOrganizationAdminDeputyRemoved, envelope)
+	return outbox.Publish(tx, SubjectOrganizationAdminDeputyRemoved, AggregateTypeOrganization, organizationID.String(), now, ev)
 }

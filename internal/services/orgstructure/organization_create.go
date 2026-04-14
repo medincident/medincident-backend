@@ -9,12 +9,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -208,20 +205,7 @@ func (s *OrganizationService) Create(
 		}
 
 		event := buildOrganizationCreatedEvent(&org)
-		payload, err := anypb.New(event)
-		if err != nil {
-			return oops.In("services.orgstructure.organization").
-				Code(ErrCodeOrganizationEventBuildFailed).
-				With("organization_id", id).
-				Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(org.UpdatedAt),
-			AggregateType: AggregateTypeOrganization,
-			AggregateId:   org.ID.String(),
-			Payload:       payload,
-		}
-		if err := outbox.AppendEvent(tx, SubjectOrganizationCreated, envelope); err != nil {
+		if err := outbox.Publish(tx, SubjectOrganizationCreated, AggregateTypeOrganization, org.ID.String(), org.UpdatedAt, event); err != nil {
 			return err
 		}
 		result.ID = id

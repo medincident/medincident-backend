@@ -9,12 +9,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
@@ -139,17 +136,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			p := position.String
 			ev.Position = &p
 		}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(emp.UpdatedAt),
-			AggregateType: AggregateTypeEmployee,
-			AggregateId:   id.String(),
-			Payload:       payload,
-		}
-		if err := outbox.AppendEvent(tx, SubjectEmployeeHired, envelope); err != nil {
+		if err := outbox.Publish(tx, SubjectEmployeeHired, AggregateTypeEmployee, id.String(), emp.UpdatedAt, ev); err != nil {
 			return err
 		}
 

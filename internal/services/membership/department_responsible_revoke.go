@@ -7,13 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -84,17 +81,7 @@ func publishDepartmentResponsibleRevoked(tx *gorm.DB, departmentID, employeeID u
 	ev := &departmentv1.DepartmentResponsibleRevoked{
 		EmployeeId: employeeID.String(),
 	}
-	payload, err := anypb.New(ev)
-	if err != nil {
-		return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleEventBuildFailed).Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeDepartment,
-		AggregateId:   departmentID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectDepartmentResponsibleRevoked, envelope)
+	return outbox.Publish(tx, SubjectDepartmentResponsibleRevoked, AggregateTypeDepartment, departmentID.String(), now, ev)
 }
 
 // publishDepartmentResponsibleDeputyRemoved is a shared helper; it
@@ -103,15 +90,5 @@ func publishDepartmentResponsibleDeputyRemoved(tx *gorm.DB, departmentID, employ
 	ev := &departmentv1.DepartmentResponsibleDeputyRemoved{
 		EmployeeId: employeeID.String(),
 	}
-	payload, err := anypb.New(ev)
-	if err != nil {
-		return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleEventBuildFailed).Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeDepartment,
-		AggregateId:   departmentID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectDepartmentResponsibleDeputyRemoved, envelope)
+	return outbox.Publish(tx, SubjectDepartmentResponsibleDeputyRemoved, AggregateTypeDepartment, departmentID.String(), now, ev)
 }

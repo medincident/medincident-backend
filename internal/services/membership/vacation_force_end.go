@@ -8,13 +8,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -76,16 +74,6 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 			VacationId: vac.ID.String(),
 			EndsAt:     timestamppb.New(now),
 		}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeVacationEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(now),
-			AggregateType: AggregateTypeEmployee,
-			AggregateId:   vac.EmployeeID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectVacationEnded, envelope)
+		return outbox.Publish(tx, SubjectVacationEnded, AggregateTypeEmployee, vac.EmployeeID.String(), now, ev)
 	})
 }

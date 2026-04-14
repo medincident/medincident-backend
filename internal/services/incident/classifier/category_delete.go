@@ -7,14 +7,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -119,38 +116,12 @@ func (s *IncidentCategoryService) Delete(
 		}
 
 		for _, id := range typeIDs {
-			payload, err := anypb.New(&typeeventv1.IncidentTypeDeleted{})
-			if err != nil {
-				return oops.In("services.incident.classifier.type").
-					Code(ErrCodeIncidentTypeEventBuildFailed).
-					With("incident_type_id", id).
-					Wrap(err)
-			}
-			envelope := &envelopev1.Envelope{
-				OccurredAt:    timestamppb.New(now),
-				AggregateType: AggregateTypeIncidentType,
-				AggregateId:   id.String(),
-				Payload:       payload,
-			}
-			if err := outbox.AppendEvent(tx, SubjectIncidentTypeDeleted, envelope); err != nil {
+			if err := outbox.Publish(tx, SubjectIncidentTypeDeleted, AggregateTypeIncidentType, id.String(), now, &typeeventv1.IncidentTypeDeleted{}); err != nil {
 				return err
 			}
 		}
 		for _, id := range categoryIDs {
-			payload, err := anypb.New(&categoryeventv1.IncidentCategoryDeleted{})
-			if err != nil {
-				return oops.In("services.incident.classifier.category").
-					Code(ErrCodeIncidentCategoryEventBuildFailed).
-					With("incident_category_id", id).
-					Wrap(err)
-			}
-			envelope := &envelopev1.Envelope{
-				OccurredAt:    timestamppb.New(now),
-				AggregateType: AggregateTypeIncidentCategory,
-				AggregateId:   id.String(),
-				Payload:       payload,
-			}
-			if err := outbox.AppendEvent(tx, SubjectIncidentCategoryDeleted, envelope); err != nil {
+			if err := outbox.Publish(tx, SubjectIncidentCategoryDeleted, AggregateTypeIncidentCategory, id.String(), now, &categoryeventv1.IncidentCategoryDeleted{}); err != nil {
 				return err
 			}
 		}

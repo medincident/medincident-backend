@@ -8,13 +8,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -81,19 +78,6 @@ func (s *DepartmentService) UpdateDetails(
 		}
 
 		event := buildDepartmentDetailsChangedEvent(&dept)
-		payload, err := anypb.New(event)
-		if err != nil {
-			return oops.In("services.orgstructure.department").
-				Code(ErrCodeDepartmentEventBuildFailed).
-				With("department_id", cmd.ID).
-				Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(dept.UpdatedAt),
-			AggregateType: AggregateTypeDepartment,
-			AggregateId:   dept.ID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectDepartmentDetailsChanged, envelope)
+		return outbox.Publish(tx, SubjectDepartmentDetailsChanged, AggregateTypeDepartment, dept.ID.String(), dept.UpdatedAt, event)
 	})
 }

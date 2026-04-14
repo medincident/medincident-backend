@@ -7,12 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -90,17 +88,7 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 		if cmd.EndsAt != nil {
 			ev.EndsAt = timestamppb.New(*cmd.EndsAt)
 		}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeVacation).Code(ErrCodeVacationEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(now),
-			AggregateType: AggregateTypeEmployee,
-			AggregateId:   cmd.EmployeeID.String(),
-			Payload:       payload,
-		}
-		if err := outbox.AppendEvent(tx, SubjectVacationScheduled, envelope); err != nil {
+		if err := outbox.Publish(tx, SubjectVacationScheduled, AggregateTypeEmployee, cmd.EmployeeID.String(), now, ev); err != nil {
 			return err
 		}
 		result.ID = id

@@ -7,14 +7,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -129,35 +126,9 @@ func deactivateTypesInSubtree(tx *gorm.DB, root uuid.UUID) ([]uuid.UUID, error) 
 }
 
 func appendCategoryDeactivatedEvent(tx *gorm.DB, categoryID uuid.UUID, now time.Time) error {
-	payload, err := anypb.New(&categoryeventv1.IncidentCategoryDeactivated{})
-	if err != nil {
-		return oops.In("services.incident.classifier.category").
-			Code(ErrCodeIncidentCategoryEventBuildFailed).
-			With("incident_category_id", categoryID).
-			Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeIncidentCategory,
-		AggregateId:   categoryID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectIncidentCategoryDeactivated, envelope)
+	return outbox.Publish(tx, SubjectIncidentCategoryDeactivated, AggregateTypeIncidentCategory, categoryID.String(), now, &categoryeventv1.IncidentCategoryDeactivated{})
 }
 
 func appendTypeDeactivatedEvent(tx *gorm.DB, typeID uuid.UUID, now time.Time) error {
-	payload, err := anypb.New(&typeeventv1.IncidentTypeDeactivated{})
-	if err != nil {
-		return oops.In("services.incident.classifier.type").
-			Code(ErrCodeIncidentTypeEventBuildFailed).
-			With("incident_type_id", typeID).
-			Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeIncidentType,
-		AggregateId:   typeID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectIncidentTypeDeactivated, envelope)
+	return outbox.Publish(tx, SubjectIncidentTypeDeactivated, AggregateTypeIncidentType, typeID.String(), now, &typeeventv1.IncidentTypeDeactivated{})
 }

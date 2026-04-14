@@ -10,30 +10,51 @@
 package outbox
 
 import (
+	"time"
+
 	"github.com/samber/oops"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 )
 
-// Error codes emitted by AppendEvent.
+// Error codes emitted by Publish.
 const (
 	ErrCodeOutboxMarshalFailed = "outbox_marshal_failed"
 	ErrCodeOutboxAppendFailed  = "outbox_append_failed"
 )
 
-// AppendEvent serialises the envelope and writes one row into
-// outbox.events inside the given transaction. Callers own the
-// envelope construction (occurred_at, aggregate_type, aggregate_id,
-// payload); this helper only handles the marshal + insert.
-func AppendEvent(
+// Publish builds an envelope around `event`, marshals it, and writes
+// one row into outbox.events inside the given transaction. It is the
+// single entry point for every command service — AGENTS.md §10 says
+// the event proto is still constructed inline at the call site, but
+// the envelope assembly, proto marshal, and INSERT all live here.
+func Publish(
 	tx *gorm.DB,
-	subject string,
-	envelope *envelopev1.Envelope,
+	subject, aggregateType, aggregateID string,
+	occurredAt time.Time,
+	event proto.Message,
 ) error {
-	payload, err := proto.Marshal(envelope)
+	payload, err := anypb.New(event)
+	if err != nil {
+		return oops.In("services.outbox").
+			Code(ErrCodeOutboxMarshalFailed).
+			With("subject", subject).
+			With("aggregate_type", aggregateType).
+			With("aggregate_id", aggregateID).
+			Wrap(err)
+	}
+	envelope := &envelopev1.Envelope{
+		OccurredAt:    timestamppb.New(occurredAt),
+		AggregateType: aggregateType,
+		AggregateId:   aggregateID,
+		Payload:       payload,
+	}
+	envelopeBytes, err := proto.Marshal(envelope)
 	if err != nil {
 		return oops.In("services.outbox").
 			Code(ErrCodeOutboxMarshalFailed).
@@ -42,7 +63,7 @@ func AppendEvent(
 	}
 	row := model.OutboxEvent{
 		Subject: subject,
-		Payload: payload,
+		Payload: envelopeBytes,
 	}
 	if err := tx.Create(&row).Error; err != nil {
 		return oops.In("services.outbox").

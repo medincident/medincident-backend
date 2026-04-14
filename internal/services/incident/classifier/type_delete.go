@@ -7,13 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -51,20 +48,7 @@ func (s *IncidentTypeService) Delete(
 			return err
 		}
 
-		payload, err := anypb.New(&typeeventv1.IncidentTypeDeleted{})
-		if err != nil {
-			return oops.In("services.incident.classifier.type").
-				Code(ErrCodeIncidentTypeEventBuildFailed).
-				With("incident_type_id", row.ID).
-				Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(now),
-			AggregateType: AggregateTypeIncidentType,
-			AggregateId:   row.ID.String(),
-			Payload:       payload,
-		}
-		if err := outbox.AppendEvent(tx, SubjectIncidentTypeDeleted, envelope); err != nil {
+		if err := outbox.Publish(tx, SubjectIncidentTypeDeleted, AggregateTypeIncidentType, row.ID.String(), now, &typeeventv1.IncidentTypeDeleted{}); err != nil {
 			return err
 		}
 		if err := tx.Delete(&model.IncidentType{}, "id = ?", row.ID).Error; err != nil {

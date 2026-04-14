@@ -8,13 +8,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -113,16 +110,6 @@ func (s *EmployeeService) AssignOrganizationDispatcherDeputy(ctx context.Context
 			EmployeeId:       cmd.EmployeeID.String(),
 			DeputyEmployeeId: cmd.DeputyEmployeeID.String(),
 		}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(time.Now().UTC()),
-			AggregateType: AggregateTypeOrganization,
-			AggregateId:   cmd.OrganizationID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectOrganizationDispatcherDeputyAssigned, envelope)
+		return outbox.Publish(tx, SubjectOrganizationDispatcherDeputyAssigned, AggregateTypeOrganization, cmd.OrganizationID.String(), time.Now().UTC(), ev)
 	})
 }

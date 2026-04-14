@@ -7,13 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -101,16 +98,6 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 		}
 
 		ev := &employeev1.EmployeeTerminated{}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(now),
-			AggregateType: AggregateTypeEmployee,
-			AggregateId:   emp.ID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectEmployeeTerminated, envelope)
+		return outbox.Publish(tx, SubjectEmployeeTerminated, AggregateTypeEmployee, emp.ID.String(), now, ev)
 	})
 }

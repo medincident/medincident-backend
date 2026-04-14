@@ -7,13 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -92,22 +89,9 @@ func (s *IncidentTypeService) Move(
 				Wrap(err)
 		}
 
-		payload, err := anypb.New(&typeeventv1.IncidentTypeMoved{
+		return outbox.Publish(tx, SubjectIncidentTypeMoved, AggregateTypeIncidentType, moving.ID.String(), updatedAt, &typeeventv1.IncidentTypeMoved{
 			NewCategoryId: newCategory.ID.String(),
 		})
-		if err != nil {
-			return oops.In("services.incident.classifier.type").
-				Code(ErrCodeIncidentTypeEventBuildFailed).
-				With("incident_type_id", moving.ID).
-				Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(updatedAt),
-			AggregateType: AggregateTypeIncidentType,
-			AggregateId:   moving.ID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectIncidentTypeMoved, envelope)
 	})
 	return MoveIncidentTypeResult{}, err
 }

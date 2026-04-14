@@ -10,12 +10,9 @@ import (
 	"github.com/guregu/null/v6"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
@@ -200,20 +197,7 @@ func (s *ClinicService) Create(
 		}
 
 		event := buildClinicCreatedEvent(&clinic)
-		payload, err := anypb.New(event)
-		if err != nil {
-			return oops.In("services.orgstructure.clinic").
-				Code(ErrCodeClinicEventBuildFailed).
-				With("clinic_id", id).
-				Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(clinic.UpdatedAt),
-			AggregateType: AggregateTypeClinic,
-			AggregateId:   clinic.ID.String(),
-			Payload:       payload,
-		}
-		if err := outbox.AppendEvent(tx, SubjectClinicCreated, envelope); err != nil {
+		if err := outbox.Publish(tx, SubjectClinicCreated, AggregateTypeClinic, clinic.ID.String(), clinic.UpdatedAt, event); err != nil {
 			return err
 		}
 		result.ID = id

@@ -8,13 +8,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -88,19 +85,6 @@ func (s *ClinicService) UpdatePhysicalAddress(
 		}
 
 		event := buildClinicPhysicalAddressChangedEvent(&clinic)
-		payload, err := anypb.New(event)
-		if err != nil {
-			return oops.In("services.orgstructure.clinic").
-				Code(ErrCodeClinicEventBuildFailed).
-				With("clinic_id", cmd.ID).
-				Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(clinic.UpdatedAt),
-			AggregateType: AggregateTypeClinic,
-			AggregateId:   clinic.ID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectClinicPhysicalAddressChanged, envelope)
+		return outbox.Publish(tx, SubjectClinicPhysicalAddressChanged, AggregateTypeClinic, clinic.ID.String(), clinic.UpdatedAt, event)
 	})
 }

@@ -7,13 +7,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
@@ -106,16 +103,6 @@ func (s *EmployeeService) AssignDepartmentResponsible(ctx context.Context, cmd A
 		ev := &departmentv1.DepartmentResponsibleAssigned{
 			EmployeeId: cmd.EmployeeID.String(),
 		}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(row.CreatedAt),
-			AggregateType: AggregateTypeDepartment,
-			AggregateId:   cmd.DepartmentID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectDepartmentResponsibleAssigned, envelope)
+		return outbox.Publish(tx, SubjectDepartmentResponsibleAssigned, AggregateTypeDepartment, cmd.DepartmentID.String(), row.CreatedAt, ev)
 	})
 }

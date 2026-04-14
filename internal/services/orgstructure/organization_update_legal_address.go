@@ -8,13 +8,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -96,19 +93,6 @@ func (s *OrganizationService) UpdateLegalAddress(
 		}
 
 		event := buildOrganizationLegalAddressChangedEvent(&org)
-		payload, err := anypb.New(event)
-		if err != nil {
-			return oops.In("services.orgstructure.organization").
-				Code(ErrCodeOrganizationEventBuildFailed).
-				With("organization_id", cmd.ID).
-				Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(org.UpdatedAt),
-			AggregateType: AggregateTypeOrganization,
-			AggregateId:   org.ID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectOrganizationLegalAddressChanged, envelope)
+		return outbox.Publish(tx, SubjectOrganizationLegalAddressChanged, AggregateTypeOrganization, org.ID.String(), org.UpdatedAt, event)
 	})
 }

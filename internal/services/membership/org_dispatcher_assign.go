@@ -7,13 +7,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
@@ -107,16 +104,6 @@ func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd 
 		ev := &organizationv1.OrganizationDispatcherAssigned{
 			EmployeeId: cmd.EmployeeID.String(),
 		}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(row.CreatedAt),
-			AggregateType: AggregateTypeOrganization,
-			AggregateId:   cmd.OrganizationID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectOrganizationDispatcherAssigned, envelope)
+		return outbox.Publish(tx, SubjectOrganizationDispatcherAssigned, AggregateTypeOrganization, cmd.OrganizationID.String(), row.CreatedAt, ev)
 	})
 }

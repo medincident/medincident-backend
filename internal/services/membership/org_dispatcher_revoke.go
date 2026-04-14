@@ -7,13 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -84,17 +81,7 @@ func publishOrgDispatcherRevoked(tx *gorm.DB, organizationID, employeeID uuid.UU
 	ev := &organizationv1.OrganizationDispatcherRevoked{
 		EmployeeId: employeeID.String(),
 	}
-	payload, err := anypb.New(ev)
-	if err != nil {
-		return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherEventBuildFailed).Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeOrganization,
-		AggregateId:   organizationID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectOrganizationDispatcherRevoked, envelope)
+	return outbox.Publish(tx, SubjectOrganizationDispatcherRevoked, AggregateTypeOrganization, organizationID.String(), now, ev)
 }
 
 // publishOrgDispatcherDeputyRemoved is a shared helper; it publishes the
@@ -103,15 +90,5 @@ func publishOrgDispatcherDeputyRemoved(tx *gorm.DB, organizationID, employeeID u
 	ev := &organizationv1.OrganizationDispatcherDeputyRemoved{
 		EmployeeId: employeeID.String(),
 	}
-	payload, err := anypb.New(ev)
-	if err != nil {
-		return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherEventBuildFailed).Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeOrganization,
-		AggregateId:   organizationID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectOrganizationDispatcherDeputyRemoved, envelope)
+	return outbox.Publish(tx, SubjectOrganizationDispatcherDeputyRemoved, AggregateTypeOrganization, organizationID.String(), now, ev)
 }

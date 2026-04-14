@@ -7,13 +7,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -84,17 +81,7 @@ func publishClinicHeadRevoked(tx *gorm.DB, clinicID, employeeID uuid.UUID, now t
 	ev := &clinicv1.ClinicHeadRevoked{
 		EmployeeId: employeeID.String(),
 	}
-	payload, err := anypb.New(ev)
-	if err != nil {
-		return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadEventBuildFailed).Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeClinic,
-		AggregateId:   clinicID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectClinicHeadRevoked, envelope)
+	return outbox.Publish(tx, SubjectClinicHeadRevoked, AggregateTypeClinic, clinicID.String(), now, ev)
 }
 
 // publishClinicHeadDeputyRemoved is a shared helper; it publishes the
@@ -103,15 +90,5 @@ func publishClinicHeadDeputyRemoved(tx *gorm.DB, clinicID, employeeID uuid.UUID,
 	ev := &clinicv1.ClinicHeadDeputyRemoved{
 		EmployeeId: employeeID.String(),
 	}
-	payload, err := anypb.New(ev)
-	if err != nil {
-		return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadEventBuildFailed).Wrap(err)
-	}
-	envelope := &envelopev1.Envelope{
-		OccurredAt:    timestamppb.New(now),
-		AggregateType: AggregateTypeClinic,
-		AggregateId:   clinicID.String(),
-		Payload:       payload,
-	}
-	return outbox.AppendEvent(tx, SubjectClinicHeadDeputyRemoved, envelope)
+	return outbox.Publish(tx, SubjectClinicHeadDeputyRemoved, AggregateTypeClinic, clinicID.String(), now, ev)
 }

@@ -9,13 +9,10 @@ import (
 	"github.com/guregu/null/v6"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
@@ -99,20 +96,7 @@ func (s *IncidentCategoryService) UpdateDetails(
 		}
 
 		event := buildIncidentCategoryDetailsChangedEvent(&cat)
-		payload, err := anypb.New(event)
-		if err != nil {
-			return oops.In("services.incident.classifier.category").
-				Code(ErrCodeIncidentCategoryEventBuildFailed).
-				With("incident_category_id", cat.ID).
-				Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(cat.UpdatedAt),
-			AggregateType: AggregateTypeIncidentCategory,
-			AggregateId:   cat.ID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectIncidentCategoryDetailsChanged, envelope)
+		return outbox.Publish(tx, SubjectIncidentCategoryDetailsChanged, AggregateTypeIncidentCategory, cat.ID.String(), cat.UpdatedAt, event)
 	})
 	return UpdateIncidentCategoryDetailsResult{}, err
 }

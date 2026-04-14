@@ -8,13 +8,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
 )
@@ -120,16 +117,6 @@ func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd Assign
 			EmployeeId:       cmd.EmployeeID.String(),
 			DeputyEmployeeId: cmd.DeputyEmployeeID.String(),
 		}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(time.Now().UTC()),
-			AggregateType: AggregateTypeClinic,
-			AggregateId:   cmd.ClinicID.String(),
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectClinicHeadDeputyAssigned, envelope)
+		return outbox.Publish(tx, SubjectClinicHeadDeputyAssigned, AggregateTypeClinic, cmd.ClinicID.String(), time.Now().UTC(), ev)
 	})
 }

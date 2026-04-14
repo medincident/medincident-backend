@@ -8,12 +8,9 @@ import (
 
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/anypb"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	systemadminv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1"
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/services/outbox"
@@ -66,16 +63,6 @@ func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemA
 		}
 
 		ev := &systemadminv1.SystemAdminGranted{}
-		payload, err := anypb.New(ev)
-		if err != nil {
-			return oops.In(scopeSystemAdmin).Code(ErrCodeSystemAdminEventBuildFailed).Wrap(err)
-		}
-		envelope := &envelopev1.Envelope{
-			OccurredAt:    timestamppb.New(time.Now().UTC()),
-			AggregateType: AggregateTypeSystemAdmin,
-			AggregateId:   id,
-			Payload:       payload,
-		}
-		return outbox.AppendEvent(tx, SubjectSystemAdminGranted, envelope)
+		return outbox.Publish(tx, SubjectSystemAdminGranted, AggregateTypeSystemAdmin, id, time.Now().UTC(), ev)
 	})
 }
