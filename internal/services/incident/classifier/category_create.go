@@ -21,6 +21,7 @@ import (
 // category service methods.
 const (
 	ErrCodeIncidentCategoryIDGenerationFailed         = "incident_category_id_generation_failed"
+	ErrCodeIncidentCategoryIDEmpty                    = "incident_category_id_empty"
 	ErrCodeIncidentCategorySaveFailed                 = "incident_category_save_failed"
 	ErrCodeIncidentCategoryLoadFailed                 = "incident_category_load_failed"
 	ErrCodeIncidentCategoryNotFound                   = "incident_category_not_found"

@@ -40,6 +40,9 @@ func (s *IncidentCategoryService) UpdateDetails(
 	cmd UpdateIncidentCategoryDetailsCommand,
 ) (UpdateIncidentCategoryDetailsResult, error) {
 	var errs []error
+	if err := requireCategoryID(cmd.CategoryID); err != nil {
+		errs = append(errs, err)
+	}
 	if err := validateIncidentCategoryName(cmd.Name); err != nil {
 		errs = append(errs, err)
 	}

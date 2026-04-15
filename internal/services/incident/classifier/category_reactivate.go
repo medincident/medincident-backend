@@ -63,6 +63,9 @@ func (s *IncidentCategoryService) Reactivate(
 	ctx context.Context,
 	cmd ReactivateIncidentCategoryCommand,
 ) (ReactivateIncidentCategoryResult, error) {
+	if err := requireCategoryID(cmd.CategoryID); err != nil {
+		return ReactivateIncidentCategoryResult{}, err
+	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var cat model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).

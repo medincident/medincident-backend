@@ -85,6 +85,9 @@ func (s *IncidentCategoryService) Move(
 	ctx context.Context,
 	cmd MoveIncidentCategoryCommand,
 ) (MoveIncidentCategoryResult, error) {
+	if err := requireCategoryID(cmd.CategoryID); err != nil {
+		return MoveIncidentCategoryResult{}, err
+	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var moving model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).

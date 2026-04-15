@@ -25,6 +25,9 @@ func (s *IncidentTypeService) Delete(
 	ctx context.Context,
 	cmd DeleteIncidentTypeCommand,
 ) (DeleteIncidentTypeResult, error) {
+	if err := requireTypeID(cmd.TypeID); err != nil {
+		return DeleteIncidentTypeResult{}, err
+	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		now := time.Now().UTC()
 

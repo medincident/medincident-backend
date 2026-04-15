@@ -23,9 +23,10 @@ func (s *IncidentTypeService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateIncidentTypeCommand,
 ) (DeactivateIncidentTypeResult, error) {
+	if err := requireTypeID(cmd.TypeID); err != nil {
+		return DeactivateIncidentTypeResult{}, err
+	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		now := time.Now().UTC()
-
 		var row model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
@@ -49,15 +50,21 @@ func (s *IncidentTypeService) Deactivate(
 		if !row.IsActive {
 			return nil
 		}
-		if err := tx.Model(&model.IncidentType{}).
-			Where("id = ?", row.ID).
-			Updates(map[string]any{"is_active": false}).Error; err != nil {
+		// Update the row and return updated_at in a single round-trip
+		// so the outbox event's OccurredAt matches the DB clock.
+		var updatedAt time.Time
+		if err := tx.Raw(`
+			UPDATE domain.incident_types
+			SET is_active = FALSE, updated_at = now()
+			WHERE id = ?
+			RETURNING updated_at`, row.ID,
+		).Row().Scan(&updatedAt); err != nil {
 			return oops.In("services.incident.classifier.type").
 				Code(ErrCodeIncidentTypeSaveFailed).
 				With("incident_type_id", row.ID).
 				Wrap(err)
 		}
-		return appendTypeDeactivatedEvent(tx, row.ID, now)
+		return appendTypeDeactivatedEvent(tx, row.ID, updatedAt)
 	})
 	return DeactivateIncidentTypeResult{}, err
 }

@@ -4,8 +4,36 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/google/uuid"
 	"github.com/samber/oops"
 )
+
+// requireCategoryID fails with ErrCodeIncidentCategoryIDEmpty when
+// the passed uuid is Nil, ensuring every category command returns an
+// InvalidArgument-class error at the boundary instead of leaking a
+// NotFound/LoadFailed for an obviously empty input.
+func requireCategoryID(id uuid.UUID) error {
+	if id != uuid.Nil {
+		return nil
+	}
+	return oops.In("services.incident.classifier.category").
+		Code(ErrCodeIncidentCategoryIDEmpty).
+		Public("Incident category ID is required.").
+		With("field", "incident_category_id").
+		Errorf("incident category id is empty")
+}
+
+// requireTypeID is the type-table counterpart of requireCategoryID.
+func requireTypeID(id uuid.UUID) error {
+	if id != uuid.Nil {
+		return nil
+	}
+	return oops.In("services.incident.classifier.type").
+		Code(ErrCodeIncidentTypeIDEmpty).
+		Public("Incident type ID is required.").
+		With("field", "incident_type_id").
+		Errorf("incident type id is empty")
+}
 
 // Length and depth limits for the classifier. Every invariant is a
 // named constant.

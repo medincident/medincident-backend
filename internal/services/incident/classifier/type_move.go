@@ -30,6 +30,20 @@ func (s *IncidentTypeService) Move(
 	ctx context.Context,
 	cmd MoveIncidentTypeCommand,
 ) (MoveIncidentTypeResult, error) {
+	var errs []error
+	if err := requireTypeID(cmd.TypeID); err != nil {
+		errs = append(errs, err)
+	}
+	if cmd.NewCategoryID == uuid.Nil {
+		errs = append(errs, oops.In("services.incident.classifier.type").
+			Code(ErrCodeIncidentCategoryIDEmpty).
+			Public("New incident category ID is required.").
+			With("field", "new_category_id").
+			Errorf("new category id is empty"))
+	}
+	if len(errs) > 0 {
+		return MoveIncidentTypeResult{}, errors.Join(errs...)
+	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var moving model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).

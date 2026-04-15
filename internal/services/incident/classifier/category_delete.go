@@ -75,6 +75,9 @@ func (s *IncidentCategoryService) Delete(
 	ctx context.Context,
 	cmd DeleteIncidentCategoryCommand,
 ) (DeleteIncidentCategoryResult, error) {
+	if err := requireCategoryID(cmd.CategoryID); err != nil {
+		return DeleteIncidentCategoryResult{}, err
+	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		now := time.Now().UTC()
 
@@ -115,6 +118,9 @@ func (s *IncidentCategoryService) Delete(
 				Wrap(err)
 		}
 
+		// Emit Deleted events first — leaf types, then categories in
+		// children-first order (lockCategorySubtreeIDs already orders
+		// by depth DESC so the deepest leaves come first).
 		for _, id := range typeIDs {
 			if err := outbox.Publish(tx, SubjectIncidentTypeDeleted, AggregateTypeIncidentType, id.String(), now, &typeeventv1.IncidentTypeDeleted{}); err != nil {
 				return err
@@ -126,11 +132,26 @@ func (s *IncidentCategoryService) Delete(
 			}
 		}
 
-		if err := tx.Delete(&model.IncidentCategory{}, "id = ?", root.ID).Error; err != nil {
-			return oops.In("services.incident.classifier.category").
-				Code(ErrCodeIncidentCategorySaveFailed).
-				With("incident_category_id", root.ID).
-				Wrap(err)
+		// Delete types first — they FK-reference the categories and
+		// the parent_category_id FK is now ON DELETE RESTRICT.
+		if len(typeIDs) > 0 {
+			if err := tx.Delete(&model.IncidentType{}, "id IN ?", typeIDs).Error; err != nil {
+				return oops.In("services.incident.classifier.type").
+					Code(ErrCodeIncidentTypeSaveFailed).
+					With("root_category_id", root.ID).
+					Wrap(err)
+			}
+		}
+
+		// Delete categories children-first (depth DESC) so no row is
+		// removed while its descendants still exist.
+		for _, id := range categoryIDs {
+			if err := tx.Delete(&model.IncidentCategory{}, "id = ?", id).Error; err != nil {
+				return oops.In("services.incident.classifier.category").
+					Code(ErrCodeIncidentCategorySaveFailed).
+					With("incident_category_id", id).
+					Wrap(err)
+			}
 		}
 		return nil
 	})

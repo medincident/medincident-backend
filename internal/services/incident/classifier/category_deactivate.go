@@ -30,6 +30,9 @@ func (s *IncidentCategoryService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateIncidentCategoryCommand,
 ) (DeactivateIncidentCategoryResult, error) {
+	if err := requireCategoryID(cmd.CategoryID); err != nil {
+		return DeactivateIncidentCategoryResult{}, err
+	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		now := time.Now().UTC()
 
