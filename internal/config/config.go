@@ -1,10 +1,7 @@
 package config
 
 import (
-	"errors"
 	"os"
-	"sort"
-	"strings"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -19,81 +16,40 @@ const (
 	ErrCodeConfigValidateFailed  = "validate_failed"
 )
 
-// validate is the single app-scope validator instance; reused so
-// struct metadata is cached across Read calls.
 var validate = validator.New(validator.WithRequiredStructEnabled())
 
 // Config is the root application configuration.
 type Config struct {
 	Server   ServerConfig   `yaml:"server"   validate:"required"`
 	Postgres PostgresConfig `yaml:"postgres" validate:"required"`
-	Nats     NatsConfig     `yaml:"nats"     validate:"required"`
-	Zitadel  ZitadelConfig  `yaml:"zitadel"  validate:"required"`
-	Outbox   OutboxConfig   `yaml:"outbox"   validate:"required"`
 	Zerolog  ZerologConfig  `yaml:"zerolog"  validate:"required"`
+	Zitadel  ZitadelConfig  `yaml:"zitadel"  validate:"required"`
 }
 
-// ServerConfig holds gRPC server listener settings.
 type ServerConfig struct {
 	GRPC GRPCServerConfig `yaml:"grpc" validate:"required"`
 }
 
-// GRPCServerConfig holds per-server listener settings.
 type GRPCServerConfig struct {
-	// Address is the TCP listen address, e.g. ":9090".
-	Address string `yaml:"address" validate:"required,hostname_port"`
-	// MaxRecvMsgSize is the maximum inbound message size in bytes.
-	MaxRecvMsgSize int `yaml:"max_recv_msg_size" validate:"required,min=1024,max=104857600"`
+	Address        string `yaml:"address"           validate:"required,hostname_port"`
+	MaxRecvMsgSize int    `yaml:"max_recv_msg_size" validate:"required,min=1024,max=104857600"`
 }
 
-// PostgresConfig holds the write-store connection settings.
 type PostgresConfig struct {
-	// DSN is a libpq-style connection string, usually injected via
-	// the DATABASE_URL environment variable through ${VAR} expansion.
 	DSN  string             `yaml:"dsn"  validate:"required,startswith=postgres://|startswith=postgresql://"`
 	Pool PostgresPoolConfig `yaml:"pool" validate:"required"`
 }
 
-// PostgresPoolConfig holds pgxpool tuning.
 type PostgresPoolConfig struct {
-	// MaxConns is the maximum number of connections in the pool.
-	MaxConns int32 `yaml:"max_conns" validate:"required,min=1,max=10000"`
-	// MinConns is the number of connections held open at idle.
-	MinConns int32 `yaml:"min_conns" validate:"min=0,ltefield=MaxConns"`
-	// MaxConnLifetime caps how long any single connection is reused
-	// before pgx rotates it.
-	MaxConnLifetime time.Duration `yaml:"max_conn_lifetime" validate:"required,min=1s"`
-	// MaxConnIdleTime caps how long an idle connection stays in the
-	// pool before being closed.
-	MaxConnIdleTime time.Duration `yaml:"max_conn_idle_time" validate:"required,min=1s"`
+	MaxOpenConns    int           `yaml:"max_open_conns"     validate:"required,min=1,max=10000"`
+	MaxIdleConns    int           `yaml:"max_idle_conns"     validate:"min=0,ltefield=MaxOpenConns"`
+	ConnMaxLifetime time.Duration `yaml:"conn_max_lifetime"  validate:"required,min=1s"`
+	ConnMaxIdleTime time.Duration `yaml:"conn_max_idle_time" validate:"required,min=1s"`
 }
 
-// NatsConfig holds NATS JetStream connection settings.
-type NatsConfig struct {
-	// URL is the NATS server URL.
-	URL string `yaml:"url" validate:"required,url"`
-	// Stream is the JetStream stream name events are published to.
-	Stream string `yaml:"stream" validate:"required"`
-	// MaxReconnects caps the number of reconnect attempts on connection
-	// loss. -1 means infinite (the default). 0 disables reconnection.
-	MaxReconnects int `yaml:"max_reconnects" validate:"min=-1"`
-	// ReconnectWait is the base delay between reconnect attempts.
-	ReconnectWait time.Duration `yaml:"reconnect_wait" validate:"required,min=100ms"`
-}
-
-// ZitadelConfig holds Zitadel gRPC client and JWT validation settings.
 type ZitadelConfig struct {
-	GRPCAddress string `yaml:"grpc_address" validate:"required,hostname_port"`
-	JWKSURL     string `yaml:"jwks_url"     validate:"required,url"`
-	Issuer      string `yaml:"issuer"       validate:"required,url"`
-	Audience    string `yaml:"audience"     validate:"required"`
-}
-
-// OutboxConfig holds outbox poller tuning.
-type OutboxConfig struct {
-	PollInterval   time.Duration `yaml:"poll_interval"   validate:"required,min=10ms,max=1m"`
-	BatchSize      int           `yaml:"batch_size"      validate:"required,min=1,max=10000"`
-	PublishTimeout time.Duration `yaml:"publish_timeout" validate:"required,min=100ms,max=5m"`
+	Domain  string `yaml:"domain"   validate:"required,url"`
+	KeyPath string `yaml:"key_path" validate:"required,file"`
 }
 
 // Default values applied by defaultConfig when a field is absent from
@@ -102,24 +58,12 @@ const (
 	defaultGRPCAddress        = ":9090"
 	defaultGRPCMaxRecvMsgSize = 4 * 1024 * 1024 // 4 MiB
 
-	defaultPostgresMaxConns        = 20
-	defaultPostgresMinConns        = 2
-	defaultPostgresMaxConnLifetime = 30 * time.Minute
-	defaultPostgresMaxConnIdleTime = 5 * time.Minute
-
-	defaultNatsURL           = "nats://localhost:4222"
-	defaultNatsStream        = "medincident"
-	defaultNatsMaxReconnects = -1 // infinite
-	defaultNatsReconnectWait = 2 * time.Second
-
-	defaultOutboxPollInterval   = 500 * time.Millisecond
-	defaultOutboxBatchSize      = 100
-	defaultOutboxPublishTimeout = 5 * time.Second
+	defaultPostgresMaxOpenConns    = 20
+	defaultPostgresMaxIdleConns    = 2
+	defaultPostgresConnMaxLifetime = 30 * time.Minute
+	defaultPostgresConnMaxIdleTime = 5 * time.Minute
 )
 
-// defaultConfig returns a Config pre-populated with the package-level
-// default constants. yaml.Unmarshal merges the loaded file on top, so
-// fields set in YAML win and omitted fields inherit these defaults.
 func defaultConfig() Config {
 	return Config{
 		Server: ServerConfig{
@@ -130,22 +74,11 @@ func defaultConfig() Config {
 		},
 		Postgres: PostgresConfig{
 			Pool: PostgresPoolConfig{
-				MaxConns:        defaultPostgresMaxConns,
-				MinConns:        defaultPostgresMinConns,
-				MaxConnLifetime: defaultPostgresMaxConnLifetime,
-				MaxConnIdleTime: defaultPostgresMaxConnIdleTime,
+				MaxOpenConns:    defaultPostgresMaxOpenConns,
+				MaxIdleConns:    defaultPostgresMaxIdleConns,
+				ConnMaxLifetime: defaultPostgresConnMaxLifetime,
+				ConnMaxIdleTime: defaultPostgresConnMaxIdleTime,
 			},
-		},
-		Nats: NatsConfig{
-			URL:           defaultNatsURL,
-			Stream:        defaultNatsStream,
-			MaxReconnects: defaultNatsMaxReconnects,
-			ReconnectWait: defaultNatsReconnectWait,
-		},
-		Outbox: OutboxConfig{
-			PollInterval:   defaultOutboxPollInterval,
-			BatchSize:      defaultOutboxBatchSize,
-			PublishTimeout: defaultOutboxPublishTimeout,
 		},
 		Zerolog: ZerologConfig{
 			Level:      "info",
@@ -164,32 +97,6 @@ func defaultConfig() Config {
 	}
 }
 
-// formatValidationErrors converts a validator error into a sorted slice of
-// "Field.Path: tag" strings. If err is not a validator.ValidationErrors the
-// raw error message is returned as a single-element slice.
-func formatValidationErrors(err error) []string {
-	var ve validator.ValidationErrors
-	if !errors.As(err, &ve) {
-		return []string{err.Error()}
-	}
-
-	msgs := make([]string, 0, len(ve))
-	for _, fe := range ve {
-		// StructNamespace gives e.g. "Config.Postgres.DSN"; drop the root
-		// "Config." prefix so the path is relative to the config struct.
-		ns := strings.TrimPrefix(fe.StructNamespace(), "Config.")
-
-		tag := fe.Tag()
-		if param := fe.Param(); param != "" {
-			tag = tag + "=" + param
-		}
-
-		msgs = append(msgs, ns+": "+tag)
-	}
-	sort.Strings(msgs)
-	return msgs
-}
-
 // Read loads a YAML config file from path and expands ${VAR} / $VAR
 // references in its content using the current process environment.
 func Read(path string) (*Config, error) {
@@ -201,9 +108,7 @@ func Read(path string) (*Config, error) {
 			With("path", path).
 			Wrap(err)
 	}
-
 	expanded := os.ExpandEnv(string(data))
-
 	cfg := defaultConfig()
 	if err := yaml.Unmarshal([]byte(expanded), &cfg); err != nil {
 		return nil, oops.
@@ -212,15 +117,13 @@ func Read(path string) (*Config, error) {
 			With("path", path).
 			Wrap(err)
 	}
-
 	if err := validate.Struct(&cfg); err != nil {
 		return nil, oops.
 			In("config").
 			Code(ErrCodeConfigValidateFailed).
 			With("path", path).
-			With("violations", formatValidationErrors(err)).
+			With("violations", err.Error()).
 			Wrap(err)
 	}
-
 	return &cfg, nil
 }

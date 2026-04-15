@@ -1,8 +1,8 @@
 # Agent Instructions — medincident-command-service
 
-HTTP/gRPC command side of a CQRS split. Go 1.26 · pgx/v5 · sqlc ·
-NATS JetStream · samber/do · samber/oops · zerolog. Full design in
-`docs/superpowers/specs/2026-04-10-command-service-base-design.md`.
+gRPC command side of a CQRS split. Go 1.26 · gorm v2 · guregu/null/v6 ·
+samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
+`docs/superpowers/specs/2026-04-13-command-service-simplification-design.md`.
 
 ## Hard rules — NOT NEGOTIABLE
 
@@ -14,107 +14,115 @@ NATS JetStream · samber/do · samber/oops · zerolog. Full design in
 3. **Never use string literals in `oops.Code(...)` calls, and never
    use generic codes.** Every Code is a specific package-level
    constant (e.g. `ErrCodeAddressTextEmpty`, not `CodeInvalidArgument`)
-   declared **in the same file as the code that emits it** — NOT in a
-   separate `codes.go`. The rare exception is a code shared by two
-   producers in different files of the same package; only then may it
-   live in its own file. Aggregates are single-file by convention, so
-   this exception almost never applies. Test assertions reference the
-   same constants. Grep is the source of truth for where a code is
-   emitted and matched.
-4. **Never install Go tools globally.** Every Go tool (buf,
-   golangci-lint, sqlc, dbmate, govulncheck, protoc-gen-go) is pinned
-   in `go.mod`'s `tool` directive and invoked via `go tool <name>`.
-   Adding a new tool: `go get -tool <module>@latest` and reference it
-   via `go tool` in `Taskfile.yml`.
+   declared in the same file as the code that emits it.
+4. **Never install Go tools globally.** Every Go tool (buf, dbmate,
+   golangci-lint, govulncheck, protoc-gen-go, protoc-gen-go-grpc) is
+   pinned in `go.mod`'s `tool` directive and invoked via `go tool
+   <name>`. Adding a new tool: `go get -tool <module>@latest`.
 5. **Never inline invariant limits.** Every max/min/threshold is a
-   named package-level constant (`maxNameLen`, `MinLongitude`, …).
-   `With()` clauses also reference the constant, never the literal.
-6. **Never use `fmt.Errorf("%w", ...)` or stdlib `errors.New` for
-   domain errors.** Use `samber/oops`:
-   `oops.In("pkg.subsystem").Code(pkg.CodeFoo).Public("…").With("field", x).Wrap(err)`.
+   named package-level constant (`organizationMaxNameLen`,
+   `minLongitude`, …). `With()` clauses also reference the constant,
+   never the literal.
+6. **Never use `fmt.Errorf("%w", ...)` for domain errors.** Use
+   `samber/oops`:
+   `oops.In("pkg").Code(...).Public("…").With("field", x).Wrap(err)`.
    `errors.New` is OK in tests for sentinel comparisons.
-7. **Value Objects have ONE constructor, no mutating methods.**
-   Aggregates/entities have TWO constructors: `New` (validates, raises
-   Created event) and `Hydrate` (trusted, no validation, no events).
-8. **Application services take `XCommand` and return `XResult`
-   structs.** Positional params are reserved for domain constructors.
-   Never write `Service.Create(ctx, name, desc, addr)` — only
-   `Service.Create(ctx, CreateCommand{…}) (CreateResult, error)`.
-9. **Domain types carry NO struct tags.** Proto-tags and JSON-tags are
-   transport concerns. The outbox layer marshals domain events via
-   `encoding/json` using exported field names directly; this means
-   renaming a Go field on a domain event is a breaking change for
-   already-persisted outbox rows.
-10. **Events carry NEW state only.** `Renamed.Name`, not
-    `Renamed.OldName`+`Renamed.NewName`. Consumers compute diffs from
-    their own previous projection.
-11. **`aggregate.Root.Raise(event, now)` is the ONLY place
-    `UpdatedAt` moves.** Never write `o.UpdatedAt = now` directly in
-    a mutating method.
-12. **Multi-error validation spans the WHOLE operation, not just one
-    constructor.** Within a single command (e.g. `Service.Create`) the
-    validator must run every VO and aggregate constructor it can and
-    collect all failures with `errors.Join`, so the client receives
-    every field violation in one response. Inside a constructor with
-    multiple validators, collect with `errors.Join` as well. The only
-    time a later constructor is skipped is when it genuinely cannot
-    run without a prior VO (pass `nil`/zero where semantically valid
-    — e.g. a nil legal address — and continue).
-13. **Proto is transport-only.** Outbox stores JSONB of domain event
-    structs. The only places proto is imported in the feature tree
-    are `internal/orgstructure/<aggregate>/infra/outbox.go` (for
-    mappers) and the future `internal/grpcapi/` (for transport).
-14. **Never `oops.Wrap(errors.Join(...))` in validation code.** An
-    oops-wrapped error implements `Unwrap() error` (singular), not
-    `Unwrap() []error` — so the gRPC error interceptor's
-    `flattenErrors` recursive unwrap treats it as a leaf and silently
-    loses the individual field violations. At the VO / aggregate /
-    operation level return `errors.Join(...)` raw, without oops
-    wrapping. The interceptor walks the joined tree and inspects each
-    leaf's `oops.Code()` to build `BadRequest.FieldViolation` entries
-    (codes like `address_text_empty`, `organization_name_empty` each
-    identify a distinct violation). The ONE exception is
-    `internal/tx/within.go` where rollback-also-fails wraps a joined
-    error with `Code(CodeRollbackFailed)` — safe only because tx
-    errors never pass through validation flattening. Do not copy this
-    pattern elsewhere.
+7. **No interfaces for services and no repository layer.** Services
+   are concrete struct types that take `*gorm.DB` and `*zerolog.Logger`
+   in the constructor. Call gorm directly, open transactions inline
+   via `s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error
+   {...})`.
+8. **Commands and results use plain Go types only.** No `null.X`
+   anywhere outside `internal/model`. Optional fields in commands are
+   `*string` / `*float64` / `*PointInput`. Conversion to `null.X` at
+   the service boundary is inline via `null.StringFromPtr`,
+   `null.FloatFrom`, etc. — no local wrapper helpers.
+9. **Validation at the service boundary, multi-error.** Every command
+   method collects field errors via `errors.Join(errs...)` raw (never
+   `oops.Wrap(errors.Join(...))`). Validators are pure functions in
+   the same package; each failure leaf carries its own oops `Code`.
+   No DB `CHECK` constraints — the DB has only NOT NULL, PK, FK.
+10. **Events are built inline with named `buildXxxEvent` functions.**
+    No generic mappers. Each event has one builder that knows its
+    exact proto type and assembles it inline. Each proto event file
+    duplicates its own `Address`/`Point` messages so aggregates evolve
+    independently.
+11. **Outbox writes go through `outbox.AppendEvent(tx, subject,
+    envelope)`.** The caller builds the
+    `*medincident.event.v1.Envelope` explicitly. The outbox table has
+    `id, subject, payload, headers, created_at, published_at` on the
+    DB side, but the command service only writes `subject` and
+    `payload` — the `headers` column is owned by the publisher
+    service (dedup keys derived from `outbox.events.id`) and
+    `published_at` is the publisher's bookkeeping column.
+12. **Events carry NEW state only.**
+    `OrganizationDetailsChanged.Name` is the new name; consumers
+    compute diffs from their own prior projection.
+13. **DI factories no healthcheck.** Providers only wire; no Ping,
+    warm-up, or probe inside the provide function.
+14. **Every gorm model field carries an explicit field-level
+    permission tag** (`<-:create`, `<-`, `-`). Primary keys, creation
+    timestamps, and parent FKs (`Clinic.OrganizationID`,
+    `Department.ClinicID`) are `<-:create`. Mutable body fields use
+    `<-` explicitly. Parent FKs are immutable — a clinic always
+    belongs to exactly one organization and never changes parents;
+    a department always belongs to exactly one clinic.
 
 ## Directory layout
 
-- `cmd/server/` — server entry point
-- `configs/` — YAML config reference + `.env.example`
-- `db/migrations/` — dbmate SQL migrations (NEVER hand-crafted)
-- `gen/` — buf-generated proto Go bindings (committed)
-- `internal/config/` — config DTOs + YAML loader (copied from
-  zitadel-actions pattern)
-- `internal/correlation/` — request-scoped correlation id via ctx
-- `internal/di/` — samber/do providers, including the zerolog builder
-  copied verbatim from zitadel-actions
-- `internal/errcodes` — **does not exist**; codes live in the same
-  file as the code that emits them (a shared-code file is only
-  permitted when two producers in different files of the same package
-  both need it — rare)
-- `internal/orgstructure/` — bounded context for organizational
-  structure (Organization today; Clinic, Department later)
-- `internal/outbox/` — generic outbox: Store, Registry, Publish, Subject
-- `internal/shared/aggregate/` — embed base with
-  `CreatedAt`/`UpdatedAt`/events + `Raise`/`PullEvents`
-- `internal/shared/geo/` — Point, Address value objects
-- `internal/storage/postgres/` — the ONLY place `pgx` is imported
-- `internal/tx/` — driver-agnostic transaction abstraction
-  (`tx.Tx`, `tx.Beginner`, `tx.Within`)
-- `test/integration/` — integration tests behind the `integration`
-  build tag (`task test:integration`)
+```
+cmd/server/main.go                       — entry point, graceful shutdown
+internal/
+  config/                                — YAML + go-playground/validator
+  di/                                    — samber/do/v2 providers (all factories)
+    container.go                         — NewContainer + do.Provide wiring
+    zerolog.go                           — logger construction
+    postgres.go                          — *gorm.DB provider + Shutdown hook
+    grpc.go                              — *grpc.Server wrapper + GracefulStop hook
+    services.go                          — three service providers
+    handler.go                           — OrgStructureHandler provider
+  model/                                 — gorm models. ONLY place `null.X` lives.
+  services/orgstructure/                 — business logic, one file per method
+    service.go                           — three service struct types + constructors
+    outbox.go                            — AppendOutboxEvent helper
+    address.go                           — shared Address/Point validators
+    organization_{create,update_details,update_legal_address}.go
+    clinic_{create,update_details,update_physical_address}.go
+    department_{create,update_details}.go
+  handler/orgstructure/                  — gRPC handler, one file per RPC
+    handler.go                           — OrgStructureHandler struct + proto conversion helpers
+    organization_{create,update_details,update_legal_address}.go
+    clinic_{create,update_details,update_physical_address}.go
+    department_{create,update_details}.go
+gen/api/medincident/                     — buf-generated proto (committed)
+  event/v1/                              — Envelope
+  event/organization/v1/                 — Organization events + own Address/Point
+  event/clinic/v1/                       — Clinic events + own Address/Point
+  event/department/v1/                   — Department events (no Address)
+  service/orgstructure/v1/               — OrgStructureService gRPC + Request/Response
+db/migrations/                           — dbmate migrations (never hand-written)
+test/integration/orgstructure/           — testcontainers-backed integration suite
+configs/                                 — config.example.yaml
+```
+
+## Subject scheme
+
+Outbox subjects follow `medincident.event.<aggregate>.v1.<action>`:
+- `medincident.event.organization.v1.{created,details_changed,legal_address_changed}`
+- `medincident.event.clinic.v1.{created,details_changed,physical_address_changed}`
+- `medincident.event.department.v1.{created,details_changed}`
 
 ## Tooling
 
-All via `Taskfile.yml` — see README.md for the list. Key commands:
+All via `Taskfile.yml`. Key commands:
 
-- `task gen` — regenerate proto + sqlc
+- `task gen` — `go tool buf generate` (no sqlc)
+- `task gen:check` — verify `gen/` is in sync with proto
+- `task fmt`, `task fmt:check` — gofumpt + goimports via golangci-lint
 - `task lint` — golangci-lint
-- `task fmt` / `task fmt:check` — format via golangci-lint formatters
-- `task test` — unit + integration
-- `task test:unit` — fast unit tests only
-- `task test:integration` — testcontainers-backed integration suite
 - `task vuln` — govulncheck
-- `task migrate` / `task migrate:new -- <name>` — dbmate up / new
+- `task test:unit` — unit tests
+- `task test:integration` — testcontainers-backed integration suite
+- `task test` — unit + integration
+- `task migrate` — apply dbmate migrations
+- `task migrate:new -- <name>` — create a new migration file pair

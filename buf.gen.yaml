@@ -2,22 +2,54 @@ version: v2
 
 inputs:
   - git_repo: https://github.com/medincident/medincident-proto.git
-    subdir: api/proto
+    branch: main
     paths:
-      - medincident/events/v1
-      - medincident/orgstructure/v1
-      - medincident/shared/geo/v1
+      - api/proto/medincident/event/v1
+      - api/proto/medincident/event/organization/v1
+      - api/proto/medincident/event/clinic/v1
+      - api/proto/medincident/event/department/v1
+      - api/proto/medincident/service/orgstructure/v1
+      - api/proto/medincident/event/employee/v1
+      - api/proto/medincident/service/membership/v1
+      - api/proto/medincident/event/system_admin/v1
+      - api/proto/medincident/event/incident/category/v1
+      - api/proto/medincident/event/incident/type/v1
+      - api/proto/medincident/service/incident/classifier/v1
 
 plugins:
   - local:
       - go
       - tool
       - protoc-gen-go
-    out: gen
+    out: gen/api
     opt:
       - paths=source_relative
-      # Go import paths provided via M-mappings so proto files stay
-      # language-agnostic in the medincident-proto monorepo.
-      - Mmedincident/events/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/medincident/events/v1
-      - Mmedincident/orgstructure/v1/events.proto=github.com/medincident/medincident-command-service/gen/medincident/orgstructure/v1
-      - Mmedincident/shared/geo/v1/types.proto=github.com/medincident/medincident-command-service/gen/medincident/shared/geo/v1
+      - Mmedincident/event/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/v1
+      - Mmedincident/event/organization/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1
+      - Mmedincident/event/clinic/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1
+      - Mmedincident/event/department/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1
+      - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1
+      - Mmedincident/event/employee/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1
+      - Mmedincident/service/membership/v1/membership.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1
+      - Mmedincident/event/system_admin/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1
+      - Mmedincident/event/incident/category/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1
+      - Mmedincident/event/incident/type/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1
+      - Mmedincident/service/incident/classifier/v1/incident_classifier.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1
+  - local:
+      - go
+      - tool
+      - protoc-gen-go-grpc
+    out: gen/api
+    opt:
+      - paths=source_relative
+      - Mmedincident/event/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/v1
+      - Mmedincident/event/organization/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1
+      - Mmedincident/event/clinic/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1
+      - Mmedincident/event/department/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1
+      - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1
+      - Mmedincident/event/employee/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1
+      - Mmedincident/service/membership/v1/membership.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1
+      - Mmedincident/event/system_admin/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1
+      - Mmedincident/event/incident/category/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1
+      - Mmedincident/event/incident/type/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1
+      - Mmedincident/service/incident/classifier/v1/incident_classifier.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1

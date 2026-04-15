@@ -2,16 +2,15 @@ version: "3"
 
 tasks:
   gen:
-    desc: Generate Go code from protobuf definitions and sqlc queries
+    desc: Generate Go code from protobuf definitions
     cmds:
       - go tool buf generate
-      - go tool sqlc generate -f sqlc.yaml
 
   gen:check:
     desc: Verify generated code is up to date (fails if `task gen` would produce changes)
     cmds:
       - task: gen
-      - git diff --exit-code -- gen/ internal/storage/postgres/sqlc/gen/
+      - git diff --exit-code -- gen/
 
   lint:
     desc: Lint Go code

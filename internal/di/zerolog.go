@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"sync"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -17,8 +18,18 @@ import (
 	"github.com/medincident/medincident-command-service/internal/config"
 )
 
+// zerologGlobalsOnce gates the one-time mutation of process-wide
+// zerolog state (TimeFieldFormat, ErrorMarshalFunc, ErrorStackMarshaler,
+// TimestampFunc) so repeated calls to buildZerolog — possible in tests
+// that spin up a second container — do not race each other. The
+// configuration is read once, from whichever config.ZerologConfig the
+// first caller passes in.
+var zerologGlobalsOnce sync.Once
+
 // Error codes emitted by this DI init.
-const ErrCodeZerologCleanupFailed = "cleanup_failed"
+const (
+	ErrCodeZerologCleanupFailed = "cleanup_failed"
+)
 
 // loggerWrapper pairs the logger with a cleanup func that closes file
 // handles. Implements the samber/do shutdowner protocol so cleanup runs
@@ -35,8 +46,7 @@ func (w *loggerWrapper) Shutdown(_ context.Context) error {
 	return nil
 }
 
-// ProvideLoggerWrapper is a samber/do provider for *loggerWrapper.
-func ProvideLoggerWrapper(injector do.Injector) (*loggerWrapper, error) {
+func provideLoggerWrapper(injector do.Injector) (*loggerWrapper, error) {
 	cfg, err := do.Invoke[*config.Config](injector)
 	if err != nil {
 		return nil, err
@@ -48,8 +58,7 @@ func ProvideLoggerWrapper(injector do.Injector) (*loggerWrapper, error) {
 	return &loggerWrapper{logger: logger, cleanup: cleanup}, nil
 }
 
-// ProvideZerolog is a samber/do provider for *zerolog.Logger.
-func ProvideZerolog(injector do.Injector) (*zerolog.Logger, error) {
+func provideZerolog(injector do.Injector) (*zerolog.Logger, error) {
 	w, err := do.Invoke[*loggerWrapper](injector)
 	if err != nil {
 		return nil, err
@@ -134,12 +143,17 @@ func buildZerolog(cfg *config.ZerologConfig) (*zerolog.Logger, func() error, err
 		w = zerolog.MultiLevelWriter(ws...)
 	}
 
-	zerolog.TimeFieldFormat = cfg.TimeFormat
-	zerolog.ErrorMarshalFunc = oopszerolog.OopsMarshalFunc
-	zerolog.ErrorStackMarshaler = oopszerolog.OopsStackMarshaller
-	if cfg.TimeUTC {
-		zerolog.TimestampFunc = func() time.Time { return time.Now().UTC() }
-	}
+	// Process-wide zerolog state: set once, ever. Subsequent calls to
+	// buildZerolog (e.g. from a second DI container in tests) reuse
+	// whatever the first caller configured.
+	zerologGlobalsOnce.Do(func() {
+		zerolog.TimeFieldFormat = cfg.TimeFormat
+		zerolog.ErrorMarshalFunc = oopszerolog.OopsMarshalFunc
+		zerolog.ErrorStackMarshaler = oopszerolog.OopsStackMarshaller
+		if cfg.TimeUTC {
+			zerolog.TimestampFunc = func() time.Time { return time.Now().UTC() }
+		}
+	})
 
 	logger := zerolog.New(w).Level(globalLevel)
 	ctx := logger.With()
@@ -174,45 +188,4 @@ func buildZerolog(cfg *config.ZerologConfig) (*zerolog.Logger, func() error, err
 
 	result := ctx.Logger()
 	return &result, cleanup, nil
-}
-
-func consoleTarget(target config.ZerologConsoleTarget) *os.File {
-	if target == config.ZerologConsoleTargetStdout {
-		return os.Stdout
-	}
-	return os.Stderr
-}
-
-func buildOutputWriter(w io.Writer, out *config.ZerologOutputConfig, globalTimeFormat string) zerolog.LevelWriter {
-	tf := globalTimeFormat
-	if out.TimeFormat != "" {
-		tf = out.TimeFormat
-	}
-
-	var base zerolog.LevelWriter
-	if out.Pretty {
-		cw := zerolog.ConsoleWriter{
-			Out:        w,
-			NoColor:    out.NoColor,
-			TimeFormat: tf,
-		}
-		if len(out.PartsOrder) > 0 {
-			cw.PartsOrder = out.PartsOrder
-		}
-		if len(out.PartsExclude) > 0 {
-			cw.PartsExclude = out.PartsExclude
-		}
-		base = zerolog.LevelWriterAdapter{Writer: cw}
-	} else {
-		base = zerolog.LevelWriterAdapter{Writer: w}
-	}
-
-	if out.Level != "" {
-		level, err := zerolog.ParseLevel(string(out.Level))
-		if err == nil && level > zerolog.TraceLevel {
-			return &zerolog.FilteredLevelWriter{Writer: base, Level: level}
-		}
-	}
-
-	return base
 }

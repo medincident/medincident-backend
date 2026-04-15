@@ -2,7 +2,9 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
+	"net"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,14 +12,12 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
+	"google.golang.org/grpc"
 
 	"github.com/medincident/medincident-command-service/internal/config"
 	"github.com/medincident/medincident-command-service/internal/di"
-	organizationapp "github.com/medincident/medincident-command-service/internal/orgstructure/organization/app"
 )
 
-// shutdownTimeout caps how long the DI container has to release its
-// resources during graceful termination.
 const shutdownTimeout = 10 * time.Second
 
 func main() {
@@ -25,7 +25,6 @@ func main() {
 	flag.StringVar(&configPath, "config", "config.yaml", "path to the YAML configuration file")
 	flag.Parse()
 
-	// bootLogger handles config/DI errors before the configured logger exists.
 	bootLogger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
 	cfg, err := config.Read(configPath)
@@ -41,14 +40,38 @@ func main() {
 		bootLogger.Fatal().Err(err).Msg("failed to build DI container")
 	}
 
-	// Eager-invoke the top of the service graph to fail fast on wiring errors.
-	_ = do.MustInvoke[organizationapp.Service](container)
-
 	logger := do.MustInvoke[*zerolog.Logger](container)
-	logger.Info().Str("config", configPath).Msg("command-service started")
+	server, err := do.Invoke[*grpc.Server](container)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("failed to resolve grpc server")
+	}
 
-	<-ctx.Done()
-	logger.Info().Msg("command-service stopping")
+	lc := &net.ListenConfig{}
+	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)
+	if err != nil {
+		logger.Fatal().Err(err).Str("addr", cfg.Server.GRPC.Address).Msg("failed to listen")
+	}
+
+	serveErr := make(chan error, 1)
+	go func() {
+		logger.Info().Str("addr", cfg.Server.GRPC.Address).Msg("grpc server starting")
+		if err := server.Serve(listener); err != nil && !errors.Is(err, grpc.ErrServerStopped) {
+			serveErr <- err
+			return
+		}
+		close(serveErr)
+	}()
+
+	select {
+	case <-ctx.Done():
+		logger.Info().Msg("command-service stopping (signal)")
+	case err, ok := <-serveErr:
+		if ok && err != nil {
+			logger.Error().Err(err).Msg("grpc serve error, shutting down")
+		} else {
+			logger.Info().Msg("command-service stopping (grpc server stopped)")
+		}
+	}
 
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
 	defer cancel()
