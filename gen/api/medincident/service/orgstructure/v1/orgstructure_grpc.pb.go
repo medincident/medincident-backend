@@ -36,9 +36,10 @@ const (
 // OrgStructureService is the command-side contract for the three
 // organisational structure aggregates: Organization, Clinic, and
 // Department. Every mutation returns either an identifier (Create) or
-// an empty response (Update). google.api.http annotations are provided
-// for a future REST gateway wrapper service; command-service serves
-// pure gRPC and does NOT generate grpc-gateway code.
+// an empty response (Update). google.api.http annotations drive a
+// separate REST gateway binary; command-service itself serves pure
+// gRPC, while this proto repo generates grpc-gateway stubs under gen/
+// for that gateway binary to consume.
 type OrgStructureServiceClient interface {
 	CreateOrganization(ctx context.Context, in *CreateOrganizationRequest, opts ...grpc.CallOption) (*CreateOrganizationResponse, error)
 	UpdateOrganizationDetails(ctx context.Context, in *UpdateOrganizationDetailsRequest, opts ...grpc.CallOption) (*UpdateOrganizationDetailsResponse, error)
@@ -145,9 +146,10 @@ func (c *orgStructureServiceClient) UpdateDepartmentDetails(ctx context.Context,
 // OrgStructureService is the command-side contract for the three
 // organisational structure aggregates: Organization, Clinic, and
 // Department. Every mutation returns either an identifier (Create) or
-// an empty response (Update). google.api.http annotations are provided
-// for a future REST gateway wrapper service; command-service serves
-// pure gRPC and does NOT generate grpc-gateway code.
+// an empty response (Update). google.api.http annotations drive a
+// separate REST gateway binary; command-service itself serves pure
+// gRPC, while this proto repo generates grpc-gateway stubs under gen/
+// for that gateway binary to consume.
 type OrgStructureServiceServer interface {
 	CreateOrganization(context.Context, *CreateOrganizationRequest) (*CreateOrganizationResponse, error)
 	UpdateOrganizationDetails(context.Context, *UpdateOrganizationDetailsRequest) (*UpdateOrganizationDetailsResponse, error)
