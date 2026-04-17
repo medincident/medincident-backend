@@ -10,9 +10,9 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
 )
 
 // Error codes emitted by CreateIncidentCategory and shared with other

@@ -9,8 +9,10 @@ on:
       - "go.sum"
       - "**.proto"
       - "**.sql"
+      - "api/proto/buf.yaml"
+      - "api/proto/buf.lock"
       - "buf.gen.yaml"
-      - "sqlc.yaml"
+      - "buf.gen.docs.yaml"
       - "db/migrations/**"
       - "Taskfile.yml"
       - "Makefile"
@@ -23,8 +25,10 @@ on:
       - "go.sum"
       - "**.proto"
       - "**.sql"
+      - "api/proto/buf.yaml"
+      - "api/proto/buf.lock"
       - "buf.gen.yaml"
-      - "sqlc.yaml"
+      - "buf.gen.docs.yaml"
       - "db/migrations/**"
       - "Taskfile.yml"
       - "Makefile"
@@ -39,12 +43,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
       - uses: arduino/setup-task@v2
         with:
           version: 3.x
+      - run: task proto:fmt:check
+      - run: task proto:lint
+      - run: task proto:breaking
       - run: task gen:check
       - run: task fmt:check
       - run: task lint

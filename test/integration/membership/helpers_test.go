@@ -13,8 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
 
-	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
+	envelopev1 "github.com/medincident/medincident-command-service/pkg/event/v1"
 )
 
 // fixture holds the IDs of pre-seeded org/clinic/department rows that

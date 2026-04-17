@@ -2,15 +2,58 @@ version: "3"
 
 tasks:
   gen:
-    desc: Generate Go code from protobuf definitions
+    desc: Generate Go code, OpenAPI spec, and combined Markdown docs from proto
     cmds:
       - go tool buf generate
+      - go tool buf generate --template buf.gen.docs.yaml
+      # Normalize whitespace in generated docs so pre-commit hooks
+      # (trailing-whitespace, end-of-file-fixer) don't cause drift
+      # between `task gen:check` and the committed file.
+      - |
+        set -e
+        find docs/proto -name '*.md' | while read -r f; do
+          awk '
+            { sub(/[ \t\r]+$/, "") }
+            /^$/ { blank++; next }
+            { for (i = 0; i < blank; i++) print ""; blank = 0; print }
+          ' "$f" > "$f.tmp"
+          # Guarantee exactly one trailing newline.
+          printf "%s\n" "$(cat "$f.tmp")" > "$f"
+          rm -f "$f.tmp"
+        done
 
   gen:check:
-    desc: Verify generated code is up to date (fails if `task gen` would produce changes)
+    desc: Verify generated artifacts are up to date (fails if `task gen` would produce changes)
     cmds:
       - task: gen
-      - git diff --exit-code -- gen/
+      - git diff --exit-code -- pkg/ api/openapi/ docs/proto/
+
+  proto:fmt:
+    desc: Format proto files in api/proto
+    cmds:
+      - go tool buf format -w api/proto
+
+  proto:fmt:check:
+    desc: Verify proto files are formatted (fails if `task proto:fmt` would produce changes)
+    cmds:
+      - go tool buf format -d --exit-code api/proto
+
+  proto:lint:
+    desc: Lint proto files
+    cmds:
+      - go tool buf lint api/proto
+
+  proto:breaking:
+    desc: Check for breaking proto changes vs main (skips gracefully if main has no protos)
+    cmds:
+      - |
+        if git show origin/main:api/proto/buf.yaml >/dev/null 2>&1; then
+          go tool buf breaking api/proto --against '.git#branch=origin/main,subdir=api/proto'
+        elif git show main:api/proto/buf.yaml >/dev/null 2>&1; then
+          go tool buf breaking api/proto --against '.git#branch=main,subdir=api/proto'
+        else
+          echo "Skipping breaking check: main branch has no api/proto/"
+        fi
 
   lint:
     desc: Lint Go code

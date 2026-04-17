@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package event.department.v1;
+
+// Events for the Department aggregate. No Address/Point — departments
+// have no address. Parent clinic id is carried inside DepartmentCreated;
+// envelope.aggregate_id holds the department id itself.
+
+message DepartmentCreated {
+  string clinic_id = 1;
+  string name = 2;
+  optional string description = 3;
+}
+
+message DepartmentDetailsChanged {
+  string name = 1;
+  optional string description = 2;
+}
+
+// ------ DepartmentResponsible role events ------
+
+// DepartmentResponsibleAssigned — an employee became the "responsible"
+// of this department. Payload carries the holder; aggregate_id in the
+// envelope is department_id.
+message DepartmentResponsibleAssigned {
+  string employee_id = 1;
+}
+
+// DepartmentResponsibleRevoked — role revoked (either explicitly or
+// as a cascade from transfer/termination).
+message DepartmentResponsibleRevoked {
+  string employee_id = 1;
+}
+
+// DepartmentResponsibleDeputyAssigned — a deputy was attached to the
+// role held by employee_id. The deputy must currently work in the
+// same department.
+message DepartmentResponsibleDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+}
+
+// DepartmentResponsibleDeputyRemoved — the deputy slot was cleared
+// (explicit removal, cascade from role revocation, or cascade from
+// deputy employee's termination or department transfer).
+message DepartmentResponsibleDeputyRemoved {
+  string employee_id = 1;
+}

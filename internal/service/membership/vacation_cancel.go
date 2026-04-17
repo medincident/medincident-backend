@@ -10,9 +10,9 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // CancelScheduledVacationCommand identifies the future vacation to remove.

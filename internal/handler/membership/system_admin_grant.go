@@ -3,9 +3,9 @@ package membership
 import (
 	"context"
 
-	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
 	"github.com/medincident/medincident-command-service/internal/middleware"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
+	membershipv1 "github.com/medincident/medincident-command-service/pkg/service/membership/v1"
 )
 
 func (h *MembershipHandler) GrantSystemAdmin(ctx context.Context, req *membershipv1.GrantSystemAdminRequest) (*membershipv1.GrantSystemAdminResponse, error) {

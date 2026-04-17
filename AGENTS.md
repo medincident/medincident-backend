@@ -16,7 +16,8 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
    constant (e.g. `ErrCodeAddressTextEmpty`, not `CodeInvalidArgument`)
    declared in the same file as the code that emits it.
 4. **Never install Go tools globally.** Every Go tool (buf, dbmate,
-   golangci-lint, govulncheck, protoc-gen-go, protoc-gen-go-grpc) is
+   golangci-lint, govulncheck, protoc-gen-go, protoc-gen-go-grpc,
+   protoc-gen-grpc-gateway, protoc-gen-openapiv2, protoc-gen-doc) is
    pinned in `go.mod`'s `tool` directive and invoked via `go tool
    <name>`. Adding a new tool: `go get -tool <module>@latest`.
 5. **Never inline invariant limits.** Every max/min/threshold is a
@@ -49,7 +50,7 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
     independently.
 11. **Outbox writes go through `outbox.AppendEvent(tx, subject,
     envelope)`.** The caller builds the
-    `*medincident.event.v1.Envelope` explicitly. The outbox table has
+    `*event.v1.Envelope` explicitly. The outbox table has
     `id, subject, payload, headers, created_at, published_at` on the
     DB side, but the command service only writes `subject` and
     `payload` — the `headers` column is owned by the publisher
@@ -94,12 +95,20 @@ internal/
     organization_{create,update_details,update_legal_address}.go
     clinic_{create,update_details,update_physical_address}.go
     department_{create,update_details}.go
-gen/api/medincident/                     — buf-generated proto (committed)
-  event/v1/                              — Envelope
-  event/organization/v1/                 — Organization events + own Address/Point
-  event/clinic/v1/                       — Clinic events + own Address/Point
-  event/department/v1/                   — Department events (no Address)
-  service/orgstructure/v1/               — OrgStructureService gRPC + Request/Response
+api/proto/                               — proto contracts (source of truth)
+  buf.yaml                               — module config (lint, breaking, deps)
+  event/v1/envelope.proto                — Envelope (transport wrapper)
+  event/{organization,clinic,department,employee,system_admin}/v1/
+  event/incident/{category,type}/v1/     — per-aggregate events
+  service/{orgstructure,membership}/v1/
+  service/incident/classifier/v1/        — gRPC service contracts
+api/openapi/command-service.swagger.json — generated merged OpenAPI v2 (committed)
+pkg/                                     — buf-generated Go (committed)
+  event/**/*.pb.go                       — event messages
+  service/**/{*.pb.go,*_grpc.pb.go,*.pb.gw.go}  — gRPC + gateway stubs
+docs/proto/command-service.md            — generated combined Markdown docs (committed)
+buf.gen.yaml                             — go + grpc + gateway + openapi generation
+buf.gen.docs.yaml                        — protoc-gen-doc generation
 db/migrations/                           — dbmate migrations (never hand-written)
 test/integration/orgstructure/           — testcontainers-backed integration suite
 configs/                                 — config.example.yaml
@@ -116,8 +125,11 @@ Outbox subjects follow `medincident.event.<aggregate>.v1.<action>`:
 
 All via `Taskfile.yml`. Key commands:
 
-- `task gen` — `go tool buf generate` (no sqlc)
-- `task gen:check` — verify `gen/` is in sync with proto
+- `task gen` — `go tool buf generate` + docs template (pkg/, api/openapi/, docs/proto/)
+- `task gen:check` — verify `pkg/`, `api/openapi/`, `docs/proto/` are in sync with proto
+- `task proto:fmt`, `task proto:fmt:check` — buf format for .proto files
+- `task proto:lint` — buf lint (STANDARD rules, except FIELD_LOWER_SNAKE_CASE)
+- `task proto:breaking` — buf breaking vs origin/main (gracefully skipped if main has no api/proto/)
 - `task fmt`, `task fmt:check` — gofumpt + goimports via golangci-lint
 - `task lint` — golangci-lint
 - `task vuln` — govulncheck

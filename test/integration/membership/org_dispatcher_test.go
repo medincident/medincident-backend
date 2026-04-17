@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
+	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 func TestAssignOrganizationDispatcher_Success(t *testing.T) {

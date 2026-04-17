@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package event.incident.category.v1;
+
+// Events for the IncidentCategory aggregate. Each event is emitted
+// against envelope.aggregate_id = the id of a single category. Cascade
+// operations (deactivate / delete) emit one event per touched category
+// row, not a single aggregate event.
+
+message IncidentCategoryCreated {
+  string organization_id = 1;
+  optional string parent_category_id = 2; // unset = created at root
+  string name = 3;
+  optional string description = 4;
+}
+
+message IncidentCategoryDetailsChanged {
+  string name = 1;
+  optional string description = 2;
+}
+
+message IncidentCategoryMoved {
+  optional string new_parent_category_id = 1; // unset = moved to root
+}
+
+message IncidentCategoryDeactivated {}
+message IncidentCategoryReactivated {}
+message IncidentCategoryDeleted {}

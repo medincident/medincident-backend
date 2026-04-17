@@ -1,0 +1,14 @@
+version: v2
+
+# Generates one combined Markdown document covering every package in
+# the api/proto module. Output lives at docs/proto/command-service.md
+# and is committed — task gen:check enforces freshness.
+
+inputs:
+  - directory: api/proto
+
+plugins:
+  - local: [go, tool, protoc-gen-doc]
+    out: docs/proto
+    strategy: all
+    opt: markdown,command-service.md

@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package event.incident.type.v1;
+
+// Events for the IncidentType aggregate. Types are leaves under a
+// category; cascade operations on a category emit one of these per
+// affected type row.
+
+message IncidentTypeCreated {
+  string organization_id = 1;
+  string category_id = 2;
+  string name = 3;
+  optional string description = 4;
+}
+
+message IncidentTypeDetailsChanged {
+  string name = 1;
+  optional string description = 2;
+}
+
+message IncidentTypeMoved {
+  string new_category_id = 1;
+}
+
+message IncidentTypeDeactivated {}
+message IncidentTypeReactivated {}
+message IncidentTypeDeleted {}

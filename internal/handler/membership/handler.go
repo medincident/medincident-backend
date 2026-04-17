@@ -10,9 +10,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
-	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
 	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
+	membershipv1 "github.com/medincident/medincident-command-service/pkg/service/membership/v1"
 )
 
 // idErrs collects UUID-parse errors from a handler so the transport

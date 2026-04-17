@@ -10,9 +10,9 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
 )
 
 const (

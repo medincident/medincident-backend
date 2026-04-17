@@ -2,7 +2,7 @@
 
 ## Требования
 
-- [Go 1.26+](https://go.dev/dl/) — `buf`, `golangci-lint`, `sqlc`, `dbmate`, `govulncheck` и `protoc-gen-go` запинены через `go tool`, отдельная установка не нужна.
+- [Go 1.26+](https://go.dev/dl/) — `buf`, `golangci-lint`, `dbmate`, `govulncheck`, `protoc-gen-go`, `protoc-gen-go-grpc`, `protoc-gen-grpc-gateway`, `protoc-gen-openapiv2` и `protoc-gen-doc` запинены через `go tool`, отдельная установка не нужна.
 - [Task](https://taskfile.dev/installation/) — task runner, обёртка над всеми частыми командами.
 - [Docker](https://docs.docker.com/get-docker/) — для `task test:integration` (testcontainers-go поднимает Postgres 16).
 - `make` — для сборки бинарника (`make build`, `make build-all`).
@@ -32,7 +32,10 @@ task test:unit      # быстрые юнит-тесты
 ## Частые команды
 
 ```bash
-task gen              # перегенерация proto (buf) + sqlc
+task gen              # кодген: pkg/ (go+grpc+gateway) + api/openapi/ + docs/proto/
+task proto:fmt        # форматирование .proto
+task proto:lint       # buf lint
+task proto:breaking   # buf breaking vs origin/main
 task lint             # go tool golangci-lint run
 task fmt              # форматирование через golangci-lint formatters
 task fmt:check        # проверка формата (dry-run, без модификаций)
@@ -44,7 +47,7 @@ task migrate          # dbmate up
 task migrate:new -- <name>  # создать новую миграцию через dbmate new
 ```
 
-`task gen` — зонтичная точка входа для всех кодгенов. Сегодня дёргает `buf generate` и `sqlc generate`; любой новый генератор добавится сюда.
+`task gen` — зонтичная точка входа для всех кодгенов. Сегодня дёргает `buf generate` (default template — `pkg/` + `api/openapi/`) и `buf generate --template buf.gen.docs.yaml` (`docs/proto/`); любой новый генератор добавится сюда.
 
 ## Сборка бинарника
 

@@ -9,14 +9,14 @@ import (
 	"github.com/zitadel/zitadel-go/v3/pkg/authorization/oauth"
 	"google.golang.org/grpc"
 
-	incidentclassifierv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1"
-	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
-	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
 	"github.com/medincident/medincident-command-service/internal/config"
 	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
 	"github.com/medincident/medincident-command-service/internal/middleware"
+	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/service/incident/classifier/v1"
+	membershipv1 "github.com/medincident/medincident-command-service/pkg/service/membership/v1"
+	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1"
 )
 
 // grpcServerWrapper owns the *grpc.Server lifecycle. Private to di —
