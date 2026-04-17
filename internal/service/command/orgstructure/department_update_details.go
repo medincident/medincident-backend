@@ -13,6 +13,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
@@ -75,6 +76,9 @@ func (s *DepartmentService) UpdateDetails(
 				Wrap(err)
 		}
 
+		if err := projector.DepartmentDetailsChanged(tx, &dept); err != nil {
+			return err
+		}
 		event := buildDepartmentDetailsChangedEvent(&dept)
 		return outbox.Publish(tx, SubjectDepartmentDetailsChanged, AggregateTypeDepartment, dept.ID.String(), dept.UpdatedAt, event)
 	})
