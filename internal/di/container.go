@@ -34,6 +34,10 @@ func NewContainer(cfg *config.Config) (do.Injector, error) {
 	// Zitadel
 	do.Provide(injector, provideZitadelService)
 
+	// Auth
+	do.Provide(injector, provideAuthorizer)
+	do.Provide(injector, provideAuthz)
+
 	// Services
 	do.Provide(injector, provideOrganizationService)
 	do.Provide(injector, provideClinicService)

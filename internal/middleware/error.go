@@ -257,6 +257,9 @@ var errorCodeOverrides = map[string]codes.Code{
 	"validate_failed":             codes.InvalidArgument,
 	"unmarshal_failed":            codes.Internal,
 	"cleanup_failed":              codes.Internal,
+	"unauthenticated":             codes.Unauthenticated,
+	"permission_denied":           codes.PermissionDenied,
+	"scope_resolve_failed":        codes.NotFound,
 }
 
 // errorCodeSuffixes is checked in order; the first matching suffix
