@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package service.orgstructure.v1;
+package command.orgstructure.v1;
 
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
@@ -12,7 +12,7 @@ import "google/api/field_behavior.proto";
 // separate REST gateway binary; command-service itself serves pure
 // gRPC, while this repo generates grpc-gateway stubs under pkg/ for
 // that gateway binary to consume.
-service OrgStructureService {
+service OrgStructureCommandService {
   rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse) {
     option (google.api.http) = {
       post: "/v1/organizations"

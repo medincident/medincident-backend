@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package service.incident.classifier.v1;
+package command.incident.classifier.v1;
 
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
@@ -11,7 +11,7 @@ import "google/api/field_behavior.proto";
 // types living inside any category. Every mutation returns an id (for
 // Create) or an empty response and publishes one domain event per
 // touched row.
-service IncidentClassifierService {
+service IncidentClassifierCommandService {
   // --- Categories ---
   rpc CreateIncidentCategory(CreateIncidentCategoryRequest) returns (CreateIncidentCategoryResponse) {
     option (google.api.http) = {

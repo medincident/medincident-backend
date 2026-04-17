@@ -7,7 +7,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/service/authz"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
-	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1"
+	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
 )
 
 // Error codes emitted by handler-layer request parsing.
@@ -17,9 +17,9 @@ const (
 	ErrCodeHandlerInvalidDepartmentID   = "handler_invalid_department_id"
 )
 
-// OrgStructureHandler implements orgstructurev1.OrgStructureServiceServer.
+// OrgStructureHandler implements orgstructurev1.OrgStructureCommandServiceServer.
 type OrgStructureHandler struct {
-	orgstructurev1.UnimplementedOrgStructureServiceServer
+	orgstructurev1.UnimplementedOrgStructureCommandServiceServer
 
 	authz   *authz.Authz
 	orgSvc  *orgsvc.OrganizationService

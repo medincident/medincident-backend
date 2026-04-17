@@ -45,4 +45,4 @@ plugins:
     strategy: all
     opt:
       - allow_merge=true
-      - merge_file_name=command-service
+      - merge_file_name=command-server

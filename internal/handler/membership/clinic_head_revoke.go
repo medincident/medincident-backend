@@ -5,7 +5,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
-	membershipv1 "github.com/medincident/medincident-command-service/pkg/service/membership/v1"
+	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
 )
 
 // RevokeClinicHead translates a gRPC request into a service command

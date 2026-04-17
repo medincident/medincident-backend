@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/incident/classifier/v1/incident_classifier.proto
+// source: command/incident/classifier/v1/incident_classifier.proto
 
 package classifierv1
 
@@ -34,7 +34,7 @@ type CreateIncidentCategoryRequest struct {
 
 func (x *CreateIncidentCategoryRequest) Reset() {
 	*x = CreateIncidentCategoryRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[0]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -46,7 +46,7 @@ func (x *CreateIncidentCategoryRequest) String() string {
 func (*CreateIncidentCategoryRequest) ProtoMessage() {}
 
 func (x *CreateIncidentCategoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[0]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -59,7 +59,7 @@ func (x *CreateIncidentCategoryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateIncidentCategoryRequest.ProtoReflect.Descriptor instead.
 func (*CreateIncidentCategoryRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{0}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *CreateIncidentCategoryRequest) GetOrganizationId() string {
@@ -99,7 +99,7 @@ type CreateIncidentCategoryResponse struct {
 
 func (x *CreateIncidentCategoryResponse) Reset() {
 	*x = CreateIncidentCategoryResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[1]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -111,7 +111,7 @@ func (x *CreateIncidentCategoryResponse) String() string {
 func (*CreateIncidentCategoryResponse) ProtoMessage() {}
 
 func (x *CreateIncidentCategoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[1]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -124,7 +124,7 @@ func (x *CreateIncidentCategoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateIncidentCategoryResponse.ProtoReflect.Descriptor instead.
 func (*CreateIncidentCategoryResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{1}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *CreateIncidentCategoryResponse) GetCategoryId() string {
@@ -145,7 +145,7 @@ type UpdateIncidentCategoryDetailsRequest struct {
 
 func (x *UpdateIncidentCategoryDetailsRequest) Reset() {
 	*x = UpdateIncidentCategoryDetailsRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[2]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -157,7 +157,7 @@ func (x *UpdateIncidentCategoryDetailsRequest) String() string {
 func (*UpdateIncidentCategoryDetailsRequest) ProtoMessage() {}
 
 func (x *UpdateIncidentCategoryDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[2]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -170,7 +170,7 @@ func (x *UpdateIncidentCategoryDetailsRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use UpdateIncidentCategoryDetailsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateIncidentCategoryDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{2}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UpdateIncidentCategoryDetailsRequest) GetCategoryId() string {
@@ -202,7 +202,7 @@ type UpdateIncidentCategoryDetailsResponse struct {
 
 func (x *UpdateIncidentCategoryDetailsResponse) Reset() {
 	*x = UpdateIncidentCategoryDetailsResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[3]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -214,7 +214,7 @@ func (x *UpdateIncidentCategoryDetailsResponse) String() string {
 func (*UpdateIncidentCategoryDetailsResponse) ProtoMessage() {}
 
 func (x *UpdateIncidentCategoryDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[3]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -227,7 +227,7 @@ func (x *UpdateIncidentCategoryDetailsResponse) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use UpdateIncidentCategoryDetailsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateIncidentCategoryDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{3}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{3}
 }
 
 type MoveIncidentCategoryRequest struct {
@@ -240,7 +240,7 @@ type MoveIncidentCategoryRequest struct {
 
 func (x *MoveIncidentCategoryRequest) Reset() {
 	*x = MoveIncidentCategoryRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[4]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -252,7 +252,7 @@ func (x *MoveIncidentCategoryRequest) String() string {
 func (*MoveIncidentCategoryRequest) ProtoMessage() {}
 
 func (x *MoveIncidentCategoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[4]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -265,7 +265,7 @@ func (x *MoveIncidentCategoryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveIncidentCategoryRequest.ProtoReflect.Descriptor instead.
 func (*MoveIncidentCategoryRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{4}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *MoveIncidentCategoryRequest) GetCategoryId() string {
@@ -290,7 +290,7 @@ type MoveIncidentCategoryResponse struct {
 
 func (x *MoveIncidentCategoryResponse) Reset() {
 	*x = MoveIncidentCategoryResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[5]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -302,7 +302,7 @@ func (x *MoveIncidentCategoryResponse) String() string {
 func (*MoveIncidentCategoryResponse) ProtoMessage() {}
 
 func (x *MoveIncidentCategoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[5]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -315,7 +315,7 @@ func (x *MoveIncidentCategoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveIncidentCategoryResponse.ProtoReflect.Descriptor instead.
 func (*MoveIncidentCategoryResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{5}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{5}
 }
 
 type DeactivateIncidentCategoryRequest struct {
@@ -327,7 +327,7 @@ type DeactivateIncidentCategoryRequest struct {
 
 func (x *DeactivateIncidentCategoryRequest) Reset() {
 	*x = DeactivateIncidentCategoryRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[6]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -339,7 +339,7 @@ func (x *DeactivateIncidentCategoryRequest) String() string {
 func (*DeactivateIncidentCategoryRequest) ProtoMessage() {}
 
 func (x *DeactivateIncidentCategoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[6]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -352,7 +352,7 @@ func (x *DeactivateIncidentCategoryRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use DeactivateIncidentCategoryRequest.ProtoReflect.Descriptor instead.
 func (*DeactivateIncidentCategoryRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{6}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeactivateIncidentCategoryRequest) GetCategoryId() string {
@@ -370,7 +370,7 @@ type DeactivateIncidentCategoryResponse struct {
 
 func (x *DeactivateIncidentCategoryResponse) Reset() {
 	*x = DeactivateIncidentCategoryResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[7]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -382,7 +382,7 @@ func (x *DeactivateIncidentCategoryResponse) String() string {
 func (*DeactivateIncidentCategoryResponse) ProtoMessage() {}
 
 func (x *DeactivateIncidentCategoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[7]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -395,7 +395,7 @@ func (x *DeactivateIncidentCategoryResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use DeactivateIncidentCategoryResponse.ProtoReflect.Descriptor instead.
 func (*DeactivateIncidentCategoryResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{7}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{7}
 }
 
 type ReactivateIncidentCategoryRequest struct {
@@ -407,7 +407,7 @@ type ReactivateIncidentCategoryRequest struct {
 
 func (x *ReactivateIncidentCategoryRequest) Reset() {
 	*x = ReactivateIncidentCategoryRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[8]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -419,7 +419,7 @@ func (x *ReactivateIncidentCategoryRequest) String() string {
 func (*ReactivateIncidentCategoryRequest) ProtoMessage() {}
 
 func (x *ReactivateIncidentCategoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[8]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -432,7 +432,7 @@ func (x *ReactivateIncidentCategoryRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ReactivateIncidentCategoryRequest.ProtoReflect.Descriptor instead.
 func (*ReactivateIncidentCategoryRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{8}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ReactivateIncidentCategoryRequest) GetCategoryId() string {
@@ -450,7 +450,7 @@ type ReactivateIncidentCategoryResponse struct {
 
 func (x *ReactivateIncidentCategoryResponse) Reset() {
 	*x = ReactivateIncidentCategoryResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[9]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -462,7 +462,7 @@ func (x *ReactivateIncidentCategoryResponse) String() string {
 func (*ReactivateIncidentCategoryResponse) ProtoMessage() {}
 
 func (x *ReactivateIncidentCategoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[9]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -475,7 +475,7 @@ func (x *ReactivateIncidentCategoryResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use ReactivateIncidentCategoryResponse.ProtoReflect.Descriptor instead.
 func (*ReactivateIncidentCategoryResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{9}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{9}
 }
 
 type DeleteIncidentCategoryRequest struct {
@@ -487,7 +487,7 @@ type DeleteIncidentCategoryRequest struct {
 
 func (x *DeleteIncidentCategoryRequest) Reset() {
 	*x = DeleteIncidentCategoryRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[10]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -499,7 +499,7 @@ func (x *DeleteIncidentCategoryRequest) String() string {
 func (*DeleteIncidentCategoryRequest) ProtoMessage() {}
 
 func (x *DeleteIncidentCategoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[10]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -512,7 +512,7 @@ func (x *DeleteIncidentCategoryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteIncidentCategoryRequest.ProtoReflect.Descriptor instead.
 func (*DeleteIncidentCategoryRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{10}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *DeleteIncidentCategoryRequest) GetCategoryId() string {
@@ -530,7 +530,7 @@ type DeleteIncidentCategoryResponse struct {
 
 func (x *DeleteIncidentCategoryResponse) Reset() {
 	*x = DeleteIncidentCategoryResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[11]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -542,7 +542,7 @@ func (x *DeleteIncidentCategoryResponse) String() string {
 func (*DeleteIncidentCategoryResponse) ProtoMessage() {}
 
 func (x *DeleteIncidentCategoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[11]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -555,7 +555,7 @@ func (x *DeleteIncidentCategoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteIncidentCategoryResponse.ProtoReflect.Descriptor instead.
 func (*DeleteIncidentCategoryResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{11}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{11}
 }
 
 type CreateIncidentTypeRequest struct {
@@ -569,7 +569,7 @@ type CreateIncidentTypeRequest struct {
 
 func (x *CreateIncidentTypeRequest) Reset() {
 	*x = CreateIncidentTypeRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[12]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -581,7 +581,7 @@ func (x *CreateIncidentTypeRequest) String() string {
 func (*CreateIncidentTypeRequest) ProtoMessage() {}
 
 func (x *CreateIncidentTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[12]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -594,7 +594,7 @@ func (x *CreateIncidentTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateIncidentTypeRequest.ProtoReflect.Descriptor instead.
 func (*CreateIncidentTypeRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{12}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateIncidentTypeRequest) GetCategoryId() string {
@@ -627,7 +627,7 @@ type CreateIncidentTypeResponse struct {
 
 func (x *CreateIncidentTypeResponse) Reset() {
 	*x = CreateIncidentTypeResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[13]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -639,7 +639,7 @@ func (x *CreateIncidentTypeResponse) String() string {
 func (*CreateIncidentTypeResponse) ProtoMessage() {}
 
 func (x *CreateIncidentTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[13]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -652,7 +652,7 @@ func (x *CreateIncidentTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateIncidentTypeResponse.ProtoReflect.Descriptor instead.
 func (*CreateIncidentTypeResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{13}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CreateIncidentTypeResponse) GetTypeId() string {
@@ -673,7 +673,7 @@ type UpdateIncidentTypeDetailsRequest struct {
 
 func (x *UpdateIncidentTypeDetailsRequest) Reset() {
 	*x = UpdateIncidentTypeDetailsRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[14]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -685,7 +685,7 @@ func (x *UpdateIncidentTypeDetailsRequest) String() string {
 func (*UpdateIncidentTypeDetailsRequest) ProtoMessage() {}
 
 func (x *UpdateIncidentTypeDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[14]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -698,7 +698,7 @@ func (x *UpdateIncidentTypeDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateIncidentTypeDetailsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateIncidentTypeDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{14}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *UpdateIncidentTypeDetailsRequest) GetTypeId() string {
@@ -730,7 +730,7 @@ type UpdateIncidentTypeDetailsResponse struct {
 
 func (x *UpdateIncidentTypeDetailsResponse) Reset() {
 	*x = UpdateIncidentTypeDetailsResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[15]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -742,7 +742,7 @@ func (x *UpdateIncidentTypeDetailsResponse) String() string {
 func (*UpdateIncidentTypeDetailsResponse) ProtoMessage() {}
 
 func (x *UpdateIncidentTypeDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[15]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -755,7 +755,7 @@ func (x *UpdateIncidentTypeDetailsResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use UpdateIncidentTypeDetailsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateIncidentTypeDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{15}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{15}
 }
 
 type MoveIncidentTypeRequest struct {
@@ -768,7 +768,7 @@ type MoveIncidentTypeRequest struct {
 
 func (x *MoveIncidentTypeRequest) Reset() {
 	*x = MoveIncidentTypeRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[16]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -780,7 +780,7 @@ func (x *MoveIncidentTypeRequest) String() string {
 func (*MoveIncidentTypeRequest) ProtoMessage() {}
 
 func (x *MoveIncidentTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[16]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -793,7 +793,7 @@ func (x *MoveIncidentTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveIncidentTypeRequest.ProtoReflect.Descriptor instead.
 func (*MoveIncidentTypeRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{16}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *MoveIncidentTypeRequest) GetTypeId() string {
@@ -818,7 +818,7 @@ type MoveIncidentTypeResponse struct {
 
 func (x *MoveIncidentTypeResponse) Reset() {
 	*x = MoveIncidentTypeResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[17]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -830,7 +830,7 @@ func (x *MoveIncidentTypeResponse) String() string {
 func (*MoveIncidentTypeResponse) ProtoMessage() {}
 
 func (x *MoveIncidentTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[17]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -843,7 +843,7 @@ func (x *MoveIncidentTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MoveIncidentTypeResponse.ProtoReflect.Descriptor instead.
 func (*MoveIncidentTypeResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{17}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{17}
 }
 
 type DeactivateIncidentTypeRequest struct {
@@ -855,7 +855,7 @@ type DeactivateIncidentTypeRequest struct {
 
 func (x *DeactivateIncidentTypeRequest) Reset() {
 	*x = DeactivateIncidentTypeRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[18]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -867,7 +867,7 @@ func (x *DeactivateIncidentTypeRequest) String() string {
 func (*DeactivateIncidentTypeRequest) ProtoMessage() {}
 
 func (x *DeactivateIncidentTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[18]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -880,7 +880,7 @@ func (x *DeactivateIncidentTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeactivateIncidentTypeRequest.ProtoReflect.Descriptor instead.
 func (*DeactivateIncidentTypeRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{18}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *DeactivateIncidentTypeRequest) GetTypeId() string {
@@ -898,7 +898,7 @@ type DeactivateIncidentTypeResponse struct {
 
 func (x *DeactivateIncidentTypeResponse) Reset() {
 	*x = DeactivateIncidentTypeResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[19]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -910,7 +910,7 @@ func (x *DeactivateIncidentTypeResponse) String() string {
 func (*DeactivateIncidentTypeResponse) ProtoMessage() {}
 
 func (x *DeactivateIncidentTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[19]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -923,7 +923,7 @@ func (x *DeactivateIncidentTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeactivateIncidentTypeResponse.ProtoReflect.Descriptor instead.
 func (*DeactivateIncidentTypeResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{19}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{19}
 }
 
 type ReactivateIncidentTypeRequest struct {
@@ -935,7 +935,7 @@ type ReactivateIncidentTypeRequest struct {
 
 func (x *ReactivateIncidentTypeRequest) Reset() {
 	*x = ReactivateIncidentTypeRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[20]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -947,7 +947,7 @@ func (x *ReactivateIncidentTypeRequest) String() string {
 func (*ReactivateIncidentTypeRequest) ProtoMessage() {}
 
 func (x *ReactivateIncidentTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[20]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -960,7 +960,7 @@ func (x *ReactivateIncidentTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReactivateIncidentTypeRequest.ProtoReflect.Descriptor instead.
 func (*ReactivateIncidentTypeRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{20}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ReactivateIncidentTypeRequest) GetTypeId() string {
@@ -978,7 +978,7 @@ type ReactivateIncidentTypeResponse struct {
 
 func (x *ReactivateIncidentTypeResponse) Reset() {
 	*x = ReactivateIncidentTypeResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[21]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -990,7 +990,7 @@ func (x *ReactivateIncidentTypeResponse) String() string {
 func (*ReactivateIncidentTypeResponse) ProtoMessage() {}
 
 func (x *ReactivateIncidentTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[21]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1003,7 +1003,7 @@ func (x *ReactivateIncidentTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReactivateIncidentTypeResponse.ProtoReflect.Descriptor instead.
 func (*ReactivateIncidentTypeResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{21}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{21}
 }
 
 type DeleteIncidentTypeRequest struct {
@@ -1015,7 +1015,7 @@ type DeleteIncidentTypeRequest struct {
 
 func (x *DeleteIncidentTypeRequest) Reset() {
 	*x = DeleteIncidentTypeRequest{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[22]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1027,7 +1027,7 @@ func (x *DeleteIncidentTypeRequest) String() string {
 func (*DeleteIncidentTypeRequest) ProtoMessage() {}
 
 func (x *DeleteIncidentTypeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[22]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1040,7 +1040,7 @@ func (x *DeleteIncidentTypeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteIncidentTypeRequest.ProtoReflect.Descriptor instead.
 func (*DeleteIncidentTypeRequest) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{22}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *DeleteIncidentTypeRequest) GetTypeId() string {
@@ -1058,7 +1058,7 @@ type DeleteIncidentTypeResponse struct {
 
 func (x *DeleteIncidentTypeResponse) Reset() {
 	*x = DeleteIncidentTypeResponse{}
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[23]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1070,7 +1070,7 @@ func (x *DeleteIncidentTypeResponse) String() string {
 func (*DeleteIncidentTypeResponse) ProtoMessage() {}
 
 func (x *DeleteIncidentTypeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[23]
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1083,14 +1083,14 @@ func (x *DeleteIncidentTypeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteIncidentTypeResponse.ProtoReflect.Descriptor instead.
 func (*DeleteIncidentTypeResponse) Descriptor() ([]byte, []int) {
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{23}
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{23}
 }
 
-var File_service_incident_classifier_v1_incident_classifier_proto protoreflect.FileDescriptor
+var File_command_incident_classifier_v1_incident_classifier_proto protoreflect.FileDescriptor
 
-const file_service_incident_classifier_v1_incident_classifier_proto_rawDesc = "" +
+const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = "" +
 	"\n" +
-	"8service/incident/classifier/v1/incident_classifier.proto\x12\x1eservice.incident.classifier.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xe7\x01\n" +
+	"8command/incident/classifier/v1/incident_classifier.proto\x12\x1ecommand.incident.classifier.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xe7\x01\n" +
 	"\x1dCreateIncidentCategoryRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x121\n" +
 	"\x12parent_category_id\x18\x02 \x01(\tH\x00R\x10parentCategoryId\x88\x01\x01\x12\x17\n" +
@@ -1152,86 +1152,86 @@ const file_service_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"\x1eReactivateIncidentTypeResponse\"9\n" +
 	"\x19DeleteIncidentTypeRequest\x12\x1c\n" +
 	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\"\x1c\n" +
-	"\x1aDeleteIncidentTypeResponse2\xe2\x13\n" +
-	"\x19IncidentClassifierService\x12\xdb\x01\n" +
-	"\x16CreateIncidentCategory\x12=.service.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.service.incident.classifier.v1.CreateIncidentCategoryResponse\"B\x82\xd3\xe4\x93\x02<:\x01*\"7/v1/organizations/{organization_id}/incident-categories\x12\xe6\x01\n" +
-	"\x1dUpdateIncidentCategoryDetails\x12D.service.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest\x1aE.service.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse\"8\x82\xd3\xe4\x93\x022:\x01*\x1a-/v1/incident-categories/{category_id}/details\x12\xca\x01\n" +
-	"\x14MoveIncidentCategory\x12;.service.incident.classifier.v1.MoveIncidentCategoryRequest\x1a<.service.incident.classifier.v1.MoveIncidentCategoryResponse\"7\x82\xd3\xe4\x93\x021:\x01*\x1a,/v1/incident-categories/{category_id}/parent\x12\xe0\x01\n" +
-	"\x1aDeactivateIncidentCategory\x12A.service.incident.classifier.v1.DeactivateIncidentCategoryRequest\x1aB.service.incident.classifier.v1.DeactivateIncidentCategoryResponse\";\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/deactivations\x12\xe0\x01\n" +
-	"\x1aReactivateIncidentCategory\x12A.service.incident.classifier.v1.ReactivateIncidentCategoryRequest\x1aB.service.incident.classifier.v1.ReactivateIncidentCategoryResponse\";\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/reactivations\x12\xc6\x01\n" +
-	"\x16DeleteIncidentCategory\x12=.service.incident.classifier.v1.DeleteIncidentCategoryRequest\x1a>.service.incident.classifier.v1.DeleteIncidentCategoryResponse\"-\x82\xd3\xe4\x93\x02'*%/v1/incident-categories/{category_id}\x12\xc3\x01\n" +
-	"\x12CreateIncidentType\x129.service.incident.classifier.v1.CreateIncidentTypeRequest\x1a:.service.incident.classifier.v1.CreateIncidentTypeResponse\"6\x82\xd3\xe4\x93\x020:\x01*\"+/v1/incident-categories/{category_id}/types\x12\xd1\x01\n" +
-	"\x19UpdateIncidentTypeDetails\x12@.service.incident.classifier.v1.UpdateIncidentTypeDetailsRequest\x1aA.service.incident.classifier.v1.UpdateIncidentTypeDetailsResponse\"/\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/incident-types/{type_id}/details\x12\xb7\x01\n" +
-	"\x10MoveIncidentType\x127.service.incident.classifier.v1.MoveIncidentTypeRequest\x1a8.service.incident.classifier.v1.MoveIncidentTypeResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\x1a%/v1/incident-types/{type_id}/category\x12\xcb\x01\n" +
-	"\x16DeactivateIncidentType\x12=.service.incident.classifier.v1.DeactivateIncidentTypeRequest\x1a>.service.incident.classifier.v1.DeactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/deactivations\x12\xcb\x01\n" +
-	"\x16ReactivateIncidentType\x12=.service.incident.classifier.v1.ReactivateIncidentTypeRequest\x1a>.service.incident.classifier.v1.ReactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/reactivations\x12\xb1\x01\n" +
-	"\x12DeleteIncidentType\x129.service.incident.classifier.v1.DeleteIncidentTypeRequest\x1a:.service.incident.classifier.v1.DeleteIncidentTypeResponse\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/incident-types/{type_id}B\xbc\x02\n" +
-	"\"com.service.incident.classifier.v1B\x17IncidentClassifierProtoP\x01Zbgithub.com/medincident/medincident-command-service/pkg/service/incident/classifier/v1;classifierv1\xa2\x02\x03SIC\xaa\x02\x1eService.Incident.Classifier.V1\xca\x02\x1eService\\Incident\\Classifier\\V1\xe2\x02*Service\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02!Service::Incident::Classifier::V1b\x06proto3"
+	"\x1aDeleteIncidentTypeResponse2\xe9\x13\n" +
+	" IncidentClassifierCommandService\x12\xdb\x01\n" +
+	"\x16CreateIncidentCategory\x12=.command.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.command.incident.classifier.v1.CreateIncidentCategoryResponse\"B\x82\xd3\xe4\x93\x02<:\x01*\"7/v1/organizations/{organization_id}/incident-categories\x12\xe6\x01\n" +
+	"\x1dUpdateIncidentCategoryDetails\x12D.command.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest\x1aE.command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse\"8\x82\xd3\xe4\x93\x022:\x01*\x1a-/v1/incident-categories/{category_id}/details\x12\xca\x01\n" +
+	"\x14MoveIncidentCategory\x12;.command.incident.classifier.v1.MoveIncidentCategoryRequest\x1a<.command.incident.classifier.v1.MoveIncidentCategoryResponse\"7\x82\xd3\xe4\x93\x021:\x01*\x1a,/v1/incident-categories/{category_id}/parent\x12\xe0\x01\n" +
+	"\x1aDeactivateIncidentCategory\x12A.command.incident.classifier.v1.DeactivateIncidentCategoryRequest\x1aB.command.incident.classifier.v1.DeactivateIncidentCategoryResponse\";\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/deactivations\x12\xe0\x01\n" +
+	"\x1aReactivateIncidentCategory\x12A.command.incident.classifier.v1.ReactivateIncidentCategoryRequest\x1aB.command.incident.classifier.v1.ReactivateIncidentCategoryResponse\";\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/reactivations\x12\xc6\x01\n" +
+	"\x16DeleteIncidentCategory\x12=.command.incident.classifier.v1.DeleteIncidentCategoryRequest\x1a>.command.incident.classifier.v1.DeleteIncidentCategoryResponse\"-\x82\xd3\xe4\x93\x02'*%/v1/incident-categories/{category_id}\x12\xc3\x01\n" +
+	"\x12CreateIncidentType\x129.command.incident.classifier.v1.CreateIncidentTypeRequest\x1a:.command.incident.classifier.v1.CreateIncidentTypeResponse\"6\x82\xd3\xe4\x93\x020:\x01*\"+/v1/incident-categories/{category_id}/types\x12\xd1\x01\n" +
+	"\x19UpdateIncidentTypeDetails\x12@.command.incident.classifier.v1.UpdateIncidentTypeDetailsRequest\x1aA.command.incident.classifier.v1.UpdateIncidentTypeDetailsResponse\"/\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/incident-types/{type_id}/details\x12\xb7\x01\n" +
+	"\x10MoveIncidentType\x127.command.incident.classifier.v1.MoveIncidentTypeRequest\x1a8.command.incident.classifier.v1.MoveIncidentTypeResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\x1a%/v1/incident-types/{type_id}/category\x12\xcb\x01\n" +
+	"\x16DeactivateIncidentType\x12=.command.incident.classifier.v1.DeactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.DeactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/deactivations\x12\xcb\x01\n" +
+	"\x16ReactivateIncidentType\x12=.command.incident.classifier.v1.ReactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.ReactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/reactivations\x12\xb1\x01\n" +
+	"\x12DeleteIncidentType\x129.command.incident.classifier.v1.DeleteIncidentTypeRequest\x1a:.command.incident.classifier.v1.DeleteIncidentTypeResponse\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/incident-types/{type_id}B\xbc\x02\n" +
+	"\"com.command.incident.classifier.v1B\x17IncidentClassifierProtoP\x01Zbgithub.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1;classifierv1\xa2\x02\x03CIC\xaa\x02\x1eCommand.Incident.Classifier.V1\xca\x02\x1eCommand\\Incident\\Classifier\\V1\xe2\x02*Command\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02!Command::Incident::Classifier::V1b\x06proto3"
 
 var (
-	file_service_incident_classifier_v1_incident_classifier_proto_rawDescOnce sync.Once
-	file_service_incident_classifier_v1_incident_classifier_proto_rawDescData []byte
+	file_command_incident_classifier_v1_incident_classifier_proto_rawDescOnce sync.Once
+	file_command_incident_classifier_v1_incident_classifier_proto_rawDescData []byte
 )
 
-func file_service_incident_classifier_v1_incident_classifier_proto_rawDescGZIP() []byte {
-	file_service_incident_classifier_v1_incident_classifier_proto_rawDescOnce.Do(func() {
-		file_service_incident_classifier_v1_incident_classifier_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_incident_classifier_v1_incident_classifier_proto_rawDesc), len(file_service_incident_classifier_v1_incident_classifier_proto_rawDesc)))
+func file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP() []byte {
+	file_command_incident_classifier_v1_incident_classifier_proto_rawDescOnce.Do(func() {
+		file_command_incident_classifier_v1_incident_classifier_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_command_incident_classifier_v1_incident_classifier_proto_rawDesc), len(file_command_incident_classifier_v1_incident_classifier_proto_rawDesc)))
 	})
-	return file_service_incident_classifier_v1_incident_classifier_proto_rawDescData
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescData
 }
 
-var file_service_incident_classifier_v1_incident_classifier_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
-var file_service_incident_classifier_v1_incident_classifier_proto_goTypes = []any{
-	(*CreateIncidentCategoryRequest)(nil),         // 0: service.incident.classifier.v1.CreateIncidentCategoryRequest
-	(*CreateIncidentCategoryResponse)(nil),        // 1: service.incident.classifier.v1.CreateIncidentCategoryResponse
-	(*UpdateIncidentCategoryDetailsRequest)(nil),  // 2: service.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest
-	(*UpdateIncidentCategoryDetailsResponse)(nil), // 3: service.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse
-	(*MoveIncidentCategoryRequest)(nil),           // 4: service.incident.classifier.v1.MoveIncidentCategoryRequest
-	(*MoveIncidentCategoryResponse)(nil),          // 5: service.incident.classifier.v1.MoveIncidentCategoryResponse
-	(*DeactivateIncidentCategoryRequest)(nil),     // 6: service.incident.classifier.v1.DeactivateIncidentCategoryRequest
-	(*DeactivateIncidentCategoryResponse)(nil),    // 7: service.incident.classifier.v1.DeactivateIncidentCategoryResponse
-	(*ReactivateIncidentCategoryRequest)(nil),     // 8: service.incident.classifier.v1.ReactivateIncidentCategoryRequest
-	(*ReactivateIncidentCategoryResponse)(nil),    // 9: service.incident.classifier.v1.ReactivateIncidentCategoryResponse
-	(*DeleteIncidentCategoryRequest)(nil),         // 10: service.incident.classifier.v1.DeleteIncidentCategoryRequest
-	(*DeleteIncidentCategoryResponse)(nil),        // 11: service.incident.classifier.v1.DeleteIncidentCategoryResponse
-	(*CreateIncidentTypeRequest)(nil),             // 12: service.incident.classifier.v1.CreateIncidentTypeRequest
-	(*CreateIncidentTypeResponse)(nil),            // 13: service.incident.classifier.v1.CreateIncidentTypeResponse
-	(*UpdateIncidentTypeDetailsRequest)(nil),      // 14: service.incident.classifier.v1.UpdateIncidentTypeDetailsRequest
-	(*UpdateIncidentTypeDetailsResponse)(nil),     // 15: service.incident.classifier.v1.UpdateIncidentTypeDetailsResponse
-	(*MoveIncidentTypeRequest)(nil),               // 16: service.incident.classifier.v1.MoveIncidentTypeRequest
-	(*MoveIncidentTypeResponse)(nil),              // 17: service.incident.classifier.v1.MoveIncidentTypeResponse
-	(*DeactivateIncidentTypeRequest)(nil),         // 18: service.incident.classifier.v1.DeactivateIncidentTypeRequest
-	(*DeactivateIncidentTypeResponse)(nil),        // 19: service.incident.classifier.v1.DeactivateIncidentTypeResponse
-	(*ReactivateIncidentTypeRequest)(nil),         // 20: service.incident.classifier.v1.ReactivateIncidentTypeRequest
-	(*ReactivateIncidentTypeResponse)(nil),        // 21: service.incident.classifier.v1.ReactivateIncidentTypeResponse
-	(*DeleteIncidentTypeRequest)(nil),             // 22: service.incident.classifier.v1.DeleteIncidentTypeRequest
-	(*DeleteIncidentTypeResponse)(nil),            // 23: service.incident.classifier.v1.DeleteIncidentTypeResponse
+var file_command_incident_classifier_v1_incident_classifier_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_command_incident_classifier_v1_incident_classifier_proto_goTypes = []any{
+	(*CreateIncidentCategoryRequest)(nil),         // 0: command.incident.classifier.v1.CreateIncidentCategoryRequest
+	(*CreateIncidentCategoryResponse)(nil),        // 1: command.incident.classifier.v1.CreateIncidentCategoryResponse
+	(*UpdateIncidentCategoryDetailsRequest)(nil),  // 2: command.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest
+	(*UpdateIncidentCategoryDetailsResponse)(nil), // 3: command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse
+	(*MoveIncidentCategoryRequest)(nil),           // 4: command.incident.classifier.v1.MoveIncidentCategoryRequest
+	(*MoveIncidentCategoryResponse)(nil),          // 5: command.incident.classifier.v1.MoveIncidentCategoryResponse
+	(*DeactivateIncidentCategoryRequest)(nil),     // 6: command.incident.classifier.v1.DeactivateIncidentCategoryRequest
+	(*DeactivateIncidentCategoryResponse)(nil),    // 7: command.incident.classifier.v1.DeactivateIncidentCategoryResponse
+	(*ReactivateIncidentCategoryRequest)(nil),     // 8: command.incident.classifier.v1.ReactivateIncidentCategoryRequest
+	(*ReactivateIncidentCategoryResponse)(nil),    // 9: command.incident.classifier.v1.ReactivateIncidentCategoryResponse
+	(*DeleteIncidentCategoryRequest)(nil),         // 10: command.incident.classifier.v1.DeleteIncidentCategoryRequest
+	(*DeleteIncidentCategoryResponse)(nil),        // 11: command.incident.classifier.v1.DeleteIncidentCategoryResponse
+	(*CreateIncidentTypeRequest)(nil),             // 12: command.incident.classifier.v1.CreateIncidentTypeRequest
+	(*CreateIncidentTypeResponse)(nil),            // 13: command.incident.classifier.v1.CreateIncidentTypeResponse
+	(*UpdateIncidentTypeDetailsRequest)(nil),      // 14: command.incident.classifier.v1.UpdateIncidentTypeDetailsRequest
+	(*UpdateIncidentTypeDetailsResponse)(nil),     // 15: command.incident.classifier.v1.UpdateIncidentTypeDetailsResponse
+	(*MoveIncidentTypeRequest)(nil),               // 16: command.incident.classifier.v1.MoveIncidentTypeRequest
+	(*MoveIncidentTypeResponse)(nil),              // 17: command.incident.classifier.v1.MoveIncidentTypeResponse
+	(*DeactivateIncidentTypeRequest)(nil),         // 18: command.incident.classifier.v1.DeactivateIncidentTypeRequest
+	(*DeactivateIncidentTypeResponse)(nil),        // 19: command.incident.classifier.v1.DeactivateIncidentTypeResponse
+	(*ReactivateIncidentTypeRequest)(nil),         // 20: command.incident.classifier.v1.ReactivateIncidentTypeRequest
+	(*ReactivateIncidentTypeResponse)(nil),        // 21: command.incident.classifier.v1.ReactivateIncidentTypeResponse
+	(*DeleteIncidentTypeRequest)(nil),             // 22: command.incident.classifier.v1.DeleteIncidentTypeRequest
+	(*DeleteIncidentTypeResponse)(nil),            // 23: command.incident.classifier.v1.DeleteIncidentTypeResponse
 }
-var file_service_incident_classifier_v1_incident_classifier_proto_depIdxs = []int32{
-	0,  // 0: service.incident.classifier.v1.IncidentClassifierService.CreateIncidentCategory:input_type -> service.incident.classifier.v1.CreateIncidentCategoryRequest
-	2,  // 1: service.incident.classifier.v1.IncidentClassifierService.UpdateIncidentCategoryDetails:input_type -> service.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest
-	4,  // 2: service.incident.classifier.v1.IncidentClassifierService.MoveIncidentCategory:input_type -> service.incident.classifier.v1.MoveIncidentCategoryRequest
-	6,  // 3: service.incident.classifier.v1.IncidentClassifierService.DeactivateIncidentCategory:input_type -> service.incident.classifier.v1.DeactivateIncidentCategoryRequest
-	8,  // 4: service.incident.classifier.v1.IncidentClassifierService.ReactivateIncidentCategory:input_type -> service.incident.classifier.v1.ReactivateIncidentCategoryRequest
-	10, // 5: service.incident.classifier.v1.IncidentClassifierService.DeleteIncidentCategory:input_type -> service.incident.classifier.v1.DeleteIncidentCategoryRequest
-	12, // 6: service.incident.classifier.v1.IncidentClassifierService.CreateIncidentType:input_type -> service.incident.classifier.v1.CreateIncidentTypeRequest
-	14, // 7: service.incident.classifier.v1.IncidentClassifierService.UpdateIncidentTypeDetails:input_type -> service.incident.classifier.v1.UpdateIncidentTypeDetailsRequest
-	16, // 8: service.incident.classifier.v1.IncidentClassifierService.MoveIncidentType:input_type -> service.incident.classifier.v1.MoveIncidentTypeRequest
-	18, // 9: service.incident.classifier.v1.IncidentClassifierService.DeactivateIncidentType:input_type -> service.incident.classifier.v1.DeactivateIncidentTypeRequest
-	20, // 10: service.incident.classifier.v1.IncidentClassifierService.ReactivateIncidentType:input_type -> service.incident.classifier.v1.ReactivateIncidentTypeRequest
-	22, // 11: service.incident.classifier.v1.IncidentClassifierService.DeleteIncidentType:input_type -> service.incident.classifier.v1.DeleteIncidentTypeRequest
-	1,  // 12: service.incident.classifier.v1.IncidentClassifierService.CreateIncidentCategory:output_type -> service.incident.classifier.v1.CreateIncidentCategoryResponse
-	3,  // 13: service.incident.classifier.v1.IncidentClassifierService.UpdateIncidentCategoryDetails:output_type -> service.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse
-	5,  // 14: service.incident.classifier.v1.IncidentClassifierService.MoveIncidentCategory:output_type -> service.incident.classifier.v1.MoveIncidentCategoryResponse
-	7,  // 15: service.incident.classifier.v1.IncidentClassifierService.DeactivateIncidentCategory:output_type -> service.incident.classifier.v1.DeactivateIncidentCategoryResponse
-	9,  // 16: service.incident.classifier.v1.IncidentClassifierService.ReactivateIncidentCategory:output_type -> service.incident.classifier.v1.ReactivateIncidentCategoryResponse
-	11, // 17: service.incident.classifier.v1.IncidentClassifierService.DeleteIncidentCategory:output_type -> service.incident.classifier.v1.DeleteIncidentCategoryResponse
-	13, // 18: service.incident.classifier.v1.IncidentClassifierService.CreateIncidentType:output_type -> service.incident.classifier.v1.CreateIncidentTypeResponse
-	15, // 19: service.incident.classifier.v1.IncidentClassifierService.UpdateIncidentTypeDetails:output_type -> service.incident.classifier.v1.UpdateIncidentTypeDetailsResponse
-	17, // 20: service.incident.classifier.v1.IncidentClassifierService.MoveIncidentType:output_type -> service.incident.classifier.v1.MoveIncidentTypeResponse
-	19, // 21: service.incident.classifier.v1.IncidentClassifierService.DeactivateIncidentType:output_type -> service.incident.classifier.v1.DeactivateIncidentTypeResponse
-	21, // 22: service.incident.classifier.v1.IncidentClassifierService.ReactivateIncidentType:output_type -> service.incident.classifier.v1.ReactivateIncidentTypeResponse
-	23, // 23: service.incident.classifier.v1.IncidentClassifierService.DeleteIncidentType:output_type -> service.incident.classifier.v1.DeleteIncidentTypeResponse
+var file_command_incident_classifier_v1_incident_classifier_proto_depIdxs = []int32{
+	0,  // 0: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentCategory:input_type -> command.incident.classifier.v1.CreateIncidentCategoryRequest
+	2,  // 1: command.incident.classifier.v1.IncidentClassifierCommandService.UpdateIncidentCategoryDetails:input_type -> command.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest
+	4,  // 2: command.incident.classifier.v1.IncidentClassifierCommandService.MoveIncidentCategory:input_type -> command.incident.classifier.v1.MoveIncidentCategoryRequest
+	6,  // 3: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentCategory:input_type -> command.incident.classifier.v1.DeactivateIncidentCategoryRequest
+	8,  // 4: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentCategory:input_type -> command.incident.classifier.v1.ReactivateIncidentCategoryRequest
+	10, // 5: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentCategory:input_type -> command.incident.classifier.v1.DeleteIncidentCategoryRequest
+	12, // 6: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentType:input_type -> command.incident.classifier.v1.CreateIncidentTypeRequest
+	14, // 7: command.incident.classifier.v1.IncidentClassifierCommandService.UpdateIncidentTypeDetails:input_type -> command.incident.classifier.v1.UpdateIncidentTypeDetailsRequest
+	16, // 8: command.incident.classifier.v1.IncidentClassifierCommandService.MoveIncidentType:input_type -> command.incident.classifier.v1.MoveIncidentTypeRequest
+	18, // 9: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentType:input_type -> command.incident.classifier.v1.DeactivateIncidentTypeRequest
+	20, // 10: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentType:input_type -> command.incident.classifier.v1.ReactivateIncidentTypeRequest
+	22, // 11: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentType:input_type -> command.incident.classifier.v1.DeleteIncidentTypeRequest
+	1,  // 12: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentCategory:output_type -> command.incident.classifier.v1.CreateIncidentCategoryResponse
+	3,  // 13: command.incident.classifier.v1.IncidentClassifierCommandService.UpdateIncidentCategoryDetails:output_type -> command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse
+	5,  // 14: command.incident.classifier.v1.IncidentClassifierCommandService.MoveIncidentCategory:output_type -> command.incident.classifier.v1.MoveIncidentCategoryResponse
+	7,  // 15: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentCategory:output_type -> command.incident.classifier.v1.DeactivateIncidentCategoryResponse
+	9,  // 16: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentCategory:output_type -> command.incident.classifier.v1.ReactivateIncidentCategoryResponse
+	11, // 17: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentCategory:output_type -> command.incident.classifier.v1.DeleteIncidentCategoryResponse
+	13, // 18: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentType:output_type -> command.incident.classifier.v1.CreateIncidentTypeResponse
+	15, // 19: command.incident.classifier.v1.IncidentClassifierCommandService.UpdateIncidentTypeDetails:output_type -> command.incident.classifier.v1.UpdateIncidentTypeDetailsResponse
+	17, // 20: command.incident.classifier.v1.IncidentClassifierCommandService.MoveIncidentType:output_type -> command.incident.classifier.v1.MoveIncidentTypeResponse
+	19, // 21: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentType:output_type -> command.incident.classifier.v1.DeactivateIncidentTypeResponse
+	21, // 22: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentType:output_type -> command.incident.classifier.v1.ReactivateIncidentTypeResponse
+	23, // 23: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentType:output_type -> command.incident.classifier.v1.DeleteIncidentTypeResponse
 	12, // [12:24] is the sub-list for method output_type
 	0,  // [0:12] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
@@ -1239,31 +1239,31 @@ var file_service_incident_classifier_v1_incident_classifier_proto_depIdxs = []in
 	0,  // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_service_incident_classifier_v1_incident_classifier_proto_init() }
-func file_service_incident_classifier_v1_incident_classifier_proto_init() {
-	if File_service_incident_classifier_v1_incident_classifier_proto != nil {
+func init() { file_command_incident_classifier_v1_incident_classifier_proto_init() }
+func file_command_incident_classifier_v1_incident_classifier_proto_init() {
+	if File_command_incident_classifier_v1_incident_classifier_proto != nil {
 		return
 	}
-	file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[0].OneofWrappers = []any{}
-	file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[2].OneofWrappers = []any{}
-	file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[4].OneofWrappers = []any{}
-	file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[12].OneofWrappers = []any{}
-	file_service_incident_classifier_v1_incident_classifier_proto_msgTypes[14].OneofWrappers = []any{}
+	file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[0].OneofWrappers = []any{}
+	file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[2].OneofWrappers = []any{}
+	file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[4].OneofWrappers = []any{}
+	file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[12].OneofWrappers = []any{}
+	file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[14].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_incident_classifier_v1_incident_classifier_proto_rawDesc), len(file_service_incident_classifier_v1_incident_classifier_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_command_incident_classifier_v1_incident_classifier_proto_rawDesc), len(file_command_incident_classifier_v1_incident_classifier_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_incident_classifier_v1_incident_classifier_proto_goTypes,
-		DependencyIndexes: file_service_incident_classifier_v1_incident_classifier_proto_depIdxs,
-		MessageInfos:      file_service_incident_classifier_v1_incident_classifier_proto_msgTypes,
+		GoTypes:           file_command_incident_classifier_v1_incident_classifier_proto_goTypes,
+		DependencyIndexes: file_command_incident_classifier_v1_incident_classifier_proto_depIdxs,
+		MessageInfos:      file_command_incident_classifier_v1_incident_classifier_proto_msgTypes,
 	}.Build()
-	File_service_incident_classifier_v1_incident_classifier_proto = out.File
-	file_service_incident_classifier_v1_incident_classifier_proto_goTypes = nil
-	file_service_incident_classifier_v1_incident_classifier_proto_depIdxs = nil
+	File_command_incident_classifier_v1_incident_classifier_proto = out.File
+	file_command_incident_classifier_v1_incident_classifier_proto_goTypes = nil
+	file_command_incident_classifier_v1_incident_classifier_proto_depIdxs = nil
 }

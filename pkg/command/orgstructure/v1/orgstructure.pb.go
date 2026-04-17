@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: service/orgstructure/v1/orgstructure.proto
+// source: command/orgstructure/v1/orgstructure.proto
 
 package orgstructurev1
 
@@ -32,7 +32,7 @@ type PointInput struct {
 
 func (x *PointInput) Reset() {
 	*x = PointInput{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[0]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +44,7 @@ func (x *PointInput) String() string {
 func (*PointInput) ProtoMessage() {}
 
 func (x *PointInput) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[0]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +57,7 @@ func (x *PointInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PointInput.ProtoReflect.Descriptor instead.
 func (*PointInput) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{0}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *PointInput) GetLongitude() float64 {
@@ -84,7 +84,7 @@ type AddressInput struct {
 
 func (x *AddressInput) Reset() {
 	*x = AddressInput{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[1]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -96,7 +96,7 @@ func (x *AddressInput) String() string {
 func (*AddressInput) ProtoMessage() {}
 
 func (x *AddressInput) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[1]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -109,7 +109,7 @@ func (x *AddressInput) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddressInput.ProtoReflect.Descriptor instead.
 func (*AddressInput) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{1}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *AddressInput) GetText() string {
@@ -137,7 +137,7 @@ type CreateOrganizationRequest struct {
 
 func (x *CreateOrganizationRequest) Reset() {
 	*x = CreateOrganizationRequest{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[2]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -149,7 +149,7 @@ func (x *CreateOrganizationRequest) String() string {
 func (*CreateOrganizationRequest) ProtoMessage() {}
 
 func (x *CreateOrganizationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[2]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -162,7 +162,7 @@ func (x *CreateOrganizationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateOrganizationRequest.ProtoReflect.Descriptor instead.
 func (*CreateOrganizationRequest) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{2}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CreateOrganizationRequest) GetName() string {
@@ -195,7 +195,7 @@ type CreateOrganizationResponse struct {
 
 func (x *CreateOrganizationResponse) Reset() {
 	*x = CreateOrganizationResponse{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[3]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -207,7 +207,7 @@ func (x *CreateOrganizationResponse) String() string {
 func (*CreateOrganizationResponse) ProtoMessage() {}
 
 func (x *CreateOrganizationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[3]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -220,7 +220,7 @@ func (x *CreateOrganizationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateOrganizationResponse.ProtoReflect.Descriptor instead.
 func (*CreateOrganizationResponse) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{3}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CreateOrganizationResponse) GetOrganizationId() string {
@@ -241,7 +241,7 @@ type UpdateOrganizationDetailsRequest struct {
 
 func (x *UpdateOrganizationDetailsRequest) Reset() {
 	*x = UpdateOrganizationDetailsRequest{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[4]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -253,7 +253,7 @@ func (x *UpdateOrganizationDetailsRequest) String() string {
 func (*UpdateOrganizationDetailsRequest) ProtoMessage() {}
 
 func (x *UpdateOrganizationDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[4]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -266,7 +266,7 @@ func (x *UpdateOrganizationDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateOrganizationDetailsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateOrganizationDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{4}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UpdateOrganizationDetailsRequest) GetOrganizationId() string {
@@ -298,7 +298,7 @@ type UpdateOrganizationDetailsResponse struct {
 
 func (x *UpdateOrganizationDetailsResponse) Reset() {
 	*x = UpdateOrganizationDetailsResponse{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[5]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -310,7 +310,7 @@ func (x *UpdateOrganizationDetailsResponse) String() string {
 func (*UpdateOrganizationDetailsResponse) ProtoMessage() {}
 
 func (x *UpdateOrganizationDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[5]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -323,7 +323,7 @@ func (x *UpdateOrganizationDetailsResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use UpdateOrganizationDetailsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateOrganizationDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{5}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{5}
 }
 
 type UpdateOrganizationLegalAddressRequest struct {
@@ -336,7 +336,7 @@ type UpdateOrganizationLegalAddressRequest struct {
 
 func (x *UpdateOrganizationLegalAddressRequest) Reset() {
 	*x = UpdateOrganizationLegalAddressRequest{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[6]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -348,7 +348,7 @@ func (x *UpdateOrganizationLegalAddressRequest) String() string {
 func (*UpdateOrganizationLegalAddressRequest) ProtoMessage() {}
 
 func (x *UpdateOrganizationLegalAddressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[6]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -361,7 +361,7 @@ func (x *UpdateOrganizationLegalAddressRequest) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use UpdateOrganizationLegalAddressRequest.ProtoReflect.Descriptor instead.
 func (*UpdateOrganizationLegalAddressRequest) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{6}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateOrganizationLegalAddressRequest) GetOrganizationId() string {
@@ -386,7 +386,7 @@ type UpdateOrganizationLegalAddressResponse struct {
 
 func (x *UpdateOrganizationLegalAddressResponse) Reset() {
 	*x = UpdateOrganizationLegalAddressResponse{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[7]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -398,7 +398,7 @@ func (x *UpdateOrganizationLegalAddressResponse) String() string {
 func (*UpdateOrganizationLegalAddressResponse) ProtoMessage() {}
 
 func (x *UpdateOrganizationLegalAddressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[7]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -411,7 +411,7 @@ func (x *UpdateOrganizationLegalAddressResponse) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use UpdateOrganizationLegalAddressResponse.ProtoReflect.Descriptor instead.
 func (*UpdateOrganizationLegalAddressResponse) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{7}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{7}
 }
 
 type CreateClinicRequest struct {
@@ -426,7 +426,7 @@ type CreateClinicRequest struct {
 
 func (x *CreateClinicRequest) Reset() {
 	*x = CreateClinicRequest{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[8]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -438,7 +438,7 @@ func (x *CreateClinicRequest) String() string {
 func (*CreateClinicRequest) ProtoMessage() {}
 
 func (x *CreateClinicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[8]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -451,7 +451,7 @@ func (x *CreateClinicRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateClinicRequest.ProtoReflect.Descriptor instead.
 func (*CreateClinicRequest) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{8}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CreateClinicRequest) GetOrganizationId() string {
@@ -491,7 +491,7 @@ type CreateClinicResponse struct {
 
 func (x *CreateClinicResponse) Reset() {
 	*x = CreateClinicResponse{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[9]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -503,7 +503,7 @@ func (x *CreateClinicResponse) String() string {
 func (*CreateClinicResponse) ProtoMessage() {}
 
 func (x *CreateClinicResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[9]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -516,7 +516,7 @@ func (x *CreateClinicResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateClinicResponse.ProtoReflect.Descriptor instead.
 func (*CreateClinicResponse) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{9}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateClinicResponse) GetClinicId() string {
@@ -537,7 +537,7 @@ type UpdateClinicDetailsRequest struct {
 
 func (x *UpdateClinicDetailsRequest) Reset() {
 	*x = UpdateClinicDetailsRequest{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[10]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -549,7 +549,7 @@ func (x *UpdateClinicDetailsRequest) String() string {
 func (*UpdateClinicDetailsRequest) ProtoMessage() {}
 
 func (x *UpdateClinicDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[10]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -562,7 +562,7 @@ func (x *UpdateClinicDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateClinicDetailsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateClinicDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{10}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpdateClinicDetailsRequest) GetClinicId() string {
@@ -594,7 +594,7 @@ type UpdateClinicDetailsResponse struct {
 
 func (x *UpdateClinicDetailsResponse) Reset() {
 	*x = UpdateClinicDetailsResponse{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[11]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -606,7 +606,7 @@ func (x *UpdateClinicDetailsResponse) String() string {
 func (*UpdateClinicDetailsResponse) ProtoMessage() {}
 
 func (x *UpdateClinicDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[11]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -619,7 +619,7 @@ func (x *UpdateClinicDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateClinicDetailsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateClinicDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{11}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{11}
 }
 
 type UpdateClinicPhysicalAddressRequest struct {
@@ -632,7 +632,7 @@ type UpdateClinicPhysicalAddressRequest struct {
 
 func (x *UpdateClinicPhysicalAddressRequest) Reset() {
 	*x = UpdateClinicPhysicalAddressRequest{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[12]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -644,7 +644,7 @@ func (x *UpdateClinicPhysicalAddressRequest) String() string {
 func (*UpdateClinicPhysicalAddressRequest) ProtoMessage() {}
 
 func (x *UpdateClinicPhysicalAddressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[12]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -657,7 +657,7 @@ func (x *UpdateClinicPhysicalAddressRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use UpdateClinicPhysicalAddressRequest.ProtoReflect.Descriptor instead.
 func (*UpdateClinicPhysicalAddressRequest) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{12}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *UpdateClinicPhysicalAddressRequest) GetClinicId() string {
@@ -682,7 +682,7 @@ type UpdateClinicPhysicalAddressResponse struct {
 
 func (x *UpdateClinicPhysicalAddressResponse) Reset() {
 	*x = UpdateClinicPhysicalAddressResponse{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[13]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -694,7 +694,7 @@ func (x *UpdateClinicPhysicalAddressResponse) String() string {
 func (*UpdateClinicPhysicalAddressResponse) ProtoMessage() {}
 
 func (x *UpdateClinicPhysicalAddressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[13]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -707,7 +707,7 @@ func (x *UpdateClinicPhysicalAddressResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UpdateClinicPhysicalAddressResponse.ProtoReflect.Descriptor instead.
 func (*UpdateClinicPhysicalAddressResponse) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{13}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{13}
 }
 
 type CreateDepartmentRequest struct {
@@ -721,7 +721,7 @@ type CreateDepartmentRequest struct {
 
 func (x *CreateDepartmentRequest) Reset() {
 	*x = CreateDepartmentRequest{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[14]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -733,7 +733,7 @@ func (x *CreateDepartmentRequest) String() string {
 func (*CreateDepartmentRequest) ProtoMessage() {}
 
 func (x *CreateDepartmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[14]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -746,7 +746,7 @@ func (x *CreateDepartmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateDepartmentRequest.ProtoReflect.Descriptor instead.
 func (*CreateDepartmentRequest) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{14}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *CreateDepartmentRequest) GetClinicId() string {
@@ -779,7 +779,7 @@ type CreateDepartmentResponse struct {
 
 func (x *CreateDepartmentResponse) Reset() {
 	*x = CreateDepartmentResponse{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[15]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -791,7 +791,7 @@ func (x *CreateDepartmentResponse) String() string {
 func (*CreateDepartmentResponse) ProtoMessage() {}
 
 func (x *CreateDepartmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[15]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -804,7 +804,7 @@ func (x *CreateDepartmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateDepartmentResponse.ProtoReflect.Descriptor instead.
 func (*CreateDepartmentResponse) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{15}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *CreateDepartmentResponse) GetDepartmentId() string {
@@ -825,7 +825,7 @@ type UpdateDepartmentDetailsRequest struct {
 
 func (x *UpdateDepartmentDetailsRequest) Reset() {
 	*x = UpdateDepartmentDetailsRequest{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[16]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -837,7 +837,7 @@ func (x *UpdateDepartmentDetailsRequest) String() string {
 func (*UpdateDepartmentDetailsRequest) ProtoMessage() {}
 
 func (x *UpdateDepartmentDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[16]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -850,7 +850,7 @@ func (x *UpdateDepartmentDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDepartmentDetailsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateDepartmentDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{16}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateDepartmentDetailsRequest) GetDepartmentId() string {
@@ -882,7 +882,7 @@ type UpdateDepartmentDetailsResponse struct {
 
 func (x *UpdateDepartmentDetailsResponse) Reset() {
 	*x = UpdateDepartmentDetailsResponse{}
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[17]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -894,7 +894,7 @@ func (x *UpdateDepartmentDetailsResponse) String() string {
 func (*UpdateDepartmentDetailsResponse) ProtoMessage() {}
 
 func (x *UpdateDepartmentDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_service_orgstructure_v1_orgstructure_proto_msgTypes[17]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -907,25 +907,25 @@ func (x *UpdateDepartmentDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDepartmentDetailsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateDepartmentDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{17}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{17}
 }
 
-var File_service_orgstructure_v1_orgstructure_proto protoreflect.FileDescriptor
+var File_command_orgstructure_v1_orgstructure_proto protoreflect.FileDescriptor
 
-const file_service_orgstructure_v1_orgstructure_proto_rawDesc = "" +
+const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\n" +
-	"*service/orgstructure/v1/orgstructure.proto\x12\x17service.orgstructure.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"F\n" +
+	"*command/orgstructure/v1/orgstructure.proto\x12\x17command.orgstructure.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"F\n" +
 	"\n" +
 	"PointInput\x12\x1c\n" +
 	"\tlongitude\x18\x01 \x01(\x01R\tlongitude\x12\x1a\n" +
 	"\blatitude\x18\x02 \x01(\x01R\blatitude\"q\n" +
 	"\fAddressInput\x12\x17\n" +
 	"\x04text\x18\x01 \x01(\tB\x03\xe0A\x02R\x04text\x12>\n" +
-	"\x05point\x18\x02 \x01(\v2#.service.orgstructure.v1.PointInputH\x00R\x05point\x88\x01\x01B\b\n" +
+	"\x05point\x18\x02 \x01(\v2#.command.orgstructure.v1.PointInputH\x00R\x05point\x88\x01\x01B\b\n" +
 	"\x06_point\"\xbc\x01\n" +
 	"\x19CreateOrganizationRequest\x12\x17\n" +
 	"\x04name\x18\x01 \x01(\tB\x03\xe0A\x02R\x04name\x12O\n" +
-	"\rlegal_address\x18\x02 \x01(\v2%.service.orgstructure.v1.AddressInputB\x03\xe0A\x02R\flegalAddress\x12%\n" +
+	"\rlegal_address\x18\x02 \x01(\v2%.command.orgstructure.v1.AddressInputB\x03\xe0A\x02R\flegalAddress\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"E\n" +
 	"\x1aCreateOrganizationResponse\x12'\n" +
@@ -938,12 +938,12 @@ const file_service_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"!UpdateOrganizationDetailsResponse\"\xa6\x01\n" +
 	"%UpdateOrganizationLegalAddressRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12O\n" +
-	"\rlegal_address\x18\x02 \x01(\v2%.service.orgstructure.v1.AddressInputB\x03\xe0A\x02R\flegalAddress\"(\n" +
+	"\rlegal_address\x18\x02 \x01(\v2%.command.orgstructure.v1.AddressInputB\x03\xe0A\x02R\flegalAddress\"(\n" +
 	"&UpdateOrganizationLegalAddressResponse\"\xea\x01\n" +
 	"\x13CreateClinicRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12U\n" +
-	"\x10physical_address\x18\x03 \x01(\v2%.service.orgstructure.v1.AddressInputB\x03\xe0A\x02R\x0fphysicalAddress\x12%\n" +
+	"\x10physical_address\x18\x03 \x01(\v2%.command.orgstructure.v1.AddressInputB\x03\xe0A\x02R\x0fphysicalAddress\x12%\n" +
 	"\vdescription\x18\x04 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"3\n" +
 	"\x14CreateClinicResponse\x12\x1b\n" +
@@ -956,7 +956,7 @@ const file_service_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x1bUpdateClinicDetailsResponse\"\x9d\x01\n" +
 	"\"UpdateClinicPhysicalAddressRequest\x12 \n" +
 	"\tclinic_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bclinicId\x12U\n" +
-	"\x10physical_address\x18\x02 \x01(\v2%.service.orgstructure.v1.AddressInputB\x03\xe0A\x02R\x0fphysicalAddress\"%\n" +
+	"\x10physical_address\x18\x02 \x01(\v2%.command.orgstructure.v1.AddressInputB\x03\xe0A\x02R\x0fphysicalAddress\"%\n" +
 	"#UpdateClinicPhysicalAddressResponse\"\x8b\x01\n" +
 	"\x17CreateDepartmentRequest\x12 \n" +
 	"\tclinic_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bclinicId\x12\x17\n" +
@@ -970,73 +970,73 @@ const file_service_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"!\n" +
-	"\x1fUpdateDepartmentDetailsResponse2\xf4\v\n" +
-	"\x13OrgStructureService\x12\x9b\x01\n" +
-	"\x12CreateOrganization\x122.service.orgstructure.v1.CreateOrganizationRequest\x1a3.service.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xca\x01\n" +
-	"\x19UpdateOrganizationDetails\x129.service.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.service.orgstructure.v1.UpdateOrganizationDetailsResponse\"6\x82\xd3\xe4\x93\x020:\x01*\x1a+/v1/organizations/{organization_id}/details\x12\xdf\x01\n" +
-	"\x1eUpdateOrganizationLegalAddress\x12>.service.orgstructure.v1.UpdateOrganizationLegalAddressRequest\x1a?.service.orgstructure.v1.UpdateOrganizationLegalAddressResponse\"<\x82\xd3\xe4\x93\x026:\x01*\x1a1/v1/organizations/{organization_id}/legal-address\x12\xa3\x01\n" +
-	"\fCreateClinic\x12,.service.orgstructure.v1.CreateClinicRequest\x1a-.service.orgstructure.v1.CreateClinicResponse\"6\x82\xd3\xe4\x93\x020:\x01*\"+/v1/organizations/{organization_id}/clinics\x12\xac\x01\n" +
-	"\x13UpdateClinicDetails\x123.service.orgstructure.v1.UpdateClinicDetailsRequest\x1a4.service.orgstructure.v1.UpdateClinicDetailsResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/clinics/{clinic_id}/details\x12\xcd\x01\n" +
-	"\x1bUpdateClinicPhysicalAddress\x12;.service.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.service.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"3\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\xa7\x01\n" +
-	"\x10CreateDepartment\x120.service.orgstructure.v1.CreateDepartmentRequest\x1a1.service.orgstructure.v1.CreateDepartmentResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/clinics/{clinic_id}/departments\x12\xc0\x01\n" +
-	"\x17UpdateDepartmentDetails\x127.service.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.service.orgstructure.v1.UpdateDepartmentDetailsResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\x8d\x02\n" +
-	"\x1bcom.service.orgstructure.v1B\x11OrgstructureProtoP\x01Z]github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1;orgstructurev1\xa2\x02\x03SOX\xaa\x02\x17Service.Orgstructure.V1\xca\x02\x17Service\\Orgstructure\\V1\xe2\x02#Service\\Orgstructure\\V1\\GPBMetadata\xea\x02\x19Service::Orgstructure::V1b\x06proto3"
+	"\x1fUpdateDepartmentDetailsResponse2\xfb\v\n" +
+	"\x1aOrgStructureCommandService\x12\x9b\x01\n" +
+	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xca\x01\n" +
+	"\x19UpdateOrganizationDetails\x129.command.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.command.orgstructure.v1.UpdateOrganizationDetailsResponse\"6\x82\xd3\xe4\x93\x020:\x01*\x1a+/v1/organizations/{organization_id}/details\x12\xdf\x01\n" +
+	"\x1eUpdateOrganizationLegalAddress\x12>.command.orgstructure.v1.UpdateOrganizationLegalAddressRequest\x1a?.command.orgstructure.v1.UpdateOrganizationLegalAddressResponse\"<\x82\xd3\xe4\x93\x026:\x01*\x1a1/v1/organizations/{organization_id}/legal-address\x12\xa3\x01\n" +
+	"\fCreateClinic\x12,.command.orgstructure.v1.CreateClinicRequest\x1a-.command.orgstructure.v1.CreateClinicResponse\"6\x82\xd3\xe4\x93\x020:\x01*\"+/v1/organizations/{organization_id}/clinics\x12\xac\x01\n" +
+	"\x13UpdateClinicDetails\x123.command.orgstructure.v1.UpdateClinicDetailsRequest\x1a4.command.orgstructure.v1.UpdateClinicDetailsResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/clinics/{clinic_id}/details\x12\xcd\x01\n" +
+	"\x1bUpdateClinicPhysicalAddress\x12;.command.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.command.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"3\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\xa7\x01\n" +
+	"\x10CreateDepartment\x120.command.orgstructure.v1.CreateDepartmentRequest\x1a1.command.orgstructure.v1.CreateDepartmentResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/clinics/{clinic_id}/departments\x12\xc0\x01\n" +
+	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\x8d\x02\n" +
+	"\x1bcom.command.orgstructure.v1B\x11OrgstructureProtoP\x01Z]github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1;orgstructurev1\xa2\x02\x03COX\xaa\x02\x17Command.Orgstructure.V1\xca\x02\x17Command\\Orgstructure\\V1\xe2\x02#Command\\Orgstructure\\V1\\GPBMetadata\xea\x02\x19Command::Orgstructure::V1b\x06proto3"
 
 var (
-	file_service_orgstructure_v1_orgstructure_proto_rawDescOnce sync.Once
-	file_service_orgstructure_v1_orgstructure_proto_rawDescData []byte
+	file_command_orgstructure_v1_orgstructure_proto_rawDescOnce sync.Once
+	file_command_orgstructure_v1_orgstructure_proto_rawDescData []byte
 )
 
-func file_service_orgstructure_v1_orgstructure_proto_rawDescGZIP() []byte {
-	file_service_orgstructure_v1_orgstructure_proto_rawDescOnce.Do(func() {
-		file_service_orgstructure_v1_orgstructure_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_service_orgstructure_v1_orgstructure_proto_rawDesc), len(file_service_orgstructure_v1_orgstructure_proto_rawDesc)))
+func file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP() []byte {
+	file_command_orgstructure_v1_orgstructure_proto_rawDescOnce.Do(func() {
+		file_command_orgstructure_v1_orgstructure_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_command_orgstructure_v1_orgstructure_proto_rawDesc), len(file_command_orgstructure_v1_orgstructure_proto_rawDesc)))
 	})
-	return file_service_orgstructure_v1_orgstructure_proto_rawDescData
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescData
 }
 
-var file_service_orgstructure_v1_orgstructure_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
-var file_service_orgstructure_v1_orgstructure_proto_goTypes = []any{
-	(*PointInput)(nil),                             // 0: service.orgstructure.v1.PointInput
-	(*AddressInput)(nil),                           // 1: service.orgstructure.v1.AddressInput
-	(*CreateOrganizationRequest)(nil),              // 2: service.orgstructure.v1.CreateOrganizationRequest
-	(*CreateOrganizationResponse)(nil),             // 3: service.orgstructure.v1.CreateOrganizationResponse
-	(*UpdateOrganizationDetailsRequest)(nil),       // 4: service.orgstructure.v1.UpdateOrganizationDetailsRequest
-	(*UpdateOrganizationDetailsResponse)(nil),      // 5: service.orgstructure.v1.UpdateOrganizationDetailsResponse
-	(*UpdateOrganizationLegalAddressRequest)(nil),  // 6: service.orgstructure.v1.UpdateOrganizationLegalAddressRequest
-	(*UpdateOrganizationLegalAddressResponse)(nil), // 7: service.orgstructure.v1.UpdateOrganizationLegalAddressResponse
-	(*CreateClinicRequest)(nil),                    // 8: service.orgstructure.v1.CreateClinicRequest
-	(*CreateClinicResponse)(nil),                   // 9: service.orgstructure.v1.CreateClinicResponse
-	(*UpdateClinicDetailsRequest)(nil),             // 10: service.orgstructure.v1.UpdateClinicDetailsRequest
-	(*UpdateClinicDetailsResponse)(nil),            // 11: service.orgstructure.v1.UpdateClinicDetailsResponse
-	(*UpdateClinicPhysicalAddressRequest)(nil),     // 12: service.orgstructure.v1.UpdateClinicPhysicalAddressRequest
-	(*UpdateClinicPhysicalAddressResponse)(nil),    // 13: service.orgstructure.v1.UpdateClinicPhysicalAddressResponse
-	(*CreateDepartmentRequest)(nil),                // 14: service.orgstructure.v1.CreateDepartmentRequest
-	(*CreateDepartmentResponse)(nil),               // 15: service.orgstructure.v1.CreateDepartmentResponse
-	(*UpdateDepartmentDetailsRequest)(nil),         // 16: service.orgstructure.v1.UpdateDepartmentDetailsRequest
-	(*UpdateDepartmentDetailsResponse)(nil),        // 17: service.orgstructure.v1.UpdateDepartmentDetailsResponse
+var file_command_orgstructure_v1_orgstructure_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_command_orgstructure_v1_orgstructure_proto_goTypes = []any{
+	(*PointInput)(nil),                             // 0: command.orgstructure.v1.PointInput
+	(*AddressInput)(nil),                           // 1: command.orgstructure.v1.AddressInput
+	(*CreateOrganizationRequest)(nil),              // 2: command.orgstructure.v1.CreateOrganizationRequest
+	(*CreateOrganizationResponse)(nil),             // 3: command.orgstructure.v1.CreateOrganizationResponse
+	(*UpdateOrganizationDetailsRequest)(nil),       // 4: command.orgstructure.v1.UpdateOrganizationDetailsRequest
+	(*UpdateOrganizationDetailsResponse)(nil),      // 5: command.orgstructure.v1.UpdateOrganizationDetailsResponse
+	(*UpdateOrganizationLegalAddressRequest)(nil),  // 6: command.orgstructure.v1.UpdateOrganizationLegalAddressRequest
+	(*UpdateOrganizationLegalAddressResponse)(nil), // 7: command.orgstructure.v1.UpdateOrganizationLegalAddressResponse
+	(*CreateClinicRequest)(nil),                    // 8: command.orgstructure.v1.CreateClinicRequest
+	(*CreateClinicResponse)(nil),                   // 9: command.orgstructure.v1.CreateClinicResponse
+	(*UpdateClinicDetailsRequest)(nil),             // 10: command.orgstructure.v1.UpdateClinicDetailsRequest
+	(*UpdateClinicDetailsResponse)(nil),            // 11: command.orgstructure.v1.UpdateClinicDetailsResponse
+	(*UpdateClinicPhysicalAddressRequest)(nil),     // 12: command.orgstructure.v1.UpdateClinicPhysicalAddressRequest
+	(*UpdateClinicPhysicalAddressResponse)(nil),    // 13: command.orgstructure.v1.UpdateClinicPhysicalAddressResponse
+	(*CreateDepartmentRequest)(nil),                // 14: command.orgstructure.v1.CreateDepartmentRequest
+	(*CreateDepartmentResponse)(nil),               // 15: command.orgstructure.v1.CreateDepartmentResponse
+	(*UpdateDepartmentDetailsRequest)(nil),         // 16: command.orgstructure.v1.UpdateDepartmentDetailsRequest
+	(*UpdateDepartmentDetailsResponse)(nil),        // 17: command.orgstructure.v1.UpdateDepartmentDetailsResponse
 }
-var file_service_orgstructure_v1_orgstructure_proto_depIdxs = []int32{
-	0,  // 0: service.orgstructure.v1.AddressInput.point:type_name -> service.orgstructure.v1.PointInput
-	1,  // 1: service.orgstructure.v1.CreateOrganizationRequest.legal_address:type_name -> service.orgstructure.v1.AddressInput
-	1,  // 2: service.orgstructure.v1.UpdateOrganizationLegalAddressRequest.legal_address:type_name -> service.orgstructure.v1.AddressInput
-	1,  // 3: service.orgstructure.v1.CreateClinicRequest.physical_address:type_name -> service.orgstructure.v1.AddressInput
-	1,  // 4: service.orgstructure.v1.UpdateClinicPhysicalAddressRequest.physical_address:type_name -> service.orgstructure.v1.AddressInput
-	2,  // 5: service.orgstructure.v1.OrgStructureService.CreateOrganization:input_type -> service.orgstructure.v1.CreateOrganizationRequest
-	4,  // 6: service.orgstructure.v1.OrgStructureService.UpdateOrganizationDetails:input_type -> service.orgstructure.v1.UpdateOrganizationDetailsRequest
-	6,  // 7: service.orgstructure.v1.OrgStructureService.UpdateOrganizationLegalAddress:input_type -> service.orgstructure.v1.UpdateOrganizationLegalAddressRequest
-	8,  // 8: service.orgstructure.v1.OrgStructureService.CreateClinic:input_type -> service.orgstructure.v1.CreateClinicRequest
-	10, // 9: service.orgstructure.v1.OrgStructureService.UpdateClinicDetails:input_type -> service.orgstructure.v1.UpdateClinicDetailsRequest
-	12, // 10: service.orgstructure.v1.OrgStructureService.UpdateClinicPhysicalAddress:input_type -> service.orgstructure.v1.UpdateClinicPhysicalAddressRequest
-	14, // 11: service.orgstructure.v1.OrgStructureService.CreateDepartment:input_type -> service.orgstructure.v1.CreateDepartmentRequest
-	16, // 12: service.orgstructure.v1.OrgStructureService.UpdateDepartmentDetails:input_type -> service.orgstructure.v1.UpdateDepartmentDetailsRequest
-	3,  // 13: service.orgstructure.v1.OrgStructureService.CreateOrganization:output_type -> service.orgstructure.v1.CreateOrganizationResponse
-	5,  // 14: service.orgstructure.v1.OrgStructureService.UpdateOrganizationDetails:output_type -> service.orgstructure.v1.UpdateOrganizationDetailsResponse
-	7,  // 15: service.orgstructure.v1.OrgStructureService.UpdateOrganizationLegalAddress:output_type -> service.orgstructure.v1.UpdateOrganizationLegalAddressResponse
-	9,  // 16: service.orgstructure.v1.OrgStructureService.CreateClinic:output_type -> service.orgstructure.v1.CreateClinicResponse
-	11, // 17: service.orgstructure.v1.OrgStructureService.UpdateClinicDetails:output_type -> service.orgstructure.v1.UpdateClinicDetailsResponse
-	13, // 18: service.orgstructure.v1.OrgStructureService.UpdateClinicPhysicalAddress:output_type -> service.orgstructure.v1.UpdateClinicPhysicalAddressResponse
-	15, // 19: service.orgstructure.v1.OrgStructureService.CreateDepartment:output_type -> service.orgstructure.v1.CreateDepartmentResponse
-	17, // 20: service.orgstructure.v1.OrgStructureService.UpdateDepartmentDetails:output_type -> service.orgstructure.v1.UpdateDepartmentDetailsResponse
+var file_command_orgstructure_v1_orgstructure_proto_depIdxs = []int32{
+	0,  // 0: command.orgstructure.v1.AddressInput.point:type_name -> command.orgstructure.v1.PointInput
+	1,  // 1: command.orgstructure.v1.CreateOrganizationRequest.legal_address:type_name -> command.orgstructure.v1.AddressInput
+	1,  // 2: command.orgstructure.v1.UpdateOrganizationLegalAddressRequest.legal_address:type_name -> command.orgstructure.v1.AddressInput
+	1,  // 3: command.orgstructure.v1.CreateClinicRequest.physical_address:type_name -> command.orgstructure.v1.AddressInput
+	1,  // 4: command.orgstructure.v1.UpdateClinicPhysicalAddressRequest.physical_address:type_name -> command.orgstructure.v1.AddressInput
+	2,  // 5: command.orgstructure.v1.OrgStructureCommandService.CreateOrganization:input_type -> command.orgstructure.v1.CreateOrganizationRequest
+	4,  // 6: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationDetails:input_type -> command.orgstructure.v1.UpdateOrganizationDetailsRequest
+	6,  // 7: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationLegalAddress:input_type -> command.orgstructure.v1.UpdateOrganizationLegalAddressRequest
+	8,  // 8: command.orgstructure.v1.OrgStructureCommandService.CreateClinic:input_type -> command.orgstructure.v1.CreateClinicRequest
+	10, // 9: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicDetails:input_type -> command.orgstructure.v1.UpdateClinicDetailsRequest
+	12, // 10: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicPhysicalAddress:input_type -> command.orgstructure.v1.UpdateClinicPhysicalAddressRequest
+	14, // 11: command.orgstructure.v1.OrgStructureCommandService.CreateDepartment:input_type -> command.orgstructure.v1.CreateDepartmentRequest
+	16, // 12: command.orgstructure.v1.OrgStructureCommandService.UpdateDepartmentDetails:input_type -> command.orgstructure.v1.UpdateDepartmentDetailsRequest
+	3,  // 13: command.orgstructure.v1.OrgStructureCommandService.CreateOrganization:output_type -> command.orgstructure.v1.CreateOrganizationResponse
+	5,  // 14: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationDetails:output_type -> command.orgstructure.v1.UpdateOrganizationDetailsResponse
+	7,  // 15: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationLegalAddress:output_type -> command.orgstructure.v1.UpdateOrganizationLegalAddressResponse
+	9,  // 16: command.orgstructure.v1.OrgStructureCommandService.CreateClinic:output_type -> command.orgstructure.v1.CreateClinicResponse
+	11, // 17: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicDetails:output_type -> command.orgstructure.v1.UpdateClinicDetailsResponse
+	13, // 18: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicPhysicalAddress:output_type -> command.orgstructure.v1.UpdateClinicPhysicalAddressResponse
+	15, // 19: command.orgstructure.v1.OrgStructureCommandService.CreateDepartment:output_type -> command.orgstructure.v1.CreateDepartmentResponse
+	17, // 20: command.orgstructure.v1.OrgStructureCommandService.UpdateDepartmentDetails:output_type -> command.orgstructure.v1.UpdateDepartmentDetailsResponse
 	13, // [13:21] is the sub-list for method output_type
 	5,  // [5:13] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -1044,33 +1044,33 @@ var file_service_orgstructure_v1_orgstructure_proto_depIdxs = []int32{
 	0,  // [0:5] is the sub-list for field type_name
 }
 
-func init() { file_service_orgstructure_v1_orgstructure_proto_init() }
-func file_service_orgstructure_v1_orgstructure_proto_init() {
-	if File_service_orgstructure_v1_orgstructure_proto != nil {
+func init() { file_command_orgstructure_v1_orgstructure_proto_init() }
+func file_command_orgstructure_v1_orgstructure_proto_init() {
+	if File_command_orgstructure_v1_orgstructure_proto != nil {
 		return
 	}
-	file_service_orgstructure_v1_orgstructure_proto_msgTypes[1].OneofWrappers = []any{}
-	file_service_orgstructure_v1_orgstructure_proto_msgTypes[2].OneofWrappers = []any{}
-	file_service_orgstructure_v1_orgstructure_proto_msgTypes[4].OneofWrappers = []any{}
-	file_service_orgstructure_v1_orgstructure_proto_msgTypes[8].OneofWrappers = []any{}
-	file_service_orgstructure_v1_orgstructure_proto_msgTypes[10].OneofWrappers = []any{}
-	file_service_orgstructure_v1_orgstructure_proto_msgTypes[14].OneofWrappers = []any{}
-	file_service_orgstructure_v1_orgstructure_proto_msgTypes[16].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[1].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[2].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[4].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[8].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[10].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[14].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[16].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_service_orgstructure_v1_orgstructure_proto_rawDesc), len(file_service_orgstructure_v1_orgstructure_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_command_orgstructure_v1_orgstructure_proto_rawDesc), len(file_command_orgstructure_v1_orgstructure_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_service_orgstructure_v1_orgstructure_proto_goTypes,
-		DependencyIndexes: file_service_orgstructure_v1_orgstructure_proto_depIdxs,
-		MessageInfos:      file_service_orgstructure_v1_orgstructure_proto_msgTypes,
+		GoTypes:           file_command_orgstructure_v1_orgstructure_proto_goTypes,
+		DependencyIndexes: file_command_orgstructure_v1_orgstructure_proto_depIdxs,
+		MessageInfos:      file_command_orgstructure_v1_orgstructure_proto_msgTypes,
 	}.Build()
-	File_service_orgstructure_v1_orgstructure_proto = out.File
-	file_service_orgstructure_v1_orgstructure_proto_goTypes = nil
-	file_service_orgstructure_v1_orgstructure_proto_depIdxs = nil
+	File_command_orgstructure_v1_orgstructure_proto = out.File
+	file_command_orgstructure_v1_orgstructure_proto_goTypes = nil
+	file_command_orgstructure_v1_orgstructure_proto_depIdxs = nil
 }

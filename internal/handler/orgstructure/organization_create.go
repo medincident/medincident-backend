@@ -5,7 +5,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
-	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1"
+	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
 )
 
 func (h *OrgStructureHandler) CreateOrganization(

@@ -12,7 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
-	membershipv1 "github.com/medincident/medincident-command-service/pkg/service/membership/v1"
+	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
 )
 
 // idErrs collects UUID-parse errors from a handler so the transport
@@ -36,9 +36,9 @@ func (e idErrs) err() error {
 	return errors.Join(e...)
 }
 
-// MembershipHandler implements membershipv1.MembershipServiceServer.
+// MembershipHandler implements membershipv1.MembershipCommandServiceServer.
 type MembershipHandler struct {
-	membershipv1.UnimplementedMembershipServiceServer
+	membershipv1.UnimplementedMembershipCommandServiceServer
 
 	authz  *authz.Authz
 	empSvc *membership.EmployeeService

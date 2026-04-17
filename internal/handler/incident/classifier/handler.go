@@ -7,7 +7,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/service/authz"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
-	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/service/incident/classifier/v1"
+	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
 )
 
 // Error codes emitted by handler-layer request parsing.
@@ -17,9 +17,9 @@ const (
 	ErrCodeHandlerInvalidIncidentTypeID     = "handler_invalid_incident_type_id"
 )
 
-// IncidentClassifierHandler implements incidentclassifierv1.IncidentClassifierServiceServer.
+// IncidentClassifierHandler implements incidentclassifierv1.IncidentClassifierCommandServiceServer.
 type IncidentClassifierHandler struct {
-	incidentclassifierv1.UnimplementedIncidentClassifierServiceServer
+	incidentclassifierv1.UnimplementedIncidentClassifierCommandServiceServer
 
 	authz       *authz.Authz
 	categorySvc *classifiersvc.IncidentCategoryService

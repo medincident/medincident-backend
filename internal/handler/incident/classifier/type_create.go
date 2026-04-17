@@ -5,7 +5,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
-	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/service/incident/classifier/v1"
+	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
 )
 
 func (h *IncidentClassifierHandler) CreateIncidentType(

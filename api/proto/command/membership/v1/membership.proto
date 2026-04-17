@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package service.membership.v1;
+package command.membership.v1;
 
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
@@ -13,7 +13,7 @@ import "google/protobuf/timestamp.proto";
 // ClinicHead, OrganizationAdmin, OrganizationHead, and
 // OrganizationDispatcher, plus the global SystemAdmin grant that
 // operates directly on Zitadel user identifiers.
-service MembershipService {
+service MembershipCommandService {
   // Employee lifecycle
   rpc HireEmployee(HireEmployeeRequest) returns (HireEmployeeResponse) {
     option (google.api.http) = {

@@ -1,18 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "event/clinic/v1/events.proto",
+    "title": "command/incident/classifier/v1/incident_classifier.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "IncidentClassifierService"
+      "name": "IncidentClassifierCommandService"
     },
     {
-      "name": "MembershipService"
+      "name": "MembershipCommandService"
     },
     {
-      "name": "OrgStructureService"
+      "name": "OrgStructureCommandService"
     }
   ],
   "consumes": [
@@ -24,7 +24,7 @@
   "paths": {
     "/v1/clinics/{clinicId}/departments": {
       "post": {
-        "operationId": "OrgStructureService_CreateDepartment",
+        "operationId": "OrgStructureCommandService_CreateDepartment",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -51,18 +51,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrgStructureServiceCreateDepartmentBody"
+              "$ref": "#/definitions/OrgStructureCommandServiceCreateDepartmentBody"
             }
           }
         ],
         "tags": [
-          "OrgStructureService"
+          "OrgStructureCommandService"
         ]
       }
     },
     "/v1/clinics/{clinicId}/details": {
       "put": {
-        "operationId": "OrgStructureService_UpdateClinicDetails",
+        "operationId": "OrgStructureCommandService_UpdateClinicDetails",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -89,19 +89,19 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrgStructureServiceUpdateClinicDetailsBody"
+              "$ref": "#/definitions/OrgStructureCommandServiceUpdateClinicDetailsBody"
             }
           }
         ],
         "tags": [
-          "OrgStructureService"
+          "OrgStructureCommandService"
         ]
       }
     },
     "/v1/clinics/{clinicId}/heads": {
       "post": {
         "summary": "------ ClinicHead ------",
-        "operationId": "MembershipService_AssignClinicHead",
+        "operationId": "MembershipCommandService_AssignClinicHead",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -128,18 +128,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignClinicHeadBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignClinicHeadBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/clinics/{clinicId}/heads/{employeeId}": {
       "delete": {
-        "operationId": "MembershipService_RevokeClinicHead",
+        "operationId": "MembershipCommandService_RevokeClinicHead",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -169,13 +169,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/clinics/{clinicId}/heads/{employeeId}/deputy": {
       "delete": {
-        "operationId": "MembershipService_RemoveClinicHeadDeputy",
+        "operationId": "MembershipCommandService_RemoveClinicHeadDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -205,11 +205,11 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       },
       "post": {
-        "operationId": "MembershipService_AssignClinicHeadDeputy",
+        "operationId": "MembershipCommandService_AssignClinicHeadDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -242,18 +242,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignClinicHeadDeputyBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignClinicHeadDeputyBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/clinics/{clinicId}/physical-address": {
       "put": {
-        "operationId": "OrgStructureService_UpdateClinicPhysicalAddress",
+        "operationId": "OrgStructureCommandService_UpdateClinicPhysicalAddress",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -280,18 +280,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrgStructureServiceUpdateClinicPhysicalAddressBody"
+              "$ref": "#/definitions/OrgStructureCommandServiceUpdateClinicPhysicalAddressBody"
             }
           }
         ],
         "tags": [
-          "OrgStructureService"
+          "OrgStructureCommandService"
         ]
       }
     },
     "/v1/departments/{departmentId}/details": {
       "put": {
-        "operationId": "OrgStructureService_UpdateDepartmentDetails",
+        "operationId": "OrgStructureCommandService_UpdateDepartmentDetails",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -318,19 +318,19 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrgStructureServiceUpdateDepartmentDetailsBody"
+              "$ref": "#/definitions/OrgStructureCommandServiceUpdateDepartmentDetailsBody"
             }
           }
         ],
         "tags": [
-          "OrgStructureService"
+          "OrgStructureCommandService"
         ]
       }
     },
     "/v1/departments/{departmentId}/responsibles": {
       "post": {
         "summary": "------ DepartmentResponsible ------",
-        "operationId": "MembershipService_AssignDepartmentResponsible",
+        "operationId": "MembershipCommandService_AssignDepartmentResponsible",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -357,18 +357,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignDepartmentResponsibleBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignDepartmentResponsibleBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/departments/{departmentId}/responsibles/{employeeId}": {
       "delete": {
-        "operationId": "MembershipService_RevokeDepartmentResponsible",
+        "operationId": "MembershipCommandService_RevokeDepartmentResponsible",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -398,13 +398,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/departments/{departmentId}/responsibles/{employeeId}/deputy": {
       "delete": {
-        "operationId": "MembershipService_RemoveDepartmentResponsibleDeputy",
+        "operationId": "MembershipCommandService_RemoveDepartmentResponsibleDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -434,11 +434,11 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       },
       "post": {
-        "operationId": "MembershipService_AssignDepartmentResponsibleDeputy",
+        "operationId": "MembershipCommandService_AssignDepartmentResponsibleDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -471,19 +471,19 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignDepartmentResponsibleDeputyBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignDepartmentResponsibleDeputyBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/employees": {
       "post": {
         "summary": "Employee lifecycle",
-        "operationId": "MembershipService_HireEmployee",
+        "operationId": "MembershipCommandService_HireEmployee",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -509,13 +509,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/employees/{employeeId}": {
       "delete": {
-        "operationId": "MembershipService_TerminateEmployee",
+        "operationId": "MembershipCommandService_TerminateEmployee",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -539,14 +539,14 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/employees/{employeeId}/current-vacation": {
       "post": {
         "summary": "Vacation lifecycle",
-        "operationId": "MembershipService_StartVacationNow",
+        "operationId": "MembershipCommandService_StartVacationNow",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -573,18 +573,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceStartVacationNowBody"
+              "$ref": "#/definitions/MembershipCommandServiceStartVacationNowBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/employees/{employeeId}/department": {
       "put": {
-        "operationId": "MembershipService_UpdateEmployeeDepartment",
+        "operationId": "MembershipCommandService_UpdateEmployeeDepartment",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -611,18 +611,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceUpdateEmployeeDepartmentBody"
+              "$ref": "#/definitions/MembershipCommandServiceUpdateEmployeeDepartmentBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/employees/{employeeId}/position": {
       "put": {
-        "operationId": "MembershipService_UpdateEmployeePosition",
+        "operationId": "MembershipCommandService_UpdateEmployeePosition",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -649,18 +649,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceUpdateEmployeePositionBody"
+              "$ref": "#/definitions/MembershipCommandServiceUpdateEmployeePositionBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/employees/{employeeId}/vacations": {
       "post": {
-        "operationId": "MembershipService_ScheduleVacation",
+        "operationId": "MembershipCommandService_ScheduleVacation",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -687,18 +687,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceScheduleVacationBody"
+              "$ref": "#/definitions/MembershipCommandServiceScheduleVacationBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/incident-categories/{categoryId}": {
       "delete": {
-        "operationId": "IncidentClassifierService_DeleteIncidentCategory",
+        "operationId": "IncidentClassifierCommandService_DeleteIncidentCategory",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -722,13 +722,13 @@
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-categories/{categoryId}/deactivations": {
       "post": {
-        "operationId": "IncidentClassifierService_DeactivateIncidentCategory",
+        "operationId": "IncidentClassifierCommandService_DeactivateIncidentCategory",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -752,13 +752,13 @@
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-categories/{categoryId}/details": {
       "put": {
-        "operationId": "IncidentClassifierService_UpdateIncidentCategoryDetails",
+        "operationId": "IncidentClassifierCommandService_UpdateIncidentCategoryDetails",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -785,18 +785,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/IncidentClassifierServiceUpdateIncidentCategoryDetailsBody"
+              "$ref": "#/definitions/IncidentClassifierCommandServiceUpdateIncidentCategoryDetailsBody"
             }
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-categories/{categoryId}/parent": {
       "put": {
-        "operationId": "IncidentClassifierService_MoveIncidentCategory",
+        "operationId": "IncidentClassifierCommandService_MoveIncidentCategory",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -823,18 +823,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/IncidentClassifierServiceMoveIncidentCategoryBody"
+              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentCategoryBody"
             }
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-categories/{categoryId}/reactivations": {
       "post": {
-        "operationId": "IncidentClassifierService_ReactivateIncidentCategory",
+        "operationId": "IncidentClassifierCommandService_ReactivateIncidentCategory",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -858,14 +858,14 @@
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-categories/{categoryId}/types": {
       "post": {
         "summary": "--- Types ---",
-        "operationId": "IncidentClassifierService_CreateIncidentType",
+        "operationId": "IncidentClassifierCommandService_CreateIncidentType",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -892,18 +892,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/IncidentClassifierServiceCreateIncidentTypeBody"
+              "$ref": "#/definitions/IncidentClassifierCommandServiceCreateIncidentTypeBody"
             }
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-types/{typeId}": {
       "delete": {
-        "operationId": "IncidentClassifierService_DeleteIncidentType",
+        "operationId": "IncidentClassifierCommandService_DeleteIncidentType",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -927,13 +927,13 @@
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-types/{typeId}/category": {
       "put": {
-        "operationId": "IncidentClassifierService_MoveIncidentType",
+        "operationId": "IncidentClassifierCommandService_MoveIncidentType",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -960,18 +960,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/IncidentClassifierServiceMoveIncidentTypeBody"
+              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentTypeBody"
             }
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-types/{typeId}/deactivations": {
       "post": {
-        "operationId": "IncidentClassifierService_DeactivateIncidentType",
+        "operationId": "IncidentClassifierCommandService_DeactivateIncidentType",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -995,13 +995,13 @@
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-types/{typeId}/details": {
       "put": {
-        "operationId": "IncidentClassifierService_UpdateIncidentTypeDetails",
+        "operationId": "IncidentClassifierCommandService_UpdateIncidentTypeDetails",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1028,18 +1028,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/IncidentClassifierServiceUpdateIncidentTypeDetailsBody"
+              "$ref": "#/definitions/IncidentClassifierCommandServiceUpdateIncidentTypeDetailsBody"
             }
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/incident-types/{typeId}/reactivations": {
       "post": {
-        "operationId": "IncidentClassifierService_ReactivateIncidentType",
+        "operationId": "IncidentClassifierCommandService_ReactivateIncidentType",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1063,13 +1063,13 @@
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/organizations": {
       "post": {
-        "operationId": "OrgStructureService_CreateOrganization",
+        "operationId": "OrgStructureCommandService_CreateOrganization",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1095,14 +1095,14 @@
           }
         ],
         "tags": [
-          "OrgStructureService"
+          "OrgStructureCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/admins": {
       "post": {
         "summary": "------ OrganizationAdmin ------",
-        "operationId": "MembershipService_AssignOrganizationAdmin",
+        "operationId": "MembershipCommandService_AssignOrganizationAdmin",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1129,18 +1129,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignOrganizationAdminBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignOrganizationAdminBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/admins/{employeeId}": {
       "delete": {
-        "operationId": "MembershipService_RevokeOrganizationAdmin",
+        "operationId": "MembershipCommandService_RevokeOrganizationAdmin",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1170,13 +1170,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/admins/{employeeId}/deputy": {
       "delete": {
-        "operationId": "MembershipService_RemoveOrganizationAdminDeputy",
+        "operationId": "MembershipCommandService_RemoveOrganizationAdminDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1206,11 +1206,11 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       },
       "post": {
-        "operationId": "MembershipService_AssignOrganizationAdminDeputy",
+        "operationId": "MembershipCommandService_AssignOrganizationAdminDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1243,18 +1243,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignOrganizationAdminDeputyBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignOrganizationAdminDeputyBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/clinics": {
       "post": {
-        "operationId": "OrgStructureService_CreateClinic",
+        "operationId": "OrgStructureCommandService_CreateClinic",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1281,18 +1281,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrgStructureServiceCreateClinicBody"
+              "$ref": "#/definitions/OrgStructureCommandServiceCreateClinicBody"
             }
           }
         ],
         "tags": [
-          "OrgStructureService"
+          "OrgStructureCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/details": {
       "put": {
-        "operationId": "OrgStructureService_UpdateOrganizationDetails",
+        "operationId": "OrgStructureCommandService_UpdateOrganizationDetails",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1319,19 +1319,19 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrgStructureServiceUpdateOrganizationDetailsBody"
+              "$ref": "#/definitions/OrgStructureCommandServiceUpdateOrganizationDetailsBody"
             }
           }
         ],
         "tags": [
-          "OrgStructureService"
+          "OrgStructureCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/dispatchers": {
       "post": {
         "summary": "------ OrganizationDispatcher ------",
-        "operationId": "MembershipService_AssignOrganizationDispatcher",
+        "operationId": "MembershipCommandService_AssignOrganizationDispatcher",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1358,18 +1358,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignOrganizationDispatcherBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignOrganizationDispatcherBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/dispatchers/{employeeId}": {
       "delete": {
-        "operationId": "MembershipService_RevokeOrganizationDispatcher",
+        "operationId": "MembershipCommandService_RevokeOrganizationDispatcher",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1399,13 +1399,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy": {
       "delete": {
-        "operationId": "MembershipService_RemoveOrganizationDispatcherDeputy",
+        "operationId": "MembershipCommandService_RemoveOrganizationDispatcherDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1435,11 +1435,11 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       },
       "post": {
-        "operationId": "MembershipService_AssignOrganizationDispatcherDeputy",
+        "operationId": "MembershipCommandService_AssignOrganizationDispatcherDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1472,19 +1472,19 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignOrganizationDispatcherDeputyBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignOrganizationDispatcherDeputyBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/heads": {
       "post": {
         "summary": "------ OrganizationHead ------",
-        "operationId": "MembershipService_AssignOrganizationHead",
+        "operationId": "MembershipCommandService_AssignOrganizationHead",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1511,18 +1511,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignOrganizationHeadBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignOrganizationHeadBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/heads/{employeeId}": {
       "delete": {
-        "operationId": "MembershipService_RevokeOrganizationHead",
+        "operationId": "MembershipCommandService_RevokeOrganizationHead",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1552,13 +1552,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/heads/{employeeId}/deputy": {
       "delete": {
-        "operationId": "MembershipService_RemoveOrganizationHeadDeputy",
+        "operationId": "MembershipCommandService_RemoveOrganizationHeadDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1588,11 +1588,11 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       },
       "post": {
-        "operationId": "MembershipService_AssignOrganizationHeadDeputy",
+        "operationId": "MembershipCommandService_AssignOrganizationHeadDeputy",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1625,19 +1625,19 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceAssignOrganizationHeadDeputyBody"
+              "$ref": "#/definitions/MembershipCommandServiceAssignOrganizationHeadDeputyBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/incident-categories": {
       "post": {
         "summary": "--- Categories ---",
-        "operationId": "IncidentClassifierService_CreateIncidentCategory",
+        "operationId": "IncidentClassifierCommandService_CreateIncidentCategory",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1664,18 +1664,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/IncidentClassifierServiceCreateIncidentCategoryBody"
+              "$ref": "#/definitions/IncidentClassifierCommandServiceCreateIncidentCategoryBody"
             }
           }
         ],
         "tags": [
-          "IncidentClassifierService"
+          "IncidentClassifierCommandService"
         ]
       }
     },
     "/v1/organizations/{organizationId}/legal-address": {
       "put": {
-        "operationId": "OrgStructureService_UpdateOrganizationLegalAddress",
+        "operationId": "OrgStructureCommandService_UpdateOrganizationLegalAddress",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1702,19 +1702,19 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrgStructureServiceUpdateOrganizationLegalAddressBody"
+              "$ref": "#/definitions/OrgStructureCommandServiceUpdateOrganizationLegalAddressBody"
             }
           }
         ],
         "tags": [
-          "OrgStructureService"
+          "OrgStructureCommandService"
         ]
       }
     },
     "/v1/system-admins": {
       "post": {
         "summary": "------ SystemAdmin ------",
-        "operationId": "MembershipService_GrantSystemAdmin",
+        "operationId": "MembershipCommandService_GrantSystemAdmin",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1740,13 +1740,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/system-admins/{zitadelUserId}": {
       "delete": {
-        "operationId": "MembershipService_RevokeSystemAdmin",
+        "operationId": "MembershipCommandService_RevokeSystemAdmin",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1770,13 +1770,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/vacations/{vacationId}/cancellations": {
       "post": {
-        "operationId": "MembershipService_CancelScheduledVacation",
+        "operationId": "MembershipCommandService_CancelScheduledVacation",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1800,13 +1800,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/vacations/{vacationId}/end-date": {
       "put": {
-        "operationId": "MembershipService_UpdateVacationEndDate",
+        "operationId": "MembershipCommandService_UpdateVacationEndDate",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1833,18 +1833,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/MembershipServiceUpdateVacationEndDateBody"
+              "$ref": "#/definitions/MembershipCommandServiceUpdateVacationEndDateBody"
             }
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     },
     "/v1/vacations/{vacationId}/terminations": {
       "post": {
-        "operationId": "MembershipService_ForceEndVacation",
+        "operationId": "MembershipCommandService_ForceEndVacation",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -1868,13 +1868,13 @@
           }
         ],
         "tags": [
-          "MembershipService"
+          "MembershipCommandService"
         ]
       }
     }
   },
   "definitions": {
-    "IncidentClassifierServiceCreateIncidentCategoryBody": {
+    "IncidentClassifierCommandServiceCreateIncidentCategoryBody": {
       "type": "object",
       "properties": {
         "parentCategoryId": {
@@ -1891,7 +1891,7 @@
         "name"
       ]
     },
-    "IncidentClassifierServiceCreateIncidentTypeBody": {
+    "IncidentClassifierCommandServiceCreateIncidentTypeBody": {
       "type": "object",
       "properties": {
         "name": {
@@ -1905,7 +1905,7 @@
         "name"
       ]
     },
-    "IncidentClassifierServiceMoveIncidentCategoryBody": {
+    "IncidentClassifierCommandServiceMoveIncidentCategoryBody": {
       "type": "object",
       "properties": {
         "newParentCategoryId": {
@@ -1913,7 +1913,7 @@
         }
       }
     },
-    "IncidentClassifierServiceMoveIncidentTypeBody": {
+    "IncidentClassifierCommandServiceMoveIncidentTypeBody": {
       "type": "object",
       "properties": {
         "newCategoryId": {
@@ -1924,7 +1924,7 @@
         "newCategoryId"
       ]
     },
-    "IncidentClassifierServiceUpdateIncidentCategoryDetailsBody": {
+    "IncidentClassifierCommandServiceUpdateIncidentCategoryDetailsBody": {
       "type": "object",
       "properties": {
         "name": {
@@ -1938,7 +1938,7 @@
         "name"
       ]
     },
-    "IncidentClassifierServiceUpdateIncidentTypeDetailsBody": {
+    "IncidentClassifierCommandServiceUpdateIncidentTypeDetailsBody": {
       "type": "object",
       "properties": {
         "name": {
@@ -1952,7 +1952,7 @@
         "name"
       ]
     },
-    "MembershipServiceAssignClinicHeadBody": {
+    "MembershipCommandServiceAssignClinicHeadBody": {
       "type": "object",
       "properties": {
         "employeeId": {
@@ -1963,7 +1963,7 @@
         "employeeId"
       ]
     },
-    "MembershipServiceAssignClinicHeadDeputyBody": {
+    "MembershipCommandServiceAssignClinicHeadDeputyBody": {
       "type": "object",
       "properties": {
         "deputyEmployeeId": {
@@ -1974,7 +1974,7 @@
         "deputyEmployeeId"
       ]
     },
-    "MembershipServiceAssignDepartmentResponsibleBody": {
+    "MembershipCommandServiceAssignDepartmentResponsibleBody": {
       "type": "object",
       "properties": {
         "employeeId": {
@@ -1985,7 +1985,7 @@
         "employeeId"
       ]
     },
-    "MembershipServiceAssignDepartmentResponsibleDeputyBody": {
+    "MembershipCommandServiceAssignDepartmentResponsibleDeputyBody": {
       "type": "object",
       "properties": {
         "deputyEmployeeId": {
@@ -1996,7 +1996,7 @@
         "deputyEmployeeId"
       ]
     },
-    "MembershipServiceAssignOrganizationAdminBody": {
+    "MembershipCommandServiceAssignOrganizationAdminBody": {
       "type": "object",
       "properties": {
         "employeeId": {
@@ -2007,7 +2007,7 @@
         "employeeId"
       ]
     },
-    "MembershipServiceAssignOrganizationAdminDeputyBody": {
+    "MembershipCommandServiceAssignOrganizationAdminDeputyBody": {
       "type": "object",
       "properties": {
         "deputyEmployeeId": {
@@ -2018,7 +2018,7 @@
         "deputyEmployeeId"
       ]
     },
-    "MembershipServiceAssignOrganizationDispatcherBody": {
+    "MembershipCommandServiceAssignOrganizationDispatcherBody": {
       "type": "object",
       "properties": {
         "employeeId": {
@@ -2029,7 +2029,7 @@
         "employeeId"
       ]
     },
-    "MembershipServiceAssignOrganizationDispatcherDeputyBody": {
+    "MembershipCommandServiceAssignOrganizationDispatcherDeputyBody": {
       "type": "object",
       "properties": {
         "deputyEmployeeId": {
@@ -2040,7 +2040,7 @@
         "deputyEmployeeId"
       ]
     },
-    "MembershipServiceAssignOrganizationHeadBody": {
+    "MembershipCommandServiceAssignOrganizationHeadBody": {
       "type": "object",
       "properties": {
         "employeeId": {
@@ -2051,7 +2051,7 @@
         "employeeId"
       ]
     },
-    "MembershipServiceAssignOrganizationHeadDeputyBody": {
+    "MembershipCommandServiceAssignOrganizationHeadDeputyBody": {
       "type": "object",
       "properties": {
         "deputyEmployeeId": {
@@ -2062,7 +2062,7 @@
         "deputyEmployeeId"
       ]
     },
-    "MembershipServiceScheduleVacationBody": {
+    "MembershipCommandServiceScheduleVacationBody": {
       "type": "object",
       "properties": {
         "startsAt": {
@@ -2078,7 +2078,7 @@
         "startsAt"
       ]
     },
-    "MembershipServiceStartVacationNowBody": {
+    "MembershipCommandServiceStartVacationNowBody": {
       "type": "object",
       "properties": {
         "endsAt": {
@@ -2087,7 +2087,7 @@
         }
       }
     },
-    "MembershipServiceUpdateEmployeeDepartmentBody": {
+    "MembershipCommandServiceUpdateEmployeeDepartmentBody": {
       "type": "object",
       "properties": {
         "departmentId": {
@@ -2098,7 +2098,7 @@
         "departmentId"
       ]
     },
-    "MembershipServiceUpdateEmployeePositionBody": {
+    "MembershipCommandServiceUpdateEmployeePositionBody": {
       "type": "object",
       "properties": {
         "position": {
@@ -2106,7 +2106,7 @@
         }
       }
     },
-    "MembershipServiceUpdateVacationEndDateBody": {
+    "MembershipCommandServiceUpdateVacationEndDateBody": {
       "type": "object",
       "properties": {
         "endsAt": {
@@ -2118,7 +2118,7 @@
         "endsAt"
       ]
     },
-    "OrgStructureServiceCreateClinicBody": {
+    "OrgStructureCommandServiceCreateClinicBody": {
       "type": "object",
       "properties": {
         "name": {
@@ -2136,7 +2136,7 @@
         "physicalAddress"
       ]
     },
-    "OrgStructureServiceCreateDepartmentBody": {
+    "OrgStructureCommandServiceCreateDepartmentBody": {
       "type": "object",
       "properties": {
         "name": {
@@ -2150,7 +2150,7 @@
         "name"
       ]
     },
-    "OrgStructureServiceUpdateClinicDetailsBody": {
+    "OrgStructureCommandServiceUpdateClinicDetailsBody": {
       "type": "object",
       "properties": {
         "name": {
@@ -2164,7 +2164,7 @@
         "name"
       ]
     },
-    "OrgStructureServiceUpdateClinicPhysicalAddressBody": {
+    "OrgStructureCommandServiceUpdateClinicPhysicalAddressBody": {
       "type": "object",
       "properties": {
         "physicalAddress": {
@@ -2175,7 +2175,7 @@
         "physicalAddress"
       ]
     },
-    "OrgStructureServiceUpdateDepartmentDetailsBody": {
+    "OrgStructureCommandServiceUpdateDepartmentDetailsBody": {
       "type": "object",
       "properties": {
         "name": {
@@ -2189,7 +2189,7 @@
         "name"
       ]
     },
-    "OrgStructureServiceUpdateOrganizationDetailsBody": {
+    "OrgStructureCommandServiceUpdateOrganizationDetailsBody": {
       "type": "object",
       "properties": {
         "name": {
@@ -2203,7 +2203,7 @@
         "name"
       ]
     },
-    "OrgStructureServiceUpdateOrganizationLegalAddressBody": {
+    "OrgStructureCommandServiceUpdateOrganizationLegalAddressBody": {
       "type": "object",
       "properties": {
         "legalAddress": {
