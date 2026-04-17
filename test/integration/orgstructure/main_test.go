@@ -19,7 +19,7 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
 )
 
 var (
@@ -64,6 +64,7 @@ func TestMain(m *testing.M) {
 
 	testDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		SkipDefaultTransaction: true,
+		TranslateError:         true,
 		Logger:                 gormlogger.Default.LogMode(gormlogger.Silent),
 	})
 	if err != nil {

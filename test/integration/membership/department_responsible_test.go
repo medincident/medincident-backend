@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
-	"github.com/medincident/medincident-command-service/internal/services/membership"
+	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
 func TestAssignDepartmentResponsible_Success(t *testing.T) {

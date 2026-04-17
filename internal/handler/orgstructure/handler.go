@@ -6,7 +6,7 @@ import (
 	"github.com/samber/oops"
 
 	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
-	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
 )
 
 // Error codes emitted by handler-layer request parsing.

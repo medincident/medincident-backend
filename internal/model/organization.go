@@ -14,7 +14,7 @@ type Organization struct {
 	ID           uuid.UUID   `gorm:"primaryKey;<-:create"`
 	Name         string      `gorm:"<-"`
 	Description  null.String `gorm:"<-"`
-	LegalAddress Address     `gorm:"embedded;embeddedPrefix:legal_address_;<-"`
+	LegalAddress Address     `gorm:"column:legal_address;<-"`
 	CreatedAt    time.Time   `gorm:"<-:create"`
 	UpdatedAt    time.Time   `gorm:"<-"`
 }

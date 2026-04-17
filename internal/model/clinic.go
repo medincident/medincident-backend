@@ -14,7 +14,7 @@ type Clinic struct {
 	OrganizationID  uuid.UUID   `gorm:"<-:create"`
 	Name            string      `gorm:"<-"`
 	Description     null.String `gorm:"<-"`
-	PhysicalAddress Address     `gorm:"embedded;embeddedPrefix:physical_address_;<-"`
+	PhysicalAddress Address     `gorm:"column:physical_address;<-"`
 	CreatedAt       time.Time   `gorm:"<-:create"`
 	UpdatedAt       time.Time   `gorm:"<-"`
 }

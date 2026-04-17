@@ -14,7 +14,7 @@ import (
 	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
-	"github.com/medincident/medincident-command-service/internal/middlewares"
+	"github.com/medincident/medincident-command-service/internal/middleware"
 )
 
 // grpcServerWrapper owns the *grpc.Server lifecycle. Private to di —
@@ -55,7 +55,7 @@ func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) 
 	}
 	server := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
-		grpc.ChainUnaryInterceptor(middlewares.ErrorInterceptor(logger)),
+		grpc.ChainUnaryInterceptor(middleware.ErrorInterceptor(logger)),
 	)
 	orgstructurev1.RegisterOrgStructureServiceServer(server, handler)
 

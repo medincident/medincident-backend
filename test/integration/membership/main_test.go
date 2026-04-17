@@ -24,8 +24,8 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	"github.com/medincident/medincident-command-service/internal/services/membership"
-	"github.com/medincident/medincident-command-service/internal/services/zitadel"
+	"github.com/medincident/medincident-command-service/internal/service/membership"
+	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
 
 const (
@@ -134,6 +134,7 @@ func setup(ctx context.Context) error {
 	}
 	testDB, err = gorm.Open(postgres.Open(appDSN), &gorm.Config{
 		SkipDefaultTransaction: true,
+		TranslateError:         true,
 		Logger:                 gormlogger.Default.LogMode(gormlogger.Silent),
 	})
 	if err != nil {

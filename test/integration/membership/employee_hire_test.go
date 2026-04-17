@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
-	"github.com/medincident/medincident-command-service/internal/services/membership"
+	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
 func hireBob(t *testing.T, f fixture) (employeeID string) {
@@ -68,7 +68,7 @@ func TestHireEmployee_Success_NoPosition(t *testing.T) {
 	assert.Nil(t, ev.Position)
 }
 
-func TestHireEmployee_Success_EmptyPositionTreatedAsUnset(t *testing.T) {
+func TestHireEmployee_WhitespaceOnlyPositionRejected(t *testing.T) {
 	f := takeFixture(t)
 	empty := "   "
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
@@ -76,10 +76,8 @@ func TestHireEmployee_Success_EmptyPositionTreatedAsUnset(t *testing.T) {
 		DepartmentID:  f.DeptA1a,
 		Position:      &empty,
 	})
-	require.NoError(t, err)
-	var position *string
-	require.NoError(t, testDB.Raw(`SELECT position FROM domain.employees`).Scan(&position).Error)
-	assert.Nil(t, position)
+	require.Error(t, err)
+	assert.Equal(t, membership.ErrCodeEmployeePositionTooShort, oopsCode(t, err))
 }
 
 func TestHireEmployee_ZitadelUserNotFound(t *testing.T) {

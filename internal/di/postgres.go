@@ -45,6 +45,7 @@ func providePostgresDBWrapper(injector do.Injector) (*postgresDBWrapper, error) 
 
 	db, err := gorm.Open(postgres.Open(cfg.Postgres.DSN), &gorm.Config{
 		SkipDefaultTransaction: true,
+		TranslateError:         true,
 		Logger:                 gormlogger.Default.LogMode(gormlogger.Error),
 	})
 	if err != nil {

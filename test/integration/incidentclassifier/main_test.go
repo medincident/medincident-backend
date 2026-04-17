@@ -22,7 +22,7 @@ import (
 	gormlogger "gorm.io/gorm/logger"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	classifiersvc "github.com/medincident/medincident-command-service/internal/services/incident/classifier"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
 )
 
 var (
@@ -66,6 +66,7 @@ func TestMain(m *testing.M) {
 
 	testDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		SkipDefaultTransaction: true,
+		TranslateError:         true,
 		Logger:                 gormlogger.Default.LogMode(gormlogger.Silent),
 	})
 	if err != nil {

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
-	"github.com/medincident/medincident-command-service/internal/services/membership"
+	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
 // RemoveOrganizationDispatcherDeputy translates a gRPC request into a

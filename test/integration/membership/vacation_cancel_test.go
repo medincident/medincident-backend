@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
-	"github.com/medincident/medincident-command-service/internal/services/membership"
+	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
 func TestCancelScheduledVacation_Success(t *testing.T) {

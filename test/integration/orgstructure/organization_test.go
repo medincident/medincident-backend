@@ -16,7 +16,7 @@ import (
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
 )
 
 // codeOf extracts the oops Code as a string from any error in a joined
@@ -56,8 +56,8 @@ func TestOrganization_Create_HappyPath(t *testing.T) {
 	assert.True(t, row.Description.Valid)
 	assert.Equal(t, desc, row.Description.String)
 	assert.Equal(t, "г. Москва, ул. Пушкина, д. Колотушкина", row.LegalAddress.Text)
-	assert.True(t, row.LegalAddress.Point.Longitude.Valid)
-	assert.InDelta(t, 37.6, row.LegalAddress.Point.Longitude.Float64, 0.0001)
+	require.NotNil(t, row.LegalAddress.Point)
+	assert.InDelta(t, 37.6, row.LegalAddress.Point.Longitude, 0.0001)
 
 	assert.Equal(t, 1, countOutboxEvents(t))
 
@@ -101,16 +101,18 @@ func TestOrganization_Create_MultiFieldViolations(t *testing.T) {
 	leaves := unwrapper.Unwrap()
 
 	codes := make(map[string]bool)
-	for _, leaf := range leaves {
-		// leaf may itself be a joined error (point validator returns
-		// errors.Join of two leaves); flatten one level.
-		if inner, ok := leaf.(interface{ Unwrap() []error }); ok {
+	var collect func(error)
+	collect = func(e error) {
+		if inner, ok := e.(interface{ Unwrap() []error }); ok {
 			for _, sub := range inner.Unwrap() {
-				codes[codeOf(t, sub)] = true
+				collect(sub)
 			}
-			continue
+			return
 		}
-		codes[codeOf(t, leaf)] = true
+		codes[codeOf(t, e)] = true
+	}
+	for _, leaf := range leaves {
+		collect(leaf)
 	}
 
 	assert.True(t, codes[orgsvc.ErrCodeOrganizationNameEmpty], "name_empty expected")
