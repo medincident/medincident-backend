@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
@@ -80,6 +81,9 @@ func (s *ClinicService) UpdatePhysicalAddress(
 				Wrap(err)
 		}
 
+		if err := projector.ClinicPhysicalAddressChanged(tx, &clinic); err != nil {
+			return err
+		}
 		event := buildClinicPhysicalAddressChangedEvent(&clinic)
 		return outbox.Publish(tx, SubjectClinicPhysicalAddressChanged, AggregateTypeClinic, clinic.ID.String(), clinic.UpdatedAt, event)
 	})

@@ -13,6 +13,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
@@ -187,6 +188,9 @@ func (s *ClinicService) Create(
 				Wrap(err)
 		}
 
+		if err := projector.ClinicCreated(tx, &clinic); err != nil {
+			return err
+		}
 		event := buildClinicCreatedEvent(&clinic)
 		if err := outbox.Publish(tx, SubjectClinicCreated, AggregateTypeClinic, clinic.ID.String(), clinic.UpdatedAt, event); err != nil {
 			return err
