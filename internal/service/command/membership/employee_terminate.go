@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
@@ -87,6 +88,10 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 
 		if err := tx.Delete(&model.Employee{}, "id = ?", cmd.ID).Error; err != nil {
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
+		}
+
+		if err := projector.EmployeeTerminated(tx, &emp, now); err != nil {
+			return err
 		}
 
 		ev := &employeev1.EmployeeTerminated{}

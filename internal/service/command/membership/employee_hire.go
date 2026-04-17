@@ -13,6 +13,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
@@ -126,6 +127,10 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			return oops.In(scopeEmployee).
 				Code(ErrCodeEmployeeSaveFailed).
 				Wrap(err)
+		}
+
+		if err := projector.EmployeeHired(tx, &emp); err != nil {
+			return err
 		}
 
 		ev := &employeev1.EmployeeHired{

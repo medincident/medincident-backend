@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
@@ -108,6 +109,10 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 		emp.DepartmentID = cmd.DepartmentID
 		if err := tx.Save(&emp).Error; err != nil {
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
+		}
+
+		if err := projector.EmployeeDepartmentChanged(tx, &emp); err != nil {
+			return err
 		}
 
 		ev := &employeev1.EmployeeDepartmentChanged{DepartmentId: cmd.DepartmentID.String()}
