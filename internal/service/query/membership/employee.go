@@ -1,0 +1,214 @@
+package membership
+
+import (
+	"context"
+	"database/sql"
+	"errors"
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/samber/oops"
+)
+
+// Error codes emitted by EmployeeReader.
+const (
+	ErrCodeEmployeeNotFound   = "employee_card_not_found"
+	ErrCodeEmployeeLoadFailed = "employee_card_load_failed"
+	ErrCodeVacationLoadFailed = "vacation_load_failed"
+)
+
+// EmployeeCardView mirrors projections.employee_cards. Optional columns
+// are represented as *T so the downstream proto layer can omit them
+// when NULL.
+type EmployeeCardView struct {
+	EmployeeID            uuid.UUID
+	ZitadelUserID         string
+	FirstName             *string
+	LastName              *string
+	DisplayName           *string
+	Email                 *string
+	OrganizationID        uuid.UUID
+	OrganizationName      *string
+	ClinicID              *uuid.UUID
+	ClinicName            *string
+	DepartmentID          uuid.UUID
+	DepartmentName        *string
+	Position              *string
+	TerminatedAt          *time.Time
+	CurrentVacationEndsAt *time.Time
+	NextVacationStartsAt  *time.Time
+}
+
+// selectEmployeeCard is the reusable SELECT list matching the scan
+// order used by every employee_card query.
+const selectEmployeeCard = `
+	SELECT employee_id, zitadel_user_id,
+	       first_name, last_name, display_name, email,
+	       organization_id, organization_name,
+	       clinic_id, clinic_name,
+	       department_id, department_name,
+	       position, terminated_at,
+	       current_vacation_ends_at, next_vacation_starts_at
+	  FROM projections.employee_cards`
+
+// scanEmployeeCard reads one row from a *sql.Rows cursor into a view.
+func scanEmployeeCard(scanner interface {
+	Scan(dest ...any) error
+}, out *EmployeeCardView,
+) error {
+	return scanner.Scan(
+		&out.EmployeeID, &out.ZitadelUserID,
+		&out.FirstName, &out.LastName, &out.DisplayName, &out.Email,
+		&out.OrganizationID, &out.OrganizationName,
+		&out.ClinicID, &out.ClinicName,
+		&out.DepartmentID, &out.DepartmentName,
+		&out.Position, &out.TerminatedAt,
+		&out.CurrentVacationEndsAt, &out.NextVacationStartsAt,
+	)
+}
+
+// Get returns the employee_card row for the given id.
+func (r *EmployeeReader) Get(ctx context.Context, id uuid.UUID) (*EmployeeCardView, error) {
+	var out EmployeeCardView
+	err := scanEmployeeCard(
+		r.db.WithContext(ctx).Raw(selectEmployeeCard+` WHERE employee_id = ?`, id).Row(),
+		&out,
+	)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, oops.In("reader.membership.employee").
+				Code(ErrCodeEmployeeNotFound).
+				Public("Employee not found.").
+				With("employee_id", id).
+				Errorf("not found")
+		}
+		return nil, oops.In("reader.membership.employee").
+			Code(ErrCodeEmployeeLoadFailed).
+			With("employee_id", id).
+			Wrap(err)
+	}
+	return &out, nil
+}
+
+// listByField is shared by the three ListEmployeesByX methods.
+func (r *EmployeeReader) listByField(
+	ctx context.Context,
+	field string,
+	value uuid.UUID,
+	q ListQuery,
+) ([]EmployeeCardView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
+	rows, err := r.db.WithContext(ctx).Raw(selectEmployeeCard+
+		` WHERE `+field+` = ?
+		 ORDER BY updated_at DESC, employee_id DESC
+		 LIMIT ? OFFSET ?`, value, q.Limit, q.Offset,
+	).Rows()
+	if err != nil {
+		return nil, oops.In("reader.membership.employee").
+			Code(ErrCodeEmployeeLoadFailed).
+			With(field, value).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]EmployeeCardView, 0, q.Limit)
+	for rows.Next() {
+		var v EmployeeCardView
+		if err := scanEmployeeCard(rows, &v); err != nil {
+			return nil, oops.In("reader.membership.employee").
+				Code(ErrCodeEmployeeLoadFailed).
+				With(field, value).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, oops.In("reader.membership.employee").
+			Code(ErrCodeEmployeeLoadFailed).
+			With(field, value).
+			Wrap(err)
+	}
+	return out, nil
+}
+
+// ListByDepartment returns cards under a department.
+func (r *EmployeeReader) ListByDepartment(ctx context.Context, deptID uuid.UUID, q ListQuery) ([]EmployeeCardView, error) {
+	return r.listByField(ctx, "department_id", deptID, q)
+}
+
+// ListByClinic returns cards under a clinic.
+func (r *EmployeeReader) ListByClinic(ctx context.Context, clinicID uuid.UUID, q ListQuery) ([]EmployeeCardView, error) {
+	return r.listByField(ctx, "clinic_id", clinicID, q)
+}
+
+// ListByOrganization returns cards under an organization.
+func (r *EmployeeReader) ListByOrganization(ctx context.Context, orgID uuid.UUID, q ListQuery) ([]EmployeeCardView, error) {
+	return r.listByField(ctx, "organization_id", orgID, q)
+}
+
+// VacationView mirrors projections.employee_vacations.
+type VacationView struct {
+	ID         uuid.UUID
+	EmployeeID uuid.UUID
+	State      string
+	StartsAt   time.Time
+	EndsAt     *time.Time
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+}
+
+// ListVacationsByEmployee returns vacation rows for an employee. If
+// state is non-empty, it is used as an exact-match filter.
+func (r *EmployeeReader) ListVacationsByEmployee(
+	ctx context.Context,
+	employeeID uuid.UUID,
+	state string,
+) ([]VacationView, error) {
+	var (
+		rows *sql.Rows
+		err  error
+	)
+	if state == "" {
+		rows, err = r.db.WithContext(ctx).Raw(`
+			SELECT id, employee_id, state, starts_at, ends_at, created_at, updated_at
+			  FROM projections.employee_vacations
+			 WHERE employee_id = ?
+			 ORDER BY starts_at DESC, id DESC`, employeeID,
+		).Rows()
+	} else {
+		rows, err = r.db.WithContext(ctx).Raw(`
+			SELECT id, employee_id, state, starts_at, ends_at, created_at, updated_at
+			  FROM projections.employee_vacations
+			 WHERE employee_id = ? AND state = ?
+			 ORDER BY starts_at DESC, id DESC`, employeeID, state,
+		).Rows()
+	}
+	if err != nil {
+		return nil, oops.In("reader.membership.vacation").
+			Code(ErrCodeVacationLoadFailed).
+			With("employee_id", employeeID).
+			With("state", state).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+
+	out := make([]VacationView, 0)
+	for rows.Next() {
+		var v VacationView
+		if err := rows.Scan(&v.ID, &v.EmployeeID, &v.State, &v.StartsAt, &v.EndsAt, &v.CreatedAt, &v.UpdatedAt); err != nil {
+			return nil, oops.In("reader.membership.vacation").
+				Code(ErrCodeVacationLoadFailed).
+				With("employee_id", employeeID).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, oops.In("reader.membership.vacation").
+			Code(ErrCodeVacationLoadFailed).
+			With("employee_id", employeeID).
+			Wrap(err)
+	}
+	return out, nil
+}
