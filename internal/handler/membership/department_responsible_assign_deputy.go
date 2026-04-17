@@ -4,6 +4,7 @@ import (
 	"context"
 
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
+	"github.com/medincident/medincident-command-service/internal/middleware"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
@@ -15,6 +16,9 @@ func (h *MembershipHandler) AssignDepartmentResponsibleDeputy(ctx context.Contex
 	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
 	deputyID := ids.parse(req.GetDeputyEmployeeId(), parseDeputyEmployeeID)
 	if err := ids.err(); err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaDepartment(ctx, middleware.CallerID(ctx), depID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.AssignDepartmentResponsibleDeputy(ctx, membership.AssignDepartmentResponsibleDeputyCommand{

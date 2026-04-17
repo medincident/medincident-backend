@@ -4,6 +4,7 @@ import (
 	"context"
 
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
+	"github.com/medincident/medincident-command-service/internal/middleware"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
@@ -14,6 +15,9 @@ func (h *MembershipHandler) RemoveOrganizationAdminDeputy(ctx context.Context, r
 	orgID := ids.parse(req.GetOrganizationId(), parseOrganizationID)
 	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
 	if err := ids.err(); err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdmin(ctx, middleware.CallerID(ctx), orgID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RemoveOrganizationAdminDeputy(ctx, membership.RemoveOrganizationAdminDeputyCommand{

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
+	"github.com/medincident/medincident-command-service/internal/middleware"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
@@ -12,6 +13,9 @@ import (
 func (h *MembershipHandler) StartVacationNow(ctx context.Context, req *membershipv1.StartVacationNowRequest) (*membershipv1.StartVacationNowResponse, error) {
 	id, err := parseEmployeeID(req.GetEmployeeId())
 	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaEmployee(ctx, middleware.CallerID(ctx), id); err != nil {
 		return nil, err
 	}
 	cmd := membership.StartVacationNowCommand{EmployeeID: id}

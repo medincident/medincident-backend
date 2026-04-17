@@ -4,10 +4,14 @@ import (
 	"context"
 
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
+	"github.com/medincident/medincident-command-service/internal/middleware"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
 func (h *MembershipHandler) GrantSystemAdmin(ctx context.Context, req *membershipv1.GrantSystemAdminRequest) (*membershipv1.GrantSystemAdminResponse, error) {
+	if err := h.authz.RequireSystemAdmin(ctx, middleware.CallerID(ctx)); err != nil {
+		return nil, err
+	}
 	if err := h.empSvc.GrantSystemAdmin(ctx, membership.GrantSystemAdminCommand{
 		ZitadelUserID: req.GetZitadelUserId(),
 	}); err != nil {

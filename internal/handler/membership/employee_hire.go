@@ -4,6 +4,7 @@ import (
 	"context"
 
 	membershipv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1"
+	"github.com/medincident/medincident-command-service/internal/middleware"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
@@ -12,6 +13,9 @@ import (
 func (h *MembershipHandler) HireEmployee(ctx context.Context, req *membershipv1.HireEmployeeRequest) (*membershipv1.HireEmployeeResponse, error) {
 	depID, err := parseDepartmentID(req.GetDepartmentId())
 	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaDepartment(ctx, middleware.CallerID(ctx), depID); err != nil {
 		return nil, err
 	}
 	cmd := membership.HireEmployeeCommand{
