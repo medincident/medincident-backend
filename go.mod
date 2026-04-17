@@ -16,6 +16,7 @@ require (
 	github.com/samber/oops/loggers/zerolog v0.0.0-20260409201923-0372e7b9d26f
 	github.com/stretchr/testify v1.11.1
 	github.com/testcontainers/testcontainers-go v0.42.0
+	github.com/testcontainers/testcontainers-go/modules/nats v0.42.0
 	github.com/testcontainers/testcontainers-go/modules/postgres v0.42.0
 	github.com/zitadel/oidc/v3 v3.47.2
 	github.com/zitadel/zitadel-go/v3 v3.28.0
