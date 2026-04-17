@@ -38,6 +38,16 @@ func TestType_CreateUnderRoot(t *testing.T) {
 	assert.Equal(t, cat.ID, row.CategoryID)
 	assert.Equal(t, orgID, row.OrganizationID)
 	assert.True(t, row.IsActive)
+
+	// Sync projector must have written the matching projection row.
+	var projName string
+	var projActive bool
+	require.NoError(t, testDB.Raw(
+		`SELECT name, is_active FROM projections.incident_types WHERE id = ?`,
+		res.ID,
+	).Row().Scan(&projName, &projActive))
+	assert.Equal(t, "Patient fall", projName)
+	assert.True(t, projActive)
 }
 
 func TestType_CreateUnderNestedCategory(t *testing.T) {

@@ -47,6 +47,17 @@ func TestCategory_CreateRoot(t *testing.T) {
 	assert.False(t, row.ParentCategoryID.Valid)
 	assert.True(t, row.IsActive)
 	assert.True(t, row.Description.Valid)
+
+	// Sync projector must have written the matching projection row
+	// inside the same transaction as the domain insert.
+	var projName string
+	var projActive bool
+	require.NoError(t, testDB.Raw(
+		`SELECT name, is_active FROM projections.incident_categories WHERE id = ?`,
+		result.ID,
+	).Row().Scan(&projName, &projActive))
+	assert.Equal(t, "Surgical", projName)
+	assert.True(t, projActive)
 }
 
 func TestCategory_CreateChild(t *testing.T) {

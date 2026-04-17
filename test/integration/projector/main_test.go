@@ -80,8 +80,8 @@ func runMigrations(dsn string) error {
 }
 
 // resetProjections truncates every projections.* table between tests so
-// each test sees a clean slate. The domain.* and outbox.* tables are
-// left alone — projector tests do not use them.
+// each test sees a clean slate. The domain.* tables are left alone —
+// projector tests do not use them.
 func resetProjections(t *testing.T) {
 	t.Helper()
 	raw, err := testDB.DB()

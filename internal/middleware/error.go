@@ -280,7 +280,7 @@ var errorCodeSuffixes = []struct {
 }{
 	// Internal infrastructure failures.
 	{suffix: "_id_generation_failed", grpcCode: codes.Internal},
-	{suffix: "_event_build_failed", grpcCode: codes.Internal},
+	{suffix: "_projection_failed", grpcCode: codes.Internal},
 	{suffix: "_save_failed", grpcCode: codes.Internal},
 	{suffix: "_load_failed", grpcCode: codes.Internal},
 	{suffix: "_delete_failed", grpcCode: codes.Internal},

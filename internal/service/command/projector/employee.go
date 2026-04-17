@@ -274,9 +274,13 @@ func EmployeePositionChanged(tx *gorm.DB, e *model.Employee) error {
 }
 
 // lookupClinicID reads clinic_id from projections.departments for the
-// given department, returning nil when the department row isn't yet
-// projected (should not happen under sync-projector semantics but is
-// tolerated for robustness).
+// given department. The department MUST already be projected because
+// the sync-projector contract orders parent writes before child writes
+// inside the same transaction — a missing row is a bug, not a valid
+// state, and is surfaced as an oops error.
+//
+// A NULL clinic_id column (department directly under the organization)
+// is a legitimate result and returns (nil, nil).
 func lookupClinicID(tx *gorm.DB, deptID uuid.UUID) (*uuid.UUID, error) {
 	var clinicID uuid.UUID
 	err := tx.Raw(
@@ -284,12 +288,15 @@ func lookupClinicID(tx *gorm.DB, deptID uuid.UUID) (*uuid.UUID, error) {
 	).Row().Scan(&clinicID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, nil //nolint:nilnil // no row means no clinic
+			return nil, oops.In("projector.employee").
+				Code(ErrCodeEmployeeProjectionFailed).
+				With("department_id", deptID).
+				Errorf("department projection not found")
 		}
 		return nil, err
 	}
 	if clinicID == uuid.Nil {
-		return nil, nil //nolint:nilnil // nil UUID means no clinic
+		return nil, nil //nolint:nilnil // NULL clinic_id — department directly under the org
 	}
 	return &clinicID, nil
 }

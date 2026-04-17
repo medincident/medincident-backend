@@ -34,14 +34,13 @@ func TestGRPCCodeForError_Overrides(t *testing.T) {
 func TestGRPCCodeForError_SuffixRules(t *testing.T) {
 	cases := map[string]codes.Code{
 		// Internal
-		"employee_save_failed":          codes.Internal,
-		"employee_load_failed":          codes.Internal,
-		"outbox_append_failed":          codes.Internal,
-		"outbox_marshal_failed":         codes.Internal,
-		"vacation_id_generation_failed": codes.Internal,
-		"employee_event_build_failed":   codes.Internal,
-		"department_lookup_failed":      codes.Internal,
-		"postgres_open_failed":          codes.Internal,
+		"employee_save_failed":           codes.Internal,
+		"employee_load_failed":           codes.Internal,
+		"organization_projection_failed": codes.Internal,
+		"employee_projection_failed":     codes.Internal,
+		"vacation_id_generation_failed":  codes.Internal,
+		"department_lookup_failed":       codes.Internal,
+		"postgres_open_failed":           codes.Internal,
 		// InvalidArgument
 		"employee_id_empty":              codes.InvalidArgument,
 		"department_id_invalid":          codes.InvalidArgument,

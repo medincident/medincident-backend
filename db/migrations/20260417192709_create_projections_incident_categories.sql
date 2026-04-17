@@ -21,5 +21,11 @@ CREATE INDEX incident_categories_organization_id_idx
 CREATE INDEX incident_categories_parent_category_id_idx
     ON projections.incident_categories (parent_category_id);
 
+-- Matches the domain-side partial unique index so read queries can
+-- rely on the same invariant (one active category name per org).
+CREATE UNIQUE INDEX incident_categories_org_active_name_uniq
+    ON projections.incident_categories (organization_id, name)
+    WHERE is_active;
+
 -- migrate:down
 DROP TABLE IF EXISTS projections.incident_categories;
