@@ -64,6 +64,7 @@ func TestMain(m *testing.M) {
 
 	testDB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		SkipDefaultTransaction: true,
+		TranslateError:         true,
 		Logger:                 gormlogger.Default.LogMode(gormlogger.Silent),
 	})
 	if err != nil {

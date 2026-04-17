@@ -134,6 +134,7 @@ func setup(ctx context.Context) error {
 	}
 	testDB, err = gorm.Open(postgres.Open(appDSN), &gorm.Config{
 		SkipDefaultTransaction: true,
+		TranslateError:         true,
 		Logger:                 gormlogger.Default.LogMode(gormlogger.Silent),
 	})
 	if err != nil {

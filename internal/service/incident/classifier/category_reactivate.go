@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -114,7 +115,9 @@ func (s *IncidentCategoryService) Reactivate(
 			WHERE id = ?
 			RETURNING updated_at`, cat.ID,
 		).Row().Scan(&updatedAt); err != nil {
-			if errors.Is(err, gorm.ErrDuplicatedKey) {
+			// Raw SQL bypasses GORM's TranslateError — check pgconn directly.
+			var pgErr *pgconn.PgError
+			if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryReactivateNameConflict).
 					Public("Cannot reactivate: another active incident category uses this name.").
