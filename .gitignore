@@ -59,3 +59,9 @@ coverage.html
 # Superpowers internal docs — never committed
 docs/superpowers/
 .claude/
+
+# Binary outputs
+bin/
+dist/
+/command-server
+/query-server
