@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
-	"github.com/medincident/medincident-command-service/internal/service/membership"
+	"github.com/medincident/medincident-command-service/internal/service/command/membership"
 	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
 )
 

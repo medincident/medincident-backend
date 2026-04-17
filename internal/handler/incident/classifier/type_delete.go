@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
-	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
 	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
 )
 

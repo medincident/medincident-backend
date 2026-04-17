@@ -24,7 +24,7 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	"github.com/medincident/medincident-command-service/internal/service/membership"
+	"github.com/medincident/medincident-command-service/internal/service/command/membership"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
 
