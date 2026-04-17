@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	systemadminv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
+	systemadminv1 "github.com/medincident/medincident-command-service/pkg/event/system_admin/v1"
 )
 
 func TestGrantSystemAdmin_Success(t *testing.T) {

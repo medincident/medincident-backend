@@ -11,9 +11,9 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
 const (

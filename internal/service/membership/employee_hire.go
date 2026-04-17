@@ -11,10 +11,10 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
+	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // HireEmployeeCommand carries everything the service needs to create

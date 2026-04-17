@@ -13,19 +13,25 @@ Command никогда не читает проекции и не знает о 
 ## Стек
 
 - Go 1.26
-- gRPC-сервис (pure gRPC, без REST gateway — аннотации `google.api.http`
-  оставлены в proto для будущей REST-обёртки)
+- gRPC-сервис (pure gRPC; аннотации `google.api.http` в proto — под
+  будущую REST-обёртку, для неё генерятся grpc-gateway stubs)
 - gorm v2 + gorm.io/driver/postgres
 - `github.com/guregu/null/v6` (только в `internal/model`)
 - samber/do/v2 · samber/oops · zerolog
 - dbmate (`go tool dbmate`) для миграций
-- buf (`go tool buf`) + protoc-gen-go + protoc-gen-go-grpc для кодогенерации
+- buf (`go tool buf`) + protoc-gen-go + protoc-gen-go-grpc +
+  protoc-gen-grpc-gateway + protoc-gen-openapiv2 + protoc-gen-doc
+  для кодогенерации
 
 ## Архитектура
 
-- **gRPC API** — `OrgStructureService` в `medincident.service.orgstructure.v1`.
-  Proto-контракты живут в отдельном репо `medincident-proto`; Go-биндинги
-  генерятся через `task gen` и коммитятся в [`gen/api/medincident/`](gen/api/medincident/).
+- **gRPC API** — `OrgStructureService` в `service.orgstructure.v1`,
+  `MembershipService` в `service.membership.v1`,
+  `IncidentClassifierService` в `service.incident.classifier.v1`.
+  Proto-контракты живут в [`api/proto/`](api/proto/) внутри этого
+  репо; Go-биндинги, merged OpenAPI и Markdown-документация генерятся
+  через `task gen` и коммитятся в [`pkg/`](pkg/),
+  [`api/openapi/`](api/openapi/) и [`docs/proto/`](docs/proto/).
 - **Плоский layout, без DDD.** Три service-струт типа
   (`OrganizationService`, `ClinicService`, `DepartmentService`) в одном
   пакете `internal/services/orgstructure`. Зависимости —
@@ -35,9 +41,10 @@ Command никогда не читает проекции и не знает о 
   и её транзакционный flow в одном файле.
 - **Транзакционный outbox.** Доменные события пишутся в `outbox.events`
   в той же транзакции, что и мутация агрегата, через
-  `orgstructure.AppendOutboxEvent`. Схема outbox-таблицы: `id, subject,
-  payload, headers, created_at, published_at` — больше ничего.
-  `payload` — это сериализованный `medincident.event.v1.Envelope`
+  `outbox.Publish` из [`internal/service/outbox`](internal/service/outbox).
+  Схема outbox-таблицы: `id, subject, payload, headers, created_at,
+  published_at` — больше ничего.
+  `payload` — это сериализованный `event.v1.Envelope`
   внутри которого `google.protobuf.Any` с доменным событием.
 - **Events carry NEW state only.** `OrganizationDetailsChanged.Name` —
   это новое имя; consumer'ы считают diff против своих собственных
@@ -53,10 +60,13 @@ Command никогда не читает проекции и не знает о 
 
 ## Директории
 
+- `api/proto/` — исходные `.proto` контракты (event/* + service/*)
+- `api/openapi/command-service.swagger.json` — merged OpenAPI v2 (коммитится)
+- `pkg/` — сгенерированный buf Go-код (коммитится)
+- `docs/proto/command-service.md` — сгенерированная Markdown-документация (коммитится)
 - `cmd/server/` — точка входа, graceful shutdown
 - `configs/` — YAML config пример
 - `db/migrations/` — dbmate миграции (через `task migrate:new`)
-- `gen/` — сгенерированный buf-кодом protobuf (коммитится)
 - `internal/config/` — YAML loader + go-playground/validator
 - `internal/model/` — gorm-модели (единственное место где живёт `null.X`)
 - `internal/services/orgstructure/` — бизнес-логика, файл на метод
@@ -85,8 +95,13 @@ task test               # всё вместе
 ## Генерация кода
 
 ```bash
-task gen         # buf generate из medincident-proto (git_repo input)
-task gen:check   # verify gen/ в синке с proto
+task gen         # buf generate (pkg/, api/openapi/) + docs template
+task gen:check   # verify pkg/, api/openapi/, docs/proto/ в синке с proto
+
+task proto:fmt          # форматирование .proto
+task proto:fmt:check    # dry-run
+task proto:lint         # buf lint
+task proto:breaking     # buf breaking vs origin/main
 ```
 
 ## Линт и безопасность

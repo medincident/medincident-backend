@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
+	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
 func TestAssignDepartmentResponsible_Success(t *testing.T) {

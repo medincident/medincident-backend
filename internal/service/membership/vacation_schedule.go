@@ -11,9 +11,9 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
-	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // ScheduleVacationCommand carries everything the service needs to

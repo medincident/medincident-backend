@@ -8,9 +8,9 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 // AssignOrganizationHeadCommand carries the identifiers needed to link

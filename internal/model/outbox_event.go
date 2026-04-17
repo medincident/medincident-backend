@@ -3,8 +3,8 @@ package model
 import "time"
 
 // OutboxEvent is one row in outbox.events. Payload holds the serialized
-// medincident.event.v1.Envelope; Subject holds the NATS subject used by
-// the drainer when shipping the row.
+// event.v1.Envelope; Subject holds the NATS subject used by the drainer
+// when shipping the row.
 //
 // The command service NEVER mutates an existing row: Append creates,
 // the separate publisher service updates published_at. Subject/Payload

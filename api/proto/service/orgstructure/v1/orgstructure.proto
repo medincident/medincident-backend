@@ -1,0 +1,145 @@
+syntax = "proto3";
+
+package service.orgstructure.v1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+
+// OrgStructureService is the command-side contract for the three
+// organisational structure aggregates: Organization, Clinic, and
+// Department. Every mutation returns either an identifier (Create) or
+// an empty response (Update). google.api.http annotations drive a
+// separate REST gateway binary; command-service itself serves pure
+// gRPC, while this repo generates grpc-gateway stubs under pkg/ for
+// that gateway binary to consume.
+service OrgStructureService {
+  rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse) {
+    option (google.api.http) = {
+      post: "/v1/organizations"
+      body: "*"
+    };
+  }
+  rpc UpdateOrganizationDetails(UpdateOrganizationDetailsRequest) returns (UpdateOrganizationDetailsResponse) {
+    option (google.api.http) = {
+      put: "/v1/organizations/{organization_id}/details"
+      body: "*"
+    };
+  }
+  rpc UpdateOrganizationLegalAddress(UpdateOrganizationLegalAddressRequest) returns (UpdateOrganizationLegalAddressResponse) {
+    option (google.api.http) = {
+      put: "/v1/organizations/{organization_id}/legal-address"
+      body: "*"
+    };
+  }
+
+  rpc CreateClinic(CreateClinicRequest) returns (CreateClinicResponse) {
+    option (google.api.http) = {
+      post: "/v1/organizations/{organization_id}/clinics"
+      body: "*"
+    };
+  }
+  rpc UpdateClinicDetails(UpdateClinicDetailsRequest) returns (UpdateClinicDetailsResponse) {
+    option (google.api.http) = {
+      put: "/v1/clinics/{clinic_id}/details"
+      body: "*"
+    };
+  }
+  rpc UpdateClinicPhysicalAddress(UpdateClinicPhysicalAddressRequest) returns (UpdateClinicPhysicalAddressResponse) {
+    option (google.api.http) = {
+      put: "/v1/clinics/{clinic_id}/physical-address"
+      body: "*"
+    };
+  }
+
+  rpc CreateDepartment(CreateDepartmentRequest) returns (CreateDepartmentResponse) {
+    option (google.api.http) = {
+      post: "/v1/clinics/{clinic_id}/departments"
+      body: "*"
+    };
+  }
+  rpc UpdateDepartmentDetails(UpdateDepartmentDetailsRequest) returns (UpdateDepartmentDetailsResponse) {
+    option (google.api.http) = {
+      put: "/v1/departments/{department_id}/details"
+      body: "*"
+    };
+  }
+}
+
+// ------ Shared request value types (inside this service package) ------
+
+message PointInput {
+  double longitude = 1;
+  double latitude = 2;
+}
+
+message AddressInput {
+  string text = 1 [(google.api.field_behavior) = REQUIRED];
+  optional PointInput point = 2;
+}
+
+// ------ Organization ------
+
+message CreateOrganizationRequest {
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+  AddressInput legal_address = 2 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 3;
+}
+message CreateOrganizationResponse {
+  string organization_id = 1;
+}
+
+message UpdateOrganizationDetailsRequest {
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 3;
+}
+message UpdateOrganizationDetailsResponse {}
+
+message UpdateOrganizationLegalAddressRequest {
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
+  AddressInput legal_address = 2 [(google.api.field_behavior) = REQUIRED];
+}
+message UpdateOrganizationLegalAddressResponse {}
+
+// ------ Clinic ------
+
+message CreateClinicRequest {
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  AddressInput physical_address = 3 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 4;
+}
+message CreateClinicResponse {
+  string clinic_id = 1;
+}
+
+message UpdateClinicDetailsRequest {
+  string clinic_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 3;
+}
+message UpdateClinicDetailsResponse {}
+
+message UpdateClinicPhysicalAddressRequest {
+  string clinic_id = 1 [(google.api.field_behavior) = REQUIRED];
+  AddressInput physical_address = 2 [(google.api.field_behavior) = REQUIRED];
+}
+message UpdateClinicPhysicalAddressResponse {}
+
+// ------ Department ------
+
+message CreateDepartmentRequest {
+  string clinic_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 3;
+}
+message CreateDepartmentResponse {
+  string department_id = 1;
+}
+
+message UpdateDepartmentDetailsRequest {
+  string department_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 3;
+}
+message UpdateDepartmentDetailsResponse {}

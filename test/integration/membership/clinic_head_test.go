@@ -8,8 +8,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
+	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
 func TestAssignClinicHead_Success(t *testing.T) {

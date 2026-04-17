@@ -18,6 +18,22 @@ repos:
         files: '\.go$'
         pass_filenames: false
 
+      - id: task-proto-fmt-check
+        name: proto format check
+        entry: task
+        args: [proto:fmt:check]
+        language: system
+        files: '\.proto$'
+        pass_filenames: false
+
+      - id: task-proto-lint
+        name: proto lint
+        entry: task
+        args: [proto:lint]
+        language: system
+        files: '\.proto$'
+        pass_filenames: false
+
       - id: task-lint
         name: lint (Go)
         entry: task

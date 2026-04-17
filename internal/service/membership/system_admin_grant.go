@@ -9,10 +9,10 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	systemadminv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
+	systemadminv1 "github.com/medincident/medincident-command-service/pkg/event/system_admin/v1"
 )
 
 // GrantSystemAdminCommand carries the Zitadel user ID to promote to system admin.

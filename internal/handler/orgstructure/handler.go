@@ -5,8 +5,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
-	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
+	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1"
 )
 
 // Error codes emitted by handler-layer request parsing.

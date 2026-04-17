@@ -5,8 +5,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
-	incidentclassifierv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
+	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/service/incident/classifier/v1"
 )
 
 // Error codes emitted by handler-layer request parsing.

@@ -8,9 +8,9 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
 // AssignDepartmentResponsibleCommand carries the identifiers needed to

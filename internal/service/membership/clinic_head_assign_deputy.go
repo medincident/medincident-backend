@@ -11,9 +11,9 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
 // AssignClinicHeadDeputyCommand carries the identifiers needed to set
