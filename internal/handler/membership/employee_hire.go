@@ -15,7 +15,11 @@ func (h *MembershipHandler) HireEmployee(ctx context.Context, req *membershipv1.
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaDepartment(ctx, middleware.CallerID(ctx), depID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaDepartment(ctx, callerID, depID); err != nil {
 		return nil, err
 	}
 	cmd := membership.HireEmployeeCommand{

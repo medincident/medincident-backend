@@ -16,7 +16,11 @@ func (h *IncidentClassifierHandler) UpdateIncidentCategoryDetails(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaCategory(ctx, middleware.CallerID(ctx), categoryID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaCategory(ctx, callerID, categoryID); err != nil {
 		return nil, err
 	}
 	if _, err := h.categorySvc.UpdateDetails(ctx, classifiersvc.UpdateIncidentCategoryDetailsCommand{

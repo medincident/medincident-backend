@@ -17,7 +17,11 @@ func (h *MembershipHandler) RevokeDepartmentResponsible(ctx context.Context, req
 	if err := ids.err(); err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaDepartment(ctx, middleware.CallerID(ctx), depID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaDepartment(ctx, callerID, depID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RevokeDepartmentResponsible(ctx, membership.RevokeDepartmentResponsibleCommand{

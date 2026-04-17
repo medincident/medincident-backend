@@ -15,7 +15,11 @@ func (h *MembershipHandler) CancelScheduledVacation(ctx context.Context, req *me
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaVacation(ctx, middleware.CallerID(ctx), id); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaVacation(ctx, callerID, id); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.CancelScheduledVacation(ctx, membership.CancelScheduledVacationCommand{VacationID: id}); err != nil {

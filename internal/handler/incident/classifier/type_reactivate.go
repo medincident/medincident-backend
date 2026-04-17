@@ -16,7 +16,11 @@ func (h *IncidentClassifierHandler) ReactivateIncidentType(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaType(ctx, middleware.CallerID(ctx), typeID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaType(ctx, callerID, typeID); err != nil {
 		return nil, err
 	}
 	if _, err := h.typeSvc.Reactivate(ctx, classifiersvc.ReactivateIncidentTypeCommand{TypeID: typeID}); err != nil {

@@ -1,29 +1,34 @@
+// Package authz is the authorization service. Each Require* method
+// answers one question — "is this caller allowed to act on this
+// scope?" — with a single round-trip raw SQL query that combines
+// system-admin membership, direct role membership, and deputy
+// membership (the latter gated by an active vacation on the holder).
+//
+// The queries are collapsed into UNION ALL branches so that an
+// unauthorized caller cannot distinguish "scope does not exist" from
+// "you don't have access": for a non-system-admin caller, both cases
+// end in the same zero-row EXISTS result and surface as
+// permission_denied. Only system admins — who are authorized for any
+// scope — can observe the service layer's not_found errors downstream.
 package authz
 
-import (
-	"github.com/samber/oops"
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
-const (
-	ErrCodePermissionDenied   = "permission_denied"
-	ErrCodeCallerNotFound     = "caller_not_found"
-	ErrCodeScopeResolveFailed = "scope_resolve_failed"
-	ErrCodeAuthzQueryFailed   = "authz_query_failed"
-)
-
-func errPermissionDenied(callerID string) error {
-	return oops.In("service.authz").
-		Code(ErrCodePermissionDenied).
-		Public("Permission denied.").
-		With("caller_id", callerID).
-		Errorf("permission denied")
-}
-
+// Authz is a concrete authorization service. No interface — handlers
+// depend on the struct type directly.
 type Authz struct {
 	db *gorm.DB
 }
 
+// New wires Authz with the shared gorm DB.
 func New(db *gorm.DB) *Authz {
 	return &Authz{db: db}
 }
+
+// activeVacationPredicate is the SQL fragment that evaluates to true
+// when a vacation row is currently in effect. Shared by every deputy
+// branch so the rule stays in one place: "starts_at has passed and
+// ends_at is either open-ended or still in the future". Injected
+// inline via fmt.Sprintf at query build time — no user input is
+// concatenated.
+const activeVacationPredicate = `v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`

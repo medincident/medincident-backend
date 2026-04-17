@@ -15,7 +15,11 @@ func (h *MembershipHandler) ForceEndVacation(ctx context.Context, req *membershi
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaVacation(ctx, middleware.CallerID(ctx), id); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaVacation(ctx, callerID, id); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.ForceEndVacation(ctx, membership.ForceEndVacationCommand{VacationID: id}); err != nil {

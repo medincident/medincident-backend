@@ -9,7 +9,11 @@ import (
 )
 
 func (h *MembershipHandler) GrantSystemAdmin(ctx context.Context, req *membershipv1.GrantSystemAdminRequest) (*membershipv1.GrantSystemAdminResponse, error) {
-	if err := h.authz.RequireSystemAdmin(ctx, middleware.CallerID(ctx)); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireSystemAdmin(ctx, callerID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.GrantSystemAdmin(ctx, membership.GrantSystemAdminCommand{

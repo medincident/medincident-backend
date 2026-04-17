@@ -16,7 +16,11 @@ func (h *OrgStructureHandler) CreateClinic(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdmin(ctx, middleware.CallerID(ctx), orgID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdmin(ctx, callerID, orgID); err != nil {
 		return nil, err
 	}
 	result, err := h.clinSvc.Create(ctx, orgsvc.CreateClinicCommand{

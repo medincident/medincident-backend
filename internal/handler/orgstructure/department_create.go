@@ -16,7 +16,11 @@ func (h *OrgStructureHandler) CreateDepartment(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaClinic(ctx, middleware.CallerID(ctx), clinicID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaClinic(ctx, callerID, clinicID); err != nil {
 		return nil, err
 	}
 	result, err := h.deptSvc.Create(ctx, orgsvc.CreateDepartmentCommand{

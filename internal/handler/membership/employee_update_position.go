@@ -15,7 +15,11 @@ func (h *MembershipHandler) UpdateEmployeePosition(ctx context.Context, req *mem
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaEmployee(ctx, middleware.CallerID(ctx), id); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaEmployee(ctx, callerID, id); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.UpdatePosition(ctx, membership.UpdateEmployeePositionCommand{

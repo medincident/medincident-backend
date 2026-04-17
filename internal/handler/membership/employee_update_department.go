@@ -17,7 +17,11 @@ func (h *MembershipHandler) UpdateEmployeeDepartment(ctx context.Context, req *m
 	if err := ids.err(); err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaEmployee(ctx, middleware.CallerID(ctx), empID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaEmployee(ctx, callerID, empID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.UpdateDepartment(ctx, membership.UpdateEmployeeDepartmentCommand{

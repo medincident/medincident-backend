@@ -16,7 +16,11 @@ func (h *IncidentClassifierHandler) ReactivateIncidentCategory(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaCategory(ctx, middleware.CallerID(ctx), categoryID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaCategory(ctx, callerID, categoryID); err != nil {
 		return nil, err
 	}
 	if _, err := h.categorySvc.Reactivate(ctx, classifiersvc.ReactivateIncidentCategoryCommand{CategoryID: categoryID}); err != nil {

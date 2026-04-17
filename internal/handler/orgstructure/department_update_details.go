@@ -16,7 +16,11 @@ func (h *OrgStructureHandler) UpdateDepartmentDetails(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaDepartment(ctx, middleware.CallerID(ctx), id); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaDepartment(ctx, callerID, id); err != nil {
 		return nil, err
 	}
 	if err := h.deptSvc.UpdateDetails(ctx, orgsvc.UpdateDepartmentDetailsCommand{

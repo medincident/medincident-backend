@@ -16,7 +16,11 @@ func (h *OrgStructureHandler) UpdateClinicPhysicalAddress(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaClinic(ctx, middleware.CallerID(ctx), id); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaClinic(ctx, callerID, id); err != nil {
 		return nil, err
 	}
 	if err := h.clinSvc.UpdatePhysicalAddress(ctx, orgsvc.UpdateClinicPhysicalAddressCommand{

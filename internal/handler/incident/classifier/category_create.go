@@ -16,7 +16,11 @@ func (h *IncidentClassifierHandler) CreateIncidentCategory(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdmin(ctx, middleware.CallerID(ctx), organizationID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdmin(ctx, callerID, organizationID); err != nil {
 		return nil, err
 	}
 	cmd := classifiersvc.CreateIncidentCategoryCommand{

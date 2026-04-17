@@ -9,7 +9,11 @@ import (
 )
 
 func (h *MembershipHandler) RevokeSystemAdmin(ctx context.Context, req *membershipv1.RevokeSystemAdminRequest) (*membershipv1.RevokeSystemAdminResponse, error) {
-	if err := h.authz.RequireSystemAdmin(ctx, middleware.CallerID(ctx)); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireSystemAdmin(ctx, callerID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RevokeSystemAdmin(ctx, membership.RevokeSystemAdminCommand{

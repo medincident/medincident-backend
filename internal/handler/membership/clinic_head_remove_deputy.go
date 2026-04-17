@@ -17,7 +17,11 @@ func (h *MembershipHandler) RemoveClinicHeadDeputy(ctx context.Context, req *mem
 	if err := ids.err(); err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaClinic(ctx, middleware.CallerID(ctx), clinicID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaClinic(ctx, callerID, clinicID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RemoveClinicHeadDeputy(ctx, membership.RemoveClinicHeadDeputyCommand{

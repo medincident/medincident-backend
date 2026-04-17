@@ -12,7 +12,11 @@ func (h *OrgStructureHandler) CreateOrganization(
 	ctx context.Context,
 	req *orgstructurev1.CreateOrganizationRequest,
 ) (*orgstructurev1.CreateOrganizationResponse, error) {
-	if err := h.authz.RequireSystemAdmin(ctx, middleware.CallerID(ctx)); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireSystemAdmin(ctx, callerID); err != nil {
 		return nil, err
 	}
 	result, err := h.orgSvc.Create(ctx, orgsvc.CreateOrganizationCommand{

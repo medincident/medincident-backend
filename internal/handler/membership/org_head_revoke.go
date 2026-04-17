@@ -17,7 +17,11 @@ func (h *MembershipHandler) RevokeOrganizationHead(ctx context.Context, req *mem
 	if err := ids.err(); err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdmin(ctx, middleware.CallerID(ctx), orgID); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdmin(ctx, callerID, orgID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.RevokeOrganizationHead(ctx, membership.RevokeOrganizationHeadCommand{

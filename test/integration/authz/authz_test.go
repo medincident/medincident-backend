@@ -26,14 +26,6 @@ func requirePermissionDenied(t *testing.T, err error) {
 	assert.Equal(t, authz.ErrCodePermissionDenied, oe.Code())
 }
 
-func requireScopeResolveFailed(t *testing.T, err error) {
-	t.Helper()
-	require.Error(t, err)
-	var oe oops.OopsError
-	require.True(t, errors.As(err, &oe), "expected oops error, got: %v", err)
-	assert.Equal(t, authz.ErrCodeScopeResolveFailed, oe.Code())
-}
-
 // ---------------------------------------------------------------------------
 // RequireSystemAdmin
 // ---------------------------------------------------------------------------
@@ -129,6 +121,18 @@ func TestRequireOrgAdmin_UnknownCaller(t *testing.T) {
 	requirePermissionDenied(t, err)
 }
 
+// Non-sysadmin caller targeting a random org id must get
+// permission_denied — the zero-row EXISTS result is the same as
+// "wrong org", so enumeration via differentiated error codes is not
+// possible.
+func TestRequireOrgAdmin_NonSysAdminNonexistentOrg(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+
+	err := authzSvc.RequireOrgAdmin(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
+	requirePermissionDenied(t, err)
+}
+
 // ---------------------------------------------------------------------------
 // RequireOrgAdminViaClinic
 // ---------------------------------------------------------------------------
@@ -150,12 +154,24 @@ func TestRequireOrgAdminViaClinic_CrossOrg(t *testing.T) {
 	requirePermissionDenied(t, err)
 }
 
-func TestRequireOrgAdminViaClinic_NotFound(t *testing.T) {
+// Sysadmin authorizes regardless of whether the clinic exists — the
+// service layer is the authoritative source of not-found for them.
+func TestRequireOrgAdminViaClinic_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
 	err := authzSvc.RequireOrgAdminViaClinic(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
-	requireScopeResolveFailed(t, err)
+	require.NoError(t, err)
+}
+
+// A non-sysadmin caller probing a random clinic id must be
+// indistinguishable from a cross-tenant access attempt.
+func TestRequireOrgAdminViaClinic_NonSysAdminNotFound(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+
+	err := authzSvc.RequireOrgAdminViaClinic(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
+	requirePermissionDenied(t, err)
 }
 
 // ---------------------------------------------------------------------------
@@ -170,12 +186,20 @@ func TestRequireOrgAdminViaDepartment_Allowed(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestRequireOrgAdminViaDepartment_NotFound(t *testing.T) {
+func TestRequireOrgAdminViaDepartment_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
 	err := authzSvc.RequireOrgAdminViaDepartment(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
-	requireScopeResolveFailed(t, err)
+	require.NoError(t, err)
+}
+
+func TestRequireOrgAdminViaDepartment_NonSysAdminNotFound(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+
+	err := authzSvc.RequireOrgAdminViaDepartment(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
+	requirePermissionDenied(t, err)
 }
 
 // ---------------------------------------------------------------------------
@@ -190,12 +214,29 @@ func TestRequireOrgAdminViaEmployee_Allowed(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestRequireOrgAdminViaEmployee_NotFound(t *testing.T) {
+func TestRequireOrgAdminViaEmployee_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
 	err := authzSvc.RequireOrgAdminViaEmployee(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
-	requireScopeResolveFailed(t, err)
+	require.NoError(t, err)
+}
+
+func TestRequireOrgAdminViaEmployee_NonSysAdminNotFound(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+
+	err := authzSvc.RequireOrgAdminViaEmployee(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
+	requirePermissionDenied(t, err)
+}
+
+// Bob (OrgA admin) targeting Dave (OrgB employee) must be denied.
+func TestRequireOrgAdminViaEmployee_CrossOrg(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+
+	err := authzSvc.RequireOrgAdminViaEmployee(ctxT(t), "bob", empDave)
+	requirePermissionDenied(t, err)
 }
 
 // ---------------------------------------------------------------------------
@@ -210,12 +251,20 @@ func TestRequireOrgAdminViaCategory_Allowed(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestRequireOrgAdminViaCategory_NotFound(t *testing.T) {
+func TestRequireOrgAdminViaCategory_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
 	err := authzSvc.RequireOrgAdminViaCategory(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
-	requireScopeResolveFailed(t, err)
+	require.NoError(t, err)
+}
+
+func TestRequireOrgAdminViaCategory_NonSysAdminNotFound(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+
+	err := authzSvc.RequireOrgAdminViaCategory(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
+	requirePermissionDenied(t, err)
 }
 
 // ---------------------------------------------------------------------------
@@ -230,12 +279,20 @@ func TestRequireOrgAdminViaType_Allowed(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestRequireOrgAdminViaType_NotFound(t *testing.T) {
+func TestRequireOrgAdminViaType_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
 	err := authzSvc.RequireOrgAdminViaType(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
-	requireScopeResolveFailed(t, err)
+	require.NoError(t, err)
+}
+
+func TestRequireOrgAdminViaType_NonSysAdminNotFound(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+
+	err := authzSvc.RequireOrgAdminViaType(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
+	requirePermissionDenied(t, err)
 }
 
 // ---------------------------------------------------------------------------
@@ -250,10 +307,18 @@ func TestRequireOrgAdminViaVacation_Allowed(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestRequireOrgAdminViaVacation_NotFound(t *testing.T) {
+func TestRequireOrgAdminViaVacation_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
 	err := authzSvc.RequireOrgAdminViaVacation(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
-	requireScopeResolveFailed(t, err)
+	require.NoError(t, err)
+}
+
+func TestRequireOrgAdminViaVacation_NonSysAdminNotFound(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+
+	err := authzSvc.RequireOrgAdminViaVacation(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
+	requirePermissionDenied(t, err)
 }

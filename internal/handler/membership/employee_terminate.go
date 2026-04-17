@@ -15,7 +15,11 @@ func (h *MembershipHandler) TerminateEmployee(ctx context.Context, req *membersh
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaEmployee(ctx, middleware.CallerID(ctx), id); err != nil {
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaEmployee(ctx, callerID, id); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.Terminate(ctx, membership.TerminateEmployeeCommand{ID: id}); err != nil {
