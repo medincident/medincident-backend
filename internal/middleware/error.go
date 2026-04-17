@@ -257,6 +257,19 @@ var errorCodeOverrides = map[string]codes.Code{
 	"validate_failed":             codes.InvalidArgument,
 	"unmarshal_failed":            codes.Internal,
 	"cleanup_failed":              codes.Internal,
+	"unauthenticated":             codes.Unauthenticated,
+	"permission_denied":           codes.PermissionDenied,
+	// Each authz.* check failure is a DB-level fault, not a client
+	// error — the generic suffix rules below would route them to
+	// Internal too, but the explicit overrides document the policy.
+	"authz_system_admin_check_failed":      codes.Internal,
+	"authz_org_access_check_failed":        codes.Internal,
+	"authz_clinic_access_check_failed":     codes.Internal,
+	"authz_department_access_check_failed": codes.Internal,
+	"authz_employee_access_check_failed":   codes.Internal,
+	"authz_vacation_access_check_failed":   codes.Internal,
+	"authz_category_access_check_failed":   codes.Internal,
+	"authz_type_access_check_failed":       codes.Internal,
 }
 
 // errorCodeSuffixes is checked in order; the first matching suffix

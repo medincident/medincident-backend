@@ -3,6 +3,7 @@ package orgstructure
 import (
 	"context"
 
+	"github.com/medincident/medincident-command-service/internal/middleware"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
 	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1"
 )
@@ -13,6 +14,13 @@ func (h *OrgStructureHandler) UpdateDepartmentDetails(
 ) (*orgstructurev1.UpdateDepartmentDetailsResponse, error) {
 	id, err := parseDepartmentID(req.GetDepartmentId())
 	if err != nil {
+		return nil, err
+	}
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaDepartment(ctx, callerID, id); err != nil {
 		return nil, err
 	}
 	if err := h.deptSvc.UpdateDetails(ctx, orgsvc.UpdateDepartmentDetailsCommand{

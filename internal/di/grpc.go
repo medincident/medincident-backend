@@ -5,6 +5,8 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
+	"github.com/zitadel/zitadel-go/v3/pkg/authorization"
+	"github.com/zitadel/zitadel-go/v3/pkg/authorization/oauth"
 	"google.golang.org/grpc"
 
 	"github.com/medincident/medincident-command-service/internal/config"
@@ -49,13 +51,29 @@ func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) 
 	if err != nil {
 		return nil, err
 	}
+	authorizer, err := do.Invoke[*authorization.Authorizer[*oauth.IntrospectionContext]](injector)
+	if err != nil {
+		return nil, err
+	}
+
 	handler, err := do.Invoke[*orghandler.OrgStructureHandler](injector)
 	if err != nil {
 		return nil, err
 	}
+
+	authnSkip := map[string]struct{}{
+		"/grpc.health.v1.Health/Check":                                   {},
+		"/grpc.health.v1.Health/Watch":                                   {},
+		"/grpc.reflection.v1.ServerReflection/ServerReflectionInfo":      {},
+		"/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo": {},
+	}
+
 	server := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
-		grpc.ChainUnaryInterceptor(middleware.ErrorInterceptor(logger)),
+		grpc.ChainUnaryInterceptor(
+			middleware.ErrorInterceptor(logger),
+			middleware.AuthnInterceptor(authorizer, authnSkip),
+		),
 	)
 	orgstructurev1.RegisterOrgStructureServiceServer(server, handler)
 

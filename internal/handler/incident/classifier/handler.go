@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
 	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/service/incident/classifier/v1"
 )
@@ -20,6 +21,7 @@ const (
 type IncidentClassifierHandler struct {
 	incidentclassifierv1.UnimplementedIncidentClassifierServiceServer
 
+	authz       *authz.Authz
 	categorySvc *classifiersvc.IncidentCategoryService
 	typeSvc     *classifiersvc.IncidentTypeService
 }
@@ -28,8 +30,10 @@ type IncidentClassifierHandler struct {
 func NewIncidentClassifierHandler(
 	categorySvc *classifiersvc.IncidentCategoryService,
 	typeSvc *classifiersvc.IncidentTypeService,
+	az *authz.Authz,
 ) *IncidentClassifierHandler {
 	return &IncidentClassifierHandler{
+		authz:       az,
 		categorySvc: categorySvc,
 		typeSvc:     typeSvc,
 	}

@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
 	membershipv1 "github.com/medincident/medincident-command-service/pkg/service/membership/v1"
 )
@@ -39,12 +40,13 @@ func (e idErrs) err() error {
 type MembershipHandler struct {
 	membershipv1.UnimplementedMembershipServiceServer
 
+	authz  *authz.Authz
 	empSvc *membership.EmployeeService
 }
 
 // NewMembershipHandler wires the handler with EmployeeService.
-func NewMembershipHandler(empSvc *membership.EmployeeService) *MembershipHandler {
-	return &MembershipHandler{empSvc: empSvc}
+func NewMembershipHandler(empSvc *membership.EmployeeService, az *authz.Authz) *MembershipHandler {
+	return &MembershipHandler{authz: az, empSvc: empSvc}
 }
 
 func parseEmployeeID(raw string) (uuid.UUID, error) {

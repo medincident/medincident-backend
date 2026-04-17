@@ -6,6 +6,7 @@ import (
 	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
@@ -24,7 +25,11 @@ func provideOrgStructureHandler(injector do.Injector) (*orghandler.OrgStructureH
 	if err != nil {
 		return nil, err
 	}
-	return orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc), nil
+	az, err := do.Invoke[*authz.Authz](injector)
+	if err != nil {
+		return nil, err
+	}
+	return orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc, az), nil
 }
 
 func provideIncidentClassifierHandler(injector do.Injector) (*classifierhandler.IncidentClassifierHandler, error) {
@@ -36,7 +41,11 @@ func provideIncidentClassifierHandler(injector do.Injector) (*classifierhandler.
 	if err != nil {
 		return nil, err
 	}
-	return classifierhandler.NewIncidentClassifierHandler(categorySvc, typeSvc), nil
+	az, err := do.Invoke[*authz.Authz](injector)
+	if err != nil {
+		return nil, err
+	}
+	return classifierhandler.NewIncidentClassifierHandler(categorySvc, typeSvc, az), nil
 }
 
 func provideMembershipHandler(injector do.Injector) (*membershiphandler.MembershipHandler, error) {
@@ -44,5 +53,9 @@ func provideMembershipHandler(injector do.Injector) (*membershiphandler.Membersh
 	if err != nil {
 		return nil, err
 	}
-	return membershiphandler.NewMembershipHandler(empSvc), nil
+	az, err := do.Invoke[*authz.Authz](injector)
+	if err != nil {
+		return nil, err
+	}
+	return membershiphandler.NewMembershipHandler(empSvc, az), nil
 }

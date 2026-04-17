@@ -49,7 +49,7 @@ type Service struct {
 // while wiring the JWT Profile token source — callers must pass a
 // bounded ctx so DI bootstrap cannot hang on an unreachable Zitadel.
 func NewServiceFromKeyFile(ctx context.Context, logger *zerolog.Logger, domain, keyPath string) (*Service, error) {
-	hostname, port, tls, tlsDefaulted, err := parseDomain(domain)
+	hostname, port, tls, tlsDefaulted, err := ParseDomain(domain)
 	if err != nil {
 		return nil, oops.In("services.zitadel").
 			Code(ErrCodeZitadelClientBuildFailed).
@@ -57,7 +57,7 @@ func NewServiceFromKeyFile(ctx context.Context, logger *zerolog.Logger, domain, 
 			Wrap(err)
 	}
 	warnIfTLSDefaulted(logger, domain, tlsDefaulted)
-	opts := zitadelOptsFromParsed(hostname, port, tls)
+	opts := ZitadelOptsFromParsed(port, tls)
 	cl, err := client.New(
 		ctx,
 		zitadelcfg.New(hostname, opts...),
@@ -81,7 +81,7 @@ func NewServiceFromKeyFile(ctx context.Context, logger *zerolog.Logger, domain, 
 // only by integration tests — production uses NewServiceFromKeyFile.
 // domain may be an http(s) URL or a bare host:port string.
 func NewServiceFromPAT(ctx context.Context, logger *zerolog.Logger, domain, pat string) (*Service, error) {
-	hostname, port, tls, tlsDefaulted, err := parseDomain(domain)
+	hostname, port, tls, tlsDefaulted, err := ParseDomain(domain)
 	if err != nil {
 		return nil, oops.In("services.zitadel").
 			Code(ErrCodeZitadelClientBuildFailed).
@@ -89,7 +89,7 @@ func NewServiceFromPAT(ctx context.Context, logger *zerolog.Logger, domain, pat 
 			Wrap(err)
 	}
 	warnIfTLSDefaulted(logger, domain, tlsDefaulted)
-	opts := zitadelOptsFromParsed(hostname, port, tls)
+	opts := ZitadelOptsFromParsed(port, tls)
 	cl, err := client.New(
 		ctx,
 		zitadelcfg.New(hostname, opts...),
@@ -104,14 +104,14 @@ func NewServiceFromPAT(ctx context.Context, logger *zerolog.Logger, domain, pat 
 	return &Service{cl: cl}, nil
 }
 
-// parseDomain parses a domain string that may be a full URL
+// ParseDomain parses a domain string that may be a full URL
 // (http://localhost:8080) or a bare host:port (localhost:8080).
 // Returns (hostname, port, isTLS, tlsDefaulted, error). Port is the
 // string form (e.g. "8080"); "" means use the scheme default.
 // tlsDefaulted is true only on the bare-hostname branch where we had
 // no explicit scheme and no colon — see warnIfTLSDefaulted for the
 // matching advisory log.
-func parseDomain(domain string) (hostname, port string, tls, tlsDefaulted bool, err error) {
+func ParseDomain(domain string) (hostname, port string, tls, tlsDefaulted bool, err error) {
 	u, parseErr := url.Parse(domain)
 	if parseErr != nil {
 		return "", "", false, false, parseErr
@@ -147,7 +147,7 @@ func parseDomain(domain string) (hostname, port string, tls, tlsDefaulted bool, 
 	return hostname, port, tls, tlsDefaulted, nil
 }
 
-// warnIfTLSDefaulted logs a warning whenever parseDomain had to fall
+// warnIfTLSDefaulted logs a warning whenever ParseDomain had to fall
 // back to TLS-on-443 because the caller gave it a bare hostname with
 // no scheme. Silent in the happy path; no-ops if the logger is nil.
 func warnIfTLSDefaulted(logger *zerolog.Logger, domain string, tlsDefaulted bool) {
@@ -159,9 +159,9 @@ func warnIfTLSDefaulted(logger *zerolog.Logger, domain string, tlsDefaulted bool
 		Msg("zitadel: no scheme in domain, assuming https://<host>:443 — add explicit http:// or https:// to silence this")
 }
 
-// zitadelOptsFromParsed returns the zitadelcfg options that match the
+// ZitadelOptsFromParsed returns the zitadelcfg options that match the
 // parsed hostname/port/tls combination.
-func zitadelOptsFromParsed(_, port string, tls bool) []zitadelcfg.Option {
+func ZitadelOptsFromParsed(port string, tls bool) []zitadelcfg.Option {
 	if !tls {
 		// WithInsecure sets both port and disables TLS.
 		p := port

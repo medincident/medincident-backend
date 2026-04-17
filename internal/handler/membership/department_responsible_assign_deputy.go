@@ -3,6 +3,7 @@ package membership
 import (
 	"context"
 
+	"github.com/medincident/medincident-command-service/internal/middleware"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
 	membershipv1 "github.com/medincident/medincident-command-service/pkg/service/membership/v1"
 )
@@ -15,6 +16,13 @@ func (h *MembershipHandler) AssignDepartmentResponsibleDeputy(ctx context.Contex
 	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
 	deputyID := ids.parse(req.GetDeputyEmployeeId(), parseDeputyEmployeeID)
 	if err := ids.err(); err != nil {
+		return nil, err
+	}
+	callerID, err := middleware.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdminViaDepartment(ctx, callerID, depID); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.AssignDepartmentResponsibleDeputy(ctx, membership.AssignDepartmentResponsibleDeputyCommand{

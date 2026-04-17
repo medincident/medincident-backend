@@ -93,6 +93,7 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bkielbasa/cyclop v1.2.3 // indirect
 	github.com/blizzy78/varnamelen v0.8.0 // indirect
+	github.com/bmatcuk/doublestar/v4 v4.10.0 // indirect
 	github.com/bombsimon/wsl/v4 v4.7.0 // indirect
 	github.com/bombsimon/wsl/v5 v5.6.0 // indirect
 	github.com/breml/bidichk v0.3.3 // indirect
@@ -144,6 +145,7 @@ require (
 	github.com/fzipp/gocyclo v0.6.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.13 // indirect
 	github.com/ghostiam/protogetter v0.3.20 // indirect
+	github.com/go-chi/chi/v5 v5.2.5 // indirect
 	github.com/go-critic/go-critic v0.14.3 // indirect
 	github.com/go-faster/city v1.0.1 // indirect
 	github.com/go-faster/errors v0.7.1 // indirect
@@ -259,6 +261,7 @@ require (
 	github.com/moricho/tparallel v0.3.2 // indirect
 	github.com/muesli/termenv v0.16.0 // indirect
 	github.com/muhlemmer/gu v0.3.1 // indirect
+	github.com/muhlemmer/httpforwarded v0.1.0 // indirect
 	github.com/mwitkow/go-proto-validators v0.0.0-20180403085117-0950a7990007 // indirect
 	github.com/nakabonne/nestif v0.3.1 // indirect
 	github.com/nishanths/exhaustive v0.12.0 // indirect

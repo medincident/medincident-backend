@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
 	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1"
 )
@@ -20,6 +21,7 @@ const (
 type OrgStructureHandler struct {
 	orgstructurev1.UnimplementedOrgStructureServiceServer
 
+	authz   *authz.Authz
 	orgSvc  *orgsvc.OrganizationService
 	clinSvc *orgsvc.ClinicService
 	deptSvc *orgsvc.DepartmentService
@@ -30,8 +32,10 @@ func NewOrgStructureHandler(
 	orgSvc *orgsvc.OrganizationService,
 	clinSvc *orgsvc.ClinicService,
 	deptSvc *orgsvc.DepartmentService,
+	az *authz.Authz,
 ) *OrgStructureHandler {
 	return &OrgStructureHandler{
+		authz:   az,
 		orgSvc:  orgSvc,
 		clinSvc: clinSvc,
 		deptSvc: deptSvc,
