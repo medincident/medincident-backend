@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	classifiersvc "github.com/medincident/medincident-command-service/internal/services/incident/classifier"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
 )
 
 func TestType_CreateUnderRoot(t *testing.T) {

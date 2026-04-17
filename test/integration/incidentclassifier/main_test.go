@@ -22,7 +22,7 @@ import (
 	gormlogger "gorm.io/gorm/logger"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	classifiersvc "github.com/medincident/medincident-command-service/internal/services/incident/classifier"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
 )
 
 var (

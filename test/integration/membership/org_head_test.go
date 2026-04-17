@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
-	"github.com/medincident/medincident-command-service/internal/services/membership"
+	"github.com/medincident/medincident-command-service/internal/service/membership"
 )
 
 func TestAssignOrganizationHead_Success(t *testing.T) {

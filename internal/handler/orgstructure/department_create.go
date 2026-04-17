@@ -4,7 +4,7 @@ import (
 	"context"
 
 	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
-	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
 )
 
 func (h *OrgStructureHandler) CreateDepartment(

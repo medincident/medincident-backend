@@ -5,10 +5,10 @@ import (
 	"github.com/samber/do/v2"
 	"gorm.io/gorm"
 
-	classifiersvc "github.com/medincident/medincident-command-service/internal/services/incident/classifier"
-	"github.com/medincident/medincident-command-service/internal/services/membership"
-	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
-	"github.com/medincident/medincident-command-service/internal/services/zitadel"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
+	"github.com/medincident/medincident-command-service/internal/service/membership"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
+	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
 
 func provideOrganizationService(injector do.Injector) (*orgsvc.OrganizationService, error) {

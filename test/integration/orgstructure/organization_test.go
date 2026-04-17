@@ -16,7 +16,7 @@ import (
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	orgsvc "github.com/medincident/medincident-command-service/internal/services/orgstructure"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
 )
 
 // codeOf extracts the oops Code as a string from any error in a joined
