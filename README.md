@@ -41,8 +41,9 @@ Command никогда не читает проекции и не знает о 
   и её транзакционный flow в одном файле.
 - **Транзакционный outbox.** Доменные события пишутся в `outbox.events`
   в той же транзакции, что и мутация агрегата, через
-  `orgstructure.AppendOutboxEvent`. Схема outbox-таблицы: `id, subject,
-  payload, headers, created_at, published_at` — больше ничего.
+  `outbox.Publish` из [`internal/service/outbox`](internal/service/outbox).
+  Схема outbox-таблицы: `id, subject, payload, headers, created_at,
+  published_at` — больше ничего.
   `payload` — это сериализованный `event.v1.Envelope`
   внутри которого `google.protobuf.Any` с доменным событием.
 - **Events carry NEW state only.** `OrganizationDetailsChanged.Name` —
