@@ -46,14 +46,14 @@ func takeFixture(t *testing.T) fixture {
 		DeptB1a:  uuid.Must(uuid.NewV7()),
 	}
 	must := func(err error) { require.NoError(t, err) }
-	must(testDB.Exec(`INSERT INTO domain.organizations (id, name, legal_address_text) VALUES (?, ?, ?)`, f.OrgA, "Org A", "addr-a").Error)
-	must(testDB.Exec(`INSERT INTO domain.clinics (id, organization_id, name, physical_address_text) VALUES (?, ?, ?, ?)`, f.ClinicA1, f.OrgA, "Clinic A1", "caddr-a1").Error)
+	must(testDB.Exec(`INSERT INTO domain.organizations (id, name, legal_address) VALUES (?, ?, ROW(?, NULL)::domain.address)`, f.OrgA, "Org A", "addr-a").Error)
+	must(testDB.Exec(`INSERT INTO domain.clinics (id, organization_id, name, physical_address) VALUES (?, ?, ?, ROW(?, NULL)::domain.address)`, f.ClinicA1, f.OrgA, "Clinic A1", "caddr-a1").Error)
 	must(testDB.Exec(`INSERT INTO domain.departments (id, clinic_id, name) VALUES (?, ?, ?)`, f.DeptA1a, f.ClinicA1, "Dept A1a").Error)
 	must(testDB.Exec(`INSERT INTO domain.departments (id, clinic_id, name) VALUES (?, ?, ?)`, f.DeptA1b, f.ClinicA1, "Dept A1b").Error)
-	must(testDB.Exec(`INSERT INTO domain.clinics (id, organization_id, name, physical_address_text) VALUES (?, ?, ?, ?)`, f.ClinicA2, f.OrgA, "Clinic A2", "caddr-a2").Error)
+	must(testDB.Exec(`INSERT INTO domain.clinics (id, organization_id, name, physical_address) VALUES (?, ?, ?, ROW(?, NULL)::domain.address)`, f.ClinicA2, f.OrgA, "Clinic A2", "caddr-a2").Error)
 	must(testDB.Exec(`INSERT INTO domain.departments (id, clinic_id, name) VALUES (?, ?, ?)`, f.DeptA2a, f.ClinicA2, "Dept A2a").Error)
-	must(testDB.Exec(`INSERT INTO domain.organizations (id, name, legal_address_text) VALUES (?, ?, ?)`, f.OrgB, "Org B", "addr-b").Error)
-	must(testDB.Exec(`INSERT INTO domain.clinics (id, organization_id, name, physical_address_text) VALUES (?, ?, ?, ?)`, f.ClinicB1, f.OrgB, "Clinic B1", "cbaddr").Error)
+	must(testDB.Exec(`INSERT INTO domain.organizations (id, name, legal_address) VALUES (?, ?, ROW(?, NULL)::domain.address)`, f.OrgB, "Org B", "addr-b").Error)
+	must(testDB.Exec(`INSERT INTO domain.clinics (id, organization_id, name, physical_address) VALUES (?, ?, ?, ROW(?, NULL)::domain.address)`, f.ClinicB1, f.OrgB, "Clinic B1", "cbaddr").Error)
 	must(testDB.Exec(`INSERT INTO domain.departments (id, clinic_id, name) VALUES (?, ?, ?)`, f.DeptB1a, f.ClinicB1, "Dept B1a").Error)
 
 	t.Cleanup(func() {

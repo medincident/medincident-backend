@@ -56,8 +56,8 @@ func TestOrganization_Create_HappyPath(t *testing.T) {
 	assert.True(t, row.Description.Valid)
 	assert.Equal(t, desc, row.Description.String)
 	assert.Equal(t, "г. Москва, ул. Пушкина, д. Колотушкина", row.LegalAddress.Text)
-	assert.True(t, row.LegalAddress.Point.Longitude.Valid)
-	assert.InDelta(t, 37.6, row.LegalAddress.Point.Longitude.Float64, 0.0001)
+	require.NotNil(t, row.LegalAddress.Point)
+	assert.InDelta(t, 37.6, row.LegalAddress.Point.Longitude, 0.0001)
 
 	assert.Equal(t, 1, countOutboxEvents(t))
 
