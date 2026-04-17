@@ -65,13 +65,11 @@ jobs:
           version: 3.x
       - run: task proto:fmt:check
       - run: task proto:lint
-      # The monorepo merge (Plan 1) intentionally renames service.* to
-      # command.* — that is a breaking change vs the pre-merge main.
-      # Allow this step to fail until Plan 2 (which adds the projector
-      # wiring) lands on top of the new baseline; from that point on
-      # strict breaking-check resumes naturally.
+      # After Plans 1-3 of the monorepo CQRS merge landed on main, the
+      # new proto tree (api/proto/{command,query}/...) is the baseline.
+      # Every subsequent PR that touches proto must go through an
+      # explicit migration — no more free breaking changes.
       - run: task proto:breaking
-        continue-on-error: true
       - run: task gen:check
       - run: task fmt:check
       - run: task lint
