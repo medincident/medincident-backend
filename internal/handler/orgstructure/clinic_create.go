@@ -3,8 +3,8 @@ package orgstructure
 import (
 	"context"
 
-	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
+	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1"
 )
 
 func (h *OrgStructureHandler) CreateClinic(

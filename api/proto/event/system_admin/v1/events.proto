@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package event.system_admin.v1;
+
+// Events for the SystemAdmin role — a global grant pointing directly
+// at a Zitadel user with no employee or organisation coupling. The
+// envelope's aggregate_type is "system_admin" and aggregate_id is the
+// zitadel_user_id. Payloads are empty because the id is already in
+// the envelope.
+
+message SystemAdminGranted {}
+
+message SystemAdminRevoked {}

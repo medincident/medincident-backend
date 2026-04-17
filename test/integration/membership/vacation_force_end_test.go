@@ -9,8 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	"github.com/medincident/medincident-command-service/internal/service/membership"
+	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 func TestForceEndVacation_Success_UnlimitedRunning(t *testing.T) {

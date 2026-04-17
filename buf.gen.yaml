@@ -1,55 +1,48 @@
 version: v2
 
+# Generates Go client + server gRPC stubs, HTTP gateway stubs, and a
+# single merged OpenAPI v2 spec from the local proto module at api/proto.
+#
+# Go package paths are injected by managed mode via go_package_prefix —
+# no `option go_package` lives in any .proto file. External modules
+# (googleapis, grpc-gateway, wellknowntypes) keep their upstream Go
+# import paths and are explicitly excluded from the override.
+
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/medincident/medincident-command-service/pkg
+  disable:
+    - file_option: go_package_prefix
+      module: buf.build/googleapis/googleapis
+    - file_option: go_package_prefix
+      module: buf.build/grpc-ecosystem/grpc-gateway
+    - file_option: go_package_prefix
+      module: buf.build/protocolbuffers/wellknowntypes
+
 inputs:
-  - git_repo: https://github.com/medincident/medincident-proto.git
-    branch: main
-    paths:
-      - api/proto/medincident/event/v1
-      - api/proto/medincident/event/organization/v1
-      - api/proto/medincident/event/clinic/v1
-      - api/proto/medincident/event/department/v1
-      - api/proto/medincident/service/orgstructure/v1
-      - api/proto/medincident/event/employee/v1
-      - api/proto/medincident/service/membership/v1
-      - api/proto/medincident/event/system_admin/v1
-      - api/proto/medincident/event/incident/category/v1
-      - api/proto/medincident/event/incident/type/v1
-      - api/proto/medincident/service/incident/classifier/v1
+  - directory: api/proto
 
 plugins:
-  - local:
-      - go
-      - tool
-      - protoc-gen-go
-    out: gen/api
+  - local: [go, tool, protoc-gen-go]
+    out: pkg
     opt:
       - paths=source_relative
-      - Mmedincident/event/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/v1
-      - Mmedincident/event/organization/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1
-      - Mmedincident/event/clinic/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1
-      - Mmedincident/event/department/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1
-      - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1
-      - Mmedincident/event/employee/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1
-      - Mmedincident/service/membership/v1/membership.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1
-      - Mmedincident/event/system_admin/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1
-      - Mmedincident/event/incident/category/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1
-      - Mmedincident/event/incident/type/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1
-      - Mmedincident/service/incident/classifier/v1/incident_classifier.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1
-  - local:
-      - go
-      - tool
-      - protoc-gen-go-grpc
-    out: gen/api
+
+  - local: [go, tool, protoc-gen-go-grpc]
+    out: pkg
     opt:
       - paths=source_relative
-      - Mmedincident/event/v1/envelope.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/v1
-      - Mmedincident/event/organization/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1
-      - Mmedincident/event/clinic/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1
-      - Mmedincident/event/department/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1
-      - Mmedincident/service/orgstructure/v1/orgstructure.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1
-      - Mmedincident/event/employee/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1
-      - Mmedincident/service/membership/v1/membership.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/membership/v1
-      - Mmedincident/event/system_admin/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1
-      - Mmedincident/event/incident/category/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1
-      - Mmedincident/event/incident/type/v1/events.proto=github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1
-      - Mmedincident/service/incident/classifier/v1/incident_classifier.proto=github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1
+
+  - local: [go, tool, protoc-gen-grpc-gateway]
+    out: pkg
+    opt:
+      - paths=source_relative
+
+  - local: [go, tool, protoc-gen-openapiv2]
+    out: api/openapi
+    strategy: all
+    opt:
+      - allow_merge=true
+      - merge_file_name=command-service

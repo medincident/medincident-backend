@@ -10,9 +10,9 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	departmentv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/department/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
 // RevokeDepartmentResponsibleCommand carries the identifiers needed to

@@ -3,8 +3,8 @@ package classifier
 import (
 	"context"
 
-	incidentclassifierv1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/incident/classifier/v1"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
+	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/service/incident/classifier/v1"
 )
 
 func (h *IncidentClassifierHandler) MoveIncidentType(

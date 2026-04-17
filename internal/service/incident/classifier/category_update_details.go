@@ -11,9 +11,9 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
+	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
 )
 
 type UpdateIncidentCategoryDetailsCommand struct {
