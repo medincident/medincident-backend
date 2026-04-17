@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 // RevokeOrganizationDispatcherCommand carries the identifiers needed to
@@ -70,25 +68,12 @@ func (s *EmployeeService) RevokeOrganizationDispatcher(ctx context.Context, cmd 
 // cascade-on-terminate. It does NOT delete the domain row; the caller
 // owns that. The projector call removes the projection row so explicit
 // and cascaded revokes stay in sync.
-func publishOrgDispatcherRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	if err := projector.OrgDispatcherRevoked(tx, organizationID, employeeID); err != nil {
-		return err
-	}
-	ev := &organizationv1.OrganizationDispatcherRevoked{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectOrganizationDispatcherRevoked, AggregateTypeOrganization, organizationID.String(), now, ev)
+func publishOrgDispatcherRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, _ time.Time) error {
+	return projector.OrgDispatcherRevoked(tx, organizationID, employeeID)
 }
 
 // publishOrgDispatcherDeputyRemoved is a shared helper; it clears the
-// projection's deputy slot and publishes the event. Caller owns the
-// domain-row update.
+// projection's deputy slot. Caller owns the domain-row update.
 func publishOrgDispatcherDeputyRemoved(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	if err := projector.OrgDispatcherDeputyRemoved(tx, organizationID, employeeID, now); err != nil {
-		return err
-	}
-	ev := &organizationv1.OrganizationDispatcherDeputyRemoved{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectOrganizationDispatcherDeputyRemoved, AggregateTypeOrganization, organizationID.String(), now, ev)
+	return projector.OrgDispatcherDeputyRemoved(tx, organizationID, employeeID, now)
 }

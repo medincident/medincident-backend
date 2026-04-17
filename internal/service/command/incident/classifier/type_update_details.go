@@ -12,9 +12,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
 )
 
 type UpdateIncidentTypeDetailsCommand struct {
@@ -24,13 +22,6 @@ type UpdateIncidentTypeDetailsCommand struct {
 }
 
 type UpdateIncidentTypeDetailsResult struct{}
-
-func buildIncidentTypeDetailsChangedEvent(t *model.IncidentType) *typeeventv1.IncidentTypeDetailsChanged {
-	return &typeeventv1.IncidentTypeDetailsChanged{
-		Name:        t.Name,
-		Description: t.Description.Ptr(),
-	}
-}
 
 func (s *IncidentTypeService) UpdateDetails(
 	ctx context.Context,
@@ -97,12 +88,7 @@ func (s *IncidentTypeService) UpdateDetails(
 				Wrap(err)
 		}
 
-		if err := projector.TypeUpdateDetails(tx, &row); err != nil {
-			return err
-		}
-
-		event := buildIncidentTypeDetailsChangedEvent(&row)
-		return outbox.Publish(tx, SubjectIncidentTypeDetailsChanged, AggregateTypeIncidentType, row.ID.String(), row.UpdatedAt, event)
+		return projector.TypeUpdateDetails(tx, &row)
 	})
 	return UpdateIncidentTypeDetailsResult{}, err
 }

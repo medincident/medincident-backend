@@ -3,7 +3,6 @@ package membership
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
@@ -12,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
 // AssignDepartmentResponsibleDeputyCommand carries the identifiers
@@ -46,8 +43,6 @@ func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context,
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		now := time.Now().UTC()
-
 		var row model.DepartmentResponsible
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			Where("department_id = ? AND employee_id = ?", cmd.DepartmentID, cmd.EmployeeID).
@@ -106,14 +101,6 @@ func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context,
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleSaveFailed).Wrap(err)
 		}
 
-		if err := projector.DepartmentResponsibleDeputyAssigned(tx, &row); err != nil {
-			return err
-		}
-
-		ev := &departmentv1.DepartmentResponsibleDeputyAssigned{
-			EmployeeId:       cmd.EmployeeID.String(),
-			DeputyEmployeeId: cmd.DeputyEmployeeID.String(),
-		}
-		return outbox.Publish(tx, SubjectDepartmentResponsibleDeputyAssigned, AggregateTypeDepartment, cmd.DepartmentID.String(), now, ev)
+		return projector.DepartmentResponsibleDeputyAssigned(tx, &row)
 	})
 }

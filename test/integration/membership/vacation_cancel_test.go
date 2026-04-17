@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 func TestCancelScheduledVacation_Success(t *testing.T) {
@@ -22,20 +21,12 @@ func TestCancelScheduledVacation_Success(t *testing.T) {
 		StartsAt:   start,
 	})
 	require.NoError(t, err)
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.CancelScheduledVacation(ctxT(t), membership.CancelScheduledVacationCommand{VacationID: res.ID}))
 
 	var count int64
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.employee_vacations WHERE id = ?`, res.ID).Scan(&count).Error)
 	assert.Equal(t, int64(0), count)
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectVacationCancelled, rows[0].Subject)
-	ev := &employeev1.VacationCancelled{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, res.ID.String(), ev.VacationId)
 }
 
 func TestCancelScheduledVacation_AlreadyStarted(t *testing.T) {

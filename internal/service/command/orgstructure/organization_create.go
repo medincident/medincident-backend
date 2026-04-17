@@ -12,9 +12,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 // Organization name and description invariant limits.
@@ -37,21 +35,6 @@ const (
 	ErrCodeOrganizationSaveFailed         = "organization_save_failed"
 	ErrCodeOrganizationLoadFailed         = "organization_load_failed"
 	ErrCodeOrganizationNotFound           = "organization_not_found"
-	ErrCodeOrganizationEventBuildFailed   = "organization_event_build_failed"
-)
-
-// Subject constants for Organization events.
-const (
-	SubjectOrganizationCreated             = "medincident.event.organization.v1.created"
-	SubjectOrganizationDetailsChanged      = "medincident.event.organization.v1.details_changed"
-	SubjectOrganizationLegalAddressChanged = "medincident.event.organization.v1.legal_address_changed"
-)
-
-// Aggregate type constants used in event envelopes.
-const (
-	AggregateTypeOrganization = "organization"
-	AggregateTypeClinic       = "clinic"
-	AggregateTypeDepartment   = "department"
 )
 
 // CreateOrganizationCommand is the input of OrganizationService.Create.
@@ -128,27 +111,8 @@ func validateOrganizationDescription(desc *string) error {
 	return nil
 }
 
-// buildOrganizationCreatedEvent assembles the OrganizationCreated proto
-// event from the persisted model.
-func buildOrganizationCreatedEvent(org *model.Organization) *organizationv1.OrganizationCreated {
-	ev := &organizationv1.OrganizationCreated{
-		Name:        org.Name,
-		Description: org.Description.Ptr(),
-		LegalAddress: &organizationv1.Address{
-			Text: org.LegalAddress.Text,
-		},
-	}
-	if org.LegalAddress.Point != nil {
-		ev.LegalAddress.Point = &organizationv1.Point{
-			Longitude: org.LegalAddress.Point.Longitude,
-			Latitude:  org.LegalAddress.Point.Latitude,
-		}
-	}
-	return ev
-}
-
-// Create persists a new Organization and appends OrganizationCreated
-// to the outbox in one transaction.
+// Create persists a new Organization and writes the matching
+// projection row in one transaction via the synchronous projector.
 func (s *OrganizationService) Create(
 	ctx context.Context,
 	cmd CreateOrganizationCommand,
@@ -200,10 +164,6 @@ func (s *OrganizationService) Create(
 		}
 
 		if err := projector.OrganizationCreated(tx, &org); err != nil {
-			return err
-		}
-		event := buildOrganizationCreatedEvent(&org)
-		if err := outbox.Publish(tx, SubjectOrganizationCreated, AggregateTypeOrganization, org.ID.String(), org.UpdatedAt, event); err != nil {
 			return err
 		}
 		result.ID = id

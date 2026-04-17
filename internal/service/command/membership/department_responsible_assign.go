@@ -9,9 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
 // AssignDepartmentResponsibleCommand carries the identifiers needed to
@@ -70,13 +68,6 @@ func (s *EmployeeService) AssignDepartmentResponsible(ctx context.Context, cmd A
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleSaveFailed).Wrap(err)
 		}
 
-		if err := projector.DepartmentResponsibleAssigned(tx, &row); err != nil {
-			return err
-		}
-
-		ev := &departmentv1.DepartmentResponsibleAssigned{
-			EmployeeId: cmd.EmployeeID.String(),
-		}
-		return outbox.Publish(tx, SubjectDepartmentResponsibleAssigned, AggregateTypeDepartment, cmd.DepartmentID.String(), row.CreatedAt, ev)
+		return projector.DepartmentResponsibleAssigned(tx, &row)
 	})
 }

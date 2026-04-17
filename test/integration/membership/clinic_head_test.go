@@ -9,28 +9,17 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
 func TestAssignClinicHead_Success(t *testing.T) {
 	f := takeFixture(t)
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
 		ClinicID:   f.ClinicA1,
 		EmployeeID: id,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectClinicHeadAssigned, rows[0].Subject)
-	ev := &clinicv1.ClinicHeadAssigned{}
-	env := decodePayload(t, rows[0], ev)
-	assert.Equal(t, membership.AggregateTypeClinic, env.AggregateType)
-	assert.Equal(t, f.ClinicA1.String(), env.AggregateId)
-	assert.Equal(t, id.String(), ev.EmployeeId)
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -104,16 +93,11 @@ func TestRevokeClinicHead_Success_NoDeputy(t *testing.T) {
 		ClinicID:   f.ClinicA1,
 		EmployeeID: id,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RevokeClinicHead(ctxT(t), membership.RevokeClinicHeadCommand{
 		ClinicID:   f.ClinicA1,
 		EmployeeID: id,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectClinicHeadRevoked, rows[0].Subject)
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -137,17 +121,11 @@ func TestRevokeClinicHead_Success_WithDeputy_EmitsDeputyRemovedFirst(t *testing.
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RevokeClinicHead(ctxT(t), membership.RevokeClinicHeadCommand{
 		ClinicID:   f.ClinicA1,
 		EmployeeID: aliceID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 2)
-	assert.Equal(t, membership.SubjectClinicHeadDeputyRemoved, rows[0].Subject, "Rule 2: cleanup before terminate")
-	assert.Equal(t, membership.SubjectClinicHeadRevoked, rows[1].Subject)
 }
 
 func TestRevokeClinicHead_NotFound(t *testing.T) {
@@ -171,21 +149,12 @@ func TestAssignClinicHeadDeputy_Success(t *testing.T) {
 		ClinicID:   f.ClinicA1,
 		EmployeeID: aliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.AssignClinicHeadDeputy(ctxT(t), membership.AssignClinicHeadDeputyCommand{
 		ClinicID:         f.ClinicA1,
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectClinicHeadDeputyAssigned, rows[0].Subject)
-	ev := &clinicv1.ClinicHeadDeputyAssigned{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, aliceID.String(), ev.EmployeeId)
-	assert.Equal(t, bobID.String(), ev.DeputyEmployeeId)
 }
 
 func TestAssignClinicHeadDeputy_RoleNotFound(t *testing.T) {
@@ -303,19 +272,11 @@ func TestRemoveClinicHeadDeputy_Success(t *testing.T) {
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RemoveClinicHeadDeputy(ctxT(t), membership.RemoveClinicHeadDeputyCommand{
 		ClinicID:   f.ClinicA1,
 		EmployeeID: aliceID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectClinicHeadDeputyRemoved, rows[0].Subject)
-	ev := &clinicv1.ClinicHeadDeputyRemoved{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, aliceID.String(), ev.EmployeeId)
 }
 
 func TestRemoveClinicHeadDeputy_DeputyNotAssigned(t *testing.T) {

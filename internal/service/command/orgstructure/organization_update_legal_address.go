@@ -11,31 +11,13 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 // UpdateOrganizationLegalAddressCommand carries the new legal address.
 type UpdateOrganizationLegalAddressCommand struct {
 	ID      uuid.UUID
 	Address AddressInput
-}
-
-// buildOrganizationLegalAddressChangedEvent assembles the event from
-// the updated model's LegalAddress. Text is always present; point is
-// conditionally attached when both coordinates are Valid.
-func buildOrganizationLegalAddressChangedEvent(org *model.Organization) *organizationv1.OrganizationLegalAddressChanged {
-	ev := &organizationv1.OrganizationLegalAddressChanged{
-		LegalAddress: &organizationv1.Address{Text: org.LegalAddress.Text},
-	}
-	if org.LegalAddress.Point != nil {
-		ev.LegalAddress.Point = &organizationv1.Point{
-			Longitude: org.LegalAddress.Point.Longitude,
-			Latitude:  org.LegalAddress.Point.Latitude,
-		}
-	}
-	return ev
 }
 
 // UpdateLegalAddress replaces the organization's legal address. Returns
@@ -89,10 +71,6 @@ func (s *OrganizationService) UpdateLegalAddress(
 				Wrap(err)
 		}
 
-		if err := projector.OrganizationLegalAddressChanged(tx, &org); err != nil {
-			return err
-		}
-		event := buildOrganizationLegalAddressChangedEvent(&org)
-		return outbox.Publish(tx, SubjectOrganizationLegalAddressChanged, AggregateTypeOrganization, org.ID.String(), org.UpdatedAt, event)
+		return projector.OrganizationLegalAddressChanged(tx, &org)
 	})
 }

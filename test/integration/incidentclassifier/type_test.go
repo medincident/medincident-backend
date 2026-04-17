@@ -38,7 +38,6 @@ func TestType_CreateUnderRoot(t *testing.T) {
 	assert.Equal(t, cat.ID, row.CategoryID)
 	assert.Equal(t, orgID, row.OrganizationID)
 	assert.True(t, row.IsActive)
-	assert.Equal(t, 1, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentTypeCreated))
 }
 
 func TestType_CreateUnderNestedCategory(t *testing.T) {
@@ -133,7 +132,6 @@ func TestType_UpdateDetails(t *testing.T) {
 	row := loadType(t, res.ID)
 	assert.Equal(t, "New name", row.Name)
 	assert.True(t, row.Description.Valid)
-	assert.Equal(t, 1, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentTypeDetailsChanged))
 }
 
 func TestType_MoveSameOrg(t *testing.T) {
@@ -211,12 +209,9 @@ func TestType_Deactivate(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	require.NoError(t, testDB.Exec("TRUNCATE TABLE outbox.events RESTART IDENTITY").Error)
-
 	_, err = typeSvc.Deactivate(ctx, classifiersvc.DeactivateIncidentTypeCommand{TypeID: res.ID})
 	require.NoError(t, err)
 	assert.False(t, loadType(t, res.ID).IsActive)
-	assert.Equal(t, 1, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentTypeDeactivated))
 }
 
 func TestType_ReactivateBlockedByInactiveCategory(t *testing.T) {
@@ -259,10 +254,7 @@ func TestType_Delete(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	require.NoError(t, testDB.Exec("TRUNCATE TABLE outbox.events RESTART IDENTITY").Error)
-
 	_, err = typeSvc.Delete(ctx, classifiersvc.DeleteIncidentTypeCommand{TypeID: res.ID})
 	require.NoError(t, err)
 	assert.Equal(t, 0, countIncidentTypes(t))
-	assert.Equal(t, 1, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentTypeDeleted))
 }

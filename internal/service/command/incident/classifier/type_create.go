@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
 )
 
 const (
@@ -25,7 +23,6 @@ const (
 	ErrCodeIncidentTypeCategoryNotFound   = "incident_type_category_not_found"
 	ErrCodeIncidentTypeCategoryInactive   = "incident_type_category_inactive"
 	ErrCodeIncidentTypeNameConflict       = "incident_type_name_conflict"
-	ErrCodeIncidentTypeEventBuildFailed   = "incident_type_event_build_failed"
 )
 
 type CreateIncidentTypeCommand struct {
@@ -36,15 +33,6 @@ type CreateIncidentTypeCommand struct {
 
 type CreateIncidentTypeResult struct {
 	ID uuid.UUID
-}
-
-func buildIncidentTypeCreatedEvent(t *model.IncidentType) *typeeventv1.IncidentTypeCreated {
-	return &typeeventv1.IncidentTypeCreated{
-		OrganizationId: t.OrganizationID.String(),
-		CategoryId:     t.CategoryID.String(),
-		Name:           t.Name,
-		Description:    t.Description.Ptr(),
-	}
 }
 
 func (s *IncidentTypeService) Create(
@@ -128,11 +116,6 @@ func (s *IncidentTypeService) Create(
 		}
 
 		if err := projector.TypeCreated(tx, &row); err != nil {
-			return err
-		}
-
-		event := buildIncidentTypeCreatedEvent(&row)
-		if err := outbox.Publish(tx, SubjectIncidentTypeCreated, AggregateTypeIncidentType, row.ID.String(), row.UpdatedAt, event); err != nil {
 			return err
 		}
 		result.ID = id

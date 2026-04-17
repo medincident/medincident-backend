@@ -12,9 +12,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
 const (
@@ -35,13 +33,7 @@ const (
 	ErrCodeDepartmentSaveFailed         = "department_save_failed"
 	ErrCodeDepartmentLoadFailed         = "department_load_failed"
 	ErrCodeDepartmentNotFound           = "department_not_found"
-	ErrCodeDepartmentEventBuildFailed   = "department_event_build_failed"
 	ErrCodeDepartmentClinicNotFound     = "department_clinic_not_found"
-)
-
-const (
-	SubjectDepartmentCreated        = "medincident.event.department.v1.created"
-	SubjectDepartmentDetailsChanged = "medincident.event.department.v1.details_changed"
 )
 
 type CreateDepartmentCommand struct {
@@ -112,14 +104,6 @@ func validateDepartmentDescription(desc *string) error {
 	return nil
 }
 
-func buildDepartmentCreatedEvent(d *model.Department) *departmentv1.DepartmentCreated {
-	return &departmentv1.DepartmentCreated{
-		ClinicId:    d.ClinicID.String(),
-		Name:        d.Name,
-		Description: d.Description.Ptr(),
-	}
-}
-
 func (s *DepartmentService) Create(
 	ctx context.Context,
 	cmd CreateDepartmentCommand,
@@ -167,10 +151,6 @@ func (s *DepartmentService) Create(
 		}
 
 		if err := projector.DepartmentCreated(tx, &dept); err != nil {
-			return err
-		}
-		event := buildDepartmentCreatedEvent(&dept)
-		if err := outbox.Publish(tx, SubjectDepartmentCreated, AggregateTypeDepartment, dept.ID.String(), dept.UpdatedAt, event); err != nil {
 			return err
 		}
 		result.ID = id

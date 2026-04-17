@@ -47,8 +47,6 @@ func TestCategory_CreateRoot(t *testing.T) {
 	assert.False(t, row.ParentCategoryID.Valid)
 	assert.True(t, row.IsActive)
 	assert.True(t, row.Description.Valid)
-
-	assert.Equal(t, 1, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentCategoryCreated))
 }
 
 func TestCategory_CreateChild(t *testing.T) {
@@ -163,7 +161,6 @@ func TestCategory_UpdateDetails(t *testing.T) {
 	row := loadCategory(t, res.ID)
 	assert.Equal(t, "New name", row.Name)
 	assert.True(t, row.Description.Valid)
-	assert.Equal(t, 1, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentCategoryDetailsChanged))
 }
 
 func TestCategory_MoveToRootAndUnderNewParent(t *testing.T) {
@@ -350,7 +347,6 @@ func TestCategory_DeactivateCascades(t *testing.T) {
 	require.NoError(t, err)
 
 	// Clear creation events so we can count only deactivate events.
-	require.NoError(t, testDB.Exec("TRUNCATE TABLE outbox.events RESTART IDENTITY").Error)
 
 	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{
 		CategoryID: root.ID,
@@ -362,9 +358,6 @@ func TestCategory_DeactivateCascades(t *testing.T) {
 	assert.False(t, loadCategory(t, grand.ID).IsActive)
 	assert.False(t, loadType(t, typeOnRoot.ID).IsActive)
 	assert.False(t, loadType(t, typeOnGrand.ID).IsActive)
-
-	assert.Equal(t, 3, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentCategoryDeactivated))
-	assert.Equal(t, 2, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentTypeDeactivated))
 }
 
 func TestCategory_ReactivateBlockedByInactiveAncestor(t *testing.T) {
@@ -474,15 +467,11 @@ func TestCategory_DeleteCascades(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	require.NoError(t, testDB.Exec("TRUNCATE TABLE outbox.events RESTART IDENTITY").Error)
-
 	_, err = categorySvc.Delete(ctx, classifiersvc.DeleteIncidentCategoryCommand{CategoryID: root.ID})
 	require.NoError(t, err)
 
 	assert.Equal(t, 0, countIncidentCategories(t))
 	assert.Equal(t, 0, countIncidentTypes(t))
-	assert.Equal(t, 2, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentCategoryDeleted))
-	assert.Equal(t, 2, countOutboxEventsWithSubject(t, classifiersvc.SubjectIncidentTypeDeleted))
 }
 
 // names generates short deterministic names for depth tests.

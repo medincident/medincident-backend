@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
 // RevokeClinicHeadCommand carries the identifiers needed to remove an
@@ -77,28 +75,16 @@ func (s *EmployeeService) RevokeClinicHead(ctx context.Context, cmd RevokeClinic
 
 // publishClinicHeadRevoked is a shared helper for Revoke,
 // cascade-on-transfer, and cascade-on-terminate. It does NOT delete
-// the domain row; the caller is responsible for that. The projector
-// call here deletes the matching projection row so explicit and
-// cascaded revokes stay in sync without duplicating the call site.
-func publishClinicHeadRevoked(tx *gorm.DB, clinicID, employeeID uuid.UUID, now time.Time) error {
-	if err := projector.ClinicHeadRevoked(tx, clinicID, employeeID); err != nil {
-		return err
-	}
-	ev := &clinicv1.ClinicHeadRevoked{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectClinicHeadRevoked, AggregateTypeClinic, clinicID.String(), now, ev)
+// the domain row; the caller owns that. The projector call here
+// deletes the matching projection row so explicit and cascaded
+// revokes stay in sync.
+func publishClinicHeadRevoked(tx *gorm.DB, clinicID, employeeID uuid.UUID, _ time.Time) error {
+	return projector.ClinicHeadRevoked(tx, clinicID, employeeID)
 }
 
-// publishClinicHeadDeputyRemoved is a shared helper; it updates the
-// projection row (deputy_employee_id = NULL) and publishes the event,
-// but does NOT update the domain row — the caller owns that.
+// publishClinicHeadDeputyRemoved is a shared helper; it clears the
+// deputy slot on the projection row. The caller owns the domain-row
+// update.
 func publishClinicHeadDeputyRemoved(tx *gorm.DB, clinicID, employeeID uuid.UUID, now time.Time) error {
-	if err := projector.ClinicHeadDeputyRemoved(tx, clinicID, employeeID, now); err != nil {
-		return err
-	}
-	ev := &clinicv1.ClinicHeadDeputyRemoved{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectClinicHeadDeputyRemoved, AggregateTypeClinic, clinicID.String(), now, ev)
+	return projector.ClinicHeadDeputyRemoved(tx, clinicID, employeeID, now)
 }

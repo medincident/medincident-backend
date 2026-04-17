@@ -3,7 +3,6 @@ package membership
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
@@ -12,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 // AssignOrganizationAdminDeputyCommand carries the identifiers needed
@@ -46,8 +43,6 @@ func (s *EmployeeService) AssignOrganizationAdminDeputy(ctx context.Context, cmd
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		now := time.Now().UTC()
-
 		var row model.OrgAdmin
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			Where("organization_id = ? AND employee_id = ?", cmd.OrganizationID, cmd.EmployeeID).
@@ -109,14 +104,6 @@ func (s *EmployeeService) AssignOrganizationAdminDeputy(ctx context.Context, cmd
 			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminSaveFailed).Wrap(err)
 		}
 
-		if err := projector.OrgAdminDeputyAssigned(tx, &row); err != nil {
-			return err
-		}
-
-		ev := &organizationv1.OrganizationAdminDeputyAssigned{
-			EmployeeId:       cmd.EmployeeID.String(),
-			DeputyEmployeeId: cmd.DeputyEmployeeID.String(),
-		}
-		return outbox.Publish(tx, SubjectOrganizationAdminDeputyAssigned, AggregateTypeOrganization, cmd.OrganizationID.String(), now, ev)
+		return projector.OrgAdminDeputyAssigned(tx, &row)
 	})
 }

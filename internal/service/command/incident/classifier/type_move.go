@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
 )
 
 const (
@@ -104,13 +102,7 @@ func (s *IncidentTypeService) Move(
 				Wrap(err)
 		}
 
-		if err := projector.TypeMove(tx, moving.ID, newCategory.ID, updatedAt); err != nil {
-			return err
-		}
-
-		return outbox.Publish(tx, SubjectIncidentTypeMoved, AggregateTypeIncidentType, moving.ID.String(), updatedAt, &typeeventv1.IncidentTypeMoved{
-			NewCategoryId: newCategory.ID.String(),
-		})
+		return projector.TypeMove(tx, moving.ID, newCategory.ID, updatedAt)
 	})
 	return MoveIncidentTypeResult{}, err
 }

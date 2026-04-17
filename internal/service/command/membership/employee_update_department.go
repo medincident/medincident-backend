@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // UpdateEmployeeDepartmentCommand carries the inputs required to move
@@ -115,17 +113,13 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 			return err
 		}
 
-		ev := &employeev1.EmployeeDepartmentChanged{DepartmentId: cmd.DepartmentID.String()}
-		if err := outbox.Publish(tx, SubjectEmployeeDepartmentChanged, AggregateTypeEmployee, emp.ID.String(), emp.UpdatedAt, ev); err != nil {
-			return err
-		}
-
-		// Rule 1: cause first — DepartmentChanged is already in the outbox.
-		// Cascade-revoke any DR roles the employee held in the old
-		// department, and clear any DR deputy slots in the old department
-		// that still reference this employee. The DR-deputy invariant is
-		// same-department, so leaving the old department always invalidates
-		// those slots.
+		// Rule 1: cause first — the department change is already
+		// reflected in both the domain row and projections. Cascade-
+		// revoke any DR roles the employee held in the old department,
+		// and clear any DR deputy slots in the old department that
+		// still reference this employee. The DR-deputy invariant is
+		// same-department, so leaving the old department always
+		// invalidates those slots.
 		if err := cascadeRevokeDepartmentResponsible(tx, emp.ID, oldDepartmentID, emp.UpdatedAt); err != nil {
 			return err
 		}

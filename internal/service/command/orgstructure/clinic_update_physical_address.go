@@ -11,27 +11,12 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
 type UpdateClinicPhysicalAddressCommand struct {
 	ID      uuid.UUID
 	Address AddressInput
-}
-
-func buildClinicPhysicalAddressChangedEvent(c *model.Clinic) *clinicv1.ClinicPhysicalAddressChanged {
-	ev := &clinicv1.ClinicPhysicalAddressChanged{
-		PhysicalAddress: &clinicv1.Address{Text: c.PhysicalAddress.Text},
-	}
-	if c.PhysicalAddress.Point != nil {
-		ev.PhysicalAddress.Point = &clinicv1.Point{
-			Longitude: c.PhysicalAddress.Point.Longitude,
-			Latitude:  c.PhysicalAddress.Point.Latitude,
-		}
-	}
-	return ev
 }
 
 func (s *ClinicService) UpdatePhysicalAddress(
@@ -81,10 +66,6 @@ func (s *ClinicService) UpdatePhysicalAddress(
 				Wrap(err)
 		}
 
-		if err := projector.ClinicPhysicalAddressChanged(tx, &clinic); err != nil {
-			return err
-		}
-		event := buildClinicPhysicalAddressChangedEvent(&clinic)
-		return outbox.Publish(tx, SubjectClinicPhysicalAddressChanged, AggregateTypeClinic, clinic.ID.String(), clinic.UpdatedAt, event)
+		return projector.ClinicPhysicalAddressChanged(tx, &clinic)
 	})
 }

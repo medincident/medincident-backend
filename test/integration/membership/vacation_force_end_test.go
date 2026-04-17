@@ -10,23 +10,13 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 func TestForceEndVacation_Success_UnlimitedRunning(t *testing.T) {
 	f := takeFixture(t)
 	empID := hireAlice(t, f)
 	vacID := startUnlimitedVacation(t, empID)
-	truncateOutbox(t)
 	require.NoError(t, empSvc.ForceEndVacation(ctxT(t), membership.ForceEndVacationCommand{VacationID: mustParseUUID(t, vacID)}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectVacationEnded, rows[0].Subject)
-	ev := &employeev1.VacationEnded{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, vacID, ev.VacationId)
-	require.NotNil(t, ev.EndsAt)
 }
 
 func TestForceEndVacation_Success_BoundedRunning(t *testing.T) {

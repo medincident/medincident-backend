@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 // RevokeOrganizationAdminCommand carries the identifiers needed to
@@ -68,27 +66,14 @@ func (s *EmployeeService) RevokeOrganizationAdmin(ctx context.Context, cmd Revok
 
 // publishOrgAdminRevoked is a shared helper for Revoke and
 // cascade-on-terminate. It does NOT delete the domain row; the caller
-// owns that. The projector call here removes the projection row so
+// owns that. The projector call removes the projection row so
 // explicit and cascaded revokes stay in sync.
-func publishOrgAdminRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	if err := projector.OrgAdminRevoked(tx, organizationID, employeeID); err != nil {
-		return err
-	}
-	ev := &organizationv1.OrganizationAdminRevoked{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectOrganizationAdminRevoked, AggregateTypeOrganization, organizationID.String(), now, ev)
+func publishOrgAdminRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, _ time.Time) error {
+	return projector.OrgAdminRevoked(tx, organizationID, employeeID)
 }
 
 // publishOrgAdminDeputyRemoved is a shared helper; it clears the
-// projection's deputy slot and publishes the event. Caller owns the
-// domain-row update.
+// projection's deputy slot. Caller owns the domain-row update.
 func publishOrgAdminDeputyRemoved(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	if err := projector.OrgAdminDeputyRemoved(tx, organizationID, employeeID, now); err != nil {
-		return err
-	}
-	ev := &organizationv1.OrganizationAdminDeputyRemoved{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectOrganizationAdminDeputyRemoved, AggregateTypeOrganization, organizationID.String(), now, ev)
+	return projector.OrgAdminDeputyRemoved(tx, organizationID, employeeID, now)
 }

@@ -10,10 +10,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
-	systemadminv1 "github.com/medincident/medincident-command-service/pkg/event/system_admin/v1"
 )
 
 // GrantSystemAdminCommand carries the Zitadel user ID to promote to system admin.
@@ -60,12 +58,6 @@ func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemA
 			return oops.In(scopeSystemAdmin).Code(ErrCodeSystemAdminSaveFailed).Wrap(err)
 		}
 
-		now := time.Now().UTC()
-		if err := projector.SystemAdminGranted(tx, id, now); err != nil {
-			return err
-		}
-
-		ev := &systemadminv1.SystemAdminGranted{}
-		return outbox.Publish(tx, SubjectSystemAdminGranted, AggregateTypeSystemAdmin, id, now, ev)
+		return projector.SystemAdminGranted(tx, id, time.Now().UTC())
 	})
 }

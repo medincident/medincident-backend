@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 // RevokeOrganizationHeadCommand carries the identifiers needed to
@@ -70,25 +68,12 @@ func (s *EmployeeService) RevokeOrganizationHead(ctx context.Context, cmd Revoke
 // cascade-on-terminate. It does NOT delete the domain row; the caller
 // owns that. The projector call removes the projection row so
 // explicit and cascaded revokes stay in sync.
-func publishOrgHeadRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	if err := projector.OrgHeadRevoked(tx, organizationID, employeeID); err != nil {
-		return err
-	}
-	ev := &organizationv1.OrganizationHeadRevoked{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectOrganizationHeadRevoked, AggregateTypeOrganization, organizationID.String(), now, ev)
+func publishOrgHeadRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, _ time.Time) error {
+	return projector.OrgHeadRevoked(tx, organizationID, employeeID)
 }
 
 // publishOrgHeadDeputyRemoved is a shared helper; it clears the
-// projection's deputy slot and publishes the event. Caller owns the
-// domain-row update.
+// projection's deputy slot. Caller owns the domain-row update.
 func publishOrgHeadDeputyRemoved(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	if err := projector.OrgHeadDeputyRemoved(tx, organizationID, employeeID, now); err != nil {
-		return err
-	}
-	ev := &organizationv1.OrganizationHeadDeputyRemoved{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectOrganizationHeadDeputyRemoved, AggregateTypeOrganization, organizationID.String(), now, ev)
+	return projector.OrgHeadDeputyRemoved(tx, organizationID, employeeID, now)
 }

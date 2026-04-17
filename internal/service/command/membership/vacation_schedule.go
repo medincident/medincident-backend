@@ -8,13 +8,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // ScheduleVacationCommand carries everything the service needs to
@@ -84,17 +81,6 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 		}
 
 		if err := projector.VacationScheduled(tx, &vac); err != nil {
-			return err
-		}
-
-		ev := &employeev1.VacationScheduled{
-			VacationId: id.String(),
-			StartsAt:   timestamppb.New(cmd.StartsAt),
-		}
-		if cmd.EndsAt != nil {
-			ev.EndsAt = timestamppb.New(*cmd.EndsAt)
-		}
-		if err := outbox.Publish(tx, SubjectVacationScheduled, AggregateTypeEmployee, cmd.EmployeeID.String(), now, ev); err != nil {
 			return err
 		}
 		result.ID = id

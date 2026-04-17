@@ -112,7 +112,6 @@ func resetDB(t *testing.T) {
 		t.Fatalf("get raw db: %v", err)
 	}
 	truncate := []string{
-		`TRUNCATE TABLE outbox.events RESTART IDENTITY`,
 		`TRUNCATE TABLE domain.incident_types CASCADE`,
 		`TRUNCATE TABLE domain.incident_categories CASCADE`,
 		`TRUNCATE TABLE domain.department_responsibles CASCADE`,

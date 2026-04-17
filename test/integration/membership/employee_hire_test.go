@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 func hireBob(t *testing.T, f fixture) (employeeID string) {
@@ -25,7 +24,6 @@ func hireBob(t *testing.T, f fixture) (employeeID string) {
 
 func TestHireEmployee_Success_WithPosition(t *testing.T) {
 	f := takeFixture(t)
-	truncateOutbox(t)
 	pos := "Senior nurse"
 	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
 		ZitadelUserID: testUserAliceID,
@@ -39,33 +37,27 @@ func TestHireEmployee_Success_WithPosition(t *testing.T) {
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.employees WHERE id = ?`, res.ID).Scan(&count).Error)
 	require.Equal(t, int64(1), count)
 
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectEmployeeHired, rows[0].Subject)
-	ev := &employeev1.EmployeeHired{}
-	env := decodePayload(t, rows[0], ev)
-	assert.Equal(t, "employee", env.AggregateType)
-	assert.Equal(t, res.ID.String(), env.AggregateId)
-	assert.Equal(t, testUserAliceID, ev.ZitadelUserId)
-	assert.Equal(t, f.DeptA1a.String(), ev.DepartmentId)
-	assert.Equal(t, f.OrgA.String(), ev.OrganizationId)
-	require.NotNil(t, ev.Position)
-	assert.Equal(t, "Senior nurse", *ev.Position)
+	// Projection row written atomically.
+	var projCount int64
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM projections.employees WHERE id = ?`, res.ID).Scan(&projCount).Error)
+	require.Equal(t, int64(1), projCount)
+
+	var projPos string
+	require.NoError(t, testDB.Raw(`SELECT position FROM projections.employees WHERE id = ?`, res.ID).Row().Scan(&projPos))
+	require.Equal(t, "Senior nurse", projPos)
 }
 
 func TestHireEmployee_Success_NoPosition(t *testing.T) {
 	f := takeFixture(t)
-	truncateOutbox(t)
-	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
+	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
 		ZitadelUserID: testUserBobID,
 		DepartmentID:  f.DeptA1a,
 	})
 	require.NoError(t, err)
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	ev := &employeev1.EmployeeHired{}
-	decodePayload(t, rows[0], ev)
-	assert.Nil(t, ev.Position)
+
+	var projPos *string
+	require.NoError(t, testDB.Raw(`SELECT position FROM projections.employees WHERE id = ?`, res.ID).Row().Scan(&projPos))
+	assert.Nil(t, projPos)
 }
 
 func TestHireEmployee_WhitespaceOnlyPositionRejected(t *testing.T) {

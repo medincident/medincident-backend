@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // CancelScheduledVacationCommand identifies the future vacation to remove.
@@ -62,11 +60,6 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 			return oops.In(scopeVacation).Code(ErrCodeVacationDeleteFailed).Wrap(err)
 		}
 
-		if err := projector.VacationCancelled(tx, &vac, now); err != nil {
-			return err
-		}
-
-		ev := &employeev1.VacationCancelled{VacationId: vac.ID.String()}
-		return outbox.Publish(tx, SubjectVacationCancelled, AggregateTypeEmployee, vac.EmployeeID.String(), now, ev)
+		return projector.VacationCancelled(tx, &vac, now)
 	})
 }

@@ -9,13 +9,10 @@ import (
 	"github.com/guregu/null/v6"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // StartVacationNowCommand carries everything the service needs to
@@ -69,18 +66,6 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 		if err := projector.VacationStarted(tx, &vac); err != nil {
 			return err
 		}
-
-		ev := &employeev1.VacationStarted{
-			VacationId: id.String(),
-			StartsAt:   timestamppb.New(now),
-		}
-		if cmd.EndsAt != nil {
-			ev.EndsAt = timestamppb.New(*cmd.EndsAt)
-		}
-		if err := outbox.Publish(tx, SubjectVacationStarted, AggregateTypeEmployee, cmd.EmployeeID.String(), now, ev); err != nil {
-			return err
-		}
-
 		result.ID = id
 		return nil
 	})

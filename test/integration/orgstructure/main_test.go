@@ -92,7 +92,7 @@ func runMigrations(dsn string) error {
 	return cmd.Run()
 }
 
-// resetDB truncates every domain.* and outbox.* table between tests.
+// resetDB truncates every domain.* and projections.* table between tests.
 func resetDB(t *testing.T) {
 	t.Helper()
 	raw, err := testDB.DB()
@@ -100,7 +100,6 @@ func resetDB(t *testing.T) {
 		t.Fatalf("get raw db: %v", err)
 	}
 	truncate := []string{
-		`TRUNCATE TABLE outbox.events RESTART IDENTITY`,
 		`TRUNCATE TABLE domain.departments CASCADE`,
 		`TRUNCATE TABLE domain.clinics CASCADE`,
 		`TRUNCATE TABLE domain.organizations CASCADE`,
@@ -152,9 +151,23 @@ func countDepartments(t *testing.T) int {
 	return n
 }
 
-func countOutboxEvents(t *testing.T) int {
+func countProjectionOrganizations(t *testing.T) int {
 	t.Helper()
 	var n int
-	require.NoError(t, testDB.Raw(`SELECT count(*) FROM outbox.events`).Scan(&n).Error)
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM projections.organizations`).Scan(&n).Error)
+	return n
+}
+
+func countProjectionClinics(t *testing.T) int {
+	t.Helper()
+	var n int
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM projections.clinics`).Scan(&n).Error)
+	return n
+}
+
+func countProjectionDepartments(t *testing.T) int {
+	t.Helper()
+	var n int
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM projections.departments`).Scan(&n).Error)
 	return n
 }

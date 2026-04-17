@@ -12,9 +12,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 // UpdateOrganizationDetailsCommand carries the new name and (optional)
@@ -23,16 +21,6 @@ type UpdateOrganizationDetailsCommand struct {
 	ID          uuid.UUID
 	Name        string
 	Description *string // nil = clear description
-}
-
-// buildOrganizationDetailsChangedEvent assembles the details-changed
-// event from the updated model. Only name and description are included;
-// address is carried by a separate event type.
-func buildOrganizationDetailsChangedEvent(org *model.Organization) *organizationv1.OrganizationDetailsChanged {
-	return &organizationv1.OrganizationDetailsChanged{
-		Name:        org.Name,
-		Description: org.Description.Ptr(),
-	}
 }
 
 // UpdateDetails changes an organization's name and description. If
@@ -84,10 +72,6 @@ func (s *OrganizationService) UpdateDetails(
 				Wrap(err)
 		}
 
-		if err := projector.OrganizationDetailsChanged(tx, &org); err != nil {
-			return err
-		}
-		event := buildOrganizationDetailsChangedEvent(&org)
-		return outbox.Publish(tx, SubjectOrganizationDetailsChanged, AggregateTypeOrganization, org.ID.String(), org.UpdatedAt, event)
+		return projector.OrganizationDetailsChanged(tx, &org)
 	})
 }

@@ -11,9 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
 )
 
 const (
@@ -71,15 +69,6 @@ func categoryIsAncestorOf(tx *gorm.DB, ancestor, descendant uuid.UUID) (bool, er
 		return false, err
 	}
 	return found, nil
-}
-
-func buildIncidentCategoryMovedEvent(newParent uuid.NullUUID) *categoryeventv1.IncidentCategoryMoved {
-	ev := &categoryeventv1.IncidentCategoryMoved{}
-	if newParent.Valid {
-		s := newParent.UUID.String()
-		ev.NewParentCategoryId = &s
-	}
-	return ev
 }
 
 func (s *IncidentCategoryService) Move(
@@ -192,12 +181,7 @@ func (s *IncidentCategoryService) Move(
 				Wrap(err)
 		}
 
-		if err := projector.CategoryMove(tx, moving.ID, newParent, updatedAt); err != nil {
-			return err
-		}
-
-		event := buildIncidentCategoryMovedEvent(newParent)
-		return outbox.Publish(tx, SubjectIncidentCategoryMoved, AggregateTypeIncidentCategory, moving.ID.String(), updatedAt, event)
+		return projector.CategoryMove(tx, moving.ID, newParent, updatedAt)
 	})
 	return MoveIncidentCategoryResult{}, err
 }

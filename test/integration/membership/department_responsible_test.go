@@ -9,28 +9,17 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
 func TestAssignDepartmentResponsible_Success(t *testing.T) {
 	f := takeFixture(t)
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.AssignDepartmentResponsible(ctxT(t), membership.AssignDepartmentResponsibleCommand{
 		DepartmentID: f.DeptA1a,
 		EmployeeID:   id,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectDepartmentResponsibleAssigned, rows[0].Subject)
-	ev := &departmentv1.DepartmentResponsibleAssigned{}
-	env := decodePayload(t, rows[0], ev)
-	assert.Equal(t, membership.AggregateTypeDepartment, env.AggregateType)
-	assert.Equal(t, f.DeptA1a.String(), env.AggregateId)
-	assert.Equal(t, id.String(), ev.EmployeeId)
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -103,16 +92,11 @@ func TestRevokeDepartmentResponsible_Success_NoDeputy(t *testing.T) {
 		DepartmentID: f.DeptA1a,
 		EmployeeID:   id,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RevokeDepartmentResponsible(ctxT(t), membership.RevokeDepartmentResponsibleCommand{
 		DepartmentID: f.DeptA1a,
 		EmployeeID:   id,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectDepartmentResponsibleRevoked, rows[0].Subject)
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -136,17 +120,11 @@ func TestRevokeDepartmentResponsible_Success_WithDeputy_EmitsDeputyRemovedFirst(
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RevokeDepartmentResponsible(ctxT(t), membership.RevokeDepartmentResponsibleCommand{
 		DepartmentID: f.DeptA1a,
 		EmployeeID:   aliceID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 2)
-	assert.Equal(t, membership.SubjectDepartmentResponsibleDeputyRemoved, rows[0].Subject, "Rule 2: cleanup before terminate")
-	assert.Equal(t, membership.SubjectDepartmentResponsibleRevoked, rows[1].Subject)
 }
 
 func TestRevokeDepartmentResponsible_NotFound(t *testing.T) {
@@ -170,21 +148,12 @@ func TestAssignDepartmentResponsibleDeputy_Success(t *testing.T) {
 		DepartmentID: f.DeptA1a,
 		EmployeeID:   aliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.AssignDepartmentResponsibleDeputy(ctxT(t), membership.AssignDepartmentResponsibleDeputyCommand{
 		DepartmentID:     f.DeptA1a,
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectDepartmentResponsibleDeputyAssigned, rows[0].Subject)
-	ev := &departmentv1.DepartmentResponsibleDeputyAssigned{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, aliceID.String(), ev.EmployeeId)
-	assert.Equal(t, bobID.String(), ev.DeputyEmployeeId)
 }
 
 func TestAssignDepartmentResponsibleDeputy_RoleNotFound(t *testing.T) {
@@ -301,19 +270,11 @@ func TestRemoveDepartmentResponsibleDeputy_Success(t *testing.T) {
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RemoveDepartmentResponsibleDeputy(ctxT(t), membership.RemoveDepartmentResponsibleDeputyCommand{
 		DepartmentID: f.DeptA1a,
 		EmployeeID:   aliceID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectDepartmentResponsibleDeputyRemoved, rows[0].Subject)
-	ev := &departmentv1.DepartmentResponsibleDeputyRemoved{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, aliceID.String(), ev.EmployeeId)
 }
 
 func TestRemoveDepartmentResponsibleDeputy_DeputyNotAssigned(t *testing.T) {

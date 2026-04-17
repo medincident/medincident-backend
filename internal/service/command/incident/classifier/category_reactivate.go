@@ -13,9 +13,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
 )
 
 const (
@@ -132,11 +130,7 @@ func (s *IncidentCategoryService) Reactivate(
 				Wrap(err)
 		}
 
-		if err := projector.CategoryReactivate(tx, cat.ID, updatedAt); err != nil {
-			return err
-		}
-
-		return outbox.Publish(tx, SubjectIncidentCategoryReactivated, AggregateTypeIncidentCategory, cat.ID.String(), updatedAt, &categoryeventv1.IncidentCategoryReactivated{})
+		return projector.CategoryReactivate(tx, cat.ID, updatedAt)
 	})
 	return ReactivateIncidentCategoryResult{}, err
 }

@@ -100,7 +100,6 @@ func resetDB(t *testing.T) {
 		t.Fatalf("get raw db: %v", err)
 	}
 	truncate := []string{
-		`TRUNCATE TABLE outbox.events RESTART IDENTITY`,
 		`TRUNCATE TABLE domain.incident_types CASCADE`,
 		`TRUNCATE TABLE domain.incident_categories CASCADE`,
 		`TRUNCATE TABLE domain.departments CASCADE`,
@@ -164,15 +163,6 @@ func countIncidentTypes(t *testing.T) int {
 	t.Helper()
 	var n int
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.incident_types`).Scan(&n).Error)
-	return n
-}
-
-func countOutboxEventsWithSubject(t *testing.T, subject string) int {
-	t.Helper()
-	var n int
-	require.NoError(t, testDB.Raw(
-		`SELECT count(*) FROM outbox.events WHERE subject = ?`, subject,
-	).Scan(&n).Error)
 	return n
 }
 

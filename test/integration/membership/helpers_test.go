@@ -11,10 +11,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto"
-
-	"github.com/medincident/medincident-command-service/internal/model"
-	envelopev1 "github.com/medincident/medincident-command-service/pkg/event/v1"
 )
 
 // fixture holds the IDs of pre-seeded org/clinic/department rows that
@@ -71,7 +67,6 @@ func takeFixture(t *testing.T) fixture {
 		_ = testDB.Exec(`DELETE FROM domain.departments WHERE id IN (?, ?, ?, ?)`, f.DeptA1a, f.DeptA1b, f.DeptA2a, f.DeptB1a).Error
 		_ = testDB.Exec(`DELETE FROM domain.clinics WHERE id IN (?, ?, ?)`, f.ClinicA1, f.ClinicA2, f.ClinicB1).Error
 		_ = testDB.Exec(`DELETE FROM domain.organizations WHERE id IN (?, ?)`, f.OrgA, f.OrgB).Error
-		_ = testDB.Exec(`DELETE FROM outbox.events`).Error
 		// Projection tables — sync projector writes these alongside
 		// every domain mutation, so the cleanup needs to sweep them
 		// too or cross-test id reuse trips unique constraints.
@@ -93,29 +88,6 @@ func takeFixture(t *testing.T) fixture {
 		                         CASCADE`).Error
 	})
 	return f
-}
-
-// latestOutbox returns all outbox rows ordered by id ascending.
-func latestOutbox(t *testing.T) []model.OutboxEvent {
-	t.Helper()
-	var rows []model.OutboxEvent
-	require.NoError(t, testDB.Order("id ASC").Find(&rows).Error)
-	return rows
-}
-
-func truncateOutbox(t *testing.T) {
-	t.Helper()
-	require.NoError(t, testDB.Exec(`DELETE FROM outbox.events`).Error)
-}
-
-// decodePayload unmarshals an outbox row into its envelope and then
-// into the caller-provided target proto message.
-func decodePayload(t *testing.T, row model.OutboxEvent, target proto.Message) *envelopev1.Envelope {
-	t.Helper()
-	env := &envelopev1.Envelope{}
-	require.NoError(t, proto.Unmarshal(row.Payload, env))
-	require.NoError(t, env.Payload.UnmarshalTo(target))
-	return env
 }
 
 // ctxT returns a 10-second context cancelled on test cleanup.
