@@ -7,14 +7,12 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	typeeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/type/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 )
 
@@ -115,8 +113,7 @@ func (s *IncidentTypeService) Reactivate(
 			WHERE id = ?
 			RETURNING updated_at`, row.ID,
 		).Row().Scan(&updatedAt); err != nil {
-			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
+			if errors.Is(err, gorm.ErrDuplicatedKey) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeReactivateNameConflict).
 					Public("Cannot reactivate: another active incident type uses this name.").

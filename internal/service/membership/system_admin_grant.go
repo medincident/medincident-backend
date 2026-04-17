@@ -6,13 +6,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
 	systemadminv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/system_admin/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
@@ -51,8 +49,7 @@ func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemA
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		row := model.SystemAdmin{ZitadelUserID: id}
 		if err := tx.Create(&row).Error; err != nil {
-			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
+			if errors.Is(err, gorm.ErrDuplicatedKey) {
 				return oops.In(scopeSystemAdmin).
 					Code(ErrCodeSystemAdminAlreadyGranted).
 					Public("User is already a system admin.").

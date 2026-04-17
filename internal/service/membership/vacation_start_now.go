@@ -14,7 +14,6 @@ import (
 
 	employeev1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/employee/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 )
 
@@ -87,22 +86,27 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 // employee_vacations INSERT/UPDATE into domain error codes. Used by
 // all vacation write operations. employeeID is attached to the
 // NotFound branch so operators can identify which employee was missing.
-func mapVacationInsertError(err error, employeeID uuid.UUID) error {
+// isExclusionViolation reports whether err wraps a Postgres exclusion
+// violation (23P01). GORM does not translate this code, so we check
+// the underlying pgconn.PgError directly.
+func isExclusionViolation(err error) bool {
 	var pgErr *pgconn.PgError
-	if errors.As(err, &pgErr) {
-		switch pgErr.Code {
-		case pgerr.CodeExclusionViolation:
-			return oops.In(scopeVacation).
-				Code(ErrCodeVacationOverlap).
-				Public("Vacation overlaps with an existing one.").
-				Wrap(err)
-		case pgerr.CodeForeignKeyViolation:
-			return oops.In(scopeVacation).
-				Code(ErrCodeEmployeeNotFound).
-				Public("Employee not found.").
-				With("employee_id", employeeID).
-				Wrap(err)
-		}
+	return errors.As(err, &pgErr) && pgErr.Code == "23P01"
+}
+
+func mapVacationInsertError(err error, employeeID uuid.UUID) error {
+	if isExclusionViolation(err) {
+		return oops.In(scopeVacation).
+			Code(ErrCodeVacationOverlap).
+			Public("Vacation overlaps with an existing one.").
+			Wrap(err)
+	}
+	if errors.Is(err, gorm.ErrForeignKeyViolated) {
+		return oops.In(scopeVacation).
+			Code(ErrCodeEmployeeNotFound).
+			Public("Employee not found.").
+			With("employee_id", employeeID).
+			Wrap(err)
 	}
 	return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
 }

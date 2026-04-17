@@ -5,13 +5,11 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
 	organizationv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/organization/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 )
 
@@ -47,8 +45,7 @@ func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd 
 			EmployeeID:     cmd.EmployeeID,
 		}
 		if err := tx.Create(&row).Error; err != nil {
-			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
+			if errors.Is(err, gorm.ErrDuplicatedKey) {
 				return oops.In(scopeOrgDispatcher).
 					Code(ErrCodeOrganizationDispatcherAlreadyAssigned).
 					Public("This employee is already an organization dispatcher.").

@@ -5,13 +5,11 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 )
 
@@ -60,8 +58,7 @@ func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinic
 			EmployeeID: cmd.EmployeeID,
 		}
 		if err := tx.Create(&row).Error; err != nil {
-			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeUniqueViolation {
+			if errors.Is(err, gorm.ErrDuplicatedKey) {
 				return oops.In(scopeClinicHead).
 					Code(ErrCodeClinicHeadAlreadyAssigned).
 					Public("This employee is already a clinic head.").

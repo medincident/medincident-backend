@@ -7,13 +7,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
 	categoryeventv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/incident/category/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 )
 
@@ -183,22 +181,18 @@ func (s *IncidentCategoryService) Create(
 		}
 
 		if err := tx.Create(&cat).Error; err != nil {
-			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) {
-				switch pgErr.Code {
-				case pgerr.CodeUniqueViolation:
-					return oops.In("services.incident.classifier.category").
-						Code(ErrCodeIncidentCategoryNameConflict).
-						Public("An active incident category with this name already exists.").
-						With("organization_id", cmd.OrganizationID).
-						With("name", cat.Name).
-						Wrap(err)
-				case pgerr.CodeForeignKeyViolation:
-					return oops.In("services.incident.classifier.category").
-						Code(ErrCodeIncidentCategoryParentNotFound).
-						Public("Parent incident category or organization not found.").
-						Wrap(err)
-				}
+			if errors.Is(err, gorm.ErrDuplicatedKey) {
+				return oops.In("services.incident.classifier.category").
+					Code(ErrCodeIncidentCategoryNameConflict).
+					Public("An active incident category with this name already exists.").
+					With("organization_id", cmd.OrganizationID).
+					With("name", cat.Name).
+					Wrap(err)
+			} else if errors.Is(err, gorm.ErrForeignKeyViolated) {
+				return oops.In("services.incident.classifier.category").
+					Code(ErrCodeIncidentCategoryParentNotFound).
+					Public("Parent incident category or organization not found.").
+					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.category").
 				Code(ErrCodeIncidentCategorySaveFailed).

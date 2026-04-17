@@ -8,13 +8,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
 	clinicv1 "github.com/medincident/medincident-command-service/gen/api/medincident/event/clinic/v1"
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/pgerr"
 	"github.com/medincident/medincident-command-service/internal/service/outbox"
 )
 
@@ -182,8 +180,7 @@ func (s *ClinicService) Create(
 	var result CreateClinicResult
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		if err := tx.Create(&clinic).Error; err != nil {
-			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) && pgErr.Code == pgerr.CodeForeignKeyViolation {
+			if errors.Is(err, gorm.ErrForeignKeyViolated) {
 				return oops.In("services.orgstructure.clinic").
 					Code(ErrCodeClinicOrganizationNotFound).
 					Public("Organization not found.").
