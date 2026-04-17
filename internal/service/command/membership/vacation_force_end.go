@@ -14,6 +14,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
@@ -68,6 +69,10 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 		vac.EndsAt = null.TimeFrom(now)
 		if err := tx.Save(&vac).Error; err != nil {
 			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).With("vacation_id", vac.ID).Wrap(err)
+		}
+
+		if err := projector.VacationEnded(tx, &vac, now); err != nil {
+			return err
 		}
 
 		ev := &employeev1.VacationEnded{

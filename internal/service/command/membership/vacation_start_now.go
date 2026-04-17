@@ -14,6 +14,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
@@ -63,6 +64,10 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 		}
 		if err := tx.Create(&vac).Error; err != nil {
 			return mapVacationInsertError(err, cmd.EmployeeID)
+		}
+
+		if err := projector.VacationStarted(tx, &vac); err != nil {
+			return err
 		}
 
 		ev := &employeev1.VacationStarted{

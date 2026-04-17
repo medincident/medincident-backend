@@ -14,6 +14,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
@@ -103,6 +104,10 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 		vac.EndsAt = null.TimeFrom(cmd.EndsAt)
 		if saveErr := tx.Save(&vac).Error; saveErr != nil {
 			return oops.In(scopeVacation).With("vacation_id", vac.ID).Wrap(mapVacationInsertError(saveErr, vac.EmployeeID))
+		}
+
+		if err := projector.VacationEndDateChanged(tx, &vac); err != nil {
+			return err
 		}
 
 		ev := &employeev1.VacationEndDateChanged{
