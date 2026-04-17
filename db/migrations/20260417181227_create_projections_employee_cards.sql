@@ -18,7 +18,6 @@ CREATE TABLE projections.employee_cards (
     current_vacation_ends_at timestamptz NULL,
     next_vacation_id         uuid NULL,
     next_vacation_starts_at  timestamptz NULL,
-    event_sequence           bigint NOT NULL DEFAULT 0,
     updated_at               timestamptz NOT NULL DEFAULT now()
 );
 
@@ -31,4 +30,4 @@ CREATE INDEX employee_cards_display_name_prefix_idx
     ON projections.employee_cards (display_name text_pattern_ops);
 
 -- migrate:down
-DROP TABLE projections.employee_cards;
+DROP TABLE IF EXISTS projections.employee_cards;

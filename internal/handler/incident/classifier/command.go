@@ -1,4 +1,4 @@
-// Package classifier is the gRPC transport for IncidentClassifierService.
+// Package classifier is the gRPC transport for IncidentClassifierCommandService.
 package classifier
 
 import (

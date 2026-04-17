@@ -1,4 +1,4 @@
-// Package orgstructure is the gRPC transport for the OrgStructureService.
+// Package orgstructure is the gRPC transport for the OrgStructureCommandService.
 package orgstructure
 
 import (

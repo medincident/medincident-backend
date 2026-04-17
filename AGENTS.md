@@ -75,42 +75,52 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
 cmd/command-server/main.go               — entry point (command side), graceful shutdown
 cmd/query-server/main.go                 — entry point (query side, placeholder until Plan 3)
 internal/
-  config/                                — YAML + go-playground/validator
+  config/                                — YAML + go-playground/validator (Command + Query)
   di/                                    — samber/do/v2 providers (all factories)
     container.go                         — NewContainer + do.Provide wiring
     zerolog.go                           — logger construction
     postgres.go                          — *gorm.DB provider + Shutdown hook
     grpc.go                              — *grpc.Server wrapper + GracefulStop hook
-    services.go                          — three service providers
-    handler.go                           — OrgStructureHandler provider
+    services.go                          — service providers
+    handler.go                           — handler providers
   model/                                 — gorm models. ONLY place `null.X` lives.
-  services/orgstructure/                 — business logic, one file per method
-    service.go                           — three service struct types + constructors
-    outbox.go                            — AppendOutboxEvent helper
-    address.go                           — shared Address/Point validators
+  service/
+    authz/                               — role-based check helpers (shared)
+    zitadel/                             — Zitadel client (today: user verify)
+    command/orgstructure/                — write-side business logic, one file per method
+      service.go                         — three service struct types + constructors
+      address.go                         — shared Address/Point validators
+      organization_{create,update_details,update_legal_address}.go
+      clinic_{create,update_details,update_physical_address}.go
+      department_{create,update_details}.go
+    command/membership/                  — write-side roles/employees/vacations
+    command/incident/classifier/         — write-side incident category/type
+    command/outbox/                      — outbox.Publish (transactional outbox)
+  handler/orgstructure/                  — gRPC handler (command side), one file per RPC
+    command.go                           — OrgStructureCommandService impl + proto helpers
     organization_{create,update_details,update_legal_address}.go
     clinic_{create,update_details,update_physical_address}.go
     department_{create,update_details}.go
-  handler/orgstructure/                  — gRPC handler, one file per RPC
-    handler.go                           — OrgStructureHandler struct + proto conversion helpers
-    organization_{create,update_details,update_legal_address}.go
-    clinic_{create,update_details,update_physical_address}.go
-    department_{create,update_details}.go
+  handler/membership/command.go + per-RPC files
+  handler/incident/classifier/command.go + per-RPC files
 api/proto/                               — proto contracts (source of truth)
   buf.yaml                               — module config (lint, breaking, deps)
   event/v1/envelope.proto                — Envelope (transport wrapper)
   event/{organization,clinic,department,employee,system_admin}/v1/
   event/incident/{category,type}/v1/     — per-aggregate events
-  service/{orgstructure,membership}/v1/
-  service/incident/classifier/v1/        — gRPC service contracts
-api/openapi/command-service.swagger.json — generated merged OpenAPI v2 (committed)
+  command/{orgstructure,membership}/v1/  — gRPC command service contracts
+  command/incident/classifier/v1/        — gRPC command service contract
+api/openapi/command-server.swagger.json  — generated merged OpenAPI v2 (committed)
 pkg/                                     — buf-generated Go (committed)
   event/**/*.pb.go                       — event messages
-  service/**/{*.pb.go,*_grpc.pb.go,*.pb.gw.go}  — gRPC + gateway stubs
-docs/proto/command-service.md            — generated combined Markdown docs (committed)
+  command/**/{*.pb.go,*_grpc.pb.go,*.pb.gw.go}  — gRPC + gateway stubs (command side)
+docs/proto/command-server.md             — generated combined Markdown docs (committed)
 buf.gen.yaml                             — go + grpc + gateway + openapi generation
 buf.gen.docs.yaml                        — protoc-gen-doc generation
-db/migrations/                           — dbmate migrations (never hand-written)
+build/{command,query}-server.Dockerfile  — multi-stage Docker builds (one per binary)
+db/migrations/                           — dbmate migrations (never hand-written).
+                                           Includes domain.*, outbox.*, projections.*
+                                           (projections.* is unused in Plan 1, wired in Plan 2)
 test/integration/orgstructure/           — testcontainers-backed integration suite
 configs/                                 — command-server.example.yaml + query-server.example.yaml
 ```

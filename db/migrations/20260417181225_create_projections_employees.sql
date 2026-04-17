@@ -8,7 +8,6 @@ CREATE TABLE projections.employees (
     position        text        NULL,
     hired_at        timestamptz NOT NULL,
     terminated_at   timestamptz NULL,
-    event_sequence  bigint      NOT NULL DEFAULT 0,
     created_at      timestamptz NOT NULL DEFAULT now(),
     updated_at      timestamptz NOT NULL DEFAULT now()
 );
@@ -28,4 +27,4 @@ CREATE INDEX employees_pending_backfill_idx
     WHERE clinic_id IS NULL;
 
 -- migrate:down
-DROP TABLE projections.employees;
+DROP TABLE IF EXISTS projections.employees;

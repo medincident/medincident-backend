@@ -2,10 +2,9 @@
 CREATE TABLE projections.employee_vacations (
     id             uuid        PRIMARY KEY,
     employee_id    uuid        NOT NULL,
-    state          text        NOT NULL CHECK (state IN ('scheduled','active','ended','cancelled')),
+    state          text        NOT NULL,
     starts_at      timestamptz NOT NULL,
     ends_at        timestamptz NULL,
-    event_sequence bigint      NOT NULL DEFAULT 0,
     created_at     timestamptz NOT NULL DEFAULT now(),
     updated_at     timestamptz NOT NULL DEFAULT now()
 );
@@ -22,4 +21,4 @@ CREATE INDEX employee_vacations_scheduled_idx
     WHERE state = 'scheduled';
 
 -- migrate:down
-DROP TABLE projections.employee_vacations;
+DROP TABLE IF EXISTS projections.employee_vacations;

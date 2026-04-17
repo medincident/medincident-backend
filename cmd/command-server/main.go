@@ -64,12 +64,12 @@ func main() {
 
 	select {
 	case <-ctx.Done():
-		logger.Info().Msg("command-service stopping (signal)")
+		logger.Info().Msg("command-server stopping (signal)")
 	case err, ok := <-serveErr:
 		if ok && err != nil {
 			logger.Error().Err(err).Msg("grpc serve error, shutting down")
 		} else {
-			logger.Info().Msg("command-service stopping (grpc server stopped)")
+			logger.Info().Msg("command-server stopping (grpc server stopped)")
 		}
 	}
 
@@ -78,5 +78,5 @@ func main() {
 	if err := container.ShutdownWithContext(shutdownCtx); err != nil {
 		logger.Error().Err(err).Msg("shutdown error")
 	}
-	logger.Info().Msg("command-service stopped")
+	logger.Info().Msg("command-server stopped")
 }

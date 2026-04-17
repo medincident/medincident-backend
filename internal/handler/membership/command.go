@@ -1,4 +1,4 @@
-// Package membership is the gRPC transport for MembershipService.
+// Package membership is the gRPC transport for MembershipCommandService.
 // Handler methods translate proto request objects into service Command
 // structs, call the service, and translate the result back. Error
 // semantics are owned by the service layer.
