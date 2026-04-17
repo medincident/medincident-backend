@@ -112,7 +112,7 @@ buf.gen.yaml                             — go + grpc + gateway + openapi gener
 buf.gen.docs.yaml                        — protoc-gen-doc generation
 db/migrations/                           — dbmate migrations (never hand-written)
 test/integration/orgstructure/           — testcontainers-backed integration suite
-configs/                                 — config.example.yaml
+configs/                                 — command-server.example.yaml + query-server.example.yaml
 ```
 
 ## Subject scheme

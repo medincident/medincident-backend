@@ -1,5 +1,6 @@
-# medincident-command-service — example configuration.
+# command-server — example configuration.
 #
+# Loaded by cmd/command-server/main.go via config.ReadCommandServerConfig.
 # ${VAR} and $VAR references are expanded from the process environment
 # before YAML parsing, so secrets (DSN, etc.) should be injected via env
 # rather than hard-coded.
