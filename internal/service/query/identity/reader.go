@@ -11,11 +11,10 @@ import (
 
 // Error codes emitted by Reader methods.
 const (
-	ErrCodeUserNotFound       = "user_not_found"
-	ErrCodeUserLoadFailed     = "user_load_failed"
-	ErrCodeSessionNotFound    = "session_not_found"
-	ErrCodeSessionLoadFailed  = "session_load_failed"
-	ErrCodeUserAgentDecodeErr = "session_user_agent_decode_failed"
+	ErrCodeUserNotFound      = "user_not_found"
+	ErrCodeUserLoadFailed    = "user_load_failed"
+	ErrCodeSessionNotFound   = "session_not_found"
+	ErrCodeSessionLoadFailed = "session_load_failed"
 )
 
 // UserView mirrors projections.users.

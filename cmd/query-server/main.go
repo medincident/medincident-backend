@@ -66,9 +66,19 @@ func main() {
 	}
 
 	// Start the identity consumer before gRPC so new connections never
-	// see a half-booted projection state.
+	// see a half-booted projection state. If the process is shutting
+	// down (ctx already cancelled) treat the consumer start failure as
+	// a graceful early-exit so the DI container's Shutdown path runs.
 	if err := consumer.Start(ctx); err != nil {
-		logger.Fatal().Err(err).Msg("failed to start identity consumer")
+		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+			logger.Info().Err(err).Msg("consumer start aborted by shutdown signal")
+		} else {
+			logger.Error().Err(err).Msg("failed to start identity consumer")
+		}
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
+		defer cancel()
+		_ = container.ShutdownWithContext(shutdownCtx)
+		return
 	}
 
 	serveErr := make(chan error, 1)

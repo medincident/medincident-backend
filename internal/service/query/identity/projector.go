@@ -343,7 +343,16 @@ func (p *Projector) ApplySessionUserChecked(
 			Wrap(res.Error)
 	}
 	if res.RowsAffected == 0 {
-		p.logger.Debug().Str("session_id", sessionID).Msg("session user_checked before added; skipped")
+		// SessionAdded hasn't been projected yet. Unlike user_human_added
+		// (which upserts and therefore retro-fills on late arrival),
+		// SessionAdded is a straight UPDATE — if we lose this
+		// SessionUserChecked payload the session row never gets its
+		// user_id/checked_at columns. Log at WARN so this is visible in
+		// prod without forcing a retry loop here.
+		p.logger.Warn().
+			Str("session_id", sessionID).
+			Str("user_id", event.GetUserId()).
+			Msg("session user_checked arrived before session_added; fields will be missing until a follow-up event")
 	}
 	return nil
 }

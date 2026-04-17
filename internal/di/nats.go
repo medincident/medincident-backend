@@ -26,10 +26,11 @@ type natsConnWrapper struct {
 	*nats.Conn
 }
 
-// Shutdown drains and closes the underlying nats.Conn.
+// Shutdown drains the underlying nats.Conn so any buffered
+// publishes/acks are flushed before the connection goes away. Drain
+// closes the connection after draining completes.
 func (w *natsConnWrapper) Shutdown(_ context.Context) error {
-	w.Close()
-	return nil
+	return w.Drain()
 }
 
 func provideNATSConnWrapper(injector do.Injector) (*natsConnWrapper, error) {

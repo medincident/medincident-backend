@@ -11,8 +11,9 @@ const (
 )
 
 // ListQuery is the input shared by every List method. Zero Limit maps
-// to listDefaultLimit; any other value is clamped to
-// [listMinLimit, listMaxLimit]. Offset must be non-negative.
+// to listDefaultLimit. Non-zero Limit outside [listMinLimit,
+// listMaxLimit] is rejected with list_limit_out_of_range. Offset must
+// be non-negative.
 type ListQuery struct {
 	Limit  int
 	Offset int

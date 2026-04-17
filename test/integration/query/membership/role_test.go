@@ -4,7 +4,6 @@ package membership_query_integration_test
 
 import (
 	"context"
-	"errors"
 	"testing"
 	"time"
 
@@ -68,6 +67,4 @@ func TestRoleReader_ListSystemAdmins(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, items, 2)
 	require.Equal(t, "zit-b", items[0].ZitadelUserID)
-
-	_ = errors.New // keep errors import use honest when only used above
 }
