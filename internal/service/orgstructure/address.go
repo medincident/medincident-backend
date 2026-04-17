@@ -2,6 +2,7 @@ package orgstructure
 
 import (
 	"errors"
+	"math"
 	"strings"
 	"unicode/utf8"
 
@@ -93,7 +94,7 @@ func validateAddressInput(addr AddressInput) error {
 // before calling this function.
 func validatePointInput(p PointInput) error {
 	var errs []error
-	if p.Longitude < minLongitude || p.Longitude > maxLongitude {
+	if math.IsNaN(p.Longitude) || math.IsInf(p.Longitude, 0) || p.Longitude < minLongitude || p.Longitude > maxLongitude {
 		errs = append(errs, oops.In("services.orgstructure.address").
 			Code(ErrCodeAddressLongitudeOutOfRange).
 			Public("Longitude is out of range.").
@@ -103,7 +104,7 @@ func validatePointInput(p PointInput) error {
 			With("max_value", maxLongitude).
 			Errorf("longitude out of range"))
 	}
-	if p.Latitude < minLatitude || p.Latitude > maxLatitude {
+	if math.IsNaN(p.Latitude) || math.IsInf(p.Latitude, 0) || p.Latitude < minLatitude || p.Latitude > maxLatitude {
 		errs = append(errs, oops.In("services.orgstructure.address").
 			Code(ErrCodeAddressLatitudeOutOfRange).
 			Public("Latitude is out of range.").

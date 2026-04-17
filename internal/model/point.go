@@ -45,16 +45,16 @@ func (p *Point) Scan(src any) error {
 	default:
 		return oops.Errorf("unsupported scan type %T for Point", src)
 	}
-	s = strings.TrimPrefix(strings.TrimSuffix(s, ")"), "(")
+	s = strings.TrimSpace(strings.TrimPrefix(strings.TrimSuffix(strings.TrimSpace(s), ")"), "("))
 	parts := strings.Split(s, ",")
 	if len(parts) != 2 {
 		return oops.Errorf("expected (lon,lat), got %q", s)
 	}
-	lon, err := strconv.ParseFloat(parts[0], 64)
+	lon, err := strconv.ParseFloat(strings.TrimSpace(parts[0]), 64)
 	if err != nil {
 		return oops.Wrap(err)
 	}
-	lat, err := strconv.ParseFloat(parts[1], 64)
+	lat, err := strconv.ParseFloat(strings.TrimSpace(parts[1]), 64)
 	if err != nil {
 		return oops.Wrap(err)
 	}
