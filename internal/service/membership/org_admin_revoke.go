@@ -26,17 +26,8 @@ type RevokeOrganizationAdminCommand struct {
 // Revoked event. If a deputy was assigned, a DeputyRemoved event is
 // published FIRST (Rule 2 — cleanup before terminate). See spec §8.6.
 func (s *EmployeeService) RevokeOrganizationAdmin(ctx context.Context, cmd RevokeOrganizationAdminCommand) error {
-	var errs []error
-	if cmd.OrganizationID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationIDEmpty).
-			Public("Organization ID is required.").Errorf("organization id empty"))
-	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgAdmin).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validateOrgRoleKeys(scopeOrgAdmin, cmd.OrganizationID, cmd.EmployeeID); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

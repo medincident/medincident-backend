@@ -85,16 +85,8 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			return err
 		}
 
-		res := tx.Delete(&model.Employee{}, "id = ?", cmd.ID)
-		if res.Error != nil {
-			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(res.Error)
-		}
-		if res.RowsAffected == 0 {
-			return oops.In(scopeEmployee).
-				Code(ErrCodeEmployeeNotFound).
-				Public("Employee not found.").
-				With("employee_id", cmd.ID).
-				Errorf("employee not found")
+		if err := tx.Delete(&model.Employee{}, "id = ?", cmd.ID).Error; err != nil {
+			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
 		}
 
 		ev := &employeev1.EmployeeTerminated{}
