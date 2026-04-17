@@ -45,6 +45,8 @@ func (s *EmployeeService) AssignOrganizationAdminDeputy(ctx context.Context, cmd
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		now := time.Now().UTC()
+
 		var row model.OrgAdmin
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			Where("organization_id = ? AND employee_id = ?", cmd.OrganizationID, cmd.EmployeeID).
@@ -110,6 +112,6 @@ func (s *EmployeeService) AssignOrganizationAdminDeputy(ctx context.Context, cmd
 			EmployeeId:       cmd.EmployeeID.String(),
 			DeputyEmployeeId: cmd.DeputyEmployeeID.String(),
 		}
-		return outbox.Publish(tx, SubjectOrganizationAdminDeputyAssigned, AggregateTypeOrganization, cmd.OrganizationID.String(), time.Now().UTC(), ev)
+		return outbox.Publish(tx, SubjectOrganizationAdminDeputyAssigned, AggregateTypeOrganization, cmd.OrganizationID.String(), now, ev)
 	})
 }

@@ -45,6 +45,8 @@ func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd Assign
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		now := time.Now().UTC()
+
 		var row model.ClinicHead
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			Where("clinic_id = ? AND employee_id = ?", cmd.ClinicID, cmd.EmployeeID).
@@ -117,6 +119,6 @@ func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd Assign
 			EmployeeId:       cmd.EmployeeID.String(),
 			DeputyEmployeeId: cmd.DeputyEmployeeID.String(),
 		}
-		return outbox.Publish(tx, SubjectClinicHeadDeputyAssigned, AggregateTypeClinic, cmd.ClinicID.String(), time.Now().UTC(), ev)
+		return outbox.Publish(tx, SubjectClinicHeadDeputyAssigned, AggregateTypeClinic, cmd.ClinicID.String(), now, ev)
 	})
 }
