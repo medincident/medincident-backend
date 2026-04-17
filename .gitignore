@@ -58,3 +58,4 @@ coverage.html
 
 # Superpowers internal docs — never committed
 docs/superpowers/
+.claude/

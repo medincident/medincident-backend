@@ -29,15 +29,19 @@ func (a *Authz) checkOrgAdmin(ctx context.Context, callerID string, orgID uuid.U
 	}
 
 	// 2. Find employee in this organization.
-	var employeeID uuid.UUID
+	var employeeIDStr *string
 	if err := a.db.WithContext(ctx).
-		Raw(`SELECT id FROM domain.employees WHERE zitadel_user_id = ? AND organization_id = ?`, callerID, orgID).
-		Scan(&employeeID).Error; err != nil {
+		Raw(`SELECT id::text FROM domain.employees WHERE zitadel_user_id = ? AND organization_id = ?`, callerID, orgID).
+		Scan(&employeeIDStr).Error; err != nil {
 		return false, oops.In("service.authz").Code(ErrCodeCallerNotFound).
 			With("caller_id", callerID).With("organization_id", orgID).Wrap(err)
 	}
-	if employeeID == uuid.Nil {
+	if employeeIDStr == nil {
 		return false, nil
+	}
+	employeeID, err := uuid.Parse(*employeeIDStr)
+	if err != nil {
+		return false, oops.In("service.authz").Code(ErrCodeCallerNotFound).Wrap(err)
 	}
 
 	// 3. Direct org admin?
