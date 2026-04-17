@@ -51,16 +51,16 @@ task migrate:new -- <name>  # создать новую миграцию чер�
 
 ## Сборка бинарника
 
-Makefile знает про entry point `./cmd/server` и умеет кросс-компилить.
+Makefile знает про entry point `./cmd/command-server` и умеет кросс-компилить.
 
 ```bash
 make build                             # под текущую хост-платформу → ./dist/
 make build-all                         # все платформы из PLATFORMS
-make run ARGS="-config configs/config.example.yaml"
+make run ARGS="-config configs/command-server.example.yaml"
 make clean                             # снести ./dist
 ```
 
-Список целевых платформ редактируется в самом [`Makefile`](Makefile) в переменной `PLATFORMS`. По умолчанию: Linux (amd64/arm64/386), macOS (amd64/arm64), Windows (amd64/arm64/386). Бинарники именуются `server-<os>-<arch>` (с `.exe` на Windows).
+Список целевых платформ редактируется в самом [`Makefile`](Makefile) в переменной `PLATFORMS`. По умолчанию: Linux (amd64/arm64/386), macOS (amd64/arm64), Windows (amd64/arm64/386). Бинарники именуются `command-server-<os>-<arch>` (с `.exe` на Windows).
 
 ## Редактирование кода — обязательные правила
 

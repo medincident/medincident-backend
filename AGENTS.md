@@ -72,7 +72,8 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
 ## Directory layout
 
 ```
-cmd/server/main.go                       — entry point, graceful shutdown
+cmd/command-server/main.go               — entry point (command side), graceful shutdown
+cmd/query-server/main.go                 — entry point (query side, placeholder until Plan 3)
 internal/
   config/                                — YAML + go-playground/validator
   di/                                    — samber/do/v2 providers (all factories)
