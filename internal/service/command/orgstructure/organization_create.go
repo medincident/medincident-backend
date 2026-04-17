@@ -13,6 +13,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
@@ -198,6 +199,9 @@ func (s *OrganizationService) Create(
 				Wrap(err)
 		}
 
+		if err := projector.OrganizationCreated(tx, &org); err != nil {
+			return err
+		}
 		event := buildOrganizationCreatedEvent(&org)
 		if err := outbox.Publish(tx, SubjectOrganizationCreated, AggregateTypeOrganization, org.ID.String(), org.UpdatedAt, event); err != nil {
 			return err
