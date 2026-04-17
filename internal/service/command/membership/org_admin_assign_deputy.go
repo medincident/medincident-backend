@@ -13,6 +13,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
@@ -106,6 +107,10 @@ func (s *EmployeeService) AssignOrganizationAdminDeputy(ctx context.Context, cmd
 		row.DeputyEmployeeID = null.ValueFrom(deputyID)
 		if err := tx.Save(&row).Error; err != nil {
 			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminSaveFailed).Wrap(err)
+		}
+
+		if err := projector.OrgAdminDeputyAssigned(tx, &row); err != nil {
+			return err
 		}
 
 		ev := &organizationv1.OrganizationAdminDeputyAssigned{

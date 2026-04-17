@@ -10,6 +10,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
@@ -67,6 +68,10 @@ func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinic
 					Wrap(err)
 			}
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
+		}
+
+		if err := projector.ClinicHeadAssigned(tx, &row); err != nil {
+			return err
 		}
 
 		ev := &clinicv1.ClinicHeadAssigned{

@@ -104,6 +104,25 @@ func resetDB(t *testing.T) {
 		`TRUNCATE TABLE domain.departments CASCADE`,
 		`TRUNCATE TABLE domain.clinics CASCADE`,
 		`TRUNCATE TABLE domain.organizations CASCADE`,
+		// Projection tables — sync projector writes these alongside
+		// every domain mutation, so cross-test id reuse needs a sweep
+		// or unique constraints trip on reruns.
+		`TRUNCATE TABLE projections.organization_counters,
+		                 projections.clinic_counters,
+		                 projections.department_counters,
+		                 projections.employee_cards,
+		                 projections.employee_vacations,
+		                 projections.employees,
+		                 projections.departments,
+		                 projections.clinics,
+		                 projections.organizations,
+		                 projections.clinic_heads,
+		                 projections.department_responsibles,
+		                 projections.org_admins,
+		                 projections.org_dispatchers,
+		                 projections.org_heads,
+		                 projections.system_admins
+		         CASCADE`,
 	}
 	for _, q := range truncate {
 		if _, err := raw.Exec(q); err != nil {

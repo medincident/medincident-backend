@@ -72,6 +72,25 @@ func takeFixture(t *testing.T) fixture {
 		_ = testDB.Exec(`DELETE FROM domain.clinics WHERE id IN (?, ?, ?)`, f.ClinicA1, f.ClinicA2, f.ClinicB1).Error
 		_ = testDB.Exec(`DELETE FROM domain.organizations WHERE id IN (?, ?)`, f.OrgA, f.OrgB).Error
 		_ = testDB.Exec(`DELETE FROM outbox.events`).Error
+		// Projection tables — sync projector writes these alongside
+		// every domain mutation, so the cleanup needs to sweep them
+		// too or cross-test id reuse trips unique constraints.
+		_ = testDB.Exec(`TRUNCATE TABLE projections.organization_counters,
+		                                 projections.clinic_counters,
+		                                 projections.department_counters,
+		                                 projections.employee_cards,
+		                                 projections.employee_vacations,
+		                                 projections.employees,
+		                                 projections.departments,
+		                                 projections.clinics,
+		                                 projections.organizations,
+		                                 projections.clinic_heads,
+		                                 projections.department_responsibles,
+		                                 projections.org_admins,
+		                                 projections.org_dispatchers,
+		                                 projections.org_heads,
+		                                 projections.system_admins
+		                         CASCADE`).Error
 	})
 	return f
 }

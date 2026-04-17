@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
@@ -76,8 +77,13 @@ func (s *EmployeeService) RevokeDepartmentResponsible(ctx context.Context, cmd R
 
 // publishDepartmentResponsibleRevoked is a shared helper for Revoke,
 // cascade-on-transfer, and cascade-on-terminate. It does NOT delete
-// the row; the caller is responsible for that.
+// the domain row; the caller owns that. The projector call here
+// removes the projection row so explicit and cascaded revokes stay in
+// sync.
 func publishDepartmentResponsibleRevoked(tx *gorm.DB, departmentID, employeeID uuid.UUID, now time.Time) error {
+	if err := projector.DepartmentResponsibleRevoked(tx, departmentID, employeeID); err != nil {
+		return err
+	}
 	ev := &departmentv1.DepartmentResponsibleRevoked{
 		EmployeeId: employeeID.String(),
 	}
@@ -85,8 +91,12 @@ func publishDepartmentResponsibleRevoked(tx *gorm.DB, departmentID, employeeID u
 }
 
 // publishDepartmentResponsibleDeputyRemoved is a shared helper; it
-// publishes the event only and does NOT update the row.
+// clears the projection's deputy slot and publishes the event. The
+// caller owns the domain-row update.
 func publishDepartmentResponsibleDeputyRemoved(tx *gorm.DB, departmentID, employeeID uuid.UUID, now time.Time) error {
+	if err := projector.DepartmentResponsibleDeputyRemoved(tx, departmentID, employeeID, now); err != nil {
+		return err
+	}
 	ev := &departmentv1.DepartmentResponsibleDeputyRemoved{
 		EmployeeId: employeeID.String(),
 	}

@@ -99,7 +99,13 @@ func resetProjections(t *testing.T) {
 		                 projections.clinics,
 		                 projections.organizations,
 		                 projections.sessions,
-		                 projections.users
+		                 projections.users,
+		                 projections.clinic_heads,
+		                 projections.department_responsibles,
+		                 projections.org_admins,
+		                 projections.org_dispatchers,
+		                 projections.org_heads,
+		                 projections.system_admins
 		         CASCADE`,
 	}
 	for _, q := range stmts {

@@ -13,6 +13,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
 )
 
@@ -113,6 +114,10 @@ func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd Assign
 		row.DeputyEmployeeID = null.ValueFrom(cmd.DeputyEmployeeID)
 		if err := tx.Save(&row).Error; err != nil {
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
+		}
+
+		if err := projector.ClinicHeadDeputyAssigned(tx, &row); err != nil {
+			return err
 		}
 
 		ev := &clinicv1.ClinicHeadDeputyAssigned{

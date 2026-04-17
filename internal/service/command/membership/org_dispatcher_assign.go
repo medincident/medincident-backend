@@ -10,6 +10,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
@@ -54,6 +55,10 @@ func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd 
 					Wrap(err)
 			}
 			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherSaveFailed).Wrap(err)
+		}
+
+		if err := projector.OrgDispatcherAssigned(tx, &row); err != nil {
+			return err
 		}
 
 		ev := &organizationv1.OrganizationDispatcherAssigned{

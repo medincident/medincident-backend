@@ -13,6 +13,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
 )
 
@@ -103,6 +104,10 @@ func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context,
 		row.DeputyEmployeeID = null.ValueFrom(cmd.DeputyEmployeeID)
 		if err := tx.Save(&row).Error; err != nil {
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleSaveFailed).Wrap(err)
+		}
+
+		if err := projector.DepartmentResponsibleDeputyAssigned(tx, &row); err != nil {
+			return err
 		}
 
 		ev := &departmentv1.DepartmentResponsibleDeputyAssigned{

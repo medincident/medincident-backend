@@ -10,6 +10,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	systemadminv1 "github.com/medincident/medincident-command-service/pkg/event/system_admin/v1"
 )
 
@@ -41,6 +42,10 @@ func (s *EmployeeService) RevokeSystemAdmin(ctx context.Context, cmd RevokeSyste
 				Public("System admin not found.").
 				With("zitadel_user_id", id).
 				Errorf("not found")
+		}
+
+		if err := projector.SystemAdminRevoked(tx, id); err != nil {
+			return err
 		}
 
 		ev := &systemadminv1.SystemAdminRevoked{}
