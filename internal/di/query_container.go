@@ -7,6 +7,9 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
 	"github.com/samber/oops"
+	"github.com/zitadel/zitadel-go/v3/pkg/authorization"
+	"github.com/zitadel/zitadel-go/v3/pkg/authorization/oauth"
+	"github.com/zitadel/zitadel-go/v3/pkg/zitadel"
 	"google.golang.org/grpc"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,6 +27,7 @@ import (
 	membershipread "github.com/medincident/medincident-command-service/internal/service/query/membership"
 	orgread "github.com/medincident/medincident-command-service/internal/service/query/orgstructure"
 	statsread "github.com/medincident/medincident-command-service/internal/service/query/stats"
+	zitadelsvc "github.com/medincident/medincident-command-service/internal/service/zitadel"
 	identityqueryv1 "github.com/medincident/medincident-command-service/pkg/query/identity/v1"
 	classifierqueryv1 "github.com/medincident/medincident-command-service/pkg/query/incident/classifier/v1"
 	membershipqueryv1 "github.com/medincident/medincident-command-service/pkg/query/membership/v1"
@@ -53,6 +57,9 @@ func NewQueryContainer(cfg *config.QueryServerConfig) (do.Injector, error) {
 	do.Provide(injector, provideNATSConnWrapper)
 	do.Provide(injector, provideNATSConn)
 	do.Provide(injector, provideJetStream)
+
+	// Zitadel authorizer (JWT introspection for the AuthnInterceptor).
+	do.Provide(injector, provideQueryAuthorizer)
 
 	// Readers
 	do.Provide(injector, provideOrganizationReader)
@@ -359,12 +366,42 @@ func provideIdentityQueryHandler(injector do.Injector) (*identityhandler.Identit
 
 // --- gRPC server ---
 
+// provideQueryAuthorizer wires JWT introspection against the Zitadel
+// domain configured for the query-server. Same flow as the
+// command-side provideAuthorizer — both binaries validate tokens the
+// same way, against the same Zitadel instance.
+func provideQueryAuthorizer(injector do.Injector) (*authorization.Authorizer[*oauth.IntrospectionContext], error) {
+	cfg, err := do.Invoke[*config.QueryServerConfig](injector)
+	if err != nil {
+		return nil, err
+	}
+
+	hostname, port, tls, _, err := zitadelsvc.ParseDomain(cfg.Zitadel.Domain)
+	if err != nil {
+		return nil, err
+	}
+	opts := zitadelsvc.ZitadelOptsFromParsed(port, tls)
+
+	ctx, cancel := context.WithTimeout(context.Background(), zitadelInitTimeout)
+	defer cancel()
+
+	return authorization.New[*oauth.IntrospectionContext](
+		ctx,
+		zitadel.New(hostname, opts...),
+		oauth.DefaultAuthorization(cfg.Zitadel.KeyPath),
+	)
+}
+
 func provideQueryGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) {
 	cfg, err := do.Invoke[*config.QueryServerConfig](injector)
 	if err != nil {
 		return nil, err
 	}
 	logger, err := do.Invoke[*zerolog.Logger](injector)
+	if err != nil {
+		return nil, err
+	}
+	authorizer, err := do.Invoke[*authorization.Authorizer[*oauth.IntrospectionContext]](injector)
 	if err != nil {
 		return nil, err
 	}
@@ -389,9 +426,21 @@ func provideQueryGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, er
 		return nil, err
 	}
 
+	// Health + reflection are public infrastructure endpoints — no JWT
+	// required. Matches command-server's skip set.
+	authnSkip := map[string]struct{}{
+		"/grpc.health.v1.Health/Check":                                   {},
+		"/grpc.health.v1.Health/Watch":                                   {},
+		"/grpc.reflection.v1.ServerReflection/ServerReflectionInfo":      {},
+		"/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo": {},
+	}
+
 	server := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
-		grpc.ChainUnaryInterceptor(middleware.ErrorInterceptor(logger)),
+		grpc.ChainUnaryInterceptor(
+			middleware.ErrorInterceptor(logger),
+			middleware.AuthnInterceptor(authorizer, authnSkip),
+		),
 	)
 	orgqueryv1.RegisterOrgStructureQueryServiceServer(server, orgHandler)
 	membershipqueryv1.RegisterMembershipQueryServiceServer(server, memHandler)
