@@ -71,8 +71,8 @@ func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) 
 	server := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
 		grpc.ChainUnaryInterceptor(
-			middleware.AuthnInterceptor(authorizer, authnSkip),
 			middleware.ErrorInterceptor(logger),
+			middleware.AuthnInterceptor(authorizer, authnSkip),
 		),
 	)
 	orgstructurev1.RegisterOrgStructureServiceServer(server, handler)

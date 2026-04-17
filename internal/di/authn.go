@@ -22,7 +22,7 @@ func provideAuthorizer(injector do.Injector) (*authorization.Authorizer[*oauth.I
 	if err != nil {
 		return nil, err
 	}
-	opts := zitadelsvc.ZitadelOptsFromParsed(hostname, port, tls)
+	opts := zitadelsvc.ZitadelOptsFromParsed(port, tls)
 
 	ctx, cancel := context.WithTimeout(context.Background(), zitadelInitTimeout)
 	defer cancel()

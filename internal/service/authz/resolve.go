@@ -2,6 +2,7 @@ package authz
 
 import (
 	"context"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
@@ -15,27 +16,20 @@ func (a *Authz) resolveOrgID(ctx context.Context, query string, arg uuid.UUID, e
 	if err := a.db.WithContext(ctx).
 		Raw(query, arg).
 		Scan(&orgIDStr).Error; err != nil {
-		return uuid.Nil, oops.In("service.authz").Code(ErrCodeScopeResolveFailed).
+		return uuid.Nil, oops.In("service.authz").Code(ErrCodeAuthzQueryFailed).
 			With(entityName+"_id", entityID).Wrap(err)
 	}
 	if orgIDStr == nil {
 		return uuid.Nil, oops.In("service.authz").Code(ErrCodeScopeResolveFailed).
-			Public(capitalize(entityName)+" not found.").
+			Public(strings.ToUpper(entityName[:1])+entityName[1:]+" not found.").
 			With(entityName+"_id", entityID).
 			Errorf("%s not found for authz scope", entityName)
 	}
 	id, err := uuid.Parse(*orgIDStr)
 	if err != nil {
-		return uuid.Nil, oops.In("service.authz").Code(ErrCodeScopeResolveFailed).Wrap(err)
+		return uuid.Nil, oops.In("service.authz").Code(ErrCodeAuthzQueryFailed).Wrap(err)
 	}
 	return id, nil
-}
-
-func capitalize(s string) string {
-	if s == "" {
-		return s
-	}
-	return string(s[0]-32) + s[1:]
 }
 
 func (a *Authz) resolveOrgByClinic(ctx context.Context, clinicID uuid.UUID) (uuid.UUID, error) {

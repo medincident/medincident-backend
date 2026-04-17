@@ -12,7 +12,7 @@ func (a *Authz) checkSystemAdmin(ctx context.Context, callerID string) (bool, er
 	if err := a.db.WithContext(ctx).
 		Raw(`SELECT EXISTS(SELECT 1 FROM domain.system_admins WHERE zitadel_user_id = ?)`, callerID).
 		Scan(&exists).Error; err != nil {
-		return false, oops.In("service.authz").Code(ErrCodeCallerNotFound).
+		return false, oops.In("service.authz").Code(ErrCodeAuthzQueryFailed).
 			With("caller_id", callerID).Wrap(err)
 	}
 	return exists, nil
@@ -33,7 +33,7 @@ func (a *Authz) checkOrgAdmin(ctx context.Context, callerID string, orgID uuid.U
 	if err := a.db.WithContext(ctx).
 		Raw(`SELECT id::text FROM domain.employees WHERE zitadel_user_id = ? AND organization_id = ?`, callerID, orgID).
 		Scan(&employeeIDStr).Error; err != nil {
-		return false, oops.In("service.authz").Code(ErrCodeCallerNotFound).
+		return false, oops.In("service.authz").Code(ErrCodeAuthzQueryFailed).
 			With("caller_id", callerID).With("organization_id", orgID).Wrap(err)
 	}
 	if employeeIDStr == nil {
@@ -41,7 +41,7 @@ func (a *Authz) checkOrgAdmin(ctx context.Context, callerID string, orgID uuid.U
 	}
 	employeeID, err := uuid.Parse(*employeeIDStr)
 	if err != nil {
-		return false, oops.In("service.authz").Code(ErrCodeCallerNotFound).Wrap(err)
+		return false, oops.In("service.authz").Code(ErrCodeAuthzQueryFailed).Wrap(err)
 	}
 
 	// 3. Direct org admin?
@@ -49,7 +49,7 @@ func (a *Authz) checkOrgAdmin(ctx context.Context, callerID string, orgID uuid.U
 	if err := a.db.WithContext(ctx).
 		Raw(`SELECT EXISTS(SELECT 1 FROM domain.org_admins WHERE organization_id = ? AND employee_id = ?)`, orgID, employeeID).
 		Scan(&isAdmin).Error; err != nil {
-		return false, oops.In("service.authz").Code(ErrCodeCallerNotFound).
+		return false, oops.In("service.authz").Code(ErrCodeAuthzQueryFailed).
 			With("caller_id", callerID).With("organization_id", orgID).Wrap(err)
 	}
 	if isAdmin {
@@ -68,7 +68,7 @@ func (a *Authz) checkOrgAdmin(ctx context.Context, callerID string, orgID uuid.U
 			  AND (v.ends_at IS NULL OR v.ends_at > now())
 		)`, orgID, employeeID).
 		Scan(&isDeputy).Error; err != nil {
-		return false, oops.In("service.authz").Code(ErrCodeCallerNotFound).
+		return false, oops.In("service.authz").Code(ErrCodeAuthzQueryFailed).
 			With("caller_id", callerID).With("organization_id", orgID).Wrap(err)
 	}
 	return isDeputy, nil

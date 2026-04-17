@@ -260,6 +260,7 @@ var errorCodeOverrides = map[string]codes.Code{
 	"unauthenticated":             codes.Unauthenticated,
 	"permission_denied":           codes.PermissionDenied,
 	"scope_resolve_failed":        codes.NotFound,
+	"authz_query_failed":          codes.Internal,
 }
 
 // errorCodeSuffixes is checked in order; the first matching suffix

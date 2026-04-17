@@ -57,7 +57,7 @@ func NewServiceFromKeyFile(ctx context.Context, logger *zerolog.Logger, domain, 
 			Wrap(err)
 	}
 	warnIfTLSDefaulted(logger, domain, tlsDefaulted)
-	opts := ZitadelOptsFromParsed(hostname, port, tls)
+	opts := ZitadelOptsFromParsed(port, tls)
 	cl, err := client.New(
 		ctx,
 		zitadelcfg.New(hostname, opts...),
@@ -89,7 +89,7 @@ func NewServiceFromPAT(ctx context.Context, logger *zerolog.Logger, domain, pat 
 			Wrap(err)
 	}
 	warnIfTLSDefaulted(logger, domain, tlsDefaulted)
-	opts := ZitadelOptsFromParsed(hostname, port, tls)
+	opts := ZitadelOptsFromParsed(port, tls)
 	cl, err := client.New(
 		ctx,
 		zitadelcfg.New(hostname, opts...),
@@ -161,7 +161,7 @@ func warnIfTLSDefaulted(logger *zerolog.Logger, domain string, tlsDefaulted bool
 
 // ZitadelOptsFromParsed returns the zitadelcfg options that match the
 // parsed hostname/port/tls combination.
-func ZitadelOptsFromParsed(_, port string, tls bool) []zitadelcfg.Option {
+func ZitadelOptsFromParsed(port string, tls bool) []zitadelcfg.Option {
 	if !tls {
 		// WithInsecure sets both port and disables TLS.
 		p := port

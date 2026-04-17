@@ -53,8 +53,9 @@ func AuthnInterceptor(
 	}
 }
 
-// bearerTokenFromMD extracts the full "Bearer <token>" value from the
-// gRPC "authorization" metadata header. Returns "" when absent.
+// bearerTokenFromMD extracts the Bearer token from the gRPC
+// "authorization" metadata header. Returns "" when absent or when
+// the scheme is not "Bearer".
 func bearerTokenFromMD(ctx context.Context) string {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
@@ -65,8 +66,9 @@ func bearerTokenFromMD(ctx context.Context) string {
 		return ""
 	}
 	v := strings.TrimSpace(values[0])
-	if v == "" {
+	const prefix = "Bearer "
+	if len(v) <= len(prefix) || !strings.EqualFold(v[:len(prefix)], prefix) {
 		return ""
 	}
-	return v
+	return v[len(prefix):]
 }

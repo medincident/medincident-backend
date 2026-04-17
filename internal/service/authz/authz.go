@@ -9,6 +9,7 @@ const (
 	ErrCodePermissionDenied   = "permission_denied"
 	ErrCodeCallerNotFound     = "caller_not_found"
 	ErrCodeScopeResolveFailed = "scope_resolve_failed"
+	ErrCodeAuthzQueryFailed   = "authz_query_failed"
 )
 
 func errPermissionDenied(callerID string) error {
