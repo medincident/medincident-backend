@@ -4,6 +4,7 @@ import (
 	"context"
 
 	orgstructurev1 "github.com/medincident/medincident-command-service/gen/api/medincident/service/orgstructure/v1"
+	"github.com/medincident/medincident-command-service/internal/middleware"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
 )
 
@@ -13,6 +14,9 @@ func (h *OrgStructureHandler) UpdateOrganizationLegalAddress(
 ) (*orgstructurev1.UpdateOrganizationLegalAddressResponse, error) {
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
+		return nil, err
+	}
+	if err := h.authz.RequireOrgAdmin(ctx, middleware.CallerID(ctx), id); err != nil {
 		return nil, err
 	}
 	if err := h.orgSvc.UpdateLegalAddress(ctx, orgsvc.UpdateOrganizationLegalAddressCommand{
