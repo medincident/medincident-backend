@@ -17,7 +17,7 @@ import (
 const zitadelInitTimeout = 30 * time.Second
 
 func provideZitadelService(injector do.Injector) (*zitadel.Service, error) {
-	cfg, err := do.Invoke[*config.Config](injector)
+	cfg, err := do.Invoke[*config.CommandServerConfig](injector)
 	if err != nil {
 		return nil, err
 	}

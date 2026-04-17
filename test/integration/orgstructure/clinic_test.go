@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 )
 
 // seedOrganization creates one organization and returns its id.

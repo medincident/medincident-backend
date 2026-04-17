@@ -60,11 +60,12 @@ Command никогда не читает проекции и не знает о 
 
 ## Директории
 
-- `api/proto/` — исходные `.proto` контракты (event/* + service/*)
-- `api/openapi/command-service.swagger.json` — merged OpenAPI v2 (коммитится)
+- `api/proto/` — исходные `.proto` контракты (event/* + command/*)
+- `api/openapi/command-server.swagger.json` — merged OpenAPI v2 (коммитится)
 - `pkg/` — сгенерированный buf Go-код (коммитится)
-- `docs/proto/command-service.md` — сгенерированная Markdown-документация (коммитится)
-- `cmd/server/` — точка входа, graceful shutdown
+- `docs/proto/command-server.md` — сгенерированная Markdown-документация (коммитится)
+- `cmd/command-server/` — точка входа command-side gRPC сервера, graceful shutdown
+- `cmd/query-server/` — точка входа query-side сервера (placeholder, заполняется в Plan 3)
 - `configs/` — YAML config пример
 - `db/migrations/` — dbmate миграции (через `task migrate:new`)
 - `internal/config/` — YAML loader + go-playground/validator
@@ -81,7 +82,7 @@ Command никогда не читает проекции и не знает о 
 ```bash
 export DATABASE_URL="postgres://postgres:postgres@localhost:5432/medincident?sslmode=disable"
 task migrate
-go run ./cmd/server --config configs/config.example.yaml
+go run ./cmd/command-server --config configs/command-server.example.yaml
 ```
 
 ## Тестирование

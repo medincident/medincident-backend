@@ -1,6 +1,6 @@
 // Package di wires the service's dependency graph via samber/do/v2.
 //
-// The container is built once from a loaded *config.Config. Providers
+// The container is built once from a loaded *config.CommandServerConfig. Providers
 // are lifecycle-aware: anything that holds external resources (gorm
 // pool, log file handles, gRPC server) is held by a private wrapper
 // that implements the do Shutdowner protocol. Consumers depend on the
@@ -18,7 +18,7 @@ import (
 )
 
 // NewContainer wires all providers and returns a ready-to-invoke injector.
-func NewContainer(cfg *config.Config) (do.Injector, error) {
+func NewContainer(cfg *config.CommandServerConfig) (do.Injector, error) {
 	injector := do.New()
 
 	do.ProvideValue(injector, cfg)

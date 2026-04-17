@@ -1,5 +1,5 @@
-ENTRY    := ./cmd/server
-BIN_NAME := server
+ENTRY    := ./cmd/command-server
+BIN_NAME := command-server
 DIST     := ./dist
 
 GOOS   ?= $(shell go env GOOS)

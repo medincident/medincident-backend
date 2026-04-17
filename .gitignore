@@ -13,9 +13,10 @@
 
 # Code coverage profiles and other test artifacts
 *.out
-coverage.*
 *.coverprofile
 profile.cov
+coverage.*
+coverage.html
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
@@ -24,38 +25,26 @@ profile.cov
 go.work
 go.work.sum
 
-# env file
-.env
-
-# Editor/IDE
-# .idea/
-# .vscode/
-
-.claude/*.lock
-drafts/
-/docs/superpowers/
-
-# Build output
-/bin/
-/dist/
-/tmp/
-
 # Env files
 .env
 .env.local
+
+# Build output
+bin/
+dist/
+/tmp/
+/command-server
+/query-server
 
 # Editor / OS
 .DS_Store
 .idea/
 .vscode/settings.json
 
-# Generated
-# gen/ is committed (buf output). sqlc gen/ is committed too.
-
-# Coverage
-coverage.out
-coverage.html
+# Internal scratch
+drafts/
+.claude/
+.claude/*.lock
 
 # Superpowers internal docs — never committed
 docs/superpowers/
-.claude/

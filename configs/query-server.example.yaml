@@ -1,0 +1,57 @@
+# query-server — example configuration.
+#
+# Loaded by cmd/query-server/main.go via config.ReadQueryServerConfig
+# (wired in Plan 3 — the placeholder binary added in Plan 1 does not
+# load this file yet).
+# ${VAR} and $VAR references are expanded from the process environment
+# before YAML parsing, so secrets (DSN, etc.) should be injected via env
+# rather than hard-coded.
+
+server:
+  grpc:
+    # TCP listen address for the gRPC server.
+    # Different port than command-server (:9090) so both binaries can
+    # run on the same host in dev.
+    address: ":9091"
+    # Maximum inbound message size in bytes. Covers a single request.
+    max_recv_msg_size: 4194304  # 4 MiB
+  gateway:
+    # HTTP listen address for the grpc-gateway. Different port than
+    # command-server's gateway so both can run on the same host.
+    address: ":8082"
+
+postgres:
+  # libpq-style DSN, normally injected via env: dsn: ${DATABASE_URL}.
+  # Same database as command-server — the read side queries the
+  # projections.* schema that the command side writes to.
+  dsn: "postgres://postgres:postgres@localhost:5432/medincident?sslmode=disable"
+  pool:
+    max_open_conns: 20
+    max_idle_conns: 2
+    conn_max_lifetime: 30m
+    conn_max_idle_time: 5m
+
+zerolog:
+  level: info
+  timestamp: true
+  time_format: "2006-01-02T15:04:05Z07:00"
+  outputs:
+    - type: console
+      target: stdout
+      pretty: true
+      time_format: "15:04:05"
+      parts_order: ["time", "level", "caller", "message"]
+
+# NATS JetStream — only the Zitadel events stream is consumed by the
+# query-server identity projector. Stream provisioning is owned by ops;
+# query-server only attaches a durable consumer to an existing stream.
+nats:
+  url: "${NATS_URL}"                # e.g. nats://localhost:4222
+  stream: "zitadel"
+  subjects: ["zitadel.>"]
+  durable_name: "medincident-query-server-zitadel"
+
+# Zitadel — base info for any reader that needs to enrich a row with
+# live Zitadel data. Identity projections come from NATS, not the API.
+zitadel:
+  domain: "${ZITADEL_DOMAIN}"

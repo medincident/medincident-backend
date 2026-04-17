@@ -7,9 +7,9 @@ import (
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
 	"github.com/medincident/medincident-command-service/internal/service/authz"
-	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
-	"github.com/medincident/medincident-command-service/internal/service/membership"
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
+	"github.com/medincident/medincident-command-service/internal/service/command/membership"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 )
 
 func provideOrgStructureHandler(injector do.Injector) (*orghandler.OrgStructureHandler, error) {

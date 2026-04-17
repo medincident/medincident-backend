@@ -1,0 +1,21 @@
+# Multi-stage build for the command-server binary.
+# The first stage compiles a static Linux binary with the same Go
+# toolchain version as go.mod. The second stage is a distroless base
+# that runs as a non-root user with no shell.
+
+ARG GO_VERSION=1.26
+
+FROM golang:${GO_VERSION}-alpine AS build
+WORKDIR /src
+RUN apk add --no-cache ca-certificates git
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build -trimpath -ldflags "-s -w" -o /out/command-server ./cmd/command-server
+
+FROM gcr.io/distroless/static-debian12:nonroot
+COPY --from=build /out/command-server /usr/local/bin/command-server
+USER nonroot:nonroot
+EXPOSE 9090 8081
+ENTRYPOINT ["/usr/local/bin/command-server"]

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
 )
 
 func codeOf(t *testing.T, err error) string {

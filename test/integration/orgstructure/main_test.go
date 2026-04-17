@@ -19,7 +19,7 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 )
 
 var (

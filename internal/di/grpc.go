@@ -14,9 +14,9 @@ import (
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
 	"github.com/medincident/medincident-command-service/internal/middleware"
-	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/service/incident/classifier/v1"
-	membershipv1 "github.com/medincident/medincident-command-service/pkg/service/membership/v1"
-	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/service/orgstructure/v1"
+	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
+	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
+	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
 )
 
 // grpcServerWrapper owns the *grpc.Server lifecycle. Private to di —
@@ -43,7 +43,7 @@ func (g *grpcServerWrapper) Shutdown(ctx context.Context) error {
 }
 
 func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) {
-	cfg, err := do.Invoke[*config.Config](injector)
+	cfg, err := do.Invoke[*config.CommandServerConfig](injector)
 	if err != nil {
 		return nil, err
 	}
@@ -75,19 +75,19 @@ func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) 
 			middleware.AuthnInterceptor(authorizer, authnSkip),
 		),
 	)
-	orgstructurev1.RegisterOrgStructureServiceServer(server, handler)
+	orgstructurev1.RegisterOrgStructureCommandServiceServer(server, handler)
 
 	membershipHandler, err := do.Invoke[*membershiphandler.MembershipHandler](injector)
 	if err != nil {
 		return nil, err
 	}
-	membershipv1.RegisterMembershipServiceServer(server, membershipHandler)
+	membershipv1.RegisterMembershipCommandServiceServer(server, membershipHandler)
 
 	incidentClassifierHandler, err := do.Invoke[*classifierhandler.IncidentClassifierHandler](injector)
 	if err != nil {
 		return nil, err
 	}
-	incidentclassifierv1.RegisterIncidentClassifierServiceServer(server, incidentClassifierHandler)
+	incidentclassifierv1.RegisterIncidentClassifierCommandServiceServer(server, incidentClassifierHandler)
 
 	return &grpcServerWrapper{Server: server}, nil
 }

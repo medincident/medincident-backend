@@ -5,9 +5,9 @@ import (
 	"github.com/samber/do/v2"
 	"gorm.io/gorm"
 
-	classifiersvc "github.com/medincident/medincident-command-service/internal/service/incident/classifier"
-	"github.com/medincident/medincident-command-service/internal/service/membership"
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
+	"github.com/medincident/medincident-command-service/internal/service/command/membership"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
 

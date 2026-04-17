@@ -14,7 +14,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/orgstructure"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 	envelopev1 "github.com/medincident/medincident-command-service/pkg/event/v1"
 )

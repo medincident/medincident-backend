@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/medincident/medincident-command-service/internal/service/membership"
+	"github.com/medincident/medincident-command-service/internal/service/command/membership"
 	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
