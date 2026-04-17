@@ -57,7 +57,7 @@ func TestValidateIncidentCategoryDescription(t *testing.T) {
 		wantErr string
 	}{
 		{"nil is fine", nil, ""},
-		{"whitespace only is fine", desc("   "), ""},
+		{"whitespace only is rejected", desc("   "), ErrCodeIncidentCategoryDescriptionTooShort},
 		{"too short", desc("short"), ErrCodeIncidentCategoryDescriptionTooShort},
 		{"ok", desc("long enough description"), ""},
 		{"ok max", desc(strings.Repeat("a", incidentCategoryMaxDescLen)), ""},
@@ -106,7 +106,7 @@ func TestValidateIncidentTypeDescription(t *testing.T) {
 		wantErr string
 	}{
 		{"nil", nil, ""},
-		{"whitespace only", desc("  "), ""},
+		{"whitespace only is rejected", desc("  "), ErrCodeIncidentTypeDescriptionTooShort},
 		{"too short", desc("tiny"), ErrCodeIncidentTypeDescriptionTooShort},
 		{"ok", desc("this is a fine description"), ""},
 		{"too long", desc(strings.Repeat("y", incidentTypeMaxDescLen+1)), ErrCodeIncidentTypeDescriptionTooLong},
