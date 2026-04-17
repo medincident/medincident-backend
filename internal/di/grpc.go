@@ -43,7 +43,7 @@ func (g *grpcServerWrapper) Shutdown(ctx context.Context) error {
 }
 
 func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) {
-	cfg, err := do.Invoke[*config.Config](injector)
+	cfg, err := do.Invoke[*config.CommandServerConfig](injector)
 	if err != nil {
 		return nil, err
 	}

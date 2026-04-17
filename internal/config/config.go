@@ -18,8 +18,10 @@ const (
 
 var validate = validator.New(validator.WithRequiredStructEnabled())
 
-// Config is the root application configuration.
-type Config struct {
+// CommandServerConfig is the root application configuration for the
+// command-server binary. The query-server binary uses
+// QueryServerConfig (defined in query_server.go).
+type CommandServerConfig struct {
 	Server   ServerConfig   `yaml:"server"   validate:"required"`
 	Postgres PostgresConfig `yaml:"postgres" validate:"required"`
 	Zerolog  ZerologConfig  `yaml:"zerolog"  validate:"required"`
@@ -64,8 +66,8 @@ const (
 	defaultPostgresConnMaxIdleTime = 5 * time.Minute
 )
 
-func defaultConfig() Config {
-	return Config{
+func defaultCommandServerConfig() CommandServerConfig {
+	return CommandServerConfig{
 		Server: ServerConfig{
 			GRPC: GRPCServerConfig{
 				Address:        defaultGRPCAddress,
@@ -97,33 +99,45 @@ func defaultConfig() Config {
 	}
 }
 
-// Read loads a YAML config file from path and expands ${VAR} / $VAR
-// references in its content using the current process environment.
-func Read(path string) (*Config, error) {
+// ReadCommandServerConfig loads a command-server YAML config file from
+// path and expands ${VAR} / $VAR references in its content using the
+// current process environment.
+func ReadCommandServerConfig(path string) (*CommandServerConfig, error) {
+	cfg := defaultCommandServerConfig()
+	if err := readAndValidate(path, &cfg); err != nil {
+		return nil, err
+	}
+	return &cfg, nil
+}
+
+// readAndValidate is the shared YAML-load + env-expand + validator
+// pipeline used by both server-config loaders. It writes into the
+// pointed-to struct and returns oops-wrapped errors with the path
+// attached as context.
+func readAndValidate(path string, dst any) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return nil, oops.
+		return oops.
 			In("config").
 			Code(ErrCodeConfigReadFailed).
 			With("path", path).
 			Wrap(err)
 	}
 	expanded := os.ExpandEnv(string(data))
-	cfg := defaultConfig()
-	if err := yaml.Unmarshal([]byte(expanded), &cfg); err != nil {
-		return nil, oops.
+	if err := yaml.Unmarshal([]byte(expanded), dst); err != nil {
+		return oops.
 			In("config").
 			Code(ErrCodeConfigUnmarshalFailed).
 			With("path", path).
 			Wrap(err)
 	}
-	if err := validate.Struct(&cfg); err != nil {
-		return nil, oops.
+	if err := validate.Struct(dst); err != nil {
+		return oops.
 			In("config").
 			Code(ErrCodeConfigValidateFailed).
 			With("path", path).
 			With("violations", err.Error()).
 			Wrap(err)
 	}
-	return &cfg, nil
+	return nil
 }

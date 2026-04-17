@@ -34,7 +34,7 @@ func (p *postgresDBWrapper) Shutdown(_ context.Context) error {
 }
 
 func providePostgresDBWrapper(injector do.Injector) (*postgresDBWrapper, error) {
-	cfg, err := do.Invoke[*config.Config](injector)
+	cfg, err := do.Invoke[*config.CommandServerConfig](injector)
 	if err != nil {
 		return nil, err
 	}

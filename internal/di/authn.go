@@ -13,7 +13,7 @@ import (
 )
 
 func provideAuthorizer(injector do.Injector) (*authorization.Authorizer[*oauth.IntrospectionContext], error) {
-	cfg, err := do.Invoke[*config.Config](injector)
+	cfg, err := do.Invoke[*config.CommandServerConfig](injector)
 	if err != nil {
 		return nil, err
 	}

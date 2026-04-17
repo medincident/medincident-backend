@@ -27,7 +27,7 @@ func main() {
 
 	bootLogger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
-	cfg, err := config.Read(configPath)
+	cfg, err := config.ReadCommandServerConfig(configPath)
 	if err != nil {
 		bootLogger.Fatal().Err(err).Str("config", configPath).Msg("failed to read config")
 	}
