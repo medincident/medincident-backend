@@ -28,12 +28,10 @@ type UpdateOrganizationDetailsCommand struct {
 // event from the updated model. Only name and description are included;
 // address is carried by a separate event type.
 func buildOrganizationDetailsChangedEvent(org *model.Organization) *organizationv1.OrganizationDetailsChanged {
-	ev := &organizationv1.OrganizationDetailsChanged{Name: org.Name}
-	if org.Description.Valid {
-		desc := org.Description.String
-		ev.Description = &desc
+	return &organizationv1.OrganizationDetailsChanged{
+		Name:        org.Name,
+		Description: org.Description.Ptr(),
 	}
-	return ev
 }
 
 // UpdateDetails changes an organization's name and description. If

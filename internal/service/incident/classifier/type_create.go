@@ -38,16 +38,12 @@ type CreateIncidentTypeResult struct {
 }
 
 func buildIncidentTypeCreatedEvent(t *model.IncidentType) *typeeventv1.IncidentTypeCreated {
-	ev := &typeeventv1.IncidentTypeCreated{
+	return &typeeventv1.IncidentTypeCreated{
 		OrganizationId: t.OrganizationID.String(),
 		CategoryId:     t.CategoryID.String(),
 		Name:           t.Name,
+		Description:    t.Description.Ptr(),
 	}
-	if t.Description.Valid {
-		d := t.Description.String
-		ev.Description = &d
-	}
-	return ev
 }
 
 func (s *IncidentTypeService) Create(

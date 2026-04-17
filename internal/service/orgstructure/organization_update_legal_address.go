@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -29,10 +28,10 @@ func buildOrganizationLegalAddressChangedEvent(org *model.Organization) *organiz
 	ev := &organizationv1.OrganizationLegalAddressChanged{
 		LegalAddress: &organizationv1.Address{Text: org.LegalAddress.Text},
 	}
-	if org.LegalAddress.Point.Longitude.Valid && org.LegalAddress.Point.Latitude.Valid {
+	if org.LegalAddress.Point != nil {
 		ev.LegalAddress.Point = &organizationv1.Point{
-			Longitude: org.LegalAddress.Point.Longitude.Float64,
-			Latitude:  org.LegalAddress.Point.Latitude.Float64,
+			Longitude: org.LegalAddress.Point.Longitude,
+			Latitude:  org.LegalAddress.Point.Latitude,
 		}
 	}
 	return ev
@@ -73,12 +72,12 @@ func (s *OrganizationService) UpdateLegalAddress(
 			Text: strings.TrimSpace(cmd.Address.Text),
 		}
 		if cmd.Address.Point != nil {
-			newAddress.Point = model.Point{
-				Longitude: null.FloatFrom(cmd.Address.Point.Longitude),
-				Latitude:  null.FloatFrom(cmd.Address.Point.Latitude),
+			newAddress.Point = &model.Point{
+				Longitude: cmd.Address.Point.Longitude,
+				Latitude:  cmd.Address.Point.Latitude,
 			}
 		}
-		if org.LegalAddress == newAddress {
+		if org.LegalAddress.Equal(newAddress) {
 			return nil
 		}
 		org.LegalAddress = newAddress

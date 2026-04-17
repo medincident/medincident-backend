@@ -71,10 +71,8 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
 		}
 
-		ev := &employeev1.EmployeePositionChanged{}
-		if newPos.Valid {
-			p := newPos.String
-			ev.Position = &p
+		ev := &employeev1.EmployeePositionChanged{
+			Position: newPos.Ptr(),
 		}
 		return outbox.Publish(tx, SubjectEmployeePositionChanged, AggregateTypeEmployee, emp.ID.String(), emp.UpdatedAt, ev)
 	})

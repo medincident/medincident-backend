@@ -48,14 +48,11 @@ func buildIncidentCategoryCreatedEvent(c *model.IncidentCategory) *categoryevent
 	ev := &categoryeventv1.IncidentCategoryCreated{
 		OrganizationId: c.OrganizationID.String(),
 		Name:           c.Name,
+		Description:    c.Description.Ptr(),
 	}
 	if c.ParentCategoryID.Valid {
 		s := c.ParentCategoryID.UUID.String()
 		ev.ParentCategoryId = &s
-	}
-	if c.Description.Valid {
-		d := c.Description.String
-		ev.Description = &d
 	}
 	return ev
 }

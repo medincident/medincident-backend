@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -25,10 +24,10 @@ func buildClinicPhysicalAddressChangedEvent(c *model.Clinic) *clinicv1.ClinicPhy
 	ev := &clinicv1.ClinicPhysicalAddressChanged{
 		PhysicalAddress: &clinicv1.Address{Text: c.PhysicalAddress.Text},
 	}
-	if c.PhysicalAddress.Point.Longitude.Valid && c.PhysicalAddress.Point.Latitude.Valid {
+	if c.PhysicalAddress.Point != nil {
 		ev.PhysicalAddress.Point = &clinicv1.Point{
-			Longitude: c.PhysicalAddress.Point.Longitude.Float64,
-			Latitude:  c.PhysicalAddress.Point.Latitude.Float64,
+			Longitude: c.PhysicalAddress.Point.Longitude,
+			Latitude:  c.PhysicalAddress.Point.Latitude,
 		}
 	}
 	return ev
@@ -65,12 +64,12 @@ func (s *ClinicService) UpdatePhysicalAddress(
 
 		newAddress := model.Address{Text: strings.TrimSpace(cmd.Address.Text)}
 		if cmd.Address.Point != nil {
-			newAddress.Point = model.Point{
-				Longitude: null.FloatFrom(cmd.Address.Point.Longitude),
-				Latitude:  null.FloatFrom(cmd.Address.Point.Latitude),
+			newAddress.Point = &model.Point{
+				Longitude: cmd.Address.Point.Longitude,
+				Latitude:  cmd.Address.Point.Latitude,
 			}
 		}
-		if clinic.PhysicalAddress == newAddress {
+		if clinic.PhysicalAddress.Equal(newAddress) {
 			return nil
 		}
 		clinic.PhysicalAddress = newAddress

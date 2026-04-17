@@ -132,10 +132,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			ZitadelUserId:  zitadelUserID,
 			OrganizationId: orgID.String(),
 			DepartmentId:   cmd.DepartmentID.String(),
-		}
-		if position.Valid {
-			p := position.String
-			ev.Position = &p
+			Position:       position.Ptr(),
 		}
 		if err := outbox.Publish(tx, SubjectEmployeeHired, AggregateTypeEmployee, id.String(), emp.UpdatedAt, ev); err != nil {
 			return err

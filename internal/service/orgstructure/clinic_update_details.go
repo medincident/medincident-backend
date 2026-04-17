@@ -23,12 +23,10 @@ type UpdateClinicDetailsCommand struct {
 }
 
 func buildClinicDetailsChangedEvent(c *model.Clinic) *clinicv1.ClinicDetailsChanged {
-	ev := &clinicv1.ClinicDetailsChanged{Name: c.Name}
-	if c.Description.Valid {
-		desc := c.Description.String
-		ev.Description = &desc
+	return &clinicv1.ClinicDetailsChanged{
+		Name:        c.Name,
+		Description: c.Description.Ptr(),
 	}
-	return ev
 }
 
 func (s *ClinicService) UpdateDetails(

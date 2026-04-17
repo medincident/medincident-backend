@@ -23,12 +23,10 @@ type UpdateDepartmentDetailsCommand struct {
 }
 
 func buildDepartmentDetailsChangedEvent(d *model.Department) *departmentv1.DepartmentDetailsChanged {
-	ev := &departmentv1.DepartmentDetailsChanged{Name: d.Name}
-	if d.Description.Valid {
-		desc := d.Description.String
-		ev.Description = &desc
+	return &departmentv1.DepartmentDetailsChanged{
+		Name:        d.Name,
+		Description: d.Description.Ptr(),
 	}
-	return ev
 }
 
 func (s *DepartmentService) UpdateDetails(

@@ -6,8 +6,7 @@ CREATE TABLE domain.clinics (
     name                        TEXT        NOT NULL,
     description                 TEXT,
     physical_address_text       TEXT        NOT NULL,
-    physical_address_longitude  DOUBLE PRECISION,
-    physical_address_latitude   DOUBLE PRECISION,
+    physical_address_point      domain.geo_point,
     created_at                  TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at                  TIMESTAMPTZ NOT NULL DEFAULT now()
 );

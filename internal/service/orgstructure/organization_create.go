@@ -131,19 +131,16 @@ func validateOrganizationDescription(desc *string) error {
 // event from the persisted model.
 func buildOrganizationCreatedEvent(org *model.Organization) *organizationv1.OrganizationCreated {
 	ev := &organizationv1.OrganizationCreated{
-		Name: org.Name,
+		Name:        org.Name,
+		Description: org.Description.Ptr(),
 		LegalAddress: &organizationv1.Address{
 			Text: org.LegalAddress.Text,
 		},
 	}
-	if org.Description.Valid {
-		desc := org.Description.String
-		ev.Description = &desc
-	}
-	if org.LegalAddress.Point.Longitude.Valid && org.LegalAddress.Point.Latitude.Valid {
+	if org.LegalAddress.Point != nil {
 		ev.LegalAddress.Point = &organizationv1.Point{
-			Longitude: org.LegalAddress.Point.Longitude.Float64,
-			Latitude:  org.LegalAddress.Point.Latitude.Float64,
+			Longitude: org.LegalAddress.Point.Longitude,
+			Latitude:  org.LegalAddress.Point.Latitude,
 		}
 	}
 	return ev
@@ -186,9 +183,9 @@ func (s *OrganizationService) Create(
 		},
 	}
 	if cmd.LegalAddress.Point != nil {
-		org.LegalAddress.Point = model.Point{
-			Longitude: null.FloatFrom(cmd.LegalAddress.Point.Longitude),
-			Latitude:  null.FloatFrom(cmd.LegalAddress.Point.Latitude),
+		org.LegalAddress.Point = &model.Point{
+			Longitude: cmd.LegalAddress.Point.Longitude,
+			Latitude:  cmd.LegalAddress.Point.Latitude,
 		}
 	}
 

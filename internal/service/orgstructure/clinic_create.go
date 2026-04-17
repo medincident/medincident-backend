@@ -117,16 +117,13 @@ func buildClinicCreatedEvent(c *model.Clinic) *clinicv1.ClinicCreated {
 	ev := &clinicv1.ClinicCreated{
 		OrganizationId:  c.OrganizationID.String(),
 		Name:            c.Name,
+		Description:     c.Description.Ptr(),
 		PhysicalAddress: &clinicv1.Address{Text: c.PhysicalAddress.Text},
 	}
-	if c.Description.Valid {
-		desc := c.Description.String
-		ev.Description = &desc
-	}
-	if c.PhysicalAddress.Point.Longitude.Valid && c.PhysicalAddress.Point.Latitude.Valid {
+	if c.PhysicalAddress.Point != nil {
 		ev.PhysicalAddress.Point = &clinicv1.Point{
-			Longitude: c.PhysicalAddress.Point.Longitude.Float64,
-			Latitude:  c.PhysicalAddress.Point.Latitude.Float64,
+			Longitude: c.PhysicalAddress.Point.Longitude,
+			Latitude:  c.PhysicalAddress.Point.Latitude,
 		}
 	}
 	return ev
@@ -168,9 +165,9 @@ func (s *ClinicService) Create(
 		},
 	}
 	if cmd.PhysicalAddress.Point != nil {
-		clinic.PhysicalAddress.Point = model.Point{
-			Longitude: null.FloatFrom(cmd.PhysicalAddress.Point.Longitude),
-			Latitude:  null.FloatFrom(cmd.PhysicalAddress.Point.Latitude),
+		clinic.PhysicalAddress.Point = &model.Point{
+			Longitude: cmd.PhysicalAddress.Point.Longitude,
+			Latitude:  cmd.PhysicalAddress.Point.Latitude,
 		}
 	}
 

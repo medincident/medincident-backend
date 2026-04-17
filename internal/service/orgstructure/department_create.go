@@ -112,15 +112,11 @@ func validateDepartmentDescription(desc *string) error {
 }
 
 func buildDepartmentCreatedEvent(d *model.Department) *departmentv1.DepartmentCreated {
-	ev := &departmentv1.DepartmentCreated{
-		ClinicId: d.ClinicID.String(),
-		Name:     d.Name,
+	return &departmentv1.DepartmentCreated{
+		ClinicId:    d.ClinicID.String(),
+		Name:        d.Name,
+		Description: d.Description.Ptr(),
 	}
-	if d.Description.Valid {
-		desc := d.Description.String
-		ev.Description = &desc
-	}
-	return ev
 }
 
 func (s *DepartmentService) Create(

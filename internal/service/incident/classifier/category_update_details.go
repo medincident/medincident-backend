@@ -25,12 +25,10 @@ type UpdateIncidentCategoryDetailsCommand struct {
 type UpdateIncidentCategoryDetailsResult struct{}
 
 func buildIncidentCategoryDetailsChangedEvent(c *model.IncidentCategory) *categoryeventv1.IncidentCategoryDetailsChanged {
-	ev := &categoryeventv1.IncidentCategoryDetailsChanged{Name: c.Name}
-	if c.Description.Valid {
-		d := c.Description.String
-		ev.Description = &d
+	return &categoryeventv1.IncidentCategoryDetailsChanged{
+		Name:        c.Name,
+		Description: c.Description.Ptr(),
 	}
-	return ev
 }
 
 func (s *IncidentCategoryService) UpdateDetails(
