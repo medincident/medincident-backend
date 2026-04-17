@@ -103,7 +103,13 @@ func validateIncidentCategoryDescription(desc *string) error {
 	}
 	trimmed := strings.TrimSpace(*desc)
 	if trimmed == "" {
-		return nil
+		return oops.In("services.incident.classifier.category").
+			Code(ErrCodeIncidentCategoryDescriptionTooShort).
+			Public("Incident category description is too short.").
+			With("field", "description").
+			With("actual_length", 0).
+			With("min_length", incidentCategoryMinDescLen).
+			Errorf("description too short")
 	}
 	n := utf8.RuneCountInString(trimmed)
 	if n < incidentCategoryMinDescLen {
@@ -164,7 +170,13 @@ func validateIncidentTypeDescription(desc *string) error {
 	}
 	trimmed := strings.TrimSpace(*desc)
 	if trimmed == "" {
-		return nil
+		return oops.In("services.incident.classifier.type").
+			Code(ErrCodeIncidentTypeDescriptionTooShort).
+			Public("Incident type description is too short.").
+			With("field", "description").
+			With("actual_length", 0).
+			With("min_length", incidentTypeMinDescLen).
+			Errorf("description too short")
 	}
 	n := utf8.RuneCountInString(trimmed)
 	if n < incidentTypeMinDescLen {
@@ -188,16 +200,12 @@ func validateIncidentTypeDescription(desc *string) error {
 	return nil
 }
 
-// trimmedStringPtr returns a pointer to the trimmed input iff the
-// trimmed value is non-empty; otherwise nil. Used to collapse
-// whitespace-only descriptions to absence.
+// trimmedStringPtr returns a pointer to the trimmed input, preserving
+// empty-after-trim so that downstream validators can reject it.
 func trimmedStringPtr(s *string) *string {
 	if s == nil {
 		return nil
 	}
 	t := strings.TrimSpace(*s)
-	if t == "" {
-		return nil
-	}
 	return &t
 }

@@ -3,8 +3,10 @@ package membership
 import (
 	"context"
 	"errors"
+	"strings"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -41,7 +43,10 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 		return errors.Join(errs...)
 	}
 
-	newPos := normalisePosition(cmd.Position)
+	var newPos null.String
+	if cmd.Position != nil {
+		newPos = null.StringFrom(strings.TrimSpace(*cmd.Position))
+	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var emp model.Employee

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
@@ -56,7 +57,10 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 	}
 
 	zitadelUserID := strings.TrimSpace(cmd.ZitadelUserID)
-	position := normalisePosition(cmd.Position)
+	var position null.String
+	if cmd.Position != nil {
+		position = null.StringFrom(strings.TrimSpace(*cmd.Position))
+	}
 
 	// Phase 2: Zitadel verify (outside tx, fail-fast).
 	if err := s.verifier.Verify(ctx, zitadelUserID); err != nil {
