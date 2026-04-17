@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+package query.orgstructure.v1;
+
+import "google/api/annotations.proto";
+
+// OrgStructureQueryService exposes read methods over the orgstructure
+// projections. Pagination is offset/limit; backed by COUNT(*) queries
+// via dedicated CountX RPCs — clients drive pagination controls with
+// both values.
+service OrgStructureQueryService {
+  rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{id}"};
+  }
+  rpc ListOrganizations(ListOrganizationsRequest) returns (ListOrganizationsResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations"};
+  }
+  rpc CountOrganizations(CountOrganizationsRequest) returns (CountOrganizationsResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations:count"};
+  }
+
+  rpc GetClinic(GetClinicRequest) returns (GetClinicResponse) {
+    option (google.api.http) = {get: "/v1/query/clinics/{id}"};
+  }
+  rpc ListClinicsByOrganization(ListClinicsByOrganizationRequest) returns (ListClinicsByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/clinics"};
+  }
+
+  rpc GetDepartment(GetDepartmentRequest) returns (GetDepartmentResponse) {
+    option (google.api.http) = {get: "/v1/query/departments/{id}"};
+  }
+  rpc ListDepartmentsByClinic(ListDepartmentsByClinicRequest) returns (ListDepartmentsByClinicResponse) {
+    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/departments"};
+  }
+}
+
+// Point is the coordinate pair attached to an Address. Absent when the
+// projection row has neither longitude nor latitude.
+message Point {
+  double longitude = 1;
+  double latitude = 2;
+}
+
+// Address is the read-side view of a stored postal address; Point is
+// optional because the command-side allows text-only addresses.
+message Address {
+  string text = 1;
+  optional Point point = 2;
+}
+
+// Organization mirrors the projections.organizations row returned by
+// GetOrganization. Timestamps are RFC3339 strings.
+message Organization {
+  string id = 1;
+  string name = 2;
+  optional string description = 3;
+  Address legal_address = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+// OrganizationListItem is the minimal shape returned by list endpoints.
+message OrganizationListItem {
+  string id = 1;
+  string name = 2;
+}
+
+// Clinic mirrors the projections.clinics row returned by GetClinic.
+message Clinic {
+  string id = 1;
+  string organization_id = 2;
+  string name = 3;
+  optional string description = 4;
+  Address physical_address = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+// ClinicListItem is the minimal shape returned by list endpoints.
+message ClinicListItem {
+  string id = 1;
+  string organization_id = 2;
+  string name = 3;
+}
+
+// Department mirrors the projections.departments row returned by
+// GetDepartment.
+message Department {
+  string id = 1;
+  string clinic_id = 2;
+  string name = 3;
+  optional string description = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+// DepartmentListItem is the minimal shape returned by list endpoints.
+message DepartmentListItem {
+  string id = 1;
+  string clinic_id = 2;
+  string name = 3;
+}
+
+message GetOrganizationRequest {
+  string id = 1;
+}
+message GetOrganizationResponse {
+  Organization organization = 1;
+}
+
+message ListOrganizationsRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+message ListOrganizationsResponse {
+  repeated OrganizationListItem items = 1;
+}
+
+message CountOrganizationsRequest {}
+message CountOrganizationsResponse {
+  int64 total = 1;
+}
+
+message GetClinicRequest {
+  string id = 1;
+}
+message GetClinicResponse {
+  Clinic clinic = 1;
+}
+
+message ListClinicsByOrganizationRequest {
+  string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListClinicsByOrganizationResponse {
+  repeated ClinicListItem items = 1;
+}
+
+message GetDepartmentRequest {
+  string id = 1;
+}
+message GetDepartmentResponse {
+  Department department = 1;
+}
+
+message ListDepartmentsByClinicRequest {
+  string clinic_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListDepartmentsByClinicResponse {
+  repeated DepartmentListItem items = 1;
+}

@@ -1,17 +1,17 @@
 version: v2
 
 # Generates one combined Markdown document covering every package in
-# the command-side proto tree. Output lives at
-# docs/proto/command-server.md and is committed — task gen:check
+# the query-side proto tree. Output lives at
+# docs/proto/query-server.md and is committed — task gen:check
 # enforces freshness.
 
 inputs:
   - directory: api/proto
     paths:
-      - api/proto/command
+      - api/proto/query
 
 plugins:
   - local: [go, tool, protoc-gen-doc]
     out: docs/proto
     strategy: all
-    opt: markdown,command-server.md
+    opt: markdown,query-server.md

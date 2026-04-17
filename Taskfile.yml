@@ -5,7 +5,10 @@ tasks:
     desc: Generate Go code, OpenAPI spec, and combined Markdown docs from proto
     cmds:
       - go tool buf generate
+      - go tool buf generate --template buf.gen.openapi.command.yaml
+      - go tool buf generate --template buf.gen.openapi.query.yaml
       - go tool buf generate --template buf.gen.docs.yaml
+      - go tool buf generate --template buf.gen.docs.query.yaml
       # Normalize whitespace in generated docs so pre-commit hooks
       # (trailing-whitespace, end-of-file-fixer) don't cause drift
       # between `task gen:check` and the committed file.

@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package query.identity.v1;
+
+import "google/api/annotations.proto";
+
+// IdentityQueryService exposes read methods over the Zitadel user and
+// session projections. Rows are populated asynchronously by the
+// Zitadel NATS consumer in query-server.
+service IdentityQueryService {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {get: "/v1/query/users/{id}"};
+  }
+  rpc GetSession(GetSessionRequest) returns (GetSessionResponse) {
+    option (google.api.http) = {get: "/v1/query/sessions/{id}"};
+  }
+}
+
+// User mirrors projections.users. gender uses the zitadel proto enum
+// integer: 0 unspecified, 1 female, 2 male, 3 diverse.
+message User {
+  string id = 1;
+  string user_name = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string display_name = 5;
+  optional string nick_name = 6;
+  string email = 7;
+  bool email_verified = 8;
+  string preferred_language = 9;
+  int32 gender = 10;
+  string created_at = 11;
+  string updated_at = 12;
+}
+
+// UserAgent is the JSONB user_agent column unpacked to proto.
+message UserAgent {
+  string ip = 1;
+  map<string, UserAgentHeaderValues> headers = 2;
+  optional string fingerprint_id = 3;
+  optional string description = 4;
+}
+
+// UserAgentHeaderValues holds the repeated-string values for a single
+// header entry.
+message UserAgentHeaderValues {
+  repeated string values = 1;
+}
+
+// Session mirrors projections.sessions. user_id/user_resource_owner are
+// populated once a SessionUserChecked event is consumed.
+message Session {
+  string id = 1;
+  optional string user_id = 2;
+  optional string user_resource_owner = 3;
+  optional string preferred_language = 4;
+  optional string checked_at = 5;
+  UserAgent user_agent = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+message GetUserResponse {
+  User user = 1;
+}
+
+message GetSessionRequest {
+  string id = 1;
+}
+message GetSessionResponse {
+  Session session = 1;
+}
