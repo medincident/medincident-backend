@@ -12,9 +12,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // HireEmployeeCommand carries everything the service needs to create
@@ -128,16 +127,9 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 				Wrap(err)
 		}
 
-		ev := &employeev1.EmployeeHired{
-			ZitadelUserId:  zitadelUserID,
-			OrganizationId: orgID.String(),
-			DepartmentId:   cmd.DepartmentID.String(),
-			Position:       position.Ptr(),
-		}
-		if err := outbox.Publish(tx, SubjectEmployeeHired, AggregateTypeEmployee, id.String(), emp.UpdatedAt, ev); err != nil {
+		if err := projector.EmployeeHired(tx, &emp); err != nil {
 			return err
 		}
-
 		result.ID = id
 		return nil
 	})

@@ -12,8 +12,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // UpdateEmployeePositionCommand carries the inputs required to change an
@@ -71,9 +70,6 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
 		}
 
-		ev := &employeev1.EmployeePositionChanged{
-			Position: newPos.Ptr(),
-		}
-		return outbox.Publish(tx, SubjectEmployeePositionChanged, AggregateTypeEmployee, emp.ID.String(), emp.UpdatedAt, ev)
+		return projector.EmployeePositionChanged(tx, &emp)
 	})
 }

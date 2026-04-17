@@ -11,8 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // RevokeOrganizationHeadCommand carries the identifiers needed to
@@ -65,21 +64,16 @@ func (s *EmployeeService) RevokeOrganizationHead(ctx context.Context, cmd Revoke
 	})
 }
 
-// publishOrgHeadRevoked is a shared helper for Revoke,
-// cascade-on-terminate. It does NOT delete the row; the caller is
-// responsible for that.
-func publishOrgHeadRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	ev := &organizationv1.OrganizationHeadRevoked{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectOrganizationHeadRevoked, AggregateTypeOrganization, organizationID.String(), now, ev)
+// publishOrgHeadRevoked is a shared helper for Revoke and
+// cascade-on-terminate. It does NOT delete the domain row; the caller
+// owns that. The projector call removes the projection row so
+// explicit and cascaded revokes stay in sync.
+func publishOrgHeadRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, _ time.Time) error {
+	return projector.OrgHeadRevoked(tx, organizationID, employeeID)
 }
 
-// publishOrgHeadDeputyRemoved is a shared helper; it publishes the
-// event only and does NOT update the row.
+// publishOrgHeadDeputyRemoved is a shared helper; it clears the
+// projection's deputy slot. Caller owns the domain-row update.
 func publishOrgHeadDeputyRemoved(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	ev := &organizationv1.OrganizationHeadDeputyRemoved{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectOrganizationHeadDeputyRemoved, AggregateTypeOrganization, organizationID.String(), now, ev)
+	return projector.OrgHeadDeputyRemoved(tx, organizationID, employeeID, now)
 }

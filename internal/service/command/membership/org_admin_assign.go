@@ -9,8 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // AssignOrganizationAdminCommand carries the identifiers needed to link
@@ -56,9 +55,6 @@ func (s *EmployeeService) AssignOrganizationAdmin(ctx context.Context, cmd Assig
 			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminSaveFailed).Wrap(err)
 		}
 
-		ev := &organizationv1.OrganizationAdminAssigned{
-			EmployeeId: cmd.EmployeeID.String(),
-		}
-		return outbox.Publish(tx, SubjectOrganizationAdminAssigned, AggregateTypeOrganization, cmd.OrganizationID.String(), row.CreatedAt, ev)
+		return projector.OrgAdminAssigned(tx, &row)
 	})
 }

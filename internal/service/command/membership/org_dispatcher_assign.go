@@ -9,8 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // AssignOrganizationDispatcherCommand carries the identifiers needed to link
@@ -56,9 +55,6 @@ func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd 
 			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherSaveFailed).Wrap(err)
 		}
 
-		ev := &organizationv1.OrganizationDispatcherAssigned{
-			EmployeeId: cmd.EmployeeID.String(),
-		}
-		return outbox.Publish(tx, SubjectOrganizationDispatcherAssigned, AggregateTypeOrganization, cmd.OrganizationID.String(), row.CreatedAt, ev)
+		return projector.OrgDispatcherAssigned(tx, &row)
 	})
 }

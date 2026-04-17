@@ -17,7 +17,6 @@ func TestUpdateEmployeeDepartment_CascadeRevokesDR_SameClinic(t *testing.T) {
 	require.NoError(t, empSvc.AssignDepartmentResponsible(ctxT(t), membership.AssignDepartmentResponsibleCommand{
 		DepartmentID: f.DeptA1a, EmployeeID: aliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
 		ID:           aliceID,
@@ -30,11 +29,6 @@ func TestUpdateEmployeeDepartment_CascadeRevokesDR_SameClinic(t *testing.T) {
 		f.DeptA1a, aliceID,
 	).Scan(&count).Error)
 	assert.Equal(t, int64(0), count)
-
-	rows := latestOutbox(t)
-	require.GreaterOrEqual(t, len(rows), 2)
-	assert.Equal(t, "medincident.event.employee.v1.department_changed", rows[0].Subject)
-	assert.Equal(t, membership.SubjectDepartmentResponsibleRevoked, rows[1].Subject)
 }
 
 func TestUpdateEmployeeDepartment_CascadeRevokesCH_CrossClinic(t *testing.T) {
@@ -43,7 +37,6 @@ func TestUpdateEmployeeDepartment_CascadeRevokesCH_CrossClinic(t *testing.T) {
 	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
 		ClinicID: f.ClinicA1, EmployeeID: aliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
 		ID: aliceID, DepartmentID: f.DeptA2a,
@@ -54,10 +47,6 @@ func TestUpdateEmployeeDepartment_CascadeRevokesCH_CrossClinic(t *testing.T) {
 		`SELECT count(*) FROM domain.clinic_heads WHERE clinic_id = ? AND employee_id = ?`, f.ClinicA1, aliceID,
 	).Scan(&count).Error)
 	assert.Equal(t, int64(0), count)
-
-	rows := latestOutbox(t)
-	require.GreaterOrEqual(t, len(rows), 2)
-	assert.Equal(t, "medincident.event.employee.v1.department_changed", rows[0].Subject)
 }
 
 func TestUpdateEmployeeDepartment_CHUnaffected_SameClinic(t *testing.T) {
@@ -92,7 +81,6 @@ func TestUpdateEmployeeDepartment_ClearsDRDeputySlotInOldDepartment(t *testing.T
 	require.NoError(t, empSvc.AssignDepartmentResponsibleDeputy(ctxT(t), membership.AssignDepartmentResponsibleDeputyCommand{
 		DepartmentID: f.DeptA1a, EmployeeID: bobID, DeputyEmployeeID: aliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
 		ID: aliceID, DepartmentID: f.DeptA1b,
@@ -111,14 +99,6 @@ func TestUpdateEmployeeDepartment_ClearsDRDeputySlotInOldDepartment(t *testing.T
 		f.DeptA1a, bobID,
 	).Scan(&holderCount).Error)
 	assert.Equal(t, int64(1), holderCount, "DR holder row itself must survive — Bob stays in DeptA1a")
-
-	rows := latestOutbox(t)
-	subjects := make([]string, 0, len(rows))
-	for _, r := range rows {
-		subjects = append(subjects, r.Subject)
-	}
-	assert.Contains(t, subjects, membership.SubjectDepartmentResponsibleDeputyRemoved,
-		"expected DepartmentResponsibleDeputyRemoved in outbox, got: %v", subjects)
 }
 
 // When Alice is moved cross-clinic (DeptA1a → DeptA2a), any CH row in
@@ -134,7 +114,6 @@ func TestUpdateEmployeeDepartment_ClearsCHDeputySlotInOldClinic_CrossClinic(t *t
 	require.NoError(t, empSvc.AssignClinicHeadDeputy(ctxT(t), membership.AssignClinicHeadDeputyCommand{
 		ClinicID: f.ClinicA1, EmployeeID: bobID, DeputyEmployeeID: aliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
 		ID: aliceID, DepartmentID: f.DeptA2a,
@@ -153,14 +132,6 @@ func TestUpdateEmployeeDepartment_ClearsCHDeputySlotInOldClinic_CrossClinic(t *t
 		f.ClinicA1, bobID,
 	).Scan(&holderCount).Error)
 	assert.Equal(t, int64(1), holderCount, "CH holder row itself must survive — Bob stays in ClinicA1")
-
-	rows := latestOutbox(t)
-	subjects := make([]string, 0, len(rows))
-	for _, r := range rows {
-		subjects = append(subjects, r.Subject)
-	}
-	assert.Contains(t, subjects, membership.SubjectClinicHeadDeputyRemoved,
-		"expected ClinicHeadDeputyRemoved in outbox, got: %v", subjects)
 }
 
 // Same-clinic moves must NOT clear the CH deputy slot — the invariant
@@ -198,16 +169,9 @@ func TestUpdateEmployeeDepartment_CascadeRevokesDRWithDeputy_EmitsDeputyRemovedF
 	require.NoError(t, empSvc.AssignDepartmentResponsibleDeputy(ctxT(t), membership.AssignDepartmentResponsibleDeputyCommand{
 		DepartmentID: f.DeptA1a, EmployeeID: aliceID, DeputyEmployeeID: bobID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
 		ID:           aliceID,
 		DepartmentID: f.DeptA1b,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 3, "expected 3 events: DepartmentChanged, DeputyRemoved, Revoked")
-	assert.Equal(t, "medincident.event.employee.v1.department_changed", rows[0].Subject, "Rule 1: cause first")
-	assert.Equal(t, membership.SubjectDepartmentResponsibleDeputyRemoved, rows[1].Subject, "Rule 2: cleanup before terminate")
-	assert.Equal(t, membership.SubjectDepartmentResponsibleRevoked, rows[2].Subject)
 }

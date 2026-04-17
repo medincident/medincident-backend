@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 // startUnlimitedVacation is a helper reused by F6-F9 tests.
@@ -25,20 +24,10 @@ func TestStartVacationNow_Success_Unlimited(t *testing.T) {
 	f := takeFixture(t)
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
-	truncateOutbox(t)
 
 	res, err := empSvc.StartVacationNow(ctxT(t), membership.StartVacationNowCommand{EmployeeID: id})
 	require.NoError(t, err)
 	require.NotEqual(t, "", res.ID.String())
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectVacationStarted, rows[0].Subject)
-	ev := &employeev1.VacationStarted{}
-	env := decodePayload(t, rows[0], ev)
-	assert.Equal(t, id.String(), env.AggregateId) // aggregate is the employee
-	assert.Equal(t, res.ID.String(), ev.VacationId)
-	assert.Nil(t, ev.EndsAt)
 }
 
 func TestStartVacationNow_Success_WithEnd(t *testing.T) {

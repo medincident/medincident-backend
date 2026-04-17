@@ -100,12 +100,32 @@ func resetDB(t *testing.T) {
 		t.Fatalf("get raw db: %v", err)
 	}
 	truncate := []string{
-		`TRUNCATE TABLE outbox.events RESTART IDENTITY`,
 		`TRUNCATE TABLE domain.incident_types CASCADE`,
 		`TRUNCATE TABLE domain.incident_categories CASCADE`,
 		`TRUNCATE TABLE domain.departments CASCADE`,
 		`TRUNCATE TABLE domain.clinics CASCADE`,
 		`TRUNCATE TABLE domain.organizations CASCADE`,
+		// Projection tables — sync projector writes these alongside
+		// every domain mutation, so cross-test id reuse needs a sweep
+		// or unique constraints trip on reruns.
+		`TRUNCATE TABLE projections.incident_types,
+		                 projections.incident_categories,
+		                 projections.organization_counters,
+		                 projections.clinic_counters,
+		                 projections.department_counters,
+		                 projections.employee_cards,
+		                 projections.employee_vacations,
+		                 projections.employees,
+		                 projections.departments,
+		                 projections.clinics,
+		                 projections.organizations,
+		                 projections.clinic_heads,
+		                 projections.department_responsibles,
+		                 projections.org_admins,
+		                 projections.org_dispatchers,
+		                 projections.org_heads,
+		                 projections.system_admins
+		         CASCADE`,
 	}
 	for _, q := range truncate {
 		if _, err := raw.Exec(q); err != nil {
@@ -143,15 +163,6 @@ func countIncidentTypes(t *testing.T) int {
 	t.Helper()
 	var n int
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.incident_types`).Scan(&n).Error)
-	return n
-}
-
-func countOutboxEventsWithSubject(t *testing.T, subject string) int {
-	t.Helper()
-	var n int
-	require.NoError(t, testDB.Raw(
-		`SELECT count(*) FROM outbox.events WHERE subject = ?`, subject,
-	).Scan(&n).Error)
 	return n
 }
 

@@ -3,14 +3,12 @@ package membership
 import (
 	"context"
 	"strings"
-	"time"
 
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	systemadminv1 "github.com/medincident/medincident-command-service/pkg/event/system_admin/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // RevokeSystemAdminCommand carries the Zitadel user ID to remove from system admin.
@@ -43,7 +41,6 @@ func (s *EmployeeService) RevokeSystemAdmin(ctx context.Context, cmd RevokeSyste
 				Errorf("not found")
 		}
 
-		ev := &systemadminv1.SystemAdminRevoked{}
-		return outbox.Publish(tx, SubjectSystemAdminRevoked, AggregateTypeSystemAdmin, id, time.Now().UTC(), ev)
+		return projector.SystemAdminRevoked(tx, id)
 	})
 }

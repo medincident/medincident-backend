@@ -11,8 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // Error codes emitted by CreateIncidentCategory and shared with other
@@ -27,7 +26,6 @@ const (
 	ErrCodeIncidentCategoryParentOrganizationMismatch = "incident_category_parent_organization_mismatch"
 	ErrCodeIncidentCategoryParentInactive             = "incident_category_parent_inactive"
 	ErrCodeIncidentCategoryNameConflict               = "incident_category_name_conflict"
-	ErrCodeIncidentCategoryEventBuildFailed           = "incident_category_event_build_failed"
 	ErrCodeIncidentCategoryMaxDepthExceeded           = "incident_category_max_depth_exceeded"
 )
 
@@ -42,19 +40,6 @@ type CreateIncidentCategoryCommand struct {
 // CreateIncidentCategoryResult is the output of IncidentCategoryService.Create.
 type CreateIncidentCategoryResult struct {
 	ID uuid.UUID
-}
-
-func buildIncidentCategoryCreatedEvent(c *model.IncidentCategory) *categoryeventv1.IncidentCategoryCreated {
-	ev := &categoryeventv1.IncidentCategoryCreated{
-		OrganizationId: c.OrganizationID.String(),
-		Name:           c.Name,
-		Description:    c.Description.Ptr(),
-	}
-	if c.ParentCategoryID.Valid {
-		s := c.ParentCategoryID.UUID.String()
-		ev.ParentCategoryId = &s
-	}
-	return ev
 }
 
 // categoryDepth computes the 1-based depth of a category (root = 1)
@@ -197,8 +182,7 @@ func (s *IncidentCategoryService) Create(
 				Wrap(err)
 		}
 
-		event := buildIncidentCategoryCreatedEvent(&cat)
-		if err := outbox.Publish(tx, SubjectIncidentCategoryCreated, AggregateTypeIncidentCategory, cat.ID.String(), cat.UpdatedAt, event); err != nil {
+		if err := projector.CategoryCreated(tx, &cat); err != nil {
 			return err
 		}
 		result.ID = id

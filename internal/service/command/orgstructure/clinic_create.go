@@ -12,8 +12,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 const (
@@ -34,14 +33,7 @@ const (
 	ErrCodeClinicSaveFailed           = "clinic_save_failed"
 	ErrCodeClinicLoadFailed           = "clinic_load_failed"
 	ErrCodeClinicNotFound             = "clinic_not_found"
-	ErrCodeClinicEventBuildFailed     = "clinic_event_build_failed"
 	ErrCodeClinicOrganizationNotFound = "clinic_organization_not_found"
-)
-
-const (
-	SubjectClinicCreated                = "medincident.event.clinic.v1.created"
-	SubjectClinicDetailsChanged         = "medincident.event.clinic.v1.details_changed"
-	SubjectClinicPhysicalAddressChanged = "medincident.event.clinic.v1.physical_address_changed"
 )
 
 type CreateClinicCommand struct {
@@ -113,22 +105,6 @@ func validateClinicDescription(desc *string) error {
 	return nil
 }
 
-func buildClinicCreatedEvent(c *model.Clinic) *clinicv1.ClinicCreated {
-	ev := &clinicv1.ClinicCreated{
-		OrganizationId:  c.OrganizationID.String(),
-		Name:            c.Name,
-		Description:     c.Description.Ptr(),
-		PhysicalAddress: &clinicv1.Address{Text: c.PhysicalAddress.Text},
-	}
-	if c.PhysicalAddress.Point != nil {
-		ev.PhysicalAddress.Point = &clinicv1.Point{
-			Longitude: c.PhysicalAddress.Point.Longitude,
-			Latitude:  c.PhysicalAddress.Point.Latitude,
-		}
-	}
-	return ev
-}
-
 func (s *ClinicService) Create(
 	ctx context.Context,
 	cmd CreateClinicCommand,
@@ -187,8 +163,7 @@ func (s *ClinicService) Create(
 				Wrap(err)
 		}
 
-		event := buildClinicCreatedEvent(&clinic)
-		if err := outbox.Publish(tx, SubjectClinicCreated, AggregateTypeClinic, clinic.ID.String(), clinic.UpdatedAt, event); err != nil {
+		if err := projector.ClinicCreated(tx, &clinic); err != nil {
 			return err
 		}
 		result.ID = id

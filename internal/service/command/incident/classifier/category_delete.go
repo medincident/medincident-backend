@@ -3,7 +3,6 @@ package classifier
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
@@ -11,9 +10,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
-	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 type DeleteIncidentCategoryCommand struct {
@@ -79,8 +76,6 @@ func (s *IncidentCategoryService) Delete(
 		return DeleteIncidentCategoryResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		now := time.Now().UTC()
-
 		var root model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			First(&root, "id = ?", cmd.CategoryID).Error; err != nil {
@@ -118,16 +113,16 @@ func (s *IncidentCategoryService) Delete(
 				Wrap(err)
 		}
 
-		// Emit Deleted events first — leaf types, then categories in
-		// children-first order (lockCategorySubtreeIDs already orders
-		// by depth DESC so the deepest leaves come first).
+		// Delete projection rows children-first (types first, then
+		// categories in depth-DESC order) so no row is removed while
+		// its descendants still exist on the read side.
 		for _, id := range typeIDs {
-			if err := outbox.Publish(tx, SubjectIncidentTypeDeleted, AggregateTypeIncidentType, id.String(), now, &typeeventv1.IncidentTypeDeleted{}); err != nil {
+			if err := projector.TypeDeleted(tx, id); err != nil {
 				return err
 			}
 		}
 		for _, id := range categoryIDs {
-			if err := outbox.Publish(tx, SubjectIncidentCategoryDeleted, AggregateTypeIncidentCategory, id.String(), now, &categoryeventv1.IncidentCategoryDeleted{}); err != nil {
+			if err := projector.CategoryDeleted(tx, id); err != nil {
 				return err
 			}
 		}

@@ -3,7 +3,6 @@ package classifier
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
@@ -11,8 +10,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 type DeleteIncidentTypeCommand struct {
@@ -29,8 +27,6 @@ func (s *IncidentTypeService) Delete(
 		return DeleteIncidentTypeResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		now := time.Now().UTC()
-
 		var row model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
@@ -51,7 +47,7 @@ func (s *IncidentTypeService) Delete(
 			return err
 		}
 
-		if err := outbox.Publish(tx, SubjectIncidentTypeDeleted, AggregateTypeIncidentType, row.ID.String(), now, &typeeventv1.IncidentTypeDeleted{}); err != nil {
+		if err := projector.TypeDeleted(tx, row.ID); err != nil {
 			return err
 		}
 		if err := tx.Delete(&model.IncidentType{}, "id = ?", row.ID).Error; err != nil {

@@ -9,12 +9,10 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	systemadminv1 "github.com/medincident/medincident-command-service/pkg/event/system_admin/v1"
 )
 
 func TestGrantSystemAdmin_Success(t *testing.T) {
 	_ = takeFixture(t)
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
 		ZitadelUserID: testUserAliceID,
@@ -26,13 +24,12 @@ func TestGrantSystemAdmin_Success(t *testing.T) {
 	).Scan(&count).Error)
 	assert.Equal(t, int64(1), count)
 
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectSystemAdminGranted, rows[0].Subject)
-	ev := &systemadminv1.SystemAdminGranted{}
-	env := decodePayload(t, rows[0], ev)
-	assert.Equal(t, membership.AggregateTypeSystemAdmin, env.AggregateType)
-	assert.Equal(t, testUserAliceID, env.AggregateId)
+	// Sync projector must have written the matching projection row.
+	var projCount int64
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM projections.system_admins WHERE zitadel_user_id = ?`, testUserAliceID,
+	).Scan(&projCount).Error)
+	assert.Equal(t, int64(1), projCount)
 }
 
 func TestGrantSystemAdmin_ZitadelUserNotFound(t *testing.T) {
@@ -67,7 +64,6 @@ func TestRevokeSystemAdmin_Success(t *testing.T) {
 	require.NoError(t, empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
 		ZitadelUserID: testUserAliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RevokeSystemAdmin(ctxT(t), membership.RevokeSystemAdminCommand{
 		ZitadelUserID: testUserAliceID,
@@ -79,9 +75,12 @@ func TestRevokeSystemAdmin_Success(t *testing.T) {
 	).Scan(&count).Error)
 	assert.Equal(t, int64(0), count)
 
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectSystemAdminRevoked, rows[0].Subject)
+	// Sync projector must have deleted the matching projection row.
+	var projCount int64
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM projections.system_admins WHERE zitadel_user_id = ?`, testUserAliceID,
+	).Scan(&projCount).Error)
+	assert.Equal(t, int64(0), projCount)
 }
 
 func TestRevokeSystemAdmin_NotFound(t *testing.T) {
@@ -114,7 +113,6 @@ func TestTerminateEmployee_DoesNotTouchSystemAdmin(t *testing.T) {
 	require.NoError(t, empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
 		ZitadelUserID: testUserAliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: aliceID}))
 

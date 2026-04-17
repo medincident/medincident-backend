@@ -11,8 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // RevokeDepartmentResponsibleCommand carries the identifiers needed to
@@ -76,19 +75,15 @@ func (s *EmployeeService) RevokeDepartmentResponsible(ctx context.Context, cmd R
 
 // publishDepartmentResponsibleRevoked is a shared helper for Revoke,
 // cascade-on-transfer, and cascade-on-terminate. It does NOT delete
-// the row; the caller is responsible for that.
-func publishDepartmentResponsibleRevoked(tx *gorm.DB, departmentID, employeeID uuid.UUID, now time.Time) error {
-	ev := &departmentv1.DepartmentResponsibleRevoked{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectDepartmentResponsibleRevoked, AggregateTypeDepartment, departmentID.String(), now, ev)
+// the domain row; the caller owns that. The projector call removes
+// the projection row so explicit and cascaded revokes stay in sync.
+func publishDepartmentResponsibleRevoked(tx *gorm.DB, departmentID, employeeID uuid.UUID, _ time.Time) error {
+	return projector.DepartmentResponsibleRevoked(tx, departmentID, employeeID)
 }
 
 // publishDepartmentResponsibleDeputyRemoved is a shared helper; it
-// publishes the event only and does NOT update the row.
+// clears the projection's deputy slot. The caller owns the domain-
+// row update.
 func publishDepartmentResponsibleDeputyRemoved(tx *gorm.DB, departmentID, employeeID uuid.UUID, now time.Time) error {
-	ev := &departmentv1.DepartmentResponsibleDeputyRemoved{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectDepartmentResponsibleDeputyRemoved, AggregateTypeDepartment, departmentID.String(), now, ev)
+	return projector.DepartmentResponsibleDeputyRemoved(tx, departmentID, employeeID, now)
 }

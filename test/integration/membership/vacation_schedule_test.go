@@ -10,25 +10,19 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
 )
 
 func TestScheduleVacation_Success_Unlimited(t *testing.T) {
 	f := takeFixture(t)
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
-	truncateOutbox(t)
 	start := time.Now().Add(72 * time.Hour)
 	res, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{EmployeeID: id, StartsAt: start})
 	require.NoError(t, err)
 
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectVacationScheduled, rows[0].Subject)
-	ev := &employeev1.VacationScheduled{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, res.ID.String(), ev.VacationId)
-	assert.Nil(t, ev.EndsAt)
+	var projState string
+	require.NoError(t, testDB.Raw(`SELECT state FROM projections.employee_vacations WHERE id = ?`, res.ID).Row().Scan(&projState))
+	require.Equal(t, "scheduled", projState)
 }
 
 func TestScheduleVacation_Success_WithEnd(t *testing.T) {

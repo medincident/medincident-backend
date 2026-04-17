@@ -9,28 +9,17 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	organizationv1 "github.com/medincident/medincident-command-service/pkg/event/organization/v1"
 )
 
 func TestAssignOrganizationHead_Success(t *testing.T) {
 	f := takeFixture(t)
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.AssignOrganizationHead(ctxT(t), membership.AssignOrganizationHeadCommand{
 		OrganizationID: f.OrgA,
 		EmployeeID:     id,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	require.Equal(t, membership.SubjectOrganizationHeadAssigned, rows[0].Subject)
-	ev := &organizationv1.OrganizationHeadAssigned{}
-	env := decodePayload(t, rows[0], ev)
-	assert.Equal(t, membership.AggregateTypeOrganization, env.AggregateType)
-	assert.Equal(t, f.OrgA.String(), env.AggregateId)
-	assert.Equal(t, id.String(), ev.EmployeeId)
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -104,16 +93,11 @@ func TestRevokeOrganizationHead_Success_NoDeputy(t *testing.T) {
 		OrganizationID: f.OrgA,
 		EmployeeID:     id,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RevokeOrganizationHead(ctxT(t), membership.RevokeOrganizationHeadCommand{
 		OrganizationID: f.OrgA,
 		EmployeeID:     id,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectOrganizationHeadRevoked, rows[0].Subject)
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -137,17 +121,11 @@ func TestRevokeOrganizationHead_Success_WithDeputy_EmitsDeputyRemovedFirst(t *te
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RevokeOrganizationHead(ctxT(t), membership.RevokeOrganizationHeadCommand{
 		OrganizationID: f.OrgA,
 		EmployeeID:     aliceID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 2)
-	assert.Equal(t, membership.SubjectOrganizationHeadDeputyRemoved, rows[0].Subject, "Rule 2: cleanup before terminate")
-	assert.Equal(t, membership.SubjectOrganizationHeadRevoked, rows[1].Subject)
 }
 
 func TestRevokeOrganizationHead_NotFound(t *testing.T) {
@@ -171,21 +149,12 @@ func TestAssignOrganizationHeadDeputy_Success(t *testing.T) {
 		OrganizationID: f.OrgA,
 		EmployeeID:     aliceID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.AssignOrganizationHeadDeputy(ctxT(t), membership.AssignOrganizationHeadDeputyCommand{
 		OrganizationID:   f.OrgA,
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectOrganizationHeadDeputyAssigned, rows[0].Subject)
-	ev := &organizationv1.OrganizationHeadDeputyAssigned{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, aliceID.String(), ev.EmployeeId)
-	assert.Equal(t, bobID.String(), ev.DeputyEmployeeId)
 }
 
 func TestAssignOrganizationHeadDeputy_RoleNotFound(t *testing.T) {
@@ -303,19 +272,11 @@ func TestRemoveOrganizationHeadDeputy_Success(t *testing.T) {
 		EmployeeID:       aliceID,
 		DeputyEmployeeID: bobID,
 	}))
-	truncateOutbox(t)
 
 	require.NoError(t, empSvc.RemoveOrganizationHeadDeputy(ctxT(t), membership.RemoveOrganizationHeadDeputyCommand{
 		OrganizationID: f.OrgA,
 		EmployeeID:     aliceID,
 	}))
-
-	rows := latestOutbox(t)
-	require.Len(t, rows, 1)
-	assert.Equal(t, membership.SubjectOrganizationHeadDeputyRemoved, rows[0].Subject)
-	ev := &organizationv1.OrganizationHeadDeputyRemoved{}
-	decodePayload(t, rows[0], ev)
-	assert.Equal(t, aliceID.String(), ev.EmployeeId)
 }
 
 func TestRemoveOrganizationHeadDeputy_DeputyNotAssigned(t *testing.T) {

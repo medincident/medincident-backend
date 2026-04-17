@@ -11,8 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // RevokeClinicHeadCommand carries the identifiers needed to remove an
@@ -76,19 +75,16 @@ func (s *EmployeeService) RevokeClinicHead(ctx context.Context, cmd RevokeClinic
 
 // publishClinicHeadRevoked is a shared helper for Revoke,
 // cascade-on-transfer, and cascade-on-terminate. It does NOT delete
-// the row; the caller is responsible for that.
-func publishClinicHeadRevoked(tx *gorm.DB, clinicID, employeeID uuid.UUID, now time.Time) error {
-	ev := &clinicv1.ClinicHeadRevoked{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectClinicHeadRevoked, AggregateTypeClinic, clinicID.String(), now, ev)
+// the domain row; the caller owns that. The projector call here
+// deletes the matching projection row so explicit and cascaded
+// revokes stay in sync.
+func publishClinicHeadRevoked(tx *gorm.DB, clinicID, employeeID uuid.UUID, _ time.Time) error {
+	return projector.ClinicHeadRevoked(tx, clinicID, employeeID)
 }
 
-// publishClinicHeadDeputyRemoved is a shared helper; it publishes the
-// event only and does NOT update the row.
+// publishClinicHeadDeputyRemoved is a shared helper; it clears the
+// deputy slot on the projection row. The caller owns the domain-row
+// update.
 func publishClinicHeadDeputyRemoved(tx *gorm.DB, clinicID, employeeID uuid.UUID, now time.Time) error {
-	ev := &clinicv1.ClinicHeadDeputyRemoved{
-		EmployeeId: employeeID.String(),
-	}
-	return outbox.Publish(tx, SubjectClinicHeadDeputyRemoved, AggregateTypeClinic, clinicID.String(), now, ev)
+	return projector.ClinicHeadDeputyRemoved(tx, clinicID, employeeID, now)
 }

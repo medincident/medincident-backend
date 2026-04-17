@@ -3,7 +3,6 @@ package membership
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
@@ -12,8 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // AssignClinicHeadDeputyCommand carries the identifiers needed to set
@@ -45,8 +43,6 @@ func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd Assign
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		now := time.Now().UTC()
-
 		var row model.ClinicHead
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
 			Where("clinic_id = ? AND employee_id = ?", cmd.ClinicID, cmd.EmployeeID).
@@ -115,10 +111,6 @@ func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd Assign
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
 		}
 
-		ev := &clinicv1.ClinicHeadDeputyAssigned{
-			EmployeeId:       cmd.EmployeeID.String(),
-			DeputyEmployeeId: cmd.DeputyEmployeeID.String(),
-		}
-		return outbox.Publish(tx, SubjectClinicHeadDeputyAssigned, AggregateTypeClinic, cmd.ClinicID.String(), now, ev)
+		return projector.ClinicHeadDeputyAssigned(tx, &row)
 	})
 }

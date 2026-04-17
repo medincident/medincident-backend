@@ -8,13 +8,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // UpdateVacationEndDateCommand carries the vacation to update and the
@@ -105,10 +103,6 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 			return oops.In(scopeVacation).With("vacation_id", vac.ID).Wrap(mapVacationInsertError(saveErr, vac.EmployeeID))
 		}
 
-		ev := &employeev1.VacationEndDateChanged{
-			VacationId: vac.ID.String(),
-			EndsAt:     timestamppb.New(cmd.EndsAt),
-		}
-		return outbox.Publish(tx, SubjectVacationEndDateChanged, AggregateTypeEmployee, vac.EmployeeID.String(), now, ev)
+		return projector.VacationEndDateChanged(tx, &vac)
 	})
 }

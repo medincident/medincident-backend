@@ -9,8 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	clinicv1 "github.com/medincident/medincident-command-service/pkg/event/clinic/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // AssignClinicHeadCommand carries the identifiers needed to link an
@@ -69,9 +68,6 @@ func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinic
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
 		}
 
-		ev := &clinicv1.ClinicHeadAssigned{
-			EmployeeId: cmd.EmployeeID.String(),
-		}
-		return outbox.Publish(tx, SubjectClinicHeadAssigned, AggregateTypeClinic, cmd.ClinicID.String(), row.CreatedAt, ev)
+		return projector.ClinicHeadAssigned(tx, &row)
 	})
 }

@@ -11,8 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // TerminateEmployeeCommand carries the ID of the employee to remove.
@@ -89,7 +88,6 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
 		}
 
-		ev := &employeev1.EmployeeTerminated{}
-		return outbox.Publish(tx, SubjectEmployeeTerminated, AggregateTypeEmployee, emp.ID.String(), now, ev)
+		return projector.EmployeeTerminated(tx, &emp, now)
 	})
 }

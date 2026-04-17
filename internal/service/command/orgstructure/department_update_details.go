@@ -12,21 +12,13 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	departmentv1 "github.com/medincident/medincident-command-service/pkg/event/department/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 type UpdateDepartmentDetailsCommand struct {
 	ID          uuid.UUID
 	Name        string
 	Description *string
-}
-
-func buildDepartmentDetailsChangedEvent(d *model.Department) *departmentv1.DepartmentDetailsChanged {
-	return &departmentv1.DepartmentDetailsChanged{
-		Name:        d.Name,
-		Description: d.Description.Ptr(),
-	}
 }
 
 func (s *DepartmentService) UpdateDetails(
@@ -75,7 +67,6 @@ func (s *DepartmentService) UpdateDetails(
 				Wrap(err)
 		}
 
-		event := buildDepartmentDetailsChangedEvent(&dept)
-		return outbox.Publish(tx, SubjectDepartmentDetailsChanged, AggregateTypeDepartment, dept.ID.String(), dept.UpdatedAt, event)
+		return projector.DepartmentDetailsChanged(tx, &dept)
 	})
 }

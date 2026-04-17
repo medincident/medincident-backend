@@ -8,13 +8,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
-	employeev1 "github.com/medincident/medincident-command-service/pkg/event/employee/v1"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 )
 
 // ForceEndVacationCommand identifies the running vacation to close.
@@ -70,10 +68,6 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).With("vacation_id", vac.ID).Wrap(err)
 		}
 
-		ev := &employeev1.VacationEnded{
-			VacationId: vac.ID.String(),
-			EndsAt:     timestamppb.New(now),
-		}
-		return outbox.Publish(tx, SubjectVacationEnded, AggregateTypeEmployee, vac.EmployeeID.String(), now, ev)
+		return projector.VacationEnded(tx, &vac, now)
 	})
 }
