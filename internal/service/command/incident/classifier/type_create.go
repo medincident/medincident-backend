@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
 )
 
@@ -124,6 +125,10 @@ func (s *IncidentTypeService) Create(
 				Code(ErrCodeIncidentTypeSaveFailed).
 				With("incident_type_id", id).
 				Wrap(err)
+		}
+
+		if err := projector.TypeCreated(tx, &row); err != nil {
+			return err
 		}
 
 		event := buildIncidentTypeCreatedEvent(&row)

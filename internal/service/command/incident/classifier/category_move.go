@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
 )
 
@@ -189,6 +190,10 @@ func (s *IncidentCategoryService) Move(
 				Code(ErrCodeIncidentCategorySaveFailed).
 				With("incident_category_id", moving.ID).
 				Wrap(err)
+		}
+
+		if err := projector.CategoryMove(tx, moving.ID, newParent, updatedAt); err != nil {
+			return err
 		}
 
 		event := buildIncidentCategoryMovedEvent(newParent)

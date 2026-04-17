@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
 	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
 )
@@ -120,13 +121,22 @@ func (s *IncidentCategoryService) Delete(
 
 		// Emit Deleted events first — leaf types, then categories in
 		// children-first order (lockCategorySubtreeIDs already orders
-		// by depth DESC so the deepest leaves come first).
+		// by depth DESC so the deepest leaves come first). Each event
+		// emission is paired with its projection-row delete so the
+		// read model stays in sync without a separate asynchronous
+		// projector.
 		for _, id := range typeIDs {
+			if err := projector.TypeDeleted(tx, id); err != nil {
+				return err
+			}
 			if err := outbox.Publish(tx, SubjectIncidentTypeDeleted, AggregateTypeIncidentType, id.String(), now, &typeeventv1.IncidentTypeDeleted{}); err != nil {
 				return err
 			}
 		}
 		for _, id := range categoryIDs {
+			if err := projector.CategoryDeleted(tx, id); err != nil {
+				return err
+			}
 			if err := outbox.Publish(tx, SubjectIncidentCategoryDeleted, AggregateTypeIncidentCategory, id.String(), now, &categoryeventv1.IncidentCategoryDeleted{}); err != nil {
 				return err
 			}

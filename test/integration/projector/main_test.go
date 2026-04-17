@@ -105,7 +105,9 @@ func resetProjections(t *testing.T) {
 		                 projections.org_admins,
 		                 projections.org_dispatchers,
 		                 projections.org_heads,
-		                 projections.system_admins
+		                 projections.system_admins,
+		                 projections.incident_categories,
+		                 projections.incident_types
 		         CASCADE`,
 	}
 	for _, q := range stmts {

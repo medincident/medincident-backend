@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
 )
 
@@ -51,6 +52,9 @@ func (s *IncidentTypeService) Delete(
 			return err
 		}
 
+		if err := projector.TypeDeleted(tx, row.ID); err != nil {
+			return err
+		}
 		if err := outbox.Publish(tx, SubjectIncidentTypeDeleted, AggregateTypeIncidentType, row.ID.String(), now, &typeeventv1.IncidentTypeDeleted{}); err != nil {
 			return err
 		}

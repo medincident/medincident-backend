@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/outbox"
+	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	categoryeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/category/v1"
 	typeeventv1 "github.com/medincident/medincident-command-service/pkg/event/incident/type/v1"
 )
@@ -129,9 +130,15 @@ func deactivateTypesInSubtree(tx *gorm.DB, root uuid.UUID) ([]uuid.UUID, error) 
 }
 
 func appendCategoryDeactivatedEvent(tx *gorm.DB, categoryID uuid.UUID, now time.Time) error {
+	if err := projector.CategoryDeactivate(tx, categoryID, now); err != nil {
+		return err
+	}
 	return outbox.Publish(tx, SubjectIncidentCategoryDeactivated, AggregateTypeIncidentCategory, categoryID.String(), now, &categoryeventv1.IncidentCategoryDeactivated{})
 }
 
 func appendTypeDeactivatedEvent(tx *gorm.DB, typeID uuid.UUID, now time.Time) error {
+	if err := projector.TypeDeactivate(tx, typeID, now); err != nil {
+		return err
+	}
 	return outbox.Publish(tx, SubjectIncidentTypeDeactivated, AggregateTypeIncidentType, typeID.String(), now, &typeeventv1.IncidentTypeDeactivated{})
 }
