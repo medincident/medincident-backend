@@ -48,9 +48,6 @@ func (s *OrganizationService) UpdateLegalAddress(
 	if err := validateAddressInput(cmd.Address); err != nil {
 		errs = append(errs, err)
 	}
-	if err := validatePointInput(cmd.Address.Point); err != nil {
-		errs = append(errs, err)
-	}
 	if len(errs) > 0 {
 		return errors.Join(errs...)
 	}

@@ -165,9 +165,6 @@ func (s *OrganizationService) Create(
 	if err := validateAddressInput(cmd.LegalAddress); err != nil {
 		errs = append(errs, err)
 	}
-	if err := validatePointInput(cmd.LegalAddress.Point); err != nil {
-		errs = append(errs, err)
-	}
 	if len(errs) > 0 {
 		return CreateOrganizationResult{}, errors.Join(errs...)
 	}

@@ -146,9 +146,6 @@ func (s *ClinicService) Create(
 	if err := validateAddressInput(cmd.PhysicalAddress); err != nil {
 		errs = append(errs, err)
 	}
-	if err := validatePointInput(cmd.PhysicalAddress.Point); err != nil {
-		errs = append(errs, err)
-	}
 	if len(errs) > 0 {
 		return CreateClinicResult{}, errors.Join(errs...)
 	}

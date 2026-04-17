@@ -50,23 +50,18 @@ func TestValidateAddressInput_Valid(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func TestValidatePointInput_Nil(t *testing.T) {
-	err := validatePointInput(nil)
-	assert.NoError(t, err)
-}
-
 func TestValidatePointInput_LongitudeOutOfRange(t *testing.T) {
-	err := validatePointInput(&PointInput{Longitude: 200, Latitude: 0})
+	err := validatePointInput(PointInput{Longitude: 200, Latitude: 0})
 	assert.Equal(t, ErrCodeAddressLongitudeOutOfRange, oopsCode(t, err))
 }
 
 func TestValidatePointInput_LatitudeOutOfRange(t *testing.T) {
-	err := validatePointInput(&PointInput{Longitude: 0, Latitude: -95})
+	err := validatePointInput(PointInput{Longitude: 0, Latitude: -95})
 	assert.Equal(t, ErrCodeAddressLatitudeOutOfRange, oopsCode(t, err))
 }
 
 func TestValidatePointInput_BothOutOfRange_JoinsErrors(t *testing.T) {
-	err := validatePointInput(&PointInput{Longitude: 200, Latitude: -95})
+	err := validatePointInput(PointInput{Longitude: 200, Latitude: -95})
 	unwrapper, ok := err.(interface{ Unwrap() []error })
 	if !ok {
 		t.Fatalf("expected joined error, got %T", err)
@@ -81,6 +76,6 @@ func TestValidatePointInput_BothOutOfRange_JoinsErrors(t *testing.T) {
 }
 
 func TestValidatePointInput_Valid(t *testing.T) {
-	err := validatePointInput(&PointInput{Longitude: 37.6, Latitude: 55.75})
+	err := validatePointInput(PointInput{Longitude: 37.6, Latitude: 55.75})
 	assert.NoError(t, err)
 }

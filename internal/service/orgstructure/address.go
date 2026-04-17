@@ -43,48 +43,55 @@ const (
 )
 
 // validateAddressInput checks that addr.Text is present and within the
-// bounded range. Point validation is NOT run here — callers invoke
-// validatePointInput(addr.Point) separately so failures from both
-// validators can be joined into one multi-error.
+// bounded range and, when a Point is provided, delegates to
+// validatePointInput. All violations are collected into a single
+// multi-error so the caller sees every field error at once.
 func validateAddressInput(addr AddressInput) error {
+	var errs []error
 	text := strings.TrimSpace(addr.Text)
 	if text == "" {
-		return oops.In("services.orgstructure.address").
+		errs = append(errs, oops.In("services.orgstructure.address").
 			Code(ErrCodeAddressTextEmpty).
 			Public("Address text is required.").
 			With("field", "text").
-			Errorf("address text is empty")
+			Errorf("address text is empty"))
+	} else {
+		n := utf8.RuneCountInString(text)
+		if n < addressMinTextLen {
+			errs = append(errs, oops.In("services.orgstructure.address").
+				Code(ErrCodeAddressTextTooShort).
+				Public("Address text is too short.").
+				With("field", "text").
+				With("actual_length", n).
+				With("min_length", addressMinTextLen).
+				Errorf("address text too short"))
+		}
+		if n > addressMaxTextLen {
+			errs = append(errs, oops.In("services.orgstructure.address").
+				Code(ErrCodeAddressTextTooLong).
+				Public("Address text is too long.").
+				With("field", "text").
+				With("actual_length", n).
+				With("max_length", addressMaxTextLen).
+				Errorf("address text too long"))
+		}
 	}
-	n := utf8.RuneCountInString(text)
-	if n < addressMinTextLen {
-		return oops.In("services.orgstructure.address").
-			Code(ErrCodeAddressTextTooShort).
-			Public("Address text is too short.").
-			With("field", "text").
-			With("actual_length", n).
-			With("min_length", addressMinTextLen).
-			Errorf("address text too short")
+	if addr.Point != nil {
+		if err := validatePointInput(*addr.Point); err != nil {
+			errs = append(errs, err)
+		}
 	}
-	if n > addressMaxTextLen {
-		return oops.In("services.orgstructure.address").
-			Code(ErrCodeAddressTextTooLong).
-			Public("Address text is too long.").
-			With("field", "text").
-			With("actual_length", n).
-			With("max_length", addressMaxTextLen).
-			Errorf("address text too long")
+	if len(errs) > 0 {
+		return errors.Join(errs...)
 	}
 	return nil
 }
 
-// validatePointInput returns nil when p is nil (no point is a valid
-// absent state). When p is non-nil, BOTH longitude and latitude must
-// be in range; violations are collected and joined so callers see both
-// field errors at once.
-func validatePointInput(p *PointInput) error {
-	if p == nil {
-		return nil
-	}
+// validatePointInput checks that BOTH longitude and latitude are in
+// range; violations are collected and joined so callers see both field
+// errors at once. The nil check is handled by validateAddressInput
+// before calling this function.
+func validatePointInput(p PointInput) error {
 	var errs []error
 	if p.Longitude < minLongitude || p.Longitude > maxLongitude {
 		errs = append(errs, oops.In("services.orgstructure.address").
