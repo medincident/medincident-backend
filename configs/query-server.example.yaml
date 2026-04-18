@@ -1,8 +1,6 @@
 # query-server — example configuration.
 #
-# Loaded by cmd/query-server/main.go via config.ReadQueryServerConfig
-# (wired in Plan 3 — the placeholder binary added in Plan 1 does not
-# load this file yet).
+# Loaded by cmd/query-server/main.go via config.ReadQueryServerConfig.
 # ${VAR} and $VAR references are expanded from the process environment
 # before YAML parsing, so secrets (DSN, etc.) should be injected via env
 # rather than hard-coded.
@@ -51,7 +49,9 @@ nats:
   subjects: ["zitadel.>"]
   durable_name: "medincident-query-server-zitadel"
 
-# Zitadel — base info for any reader that needs to enrich a row with
-# live Zitadel data. Identity projections come from NATS, not the API.
+# Zitadel — used by the authn interceptor for JWT introspection on
+# every read RPC. Same shape as command-server's zitadel block: both
+# binaries validate tokens the same way.
 zitadel:
-  domain: "${ZITADEL_DOMAIN}"
+  domain: "${ZITADEL_DOMAIN}"           # e.g. https://auth.example.com
+  key_path: "${ZITADEL_KEY_PATH}"       # filesystem path to service user key.json

@@ -1,0 +1,180 @@
+syntax = "proto3";
+
+package query.membership.v1;
+
+import "google/api/annotations.proto";
+
+// MembershipQueryService exposes read methods over the employee
+// projections and the role assignment projections (clinic heads,
+// department responsibles, org admins/heads/dispatchers, system admins).
+service MembershipQueryService {
+  rpc GetEmployee(GetEmployeeRequest) returns (GetEmployeeResponse) {
+    option (google.api.http) = {get: "/v1/query/employees/{id}"};
+  }
+  rpc ListEmployeesByDepartment(ListEmployeesByDepartmentRequest) returns (ListEmployeesByDepartmentResponse) {
+    option (google.api.http) = {get: "/v1/query/departments/{department_id}/employees"};
+  }
+  rpc ListEmployeesByClinic(ListEmployeesByClinicRequest) returns (ListEmployeesByClinicResponse) {
+    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/employees"};
+  }
+  rpc ListEmployeesByOrganization(ListEmployeesByOrganizationRequest) returns (ListEmployeesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/employees"};
+  }
+
+  rpc ListVacationsByEmployee(ListVacationsByEmployeeRequest) returns (ListVacationsByEmployeeResponse) {
+    option (google.api.http) = {get: "/v1/query/employees/{employee_id}/vacations"};
+  }
+
+  rpc GetClinicHead(GetClinicHeadRequest) returns (GetClinicHeadResponse) {
+    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/head"};
+  }
+  rpc GetDepartmentResponsible(GetDepartmentResponsibleRequest) returns (GetDepartmentResponsibleResponse) {
+    option (google.api.http) = {get: "/v1/query/departments/{department_id}/responsible"};
+  }
+  rpc ListOrgAdmins(ListOrgAdminsRequest) returns (ListOrgAdminsResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/admins"};
+  }
+  rpc ListOrgDispatchers(ListOrgDispatchersRequest) returns (ListOrgDispatchersResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/dispatchers"};
+  }
+  rpc ListOrgHeads(ListOrgHeadsRequest) returns (ListOrgHeadsResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/heads"};
+  }
+  rpc ListSystemAdmins(ListSystemAdminsRequest) returns (ListSystemAdminsResponse) {
+    option (google.api.http) = {get: "/v1/query/system-admins"};
+  }
+}
+
+// EmployeeCardView is the denormalised card projection returned by
+// both Get and List endpoints. Fields mirror projections.employee_cards
+// columns; timestamps are RFC3339 strings. Optional fields stay unset
+// when the backing column is NULL.
+message EmployeeCardView {
+  string employee_id = 1;
+  string zitadel_user_id = 2;
+  optional string first_name = 3;
+  optional string last_name = 4;
+  optional string display_name = 5;
+  optional string email = 6;
+  string organization_id = 7;
+  optional string organization_name = 8;
+  optional string clinic_id = 9;
+  optional string clinic_name = 10;
+  string department_id = 11;
+  optional string department_name = 12;
+  optional string position = 13;
+  optional string terminated_at = 14;
+  optional string current_vacation_ends_at = 15;
+  optional string next_vacation_starts_at = 16;
+}
+
+// VacationView mirrors projections.employee_vacations. state is one of
+// {scheduled, active, ended, cancelled}.
+message VacationView {
+  string id = 1;
+  string employee_id = 2;
+  string state = 3;
+  string starts_at = 4;
+  optional string ends_at = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+// RoleHolder represents a single role assignment. deputy_employee_id
+// stays empty when the holder has no deputy (or the row is itself a
+// deputy-less holder).
+message RoleHolder {
+  string employee_id = 1;
+  optional string deputy_employee_id = 2;
+}
+
+// SystemAdminView is the system-admin role; system admins are rooted in
+// Zitadel user ids, not employee ids.
+message SystemAdminView {
+  string zitadel_user_id = 1;
+  string created_at = 2;
+}
+
+message GetEmployeeRequest {
+  string id = 1;
+}
+message GetEmployeeResponse {
+  EmployeeCardView employee = 1;
+}
+
+message ListEmployeesByDepartmentRequest {
+  string department_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListEmployeesByDepartmentResponse {
+  repeated EmployeeCardView items = 1;
+}
+
+message ListEmployeesByClinicRequest {
+  string clinic_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListEmployeesByClinicResponse {
+  repeated EmployeeCardView items = 1;
+}
+
+message ListEmployeesByOrganizationRequest {
+  string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListEmployeesByOrganizationResponse {
+  repeated EmployeeCardView items = 1;
+}
+
+message ListVacationsByEmployeeRequest {
+  string employee_id = 1;
+  // Optional state filter. When empty, all states are returned.
+  // Valid values: scheduled, active, ended, cancelled.
+  string state = 2;
+}
+message ListVacationsByEmployeeResponse {
+  repeated VacationView items = 1;
+}
+
+message GetClinicHeadRequest {
+  string clinic_id = 1;
+}
+message GetClinicHeadResponse {
+  optional RoleHolder holder = 1;
+}
+
+message GetDepartmentResponsibleRequest {
+  string department_id = 1;
+}
+message GetDepartmentResponsibleResponse {
+  optional RoleHolder holder = 1;
+}
+
+message ListOrgAdminsRequest {
+  string organization_id = 1;
+}
+message ListOrgAdminsResponse {
+  repeated RoleHolder items = 1;
+}
+
+message ListOrgDispatchersRequest {
+  string organization_id = 1;
+}
+message ListOrgDispatchersResponse {
+  repeated RoleHolder items = 1;
+}
+
+message ListOrgHeadsRequest {
+  string organization_id = 1;
+}
+message ListOrgHeadsResponse {
+  repeated RoleHolder items = 1;
+}
+
+message ListSystemAdminsRequest {}
+message ListSystemAdminsResponse {
+  repeated SystemAdminView items = 1;
+}

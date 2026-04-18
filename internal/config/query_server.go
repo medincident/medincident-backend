@@ -3,15 +3,8 @@ package config
 import "time"
 
 // QueryServerConfig is the YAML-backed runtime configuration for the
-// query-server binary. The placeholder cmd/query-server/main.go added
-// in Plan 1 does not load it yet; the loader and full set of fields
-// are wired in Plan 3 alongside the actual readers and the Zitadel
-// NATS consumer.
-//
-// Fields mirror the design spec § 11. Sections that command-server
-// has but query-server does not (Zitadel key-based machine auth) are
-// intentionally absent. Sections only query-server needs (NATS) are
-// only here.
+// query-server binary. Fields mirror the design spec § 11. Sections
+// only query-server needs (NATS) are only here.
 type QueryServerConfig struct {
 	Server   QueryServerNetConfig   `yaml:"server"   validate:"required"`
 	Postgres PostgresConfig         `yaml:"postgres" validate:"required"`
@@ -44,10 +37,13 @@ type QueryServerNATSConfig struct {
 	DurableName string   `yaml:"durable_name" validate:"required"`
 }
 
-// QueryServerZitadelInfo is the Zitadel base info needed by readers
-// that join projection.users with live Zitadel data, if any.
+// QueryServerZitadelInfo is the Zitadel config for the query-server's
+// authn interceptor (JWT introspection against Zitadel). Same shape as
+// command-server's ZitadelConfig — both binaries validate tokens the
+// same way, so both need domain + service-user key.
 type QueryServerZitadelInfo struct {
-	Domain string `yaml:"domain" validate:"required,url"`
+	Domain  string `yaml:"domain"   validate:"required,url"`
+	KeyPath string `yaml:"key_path" validate:"required,file"`
 }
 
 // Default values applied when a query-server YAML omits a field.

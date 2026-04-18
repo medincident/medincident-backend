@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package query.incident.classifier.v1;
+
+import "google/api/annotations.proto";
+
+// IncidentClassifierQueryService exposes read methods over the
+// projections.incident_categories / projections.incident_types
+// tables. Subtree walks (descendants of a category) use recursive SQL
+// CTEs in the reader; the RPC surface stays flat.
+service IncidentClassifierQueryService {
+  rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse) {
+    option (google.api.http) = {get: "/v1/query/incident-categories/{id}"};
+  }
+  rpc ListCategoriesByOrganization(ListCategoriesByOrganizationRequest) returns (ListCategoriesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-categories"};
+  }
+  rpc ListActiveRootCategories(ListActiveRootCategoriesRequest) returns (ListActiveRootCategoriesResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-categories:roots"};
+  }
+  rpc ListCategorySubtree(ListCategorySubtreeRequest) returns (ListCategorySubtreeResponse) {
+    option (google.api.http) = {get: "/v1/query/incident-categories/{root_category_id}:subtree"};
+  }
+
+  rpc GetType(GetTypeRequest) returns (GetTypeResponse) {
+    option (google.api.http) = {get: "/v1/query/incident-types/{id}"};
+  }
+  rpc ListTypesByCategory(ListTypesByCategoryRequest) returns (ListTypesByCategoryResponse) {
+    option (google.api.http) = {get: "/v1/query/incident-categories/{category_id}/types"};
+  }
+  rpc ListActiveTypesByOrganization(ListActiveTypesByOrganizationRequest) returns (ListActiveTypesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-types:active"};
+  }
+}
+
+// Category mirrors projections.incident_categories row.
+message Category {
+  string id = 1;
+  string organization_id = 2;
+  optional string parent_category_id = 3;
+  string name = 4;
+  optional string description = 5;
+  bool is_active = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+// Type mirrors projections.incident_types row.
+message Type {
+  string id = 1;
+  string organization_id = 2;
+  string category_id = 3;
+  string name = 4;
+  optional string description = 5;
+  bool is_active = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message GetCategoryRequest {
+  string id = 1;
+}
+message GetCategoryResponse {
+  Category category = 1;
+}
+
+message ListCategoriesByOrganizationRequest {
+  string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListCategoriesByOrganizationResponse {
+  repeated Category items = 1;
+}
+
+message ListActiveRootCategoriesRequest {
+  string organization_id = 1;
+}
+message ListActiveRootCategoriesResponse {
+  repeated Category items = 1;
+}
+
+message ListCategorySubtreeRequest {
+  string root_category_id = 1;
+}
+message ListCategorySubtreeResponse {
+  repeated Category items = 1;
+}
+
+message GetTypeRequest {
+  string id = 1;
+}
+message GetTypeResponse {
+  Type type = 1;
+}
+
+message ListTypesByCategoryRequest {
+  string category_id = 1;
+}
+message ListTypesByCategoryResponse {
+  repeated Type items = 1;
+}
+
+message ListActiveTypesByOrganizationRequest {
+  string organization_id = 1;
+}
+message ListActiveTypesByOrganizationResponse {
+  repeated Type items = 1;
+}

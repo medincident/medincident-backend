@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package query.stats.v1;
+
+import "google/api/annotations.proto";
+
+// StatsQueryService exposes aggregate counters for dashboards. Counts
+// come from the per-aggregate counters tables; "employees on vacation"
+// and "scheduled vacations" are computed at read time from
+// projections.employee_vacations so they never drift.
+service StatsQueryService {
+  rpc GetOrganizationStats(GetOrganizationStatsRequest) returns (GetOrganizationStatsResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/stats"};
+  }
+  rpc GetClinicStats(GetClinicStatsRequest) returns (GetClinicStatsResponse) {
+    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/stats"};
+  }
+  rpc GetDepartmentStats(GetDepartmentStatsRequest) returns (GetDepartmentStatsResponse) {
+    option (google.api.http) = {get: "/v1/query/departments/{department_id}/stats"};
+  }
+}
+
+message OrganizationStats {
+  string organization_id = 1;
+  int64 employees_total = 2;
+  int64 clinics_total = 3;
+  int64 departments_total = 4;
+  int64 employees_on_vacation = 5;
+  int64 vacations_scheduled = 6;
+}
+
+message ClinicStats {
+  string clinic_id = 1;
+  string organization_id = 2;
+  int64 employees_total = 3;
+  int64 departments_total = 4;
+  int64 employees_on_vacation = 5;
+}
+
+message DepartmentStats {
+  string department_id = 1;
+  optional string clinic_id = 2;
+  string organization_id = 3;
+  int64 employees_total = 4;
+  int64 employees_on_vacation = 5;
+}
+
+message GetOrganizationStatsRequest {
+  string organization_id = 1;
+}
+message GetOrganizationStatsResponse {
+  OrganizationStats stats = 1;
+}
+
+message GetClinicStatsRequest {
+  string clinic_id = 1;
+}
+message GetClinicStatsResponse {
+  ClinicStats stats = 1;
+}
+
+message GetDepartmentStatsRequest {
+  string department_id = 1;
+}
+message GetDepartmentStatsResponse {
+  DepartmentStats stats = 1;
+}
