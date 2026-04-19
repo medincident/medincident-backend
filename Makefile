@@ -1,9 +1,8 @@
-ENTRY    := ./cmd/command-server
-BIN_NAME := command-server
-DIST     := ./dist
-
+DIST   := ./dist
 GOOS   ?= $(shell go env GOOS)
 GOARCH ?= $(shell go env GOARCH)
+
+BINARIES := command-server query-server gateway-server
 
 # ── Platforms ────────────────────────────────────────────────────────────────
 # Edit the list below to add or remove build targets.
@@ -18,29 +17,37 @@ PLATFORMS := \
 	windows/386
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
-bin_name = $(BIN_NAME)-$(1)-$(2)$(if $(filter windows,$(1)),.exe)
+bin_name = $(1)-$(2)-$(3)$(if $(filter windows,$(2)),.exe)
 
 # ── Targets ──────────────────────────────────────────────────────────────────
 
-.PHONY: build build-all run clean
+.PHONY: build build-all clean \
+        $(addprefix build-,$(BINARIES)) \
+        $(addprefix build-all-,$(BINARIES))
 
-## build: compile for the current host platform
-build:
+## build: compile every binary for the host platform
+build: $(addprefix build-,$(BINARIES))
+
+## build-<binary>: compile a single binary for the host platform
+$(addprefix build-,$(BINARIES)):
 	@mkdir -p $(DIST)
-	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o $(DIST)/$(call bin_name,$(GOOS),$(GOARCH)) $(ENTRY)
+	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -trimpath -ldflags "-s -w" \
+		-o $(DIST)/$(call bin_name,$(patsubst build-%,%,$@),$(GOOS),$(GOARCH)) \
+		./cmd/$(patsubst build-%,%,$@)
 
-## build-all: cross-compile for every platform in PLATFORMS
-build-all:
+## build-all: cross-compile every binary for every PLATFORM
+build-all: $(addprefix build-all-,$(BINARIES))
+
+## build-all-<binary>: cross-compile a single binary for every PLATFORM
+$(addprefix build-all-,$(BINARIES)):
 	@mkdir -p $(DIST)
 	@set -e; $(foreach p,$(PLATFORMS), \
-		$(eval os   = $(word 1,$(subst /, ,$(p)))) \
-		$(eval arch = $(word 2,$(subst /, ,$(p)))) \
-		GOOS=$(os) GOARCH=$(arch) go build -o $(DIST)/$(call bin_name,$(os),$(arch)) $(ENTRY) ; \
+	  $(eval os   = $(word 1,$(subst /, ,$(p)))) \
+	  $(eval arch = $(word 2,$(subst /, ,$(p)))) \
+	  GOOS=$(os) GOARCH=$(arch) go build -trimpath -ldflags "-s -w" \
+	      -o $(DIST)/$(call bin_name,$(patsubst build-all-%,%,$@),$(os),$(arch)) \
+	      ./cmd/$(patsubst build-all-%,%,$@) ; \
 	)
-
-## run: build and run the server locally
-run: build
-	$(DIST)/$(call bin_name,$(GOOS),$(GOARCH)) $(ARGS)
 
 ## clean: remove build artifacts
 clean:
