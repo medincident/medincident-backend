@@ -141,6 +141,7 @@ func provideQueryPostgresWrapper(injector do.Injector) (*postgresDBWrapper, erro
 		Logger:                 gormlogger.Default.LogMode(gormlogger.Error),
 	})
 	if err != nil {
+		_ = sqlDB.Close()
 		pool.Close()
 		return nil, oops.In("di.postgres").
 			Code(ErrCodePostgresOpenFailed).

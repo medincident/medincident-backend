@@ -27,9 +27,18 @@ type postgresDBWrapper struct {
 	pool *pgxpool.Pool
 }
 
+// Shutdown tears down the connection chain in LIFO order: first
+// close the *sql.DB created by stdlib.OpenDBFromPool so its
+// connectionOpener goroutine exits, then drain and close the
+// underlying pgxpool. The pool close runs unconditionally via
+// defer — even if sql.DB close fails, the pool must not be leaked.
 func (p *postgresDBWrapper) Shutdown(_ context.Context) error {
-	p.pool.Close()
-	return nil
+	defer p.pool.Close()
+	sqlDB, err := p.DB.DB()
+	if err != nil {
+		return err
+	}
+	return sqlDB.Close()
 }
 
 func providePostgresDBWrapper(injector do.Injector) (*postgresDBWrapper, error) {
@@ -57,6 +66,7 @@ func providePostgresDBWrapper(injector do.Injector) (*postgresDBWrapper, error) 
 		Logger:                 gormlogger.Default.LogMode(gormlogger.Error),
 	})
 	if err != nil {
+		_ = sqlDB.Close()
 		pool.Close()
 		return nil, oops.In("di.postgres").
 			Code(ErrCodePostgresOpenFailed).
