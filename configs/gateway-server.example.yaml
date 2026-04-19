@@ -1,0 +1,60 @@
+# gateway-server — example configuration.
+#
+# Loaded by cmd/gateway-server/main.go via config.ReadGatewayServerConfig.
+# ${VAR} and $VAR references are expanded from the process environment
+# before YAML parsing.
+#
+# The gateway is a thin HTTP → gRPC translator. It does NOT validate
+# JWTs; it forwards the Authorization header into gRPC metadata, and
+# command-server / query-server verify the token via their Zitadel
+# interceptor. Trusted-network deployment is assumed: no TLS between
+# gateway and upstreams.
+
+server:
+  http:
+    # TCP listen address for the HTTP gateway.
+    address: ":8080"
+
+    # Optional CORS block. Remove the block entirely to disable CORS.
+    # When present, origins/methods must be non-empty. allowed_headers
+    # typically includes "Authorization" so browsers can forward JWTs.
+    cors:
+      allowed_origins:
+        - "https://app.example.com"
+      allowed_methods:
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+        - "OPTIONS"
+      allowed_headers:
+        - "Authorization"
+        - "Content-Type"
+      max_age_seconds: 3600
+
+# Upstream gRPC backends. Plaintext dial — trusted network.
+#
+#   - command: three CQRS command services (orgstructure, membership,
+#     incident classifier). The gateway registers those three.
+#   - query: five CQRS query services (orgstructure, membership,
+#     incident classifier, stats, identity). The gateway registers those
+#     five.
+#
+# Routing between the two is not operator-configurable: it is fixed by
+# the proto package of each generated .pb.gw.go registrar.
+upstreams:
+  command:
+    address: "command-server:9090"
+  query:
+    address: "query-server:9091"
+
+zerolog:
+  level: info
+  timestamp: true
+  time_format: "2006-01-02T15:04:05Z07:00"
+  outputs:
+    - type: console
+      target: stdout
+      pretty: true
+      time_format: "15:04:05"
+      parts_order: ["time", "level", "caller", "message"]
