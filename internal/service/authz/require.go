@@ -7,12 +7,6 @@ import (
 	"github.com/samber/oops"
 )
 
-// ErrCodePermissionDenied is emitted whenever a check* call returns
-// (ok=false, nil): the caller is known, the scope exists or does not,
-// and either way they are not authorized. Maps to
-// codes.PermissionDenied at the gRPC boundary.
-const ErrCodePermissionDenied = "permission_denied"
-
 // errPermissionDenied shapes the deny result with the scope that was
 // being checked so server logs carry enough to triage failures. The
 // Public message is deliberately scope-agnostic to avoid revealing

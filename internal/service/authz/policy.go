@@ -9,6 +9,14 @@ import (
 	"github.com/samber/oops"
 )
 
+// ErrCodePermissionDenied is emitted when an authorization policy
+// evaluates to false for the given caller. Maps to
+// codes.PermissionDenied at the gRPC boundary.
+const ErrCodePermissionDenied = "permission_denied"
+
+// ErrCodeAuthzCheckFailed is emitted when the policy check query
+// itself fails (DB fault). Maps to codes.Internal at the gRPC
+// boundary.
 const ErrCodeAuthzCheckFailed = "authz_check_failed"
 
 // Policy is a single authorization rule. It renders to one or more
@@ -16,10 +24,14 @@ const ErrCodeAuthzCheckFailed = "authz_check_failed"
 // under this rule. Policies compose via AnyOf into a single
 // UNION ALL-based EXISTS query so that the full check stays one
 // database round-trip.
+//
+// The with method mirrors oops.OopsErrorBuilder's value-chaining
+// convention so policy decoration composes naturally with the rest
+// of the error-building code in this package.
 type Policy interface {
 	branches(bc *branchCtx) []string
 	describe() string
-	with(b *oops.OopsErrorBuilder) *oops.OopsErrorBuilder
+	with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder
 }
 
 // branchCtx accumulates SQL placeholder names and named args as a
@@ -60,8 +72,10 @@ func (sysAdminPolicy) branches(bc *branchCtx) []string {
 		"SELECT 1 FROM domain.system_admins WHERE zitadel_user_id = @%s", c)}
 }
 
-func (sysAdminPolicy) describe() string                                     { return "system administrator" }
-func (sysAdminPolicy) with(b *oops.OopsErrorBuilder) *oops.OopsErrorBuilder { return b }
+func (sysAdminPolicy) describe() string { return "system administrator" }
+
+//nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
+func (sysAdminPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder { return b }
 
 type anyOfPolicy struct{ items []Policy }
 
@@ -86,7 +100,8 @@ func (p anyOfPolicy) describe() string {
 	return strings.Join(parts, " or ")
 }
 
-func (p anyOfPolicy) with(b *oops.OopsErrorBuilder) *oops.OopsErrorBuilder {
+//nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
+func (p anyOfPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder {
 	for _, item := range p.items {
 		b = item.with(b)
 	}
