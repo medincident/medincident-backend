@@ -108,3 +108,69 @@ func TestRequire_AnyOf_ExplicitComposition_EquivalentToAdminOf(t *testing.T) {
 	err := authzSvc.Require(ctxT(t), "alice", explicit)
 	requireDenied(t, err, publicAdminOf)
 }
+
+// ---------------------------------------------------------------------------
+// Direct OrgAdminOf coverage per scope
+//
+// These exercise the bare OrgAdminOf.X policies (no SystemAdmin fallback)
+// so each scope's join chain is verified on its own. Cross-org tests
+// confirm the tenancy fence in the JOIN does not leak across orgs.
+// ---------------------------------------------------------------------------
+
+func TestRequire_OrgAdminOf_Clinic_DirectAdmin(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+	// Bob admins OrgA, clinicA1 belongs to OrgA.
+	require.NoError(t, authzSvc.Require(ctxT(t), "bob", authz.OrgAdminOf.Clinic(clinicA1)))
+}
+
+func TestRequire_OrgAdminOf_Department_DirectAdmin(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+	// deptA1a is in clinicA1, which belongs to OrgA. Bob admins OrgA.
+	require.NoError(t, authzSvc.Require(ctxT(t), "bob", authz.OrgAdminOf.Department(deptA1a)))
+}
+
+func TestRequire_OrgAdminOf_Department_CrossOrg_Denied(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+	// deptB1a is in clinicB1 which belongs to OrgB. Bob admins OrgA only.
+	err := authzSvc.Require(ctxT(t), "bob", authz.OrgAdminOf.Department(deptB1a))
+	requireDenied(t, err, publicOrgAdmin)
+}
+
+func TestRequire_OrgAdminOf_Employee_DirectAdmin(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+	// Alice is in OrgA. Bob admins OrgA.
+	require.NoError(t, authzSvc.Require(ctxT(t), "bob", authz.OrgAdminOf.Employee(empAlice)))
+}
+
+func TestRequire_OrgAdminOf_Employee_CrossOrg_Denied(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+	// Dave is in OrgB. Bob admins OrgA only.
+	err := authzSvc.Require(ctxT(t), "bob", authz.OrgAdminOf.Employee(empDave))
+	requireDenied(t, err, publicOrgAdmin)
+}
+
+func TestRequire_OrgAdminOf_Vacation_DirectAdmin(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+	// Alice's vacation is in OrgA. Bob admins OrgA.
+	require.NoError(t, authzSvc.Require(ctxT(t), "bob", authz.OrgAdminOf.Vacation(aliceVacID)))
+}
+
+func TestRequire_OrgAdminOf_Category_DirectAdmin(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+	// categoryA is in OrgA. Bob admins OrgA.
+	require.NoError(t, authzSvc.Require(ctxT(t), "bob", authz.OrgAdminOf.Category(categoryA)))
+}
+
+func TestRequire_OrgAdminOf_IncidentType_DirectAdmin(t *testing.T) {
+	resetDB(t)
+	seedFixtures(t)
+	// typeA is in OrgA. Bob admins OrgA.
+	require.NoError(t, authzSvc.Require(ctxT(t), "bob", authz.OrgAdminOf.IncidentType(typeA)))
+}
