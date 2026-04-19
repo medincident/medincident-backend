@@ -10,8 +10,8 @@ import (
 )
 
 // Point is a geographic coordinate pair. Both fields are always valid;
-// absence of a point is expressed via a nil pointer in the owning
-// Address struct.
+// absence of a point is expressed via Valid=false on the
+// null.Value[Point] wrapper in the owning Address struct.
 type Point struct {
 	Longitude float64
 	Latitude  float64
