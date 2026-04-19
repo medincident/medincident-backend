@@ -37,16 +37,16 @@ type GRPCServerConfig struct {
 	MaxRecvMsgSize int    `yaml:"max_recv_msg_size" validate:"required,min=1024,max=104857600"`
 }
 
+// PostgresConfig is the database connection config. Pool tuning is
+// expressed in-band via DSN query parameters honored by pgxpool:
+//
+//   - pool_max_conns, pool_min_conns
+//   - pool_max_conn_lifetime, pool_max_conn_idle_time
+//   - pool_health_check_period, pool_max_conn_lifetime_jitter
+//
+// See configs/*.example.yaml for a worked example.
 type PostgresConfig struct {
-	DSN  string             `yaml:"dsn"  validate:"required,startswith=postgres://|startswith=postgresql://"`
-	Pool PostgresPoolConfig `yaml:"pool" validate:"required"`
-}
-
-type PostgresPoolConfig struct {
-	MaxOpenConns    int           `yaml:"max_open_conns"     validate:"required,min=1,max=10000"`
-	MaxIdleConns    int           `yaml:"max_idle_conns"     validate:"min=0,ltefield=MaxOpenConns"`
-	ConnMaxLifetime time.Duration `yaml:"conn_max_lifetime"  validate:"required,min=1s"`
-	ConnMaxIdleTime time.Duration `yaml:"conn_max_idle_time" validate:"required,min=1s"`
+	DSN string `yaml:"dsn" validate:"required,startswith=postgres://|startswith=postgresql://"`
 }
 
 type ZitadelConfig struct {
@@ -59,11 +59,6 @@ type ZitadelConfig struct {
 const (
 	defaultGRPCAddress        = ":9090"
 	defaultGRPCMaxRecvMsgSize = 4 * 1024 * 1024 // 4 MiB
-
-	defaultPostgresMaxOpenConns    = 20
-	defaultPostgresMaxIdleConns    = 2
-	defaultPostgresConnMaxLifetime = 30 * time.Minute
-	defaultPostgresConnMaxIdleTime = 5 * time.Minute
 )
 
 func defaultCommandServerConfig() CommandServerConfig {
@@ -72,14 +67,6 @@ func defaultCommandServerConfig() CommandServerConfig {
 			GRPC: GRPCServerConfig{
 				Address:        defaultGRPCAddress,
 				MaxRecvMsgSize: defaultGRPCMaxRecvMsgSize,
-			},
-		},
-		Postgres: PostgresConfig{
-			Pool: PostgresPoolConfig{
-				MaxOpenConns:    defaultPostgresMaxOpenConns,
-				MaxIdleConns:    defaultPostgresMaxIdleConns,
-				ConnMaxLifetime: defaultPostgresConnMaxLifetime,
-				ConnMaxIdleTime: defaultPostgresConnMaxIdleTime,
 			},
 		},
 		Zerolog: ZerologConfig{

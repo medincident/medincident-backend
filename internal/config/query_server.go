@@ -63,14 +63,6 @@ func defaultQueryServerConfig() QueryServerConfig {
 				Address: defaultQueryServerGatewayAddress,
 			},
 		},
-		Postgres: PostgresConfig{
-			Pool: PostgresPoolConfig{
-				MaxOpenConns:    defaultPostgresMaxOpenConns,
-				MaxIdleConns:    defaultPostgresMaxIdleConns,
-				ConnMaxLifetime: defaultPostgresConnMaxLifetime,
-				ConnMaxIdleTime: defaultPostgresConnMaxIdleTime,
-			},
-		},
 		Zerolog: ZerologConfig{
 			Level:      "info",
 			Timestamp:  true,

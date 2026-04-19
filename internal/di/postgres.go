@@ -3,6 +3,8 @@ package di
 import (
 	"context"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
 	"github.com/samber/oops"
@@ -15,22 +17,19 @@ import (
 
 const (
 	ErrCodePostgresOpenFailed = "postgres_open_failed"
-	ErrCodePostgresTuneFailed = "postgres_tune_failed"
 )
 
-// postgresDBWrapper owns the *gorm.DB lifecycle so samber/do can Close
-// the underlying sql.DB pool on injector shutdown. Private to di —
-// consumers invoke *gorm.DB directly via ProvideGormDB.
+// postgresDBWrapper owns the pgxpool lifecycle so samber/do can close
+// the pool on injector shutdown. Consumers invoke *gorm.DB directly via
+// ProvideGormDB; the pool itself is an implementation detail.
 type postgresDBWrapper struct {
 	*gorm.DB
+	pool *pgxpool.Pool
 }
 
 func (p *postgresDBWrapper) Shutdown(_ context.Context) error {
-	sqlDB, err := p.DB.DB()
-	if err != nil {
-		return err
-	}
-	return sqlDB.Close()
+	p.pool.Close()
+	return nil
 }
 
 func providePostgresDBWrapper(injector do.Injector) (*postgresDBWrapper, error) {
@@ -43,30 +42,29 @@ func providePostgresDBWrapper(injector do.Injector) (*postgresDBWrapper, error) 
 		return nil, err
 	}
 
-	db, err := gorm.Open(postgres.Open(cfg.Postgres.DSN), &gorm.Config{
-		SkipDefaultTransaction: true,
-		TranslateError:         true,
-		Logger:                 gormlogger.Default.LogMode(gormlogger.Error),
-	})
+	pool, err := pgxpool.New(context.Background(), cfg.Postgres.DSN)
 	if err != nil {
 		return nil, oops.In("di.postgres").
 			Code(ErrCodePostgresOpenFailed).
 			Wrap(err)
 	}
 
-	sqlDB, err := db.DB()
+	sqlDB := stdlib.OpenDBFromPool(pool)
+
+	db, err := gorm.Open(postgres.New(postgres.Config{Conn: sqlDB}), &gorm.Config{
+		SkipDefaultTransaction: true,
+		TranslateError:         true,
+		Logger:                 gormlogger.Default.LogMode(gormlogger.Error),
+	})
 	if err != nil {
+		pool.Close()
 		return nil, oops.In("di.postgres").
-			Code(ErrCodePostgresTuneFailed).
+			Code(ErrCodePostgresOpenFailed).
 			Wrap(err)
 	}
-	sqlDB.SetMaxOpenConns(cfg.Postgres.Pool.MaxOpenConns)
-	sqlDB.SetMaxIdleConns(cfg.Postgres.Pool.MaxIdleConns)
-	sqlDB.SetConnMaxLifetime(cfg.Postgres.Pool.ConnMaxLifetime)
-	sqlDB.SetConnMaxIdleTime(cfg.Postgres.Pool.ConnMaxIdleTime)
 
 	logger.Info().Msg("postgres pool wired")
-	return &postgresDBWrapper{DB: db}, nil
+	return &postgresDBWrapper{DB: db, pool: pool}, nil
 }
 
 // provideGormDB resolves the real *gorm.DB for services and handlers —
