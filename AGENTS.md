@@ -68,17 +68,28 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
     `<-` explicitly. Parent FKs are immutable — a clinic always
     belongs to exactly one organization and never changes parents;
     a department always belongs to exactly one clinic.
+15. **Build tooling split — Makefile vs Taskfile.**
+    - `Makefile` owns **binary compilation only**: `make build`,
+      `make build-<binary>`, `make build-all`,
+      `make build-all-<binary>`, `make clean`. Never add non-build
+      targets to the Makefile.
+    - `Taskfile.yml` owns **everything else**: codegen, lint, format,
+      tests, vuln scan, proto tooling, DB migrations, Docker image
+      builds (`docker:*`). Never add Go-binary compilation tasks
+      to the Taskfile — they belong in the Makefile.
 
 ## Directory layout
 
 ```
 cmd/command-server/main.go               — entry point (command side), graceful shutdown
 cmd/query-server/main.go                 — entry point (query side, placeholder until Plan 3)
+cmd/gateway-server/main.go               — entry point (HTTP gateway), http.Server + grpc-gateway mux
 internal/
   config/                                — YAML + go-playground/validator
     config.go                            — shared types (GRPC/Postgres/Zitadel) + readAndValidate
     command_server.go                    — CommandServerConfig + ReadCommandServerConfig
     query_server.go                      — QueryServerConfig + ReadQueryServerConfig
+    gateway_server.go                    — GatewayServerConfig + ReadGatewayServerConfig
     zerolog.go                           — zerolog config subtree (shared)
   di/                                    — samber/do/v2 providers (all factories)
     container.go                         — NewContainer + do.Provide wiring
@@ -86,11 +97,17 @@ internal/
     postgres.go                          — *gorm.DB provider + Shutdown hook
     grpc.go                              — *grpc.Server wrapper + GracefulStop hook
     services.go                          — service providers
+    gateway_container.go                 — NewGatewayContainer + do.Provide wiring
     handler.go                           — handler providers
   model/                                 — gorm models. ONLY place `null.X` lives.
   service/
     authz/                               — role-based check helpers (shared)
     zitadel/                             — Zitadel client (today: user verify)
+    gateway/                             — HTTP → gRPC surface of gateway-server
+      server.go                          — ServerWrapper + NewServeMux + BuildHandler
+      middleware.go                      — access log + CORS
+      health.go                          — /healthz + /readyz
+      headers.go                         — IncomingHeaderMatcher
     command/orgstructure/                — write-side business logic, one file per method
       service.go                         — three service struct types + constructors
       address.go                         — shared Address/Point validators
@@ -121,12 +138,12 @@ pkg/                                     — buf-generated Go (committed)
 docs/proto/medincident.md                — generated combined Markdown docs for all proto contracts (committed)
 buf.gen.yaml                             — go + grpc + gateway + openapi generation
 buf.gen.docs.yaml                        — protoc-gen-doc generation
-build/{command,query}-server.Dockerfile  — multi-stage Docker builds (one per binary)
+build/{command,query,gateway}-server.Dockerfile  — multi-stage Docker builds (one per binary)
 db/migrations/                           — dbmate migrations (never hand-written).
                                            Includes domain.*, outbox.*, projections.*
                                            (projections.* is unused in Plan 1, wired in Plan 2)
 test/integration/orgstructure/           — testcontainers-backed integration suite
-configs/                                 — command-server.example.yaml + query-server.example.yaml
+configs/                                 — command-server.example.yaml + query-server.example.yaml + gateway-server.example.yaml
 ```
 
 ## Subject scheme
@@ -138,7 +155,16 @@ Outbox subjects follow `medincident.event.<aggregate>.v1.<action>`:
 
 ## Tooling
 
-All via `Taskfile.yml`. Key commands:
+Binary compilation goes through `Makefile` (see Hard Rule 15).
+Everything else goes through `Taskfile.yml`.
+
+- `make build` — compile all three binaries for the host platform
+- `make build-<binary>` — e.g. `make build-gateway-server`
+- `make build-all` — cross-compile all binaries for every platform in `PLATFORMS`
+- `make build-all-<binary>` — single binary, all platforms
+- `make clean` — remove `./dist`
+
+Taskfile commands:
 
 - `task gen` — `go tool buf generate` + docs template (pkg/, api/openapi/, docs/proto/)
 - `task gen:check` — verify `pkg/`, `api/openapi/`, `docs/proto/` are in sync with proto
@@ -153,3 +179,4 @@ All via `Taskfile.yml`. Key commands:
 - `task test` — unit + integration
 - `task migrate` — apply dbmate migrations
 - `task migrate:new -- <name>` — create a new migration file pair
+- `task docker:command-server`, `task docker:query-server`, `task docker:gateway-server` — Docker image builds
