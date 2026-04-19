@@ -32,7 +32,7 @@ func TestOrganizationReader_Get_ReturnsViewSeededByProjector(t *testing.T) {
 		ID:           orgID,
 		Name:         "Acme Clinics",
 		Description:  null.StringFrom("a description above min"),
-		LegalAddress: model.Address{Text: "1 Real Street", Point: &model.Point{Longitude: 4.25, Latitude: 50.85}},
+		LegalAddress: model.Address{Text: "1 Real Street", Point: null.ValueFrom(model.Point{Longitude: 4.25, Latitude: 50.85})},
 		CreatedAt:    now,
 		UpdatedAt:    now,
 	}

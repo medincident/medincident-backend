@@ -141,10 +141,10 @@ func (s *ClinicService) Create(
 		},
 	}
 	if cmd.PhysicalAddress.Point != nil {
-		clinic.PhysicalAddress.Point = &model.Point{
+		clinic.PhysicalAddress.Point = null.ValueFrom(model.Point{
 			Longitude: cmd.PhysicalAddress.Point.Longitude,
 			Latitude:  cmd.PhysicalAddress.Point.Latitude,
-		}
+		})
 	}
 
 	var result CreateClinicResult

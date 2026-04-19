@@ -1,6 +1,7 @@
 package projector
 
 import (
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
@@ -99,19 +100,19 @@ func OrganizationLegalAddressChanged(tx *gorm.DB, org *model.Organization) error
 // nullableLongitude returns the float pointer or nil for storage in
 // the optional legal_address_longitude / physical_address_longitude
 // columns.
-func nullableLongitude(p *model.Point) *float64 {
-	if p == nil {
+func nullableLongitude(p null.Value[model.Point]) *float64 {
+	if !p.Valid {
 		return nil
 	}
-	v := p.Longitude
+	v := p.V.Longitude
 	return &v
 }
 
 // nullableLatitude is the latitude analogue of nullableLongitude.
-func nullableLatitude(p *model.Point) *float64 {
-	if p == nil {
+func nullableLatitude(p null.Value[model.Point]) *float64 {
+	if !p.Valid {
 		return nil
 	}
-	v := p.Latitude
+	v := p.V.Latitude
 	return &v
 }

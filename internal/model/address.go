@@ -5,14 +5,15 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 )
 
 // Address is the persistence form of an address. Text is always
-// required. Point is optional — nil means no coordinates.
+// required. Point is optional — Valid=false means no coordinates.
 type Address struct {
-	Text  string `gorm:"column:text;<-"`
-	Point *Point `gorm:"column:point;<-"`
+	Text  string            `gorm:"column:text;<-"`
+	Point null.Value[Point] `gorm:"column:point;<-"`
 }
 
 // Equal reports whether two addresses have the same text and point.
@@ -20,23 +21,17 @@ func (a Address) Equal(other Address) bool {
 	if a.Text != other.Text {
 		return false
 	}
-	if a.Point == nil && other.Point == nil {
-		return true
-	}
-	if a.Point == nil || other.Point == nil {
-		return false
-	}
-	return a.Point.Equal(*other.Point)
+	return EqualValueBy(a.Point, other.Point)
 }
 
 // Value serialises Address into the Postgres composite text format
 // accepted by the domain.address type.
 func (a Address) Value() (driver.Value, error) {
 	textStr := quoteCompositeField(a.Text)
-	if a.Point == nil {
+	if !a.Point.Valid {
 		return fmt.Sprintf("(%s,)", textStr), nil
 	}
-	v, err := a.Point.Value()
+	v, err := a.Point.V.Value()
 	if err != nil {
 		return nil, err
 	}
@@ -75,14 +70,14 @@ func (a *Address) Scan(src any) error {
 
 	// Field 1: point (optional — empty string means NULL).
 	if fields[1] == "" {
-		a.Point = nil
+		a.Point = null.Value[Point]{}
 	} else {
 		raw := unquoteCompositeField(fields[1])
-		p := &Point{}
+		var p Point
 		if err := p.Scan(raw); err != nil {
 			return oops.Wrap(err)
 		}
-		a.Point = p
+		a.Point = null.ValueFrom(p)
 	}
 	return nil
 }

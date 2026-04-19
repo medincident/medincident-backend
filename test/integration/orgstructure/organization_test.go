@@ -53,8 +53,8 @@ func TestOrganization_Create_HappyPath(t *testing.T) {
 	assert.True(t, row.Description.Valid)
 	assert.Equal(t, desc, row.Description.String)
 	assert.Equal(t, "г. Москва, ул. Пушкина, д. Колотушкина", row.LegalAddress.Text)
-	require.NotNil(t, row.LegalAddress.Point)
-	assert.InDelta(t, 37.6, row.LegalAddress.Point.Longitude, 0.0001)
+	require.True(t, row.LegalAddress.Point.Valid)
+	assert.InDelta(t, 37.6, row.LegalAddress.Point.V.Longitude, 0.0001)
 
 	// Projection row written atomically alongside the domain row.
 	assert.Equal(t, 1, countProjectionOrganizations(t))
