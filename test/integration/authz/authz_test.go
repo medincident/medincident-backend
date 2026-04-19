@@ -18,12 +18,13 @@ import (
 // helpers
 // ---------------------------------------------------------------------------
 
-func requirePermissionDenied(t *testing.T, err error) {
+func requirePermissionDenied(t *testing.T, err error, wantPublic string) {
 	t.Helper()
 	require.Error(t, err)
 	var oe oops.OopsError
 	require.True(t, errors.As(err, &oe), "expected oops error, got: %v", err)
 	assert.Equal(t, authz.ErrCodePermissionDenied, oe.Code())
+	assert.Equal(t, wantPublic, oe.Public())
 }
 
 // ---------------------------------------------------------------------------
@@ -34,7 +35,7 @@ func TestRequireSystemAdmin_Allowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireSystemAdmin(ctxT(t), "sysadmin")
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.SystemAdmin)
 	require.NoError(t, err)
 }
 
@@ -42,16 +43,16 @@ func TestRequireSystemAdmin_Denied(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireSystemAdmin(ctxT(t), "alice")
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "alice", authz.SystemAdmin)
+	requirePermissionDenied(t, err, publicSystemAdmin)
 }
 
 func TestRequireSystemAdmin_UnknownCaller(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireSystemAdmin(ctxT(t), "nonexistent")
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "nonexistent", authz.SystemAdmin)
+	requirePermissionDenied(t, err, publicSystemAdmin)
 }
 
 // ---------------------------------------------------------------------------
@@ -62,15 +63,15 @@ func TestRequireOrgAdmin_SystemAdmin_AnyOrg(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	require.NoError(t, authzSvc.RequireOrgAdmin(ctxT(t), "sysadmin", orgA))
-	require.NoError(t, authzSvc.RequireOrgAdmin(ctxT(t), "sysadmin", orgB))
+	require.NoError(t, authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Organization(orgA)))
+	require.NoError(t, authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Organization(orgB)))
 }
 
 func TestRequireOrgAdmin_DirectAdmin(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdmin(ctxT(t), "bob", orgA)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Organization(orgA))
 	require.NoError(t, err)
 }
 
@@ -78,8 +79,8 @@ func TestRequireOrgAdmin_CrossOrgDenied(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdmin(ctxT(t), "bob", orgB)
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Organization(orgB))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 func TestRequireOrgAdmin_DeputyOnVacation(t *testing.T) {
@@ -87,7 +88,7 @@ func TestRequireOrgAdmin_DeputyOnVacation(t *testing.T) {
 	seedFixtures(t)
 
 	// Bob is on vacation (active), Carol is his deputy -> allowed.
-	err := authzSvc.RequireOrgAdmin(ctxT(t), "carol", orgA)
+	err := authzSvc.Require(ctxT(t), "carol", authz.AdminOf.Organization(orgA))
 	require.NoError(t, err)
 }
 
@@ -101,24 +102,24 @@ func TestRequireOrgAdmin_DeputyNoVacation(t *testing.T) {
 		bobVacationID,
 	).Error)
 
-	err := authzSvc.RequireOrgAdmin(ctxT(t), "carol", orgA)
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "carol", authz.AdminOf.Organization(orgA))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 func TestRequireOrgAdmin_RegularEmployee(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdmin(ctxT(t), "alice", orgA)
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "alice", authz.AdminOf.Organization(orgA))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 func TestRequireOrgAdmin_UnknownCaller(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdmin(ctxT(t), "ghost", orgA)
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "ghost", authz.AdminOf.Organization(orgA))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // Non-sysadmin caller targeting a random org id must get
@@ -129,8 +130,8 @@ func TestRequireOrgAdmin_NonSysAdminNonexistentOrg(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdmin(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Organization(uuid.Must(uuid.NewV7())))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -141,7 +142,7 @@ func TestRequireOrgAdminViaClinic_Allowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaClinic(ctxT(t), "sysadmin", clinicA1)
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Clinic(clinicA1))
 	require.NoError(t, err)
 }
 
@@ -150,8 +151,8 @@ func TestRequireOrgAdminViaClinic_CrossOrg(t *testing.T) {
 	seedFixtures(t)
 
 	// Bob is OrgA admin, clinicB1 belongs to OrgB -> denied.
-	err := authzSvc.RequireOrgAdminViaClinic(ctxT(t), "bob", clinicB1)
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Clinic(clinicB1))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // Sysadmin authorizes regardless of whether the clinic exists — the
@@ -160,7 +161,7 @@ func TestRequireOrgAdminViaClinic_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaClinic(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Clinic(uuid.Must(uuid.NewV7())))
 	require.NoError(t, err)
 }
 
@@ -170,8 +171,8 @@ func TestRequireOrgAdminViaClinic_NonSysAdminNotFound(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaClinic(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Clinic(uuid.Must(uuid.NewV7())))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -182,7 +183,7 @@ func TestRequireOrgAdminViaDepartment_Allowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaDepartment(ctxT(t), "sysadmin", deptA1a)
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Department(deptA1a))
 	require.NoError(t, err)
 }
 
@@ -190,7 +191,7 @@ func TestRequireOrgAdminViaDepartment_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaDepartment(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Department(uuid.Must(uuid.NewV7())))
 	require.NoError(t, err)
 }
 
@@ -198,8 +199,8 @@ func TestRequireOrgAdminViaDepartment_NonSysAdminNotFound(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaDepartment(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Department(uuid.Must(uuid.NewV7())))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -210,7 +211,7 @@ func TestRequireOrgAdminViaEmployee_Allowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaEmployee(ctxT(t), "sysadmin", empAlice)
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Employee(empAlice))
 	require.NoError(t, err)
 }
 
@@ -218,7 +219,7 @@ func TestRequireOrgAdminViaEmployee_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaEmployee(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Employee(uuid.Must(uuid.NewV7())))
 	require.NoError(t, err)
 }
 
@@ -226,8 +227,8 @@ func TestRequireOrgAdminViaEmployee_NonSysAdminNotFound(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaEmployee(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Employee(uuid.Must(uuid.NewV7())))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // Bob (OrgA admin) targeting Dave (OrgB employee) must be denied.
@@ -235,8 +236,8 @@ func TestRequireOrgAdminViaEmployee_CrossOrg(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaEmployee(ctxT(t), "bob", empDave)
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Employee(empDave))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -247,7 +248,7 @@ func TestRequireOrgAdminViaCategory_Allowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaCategory(ctxT(t), "sysadmin", categoryA)
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Category(categoryA))
 	require.NoError(t, err)
 }
 
@@ -255,7 +256,7 @@ func TestRequireOrgAdminViaCategory_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaCategory(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Category(uuid.Must(uuid.NewV7())))
 	require.NoError(t, err)
 }
 
@@ -263,8 +264,8 @@ func TestRequireOrgAdminViaCategory_NonSysAdminNotFound(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaCategory(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Category(uuid.Must(uuid.NewV7())))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -275,7 +276,7 @@ func TestRequireOrgAdminViaType_Allowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaType(ctxT(t), "sysadmin", typeA)
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.IncidentType(typeA))
 	require.NoError(t, err)
 }
 
@@ -283,7 +284,7 @@ func TestRequireOrgAdminViaType_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaType(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.IncidentType(uuid.Must(uuid.NewV7())))
 	require.NoError(t, err)
 }
 
@@ -291,8 +292,8 @@ func TestRequireOrgAdminViaType_NonSysAdminNotFound(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaType(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.IncidentType(uuid.Must(uuid.NewV7())))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -303,7 +304,7 @@ func TestRequireOrgAdminViaVacation_Allowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaVacation(ctxT(t), "sysadmin", aliceVacID)
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Vacation(aliceVacID))
 	require.NoError(t, err)
 }
 
@@ -311,7 +312,7 @@ func TestRequireOrgAdminViaVacation_SysAdminNotFoundIsAllowed(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaVacation(ctxT(t), "sysadmin", uuid.Must(uuid.NewV7()))
+	err := authzSvc.Require(ctxT(t), "sysadmin", authz.AdminOf.Vacation(uuid.Must(uuid.NewV7())))
 	require.NoError(t, err)
 }
 
@@ -319,6 +320,6 @@ func TestRequireOrgAdminViaVacation_NonSysAdminNotFound(t *testing.T) {
 	resetDB(t)
 	seedFixtures(t)
 
-	err := authzSvc.RequireOrgAdminViaVacation(ctxT(t), "bob", uuid.Must(uuid.NewV7()))
-	requirePermissionDenied(t, err)
+	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Vacation(uuid.Must(uuid.NewV7())))
+	requirePermissionDenied(t, err, publicAdminOf)
 }
