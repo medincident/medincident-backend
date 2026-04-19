@@ -23,15 +23,27 @@ Command никогда не читает проекции и не знает о 
   protoc-gen-grpc-gateway + protoc-gen-openapiv2 + protoc-gen-doc
   для кодогенерации
 
+## Документация по контрактам
+
+- **Proto-контракты** — источник правды в [`api/proto/`](api/proto/)
+  (`command/*` + `query/*` + `event/*`).
+- **Markdown-документация по всем RPC и сообщениям** — один общий файл:
+  [`docs/proto/medincident.md`](docs/proto/medincident.md). Содержит
+  обе стороны (command + query) и все события.
+- **OpenAPI v2 / Swagger** — один общий файл:
+  [`api/openapi/medincident.swagger.json`](api/openapi/medincident.swagger.json).
+  Подходит для генерации клиентов и для Swagger UI.
+- **Go-биндинги** — сгенерированные stubs в [`pkg/`](pkg/) (коммитятся).
+- Всё перечисленное выше генерируется одной командой `task gen` и
+  проверяется на актуальность через `task gen:check`.
+
 ## Архитектура
 
-- **gRPC API** — `OrgStructureService` в `service.orgstructure.v1`,
-  `MembershipService` в `service.membership.v1`,
-  `IncidentClassifierService` в `service.incident.classifier.v1`.
-  Proto-контракты живут в [`api/proto/`](api/proto/) внутри этого
-  репо; Go-биндинги, merged OpenAPI и Markdown-документация генерятся
-  через `task gen` и коммитятся в [`pkg/`](pkg/),
-  [`api/openapi/`](api/openapi/) и [`docs/proto/`](docs/proto/).
+- **gRPC API** — command-side: `OrgStructureCommandService`,
+  `MembershipCommandService`, `IncidentClassifierCommandService`;
+  query-side: `OrgStructureQueryService`, `MembershipQueryService`,
+  `IncidentClassifierQueryService`, `IdentityQueryService`,
+  `StatsQueryService`. Подробности — в `docs/proto/medincident.md`.
 - **Плоский layout, без DDD.** Три service-струт типа
   (`OrganizationService`, `ClinicService`, `DepartmentService`) в одном
   пакете `internal/services/orgstructure`. Зависимости —
@@ -61,9 +73,9 @@ Command никогда не читает проекции и не знает о 
 ## Директории
 
 - `api/proto/` — исходные `.proto` контракты (event/* + command/*)
-- `api/openapi/command-server.swagger.json` — merged OpenAPI v2 (коммитится)
+- `api/openapi/medincident.swagger.json` — merged OpenAPI v2 для обеих сторон (коммитится)
 - `pkg/` — сгенерированный buf Go-код (коммитится)
-- `docs/proto/command-server.md` — сгенерированная Markdown-документация (коммитится)
+- `docs/proto/medincident.md` — сгенерированная Markdown-документация по всем proto-контрактам (коммитится)
 - `cmd/command-server/` — точка входа command-side gRPC сервера, graceful shutdown
 - `cmd/query-server/` — точка входа query-side сервера (placeholder, заполняется в Plan 3)
 - `configs/` — YAML config пример

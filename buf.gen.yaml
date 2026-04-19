@@ -1,10 +1,9 @@
 version: v2
 
-# Generates Go client + server gRPC stubs and HTTP gateway stubs from
-# the local proto module at api/proto for both command/ and query/
-# sides. OpenAPI generation lives in two separate templates
-# (buf.gen.openapi.command.yaml and buf.gen.openapi.query.yaml) so the
-# two binaries get their own swagger.json.
+# Generates Go client + server gRPC stubs, HTTP gateway stubs, and one
+# merged OpenAPI v2 spec covering BOTH command/ and query/ sides from
+# the local proto module at api/proto. The single swagger lives at
+# api/openapi/medincident.swagger.json.
 #
 # Go package paths are injected by managed mode via go_package_prefix —
 # no `option go_package` lives in any .proto file. External modules
@@ -42,3 +41,10 @@ plugins:
     out: pkg
     opt:
       - paths=source_relative
+
+  - local: [go, tool, protoc-gen-openapiv2]
+    out: api/openapi
+    strategy: all
+    opt:
+      - allow_merge=true
+      - merge_file_name=medincident
