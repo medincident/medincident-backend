@@ -83,3 +83,21 @@ func TestOrgAdminOf_Describe(t *testing.T) {
 	assert.Equal(t, "organization administrator", OrgAdminOf.Clinic(id).describe())
 	assert.Equal(t, "organization administrator", OrgAdminOf.IncidentType(id).describe())
 }
+
+func TestAdminOf_Clinic_IsAnyOf_SystemAdmin_Plus_OrgAdmin(t *testing.T) {
+	id := uuid.MustParse("44444444-4444-4444-4444-444444444444")
+	bc1 := &branchCtx{callerID: "x"}
+	bc2 := &branchCtx{callerID: "x"}
+
+	got := AdminOf.Clinic(id).branches(bc1)
+	want := AnyOf(SystemAdmin, OrgAdminOf.Clinic(id)).branches(bc2)
+
+	assert.Equal(t, want, got)
+}
+
+func TestAdminOf_Describe(t *testing.T) {
+	id := uuid.New()
+	assert.Equal(t,
+		"system administrator or organization administrator",
+		AdminOf.Clinic(id).describe())
+}

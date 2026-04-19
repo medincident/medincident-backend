@@ -205,3 +205,39 @@ func (orgAdminOfRole) IncidentType(id uuid.UUID) Policy {
 		clauseFmt: "JOIN domain.incident_types it ON it.organization_id = oa.organization_id WHERE it.id = @%s",
 	}
 }
+
+type adminOfBattery struct{}
+
+// AdminOf packs "system admin OR organization admin" as one
+// constructor per scope. Each method returns
+// AnyOf(SystemAdmin, OrgAdminOf.X(id)) so call sites stay short
+// while the sysadmin bypass remains visible in the call.
+var AdminOf adminOfBattery
+
+func (adminOfBattery) Organization(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Organization(id))
+}
+
+func (adminOfBattery) Clinic(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Clinic(id))
+}
+
+func (adminOfBattery) Department(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Department(id))
+}
+
+func (adminOfBattery) Employee(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Employee(id))
+}
+
+func (adminOfBattery) Vacation(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Vacation(id))
+}
+
+func (adminOfBattery) Category(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Category(id))
+}
+
+func (adminOfBattery) IncidentType(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.IncidentType(id))
+}
