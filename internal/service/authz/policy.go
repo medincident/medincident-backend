@@ -10,6 +10,10 @@ import (
 	"github.com/samber/oops"
 )
 
+// ---------------------------------------------------------------------
+// Error codes
+// ---------------------------------------------------------------------
+
 // ErrCodePermissionDenied is emitted when an authorization policy
 // evaluates to false for the given caller. Maps to
 // codes.PermissionDenied at the gRPC boundary.
@@ -19,6 +23,10 @@ const ErrCodePermissionDenied = "permission_denied"
 // itself fails (DB fault). Maps to codes.Internal at the gRPC
 // boundary.
 const ErrCodeAuthzCheckFailed = "authz_check_failed"
+
+// ---------------------------------------------------------------------
+// Policy interface + branch-rendering context
+// ---------------------------------------------------------------------
 
 // Policy is a single authorization rule. It renders to one or more
 // SELECT branches that produce rows iff the caller is authorized
@@ -36,29 +44,34 @@ type Policy interface {
 }
 
 // branchCtx accumulates SQL placeholder names and named args as a
-// Policy tree renders its branches. Each Policy node requests a
-// fresh caller placeholder via addCaller and a fresh scope
-// placeholder via addScope so that multi-branch policies do not
-// collide on parameter names.
+// Policy tree renders its branches. Caller and scope counters are
+// independent so a typical composed policy yields natural names
+// (caller0, caller1, ..., scope0, scope1, ...) rather than a single
+// interleaved sequence.
 type branchCtx struct {
-	callerID string
-	args     []any
-	next     int
+	callerID   string
+	args       []any
+	nextCaller int
+	nextScope  int
 }
 
 func (bc *branchCtx) addCaller() string {
-	name := fmt.Sprintf("caller%d", bc.next)
+	name := fmt.Sprintf("caller%d", bc.nextCaller)
 	bc.args = append(bc.args, sql.Named(name, bc.callerID))
-	bc.next++
+	bc.nextCaller++
 	return name
 }
 
 func (bc *branchCtx) addScope(id uuid.UUID) string {
-	name := fmt.Sprintf("scope%d", bc.next)
+	name := fmt.Sprintf("scope%d", bc.nextScope)
 	bc.args = append(bc.args, sql.Named(name, id))
-	bc.next++
+	bc.nextScope++
 	return name
 }
+
+// ---------------------------------------------------------------------
+// SystemAdmin — scope-less role
+// ---------------------------------------------------------------------
 
 type sysAdminPolicy struct{}
 
@@ -77,6 +90,10 @@ func (sysAdminPolicy) describe() string { return "system administrator" }
 
 //nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
 func (sysAdminPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder { return b }
+
+// ---------------------------------------------------------------------
+// AnyOf — disjunctive composition
+// ---------------------------------------------------------------------
 
 type anyOfPolicy struct{ items []Policy }
 
@@ -108,6 +125,10 @@ func (p anyOfPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder {
 	}
 	return b
 }
+
+// ---------------------------------------------------------------------
+// OrgAdminOf — organization-admin scoped by one of seven child entities
+// ---------------------------------------------------------------------
 
 type orgAdminOfRole struct{}
 
@@ -207,6 +228,10 @@ func (orgAdminOfRole) IncidentType(id uuid.UUID) Policy {
 	}
 }
 
+// ---------------------------------------------------------------------
+// AdminOf — convenience battery: AnyOf(SystemAdmin, OrgAdminOf.X(id))
+// ---------------------------------------------------------------------
+
 type adminOfBattery struct{}
 
 // AdminOf packs "system admin OR organization admin" as one
@@ -242,6 +267,10 @@ func (adminOfBattery) Category(id uuid.UUID) Policy {
 func (adminOfBattery) IncidentType(id uuid.UUID) Policy {
 	return AnyOf(SystemAdmin, OrgAdminOf.IncidentType(id))
 }
+
+// ---------------------------------------------------------------------
+// Require — entry point: renders policy to SQL, executes, shapes error
+// ---------------------------------------------------------------------
 
 // Require evaluates policy p for callerID. It renders the policy tree
 // into a single SELECT EXISTS(... UNION ALL ...) query so the whole

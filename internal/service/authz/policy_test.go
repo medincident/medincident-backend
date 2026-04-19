@@ -11,17 +11,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestBranchCtx_SequentialPlaceholders(t *testing.T) {
+func TestBranchCtx_IndependentCounters(t *testing.T) {
 	bc := &branchCtx{callerID: "alice"}
 
 	c1 := bc.addCaller()
 	s1 := bc.addScope(uuid.MustParse("11111111-1111-1111-1111-111111111111"))
 	c2 := bc.addCaller()
+	s2 := bc.addScope(uuid.MustParse("22222222-2222-2222-2222-222222222222"))
 
+	// Counters are independent so names are natural sequences per type.
 	assert.Equal(t, "caller0", c1)
-	assert.Equal(t, "scope1", s1)
-	assert.Equal(t, "caller2", c2)
-	require.Len(t, bc.args, 3)
+	assert.Equal(t, "scope0", s1)
+	assert.Equal(t, "caller1", c2)
+	assert.Equal(t, "scope1", s2)
+	require.Len(t, bc.args, 4)
 
 	first, ok := bc.args[0].(sql.NamedArg)
 	require.True(t, ok)
@@ -64,7 +67,7 @@ func TestOrgAdminOf_Clinic_Branches_DirectAndDeputy(t *testing.T) {
 	assert.Contains(t, bs[0], "oa.employee_id")
 	assert.Contains(t, bs[0], "JOIN domain.clinics c ON c.organization_id = oa.organization_id")
 	assert.Contains(t, bs[0], "WHERE c.id = @scope0")
-	assert.Contains(t, bs[0], "@caller1")
+	assert.Contains(t, bs[0], "@caller0")
 
 	assert.Contains(t, bs[1], "oa.deputy_employee_id")
 	assert.Contains(t, bs[1], "domain.employee_vacations")
