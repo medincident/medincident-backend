@@ -4,6 +4,7 @@ package authz_integration_test
 
 import (
 	"errors"
+	"regexp"
 	"testing"
 
 	"github.com/google/uuid"
@@ -14,6 +15,13 @@ import (
 	"github.com/medincident/medincident-command-service/internal/service/authz"
 )
 
+// uuidPattern matches any canonical UUID string (8-4-4-4-12 hex).
+// Used to guard the anti-enumeration invariant: scope identifiers
+// must never appear in the Public message, only in server-side
+// With(...) fields, so a non-sysadmin caller cannot tell "wrong
+// scope" from "nonexistent scope".
+var uuidPattern = regexp.MustCompile(`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`)
+
 func requireDenied(t *testing.T, err error, wantPublic string) {
 	t.Helper()
 	require.Error(t, err)
@@ -21,6 +29,8 @@ func requireDenied(t *testing.T, err error, wantPublic string) {
 	require.True(t, errors.As(err, &oe), "expected oops error, got: %v", err)
 	assert.Equal(t, authz.ErrCodePermissionDenied, oe.Code())
 	assert.Equal(t, wantPublic, oe.Public())
+	assert.NotRegexp(t, uuidPattern, oe.Public(),
+		"Public message must not leak UUIDs (anti-enumeration invariant)")
 }
 
 const (
