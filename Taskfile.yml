@@ -101,24 +101,6 @@ tasks:
     cmds:
       - go tool dbmate new {{.CLI_ARGS}}
 
-  build:command-server:
-    desc: Build the command-server binary into ./bin/
-    cmds:
-      - mkdir -p bin
-      - go build -trimpath -ldflags "-s -w" -o bin/command-server ./cmd/command-server
-
-  build:query-server:
-    desc: Build the query-server binary into ./bin/
-    cmds:
-      - mkdir -p bin
-      - go build -trimpath -ldflags "-s -w" -o bin/query-server ./cmd/query-server
-
-  build:
-    desc: Build both binaries into ./bin/
-    cmds:
-      - task: build:command-server
-      - task: build:query-server
-
   docker:command-server:
     desc: Build the command-server Docker image (requires docker)
     cmds:
@@ -128,3 +110,8 @@ tasks:
     desc: Build the query-server Docker image (requires docker)
     cmds:
       - docker build -f build/query-server.Dockerfile -t medincident/query-server:dev .
+
+  docker:gateway-server:
+    desc: Build the gateway-server Docker image (requires docker)
+    cmds:
+      - docker build -f build/gateway-server.Dockerfile -t medincident/gateway-server:dev .
