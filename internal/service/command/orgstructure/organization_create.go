@@ -148,10 +148,10 @@ func (s *OrganizationService) Create(
 		},
 	}
 	if cmd.LegalAddress.Point != nil {
-		org.LegalAddress.Point = &model.Point{
+		org.LegalAddress.Point = null.ValueFrom(model.Point{
 			Longitude: cmd.LegalAddress.Point.Longitude,
 			Latitude:  cmd.LegalAddress.Point.Latitude,
-		}
+		})
 	}
 
 	var result CreateOrganizationResult

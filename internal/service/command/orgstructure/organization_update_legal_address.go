@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -55,10 +56,10 @@ func (s *OrganizationService) UpdateLegalAddress(
 			Text: strings.TrimSpace(cmd.Address.Text),
 		}
 		if cmd.Address.Point != nil {
-			newAddress.Point = &model.Point{
+			newAddress.Point = null.ValueFrom(model.Point{
 				Longitude: cmd.Address.Point.Longitude,
 				Latitude:  cmd.Address.Point.Latitude,
-			}
+			})
 		}
 		if org.LegalAddress.Equal(newAddress) {
 			return nil

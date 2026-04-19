@@ -132,7 +132,7 @@ func TestOrganizationLegalAddressChanged_UpdatesRow(t *testing.T) {
 
 	org.LegalAddress = model.Address{
 		Text:  "2 Different Avenue",
-		Point: &model.Point{Longitude: 12.5, Latitude: -7.25},
+		Point: null.ValueFrom(model.Point{Longitude: 12.5, Latitude: -7.25}),
 	}
 	org.UpdatedAt = now.Add(time.Hour)
 

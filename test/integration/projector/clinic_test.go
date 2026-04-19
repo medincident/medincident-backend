@@ -159,7 +159,7 @@ func TestClinicPhysicalAddressChanged_UpdatesRow(t *testing.T) {
 
 	clinic.PhysicalAddress = model.Address{
 		Text:  "3 New Avenue",
-		Point: &model.Point{Longitude: 10.5, Latitude: -3.25},
+		Point: null.ValueFrom(model.Point{Longitude: 10.5, Latitude: -3.25}),
 	}
 	clinic.UpdatedAt = now.Add(time.Hour)
 
