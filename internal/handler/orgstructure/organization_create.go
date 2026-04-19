@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
 )
@@ -16,7 +17,7 @@ func (h *OrgStructureHandler) CreateOrganization(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireSystemAdmin(ctx, callerID); err != nil {
+	if err := h.authz.Require(ctx, callerID, authz.SystemAdmin); err != nil {
 		return nil, err
 	}
 	result, err := h.orgSvc.Create(ctx, orgsvc.CreateOrganizationCommand{

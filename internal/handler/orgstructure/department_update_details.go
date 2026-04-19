@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
 )
@@ -20,7 +21,7 @@ func (h *OrgStructureHandler) UpdateDepartmentDetails(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaDepartment(ctx, callerID, id); err != nil {
+	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Department(id)); err != nil {
 		return nil, err
 	}
 	if err := h.deptSvc.UpdateDetails(ctx, orgsvc.UpdateDepartmentDetailsCommand{
