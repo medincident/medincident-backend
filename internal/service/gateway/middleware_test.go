@@ -93,7 +93,7 @@ func TestCORSMiddleware_HandlesPreflight(t *testing.T) {
 	req := httptest.NewRequestWithContext(t.Context(), http.MethodOptions, "/v1/things", http.NoBody)
 	req.Header.Set("Origin", "https://app.example.com")
 	req.Header.Set("Access-Control-Request-Method", "POST")
-	req.Header.Set("Access-Control-Request-Headers", "Authorization")
+	req.Header.Set("Access-Control-Request-Headers", "authorization") // lowercase per Fetch spec
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, req)
 
