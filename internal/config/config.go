@@ -1,11 +1,12 @@
 // Package config defines the YAML-backed runtime configuration for the
-// command-server and query-server binaries.
+// command-server, query-server, and gateway-server binaries.
 //
 // File layout:
-//   - config.go        — types and helpers shared by both binaries
-//   - command_server.go — CommandServerConfig and its loader
-//   - query_server.go   — QueryServerConfig and its loader
-//   - zerolog.go        — zerolog config subtree (shared)
+//   - config.go          — types and helpers shared by all binaries
+//   - command_server.go  — CommandServerConfig and its loader
+//   - query_server.go    — QueryServerConfig and its loader
+//   - gateway_server.go  — GatewayServerConfig and its loader
+//   - zerolog.go         — zerolog config subtree (shared)
 package config
 
 import (
