@@ -2,9 +2,11 @@ package authz
 
 import (
 	"database/sql"
+	"errors"
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/samber/oops"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -100,4 +102,22 @@ func TestAdminOf_Describe(t *testing.T) {
 	assert.Equal(t,
 		"system administrator or organization administrator",
 		AdminOf.Clinic(id).describe())
+}
+
+func TestRequire_NilPolicy_ReturnsAuthzCheckFailed(t *testing.T) {
+	a := &Authz{}
+	err := a.Require(t.Context(), "x", nil)
+	require.Error(t, err)
+	var oe oops.OopsError
+	require.True(t, errors.As(err, &oe))
+	assert.Equal(t, ErrCodeAuthzCheckFailed, oe.Code())
+}
+
+func TestRequire_EmptyAnyOf_ReturnsAuthzCheckFailed(t *testing.T) {
+	a := &Authz{}
+	err := a.Require(t.Context(), "x", AnyOf())
+	require.Error(t, err)
+	var oe oops.OopsError
+	require.True(t, errors.As(err, &oe))
+	assert.Equal(t, ErrCodeAuthzCheckFailed, oe.Code())
 }

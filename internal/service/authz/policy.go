@@ -253,8 +253,20 @@ func (adminOfBattery) IncidentType(id uuid.UUID) Policy {
 //   - an ErrCodeAuthzCheckFailed domain error wrapping the DB error if
 //     the check query itself cannot run.
 func (a *Authz) Require(ctx context.Context, callerID string, p Policy) error {
+	if p == nil {
+		return oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Errorf("nil policy")
+	}
 	bc := &branchCtx{callerID: callerID}
 	branches := p.branches(bc)
+	if len(branches) == 0 {
+		return oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Errorf("policy produced no branches")
+	}
 	query := "SELECT EXISTS(" + strings.Join(branches, " UNION ALL ") + ")"
 
 	var ok bool
