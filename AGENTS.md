@@ -110,11 +110,11 @@ api/proto/                               — proto contracts (source of truth)
   event/incident/{category,type}/v1/     — per-aggregate events
   command/{orgstructure,membership}/v1/  — gRPC command service contracts
   command/incident/classifier/v1/        — gRPC command service contract
-api/openapi/command-server.swagger.json  — generated merged OpenAPI v2 (committed)
+api/openapi/medincident.swagger.json     — generated merged OpenAPI v2 covering both sides (committed)
 pkg/                                     — buf-generated Go (committed)
   event/**/*.pb.go                       — event messages
   command/**/{*.pb.go,*_grpc.pb.go,*.pb.gw.go}  — gRPC + gateway stubs (command side)
-docs/proto/command-server.md             — generated combined Markdown docs (committed)
+docs/proto/medincident.md                — generated combined Markdown docs for all proto contracts (committed)
 buf.gen.yaml                             — go + grpc + gateway + openapi generation
 buf.gen.docs.yaml                        — protoc-gen-doc generation
 build/{command,query}-server.Dockerfile  — multi-stage Docker builds (one per binary)
