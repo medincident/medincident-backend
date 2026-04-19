@@ -4,7 +4,7 @@ import "time"
 
 // QueryServerConfig is the YAML-backed runtime configuration for the
 // query-server binary. Fields mirror the design spec § 11. Sections
-// only query-server needs (NATS, grpc-gateway) live here.
+// only query-server needs (NATS) live here.
 type QueryServerConfig struct {
 	Server   QueryServerNetConfig  `yaml:"server"   validate:"required"`
 	Postgres PostgresConfig        `yaml:"postgres" validate:"required"`
