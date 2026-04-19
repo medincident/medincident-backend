@@ -72,7 +72,7 @@ Command никогда не читает проекции и не знает о 
 
 ## Директории
 
-- `api/proto/` — исходные `.proto` контракты (event/* + command/*)
+- `api/proto/` — исходные `.proto` контракты (event/* + command/* + query/*)
 - `api/openapi/medincident.swagger.json` — merged OpenAPI v2 для обеих сторон (коммитится)
 - `pkg/` — сгенерированный buf Go-код (коммитится)
 - `docs/proto/medincident.md` — сгенерированная Markdown-документация по всем proto-контрактам (коммитится)
