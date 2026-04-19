@@ -10,6 +10,7 @@ require (
 	github.com/jackc/pgx/v5 v5.6.0
 	github.com/medincident/medincident-zitadel-actions v0.0.3
 	github.com/nats-io/nats.go v1.51.0
+	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.35.0
 	github.com/samber/do/v2 v2.0.0
 	github.com/samber/oops v1.21.0
@@ -298,7 +299,6 @@ require (
 	github.com/raeperd/recvcheck v0.2.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
-	github.com/rs/cors v1.11.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/ryancurrah/gomodguard v1.4.1 // indirect
 	github.com/ryanrolds/sqlclosecheck v0.6.0 // indirect
