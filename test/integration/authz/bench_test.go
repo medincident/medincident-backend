@@ -5,7 +5,6 @@ package authz_integration_test
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/google/uuid"
 
@@ -98,39 +97,43 @@ func seedFixturesBench(b *testing.B) {
 		typeA, orgA, categoryA, "Type A").Error)
 }
 
-func ctxBench(b *testing.B) context.Context {
-	b.Helper()
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	b.Cleanup(cancel)
-	return ctx
-}
-
 func BenchmarkRequire_SystemAdmin(b *testing.B) {
 	resetDBBench(b)
 	seedFixturesBench(b)
-	ctx := ctxBench(b)
+	ctx := context.Background()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = authzSvc.Require(ctx, "sysadmin", authz.SystemAdmin)
+		if err := authzSvc.Require(ctx, "sysadmin", authz.SystemAdmin); err != nil {
+			b.Fatalf("unexpected error: %v", err)
+		}
 	}
 }
 
 func BenchmarkRequire_AdminOf_Clinic_OrgAdmin(b *testing.B) {
 	resetDBBench(b)
 	seedFixturesBench(b)
-	ctx := ctxBench(b)
+	ctx := context.Background()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = authzSvc.Require(ctx, "bob", authz.AdminOf.Clinic(clinicA1))
+		if err := authzSvc.Require(ctx, "bob", authz.AdminOf.Clinic(clinicA1)); err != nil {
+			b.Fatalf("unexpected error: %v", err)
+		}
 	}
 }
 
+// BenchmarkRequire_AdminOf_Clinic_Denied measures the deny path —
+// alice is neither sysadmin nor org-admin for clinicA1. A nil error
+// would mean the seed is broken; we fail fast on that to keep the
+// benchmark honest. Any other error (e.g. DB timeout) surfaces
+// through b.Fatalf via the benchmark harness's own runtime errors.
 func BenchmarkRequire_AdminOf_Clinic_Denied(b *testing.B) {
 	resetDBBench(b)
 	seedFixturesBench(b)
-	ctx := ctxBench(b)
+	ctx := context.Background()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = authzSvc.Require(ctx, "alice", authz.AdminOf.Clinic(clinicA1))
+		if err := authzSvc.Require(ctx, "alice", authz.AdminOf.Clinic(clinicA1)); err == nil {
+			b.Fatal("expected permission denied, got nil")
+		}
 	}
 }
