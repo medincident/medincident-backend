@@ -53,3 +53,33 @@ func TestAnyOf_Describe_JoinsWithOr(t *testing.T) {
 		"system administrator or system administrator",
 		AnyOf(SystemAdmin, SystemAdmin).describe())
 }
+
+func TestOrgAdminOf_Clinic_Branches_DirectAndDeputy(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := OrgAdminOf.Clinic(uuid.MustParse("22222222-2222-2222-2222-222222222222")).branches(bc)
+
+	require.Len(t, bs, 2) // direct + deputy
+	assert.Contains(t, bs[0], "oa.employee_id")
+	assert.Contains(t, bs[0], "JOIN domain.clinics c ON c.organization_id = oa.organization_id")
+	assert.Contains(t, bs[0], "WHERE c.id = @scope0")
+	assert.Contains(t, bs[0], "@caller1")
+
+	assert.Contains(t, bs[1], "oa.deputy_employee_id")
+	assert.Contains(t, bs[1], "domain.employee_vacations")
+	assert.Contains(t, bs[1], activeVacationPredicate)
+}
+
+func TestOrgAdminOf_Organization_NoJoin(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := OrgAdminOf.Organization(uuid.MustParse("33333333-3333-3333-3333-333333333333")).branches(bc)
+	require.Len(t, bs, 2)
+	assert.Contains(t, bs[0], "WHERE oa.organization_id = @scope0")
+	assert.NotContains(t, bs[0], "JOIN domain.clinics")
+}
+
+func TestOrgAdminOf_Describe(t *testing.T) {
+	id := uuid.New()
+	assert.Equal(t, "organization administrator", OrgAdminOf.Organization(id).describe())
+	assert.Equal(t, "organization administrator", OrgAdminOf.Clinic(id).describe())
+	assert.Equal(t, "organization administrator", OrgAdminOf.IncidentType(id).describe())
+}

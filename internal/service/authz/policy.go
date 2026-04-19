@@ -107,3 +107,101 @@ func (p anyOfPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder {
 	}
 	return b
 }
+
+type orgAdminOfRole struct{}
+
+// OrgAdminOf is the namespace returning OrgAdmin policies scoped by
+// one of the supported child entities. Each method produces a Policy
+// with two branches: "caller is the direct holder" and "caller is the
+// deputy while the holder is on an active vacation".
+var OrgAdminOf orgAdminOfRole
+
+type orgAdminPolicy struct {
+	field     string
+	id        uuid.UUID
+	clauseFmt string // format string with one %s for scope placeholder
+}
+
+func (p orgAdminPolicy) branches(bc *branchCtx) []string {
+	scope := bc.addScope(p.id)
+	caller := bc.addCaller()
+	clause := fmt.Sprintf(p.clauseFmt, scope)
+
+	direct := fmt.Sprintf(`SELECT 1 FROM domain.org_admins oa
+JOIN domain.employees e ON e.id = oa.employee_id
+%s
+AND e.zitadel_user_id = @%s`, clause, caller)
+
+	deputy := fmt.Sprintf(`SELECT 1 FROM domain.org_admins oa
+JOIN domain.employees e ON e.id = oa.deputy_employee_id
+JOIN domain.employee_vacations v ON v.employee_id = oa.employee_id
+%s
+AND e.zitadel_user_id = @%s AND %s`, clause, caller, activeVacationPredicate)
+
+	return []string{direct, deputy}
+}
+
+func (orgAdminPolicy) describe() string { return "organization administrator" }
+
+//nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
+func (p orgAdminPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder {
+	return b.With(p.field, p.id)
+}
+
+func (orgAdminOfRole) Organization(id uuid.UUID) Policy {
+	return orgAdminPolicy{
+		field:     "organization_id",
+		id:        id,
+		clauseFmt: "WHERE oa.organization_id = @%s",
+	}
+}
+
+func (orgAdminOfRole) Clinic(id uuid.UUID) Policy {
+	return orgAdminPolicy{
+		field:     "clinic_id",
+		id:        id,
+		clauseFmt: "JOIN domain.clinics c ON c.organization_id = oa.organization_id WHERE c.id = @%s",
+	}
+}
+
+func (orgAdminOfRole) Department(id uuid.UUID) Policy {
+	return orgAdminPolicy{
+		field: "department_id",
+		id:    id,
+		clauseFmt: "JOIN domain.clinics c ON c.organization_id = oa.organization_id " +
+			"JOIN domain.departments d ON d.clinic_id = c.id WHERE d.id = @%s",
+	}
+}
+
+func (orgAdminOfRole) Employee(id uuid.UUID) Policy {
+	return orgAdminPolicy{
+		field:     "employee_id",
+		id:        id,
+		clauseFmt: "JOIN domain.employees tgt ON tgt.organization_id = oa.organization_id WHERE tgt.id = @%s",
+	}
+}
+
+func (orgAdminOfRole) Vacation(id uuid.UUID) Policy {
+	return orgAdminPolicy{
+		field: "vacation_id",
+		id:    id,
+		clauseFmt: "JOIN domain.employees tgt ON tgt.organization_id = oa.organization_id " +
+			"JOIN domain.employee_vacations vt ON vt.employee_id = tgt.id WHERE vt.id = @%s",
+	}
+}
+
+func (orgAdminOfRole) Category(id uuid.UUID) Policy {
+	return orgAdminPolicy{
+		field:     "category_id",
+		id:        id,
+		clauseFmt: "JOIN domain.incident_categories ic ON ic.organization_id = oa.organization_id WHERE ic.id = @%s",
+	}
+}
+
+func (orgAdminOfRole) IncidentType(id uuid.UUID) Policy {
+	return orgAdminPolicy{
+		field:     "type_id",
+		id:        id,
+		clauseFmt: "JOIN domain.incident_types it ON it.organization_id = oa.organization_id WHERE it.id = @%s",
+	}
+}
