@@ -1,6 +1,7 @@
 package authz
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"strings"
@@ -240,4 +241,37 @@ func (adminOfBattery) Category(id uuid.UUID) Policy {
 
 func (adminOfBattery) IncidentType(id uuid.UUID) Policy {
 	return AnyOf(SystemAdmin, OrgAdminOf.IncidentType(id))
+}
+
+// Require evaluates policy p for callerID. It renders the policy tree
+// into a single SELECT EXISTS(... UNION ALL ...) query so the whole
+// check is one database round-trip regardless of how many sub-policies
+// compose through AnyOf. Returns:
+//   - nil on success;
+//   - an ErrCodePermissionDenied domain error on deny (Public message
+//     derived from policy.describe());
+//   - an ErrCodeAuthzCheckFailed domain error wrapping the DB error if
+//     the check query itself cannot run.
+func (a *Authz) Require(ctx context.Context, callerID string, p Policy) error {
+	bc := &branchCtx{callerID: callerID}
+	branches := p.branches(bc)
+	query := "SELECT EXISTS(" + strings.Join(branches, " UNION ALL ") + ")"
+
+	var ok bool
+	if err := a.db.WithContext(ctx).Raw(query, bc.args...).Scan(&ok).Error; err != nil {
+		return oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Wrap(err)
+	}
+	if ok {
+		return nil
+	}
+
+	b := oops.In("service.authz").
+		Code(ErrCodePermissionDenied).
+		Public(fmt.Sprintf("Access denied: requires %s privileges.", p.describe())).
+		With("caller_id", callerID)
+	b = p.with(b)
+	return b.Errorf("permission denied")
 }
