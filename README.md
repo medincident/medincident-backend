@@ -80,7 +80,7 @@ Command никогда не читает проекции и не знает о 
 - `cmd/query-server/` — точка входа query-side сервера (placeholder, заполняется в Plan 3)
 - `configs/` — YAML config пример
 - `db/migrations/` — dbmate миграции (через `task migrate:new`)
-- `internal/config/` — YAML loader + go-playground/validator
+- `internal/config/` — YAML loader + go-playground/validator; shared types в `config.go`, специфика бинарника — в `command_server.go` / `query_server.go`, zerolog-блок — в `zerolog.go`
 - `internal/model/` — gorm-модели (единственное место где живёт `null.X`)
 - `internal/services/orgstructure/` — бизнес-логика, файл на метод
 - `internal/handler/orgstructure/` — gRPC handler, файл на RPC

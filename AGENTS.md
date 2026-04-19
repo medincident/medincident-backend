@@ -75,7 +75,11 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
 cmd/command-server/main.go               — entry point (command side), graceful shutdown
 cmd/query-server/main.go                 — entry point (query side, placeholder until Plan 3)
 internal/
-  config/                                — YAML + go-playground/validator (Command + Query)
+  config/                                — YAML + go-playground/validator
+    config.go                            — shared types (GRPC/Postgres/Zitadel) + readAndValidate
+    command_server.go                    — CommandServerConfig + ReadCommandServerConfig
+    query_server.go                      — QueryServerConfig + ReadQueryServerConfig
+    zerolog.go                           — zerolog config subtree (shared)
   di/                                    — samber/do/v2 providers (all factories)
     container.go                         — NewContainer + do.Provide wiring
     zerolog.go                           — logger construction
