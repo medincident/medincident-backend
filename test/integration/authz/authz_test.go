@@ -3,29 +3,16 @@
 package authz_integration_test
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/google/uuid"
-	"github.com/samber/oops"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/authz"
 )
 
-// ---------------------------------------------------------------------------
-// helpers
-// ---------------------------------------------------------------------------
-
-func requirePermissionDenied(t *testing.T, err error, wantPublic string) {
-	t.Helper()
-	require.Error(t, err)
-	var oe oops.OopsError
-	require.True(t, errors.As(err, &oe), "expected oops error, got: %v", err)
-	assert.Equal(t, authz.ErrCodePermissionDenied, oe.Code())
-	assert.Equal(t, wantPublic, oe.Public())
-}
+// Tests in this file share the requireDenied helper and public-message
+// constants with policy_test.go (same package).
 
 // ---------------------------------------------------------------------------
 // RequireSystemAdmin
@@ -44,7 +31,7 @@ func TestRequireSystemAdmin_Denied(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "alice", authz.SystemAdmin)
-	requirePermissionDenied(t, err, publicSystemAdmin)
+	requireDenied(t, err, publicSystemAdmin)
 }
 
 func TestRequireSystemAdmin_UnknownCaller(t *testing.T) {
@@ -52,7 +39,7 @@ func TestRequireSystemAdmin_UnknownCaller(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "nonexistent", authz.SystemAdmin)
-	requirePermissionDenied(t, err, publicSystemAdmin)
+	requireDenied(t, err, publicSystemAdmin)
 }
 
 // ---------------------------------------------------------------------------
@@ -80,7 +67,7 @@ func TestRequireOrgAdmin_CrossOrgDenied(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Organization(orgB))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 func TestRequireOrgAdmin_DeputyOnVacation(t *testing.T) {
@@ -103,7 +90,7 @@ func TestRequireOrgAdmin_DeputyNoVacation(t *testing.T) {
 	).Error)
 
 	err := authzSvc.Require(ctxT(t), "carol", authz.AdminOf.Organization(orgA))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 func TestRequireOrgAdmin_RegularEmployee(t *testing.T) {
@@ -111,7 +98,7 @@ func TestRequireOrgAdmin_RegularEmployee(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "alice", authz.AdminOf.Organization(orgA))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 func TestRequireOrgAdmin_UnknownCaller(t *testing.T) {
@@ -119,7 +106,7 @@ func TestRequireOrgAdmin_UnknownCaller(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "ghost", authz.AdminOf.Organization(orgA))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // Non-sysadmin caller targeting a random org id must get
@@ -131,7 +118,7 @@ func TestRequireOrgAdmin_NonSysAdminNonexistentOrg(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Organization(uuid.Must(uuid.NewV7())))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -152,7 +139,7 @@ func TestRequireOrgAdminViaClinic_CrossOrg(t *testing.T) {
 
 	// Bob is OrgA admin, clinicB1 belongs to OrgB -> denied.
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Clinic(clinicB1))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // Sysadmin authorizes regardless of whether the clinic exists — the
@@ -172,7 +159,7 @@ func TestRequireOrgAdminViaClinic_NonSysAdminNotFound(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Clinic(uuid.Must(uuid.NewV7())))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -200,7 +187,7 @@ func TestRequireOrgAdminViaDepartment_NonSysAdminNotFound(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Department(uuid.Must(uuid.NewV7())))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -228,7 +215,7 @@ func TestRequireOrgAdminViaEmployee_NonSysAdminNotFound(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Employee(uuid.Must(uuid.NewV7())))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // Bob (OrgA admin) targeting Dave (OrgB employee) must be denied.
@@ -237,7 +224,7 @@ func TestRequireOrgAdminViaEmployee_CrossOrg(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Employee(empDave))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -265,7 +252,7 @@ func TestRequireOrgAdminViaCategory_NonSysAdminNotFound(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Category(uuid.Must(uuid.NewV7())))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -293,7 +280,7 @@ func TestRequireOrgAdminViaType_NonSysAdminNotFound(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.IncidentType(uuid.Must(uuid.NewV7())))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
 
 // ---------------------------------------------------------------------------
@@ -321,5 +308,5 @@ func TestRequireOrgAdminViaVacation_NonSysAdminNotFound(t *testing.T) {
 	seedFixtures(t)
 
 	err := authzSvc.Require(ctxT(t), "bob", authz.AdminOf.Vacation(uuid.Must(uuid.NewV7())))
-	requirePermissionDenied(t, err, publicAdminOf)
+	requireDenied(t, err, publicAdminOf)
 }
