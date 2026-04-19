@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
 	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
 )
@@ -22,7 +23,7 @@ func (h *MembershipHandler) AssignClinicHeadDeputy(ctx context.Context, req *mem
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaClinic(ctx, callerID, clinicID); err != nil {
+	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Clinic(clinicID)); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.AssignClinicHeadDeputy(ctx, membership.AssignClinicHeadDeputyCommand{

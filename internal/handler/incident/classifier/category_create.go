@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
 	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
 )
@@ -20,7 +21,7 @@ func (h *IncidentClassifierHandler) CreateIncidentCategory(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdmin(ctx, callerID, organizationID); err != nil {
+	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Organization(organizationID)); err != nil {
 		return nil, err
 	}
 	cmd := classifiersvc.CreateIncidentCategoryCommand{

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
 	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
 )
@@ -20,7 +21,7 @@ func (h *IncidentClassifierHandler) DeactivateIncidentType(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaType(ctx, callerID, typeID); err != nil {
+	if err := h.authz.Require(ctx, callerID, authz.AdminOf.IncidentType(typeID)); err != nil {
 		return nil, err
 	}
 	if _, err := h.typeSvc.Deactivate(ctx, classifiersvc.DeactivateIncidentTypeCommand{TypeID: typeID}); err != nil {

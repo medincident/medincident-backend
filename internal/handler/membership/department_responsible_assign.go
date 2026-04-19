@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
 	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
 )
@@ -21,7 +22,7 @@ func (h *MembershipHandler) AssignDepartmentResponsible(ctx context.Context, req
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaDepartment(ctx, callerID, depID); err != nil {
+	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Department(depID)); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.AssignDepartmentResponsible(ctx, membership.AssignDepartmentResponsibleCommand{
