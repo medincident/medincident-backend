@@ -21,13 +21,7 @@ func (a Address) Equal(other Address) bool {
 	if a.Text != other.Text {
 		return false
 	}
-	if !a.Point.Valid && !other.Point.Valid {
-		return true
-	}
-	if !a.Point.Valid || !other.Point.Valid {
-		return false
-	}
-	return a.Point.V.Equal(other.Point.V)
+	return EqualValueBy(a.Point, other.Point)
 }
 
 // Value serialises Address into the Postgres composite text format
