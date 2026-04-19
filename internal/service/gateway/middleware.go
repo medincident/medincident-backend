@@ -29,7 +29,7 @@ func AccessLog(logger *zerolog.Logger) Middleware {
 				Int("status", rec.status).
 				Int("bytes", rec.bytes).
 				Str("remote_addr", r.RemoteAddr).
-				Dur("duration_ms", time.Since(start)).
+				Int64("duration_ms", time.Since(start).Milliseconds()).
 				Msg("http request")
 		})
 	}
