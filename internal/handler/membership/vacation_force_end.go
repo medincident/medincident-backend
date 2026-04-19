@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
 	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
 )
@@ -19,7 +20,7 @@ func (h *MembershipHandler) ForceEndVacation(ctx context.Context, req *membershi
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.RequireOrgAdminViaVacation(ctx, callerID, id); err != nil {
+	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Vacation(id)); err != nil {
 		return nil, err
 	}
 	if err := h.empSvc.ForceEndVacation(ctx, membership.ForceEndVacationCommand{VacationID: id}); err != nil {
