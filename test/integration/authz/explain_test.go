@@ -24,7 +24,7 @@ func TestRequire_PlanIsIndexBound(t *testing.T) {
 	// Require's signature; instead, run EXPLAIN on the equivalent raw
 	// SQL. If Require's rendering ever drifts, this test will start
 	// failing in ways visible to the reviewer.
-	const query = `EXPLAIN (FORMAT TEXT)
+	const query = `EXPLAIN (ANALYZE, FORMAT TEXT)
 		SELECT EXISTS(
 			SELECT 1 FROM domain.system_admins WHERE zitadel_user_id = @caller
 			UNION ALL
@@ -48,7 +48,10 @@ func TestRequire_PlanIsIndexBound(t *testing.T) {
 	).Scan(&lines).Error)
 
 	plan := strings.Join(lines, "\n")
-	assert.NotContains(t, plan, "Seq Scan on domain.",
+	// Postgres renders plan nodes as "Seq Scan on <table>" (no schema
+	// prefix in the textual format), so the assertion matches that
+	// prefix rather than a schema-qualified form.
+	assert.NotContains(t, plan, "Seq Scan on ",
 		"auth query should be index-bound; plan was:\n%s", plan)
 
 	// Sanity: the plan must mention index usage for at least one of
