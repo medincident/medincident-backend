@@ -4,13 +4,13 @@ import "time"
 
 // QueryServerConfig is the YAML-backed runtime configuration for the
 // query-server binary. Fields mirror the design spec § 11. Sections
-// only query-server needs (NATS) are only here.
+// only query-server needs (NATS, grpc-gateway) live here.
 type QueryServerConfig struct {
-	Server   QueryServerNetConfig   `yaml:"server"   validate:"required"`
-	Postgres PostgresConfig         `yaml:"postgres" validate:"required"`
-	Zerolog  ZerologConfig          `yaml:"zerolog"  validate:"required"`
-	NATS     QueryServerNATSConfig  `yaml:"nats"     validate:"required"`
-	Zitadel  QueryServerZitadelInfo `yaml:"zitadel"  validate:"required"`
+	Server   QueryServerNetConfig  `yaml:"server"   validate:"required"`
+	Postgres PostgresConfig        `yaml:"postgres" validate:"required"`
+	Zerolog  ZerologConfig         `yaml:"zerolog"  validate:"required"`
+	NATS     QueryServerNATSConfig `yaml:"nats"     validate:"required"`
+	Zitadel  ZitadelConfig         `yaml:"zitadel"  validate:"required"`
 }
 
 // QueryServerNetConfig holds the gRPC and grpc-gateway listen addresses
@@ -37,38 +37,23 @@ type QueryServerNATSConfig struct {
 	DurableName string   `yaml:"durable_name" validate:"required"`
 }
 
-// QueryServerZitadelInfo is the Zitadel config for the query-server's
-// authn interceptor (JWT introspection against Zitadel). Same shape as
-// command-server's ZitadelConfig — both binaries validate tokens the
-// same way, so both need domain + service-user key.
-type QueryServerZitadelInfo struct {
-	Domain  string `yaml:"domain"   validate:"required,url"`
-	KeyPath string `yaml:"key_path" validate:"required,file"`
-}
-
-// Default values applied when a query-server YAML omits a field.
-const (
-	defaultQueryServerGRPCAddress    = ":9091"
-	defaultQueryServerGatewayAddress = ":8082"
-)
-
 func defaultQueryServerConfig() QueryServerConfig {
 	return QueryServerConfig{
 		Server: QueryServerNetConfig{
 			GRPC: GRPCServerConfig{
-				Address:        defaultQueryServerGRPCAddress,
-				MaxRecvMsgSize: defaultGRPCMaxRecvMsgSize,
+				Address:        ":9091",
+				MaxRecvMsgSize: 4 * 1024 * 1024,
 			},
 			Gateway: QueryServerGatewayConfig{
-				Address: defaultQueryServerGatewayAddress,
+				Address: ":8082",
 			},
 		},
 		Postgres: PostgresConfig{
 			Pool: PostgresPoolConfig{
-				MaxOpenConns:    defaultPostgresMaxOpenConns,
-				MaxIdleConns:    defaultPostgresMaxIdleConns,
-				ConnMaxLifetime: defaultPostgresConnMaxLifetime,
-				ConnMaxIdleTime: defaultPostgresConnMaxIdleTime,
+				MaxOpenConns:    20,
+				MaxIdleConns:    2,
+				ConnMaxLifetime: 30 * time.Minute,
+				ConnMaxIdleTime: 5 * time.Minute,
 			},
 		},
 		Zerolog: ZerologConfig{
