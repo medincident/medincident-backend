@@ -13,18 +13,10 @@ type QueryServerConfig struct {
 	Zitadel  ZitadelConfig         `yaml:"zitadel"  validate:"required"`
 }
 
-// QueryServerNetConfig holds the gRPC and grpc-gateway listen addresses
-// for the query-server binary.
+// QueryServerNetConfig holds the gRPC listener for the query-server.
+// Query-server is pure gRPC — no HTTP surface.
 type QueryServerNetConfig struct {
-	GRPC    GRPCServerConfig         `yaml:"grpc"    validate:"required"`
-	Gateway QueryServerGatewayConfig `yaml:"gateway" validate:"required"`
-}
-
-// QueryServerGatewayConfig is the HTTP listener for grpc-gateway. Kept
-// query-only for now because command-server does not currently expose
-// a gateway endpoint via configuration.
-type QueryServerGatewayConfig struct {
-	Address string `yaml:"address" validate:"required,hostname_port"`
+	GRPC GRPCServerConfig `yaml:"grpc" validate:"required"`
 }
 
 // QueryServerNATSConfig is the JetStream connection block. Stream and
@@ -43,9 +35,6 @@ func defaultQueryServerConfig() QueryServerConfig {
 			GRPC: GRPCServerConfig{
 				Address:        ":9091",
 				MaxRecvMsgSize: 4 * 1024 * 1024,
-			},
-			Gateway: QueryServerGatewayConfig{
-				Address: ":8082",
 			},
 		},
 		Zerolog: ZerologConfig{

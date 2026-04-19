@@ -13,10 +13,6 @@ server:
     address: ":9091"
     # Maximum inbound message size in bytes. Covers a single request.
     max_recv_msg_size: 4194304  # 4 MiB
-  gateway:
-    # HTTP listen address for the grpc-gateway. Different port than
-    # command-server's gateway so both can run on the same host.
-    address: ":8082"
 
 postgres:
   # libpq-style DSN, normally injected via env: dsn: ${DATABASE_URL}.
