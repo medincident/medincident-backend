@@ -13,13 +13,18 @@ server:
     max_recv_msg_size: 4194304  # 4 MiB
 
 postgres:
-  # libpq-style DSN, normally injected via env: dsn: ${DATABASE_URL}
+  # libpq-style DSN, normally injected via env: dsn: ${DATABASE_URL}.
+  # The command-server opens the database via pgxpool, so pool tuning
+  # lives in the DSN query string (defaults in parens — see pgxpool docs):
+  #   - pool_max_conns                 (default: max(4, NumCPU))
+  #   - pool_min_conns                 (default: 0)
+  #   - pool_max_conn_lifetime         (default: 1h)
+  #   - pool_max_conn_idle_time        (default: 30m)
+  #   - pool_health_check_period       (default: 1m)
+  #   - pool_max_conn_lifetime_jitter  (default: 0)
+  # Example tuned DSN:
+  #   postgres://user:pass@host:5432/db?sslmode=disable&pool_max_conns=20&pool_max_conn_lifetime=30m&pool_max_conn_idle_time=5m
   dsn: "postgres://postgres:postgres@localhost:5432/medincident?sslmode=disable"
-  pool:
-    max_open_conns: 20
-    max_idle_conns: 2
-    conn_max_lifetime: 30m
-    conn_max_idle_time: 5m
 
 zerolog:
   level: info

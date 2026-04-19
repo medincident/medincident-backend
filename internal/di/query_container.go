@@ -3,6 +3,8 @@ package di
 import (
 	"context"
 
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/nats-io/nats.go/jetstream"
 	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
@@ -124,30 +126,30 @@ func provideQueryPostgresWrapper(injector do.Injector) (*postgresDBWrapper, erro
 		return nil, err
 	}
 
-	db, err := gorm.Open(postgres.Open(cfg.Postgres.DSN), &gorm.Config{
-		SkipDefaultTransaction: true,
-		TranslateError:         true,
-		Logger:                 gormlogger.Default.LogMode(gormlogger.Error),
-	})
+	pool, err := pgxpool.New(context.Background(), cfg.Postgres.DSN)
 	if err != nil {
 		return nil, oops.In("di.postgres").
 			Code(ErrCodePostgresOpenFailed).
 			Wrap(err)
 	}
 
-	sqlDB, err := db.DB()
+	sqlDB := stdlib.OpenDBFromPool(pool)
+
+	db, err := gorm.Open(postgres.New(postgres.Config{Conn: sqlDB}), &gorm.Config{
+		SkipDefaultTransaction: true,
+		TranslateError:         true,
+		Logger:                 gormlogger.Default.LogMode(gormlogger.Error),
+	})
 	if err != nil {
+		_ = sqlDB.Close()
+		pool.Close()
 		return nil, oops.In("di.postgres").
-			Code(ErrCodePostgresTuneFailed).
+			Code(ErrCodePostgresOpenFailed).
 			Wrap(err)
 	}
-	sqlDB.SetMaxOpenConns(cfg.Postgres.Pool.MaxOpenConns)
-	sqlDB.SetMaxIdleConns(cfg.Postgres.Pool.MaxIdleConns)
-	sqlDB.SetConnMaxLifetime(cfg.Postgres.Pool.ConnMaxLifetime)
-	sqlDB.SetConnMaxIdleTime(cfg.Postgres.Pool.ConnMaxIdleTime)
 
 	logger.Info().Msg("query-server postgres pool wired")
-	return &postgresDBWrapper{DB: db}, nil
+	return &postgresDBWrapper{DB: db, pool: pool}, nil
 }
 
 func provideQueryGormDB(injector do.Injector) (*gorm.DB, error) {

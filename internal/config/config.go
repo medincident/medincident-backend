@@ -10,7 +10,6 @@ package config
 
 import (
 	"os"
-	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/samber/oops"
@@ -32,19 +31,16 @@ type GRPCServerConfig struct {
 	MaxRecvMsgSize int    `yaml:"max_recv_msg_size" validate:"required,min=1024,max=104857600"`
 }
 
-// PostgresConfig is the Postgres connection block. Shared by both binaries
-// (command-server writes, query-server reads / applies projections).
+// PostgresConfig is the database connection config. Pool tuning is
+// expressed in-band via DSN query parameters honored by pgxpool:
+//
+//   - pool_max_conns, pool_min_conns
+//   - pool_max_conn_lifetime, pool_max_conn_idle_time
+//   - pool_health_check_period, pool_max_conn_lifetime_jitter
+//
+// See configs/*.example.yaml for a worked example.
 type PostgresConfig struct {
-	DSN  string             `yaml:"dsn"  validate:"required,startswith=postgres://|startswith=postgresql://"`
-	Pool PostgresPoolConfig `yaml:"pool" validate:"required"`
-}
-
-// PostgresPoolConfig tunes the database/sql connection pool under gorm.
-type PostgresPoolConfig struct {
-	MaxOpenConns    int           `yaml:"max_open_conns"     validate:"required,min=1,max=10000"`
-	MaxIdleConns    int           `yaml:"max_idle_conns"     validate:"min=0,ltefield=MaxOpenConns"`
-	ConnMaxLifetime time.Duration `yaml:"conn_max_lifetime"  validate:"required,min=1s"`
-	ConnMaxIdleTime time.Duration `yaml:"conn_max_idle_time" validate:"required,min=1s"`
+	DSN string `yaml:"dsn" validate:"required,startswith=postgres://|startswith=postgresql://"`
 }
 
 // ZitadelConfig points at the Zitadel domain and the service-user key

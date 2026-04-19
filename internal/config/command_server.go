@@ -26,14 +26,6 @@ func defaultCommandServerConfig() CommandServerConfig {
 				MaxRecvMsgSize: 4 * 1024 * 1024,
 			},
 		},
-		Postgres: PostgresConfig{
-			Pool: PostgresPoolConfig{
-				MaxOpenConns:    20,
-				MaxIdleConns:    2,
-				ConnMaxLifetime: 30 * time.Minute,
-				ConnMaxIdleTime: 5 * time.Minute,
-			},
-		},
 		Zerolog: ZerologConfig{
 			Level:      "info",
 			Timestamp:  true,
