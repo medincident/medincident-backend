@@ -16,7 +16,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/config"
 	gwhandler "github.com/medincident/medincident-command-service/internal/handler/gateway"
-	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/middleware/httpmw"
 	cmdclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
 	cmdmembershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
 	cmdorgv1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
@@ -219,8 +219,8 @@ func provideGatewayHTTPServer(injector do.Injector) (*http.Server, error) {
 	router.Handle("/", mux)
 
 	var handler http.Handler = router
-	handler = middleware.HTTPAccessLog(logger)(handler)
-	if cors := middleware.HTTPCORS(cfg.Server.HTTP.CORS); cors != nil {
+	handler = httpmw.AccessLog(logger)(handler)
+	if cors := httpmw.CORS(cfg.Server.HTTP.CORS); cors != nil {
 		handler = cors(handler)
 	}
 

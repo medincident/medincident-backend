@@ -1,4 +1,4 @@
-package middleware
+package httpmw
 
 import (
 	"net/http"
@@ -8,9 +8,9 @@ import (
 	"github.com/medincident/medincident-command-service/internal/config"
 )
 
-// HTTPCORS returns a CORS middleware backed by rs/cors when cfg is
+// CORS returns a CORS middleware backed by rs/cors when cfg is
 // present, or nil when cfg is nil (so callers can skip the wrap).
-func HTTPCORS(cfg *config.GatewayCORSConfig) func(http.Handler) http.Handler {
+func CORS(cfg *config.GatewayCORSConfig) func(http.Handler) http.Handler {
 	if cfg == nil {
 		return nil
 	}

@@ -1,4 +1,4 @@
-package middleware
+package grpcmw
 
 import (
 	"context"
@@ -25,7 +25,7 @@ func WithCallerID(ctx context.Context, id string) context.Context {
 func CallerID(ctx context.Context) (string, error) {
 	v, _ := ctx.Value(callerIDKey{}).(string)
 	if v == "" {
-		return "", oops.In("middleware.authn").
+		return "", oops.In("grpcmw.caller").
 			Code(ErrCodeUnauthenticated).
 			Public("Missing or malformed authorization header.").
 			Errorf("caller id is not set in context")

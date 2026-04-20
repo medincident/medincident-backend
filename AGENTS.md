@@ -100,12 +100,14 @@ internal/
     gateway_container.go                 — NewGatewayContainer + do.Provide wiring
     handler.go                           — handler providers
   model/                                 — gorm models. ONLY place `null.X` lives.
-  middleware/                            — HTTP and gRPC middleware
-    authn.go                             — gRPC unary authn interceptor (Zitadel JWT)
-    caller.go                            — caller-ID extraction (gRPC)
-    error.go                             — error → gRPC status mapping
-    http_access_log.go                   — HTTP access log via rs/zerolog/hlog
-    http_cors.go                         — HTTP CORS wrapper over rs/cors
+  middleware/
+    grpcmw/                              — gRPC interceptors
+      authn.go                           — unary authn interceptor (Zitadel JWT)
+      caller.go                          — caller-ID extraction
+      error.go                           — error → gRPC status mapping
+    httpmw/                              — HTTP middleware
+      access_log.go                      — access log via rs/zerolog/hlog
+      cors.go                            — CORS wrapper over rs/cors
   service/
     authz/                               — role-based check helpers (shared)
     zitadel/                             — Zitadel client (today: user verify)

@@ -13,7 +13,7 @@ import (
 	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
-	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/middleware/grpcmw"
 	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
 	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
 	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
@@ -71,8 +71,8 @@ func provideGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, error) 
 	server := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
 		grpc.ChainUnaryInterceptor(
-			middleware.ErrorInterceptor(logger),
-			middleware.AuthnInterceptor(authorizer, authnSkip),
+			grpcmw.ErrorInterceptor(logger),
+			grpcmw.AuthnInterceptor(authorizer, authnSkip),
 		),
 	)
 	orgstructurev1.RegisterOrgStructureCommandServiceServer(server, handler)
