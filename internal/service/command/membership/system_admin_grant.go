@@ -10,24 +10,34 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
 
-// GrantSystemAdminCommand carries the Zitadel user ID to promote to system admin.
-type GrantSystemAdminCommand struct {
+// GrantSystemAdminPayload carries the Zitadel user ID to promote to system admin.
+type GrantSystemAdminPayload struct {
 	ZitadelUserID string `validate:"required"`
+}
+
+// GrantSystemAdminCommand = caller + payload.
+type GrantSystemAdminCommand struct {
+	Caller  authz.Caller
+	Payload GrantSystemAdminPayload
 }
 
 // GrantSystemAdmin creates a SystemAdmin grant for a Zitadel user.
 // Verifies the user exists in Zitadel before writing. Not coupled to
 // the employees table in any way. See spec §8.8.
 func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemAdminCommand) error {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
 		return err
 	}
-	id := strings.TrimSpace(cmd.ZitadelUserID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.SystemAdmin); err != nil {
+		return err
+	}
+	id := strings.TrimSpace(cmd.Payload.ZitadelUserID)
 
 	if err := s.verifier.Verify(ctx, id); err != nil {
 		if errors.Is(err, zitadel.ErrUserNotFound) {

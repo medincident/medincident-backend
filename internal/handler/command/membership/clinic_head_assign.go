@@ -12,22 +12,16 @@ import (
 // AssignClinicHead translates a gRPC request into a service command
 // and links the employee to the clinic as its head.
 func (h *MembershipHandler) AssignClinicHead(ctx context.Context, req *membershipv1.AssignClinicHeadRequest) (*membershipv1.AssignClinicHeadResponse, error) {
-	var ids idErrs
-	clinicID := ids.parse(req.GetClinicId(), parseClinicID)
-	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
-	if err := ids.err(); err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Clinic(clinicID)); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.AssignClinicHead(ctx, membership.AssignClinicHeadCommand{
-		ClinicID:   clinicID,
-		EmployeeID: empID,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.AssignClinicHeadPayload{
+			ClinicID:   req.GetClinicId(),
+			EmployeeID: req.GetEmployeeId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

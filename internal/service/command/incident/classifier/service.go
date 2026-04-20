@@ -9,27 +9,33 @@ package classifier
 import (
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
+
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 )
 
 // IncidentCategoryService handles mutations of domain.incident_categories,
 // including all cascade and hierarchy invariants.
 type IncidentCategoryService struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewIncidentCategoryService returns a service bound to the given gorm DB.
-func NewIncidentCategoryService(db *gorm.DB, logger *zerolog.Logger) *IncidentCategoryService {
-	return &IncidentCategoryService{db: db, logger: logger}
+// NewIncidentCategoryService returns a service bound to the given gorm
+// DB and authorization service.
+func NewIncidentCategoryService(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *IncidentCategoryService {
+	return &IncidentCategoryService{db: db, authz: az, logger: logger}
 }
 
 // IncidentTypeService handles mutations of domain.incident_types.
 type IncidentTypeService struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewIncidentTypeService returns a service bound to the given gorm DB.
-func NewIncidentTypeService(db *gorm.DB, logger *zerolog.Logger) *IncidentTypeService {
-	return &IncidentTypeService{db: db, logger: logger}
+// NewIncidentTypeService returns a service bound to the given gorm DB
+// and authorization service.
+func NewIncidentTypeService(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *IncidentTypeService {
+	return &IncidentTypeService{db: db, authz: az, logger: logger}
 }

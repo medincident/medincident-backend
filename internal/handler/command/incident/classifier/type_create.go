@@ -13,21 +13,17 @@ func (h *IncidentClassifierHandler) CreateIncidentType(
 	ctx context.Context,
 	req *incidentclassifierv1.CreateIncidentTypeRequest,
 ) (*incidentclassifierv1.CreateIncidentTypeResponse, error) {
-	categoryID, err := parseIncidentCategoryID(req.GetCategoryId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Category(categoryID)); err != nil {
-		return nil, err
-	}
 	result, err := h.typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID:  categoryID,
-		Name:        req.GetName(),
-		Description: req.Description,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID:  req.GetCategoryId(),
+			Name:        req.GetName(),
+			Description: req.Description,
+		},
 	})
 	if err != nil {
 		return nil, err

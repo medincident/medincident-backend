@@ -12,23 +12,18 @@ import (
 // HireEmployee translates a gRPC HireEmployeeRequest into a service
 // command and returns the new employee ID on success.
 func (h *MembershipHandler) HireEmployee(ctx context.Context, req *membershipv1.HireEmployeeRequest) (*membershipv1.HireEmployeeResponse, error) {
-	depID, err := parseDepartmentID(req.GetDepartmentId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Department(depID)); err != nil {
-		return nil, err
-	}
-	cmd := membership.HireEmployeeCommand{
-		ZitadelUserID: req.GetZitadelUserId(),
-		DepartmentID:  depID,
-		Position:      req.Position,
-	}
-	result, err := h.empSvc.Hire(ctx, cmd)
+	result, err := h.empSvc.Hire(ctx, membership.HireEmployeeCommand{
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: req.GetZitadelUserId(),
+			DepartmentID:  req.GetDepartmentId(),
+			Position:      req.Position,
+		},
+	})
 	if err != nil {
 		return nil, err
 	}

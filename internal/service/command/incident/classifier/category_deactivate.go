@@ -11,14 +11,21 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// DeactivateIncidentCategoryCommand identifies the incident category
+// DeactivateIncidentCategoryPayload identifies the incident category
 // to deactivate (cascades to descendants and types).
+type DeactivateIncidentCategoryPayload struct {
+	CategoryID string `validate:"required,uuid"`
+}
+
+// DeactivateIncidentCategoryCommand = caller + payload.
 type DeactivateIncidentCategoryCommand struct {
-	CategoryID uuid.UUID `validate:"required"`
+	Caller  authz.Caller
+	Payload DeactivateIncidentCategoryPayload
 }
 
 // DeactivateIncidentCategoryResult is empty — events carry the real
@@ -33,7 +40,11 @@ func (s *IncidentCategoryService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateIncidentCategoryCommand,
 ) (DeactivateIncidentCategoryResult, error) {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return DeactivateIncidentCategoryResult{}, err
+	}
+	categoryID := uuid.MustParse(cmd.Payload.CategoryID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Category(categoryID)); err != nil {
 		return DeactivateIncidentCategoryResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -41,17 +52,17 @@ func (s *IncidentCategoryService) Deactivate(
 
 		var root model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&root, "id = ?", cmd.CategoryID).Error; err != nil {
+			First(&root, "id = ?", categoryID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryNotFound).
 					Public("Incident category not found.").
-					With("incident_category_id", cmd.CategoryID).
+					With("incident_category_id", categoryID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.category").
 				Code(ErrCodeIncidentCategoryLoadFailed).
-				With("incident_category_id", cmd.CategoryID).
+				With("incident_category_id", categoryID).
 				Wrap(err)
 		}
 

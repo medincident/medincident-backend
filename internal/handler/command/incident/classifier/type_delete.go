@@ -13,18 +13,14 @@ func (h *IncidentClassifierHandler) DeleteIncidentType(
 	ctx context.Context,
 	req *incidentclassifierv1.DeleteIncidentTypeRequest,
 ) (*incidentclassifierv1.DeleteIncidentTypeResponse, error) {
-	typeID, err := parseIncidentTypeID(req.GetTypeId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.IncidentType(typeID)); err != nil {
-		return nil, err
-	}
-	if _, err := h.typeSvc.Delete(ctx, classifiersvc.DeleteIncidentTypeCommand{TypeID: typeID}); err != nil {
+	if _, err := h.typeSvc.Delete(ctx, classifiersvc.DeleteIncidentTypeCommand{
+		Caller:  authz.Caller{ZitadelUserID: callerID},
+		Payload: classifiersvc.DeleteIncidentTypePayload{TypeID: req.GetTypeId()},
+	}); err != nil {
 		return nil, err
 	}
 	return &incidentclassifierv1.DeleteIncidentTypeResponse{}, nil

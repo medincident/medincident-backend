@@ -13,18 +13,14 @@ func (h *IncidentClassifierHandler) DeleteIncidentCategory(
 	ctx context.Context,
 	req *incidentclassifierv1.DeleteIncidentCategoryRequest,
 ) (*incidentclassifierv1.DeleteIncidentCategoryResponse, error) {
-	categoryID, err := parseIncidentCategoryID(req.GetCategoryId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Category(categoryID)); err != nil {
-		return nil, err
-	}
-	if _, err := h.categorySvc.Delete(ctx, classifiersvc.DeleteIncidentCategoryCommand{CategoryID: categoryID}); err != nil {
+	if _, err := h.categorySvc.Delete(ctx, classifiersvc.DeleteIncidentCategoryCommand{
+		Caller:  authz.Caller{ZitadelUserID: callerID},
+		Payload: classifiersvc.DeleteIncidentCategoryPayload{CategoryID: req.GetCategoryId()},
+	}); err != nil {
 		return nil, err
 	}
 	return &incidentclassifierv1.DeleteIncidentCategoryResponse{}, nil

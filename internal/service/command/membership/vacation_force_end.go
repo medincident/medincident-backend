@@ -12,20 +12,31 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// ForceEndVacationCommand identifies the running vacation to close.
+// ForceEndVacationPayload identifies the running vacation to close.
+type ForceEndVacationPayload struct {
+	VacationID string `validate:"required,uuid"`
+}
+
+// ForceEndVacationCommand = caller + payload.
 type ForceEndVacationCommand struct {
-	VacationID uuid.UUID `validate:"required"`
+	Caller  authz.Caller
+	Payload ForceEndVacationPayload
 }
 
 // ForceEndVacation closes a running vacation at the current moment.
 // Only applicable to vacations whose starts_at has already passed.
 // For scheduled (future) vacations, use CancelScheduledVacation.
 func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVacationCommand) error {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	vacationID := uuid.MustParse(cmd.Payload.VacationID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Vacation(vacationID)); err != nil {
 		return err
 	}
 
@@ -34,14 +45,14 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 
 		var vac model.EmployeeVacation
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.VacationID).
+			Where("id = ?", vacationID).
 			First(&vac).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeVacation).
 					Code(ErrCodeVacationNotFound).
 					Public("Vacation not found.").
-					With("vacation_id", cmd.VacationID).
+					With("vacation_id", vacationID).
 					Errorf("vacation not found")
 			}
 			return oops.In(scopeVacation).Code(ErrCodeVacationLoadFailed).Wrap(err)

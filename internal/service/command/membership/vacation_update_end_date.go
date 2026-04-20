@@ -12,15 +12,22 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// UpdateVacationEndDateCommand carries the vacation to update and the
+// UpdateVacationEndDatePayload carries the vacation to update and the
 // desired new end date.
+type UpdateVacationEndDatePayload struct {
+	VacationID string    `validate:"required,uuid"`
+	EndsAt     time.Time `validate:"required"`
+}
+
+// UpdateVacationEndDateCommand = caller + payload.
 type UpdateVacationEndDateCommand struct {
-	VacationID uuid.UUID `validate:"required"`
-	EndsAt     time.Time
+	Caller  authz.Caller
+	Payload UpdateVacationEndDatePayload
 }
 
 // UpdateVacationEndDate changes the end date of a not-yet-ended
@@ -29,7 +36,11 @@ type UpdateVacationEndDateCommand struct {
 // a concurrent ForceEndVacation (which would otherwise allow this
 // command to resurrect a manually-ended vacation from a stale read).
 func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateVacationEndDateCommand) error {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	vacationID := uuid.MustParse(cmd.Payload.VacationID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Vacation(vacationID)); err != nil {
 		return err
 	}
 
@@ -38,14 +49,14 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 
 		var vac model.EmployeeVacation
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.VacationID).
+			Where("id = ?", vacationID).
 			First(&vac).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeVacation).
 					Code(ErrCodeVacationNotFound).
 					Public("Vacation not found.").
-					With("vacation_id", cmd.VacationID).
+					With("vacation_id", vacationID).
 					Errorf("vacation not found")
 			}
 			return oops.In(scopeVacation).Code(ErrCodeVacationLoadFailed).Wrap(err)
@@ -57,12 +68,12 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationAlreadyEnded).
 				Public("Vacation has already ended.").
-				With("vacation_id", cmd.VacationID).
+				With("vacation_id", vacationID).
 				Errorf("vacation has already ended")
 		}
 
 		// "New end in future."
-		if !cmd.EndsAt.After(now) {
+		if !cmd.Payload.EndsAt.After(now) {
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationEndInPast).
 				Public("New end date must be in the future.").
@@ -70,7 +81,7 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 		}
 
 		// "New end after start."
-		if !cmd.EndsAt.After(vac.StartsAt) {
+		if !cmd.Payload.EndsAt.After(vac.StartsAt) {
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationEndBeforeStart).
 				Public("New end date must be after the vacation's start.").
@@ -82,11 +93,11 @@ func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateV
 		// passes a Go time with sub-microsecond nanoseconds would
 		// otherwise see spurious updates after the value round-trips
 		// through the database.
-		if vac.EndsAt.Valid && vac.EndsAt.Time.Equal(cmd.EndsAt.Truncate(time.Microsecond)) {
+		if vac.EndsAt.Valid && vac.EndsAt.Time.Equal(cmd.Payload.EndsAt.Truncate(time.Microsecond)) {
 			return nil
 		}
 
-		vac.EndsAt = null.TimeFrom(cmd.EndsAt)
+		vac.EndsAt = null.TimeFrom(cmd.Payload.EndsAt)
 		if saveErr := tx.Save(&vac).Error; saveErr != nil {
 			return oops.In(scopeVacation).With("vacation_id", vac.ID).Wrap(mapVacationInsertError(saveErr, vac.EmployeeID))
 		}

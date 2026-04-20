@@ -11,22 +11,34 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// RevokeDepartmentResponsibleCommand carries the identifiers needed to
+// RevokeDepartmentResponsiblePayload carries the identifiers needed to
 // remove an employee's department responsible role.
+type RevokeDepartmentResponsiblePayload struct {
+	DepartmentID string `validate:"required,uuid"`
+	EmployeeID   string `validate:"required,uuid"`
+}
+
+// RevokeDepartmentResponsibleCommand = caller + payload.
 type RevokeDepartmentResponsibleCommand struct {
-	DepartmentID uuid.UUID `validate:"required"`
-	EmployeeID   uuid.UUID `validate:"required"`
+	Caller  authz.Caller
+	Payload RevokeDepartmentResponsiblePayload
 }
 
 // RevokeDepartmentResponsible removes the role row and publishes the
 // Revoked event. If a deputy was assigned, a DeputyRemoved event is
 // published FIRST (Rule 2 — cleanup before terminate). See spec §8.6.
 func (s *EmployeeService) RevokeDepartmentResponsible(ctx context.Context, cmd RevokeDepartmentResponsibleCommand) error {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	departmentID := uuid.MustParse(cmd.Payload.DepartmentID)
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Department(departmentID)); err != nil {
 		return err
 	}
 
@@ -35,15 +47,15 @@ func (s *EmployeeService) RevokeDepartmentResponsible(ctx context.Context, cmd R
 
 		var row model.DepartmentResponsible
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("department_id = ? AND employee_id = ?", cmd.DepartmentID, cmd.EmployeeID).
+			Where("department_id = ? AND employee_id = ?", departmentID, employeeID).
 			First(&row).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeDepartmentResponsible).
 					Code(ErrCodeDepartmentResponsibleNotFound).
 					Public("Department responsible not found.").
-					With("department_id", cmd.DepartmentID).
-					With("employee_id", cmd.EmployeeID).
+					With("department_id", departmentID).
+					With("employee_id", employeeID).
 					Errorf("not found")
 			}
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleLoadFailed).Wrap(err)
@@ -51,17 +63,17 @@ func (s *EmployeeService) RevokeDepartmentResponsible(ctx context.Context, cmd R
 
 		// Rule 2 — cleanup before terminate.
 		if row.DeputyEmployeeID.Valid {
-			if err := publishDepartmentResponsibleDeputyRemoved(tx, cmd.DepartmentID, cmd.EmployeeID, now); err != nil {
+			if err := publishDepartmentResponsibleDeputyRemoved(tx, departmentID, employeeID, now); err != nil {
 				return err
 			}
 		}
 
 		if err := tx.Delete(&model.DepartmentResponsible{}, "department_id = ? AND employee_id = ?",
-			cmd.DepartmentID, cmd.EmployeeID).Error; err != nil {
+			departmentID, employeeID).Error; err != nil {
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleDeleteFailed).Wrap(err)
 		}
 
-		return publishDepartmentResponsibleRevoked(tx, cmd.DepartmentID, cmd.EmployeeID, now)
+		return publishDepartmentResponsibleRevoked(tx, departmentID, employeeID, now)
 	})
 }
 

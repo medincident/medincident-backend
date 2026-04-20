@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
@@ -21,11 +22,17 @@ const (
 	ErrCodeIncidentCategoryMoveOrganizationMismatch = "incident_category_move_organization_mismatch"
 )
 
-// MoveIncidentCategoryCommand carries the identifiers needed to
+// MoveIncidentCategoryPayload carries the identifiers needed to
 // reparent an incident category.
+type MoveIncidentCategoryPayload struct {
+	CategoryID          string  `validate:"required,uuid"`
+	NewParentCategoryID *string `validate:"omitnil,uuid"`
+}
+
+// MoveIncidentCategoryCommand = caller + payload.
 type MoveIncidentCategoryCommand struct {
-	CategoryID          uuid.UUID `validate:"required"`
-	NewParentCategoryID *uuid.UUID
+	Caller  authz.Caller
+	Payload MoveIncidentCategoryPayload
 }
 
 // MoveIncidentCategoryResult is empty — the event is the real result.
@@ -79,23 +86,32 @@ func (s *IncidentCategoryService) Move(
 	ctx context.Context,
 	cmd MoveIncidentCategoryCommand,
 ) (MoveIncidentCategoryResult, error) {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
 		return MoveIncidentCategoryResult{}, err
+	}
+	categoryID := uuid.MustParse(cmd.Payload.CategoryID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Category(categoryID)); err != nil {
+		return MoveIncidentCategoryResult{}, err
+	}
+	var newParentCategoryID *uuid.UUID
+	if cmd.Payload.NewParentCategoryID != nil {
+		p := uuid.MustParse(*cmd.Payload.NewParentCategoryID)
+		newParentCategoryID = &p
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var moving model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&moving, "id = ?", cmd.CategoryID).Error; err != nil {
+			First(&moving, "id = ?", categoryID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryNotFound).
 					Public("Incident category not found.").
-					With("incident_category_id", cmd.CategoryID).
+					With("incident_category_id", categoryID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.category").
 				Code(ErrCodeIncidentCategoryLoadFailed).
-				With("incident_category_id", cmd.CategoryID).
+				With("incident_category_id", categoryID).
 				Wrap(err)
 		}
 
@@ -107,20 +123,20 @@ func (s *IncidentCategoryService) Move(
 		}
 
 		var newParent uuid.NullUUID
-		if cmd.NewParentCategoryID != nil {
+		if newParentCategoryID != nil {
 			var parent model.IncidentCategory
 			if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthShare}).
-				First(&parent, "id = ?", *cmd.NewParentCategoryID).Error; err != nil {
+				First(&parent, "id = ?", *newParentCategoryID).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return oops.In("services.incident.classifier.category").
 						Code(ErrCodeIncidentCategoryParentNotFound).
 						Public("New parent incident category not found.").
-						With("new_parent_category_id", *cmd.NewParentCategoryID).
+						With("new_parent_category_id", *newParentCategoryID).
 						Wrap(err)
 				}
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryLoadFailed).
-					With("new_parent_category_id", *cmd.NewParentCategoryID).
+					With("new_parent_category_id", *newParentCategoryID).
 					Wrap(err)
 			}
 			if parent.OrganizationID != moving.OrganizationID {

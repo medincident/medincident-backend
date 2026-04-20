@@ -42,26 +42,39 @@ Design lives in `docs/superpowers/specs/2026-04-13-command-service-simplificatio
    `oops.In("pkg").Code(...).Public("…").With("field", x).Wrap(err)`.
    `errors.New` is OK in tests for sentinel comparisons.
 7. **No interfaces for services and no repository layer.** Services
-   are concrete struct types that take `*gorm.DB` and `*zerolog.Logger`
-   in the constructor. Call gorm directly, open transactions inline
-   via `s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error
-   {...})`.
-8. **Commands and results use plain Go types only.** No `null.X`
-   anywhere outside `internal/model`. Optional fields in commands are
-   `*string` / `*float64` / `*PointInput`. Conversion to `null.X` at
-   the service boundary is inline via `null.StringFromPtr`,
-   `null.FloatFrom`, etc. — no local wrapper helpers.
-9. **Validation at the service boundary, multi-error.** Every
-   command method calls `validation.Struct(cmd)` as its first line;
+   are concrete struct types that take `*gorm.DB`, `*authz.Authz`,
+   and `*zerolog.Logger` in the constructor. Call gorm directly,
+   open transactions inline via
+   `s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {...})`.
+8. **Commands are `Caller + Payload` DTOs carrying primitives only.**
+   Every write command is a struct with two fields: `Caller authz.Caller`
+   (the trusted identity set by the authn interceptor) and `Payload
+   XxxPayload` (the validated client-facing request). The Payload holds
+   **primitives only** — `string` for every UUID (validated with
+   `validate:"required,uuid"`), `string` for names, `*string` for
+   optional strings, `time.Time` / `*time.Time` for timestamps. Rich
+   types (`uuid.UUID`, `time.Time`) are parsed inside the service via
+   `uuid.MustParse(...)` after validation, then handed to the domain
+   model. No `null.X` anywhere outside `internal/model`; conversion at
+   the service boundary is inline via `null.StringFrom(strings.TrimSpace(...))`,
+   `null.ValueFrom(...)`, etc. — no local wrapper helpers. Handlers
+   become pure translators: they extract `callerID` via
+   `grpcmw.CallerID(ctx)`, wrap it in `authz.Caller{ZitadelUserID: ...}`,
+   and pass proto strings straight through to the Payload.
+9. **Each service method runs validate → parse → authorize → execute.**
+   The first line of every write is `validation.Struct(cmd.Payload)`;
    the translator walks every `validator.FieldError` and returns an
-   `errors.Join` of oops leaves (each with its own `Code`,
-   `"field"` path, rule, and public message) — never
-   `oops.Wrap(errors.Join(...))`. Command fields carry their own
-   rules inline as `validate:"required,min=4,max=256"` /
-   `validate:"omitnil,..."` tags. Every string field is trimmed
-   before validation so whitespace-only input fails `required` /
-   `min`. No DB `CHECK` constraints — the DB has only NOT NULL, PK,
-   FK.
+   `errors.Join` of oops leaves (each with its own `Code`, `"field"`
+   path, rule, and public message) — never
+   `oops.Wrap(errors.Join(...))`. Immediately after validation the
+   service parses Payload UUIDs into local variables, then calls
+   `s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.X(scopeID))`
+   (or `authz.SystemAdmin` for scope-less operations). Only then does
+   business logic run. Payload fields carry their own rules inline as
+   `validate:"required,min=4,max=256"` / `validate:"omitnil,..."` tags.
+   Every string field is trimmed before validation so whitespace-only
+   input fails `required` / `min`. No DB `CHECK` constraints — the DB
+   has only NOT NULL, PK, FK.
 10. **Events are built inline with named `buildXxxEvent` functions.**
     No generic mappers. Each event has one builder that knows its
     exact proto type and assembles it inline. Each proto event file

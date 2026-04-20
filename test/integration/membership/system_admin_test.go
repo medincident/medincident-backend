@@ -16,7 +16,10 @@ func TestGrantSystemAdmin_Success(t *testing.T) {
 	_ = takeFixture(t)
 
 	require.NoError(t, empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
-		ZitadelUserID: testUserAliceID,
+		Caller: sysadminCaller,
+		Payload: membership.GrantSystemAdminPayload{
+			ZitadelUserID: testUserAliceID,
+		},
 	}))
 
 	var count int64
@@ -36,7 +39,10 @@ func TestGrantSystemAdmin_Success(t *testing.T) {
 func TestGrantSystemAdmin_ZitadelUserNotFound(t *testing.T) {
 	_ = takeFixture(t)
 	err := empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
-		ZitadelUserID: "nonexistent-user-id",
+		Caller: sysadminCaller,
+		Payload: membership.GrantSystemAdminPayload{
+			ZitadelUserID: "nonexistent-user-id",
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeZitadelUserNotFound, oopsCode(t, err))
@@ -45,17 +51,26 @@ func TestGrantSystemAdmin_ZitadelUserNotFound(t *testing.T) {
 func TestGrantSystemAdmin_AlreadyGranted(t *testing.T) {
 	_ = takeFixture(t)
 	require.NoError(t, empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
-		ZitadelUserID: testUserAliceID,
+		Caller: sysadminCaller,
+		Payload: membership.GrantSystemAdminPayload{
+			ZitadelUserID: testUserAliceID,
+		},
 	}))
 	err := empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
-		ZitadelUserID: testUserAliceID,
+		Caller: sysadminCaller,
+		Payload: membership.GrantSystemAdminPayload{
+			ZitadelUserID: testUserAliceID,
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeSystemAdminAlreadyGranted, oopsCode(t, err))
 }
 
 func TestGrantSystemAdmin_EmptyInput(t *testing.T) {
-	err := empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{ZitadelUserID: "   "})
+	err := empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.GrantSystemAdminPayload{ZitadelUserID: "   "},
+	})
 	require.Error(t, err)
 	assert.Equal(t, validation.CodeStringRequired, oopsCode(t, err))
 }
@@ -63,11 +78,17 @@ func TestGrantSystemAdmin_EmptyInput(t *testing.T) {
 func TestRevokeSystemAdmin_Success(t *testing.T) {
 	_ = takeFixture(t)
 	require.NoError(t, empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
-		ZitadelUserID: testUserAliceID,
+		Caller: sysadminCaller,
+		Payload: membership.GrantSystemAdminPayload{
+			ZitadelUserID: testUserAliceID,
+		},
 	}))
 
 	require.NoError(t, empSvc.RevokeSystemAdmin(ctxT(t), membership.RevokeSystemAdminCommand{
-		ZitadelUserID: testUserAliceID,
+		Caller: sysadminCaller,
+		Payload: membership.RevokeSystemAdminPayload{
+			ZitadelUserID: testUserAliceID,
+		},
 	}))
 
 	var count int64
@@ -87,7 +108,10 @@ func TestRevokeSystemAdmin_Success(t *testing.T) {
 func TestRevokeSystemAdmin_NotFound(t *testing.T) {
 	_ = takeFixture(t)
 	err := empSvc.RevokeSystemAdmin(ctxT(t), membership.RevokeSystemAdminCommand{
-		ZitadelUserID: "nonexistent-user-id",
+		Caller: sysadminCaller,
+		Payload: membership.RevokeSystemAdminPayload{
+			ZitadelUserID: "nonexistent-user-id",
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeSystemAdminNotFound, oopsCode(t, err))
@@ -97,7 +121,10 @@ func TestSystemAdmin_IndependentOfEmployee(t *testing.T) {
 	_ = takeFixture(t)
 	// Grant SystemAdmin to a Zitadel user who is NOT hired as employee.
 	require.NoError(t, empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
-		ZitadelUserID: testUserBobID,
+		Caller: sysadminCaller,
+		Payload: membership.GrantSystemAdminPayload{
+			ZitadelUserID: testUserBobID,
+		},
 	}))
 	// Verify no employee row was created.
 	var empCount int64
@@ -112,10 +139,16 @@ func TestTerminateEmployee_DoesNotTouchSystemAdmin(t *testing.T) {
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	// Grant Alice system admin. Alice is both a system admin and an employee.
 	require.NoError(t, empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
-		ZitadelUserID: testUserAliceID,
+		Caller: sysadminCaller,
+		Payload: membership.GrantSystemAdminPayload{
+			ZitadelUserID: testUserAliceID,
+		},
 	}))
 
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: aliceID}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: aliceID.String()},
+	}))
 
 	var count int64
 	require.NoError(t, testDB.Raw(

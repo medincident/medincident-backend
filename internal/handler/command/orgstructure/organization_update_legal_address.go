@@ -13,20 +13,16 @@ func (h *OrgStructureHandler) UpdateOrganizationLegalAddress(
 	ctx context.Context,
 	req *orgstructurev1.UpdateOrganizationLegalAddressRequest,
 ) (*orgstructurev1.UpdateOrganizationLegalAddressResponse, error) {
-	id, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Organization(id)); err != nil {
-		return nil, err
-	}
 	if err := h.orgSvc.UpdateLegalAddress(ctx, orgsvc.UpdateOrganizationLegalAddressCommand{
-		ID:      id,
-		Address: addressInputFromProto(req.GetLegalAddress()),
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: orgsvc.UpdateOrganizationLegalAddressPayload{
+			ID:      req.GetOrganizationId(),
+			Address: addressInputFromProto(req.GetLegalAddress()),
+		},
 	}); err != nil {
 		return nil, err
 	}

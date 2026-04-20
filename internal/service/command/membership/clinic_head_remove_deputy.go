@@ -12,20 +12,32 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// RemoveClinicHeadDeputyCommand carries the identifiers needed to
+// RemoveClinicHeadDeputyPayload carries the identifiers needed to
 // clear the deputy slot on a CH role.
+type RemoveClinicHeadDeputyPayload struct {
+	ClinicID   string `validate:"required,uuid"`
+	EmployeeID string `validate:"required,uuid"`
+}
+
+// RemoveClinicHeadDeputyCommand = caller + payload.
 type RemoveClinicHeadDeputyCommand struct {
-	ClinicID   uuid.UUID `validate:"required"`
-	EmployeeID uuid.UUID `validate:"required"`
+	Caller  authz.Caller
+	Payload RemoveClinicHeadDeputyPayload
 }
 
 // RemoveClinicHeadDeputy clears the deputy slot. Fails if the slot is
 // already empty (no idempotent no-op per spec §4.7).
 func (s *EmployeeService) RemoveClinicHeadDeputy(ctx context.Context, cmd RemoveClinicHeadDeputyCommand) error {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	clinicID := uuid.MustParse(cmd.Payload.ClinicID)
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Clinic(clinicID)); err != nil {
 		return err
 	}
 
@@ -34,15 +46,15 @@ func (s *EmployeeService) RemoveClinicHeadDeputy(ctx context.Context, cmd Remove
 
 		var row model.ClinicHead
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("clinic_id = ? AND employee_id = ?", cmd.ClinicID, cmd.EmployeeID).
+			Where("clinic_id = ? AND employee_id = ?", clinicID, employeeID).
 			First(&row).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeClinicHead).
 					Code(ErrCodeClinicHeadNotFound).
 					Public("Clinic head not found.").
-					With("clinic_id", cmd.ClinicID).
-					With("employee_id", cmd.EmployeeID).
+					With("clinic_id", clinicID).
+					With("employee_id", employeeID).
 					Errorf("not found")
 			}
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadLoadFailed).Wrap(err)
@@ -52,8 +64,8 @@ func (s *EmployeeService) RemoveClinicHeadDeputy(ctx context.Context, cmd Remove
 			return oops.In(scopeClinicHead).
 				Code(ErrCodeDeputyNotAssigned).
 				Public("No deputy is assigned to this role.").
-				With("clinic_id", cmd.ClinicID).
-				With("employee_id", cmd.EmployeeID).
+				With("clinic_id", clinicID).
+				With("employee_id", employeeID).
 				Errorf("deputy not assigned")
 		}
 
@@ -62,6 +74,6 @@ func (s *EmployeeService) RemoveClinicHeadDeputy(ctx context.Context, cmd Remove
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
 		}
 
-		return publishClinicHeadDeputyRemoved(tx, cmd.ClinicID, cmd.EmployeeID, now)
+		return publishClinicHeadDeputyRemoved(tx, clinicID, employeeID, now)
 	})
 }

@@ -2,26 +2,19 @@
 package orgstructure
 
 import (
-	"github.com/google/uuid"
-	"github.com/samber/oops"
-
-	"github.com/medincident/medincident-command-service/internal/service/authz"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
 )
 
-// Error codes emitted by handler-layer request parsing.
-const (
-	ErrCodeHandlerInvalidOrganizationID = "handler_invalid_organization_id"
-	ErrCodeHandlerInvalidClinicID       = "handler_invalid_clinic_id"
-	ErrCodeHandlerInvalidDepartmentID   = "handler_invalid_department_id"
-)
-
 // OrgStructureHandler implements orgstructurev1.OrgStructureCommandServiceServer.
+// Pure transport: translates proto → service Command + Payload, wraps
+// the authenticated caller in an authz.Caller. Authorization happens
+// inside each service method, so the handler does not depend on
+// *authz.Authz, and UUID-parse guards are no longer needed at the
+// transport boundary.
 type OrgStructureHandler struct {
 	orgstructurev1.UnimplementedOrgStructureCommandServiceServer
 
-	authz   *authz.Authz
 	orgSvc  *orgsvc.OrganizationService
 	clinSvc *orgsvc.ClinicService
 	deptSvc *orgsvc.DepartmentService
@@ -32,10 +25,8 @@ func NewOrgStructureHandler(
 	orgSvc *orgsvc.OrganizationService,
 	clinSvc *orgsvc.ClinicService,
 	deptSvc *orgsvc.DepartmentService,
-	az *authz.Authz,
 ) *OrgStructureHandler {
 	return &OrgStructureHandler{
-		authz:   az,
 		orgSvc:  orgSvc,
 		clinSvc: clinSvc,
 		deptSvc: deptSvc,
@@ -57,44 +48,4 @@ func addressInputFromProto(in *orgstructurev1.AddressInput) orgsvc.AddressInput 
 		}
 	}
 	return out
-}
-
-// parseOrganizationID is shared by handler files that take an
-// organization_id from the proto request.
-func parseOrganizationID(raw string) (uuid.UUID, error) {
-	id, err := uuid.Parse(raw)
-	if err != nil {
-		return uuid.Nil, oops.In("handler.command.orgstructure").
-			Code(ErrCodeHandlerInvalidOrganizationID).
-			Public("Invalid organization id.").
-			With("organization_id", raw).
-			Wrap(err)
-	}
-	return id, nil
-}
-
-// parseClinicID is shared by handler files that take a clinic_id.
-func parseClinicID(raw string) (uuid.UUID, error) {
-	id, err := uuid.Parse(raw)
-	if err != nil {
-		return uuid.Nil, oops.In("handler.command.orgstructure").
-			Code(ErrCodeHandlerInvalidClinicID).
-			Public("Invalid clinic id.").
-			With("clinic_id", raw).
-			Wrap(err)
-	}
-	return id, nil
-}
-
-// parseDepartmentID is shared by handler files that take a department_id.
-func parseDepartmentID(raw string) (uuid.UUID, error) {
-	id, err := uuid.Parse(raw)
-	if err != nil {
-		return uuid.Nil, oops.In("handler.command.orgstructure").
-			Code(ErrCodeHandlerInvalidDepartmentID).
-			Public("Invalid department id.").
-			With("department_id", raw).
-			Wrap(err)
-	}
-	return id, nil
 }

@@ -12,16 +12,23 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// UpdateIncidentTypeDetailsCommand carries the new name and (optional)
+// UpdateIncidentTypeDetailsPayload carries the new name and (optional)
 // description for an existing incident type.
+type UpdateIncidentTypeDetailsPayload struct {
+	TypeID      string  `validate:"required,uuid"`
+	Name        string  `validate:"required,min=2,max=256"`
+	Description *string `validate:"omitnil,min=8,max=2048"`
+}
+
+// UpdateIncidentTypeDetailsCommand = caller + payload.
 type UpdateIncidentTypeDetailsCommand struct {
-	TypeID      uuid.UUID `validate:"required"`
-	Name        string    `validate:"required,min=2,max=256"`
-	Description *string   `validate:"omitnil,min=8,max=2048"`
+	Caller  authz.Caller
+	Payload UpdateIncidentTypeDetailsPayload
 }
 
 // UpdateIncidentTypeDetailsResult is empty.
@@ -31,24 +38,28 @@ func (s *IncidentTypeService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateIncidentTypeDetailsCommand,
 ) (UpdateIncidentTypeDetailsResult, error) {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return UpdateIncidentTypeDetailsResult{}, err
+	}
+	typeID := uuid.MustParse(cmd.Payload.TypeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.IncidentType(typeID)); err != nil {
 		return UpdateIncidentTypeDetailsResult{}, err
 	}
 
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var row model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
+			First(&row, "id = ?", typeID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeNotFound).
 					Public("Incident type not found.").
-					With("incident_type_id", cmd.TypeID).
+					With("incident_type_id", typeID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.type").
 				Code(ErrCodeIncidentTypeLoadFailed).
-				With("incident_type_id", cmd.TypeID).
+				With("incident_type_id", typeID).
 				Wrap(err)
 		}
 
@@ -56,10 +67,10 @@ func (s *IncidentTypeService) UpdateDetails(
 			return err
 		}
 
-		newName := strings.TrimSpace(cmd.Name)
+		newName := strings.TrimSpace(cmd.Payload.Name)
 		var newDescription null.String
-		if cmd.Description != nil {
-			newDescription = null.StringFrom(strings.TrimSpace(*cmd.Description))
+		if cmd.Payload.Description != nil {
+			newDescription = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 		}
 		if row.Name == newName && row.Description == newDescription {
 			return nil

@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
@@ -26,12 +27,19 @@ const (
 	ErrCodeClinicOrganizationNotFound = "clinic_organization_not_found"
 )
 
-// CreateClinicCommand is the input of ClinicService.Create.
-type CreateClinicCommand struct {
-	OrganizationID  uuid.UUID `validate:"required"`
-	Name            string    `validate:"required,min=4,max=256"`
-	Description     *string   `validate:"omitnil,min=8,max=2048"`
+// CreateClinicPayload is the validated client-facing payload of
+// CreateClinic.
+type CreateClinicPayload struct {
+	OrganizationID  string  `validate:"required,uuid"`
+	Name            string  `validate:"required,min=4,max=256"`
+	Description     *string `validate:"omitnil,min=8,max=2048"`
 	PhysicalAddress AddressInput
+}
+
+// CreateClinicCommand = caller + payload.
+type CreateClinicCommand struct {
+	Caller  authz.Caller
+	Payload CreateClinicPayload
 }
 
 // CreateClinicResult is the output of ClinicService.Create.
@@ -40,11 +48,17 @@ type CreateClinicResult struct {
 }
 
 // Create persists a new Clinic under the given organization.
+//
+//nolint:gocritic // hugeParam: Command is passed by value across the whole service layer for consistency; CreateClinicCommand is borderline at 80 bytes but not worth breaking the convention for.
 func (s *ClinicService) Create(
 	ctx context.Context,
 	cmd CreateClinicCommand,
 ) (CreateClinicResult, error) {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return CreateClinicResult{}, err
+	}
+	orgID := uuid.MustParse(cmd.Payload.OrganizationID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Organization(orgID)); err != nil {
 		return CreateClinicResult{}, err
 	}
 
@@ -58,19 +72,19 @@ func (s *ClinicService) Create(
 
 	clinic := model.Clinic{
 		ID:             id,
-		OrganizationID: cmd.OrganizationID,
-		Name:           strings.TrimSpace(cmd.Name),
+		OrganizationID: orgID,
+		Name:           strings.TrimSpace(cmd.Payload.Name),
 		PhysicalAddress: model.Address{
-			Text: strings.TrimSpace(cmd.PhysicalAddress.Text),
+			Text: strings.TrimSpace(cmd.Payload.PhysicalAddress.Text),
 		},
 	}
-	if cmd.Description != nil {
-		clinic.Description = null.StringFrom(strings.TrimSpace(*cmd.Description))
+	if cmd.Payload.Description != nil {
+		clinic.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 	}
-	if cmd.PhysicalAddress.Point != nil {
+	if cmd.Payload.PhysicalAddress.Point != nil {
 		clinic.PhysicalAddress.Point = null.ValueFrom(model.Point{
-			Longitude: cmd.PhysicalAddress.Point.Longitude,
-			Latitude:  cmd.PhysicalAddress.Point.Latitude,
+			Longitude: cmd.Payload.PhysicalAddress.Point.Longitude,
+			Latitude:  cmd.Payload.PhysicalAddress.Point.Latitude,
 		})
 	}
 
@@ -81,7 +95,7 @@ func (s *ClinicService) Create(
 				return oops.In("services.orgstructure.clinic").
 					Code(ErrCodeClinicOrganizationNotFound).
 					Public("Organization not found.").
-					With("organization_id", cmd.OrganizationID).
+					With("organization_id", orgID).
 					Wrap(err)
 			}
 			return oops.In("services.orgstructure.clinic").

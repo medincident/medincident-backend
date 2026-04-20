@@ -19,16 +19,26 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
 )
+
+// sysadminZitadelID is the Zitadel user ID of the seeded system-admin
+// used by every test as the command caller. Seeded by resetDB below.
+const sysadminZitadelID = "sysadmin"
+
+// sysadminCaller is the authz.Caller every test passes into service
+// commands so authz.SystemAdmin always succeeds.
+var sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
 
 var (
 	testDB     *gorm.DB
 	testLogger = zerolog.Nop()
 
-	orgSvc  *orgsvc.OrganizationService
-	clinSvc *orgsvc.ClinicService
-	deptSvc *orgsvc.DepartmentService
+	authzSvc *authz.Authz
+	orgSvc   *orgsvc.OrganizationService
+	clinSvc  *orgsvc.ClinicService
+	deptSvc  *orgsvc.DepartmentService
 )
 
 func TestMain(m *testing.M) {
@@ -72,9 +82,10 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	orgSvc = orgsvc.NewOrganizationService(testDB, &testLogger)
-	clinSvc = orgsvc.NewClinicService(testDB, &testLogger)
-	deptSvc = orgsvc.NewDepartmentService(testDB, &testLogger)
+	authzSvc = authz.New(testDB)
+	orgSvc = orgsvc.NewOrganizationService(testDB, authzSvc, &testLogger)
+	clinSvc = orgsvc.NewClinicService(testDB, authzSvc, &testLogger)
+	deptSvc = orgsvc.NewDepartmentService(testDB, authzSvc, &testLogger)
 
 	os.Exit(m.Run())
 }
@@ -100,6 +111,7 @@ func resetDB(t *testing.T) {
 		t.Fatalf("get raw db: %v", err)
 	}
 	truncate := []string{
+		`TRUNCATE TABLE domain.system_admins CASCADE`,
 		`TRUNCATE TABLE domain.departments CASCADE`,
 		`TRUNCATE TABLE domain.clinics CASCADE`,
 		`TRUNCATE TABLE domain.organizations CASCADE`,
@@ -127,6 +139,15 @@ func resetDB(t *testing.T) {
 		if _, err := raw.Exec(q); err != nil {
 			t.Fatalf("truncate %q: %v", q, err)
 		}
+	}
+	// Re-seed the system-admin used by every test as the command
+	// caller. Kept inline so resetDB remains the one lever every test
+	// pulls for a clean start.
+	if _, err := raw.Exec(
+		`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1)`,
+		sysadminZitadelID,
+	); err != nil {
+		t.Fatalf("seed sysadmin: %v", err)
 	}
 }
 

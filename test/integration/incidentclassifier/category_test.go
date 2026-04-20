@@ -28,6 +28,14 @@ func codeOf(t *testing.T, err error) string {
 	return code
 }
 
+// uuidStrPtr returns a *string whose value is id.String(). Used when
+// constructing payloads whose optional UUID fields are typed as
+// *string.
+func uuidStrPtr(id uuid.UUID) *string {
+	s := id.String()
+	return &s
+}
+
 func TestCategory_CreateRoot(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()
@@ -35,9 +43,12 @@ func TestCategory_CreateRoot(t *testing.T) {
 
 	desc := "Root category for surgical incidents"
 	result, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Surgical",
-		Description:    &desc,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Surgical",
+			Description:    &desc,
+		},
 	})
 	require.NoError(t, err)
 	require.NotEqual(t, uuid.Nil, result.ID)
@@ -66,15 +77,21 @@ func TestCategory_CreateChild(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	root, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Clinical",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Clinical",
+		},
 	})
 	require.NoError(t, err)
 
 	child, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &root.ID,
-		Name:             "Medication error",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(root.ID),
+			Name:             "Medication error",
+		},
 	})
 	require.NoError(t, err)
 
@@ -88,22 +105,27 @@ func TestCategory_CreateMaxDepthExceeded(t *testing.T) {
 	ctx := context.Background()
 	orgID := insertOrganization(t, "Org")
 
-	var parent *uuid.UUID
+	var parent *string
 	for i := 0; i < 5; i++ {
 		res, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-			OrganizationID:   orgID,
-			ParentCategoryID: parent,
-			Name:             names(i),
+			Caller: sysadminCaller,
+			Payload: classifiersvc.CreateIncidentCategoryPayload{
+				OrganizationID:   orgID.String(),
+				ParentCategoryID: parent,
+				Name:             names(i),
+			},
 		})
 		require.NoError(t, err)
-		id := res.ID
-		parent = &id
+		parent = uuidStrPtr(res.ID)
 	}
 
 	_, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: parent,
-		Name:             "level6",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: parent,
+			Name:             "level6",
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentCategoryMaxDepthExceeded, codeOf(t, err))
@@ -115,15 +137,21 @@ func TestCategory_CreateGlobalNameConflict(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	root, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Duplicate",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Duplicate",
+		},
 	})
 	require.NoError(t, err)
 
 	_, err = categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &root.ID,
-		Name:             "Duplicate",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(root.ID),
+			Name:             "Duplicate",
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentCategoryNameConflict, codeOf(t, err))
@@ -136,15 +164,21 @@ func TestCategory_CreateCrossOrgParent(t *testing.T) {
 	orgB := insertOrganization(t, "Org B")
 
 	parentInA, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgA,
-		Name:           "ParentInA",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgA.String(),
+			Name:           "ParentInA",
+		},
 	})
 	require.NoError(t, err)
 
 	_, err = categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgB,
-		ParentCategoryID: &parentInA.ID,
-		Name:             "Child",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgB.String(),
+			ParentCategoryID: uuidStrPtr(parentInA.ID),
+			Name:             "Child",
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentCategoryParentOrganizationMismatch, codeOf(t, err))
@@ -156,16 +190,22 @@ func TestCategory_UpdateDetails(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	res, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Old name",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Old name",
+		},
 	})
 	require.NoError(t, err)
 
 	desc := "New description text"
 	_, err = categorySvc.UpdateDetails(ctx, classifiersvc.UpdateIncidentCategoryDetailsCommand{
-		CategoryID:  res.ID,
-		Name:        "New name",
-		Description: &desc,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.UpdateIncidentCategoryDetailsPayload{
+			CategoryID:  res.ID.String(),
+			Name:        "New name",
+			Description: &desc,
+		},
 	})
 	require.NoError(t, err)
 
@@ -180,26 +220,38 @@ func TestCategory_MoveToRootAndUnderNewParent(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	rootA, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "RootA",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "RootA",
+		},
 	})
 	require.NoError(t, err)
 	rootB, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "RootB",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "RootB",
+		},
 	})
 	require.NoError(t, err)
 	child, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &rootA.ID,
-		Name:             "Child",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(rootA.ID),
+			Name:             "Child",
+		},
 	})
 	require.NoError(t, err)
 
 	// Move child under rootB
 	_, err = categorySvc.Move(ctx, classifiersvc.MoveIncidentCategoryCommand{
-		CategoryID:          child.ID,
-		NewParentCategoryID: &rootB.ID,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.MoveIncidentCategoryPayload{
+			CategoryID:          child.ID.String(),
+			NewParentCategoryID: uuidStrPtr(rootB.ID),
+		},
 	})
 	require.NoError(t, err)
 	row := loadCategory(t, child.ID)
@@ -207,7 +259,10 @@ func TestCategory_MoveToRootAndUnderNewParent(t *testing.T) {
 
 	// Move child to root level
 	_, err = categorySvc.Move(ctx, classifiersvc.MoveIncidentCategoryCommand{
-		CategoryID: child.ID,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.MoveIncidentCategoryPayload{
+			CategoryID: child.ID.String(),
+		},
 	})
 	require.NoError(t, err)
 	row = loadCategory(t, child.ID)
@@ -220,27 +275,39 @@ func TestCategory_MoveWouldCreateCycle(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	a, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "AA",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "AA",
+		},
 	})
 	require.NoError(t, err)
 	b, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &a.ID,
-		Name:             "BB",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(a.ID),
+			Name:             "BB",
+		},
 	})
 	require.NoError(t, err)
 	c, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &b.ID,
-		Name:             "CC",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(b.ID),
+			Name:             "CC",
+		},
 	})
 	require.NoError(t, err)
 
 	// Move A under C (C is descendant of A) → cycle
 	_, err = categorySvc.Move(ctx, classifiersvc.MoveIncidentCategoryCommand{
-		CategoryID:          a.ID,
-		NewParentCategoryID: &c.ID,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.MoveIncidentCategoryPayload{
+			CategoryID:          a.ID.String(),
+			NewParentCategoryID: uuidStrPtr(c.ID),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentCategoryMoveWouldCreateCycle, codeOf(t, err))
@@ -253,46 +320,67 @@ func TestCategory_MoveWouldExceedDepth(t *testing.T) {
 
 	// Build chain A(1) -> B(2) -> C(3)  (subtree depth from A = 3)
 	a, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "AA",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "AA",
+		},
 	})
 	require.NoError(t, err)
 	b, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &a.ID,
-		Name:             "BB",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(a.ID),
+			Name:             "BB",
+		},
 	})
 	require.NoError(t, err)
 	_, err = categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &b.ID,
-		Name:             "CC",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(b.ID),
+			Name:             "CC",
+		},
 	})
 	require.NoError(t, err)
 
 	// Build chain X(1) -> Y(2) -> Z(3) (target parent depth = 3)
 	x, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "XX",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "XX",
+		},
 	})
 	require.NoError(t, err)
 	y, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &x.ID,
-		Name:             "YY",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(x.ID),
+			Name:             "YY",
+		},
 	})
 	require.NoError(t, err)
 	z, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &y.ID,
-		Name:             "ZZ",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(y.ID),
+			Name:             "ZZ",
+		},
 	})
 	require.NoError(t, err)
 
 	// Move A under Z: 3 + 3 = 6 > 5 → error
 	_, err = categorySvc.Move(ctx, classifiersvc.MoveIncidentCategoryCommand{
-		CategoryID:          a.ID,
-		NewParentCategoryID: &z.ID,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.MoveIncidentCategoryPayload{
+			CategoryID:          a.ID.String(),
+			NewParentCategoryID: uuidStrPtr(z.ID),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentCategoryMoveWouldExceedDepth, codeOf(t, err))
@@ -305,19 +393,28 @@ func TestCategory_MoveCrossOrg(t *testing.T) {
 	orgB := insertOrganization(t, "Org B")
 
 	a, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgA,
-		Name:           "InA",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgA.String(),
+			Name:           "InA",
+		},
 	})
 	require.NoError(t, err)
 	b, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgB,
-		Name:           "InB",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgB.String(),
+			Name:           "InB",
+		},
 	})
 	require.NoError(t, err)
 
 	_, err = categorySvc.Move(ctx, classifiersvc.MoveIncidentCategoryCommand{
-		CategoryID:          a.ID,
-		NewParentCategoryID: &b.ID,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.MoveIncidentCategoryPayload{
+			CategoryID:          a.ID.String(),
+			NewParentCategoryID: uuidStrPtr(b.ID),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentCategoryMoveOrganizationMismatch, codeOf(t, err))
@@ -330,37 +427,53 @@ func TestCategory_DeactivateCascades(t *testing.T) {
 
 	// root → child → grand, types on root and grand
 	root, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Root",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Root",
+		},
 	})
 	require.NoError(t, err)
 	child, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &root.ID,
-		Name:             "Child",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(root.ID),
+			Name:             "Child",
+		},
 	})
 	require.NoError(t, err)
 	grand, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &child.ID,
-		Name:             "Grand",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(child.ID),
+			Name:             "Grand",
+		},
 	})
 	require.NoError(t, err)
 	typeOnRoot, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: root.ID,
-		Name:       "TypeOnRoot",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: root.ID.String(),
+			Name:       "TypeOnRoot",
+		},
 	})
 	require.NoError(t, err)
 	typeOnGrand, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: grand.ID,
-		Name:       "TypeOnGrand",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: grand.ID.String(),
+			Name:       "TypeOnGrand",
+		},
 	})
 	require.NoError(t, err)
 
 	// Clear creation events so we can count only deactivate events.
 
 	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{
-		CategoryID: root.ID,
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeactivateIncidentCategoryPayload{CategoryID: root.ID.String()},
 	})
 	require.NoError(t, err)
 
@@ -377,24 +490,32 @@ func TestCategory_ReactivateBlockedByInactiveAncestor(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	root, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Root",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Root",
+		},
 	})
 	require.NoError(t, err)
 	child, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &root.ID,
-		Name:             "Child",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(root.ID),
+			Name:             "Child",
+		},
 	})
 	require.NoError(t, err)
 
 	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{
-		CategoryID: root.ID,
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeactivateIncidentCategoryPayload{CategoryID: root.ID.String()},
 	})
 	require.NoError(t, err)
 
 	_, err = categorySvc.Reactivate(ctx, classifiersvc.ReactivateIncidentCategoryCommand{
-		CategoryID: child.ID,
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.ReactivateIncidentCategoryPayload{CategoryID: child.ID.String()},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentCategoryReactivateInactiveAncestor, codeOf(t, err))
@@ -406,21 +527,33 @@ func TestCategory_ReactivateRootOnly(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	root, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Root",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Root",
+		},
 	})
 	require.NoError(t, err)
 	child, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &root.ID,
-		Name:             "Child",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(root.ID),
+			Name:             "Child",
+		},
 	})
 	require.NoError(t, err)
 
-	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{CategoryID: root.ID})
+	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeactivateIncidentCategoryPayload{CategoryID: root.ID.String()},
+	})
 	require.NoError(t, err)
 
-	_, err = categorySvc.Reactivate(ctx, classifiersvc.ReactivateIncidentCategoryCommand{CategoryID: root.ID})
+	_, err = categorySvc.Reactivate(ctx, classifiersvc.ReactivateIncidentCategoryCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.ReactivateIncidentCategoryPayload{CategoryID: root.ID.String()},
+	})
 	require.NoError(t, err)
 
 	assert.True(t, loadCategory(t, root.ID).IsActive)
@@ -433,20 +566,32 @@ func TestCategory_ReactivateNameConflict(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	first, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Duplicate",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Duplicate",
+		},
 	})
 	require.NoError(t, err)
-	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{CategoryID: first.ID})
+	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeactivateIncidentCategoryPayload{CategoryID: first.ID.String()},
+	})
 	require.NoError(t, err)
 
 	_, err = categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Duplicate",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Duplicate",
+		},
 	})
 	require.NoError(t, err, "creating a new active Duplicate should succeed because the old one is inactive")
 
-	_, err = categorySvc.Reactivate(ctx, classifiersvc.ReactivateIncidentCategoryCommand{CategoryID: first.ID})
+	_, err = categorySvc.Reactivate(ctx, classifiersvc.ReactivateIncidentCategoryCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.ReactivateIncidentCategoryPayload{CategoryID: first.ID.String()},
+	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentCategoryReactivateNameConflict, codeOf(t, err))
 }
@@ -457,28 +602,43 @@ func TestCategory_DeleteCascades(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	root, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Root",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Root",
+		},
 	})
 	require.NoError(t, err)
 	child, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &root.ID,
-		Name:             "Child",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(root.ID),
+			Name:             "Child",
+		},
 	})
 	require.NoError(t, err)
 	_, err = typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: child.ID,
-		Name:       "TypeInChild",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: child.ID.String(),
+			Name:       "TypeInChild",
+		},
 	})
 	require.NoError(t, err)
 	_, err = typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: root.ID,
-		Name:       "TypeInRoot",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: root.ID.String(),
+			Name:       "TypeInRoot",
+		},
 	})
 	require.NoError(t, err)
 
-	_, err = categorySvc.Delete(ctx, classifiersvc.DeleteIncidentCategoryCommand{CategoryID: root.ID})
+	_, err = categorySvc.Delete(ctx, classifiersvc.DeleteIncidentCategoryCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeleteIncidentCategoryPayload{CategoryID: root.ID.String()},
+	})
 	require.NoError(t, err)
 
 	assert.Equal(t, 0, countIncidentCategories(t))

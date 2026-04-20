@@ -13,18 +13,14 @@ func (h *IncidentClassifierHandler) ReactivateIncidentCategory(
 	ctx context.Context,
 	req *incidentclassifierv1.ReactivateIncidentCategoryRequest,
 ) (*incidentclassifierv1.ReactivateIncidentCategoryResponse, error) {
-	categoryID, err := parseIncidentCategoryID(req.GetCategoryId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Category(categoryID)); err != nil {
-		return nil, err
-	}
-	if _, err := h.categorySvc.Reactivate(ctx, classifiersvc.ReactivateIncidentCategoryCommand{CategoryID: categoryID}); err != nil {
+	if _, err := h.categorySvc.Reactivate(ctx, classifiersvc.ReactivateIncidentCategoryCommand{
+		Caller:  authz.Caller{ZitadelUserID: callerID},
+		Payload: classifiersvc.ReactivateIncidentCategoryPayload{CategoryID: req.GetCategoryId()},
+	}); err != nil {
 		return nil, err
 	}
 	return &incidentclassifierv1.ReactivateIncidentCategoryResponse{}, nil

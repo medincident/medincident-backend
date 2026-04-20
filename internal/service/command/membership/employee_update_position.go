@@ -12,15 +12,22 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// UpdateEmployeePositionCommand carries the inputs required to change an
+// UpdateEmployeePositionPayload carries the inputs required to change an
 // employee's position. Position nil means "clear the position".
+type UpdateEmployeePositionPayload struct {
+	ID       string  `validate:"required,uuid"`
+	Position *string `validate:"omitnil,min=2,max=256"`
+}
+
+// UpdateEmployeePositionCommand = caller + payload.
 type UpdateEmployeePositionCommand struct {
-	ID       uuid.UUID `validate:"required"`
-	Position *string   `validate:"omitnil,min=2,max=256"`
+	Caller  authz.Caller
+	Payload UpdateEmployeePositionPayload
 }
 
 // UpdatePosition changes an employee's position. Idempotent: if the
@@ -29,25 +36,29 @@ type UpdateEmployeePositionCommand struct {
 // updates; last-writer-wins is NOT acceptable because it would emit
 // events describing overwritten intermediate states.
 func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployeePositionCommand) error {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	employeeID := uuid.MustParse(cmd.Payload.ID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Employee(employeeID)); err != nil {
 		return err
 	}
 
 	var newPos null.String
-	if cmd.Position != nil {
-		newPos = null.StringFrom(strings.TrimSpace(*cmd.Position))
+	if cmd.Payload.Position != nil {
+		newPos = null.StringFrom(strings.TrimSpace(*cmd.Payload.Position))
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var emp model.Employee
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.ID).
+			Where("id = ?", employeeID).
 			First(&emp).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeEmployee).
 					Code(ErrCodeEmployeeNotFound).
 					Public("Employee not found.").
-					With("employee_id", cmd.ID).
+					With("employee_id", employeeID).
 					Errorf("employee not found")
 			}
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeLoadFailed).Wrap(err)

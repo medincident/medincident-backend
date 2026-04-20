@@ -38,11 +38,14 @@ func TestOrganization_Create_HappyPath(t *testing.T) {
 	desc := "Крупнейшая частная клиника региона"
 
 	result, err := orgSvc.Create(ctx, orgsvc.CreateOrganizationCommand{
-		Name:        "Клиника Пушкина",
-		Description: &desc,
-		LegalAddress: orgsvc.AddressInput{
-			Text:  "г. Москва, ул. Пушкина, д. Колотушкина",
-			Point: &orgsvc.PointInput{Longitude: 37.6, Latitude: 55.75},
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateOrganizationPayload{
+			Name:        "Клиника Пушкина",
+			Description: &desc,
+			LegalAddress: orgsvc.AddressInput{
+				Text:  "г. Москва, ул. Пушкина, д. Колотушкина",
+				Point: &orgsvc.PointInput{Longitude: 37.6, Latitude: 55.75},
+			},
 		},
 	})
 	require.NoError(t, err)
@@ -73,11 +76,14 @@ func TestOrganization_Create_MultiFieldViolations(t *testing.T) {
 	tooShortDesc := "tiny"
 
 	_, err := orgSvc.Create(ctx, orgsvc.CreateOrganizationCommand{
-		Name:        "",
-		Description: &tooShortDesc,
-		LegalAddress: orgsvc.AddressInput{
-			Text:  "abc",
-			Point: &orgsvc.PointInput{Longitude: 200, Latitude: -95},
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateOrganizationPayload{
+			Name:        "",
+			Description: &tooShortDesc,
+			LegalAddress: orgsvc.AddressInput{
+				Text:  "abc",
+				Point: &orgsvc.PointInput{Longitude: 200, Latitude: -95},
+			},
 		},
 	})
 	require.Error(t, err)
@@ -115,9 +121,12 @@ func TestOrganization_UpdateDetails_NoOp(t *testing.T) {
 	desc := "Первое описание"
 
 	created, err := orgSvc.Create(ctx, orgsvc.CreateOrganizationCommand{
-		Name:         "Тестовая организация",
-		Description:  &desc,
-		LegalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateOrganizationPayload{
+			Name:         "Тестовая организация",
+			Description:  &desc,
+			LegalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
+		},
 	})
 	require.NoError(t, err)
 
@@ -129,9 +138,12 @@ func TestOrganization_UpdateDetails_NoOp(t *testing.T) {
 
 	// Re-send the same values. No-op means no projection write.
 	require.NoError(t, orgSvc.UpdateDetails(ctx, orgsvc.UpdateOrganizationDetailsCommand{
-		ID:          created.ID,
-		Name:        "Тестовая организация",
-		Description: &desc,
+		Caller: sysadminCaller,
+		Payload: orgsvc.UpdateOrganizationDetailsPayload{
+			ID:          created.ID.String(),
+			Name:        "Тестовая организация",
+			Description: &desc,
+		},
 	}))
 
 	var secondUpdatedAt string
@@ -148,16 +160,22 @@ func TestOrganization_UpdateDetails_RealChange(t *testing.T) {
 	changed := "Обновлённое описание с нормальной длиной"
 
 	created, err := orgSvc.Create(ctx, orgsvc.CreateOrganizationCommand{
-		Name:         "Орг А тестовая",
-		Description:  &initial,
-		LegalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateOrganizationPayload{
+			Name:         "Орг А тестовая",
+			Description:  &initial,
+			LegalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
+		},
 	})
 	require.NoError(t, err)
 
 	require.NoError(t, orgSvc.UpdateDetails(ctx, orgsvc.UpdateOrganizationDetailsCommand{
-		ID:          created.ID,
-		Name:        "Орг А обновлённая",
-		Description: &changed,
+		Caller: sysadminCaller,
+		Payload: orgsvc.UpdateOrganizationDetailsPayload{
+			ID:          created.ID.String(),
+			Name:        "Орг А обновлённая",
+			Description: &changed,
+		},
 	}))
 
 	var projName, projDesc string

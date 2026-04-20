@@ -12,15 +12,22 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// UpdateClinicPhysicalAddressCommand carries the new physical address
+// UpdateClinicPhysicalAddressPayload carries the new physical address
 // for an existing clinic.
-type UpdateClinicPhysicalAddressCommand struct {
-	ID      uuid.UUID `validate:"required"`
+type UpdateClinicPhysicalAddressPayload struct {
+	ID      string `validate:"required,uuid"`
 	Address AddressInput
+}
+
+// UpdateClinicPhysicalAddressCommand = caller + payload.
+type UpdateClinicPhysicalAddressCommand struct {
+	Caller  authz.Caller
+	Payload UpdateClinicPhysicalAddressPayload
 }
 
 // UpdatePhysicalAddress replaces the clinic's physical address.
@@ -28,32 +35,36 @@ func (s *ClinicService) UpdatePhysicalAddress(
 	ctx context.Context,
 	cmd UpdateClinicPhysicalAddressCommand,
 ) error {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	id := uuid.MustParse(cmd.Payload.ID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Clinic(id)); err != nil {
 		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var clinic model.Clinic
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&clinic, "id = ?", cmd.ID).Error; err != nil {
+			First(&clinic, "id = ?", id).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.orgstructure.clinic").
 					Code(ErrCodeClinicNotFound).
 					Public("Clinic not found.").
-					With("clinic_id", cmd.ID).
+					With("clinic_id", id).
 					Errorf("clinic not found")
 			}
 			return oops.In("services.orgstructure.clinic").
 				Code(ErrCodeClinicLoadFailed).
-				With("clinic_id", cmd.ID).
+				With("clinic_id", id).
 				Wrap(err)
 		}
 
-		newAddress := model.Address{Text: strings.TrimSpace(cmd.Address.Text)}
-		if cmd.Address.Point != nil {
+		newAddress := model.Address{Text: strings.TrimSpace(cmd.Payload.Address.Text)}
+		if cmd.Payload.Address.Point != nil {
 			newAddress.Point = null.ValueFrom(model.Point{
-				Longitude: cmd.Address.Point.Longitude,
-				Latitude:  cmd.Address.Point.Latitude,
+				Longitude: cmd.Payload.Address.Point.Longitude,
+				Latitude:  cmd.Payload.Address.Point.Latitude,
 			})
 		}
 		if clinic.PhysicalAddress.Equal(newAddress) {
@@ -63,7 +74,7 @@ func (s *ClinicService) UpdatePhysicalAddress(
 		if err := tx.Save(&clinic).Error; err != nil {
 			return oops.In("services.orgstructure.clinic").
 				Code(ErrCodeClinicSaveFailed).
-				With("clinic_id", cmd.ID).
+				With("clinic_id", id).
 				Wrap(err)
 		}
 

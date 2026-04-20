@@ -13,30 +13,19 @@ func (h *IncidentClassifierHandler) CreateIncidentCategory(
 	ctx context.Context,
 	req *incidentclassifierv1.CreateIncidentCategoryRequest,
 ) (*incidentclassifierv1.CreateIncidentCategoryResponse, error) {
-	organizationID, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Organization(organizationID)); err != nil {
-		return nil, err
-	}
-	cmd := classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: organizationID,
-		Name:           req.GetName(),
-		Description:    req.Description,
-	}
-	if req.ParentCategoryId != nil {
-		parentID, err := parseIncidentCategoryID(*req.ParentCategoryId)
-		if err != nil {
-			return nil, err
-		}
-		cmd.ParentCategoryID = &parentID
-	}
-	result, err := h.categorySvc.Create(ctx, cmd)
+	result, err := h.categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   req.GetOrganizationId(),
+			ParentCategoryID: req.ParentCategoryId,
+			Name:             req.GetName(),
+			Description:      req.Description,
+		},
+	})
 	if err != nil {
 		return nil, err
 	}

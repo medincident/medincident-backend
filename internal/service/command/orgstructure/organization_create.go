@@ -10,6 +10,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
@@ -25,11 +26,22 @@ const (
 	ErrCodeOrganizationNotFound           = "organization_not_found"
 )
 
-// CreateOrganizationCommand is the input of OrganizationService.Create.
-type CreateOrganizationCommand struct {
+// CreateOrganizationPayload is the validated client-facing payload of
+// CreateOrganization. All fields are primitives so the transport layer
+// can hand raw proto values straight through.
+type CreateOrganizationPayload struct {
 	Name         string  `validate:"required,min=4,max=256"`
 	Description  *string `validate:"omitnil,min=8,max=2048"`
 	LegalAddress AddressInput
+}
+
+// CreateOrganizationCommand is the input of OrganizationService.Create.
+// It bundles the authenticated caller (already validated at the
+// transport boundary) with the request payload so the service layer is
+// self-contained: validate → authorize → execute.
+type CreateOrganizationCommand struct {
+	Caller  authz.Caller
+	Payload CreateOrganizationPayload
 }
 
 // CreateOrganizationResult is the output of OrganizationService.Create.
@@ -43,7 +55,10 @@ func (s *OrganizationService) Create(
 	ctx context.Context,
 	cmd CreateOrganizationCommand,
 ) (CreateOrganizationResult, error) {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return CreateOrganizationResult{}, err
+	}
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.SystemAdmin); err != nil {
 		return CreateOrganizationResult{}, err
 	}
 
@@ -57,18 +72,18 @@ func (s *OrganizationService) Create(
 
 	org := model.Organization{
 		ID:   id,
-		Name: strings.TrimSpace(cmd.Name),
+		Name: strings.TrimSpace(cmd.Payload.Name),
 		LegalAddress: model.Address{
-			Text: strings.TrimSpace(cmd.LegalAddress.Text),
+			Text: strings.TrimSpace(cmd.Payload.LegalAddress.Text),
 		},
 	}
-	if cmd.Description != nil {
-		org.Description = null.StringFrom(strings.TrimSpace(*cmd.Description))
+	if cmd.Payload.Description != nil {
+		org.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 	}
-	if cmd.LegalAddress.Point != nil {
+	if cmd.Payload.LegalAddress.Point != nil {
 		org.LegalAddress.Point = null.ValueFrom(model.Point{
-			Longitude: cmd.LegalAddress.Point.Longitude,
-			Latitude:  cmd.LegalAddress.Point.Latitude,
+			Longitude: cmd.Payload.LegalAddress.Point.Longitude,
+			Latitude:  cmd.Payload.LegalAddress.Point.Latitude,
 		})
 	}
 

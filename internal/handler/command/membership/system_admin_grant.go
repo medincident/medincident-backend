@@ -14,11 +14,11 @@ func (h *MembershipHandler) GrantSystemAdmin(ctx context.Context, req *membershi
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.SystemAdmin); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.GrantSystemAdmin(ctx, membership.GrantSystemAdminCommand{
-		ZitadelUserID: req.GetZitadelUserId(),
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.GrantSystemAdminPayload{
+			ZitadelUserID: req.GetZitadelUserId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

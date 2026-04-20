@@ -13,22 +13,18 @@ func (h *OrgStructureHandler) CreateClinic(
 	ctx context.Context,
 	req *orgstructurev1.CreateClinicRequest,
 ) (*orgstructurev1.CreateClinicResponse, error) {
-	orgID, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Organization(orgID)); err != nil {
-		return nil, err
-	}
 	result, err := h.clinSvc.Create(ctx, orgsvc.CreateClinicCommand{
-		OrganizationID:  orgID,
-		Name:            req.GetName(),
-		Description:     req.Description,
-		PhysicalAddress: addressInputFromProto(req.GetPhysicalAddress()),
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: orgsvc.CreateClinicPayload{
+			OrganizationID:  req.GetOrganizationId(),
+			Name:            req.GetName(),
+			Description:     req.Description,
+			PhysicalAddress: addressInputFromProto(req.GetPhysicalAddress()),
+		},
 	})
 	if err != nil {
 		return nil, err

@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
@@ -25,11 +26,17 @@ const (
 	ErrCodeIncidentTypeNameConflict       = "incident_type_name_conflict"
 )
 
-// CreateIncidentTypeCommand is the input of IncidentTypeService.Create.
+// CreateIncidentTypePayload is the validated client-facing payload.
+type CreateIncidentTypePayload struct {
+	CategoryID  string  `validate:"required,uuid"`
+	Name        string  `validate:"required,min=2,max=256"`
+	Description *string `validate:"omitnil,min=8,max=2048"`
+}
+
+// CreateIncidentTypeCommand = caller + payload.
 type CreateIncidentTypeCommand struct {
-	CategoryID  uuid.UUID `validate:"required"`
-	Name        string    `validate:"required,min=2,max=256"`
-	Description *string   `validate:"omitnil,min=8,max=2048"`
+	Caller  authz.Caller
+	Payload CreateIncidentTypePayload
 }
 
 // CreateIncidentTypeResult is the output of IncidentTypeService.Create.
@@ -41,7 +48,11 @@ func (s *IncidentTypeService) Create(
 	ctx context.Context,
 	cmd CreateIncidentTypeCommand,
 ) (CreateIncidentTypeResult, error) {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return CreateIncidentTypeResult{}, err
+	}
+	categoryID := uuid.MustParse(cmd.Payload.CategoryID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Category(categoryID)); err != nil {
 		return CreateIncidentTypeResult{}, err
 	}
 
@@ -56,17 +67,17 @@ func (s *IncidentTypeService) Create(
 	var result CreateIncidentTypeResult
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var cat model.IncidentCategory
-		if err := tx.First(&cat, "id = ?", cmd.CategoryID).Error; err != nil {
+		if err := tx.First(&cat, "id = ?", categoryID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeCategoryNotFound).
 					Public("Incident category not found.").
-					With("incident_category_id", cmd.CategoryID).
+					With("incident_category_id", categoryID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.type").
 				Code(ErrCodeIncidentTypeLoadFailed).
-				With("incident_category_id", cmd.CategoryID).
+				With("incident_category_id", categoryID).
 				Wrap(err)
 		}
 
@@ -90,11 +101,11 @@ func (s *IncidentTypeService) Create(
 			ID:             id,
 			OrganizationID: cat.OrganizationID,
 			CategoryID:     cat.ID,
-			Name:           strings.TrimSpace(cmd.Name),
+			Name:           strings.TrimSpace(cmd.Payload.Name),
 			IsActive:       true,
 		}
-		if cmd.Description != nil {
-			row.Description = null.StringFrom(strings.TrimSpace(*cmd.Description))
+		if cmd.Payload.Description != nil {
+			row.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 		}
 
 		if err := tx.Create(&row).Error; err != nil {

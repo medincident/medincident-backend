@@ -12,18 +12,25 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
 
-// HireEmployeeCommand carries everything the service needs to create
+// HireEmployeePayload carries everything the service needs to create
 // a new Employee row. The organisation is derived from the
 // department's parent lineage; callers pass only the department.
+type HireEmployeePayload struct {
+	ZitadelUserID string  `validate:"required"`
+	DepartmentID  string  `validate:"required,uuid"`
+	Position      *string `validate:"omitnil,min=2,max=256"`
+}
+
+// HireEmployeeCommand = caller + payload.
 type HireEmployeeCommand struct {
-	ZitadelUserID string    `validate:"required"`
-	DepartmentID  uuid.UUID `validate:"required"`
-	Position      *string   `validate:"omitnil,min=2,max=256"`
+	Caller  authz.Caller
+	Payload HireEmployeePayload
 }
 
 // HireEmployeeResult holds the identifiers of the newly created employee.
@@ -35,14 +42,18 @@ type HireEmployeeResult struct {
 // the organisation via a JOIN on domain.departments → domain.clinics.
 // Invariants and error codes are spelled out in the spec.
 func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (HireEmployeeResult, error) {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return HireEmployeeResult{}, err
+	}
+	departmentID := uuid.MustParse(cmd.Payload.DepartmentID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Department(departmentID)); err != nil {
 		return HireEmployeeResult{}, err
 	}
 
-	zitadelUserID := strings.TrimSpace(cmd.ZitadelUserID)
+	zitadelUserID := strings.TrimSpace(cmd.Payload.ZitadelUserID)
 	var position null.String
-	if cmd.Position != nil {
-		position = null.StringFrom(strings.TrimSpace(*cmd.Position))
+	if cmd.Payload.Position != nil {
+		position = null.StringFrom(strings.TrimSpace(*cmd.Payload.Position))
 	}
 
 	// Phase 2: Zitadel verify (outside tx, fail-fast).
@@ -68,18 +79,18 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			SELECT c.organization_id
 			FROM domain.departments d
 			JOIN domain.clinics c ON c.id = d.clinic_id
-			WHERE d.id = ?`, cmd.DepartmentID).Row().Scan(&orgID)
+			WHERE d.id = ?`, departmentID).Row().Scan(&orgID)
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) || errors.Is(err, sql.ErrNoRows) {
 				return oops.In(scopeEmployee).
 					Code(ErrCodeDepartmentNotFound).
 					Public("Department not found.").
-					With("department_id", cmd.DepartmentID).
+					With("department_id", departmentID).
 					Errorf("department not found")
 			}
 			return oops.In(scopeEmployee).
 				Code(ErrCodeDepartmentLookupFailed).
-				With("department_id", cmd.DepartmentID).
+				With("department_id", departmentID).
 				Wrap(err)
 		}
 
@@ -94,7 +105,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			ID:             id,
 			ZitadelUserID:  zitadelUserID,
 			OrganizationID: orgID,
-			DepartmentID:   cmd.DepartmentID,
+			DepartmentID:   departmentID,
 			Position:       position,
 		}
 		if err := tx.Create(&emp).Error; err != nil {

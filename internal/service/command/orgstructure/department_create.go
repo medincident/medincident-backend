@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
 	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
@@ -25,11 +26,18 @@ const (
 	ErrCodeDepartmentClinicNotFound     = "department_clinic_not_found"
 )
 
-// CreateDepartmentCommand is the input of DepartmentService.Create.
+// CreateDepartmentPayload is the validated client-facing payload of
+// CreateDepartment.
+type CreateDepartmentPayload struct {
+	ClinicID    string  `validate:"required,uuid"`
+	Name        string  `validate:"required,min=4,max=256"`
+	Description *string `validate:"omitnil,min=8,max=2048"`
+}
+
+// CreateDepartmentCommand = caller + payload.
 type CreateDepartmentCommand struct {
-	ClinicID    uuid.UUID `validate:"required"`
-	Name        string    `validate:"required,min=4,max=256"`
-	Description *string   `validate:"omitnil,min=8,max=2048"`
+	Caller  authz.Caller
+	Payload CreateDepartmentPayload
 }
 
 // CreateDepartmentResult is the output of DepartmentService.Create.
@@ -42,7 +50,11 @@ func (s *DepartmentService) Create(
 	ctx context.Context,
 	cmd CreateDepartmentCommand,
 ) (CreateDepartmentResult, error) {
-	if err := validation.Struct(cmd); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return CreateDepartmentResult{}, err
+	}
+	clinicID := uuid.MustParse(cmd.Payload.ClinicID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Clinic(clinicID)); err != nil {
 		return CreateDepartmentResult{}, err
 	}
 
@@ -56,11 +68,11 @@ func (s *DepartmentService) Create(
 
 	dept := model.Department{
 		ID:       id,
-		ClinicID: cmd.ClinicID,
-		Name:     strings.TrimSpace(cmd.Name),
+		ClinicID: clinicID,
+		Name:     strings.TrimSpace(cmd.Payload.Name),
 	}
-	if cmd.Description != nil {
-		dept.Description = null.StringFrom(strings.TrimSpace(*cmd.Description))
+	if cmd.Payload.Description != nil {
+		dept.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 	}
 
 	var result CreateDepartmentResult
@@ -70,7 +82,7 @@ func (s *DepartmentService) Create(
 				return oops.In("services.orgstructure.department").
 					Code(ErrCodeDepartmentClinicNotFound).
 					Public("Clinic not found.").
-					With("clinic_id", cmd.ClinicID).
+					With("clinic_id", clinicID).
 					Wrap(err)
 			}
 			return oops.In("services.orgstructure.department").

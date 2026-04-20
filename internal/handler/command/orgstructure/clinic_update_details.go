@@ -13,21 +13,17 @@ func (h *OrgStructureHandler) UpdateClinicDetails(
 	ctx context.Context,
 	req *orgstructurev1.UpdateClinicDetailsRequest,
 ) (*orgstructurev1.UpdateClinicDetailsResponse, error) {
-	id, err := parseClinicID(req.GetClinicId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Clinic(id)); err != nil {
-		return nil, err
-	}
 	if err := h.clinSvc.UpdateDetails(ctx, orgsvc.UpdateClinicDetailsCommand{
-		ID:          id,
-		Name:        req.GetName(),
-		Description: req.Description,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: orgsvc.UpdateClinicDetailsPayload{
+			ID:          req.GetClinicId(),
+			Name:        req.GetName(),
+			Description: req.Description,
+		},
 	}); err != nil {
 		return nil, err
 	}
