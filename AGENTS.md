@@ -64,7 +64,11 @@ Design lives in `docs/superpowers/specs/2026-04-13-command-service-simplificatio
     explicitly via direct constructor calls and tears them down with
     `defer`. Shared startup helpers (Postgres open, zerolog build,
     Zitadel authorizer) live in `internal/bootstrap/`. No samber/do,
-    no wire, no injector — compile-time wiring only.
+    no wire, no injector — compile-time wiring only. Bootstrap
+    helpers must not call Ping, warm-up, or readiness probes —
+    construction must return immediately so an unreachable external
+    during a rolling deploy cannot hang the boot sequence past the
+    k8s pod-termination grace period.
 14. **Every gorm model field carries an explicit field-level
     permission tag** (`<-:create`, `<-`, `-`). Primary keys, creation
     timestamps, and parent FKs (`Clinic.OrganizationID`,

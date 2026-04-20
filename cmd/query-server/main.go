@@ -45,7 +45,12 @@ const (
 	natsReconnectWait       = 2 * time.Second
 )
 
-const errCodeJetStreamInitFailed = "jetstream_init_failed"
+const ErrCodeJetStreamInitFailed = "jetstream_init_failed"
+
+// natsDrainTimeout matches the old DI-era shutdown window so a partially
+// degraded NATS cannot slow process exit past the k8s pod termination
+// grace period.
+const natsDrainTimeout = 15 * time.Second
 
 // authnSkip lists the RPC paths that bypass JWT introspection.
 var authnSkip = map[string]struct{}{
@@ -90,6 +95,7 @@ func main() {
 		nats.Name("medincident-query-server"),
 		nats.ReconnectWait(natsReconnectWait),
 		nats.MaxReconnects(-1),
+		nats.DrainTimeout(natsDrainTimeout),
 	)
 	if err != nil {
 		logger.Fatal().Err(err).Str("url", cfg.NATS.URL).Msg("failed to connect to NATS")
@@ -99,7 +105,9 @@ func main() {
 
 	js, err := jetstream.New(nc)
 	if err != nil {
-		logger.Fatal().Err(oops.Code(errCodeJetStreamInitFailed).Wrap(err)).Msg("failed to init JetStream")
+		logger.Fatal().
+			Err(oops.In("query.bootstrap").Code(ErrCodeJetStreamInitFailed).Wrap(err)).
+			Msg("failed to init JetStream")
 	}
 
 	authorizer, err := bootstrap.NewZitadelAuthorizer(ctx, &cfg.Zitadel)

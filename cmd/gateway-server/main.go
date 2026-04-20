@@ -41,7 +41,7 @@ const (
 	readHeaderTimeout = 5 * time.Second
 )
 
-const errCodeGatewayRegisterFailed = "gateway_register_failed"
+const ErrCodeGatewayRegisterFailed = "gateway_register_failed"
 
 func main() {
 	var configPath string
@@ -174,7 +174,7 @@ func buildGatewayMux(ctx context.Context, commandConn, queryConn *grpc.ClientCon
 		qidentityv1.RegisterIdentityQueryServiceHandler(ctx, mux, queryConn),
 	}
 	if err := errors.Join(errs...); err != nil {
-		return nil, oops.In("gateway").Code(errCodeGatewayRegisterFailed).Wrap(err)
+		return nil, oops.In("gateway").Code(ErrCodeGatewayRegisterFailed).Wrap(err)
 	}
 	return mux, nil
 }

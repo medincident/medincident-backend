@@ -1,6 +1,6 @@
 # gateway-server — example configuration.
 #
-# Loaded by cmd/gateway-server/main.go via config.ReadGatewayServerConfig.
+# Loaded by cmd/gateway-server/main.go via readConfig (in that package).
 # ${VAR} and $VAR references are expanded from the process environment
 # before YAML parsing, so secrets should be injected via env rather
 # than hard-coded.
