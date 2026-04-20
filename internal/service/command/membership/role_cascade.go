@@ -7,7 +7,7 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-backend/internal/model"
 )
 
 // Cascade helpers for the five role types (DepartmentResponsible,

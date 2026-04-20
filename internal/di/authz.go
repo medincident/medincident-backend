@@ -4,7 +4,7 @@ import (
 	"github.com/samber/do/v2"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 func provideAuthz(injector do.Injector) (*authz.Authz, error) {

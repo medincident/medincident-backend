@@ -5,7 +5,7 @@ import (
 
 	"github.com/rs/cors"
 
-	"github.com/medincident/medincident-command-service/internal/config"
+	"github.com/medincident/medincident-backend/internal/config"
 )
 
 // CORS returns a CORS middleware backed by rs/cors when cfg is

@@ -14,17 +14,17 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/medincident/medincident-command-service/internal/config"
-	gwhandler "github.com/medincident/medincident-command-service/internal/handler/gateway"
-	"github.com/medincident/medincident-command-service/internal/middleware/httpmw"
-	cmdclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
-	cmdmembershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
-	cmdorgv1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
-	qidentityv1 "github.com/medincident/medincident-command-service/pkg/query/identity/v1"
-	qclassifierv1 "github.com/medincident/medincident-command-service/pkg/query/incident/classifier/v1"
-	qmembershipv1 "github.com/medincident/medincident-command-service/pkg/query/membership/v1"
-	qorgv1 "github.com/medincident/medincident-command-service/pkg/query/orgstructure/v1"
-	qstatsv1 "github.com/medincident/medincident-command-service/pkg/query/stats/v1"
+	"github.com/medincident/medincident-backend/internal/config"
+	gwhandler "github.com/medincident/medincident-backend/internal/handler/gateway"
+	"github.com/medincident/medincident-backend/internal/middleware/httpmw"
+	cmdclassifierv1 "github.com/medincident/medincident-backend/pkg/command/incident/classifier/v1"
+	cmdmembershipv1 "github.com/medincident/medincident-backend/pkg/command/membership/v1"
+	cmdorgv1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
+	qidentityv1 "github.com/medincident/medincident-backend/pkg/query/identity/v1"
+	qclassifierv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
+	qmembershipv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
+	qorgv1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
+	qstatsv1 "github.com/medincident/medincident-backend/pkg/query/stats/v1"
 )
 
 // Error codes emitted by this DI init.

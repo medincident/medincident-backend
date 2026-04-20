@@ -1,4 +1,4 @@
-# medincident-command-service
+# medincident-backend
 
 Write-сторона CQRS-развёртки medincident. Обслуживает три агрегата
 организационной структуры: **Organization**, **Clinic**, **Department**.

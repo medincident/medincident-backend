@@ -1165,8 +1165,8 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"\x10MoveIncidentType\x127.command.incident.classifier.v1.MoveIncidentTypeRequest\x1a8.command.incident.classifier.v1.MoveIncidentTypeResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\x1a%/v1/incident-types/{type_id}/category\x12\xcb\x01\n" +
 	"\x16DeactivateIncidentType\x12=.command.incident.classifier.v1.DeactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.DeactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/deactivations\x12\xcb\x01\n" +
 	"\x16ReactivateIncidentType\x12=.command.incident.classifier.v1.ReactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.ReactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/reactivations\x12\xb1\x01\n" +
-	"\x12DeleteIncidentType\x129.command.incident.classifier.v1.DeleteIncidentTypeRequest\x1a:.command.incident.classifier.v1.DeleteIncidentTypeResponse\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/incident-types/{type_id}B\xbc\x02\n" +
-	"\"com.command.incident.classifier.v1B\x17IncidentClassifierProtoP\x01Zbgithub.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1;classifierv1\xa2\x02\x03CIC\xaa\x02\x1eCommand.Incident.Classifier.V1\xca\x02\x1eCommand\\Incident\\Classifier\\V1\xe2\x02*Command\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02!Command::Incident::Classifier::V1b\x06proto3"
+	"\x12DeleteIncidentType\x129.command.incident.classifier.v1.DeleteIncidentTypeRequest\x1a:.command.incident.classifier.v1.DeleteIncidentTypeResponse\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/incident-types/{type_id}B\xb4\x02\n" +
+	"\"com.command.incident.classifier.v1B\x17IncidentClassifierProtoP\x01ZZgithub.com/medincident/medincident-backend/pkg/command/incident/classifier/v1;classifierv1\xa2\x02\x03CIC\xaa\x02\x1eCommand.Incident.Classifier.V1\xca\x02\x1eCommand\\Incident\\Classifier\\V1\xe2\x02*Command\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02!Command::Incident::Classifier::V1b\x06proto3"
 
 var (
 	file_command_incident_classifier_v1_incident_classifier_proto_rawDescOnce sync.Once

@@ -563,9 +563,9 @@ const file_query_stats_v1_stats_proto_rawDesc = "" +
 	"\x11StatsQueryService\x12\xaa\x01\n" +
 	"\x14GetOrganizationStats\x12+.query.stats.v1.GetOrganizationStatsRequest\x1a,.query.stats.v1.GetOrganizationStatsResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/query/organizations/{organization_id}/stats\x12\x8c\x01\n" +
 	"\x0eGetClinicStats\x12%.query.stats.v1.GetClinicStatsRequest\x1a&.query.stats.v1.GetClinicStatsResponse\"+\x82\xd3\xe4\x93\x02%\x12#/v1/query/clinics/{clinic_id}/stats\x12\xa0\x01\n" +
-	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/query/departments/{department_id}/statsB\xc9\x01\n" +
+	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/query/departments/{department_id}/statsB\xc1\x01\n" +
 	"\x12com.query.stats.v1B\n" +
-	"StatsProtoP\x01ZMgithub.com/medincident/medincident-command-service/pkg/query/stats/v1;statsv1\xa2\x02\x03QSX\xaa\x02\x0eQuery.Stats.V1\xca\x02\x0eQuery\\Stats\\V1\xe2\x02\x1aQuery\\Stats\\V1\\GPBMetadata\xea\x02\x10Query::Stats::V1b\x06proto3"
+	"StatsProtoP\x01ZEgithub.com/medincident/medincident-backend/pkg/query/stats/v1;statsv1\xa2\x02\x03QSX\xaa\x02\x0eQuery.Stats.V1\xca\x02\x0eQuery\\Stats\\V1\xe2\x02\x1aQuery\\Stats\\V1\\GPBMetadata\xea\x02\x10Query::Stats::V1b\x06proto3"
 
 var (
 	file_query_stats_v1_stats_proto_rawDescOnce sync.Once

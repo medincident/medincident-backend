@@ -1,4 +1,4 @@
-# Agent Instructions — medincident-command-service
+# Agent Instructions — medincident-backend
 
 gRPC command side of a CQRS split. Go 1.26 · gorm v2 · guregu/null/v6 ·
 samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in

@@ -10,7 +10,7 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-backend/internal/model"
 )
 
 // EmployeeHired writes projections.employees + projections.employee_cards

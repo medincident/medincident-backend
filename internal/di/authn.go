@@ -8,8 +8,8 @@ import (
 	"github.com/zitadel/zitadel-go/v3/pkg/authorization/oauth"
 	"github.com/zitadel/zitadel-go/v3/pkg/zitadel"
 
-	"github.com/medincident/medincident-command-service/internal/config"
-	zitadelsvc "github.com/medincident/medincident-command-service/internal/service/zitadel"
+	"github.com/medincident/medincident-backend/internal/config"
+	zitadelsvc "github.com/medincident/medincident-backend/internal/service/zitadel"
 )
 
 func provideAuthorizer(injector do.Injector) (*authorization.Authorizer[*oauth.IntrospectionContext], error) {

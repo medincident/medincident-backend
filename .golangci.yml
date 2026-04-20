@@ -76,7 +76,7 @@ formatters:
   settings:
     goimports:
       local-prefixes:
-        - github.com/medincident/medincident-command-service
+        - github.com/medincident/medincident-backend
   exclusions:
     generated: lax
     paths:

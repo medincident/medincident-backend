@@ -7,7 +7,7 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-backend/internal/model"
 )
 
 // Role projectors mirror the domain.<role> tables into projections.<role>.

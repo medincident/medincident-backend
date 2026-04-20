@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	orgread "github.com/medincident/medincident-command-service/internal/service/query/orgstructure"
-	orgqueryv1 "github.com/medincident/medincident-command-service/pkg/query/orgstructure/v1"
+	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
+	orgqueryv1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
 )
 
 // OrgStructureQueryHandler implements orgqueryv1.OrgStructureQueryServiceServer

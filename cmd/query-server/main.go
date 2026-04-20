@@ -19,9 +19,9 @@ import (
 	"github.com/samber/do/v2"
 	"google.golang.org/grpc"
 
-	"github.com/medincident/medincident-command-service/internal/config"
-	"github.com/medincident/medincident-command-service/internal/di"
-	identityread "github.com/medincident/medincident-command-service/internal/service/query/identity"
+	"github.com/medincident/medincident-backend/internal/config"
+	"github.com/medincident/medincident-backend/internal/di"
+	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 )
 
 const (

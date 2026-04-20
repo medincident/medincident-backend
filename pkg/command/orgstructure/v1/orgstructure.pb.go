@@ -979,8 +979,8 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x13UpdateClinicDetails\x123.command.orgstructure.v1.UpdateClinicDetailsRequest\x1a4.command.orgstructure.v1.UpdateClinicDetailsResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/clinics/{clinic_id}/details\x12\xcd\x01\n" +
 	"\x1bUpdateClinicPhysicalAddress\x12;.command.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.command.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"3\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\xa7\x01\n" +
 	"\x10CreateDepartment\x120.command.orgstructure.v1.CreateDepartmentRequest\x1a1.command.orgstructure.v1.CreateDepartmentResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/clinics/{clinic_id}/departments\x12\xc0\x01\n" +
-	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\x8d\x02\n" +
-	"\x1bcom.command.orgstructure.v1B\x11OrgstructureProtoP\x01Z]github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1;orgstructurev1\xa2\x02\x03COX\xaa\x02\x17Command.Orgstructure.V1\xca\x02\x17Command\\Orgstructure\\V1\xe2\x02#Command\\Orgstructure\\V1\\GPBMetadata\xea\x02\x19Command::Orgstructure::V1b\x06proto3"
+	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\x85\x02\n" +
+	"\x1bcom.command.orgstructure.v1B\x11OrgstructureProtoP\x01ZUgithub.com/medincident/medincident-backend/pkg/command/orgstructure/v1;orgstructurev1\xa2\x02\x03COX\xaa\x02\x17Command.Orgstructure.V1\xca\x02\x17Command\\Orgstructure\\V1\xe2\x02#Command\\Orgstructure\\V1\\GPBMetadata\xea\x02\x19Command::Orgstructure::V1b\x06proto3"
 
 var (
 	file_command_orgstructure_v1_orgstructure_proto_rawDescOnce sync.Once

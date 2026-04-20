@@ -14,8 +14,8 @@
 Склонируй репу:
 
 ```bash
-git clone https://github.com/medincident/medincident-command-service.git
-cd medincident-command-service
+git clone https://github.com/medincident/medincident-backend.git
+cd medincident-backend
 ```
 
 Настрой окружение и проверь тулчейн:

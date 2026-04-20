@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-backend/internal/model"
 )
 
 // RemoveOrganizationAdminDeputyCommand carries the identifiers needed

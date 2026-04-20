@@ -7,8 +7,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/samber/do/v2"
 
-	"github.com/medincident/medincident-command-service/internal/config"
-	"github.com/medincident/medincident-command-service/internal/service/zitadel"
+	"github.com/medincident/medincident-backend/internal/config"
+	"github.com/medincident/medincident-backend/internal/service/zitadel"
 )
 
 // zitadelInitTimeout bounds the implicit OIDC discovery call performed

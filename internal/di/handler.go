@@ -3,13 +3,13 @@ package di
 import (
 	"github.com/samber/do/v2"
 
-	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
-	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
-	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
-	"github.com/medincident/medincident-command-service/internal/service/authz"
-	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
-	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
+	classifierhandler "github.com/medincident/medincident-backend/internal/handler/incident/classifier"
+	membershiphandler "github.com/medincident/medincident-backend/internal/handler/membership"
+	orghandler "github.com/medincident/medincident-backend/internal/handler/orgstructure"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
+	"github.com/medincident/medincident-backend/internal/service/command/membership"
+	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
 )
 
 func provideOrgStructureHandler(injector do.Injector) (*orghandler.OrgStructureHandler, error) {

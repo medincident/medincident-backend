@@ -9,14 +9,14 @@ import (
 	"github.com/zitadel/zitadel-go/v3/pkg/authorization/oauth"
 	"google.golang.org/grpc"
 
-	"github.com/medincident/medincident-command-service/internal/config"
-	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
-	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
-	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
-	"github.com/medincident/medincident-command-service/internal/middleware/grpcmw"
-	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
-	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
-	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
+	"github.com/medincident/medincident-backend/internal/config"
+	classifierhandler "github.com/medincident/medincident-backend/internal/handler/incident/classifier"
+	membershiphandler "github.com/medincident/medincident-backend/internal/handler/membership"
+	orghandler "github.com/medincident/medincident-backend/internal/handler/orgstructure"
+	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
+	incidentclassifierv1 "github.com/medincident/medincident-backend/pkg/command/incident/classifier/v1"
+	membershipv1 "github.com/medincident/medincident-backend/pkg/command/membership/v1"
+	orgstructurev1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
 )
 
 // grpcServerWrapper owns the *grpc.Server lifecycle. Private to di —

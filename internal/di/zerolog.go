@@ -15,7 +15,7 @@ import (
 	"github.com/samber/oops"
 	oopszerolog "github.com/samber/oops/loggers/zerolog"
 
-	"github.com/medincident/medincident-command-service/internal/config"
+	"github.com/medincident/medincident-backend/internal/config"
 )
 
 // zerologGlobalsOnce gates the one-time mutation of process-wide

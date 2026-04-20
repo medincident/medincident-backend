@@ -5,9 +5,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
-	"github.com/medincident/medincident-command-service/internal/service/authz"
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
-	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
+	orgstructurev1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
 )
 
 // Error codes emitted by handler-layer request parsing.

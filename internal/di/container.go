@@ -14,7 +14,7 @@ package di
 import (
 	"github.com/samber/do/v2"
 
-	"github.com/medincident/medincident-command-service/internal/config"
+	"github.com/medincident/medincident-backend/internal/config"
 )
 
 // NewContainer wires all providers and returns a ready-to-invoke injector.

@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/medincident/medincident-command-service/internal/service/command/membership"
+	"github.com/medincident/medincident-backend/internal/service/command/membership"
 )
 
 func hireBob(t *testing.T, f fixture) (employeeID string) {

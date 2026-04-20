@@ -10,7 +10,7 @@ import (
 	"github.com/samber/do/v2"
 	"github.com/samber/oops"
 
-	"github.com/medincident/medincident-command-service/internal/config"
+	"github.com/medincident/medincident-backend/internal/config"
 )
 
 // Error codes emitted by the NATS provider.

@@ -5,8 +5,8 @@ import (
 	"errors"
 	"time"
 
-	memberread "github.com/medincident/medincident-command-service/internal/service/query/membership"
-	membershipqueryv1 "github.com/medincident/medincident-command-service/pkg/query/membership/v1"
+	memberread "github.com/medincident/medincident-backend/internal/service/query/membership"
+	membershipqueryv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
 )
 
 // MembershipQueryHandler implements

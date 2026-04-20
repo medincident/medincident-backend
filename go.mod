@@ -1,4 +1,4 @@
-module github.com/medincident/medincident-command-service
+module github.com/medincident/medincident-backend
 
 go 1.26.2
 

@@ -925,8 +925,8 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/query/incident-categories/{root_category_id}:subtree\x12\x8d\x01\n" +
 	"\aGetType\x12,.query.incident.classifier.v1.GetTypeRequest\x1a-.query.incident.classifier.v1.GetTypeResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/query/incident-types/{id}\x12\xc5\x01\n" +
 	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/query/incident-categories/{category_id}/types\x12\xf1\x01\n" +
-	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"G\x82\xd3\xe4\x93\x02A\x12?/v1/query/organizations/{organization_id}/incident-types:activeB\xa8\x02\n" +
-	" com.query.incident.classifier.v1B\x0fClassifierProtoP\x01Z`github.com/medincident/medincident-command-service/pkg/query/incident/classifier/v1;classifierv1\xa2\x02\x03QIC\xaa\x02\x1cQuery.Incident.Classifier.V1\xca\x02\x1cQuery\\Incident\\Classifier\\V1\xe2\x02(Query\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02\x1fQuery::Incident::Classifier::V1b\x06proto3"
+	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"G\x82\xd3\xe4\x93\x02A\x12?/v1/query/organizations/{organization_id}/incident-types:activeB\xa0\x02\n" +
+	" com.query.incident.classifier.v1B\x0fClassifierProtoP\x01ZXgithub.com/medincident/medincident-backend/pkg/query/incident/classifier/v1;classifierv1\xa2\x02\x03QIC\xaa\x02\x1cQuery.Incident.Classifier.V1\xca\x02\x1cQuery\\Incident\\Classifier\\V1\xe2\x02(Query\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02\x1fQuery::Incident::Classifier::V1b\x06proto3"
 
 var (
 	file_query_incident_classifier_v1_classifier_proto_rawDescOnce sync.Once
