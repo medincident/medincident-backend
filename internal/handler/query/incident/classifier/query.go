@@ -13,9 +13,22 @@ import (
 
 // Error codes emitted by query-handler ID parsing.
 const (
-	ErrCodeHandlerInvalidCategoryID = "handler_invalid_category_id"
-	ErrCodeHandlerInvalidTypeID     = "handler_invalid_type_id"
+	ErrCodeHandlerInvalidCategoryID     = "handler_invalid_category_id"
+	ErrCodeHandlerInvalidTypeID         = "handler_invalid_type_id"
+	ErrCodeHandlerInvalidOrganizationID = "handler_invalid_organization_id"
 )
+
+func parseOrganizationID(raw string) (uuid.UUID, error) {
+	id, err := uuid.Parse(raw)
+	if err != nil {
+		return uuid.Nil, oops.In("handler.query.incident.classifier").
+			Code(ErrCodeHandlerInvalidOrganizationID).
+			Public("Invalid organization id.").
+			With("organization_id", raw).
+			Wrap(err)
+	}
+	return id, nil
+}
 
 // IncidentClassifierQueryHandler implements
 // classifierqueryv1.IncidentClassifierQueryServiceServer.
