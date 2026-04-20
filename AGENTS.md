@@ -1,8 +1,9 @@
 # Agent Instructions — medincident-command-service
 
 gRPC command side of a CQRS split. Go 1.26 · gorm v2 · guregu/null/v6 ·
-samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
-`docs/superpowers/specs/2026-04-13-command-service-simplification-design.md`.
+samber/oops · zerolog · dbmate · buf. No DI framework — each binary's
+main.go wires constructors explicitly and drives teardown via `defer`.
+Design lives in `docs/superpowers/specs/2026-04-13-command-service-simplification-design.md`.
 
 ## Hard rules — NOT NEGOTIABLE
 
@@ -59,8 +60,15 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
 12. **Events carry NEW state only.**
     `OrganizationDetailsChanged.Name` is the new name; consumers
     compute diffs from their own prior projection.
-13. **DI factories no healthcheck.** Providers only wire; no Ping,
-    warm-up, or probe inside the provide function.
+13. **No DI framework.** Each binary's `main.go` wires dependencies
+    explicitly via direct constructor calls and tears them down with
+    `defer`. Shared startup helpers (Postgres open, zerolog build,
+    Zitadel authorizer) live in `internal/bootstrap/`. No samber/do,
+    no wire, no injector — compile-time wiring only. Bootstrap
+    helpers must not call Ping, warm-up, or readiness probes —
+    construction must return immediately so an unreachable external
+    during a rolling deploy cannot hang the boot sequence past the
+    k8s pod-termination grace period.
 14. **Every gorm model field carries an explicit field-level
     permission tag** (`<-:create`, `<-`, `-`). Primary keys, creation
     timestamps, and parent FKs (`Clinic.OrganizationID`,
@@ -81,24 +89,26 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
 ## Directory layout
 
 ```
-cmd/command-server/main.go               — entry point (command side), graceful shutdown
-cmd/query-server/main.go                 — entry point (query side, placeholder until Plan 3)
-cmd/gateway-server/main.go               — entry point (HTTP gateway), http.Server + grpc-gateway mux
+cmd/command-server/
+  main.go                                — explicit constructor wiring + graceful shutdown
+  config.go                              — Config struct + readConfig (package main)
+cmd/query-server/
+  main.go                                — readers + NATS identity consumer + gRPC server
+  config.go                              — Config struct + readConfig (package main)
+cmd/gateway-server/
+  main.go                                — two ClientConns + grpc-gateway mux + http.Server
+  config.go                              — Config struct + readConfig (package main)
 internal/
-  config/                                — YAML + go-playground/validator
-    config.go                            — shared types (GRPC/Postgres/Zitadel) + readAndValidate
-    command_server.go                    — CommandServerConfig + ReadCommandServerConfig
-    query_server.go                      — QueryServerConfig + ReadQueryServerConfig
-    gateway_server.go                    — GatewayServerConfig + ReadGatewayServerConfig
-    zerolog.go                           — zerolog config subtree (shared)
-  di/                                    — samber/do/v2 providers (all factories)
-    container.go                         — NewContainer + do.Provide wiring
-    zerolog.go                           — logger construction
-    postgres.go                          — *gorm.DB provider + Shutdown hook
-    grpc.go                              — *grpc.Server wrapper + GracefulStop hook
-    services.go                          — service providers
-    gateway_container.go                 — NewGatewayContainer + do.Provide wiring
-    handler.go                           — handler providers
+  bootstrap/                             — shared startup helpers (no DI framework)
+    zerolog.go                           — BuildZerolog(cfg) → *zerolog.Logger + cleanup
+    postgres.go                          — OpenPostgres(ctx, cfg, logger) → *gorm.DB + cleanup
+    zitadel.go                           — NewZitadelAuthorizer + NewZitadelService
+  config/                                — shared config subtypes only (binary-specific
+                                            top-level configs live in cmd/<name>/config.go)
+    config.go                            — GRPCServerConfig / PostgresConfig / ZitadelConfig
+                                            + ReadAndValidate (YAML + env-expand + validator)
+    zerolog.go                           — ZerologConfig subtree
+    nats.go                              — NATSConfig (query-server uses it)
   model/                                 — gorm models. ONLY place `null.X` lives.
   middleware/
     grpcmw/                              — gRPC interceptors
