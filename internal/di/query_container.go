@@ -23,7 +23,7 @@ import (
 	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
 	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
 	statshandler "github.com/medincident/medincident-command-service/internal/handler/stats"
-	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/middleware/grpcmw"
 	identityread "github.com/medincident/medincident-command-service/internal/service/query/identity"
 	classifierread "github.com/medincident/medincident-command-service/internal/service/query/incident/classifier"
 	membershipread "github.com/medincident/medincident-command-service/internal/service/query/membership"
@@ -440,8 +440,8 @@ func provideQueryGRPCServerWrapper(injector do.Injector) (*grpcServerWrapper, er
 	server := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
 		grpc.ChainUnaryInterceptor(
-			middleware.ErrorInterceptor(logger),
-			middleware.AuthnInterceptor(authorizer, authnSkip),
+			grpcmw.ErrorInterceptor(logger),
+			grpcmw.AuthnInterceptor(authorizer, authnSkip),
 		),
 	)
 	orgqueryv1.RegisterOrgStructureQueryServiceServer(server, orgHandler)

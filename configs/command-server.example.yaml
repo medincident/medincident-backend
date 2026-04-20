@@ -2,13 +2,16 @@
 #
 # Loaded by cmd/command-server/main.go via config.ReadCommandServerConfig.
 # ${VAR} and $VAR references are expanded from the process environment
-# before YAML parsing, so secrets (DSN, etc.) should be injected via env
-# rather than hard-coded.
+# before YAML parsing, so secrets should be injected via env rather
+# than hard-coded.
 
 server:
   grpc:
-    # TCP listen address for the gRPC server.
-    address: ":9090"
+    # TCP listen address for the gRPC server. All three binaries in this
+    # repo default to :8080 inside their containers; the operator maps
+    # external ports at deploy time (Docker `-p`, k8s Service, ingress).
+    # For local multi-binary runs, override here (e.g. ":9090").
+    address: ":8080"
     # Maximum inbound message size in bytes. Covers a single request.
     max_recv_msg_size: 4194304  # 4 MiB
 

@@ -1,4 +1,4 @@
-package middleware
+package grpcmw
 
 import (
 	"context"
@@ -34,7 +34,7 @@ func AuthnInterceptor(
 
 		token := bearerTokenFromMD(ctx)
 		if token == "" {
-			return nil, oops.In("middleware.authn").
+			return nil, oops.In("grpcmw.authn").
 				Code(ErrCodeUnauthenticated).
 				Public("Missing or malformed authorization header.").
 				Errorf("empty bearer token")
@@ -42,7 +42,7 @@ func AuthnInterceptor(
 
 		authCtx, err := authorizer.CheckAuthorization(ctx, token)
 		if err != nil {
-			return nil, oops.In("middleware.authn").
+			return nil, oops.In("grpcmw.authn").
 				Code(ErrCodeUnauthenticated).
 				Public("Invalid or expired token.").
 				Wrap(err)

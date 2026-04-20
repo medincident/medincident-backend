@@ -22,7 +22,7 @@ func defaultCommandServerConfig() CommandServerConfig {
 	return CommandServerConfig{
 		Server: ServerConfig{
 			GRPC: GRPCServerConfig{
-				Address:        ":9090",
+				Address:        ":8080",
 				MaxRecvMsgSize: 4 * 1024 * 1024,
 			},
 		},

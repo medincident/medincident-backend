@@ -22,7 +22,7 @@
 //     status message for client-visible codes; for Internal/Unavailable
 //     the client only sees "internal error" while the server log keeps
 //     the full context.
-package middleware
+package grpcmw
 
 import (
 	"context"

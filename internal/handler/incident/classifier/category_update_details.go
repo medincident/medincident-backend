@@ -3,7 +3,7 @@ package classifier
 import (
 	"context"
 
-	"github.com/medincident/medincident-command-service/internal/middleware"
+	"github.com/medincident/medincident-command-service/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-command-service/internal/service/authz"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
 	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
@@ -17,7 +17,7 @@ func (h *IncidentClassifierHandler) UpdateIncidentCategoryDetails(
 	if err != nil {
 		return nil, err
 	}
-	callerID, err := middleware.CallerID(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}

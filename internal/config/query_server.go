@@ -4,7 +4,7 @@ import "time"
 
 // QueryServerConfig is the YAML-backed runtime configuration for the
 // query-server binary. Fields mirror the design spec § 11. Sections
-// only query-server needs (NATS, grpc-gateway) live here.
+// only query-server needs (NATS) live here.
 type QueryServerConfig struct {
 	Server   QueryServerNetConfig  `yaml:"server"   validate:"required"`
 	Postgres PostgresConfig        `yaml:"postgres" validate:"required"`
@@ -13,18 +13,10 @@ type QueryServerConfig struct {
 	Zitadel  ZitadelConfig         `yaml:"zitadel"  validate:"required"`
 }
 
-// QueryServerNetConfig holds the gRPC and grpc-gateway listen addresses
-// for the query-server binary.
+// QueryServerNetConfig holds the gRPC listener for the query-server.
+// Query-server is pure gRPC — no HTTP surface.
 type QueryServerNetConfig struct {
-	GRPC    GRPCServerConfig         `yaml:"grpc"    validate:"required"`
-	Gateway QueryServerGatewayConfig `yaml:"gateway" validate:"required"`
-}
-
-// QueryServerGatewayConfig is the HTTP listener for grpc-gateway. Kept
-// query-only for now because command-server does not currently expose
-// a gateway endpoint via configuration.
-type QueryServerGatewayConfig struct {
-	Address string `yaml:"address" validate:"required,hostname_port"`
+	GRPC GRPCServerConfig `yaml:"grpc" validate:"required"`
 }
 
 // QueryServerNATSConfig is the JetStream connection block. Stream and
@@ -41,11 +33,8 @@ func defaultQueryServerConfig() QueryServerConfig {
 	return QueryServerConfig{
 		Server: QueryServerNetConfig{
 			GRPC: GRPCServerConfig{
-				Address:        ":9091",
+				Address:        ":8080",
 				MaxRecvMsgSize: 4 * 1024 * 1024,
-			},
-			Gateway: QueryServerGatewayConfig{
-				Address: ":8082",
 			},
 		},
 		Zerolog: ZerologConfig{

@@ -33,13 +33,14 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// OrgStructureService is the command-side contract for the three
+// OrgStructureCommandService is the command-side contract for the three
 // organisational structure aggregates: Organization, Clinic, and
 // Department. Every mutation returns either an identifier (Create) or
-// an empty response (Update). google.api.http annotations drive a
-// separate REST gateway binary; command-service itself serves pure
-// gRPC, while this repo generates grpc-gateway stubs under pkg/ for
-// that gateway binary to consume.
+// an empty response (Update). google.api.http annotations drive the
+// gateway-server binary in this repo (cmd/gateway-server): the
+// command-server itself serves pure gRPC, and gateway-server dials
+// into it and exposes a REST facade using the grpc-gateway stubs
+// generated under pkg/.
 type OrgStructureCommandServiceClient interface {
 	CreateOrganization(ctx context.Context, in *CreateOrganizationRequest, opts ...grpc.CallOption) (*CreateOrganizationResponse, error)
 	UpdateOrganizationDetails(ctx context.Context, in *UpdateOrganizationDetailsRequest, opts ...grpc.CallOption) (*UpdateOrganizationDetailsResponse, error)
@@ -143,13 +144,14 @@ func (c *orgStructureCommandServiceClient) UpdateDepartmentDetails(ctx context.C
 // All implementations must embed UnimplementedOrgStructureCommandServiceServer
 // for forward compatibility.
 //
-// OrgStructureService is the command-side contract for the three
+// OrgStructureCommandService is the command-side contract for the three
 // organisational structure aggregates: Organization, Clinic, and
 // Department. Every mutation returns either an identifier (Create) or
-// an empty response (Update). google.api.http annotations drive a
-// separate REST gateway binary; command-service itself serves pure
-// gRPC, while this repo generates grpc-gateway stubs under pkg/ for
-// that gateway binary to consume.
+// an empty response (Update). google.api.http annotations drive the
+// gateway-server binary in this repo (cmd/gateway-server): the
+// command-server itself serves pure gRPC, and gateway-server dials
+// into it and exposes a REST facade using the grpc-gateway stubs
+// generated under pkg/.
 type OrgStructureCommandServiceServer interface {
 	CreateOrganization(context.Context, *CreateOrganizationRequest) (*CreateOrganizationResponse, error)
 	UpdateOrganizationDetails(context.Context, *UpdateOrganizationDetailsRequest) (*UpdateOrganizationDetailsResponse, error)

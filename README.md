@@ -13,8 +13,9 @@ Command никогда не читает проекции и не знает о 
 ## Стек
 
 - Go 1.26
-- gRPC-сервис (pure gRPC; аннотации `google.api.http` в proto — под
-  будущую REST-обёртку, для неё генерятся grpc-gateway stubs)
+- gRPC-сервисы (pure gRPC). HTTP-фасад — отдельный бинарь
+  `cmd/gateway-server`, который поднимает grpc-gateway mux и
+  проксирует HTTP-запросы в `command-server` / `query-server`.
 - gorm v2 + gorm.io/driver/postgres
 - `github.com/guregu/null/v6` (только в `internal/model`)
 - samber/do/v2 · samber/oops · zerolog
@@ -78,6 +79,7 @@ Command никогда не читает проекции и не знает о 
 - `docs/proto/medincident.md` — сгенерированная Markdown-документация по всем proto-контрактам (коммитится)
 - `cmd/command-server/` — точка входа command-side gRPC сервера, graceful shutdown
 - `cmd/query-server/` — точка входа query-side сервера (placeholder, заполняется в Plan 3)
+- `cmd/gateway-server/` — точка входа HTTP-gateway, grpc-gateway mux, health endpoints
 - `configs/` — YAML config пример
 - `db/migrations/` — dbmate миграции (через `task migrate:new`)
 - `internal/config/` — YAML loader + go-playground/validator; shared types в `config.go`, специфика бинарника — в `command_server.go` / `query_server.go`, zerolog-блок — в `zerolog.go`
@@ -86,6 +88,23 @@ Command никогда не читает проекции и не знает о 
 - `internal/handler/orgstructure/` — gRPC handler, файл на RPC
 - `internal/di/` — samber/do/v2 фабрики (postgres, services, handler, grpc)
 - `test/integration/orgstructure/` — testcontainers-backed integration suite
+
+## Порты
+
+Все три бинаря дефолтно слушают **один и тот же порт `:8080`** внутри
+своего процесса/контейнера. Внешний маппинг портов — зона ответственности
+операций (Docker `-p 9090:8080`, k8s `Service`, ingress). В Dockerfile'ах
+тоже стоит `EXPOSE 8080`, а не три разных порта.
+
+Для **локального запуска нескольких бинарей на одном хосте** одновременно
+этот дефолт нужно перебить через собственный конфиг — примеры комментируют
+это в `configs/*.example.yaml`:
+
+- `command-server`: например `server.grpc.address: ":9090"`
+- `query-server`: например `server.grpc.address: ":9091"`
+- `gateway-server`: например `server.http.address: ":8080"` +
+  `upstreams.command.address: "localhost:9090"` +
+  `upstreams.query.address: "localhost:9091"`
 
 ## Запуск локально
 
@@ -96,6 +115,17 @@ export DATABASE_URL="postgres://postgres:postgres@localhost:5432/medincident?ssl
 task migrate
 go run ./cmd/command-server --config configs/command-server.example.yaml
 ```
+
+Gateway (HTTP-фасад поверх command-server + query-server):
+
+```bash
+go run ./cmd/gateway-server --config configs/gateway-server.example.yaml
+```
+
+Требует, чтобы `command-server` и `query-server` уже были подняты —
+их адреса задаются в `upstreams.command.address` и
+`upstreams.query.address`. Рядом с gateway'ем живут `/healthz` (liveness)
+и `/readyz` (readiness с проверкой обоих upstream'ов).
 
 ## Тестирование
 

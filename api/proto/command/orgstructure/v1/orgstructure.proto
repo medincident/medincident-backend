@@ -5,13 +5,14 @@ package command.orgstructure.v1;
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 
-// OrgStructureService is the command-side contract for the three
+// OrgStructureCommandService is the command-side contract for the three
 // organisational structure aggregates: Organization, Clinic, and
 // Department. Every mutation returns either an identifier (Create) or
-// an empty response (Update). google.api.http annotations drive a
-// separate REST gateway binary; command-service itself serves pure
-// gRPC, while this repo generates grpc-gateway stubs under pkg/ for
-// that gateway binary to consume.
+// an empty response (Update). google.api.http annotations drive the
+// gateway-server binary in this repo (cmd/gateway-server): the
+// command-server itself serves pure gRPC, and gateway-server dials
+// into it and exposes a REST facade using the grpc-gateway stubs
+// generated under pkg/.
 service OrgStructureCommandService {
   rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse) {
     option (google.api.http) = {

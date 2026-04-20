@@ -1,6 +1,5 @@
 # Multi-stage build for the query-server binary. Mirrors
-# command-server.Dockerfile; differs only in the build target and the
-# default exposed gRPC / gateway ports.
+# command-server.Dockerfile; differs only in the build target.
 
 ARG GO_VERSION=1.26
 
@@ -16,5 +15,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 FROM gcr.io/distroless/static-debian12:nonroot
 COPY --from=build /out/query-server /usr/local/bin/query-server
 USER nonroot:nonroot
-EXPOSE 9091 8082
+EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/query-server"]
