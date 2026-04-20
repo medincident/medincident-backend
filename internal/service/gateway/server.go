@@ -24,17 +24,6 @@ const (
 	ErrCodeGatewayRegisterFailed = "gateway_register_failed"
 )
 
-// ServerWrapper owns the *http.Server lifecycle. Implements the
-// samber/do Shutdowner protocol.
-type ServerWrapper struct {
-	Server *http.Server
-}
-
-// Shutdown forwards to http.Server.Shutdown bounded by ctx.
-func (w *ServerWrapper) Shutdown(ctx context.Context) error {
-	return w.Server.Shutdown(ctx)
-}
-
 // NewServeMux registers every command- and query-side grpc-gateway
 // handler against the supplied ClientConns, wires the
 // IncomingHeaderMatcher, and returns the mux. Caller composes it

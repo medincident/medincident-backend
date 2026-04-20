@@ -45,7 +45,6 @@ func NewGatewayContainer(cfg *config.GatewayServerConfig) (do.Injector, error) {
 
 	// Gateway mux + HTTP server
 	do.Provide(injector, provideGatewayMux)
-	do.Provide(injector, provideGatewayServerWrapper)
 	do.Provide(injector, provideGatewayHTTPServer)
 
 	return injector, nil
@@ -141,8 +140,12 @@ func provideGatewayMux(injector do.Injector) (*runtime.ServeMux, error) {
 }
 
 // --- HTTP server ---
+//
+// *http.Server already satisfies samber/do's ShutdownerWithContextAndError
+// (native Shutdown(context.Context) error), so no intermediate wrapper is
+// needed. The container calls the server's own Shutdown during teardown.
 
-func provideGatewayServerWrapper(injector do.Injector) (*gateway.ServerWrapper, error) {
+func provideGatewayHTTPServer(injector do.Injector) (*http.Server, error) {
 	cfg, err := do.Invoke[*config.GatewayServerConfig](injector)
 	if err != nil {
 		return nil, err
@@ -172,19 +175,9 @@ func provideGatewayServerWrapper(injector do.Injector) (*gateway.ServerWrapper, 
 		gateway.CORSMiddleware(cfg.Server.HTTP.CORS),
 	)
 
-	return &gateway.ServerWrapper{
-		Server: &http.Server{
-			Addr:              cfg.Server.HTTP.Address,
-			Handler:           handler,
-			ReadHeaderTimeout: gatewayReadHeaderTimeout,
-		},
+	return &http.Server{
+		Addr:              cfg.Server.HTTP.Address,
+		Handler:           handler,
+		ReadHeaderTimeout: gatewayReadHeaderTimeout,
 	}, nil
-}
-
-func provideGatewayHTTPServer(injector do.Injector) (*http.Server, error) {
-	w, err := do.Invoke[*gateway.ServerWrapper](injector)
-	if err != nil {
-		return nil, err
-	}
-	return w.Server, nil
 }
