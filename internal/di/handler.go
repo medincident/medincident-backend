@@ -3,9 +3,9 @@ package di
 import (
 	"github.com/samber/do/v2"
 
-	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
-	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
-	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
+	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/command/incident/classifier"
+	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/command/membership"
+	orghandler "github.com/medincident/medincident-command-service/internal/handler/command/orgstructure"
 	"github.com/medincident/medincident-command-service/internal/service/authz"
 	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"

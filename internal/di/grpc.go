@@ -10,9 +10,9 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/medincident/medincident-command-service/internal/config"
-	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/incident/classifier"
-	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/membership"
-	orghandler "github.com/medincident/medincident-command-service/internal/handler/orgstructure"
+	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/command/incident/classifier"
+	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/command/membership"
+	orghandler "github.com/medincident/medincident-command-service/internal/handler/command/orgstructure"
 	"github.com/medincident/medincident-command-service/internal/middleware/grpcmw"
 	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
 	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"

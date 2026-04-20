@@ -13,9 +13,22 @@ import (
 
 // Error codes emitted by query-handler ID parsing.
 const (
-	ErrCodeHandlerInvalidCategoryID = "handler_invalid_category_id"
-	ErrCodeHandlerInvalidTypeID     = "handler_invalid_type_id"
+	ErrCodeHandlerInvalidCategoryID     = "handler_invalid_category_id"
+	ErrCodeHandlerInvalidTypeID         = "handler_invalid_type_id"
+	ErrCodeHandlerInvalidOrganizationID = "handler_invalid_organization_id"
 )
+
+func parseOrganizationID(raw string) (uuid.UUID, error) {
+	id, err := uuid.Parse(raw)
+	if err != nil {
+		return uuid.Nil, oops.In("handler.query.incident.classifier").
+			Code(ErrCodeHandlerInvalidOrganizationID).
+			Public("Invalid organization id.").
+			With("organization_id", raw).
+			Wrap(err)
+	}
+	return id, nil
+}
 
 // IncidentClassifierQueryHandler implements
 // classifierqueryv1.IncidentClassifierQueryServiceServer.
@@ -149,7 +162,7 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 func parseCategoryID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.incident.classifier.query").
+		return uuid.Nil, oops.In("handler.query.incident.classifier").
 			Code(ErrCodeHandlerInvalidCategoryID).
 			Public("category_id is not a valid UUID.").
 			Wrap(err)
@@ -161,7 +174,7 @@ func parseCategoryID(raw string) (uuid.UUID, error) {
 func parseTypeID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.incident.classifier.query").
+		return uuid.Nil, oops.In("handler.query.incident.classifier").
 			Code(ErrCodeHandlerInvalidTypeID).
 			Public("type_id is not a valid UUID.").
 			Wrap(err)

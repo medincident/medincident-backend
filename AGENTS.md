@@ -120,15 +120,19 @@ internal/
     command/membership/                  — write-side roles/employees/vacations
     command/incident/classifier/         — write-side incident category/type
     command/outbox/                      — outbox.Publish (transactional outbox)
-  handler/orgstructure/                  — gRPC handler (command side), one file per RPC
-    command.go                           — OrgStructureCommandService impl + proto helpers
-    organization_{create,update_details,update_legal_address}.go
-    clinic_{create,update_details,update_physical_address}.go
-    department_{create,update_details}.go
-  handler/membership/command.go + per-RPC files
-  handler/incident/classifier/command.go + per-RPC files
-  handler/gateway/                       — HTTP handlers served by gateway-server
-    health.go                            — /healthz + /readyz
+  handler/
+    command/                             — gRPC command-side handlers (used by command-server)
+      orgstructure/                      — one file per RPC: command.go + organization_*, clinic_*, department_* method files
+      membership/                        — command.go + errors.go + ~25 method files
+      incident/classifier/               — command.go + per-RPC files for categories and types
+    query/                               — gRPC query-side handlers (used by query-server)
+      orgstructure/                      — query.go + ids.go
+      membership/                        — query.go + ids.go
+      incident/classifier/               — query.go (self-contained parsers for Category/Type + Organization)
+      identity/                          — query.go
+      stats/                             — query.go
+    gateway/                             — HTTP handlers served by gateway-server
+      health.go                          — /healthz + /readyz
 api/proto/                               — proto contracts (source of truth)
   buf.yaml                               — module config (lint, breaking, deps)
   event/v1/envelope.proto                — Envelope (transport wrapper)

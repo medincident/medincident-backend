@@ -109,7 +109,7 @@ func (h *StatsQueryHandler) GetDepartmentStats(
 func parseOrganizationID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.stats.query").
+		return uuid.Nil, oops.In("handler.query.stats").
 			Code(ErrCodeHandlerInvalidOrganizationID).
 			Public("organization_id is not a valid UUID.").
 			Wrap(err)
@@ -120,7 +120,7 @@ func parseOrganizationID(raw string) (uuid.UUID, error) {
 func parseClinicID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.stats.query").
+		return uuid.Nil, oops.In("handler.query.stats").
 			Code(ErrCodeHandlerInvalidClinicID).
 			Public("clinic_id is not a valid UUID.").
 			Wrap(err)
@@ -131,7 +131,7 @@ func parseClinicID(raw string) (uuid.UUID, error) {
 func parseDepartmentID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.stats.query").
+		return uuid.Nil, oops.In("handler.query.stats").
 			Code(ErrCodeHandlerInvalidDepartmentID).
 			Public("department_id is not a valid UUID.").
 			Wrap(err)
