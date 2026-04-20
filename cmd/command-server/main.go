@@ -1,3 +1,6 @@
+// Command command-server is the write-side gRPC server for the
+// medincident platform. It wires services, handlers, and middleware
+// explicitly in main — no DI framework.
 package main
 
 import (
@@ -11,14 +14,32 @@ import (
 	"time"
 
 	"github.com/rs/zerolog"
-	"github.com/samber/do/v2"
 	"google.golang.org/grpc"
 
-	"github.com/medincident/medincident-command-service/internal/config"
-	"github.com/medincident/medincident-command-service/internal/di"
+	"github.com/medincident/medincident-command-service/internal/bootstrap"
+	classifierhandler "github.com/medincident/medincident-command-service/internal/handler/command/incident/classifier"
+	membershiphandler "github.com/medincident/medincident-command-service/internal/handler/command/membership"
+	orghandler "github.com/medincident/medincident-command-service/internal/handler/command/orgstructure"
+	"github.com/medincident/medincident-command-service/internal/middleware/grpcmw"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
+	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
+	membershipsvc "github.com/medincident/medincident-command-service/internal/service/command/membership"
+	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
+	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
+	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
+	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
 )
 
 const shutdownTimeout = 10 * time.Second
+
+// authnSkip lists the RPC paths that bypass JWT introspection: health
+// and reflection endpoints need to answer before anyone is authed.
+var authnSkip = map[string]struct{}{
+	"/grpc.health.v1.Health/Check":                                   {},
+	"/grpc.health.v1.Health/Watch":                                   {},
+	"/grpc.reflection.v1.ServerReflection/ServerReflectionInfo":      {},
+	"/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo": {},
+}
 
 func main() {
 	var configPath string
@@ -27,7 +48,7 @@ func main() {
 
 	bootLogger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 
-	cfg, err := config.ReadCommandServerConfig(configPath)
+	cfg, err := readConfig(configPath)
 	if err != nil {
 		bootLogger.Fatal().Err(err).Str("config", configPath).Msg("failed to read config")
 	}
@@ -35,16 +56,55 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	container, err := di.NewContainer(cfg)
+	logger, loggerCleanup, err := bootstrap.BuildZerolog(&cfg.Zerolog)
 	if err != nil {
-		bootLogger.Fatal().Err(err).Msg("failed to build DI container")
+		bootLogger.Fatal().Err(err).Msg("failed to build zerolog")
+	}
+	defer func() {
+		if err := loggerCleanup(); err != nil {
+			bootLogger.Error().Err(err).Msg("zerolog cleanup error")
+		}
+	}()
+
+	db, dbCleanup, err := bootstrap.OpenPostgres(ctx, &cfg.Postgres, logger)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("failed to open postgres")
+	}
+	defer dbCleanup()
+
+	zitadelService, err := bootstrap.NewZitadelService(ctx, &cfg.Zitadel, logger)
+	if err != nil {
+		logger.Fatal().Err(err).Msg("failed to build zitadel service")
 	}
 
-	logger := do.MustInvoke[*zerolog.Logger](container)
-	server, err := do.Invoke[*grpc.Server](container)
+	authorizer, err := bootstrap.NewZitadelAuthorizer(ctx, &cfg.Zitadel)
 	if err != nil {
-		logger.Fatal().Err(err).Msg("failed to resolve grpc server")
+		logger.Fatal().Err(err).Msg("failed to build zitadel authorizer")
 	}
+
+	az := authz.New(db)
+
+	orgSvc := orgsvc.NewOrganizationService(db, logger)
+	clinSvc := orgsvc.NewClinicService(db, logger)
+	deptSvc := orgsvc.NewDepartmentService(db, logger)
+	empSvc := membershipsvc.NewEmployeeService(db, zitadelService, logger)
+	catSvc := classifiersvc.NewIncidentCategoryService(db, logger)
+	typSvc := classifiersvc.NewIncidentTypeService(db, logger)
+
+	orgStructureHandler := orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc, az)
+	membershipH := membershiphandler.NewMembershipHandler(empSvc, az)
+	classifierH := classifierhandler.NewIncidentClassifierHandler(catSvc, typSvc, az)
+
+	grpcServer := grpc.NewServer(
+		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
+		grpc.ChainUnaryInterceptor(
+			grpcmw.ErrorInterceptor(logger),
+			grpcmw.AuthnInterceptor(authorizer, authnSkip),
+		),
+	)
+	orgstructurev1.RegisterOrgStructureCommandServiceServer(grpcServer, orgStructureHandler)
+	membershipv1.RegisterMembershipCommandServiceServer(grpcServer, membershipH)
+	incidentclassifierv1.RegisterIncidentClassifierCommandServiceServer(grpcServer, classifierH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)
@@ -54,8 +114,8 @@ func main() {
 
 	serveErr := make(chan error, 1)
 	go func() {
-		logger.Info().Str("addr", cfg.Server.GRPC.Address).Msg("grpc server starting")
-		if err := server.Serve(listener); err != nil && !errors.Is(err, grpc.ErrServerStopped) {
+		logger.Info().Str("addr", cfg.Server.GRPC.Address).Msg("command-server grpc starting")
+		if err := grpcServer.Serve(listener); err != nil && !errors.Is(err, grpc.ErrServerStopped) {
 			serveErr <- err
 			return
 		}
@@ -73,10 +133,22 @@ func main() {
 		}
 	}
 
-	shutdownCtx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
-	defer cancel()
-	if err := container.ShutdownWithContext(shutdownCtx); err != nil {
-		logger.Error().Err(err).Msg("shutdown error")
-	}
+	shutdownGRPC(grpcServer, logger)
 	logger.Info().Msg("command-server stopped")
+}
+
+// shutdownGRPC issues GracefulStop bounded by shutdownTimeout; on
+// deadline expiry it falls back to Stop to force-close.
+func shutdownGRPC(server *grpc.Server, logger *zerolog.Logger) {
+	done := make(chan struct{})
+	go func() {
+		server.GracefulStop()
+		close(done)
+	}()
+	select {
+	case <-done:
+	case <-time.After(shutdownTimeout):
+		logger.Warn().Dur("timeout", shutdownTimeout).Msg("graceful stop timed out, forcing")
+		server.Stop()
+	}
 }

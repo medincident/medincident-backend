@@ -1,0 +1,82 @@
+package main
+
+import (
+	"time"
+
+	"github.com/medincident/medincident-command-service/internal/config"
+)
+
+// Config is the YAML-backed runtime configuration for the gateway-server
+// binary. The gateway is a thin HTTP → gRPC translator that fronts
+// both command-server and query-server; it owns no state and does
+// not share config with either backend.
+type Config struct {
+	Server    serverConfig         `yaml:"server"    validate:"required"`
+	Upstreams upstreamsConfig      `yaml:"upstreams" validate:"required"`
+	Zerolog   config.ZerologConfig `yaml:"zerolog"   validate:"required"`
+}
+
+type serverConfig struct {
+	HTTP httpConfig `yaml:"http" validate:"required"`
+}
+
+// httpConfig is the HTTP listener plus optional CORS block. An absent
+// cors block (nil pointer) disables CORS; a present block activates
+// rs/cors with the configured allowlists.
+type httpConfig struct {
+	Address string      `yaml:"address"        validate:"required,hostname_port"`
+	CORS    *corsConfig `yaml:"cors,omitempty"`
+}
+
+type corsConfig struct {
+	AllowedOrigins []string `yaml:"allowed_origins" validate:"required,min=1,dive,required"`
+	AllowedMethods []string `yaml:"allowed_methods" validate:"required,min=1,dive,required"`
+	AllowedHeaders []string `yaml:"allowed_headers" validate:"omitempty,dive,required"`
+	MaxAgeSeconds  int      `yaml:"max_age_seconds" validate:"min=0"`
+}
+
+// upstreamsConfig fixes the two upstream gRPC backends the gateway
+// proxies into. The map is closed (command + query) — routing is by
+// proto package, not by operator-provided key.
+type upstreamsConfig struct {
+	Command upstreamConfig `yaml:"command" validate:"required"`
+	Query   upstreamConfig `yaml:"query"   validate:"required"`
+}
+
+// upstreamConfig is the dial target for one upstream. Plaintext only —
+// trusted-network deployment is assumed.
+type upstreamConfig struct {
+	Address string `yaml:"address" validate:"required,hostname_port"`
+}
+
+func defaultConfig() Config {
+	return Config{
+		Server: serverConfig{
+			HTTP: httpConfig{
+				Address: ":8080",
+			},
+		},
+		Zerolog: config.ZerologConfig{
+			Level:      "info",
+			Timestamp:  true,
+			TimeFormat: time.RFC3339,
+			Outputs: []config.ZerologOutputConfig{
+				{
+					Type:       config.ZerologOutputTypeConsole,
+					Target:     config.ZerologConsoleTargetStdout,
+					Pretty:     true,
+					TimeFormat: "15:04:05",
+					PartsOrder: []string{"time", "level", "caller", "message"},
+				},
+			},
+		},
+	}
+}
+
+func readConfig(path string) (*Config, error) {
+	cfg := defaultConfig()
+	if err := config.ReadAndValidate(path, &cfg); err != nil {
+		return nil, err
+	}
+	return &cfg, nil
+}
