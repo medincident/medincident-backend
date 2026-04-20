@@ -12,11 +12,11 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 const (
 	ErrCodeIncidentTypeIDGenerationFailed = "incident_type_id_generation_failed"
-	ErrCodeIncidentTypeIDEmpty            = "incident_type_id_empty"
 	ErrCodeIncidentTypeSaveFailed         = "incident_type_save_failed"
 	ErrCodeIncidentTypeLoadFailed         = "incident_type_load_failed"
 	ErrCodeIncidentTypeNotFound           = "incident_type_not_found"
@@ -25,12 +25,14 @@ const (
 	ErrCodeIncidentTypeNameConflict       = "incident_type_name_conflict"
 )
 
+// CreateIncidentTypeCommand is the input of IncidentTypeService.Create.
 type CreateIncidentTypeCommand struct {
-	CategoryID  uuid.UUID
-	Name        string
-	Description *string
+	CategoryID  uuid.UUID `validate:"required"`
+	Name        string    `validate:"required,min=2,max=256"`
+	Description *string   `validate:"omitnil,min=8,max=2048"`
 }
 
+// CreateIncidentTypeResult is the output of IncidentTypeService.Create.
 type CreateIncidentTypeResult struct {
 	ID uuid.UUID
 }
@@ -39,15 +41,8 @@ func (s *IncidentTypeService) Create(
 	ctx context.Context,
 	cmd CreateIncidentTypeCommand,
 ) (CreateIncidentTypeResult, error) {
-	var errs []error
-	if err := validateIncidentTypeName(cmd.Name); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateIncidentTypeDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return CreateIncidentTypeResult{}, errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return CreateIncidentTypeResult{}, err
 	}
 
 	id, err := uuid.NewV7()
@@ -96,8 +91,10 @@ func (s *IncidentTypeService) Create(
 			OrganizationID: cat.OrganizationID,
 			CategoryID:     cat.ID,
 			Name:           strings.TrimSpace(cmd.Name),
-			Description:    null.StringFromPtr(trimmedStringPtr(cmd.Description)),
 			IsActive:       true,
+		}
+		if cmd.Description != nil {
+			row.Description = null.StringFrom(strings.TrimSpace(*cmd.Description))
 		}
 
 		if err := tx.Create(&row).Error; err != nil {

@@ -13,11 +13,12 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // UpdateOrganizationLegalAddressCommand carries the new legal address.
 type UpdateOrganizationLegalAddressCommand struct {
-	ID      uuid.UUID
+	ID      uuid.UUID `validate:"required"`
 	Address AddressInput
 }
 
@@ -27,12 +28,8 @@ func (s *OrganizationService) UpdateLegalAddress(
 	ctx context.Context,
 	cmd UpdateOrganizationLegalAddressCommand,
 ) error {
-	var errs []error
-	if err := validateAddressInput(cmd.Address); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

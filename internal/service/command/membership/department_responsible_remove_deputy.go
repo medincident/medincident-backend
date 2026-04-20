@@ -12,29 +12,21 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // RemoveDepartmentResponsibleDeputyCommand carries the identifiers
 // needed to clear the deputy slot on a DR role.
 type RemoveDepartmentResponsibleDeputyCommand struct {
-	DepartmentID uuid.UUID
-	EmployeeID   uuid.UUID
+	DepartmentID uuid.UUID `validate:"required"`
+	EmployeeID   uuid.UUID `validate:"required"`
 }
 
 // RemoveDepartmentResponsibleDeputy clears the deputy slot. Fails if
 // the slot is already empty (no idempotent no-op per spec §4.7).
 func (s *EmployeeService) RemoveDepartmentResponsibleDeputy(ctx context.Context, cmd RemoveDepartmentResponsibleDeputyCommand) error {
-	var errs []error
-	if cmd.DepartmentID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentIDEmpty).
-			Public("Department ID is required.").Errorf("department id empty"))
-	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

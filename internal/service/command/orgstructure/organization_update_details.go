@@ -13,14 +13,15 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // UpdateOrganizationDetailsCommand carries the new name and (optional)
 // description for an existing organization.
 type UpdateOrganizationDetailsCommand struct {
-	ID          uuid.UUID
-	Name        string
-	Description *string // nil = clear description
+	ID          uuid.UUID `validate:"required"`
+	Name        string    `validate:"required,min=4,max=256"`
+	Description *string   `validate:"omitnil,min=8,max=2048"`
 }
 
 // UpdateDetails changes an organization's name and description. If
@@ -29,15 +30,8 @@ func (s *OrganizationService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateOrganizationDetailsCommand,
 ) error {
-	var errs []error
-	if err := validateOrganizationName(cmd.Name); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateOrganizationDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -58,7 +52,10 @@ func (s *OrganizationService) UpdateDetails(
 		}
 
 		newName := strings.TrimSpace(cmd.Name)
-		newDesc := null.StringFromPtr(cmd.Description)
+		var newDesc null.String
+		if cmd.Description != nil {
+			newDesc = null.StringFrom(strings.TrimSpace(*cmd.Description))
+		}
 		if org.Name == newName && org.Description == newDesc {
 			return nil
 		}

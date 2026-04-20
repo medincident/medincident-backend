@@ -10,34 +10,22 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // AssignClinicHeadCommand carries the identifiers needed to link an
 // employee to a clinic as its head.
 type AssignClinicHeadCommand struct {
-	ClinicID   uuid.UUID
-	EmployeeID uuid.UUID
+	ClinicID   uuid.UUID `validate:"required"`
+	EmployeeID uuid.UUID `validate:"required"`
 }
 
 // AssignClinicHead links the employee to the clinic as its head. The
 // employee must currently work in a department that belongs to the
 // clinic. See spec §8.2 (ClinicHead variant).
 func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinicHeadCommand) error {
-	var errs []error
-	if cmd.ClinicID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).
-			Code(ErrCodeClinicIDEmpty).
-			Public("Clinic ID is required.").
-			Errorf("clinic id empty"))
-	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

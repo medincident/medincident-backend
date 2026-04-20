@@ -13,22 +13,20 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // ForceEndVacationCommand identifies the running vacation to close.
 type ForceEndVacationCommand struct {
-	VacationID uuid.UUID
+	VacationID uuid.UUID `validate:"required"`
 }
 
 // ForceEndVacation closes a running vacation at the current moment.
 // Only applicable to vacations whose starts_at has already passed.
 // For scheduled (future) vacations, use CancelScheduledVacation.
 func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVacationCommand) error {
-	if cmd.VacationID == uuid.Nil {
-		return oops.In(scopeVacation).
-			Code(ErrCodeVacationIDEmpty).
-			Public("Vacation ID is required.").
-			Errorf("vacation id is empty")
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

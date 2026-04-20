@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 func TestGrantSystemAdmin_Success(t *testing.T) {
@@ -56,7 +57,7 @@ func TestGrantSystemAdmin_AlreadyGranted(t *testing.T) {
 func TestGrantSystemAdmin_EmptyInput(t *testing.T) {
 	err := empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{ZitadelUserID: "   "})
 	require.Error(t, err)
-	assert.Equal(t, membership.ErrCodeSystemAdminZitadelUserIDEmpty, oopsCode(t, err))
+	assert.Equal(t, validation.CodeStringRequired, oopsCode(t, err))
 }
 
 func TestRevokeSystemAdmin_Success(t *testing.T) {

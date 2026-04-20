@@ -14,6 +14,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 const (
@@ -21,10 +22,13 @@ const (
 	ErrCodeIncidentCategoryReactivateNameConflict     = "incident_category_reactivate_name_conflict"
 )
 
+// ReactivateIncidentCategoryCommand identifies the incident category
+// to reactivate.
 type ReactivateIncidentCategoryCommand struct {
-	CategoryID uuid.UUID
+	CategoryID uuid.UUID `validate:"required"`
 }
 
+// ReactivateIncidentCategoryResult is empty.
 type ReactivateIncidentCategoryResult struct{}
 
 // firstInactiveAncestor returns the id of the nearest inactive strict
@@ -61,7 +65,7 @@ func (s *IncidentCategoryService) Reactivate(
 	ctx context.Context,
 	cmd ReactivateIncidentCategoryCommand,
 ) (ReactivateIncidentCategoryResult, error) {
-	if err := requireCategoryID(cmd.CategoryID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return ReactivateIncidentCategoryResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

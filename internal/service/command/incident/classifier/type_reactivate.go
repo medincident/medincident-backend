@@ -14,6 +14,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 const (
@@ -21,10 +22,13 @@ const (
 	ErrCodeIncidentTypeReactivateNameConflict     = "incident_type_reactivate_name_conflict"
 )
 
+// ReactivateIncidentTypeCommand identifies the incident type to
+// reactivate.
 type ReactivateIncidentTypeCommand struct {
-	TypeID uuid.UUID
+	TypeID uuid.UUID `validate:"required"`
 }
 
+// ReactivateIncidentTypeResult is empty.
 type ReactivateIncidentTypeResult struct{}
 
 // typeHasInactiveAncestor walks from the type's owning category up to
@@ -62,7 +66,7 @@ func (s *IncidentTypeService) Reactivate(
 	ctx context.Context,
 	cmd ReactivateIncidentTypeCommand,
 ) (ReactivateIncidentTypeResult, error) {
-	if err := requireTypeID(cmd.TypeID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return ReactivateIncidentTypeResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

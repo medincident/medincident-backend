@@ -12,19 +12,31 @@ Design lives in `docs/superpowers/specs/2026-04-13-command-service-simplificatio
 2. **Never hand-create migration files.** Always run
    `task migrate:new -- <name>` (which calls `go tool dbmate new`).
    Never use `Write`/`Edit` to create a file under `db/migrations/`.
-3. **Never use string literals in `oops.Code(...)` calls, and never
-   use generic codes.** Every Code is a specific package-level
-   constant (e.g. `ErrCodeAddressTextEmpty`, not `CodeInvalidArgument`)
-   declared in the same file as the code that emits it.
+3. **Never use string literals in `oops.Code(...)` calls.** Every
+   aggregate-specific Code is a package-level constant (e.g.
+   `ErrCodeEmployeeAlreadyHired`, not `CodeAlreadyExists`) declared
+   in the same file as the code that emits it. The sole exceptions
+   are the generic validation codes emitted by
+   `internal/service/validation` — `string_required`,
+   `string_too_short`, `string_too_long`, `uuid_required`,
+   `time_required`, `int_out_of_range`, `float_out_of_range` —
+   exported as `validation.CodeXxx` package constants and produced
+   by the translator, never hand-written.
 4. **Never install Go tools globally.** Every Go tool (buf, dbmate,
    golangci-lint, govulncheck, protoc-gen-go, protoc-gen-go-grpc,
    protoc-gen-grpc-gateway, protoc-gen-openapiv2, protoc-gen-doc) is
    pinned in `go.mod`'s `tool` directive and invoked via `go tool
    <name>`. Adding a new tool: `go get -tool <module>@latest`.
-5. **Never inline invariant limits.** Every max/min/threshold is a
-   named package-level constant (`organizationMaxNameLen`,
-   `minLongitude`, …). `With()` clauses also reference the constant,
-   never the literal.
+5. **Never inline invariant limits in executable code.** Every
+   max/min/threshold used in runtime logic (`With()` clauses,
+   comparisons, `categoryDepth(...)` bounds, etc.) is a named
+   package-level constant (`incidentClassifierMaxDepth`, …), never
+   the literal. The one documented exception is **struct-tag
+   validators** (`validate:"min=4,max=256"`) on command structs: the
+   numeric bounds live inline because struct tags are compile-time
+   strings and the tag is the contract a reviewer reads next to the
+   field it constrains. `With()`, `if`, and any other executable
+   reference to the same bound still uses a constant.
 6. **Never use `fmt.Errorf("%w", ...)` for domain errors.** Use
    `samber/oops`:
    `oops.In("pkg").Code(...).Public("…").With("field", x).Wrap(err)`.
@@ -39,11 +51,17 @@ Design lives in `docs/superpowers/specs/2026-04-13-command-service-simplificatio
    `*string` / `*float64` / `*PointInput`. Conversion to `null.X` at
    the service boundary is inline via `null.StringFromPtr`,
    `null.FloatFrom`, etc. — no local wrapper helpers.
-9. **Validation at the service boundary, multi-error.** Every command
-   method collects field errors via `errors.Join(errs...)` raw (never
-   `oops.Wrap(errors.Join(...))`). Validators are pure functions in
-   the same package; each failure leaf carries its own oops `Code`.
-   No DB `CHECK` constraints — the DB has only NOT NULL, PK, FK.
+9. **Validation at the service boundary, multi-error.** Every
+   command method calls `validation.Struct(cmd)` as its first line;
+   the translator walks every `validator.FieldError` and returns an
+   `errors.Join` of oops leaves (each with its own `Code`,
+   `"field"` path, rule, and public message) — never
+   `oops.Wrap(errors.Join(...))`. Command fields carry their own
+   rules inline as `validate:"required,min=4,max=256"` /
+   `validate:"omitnil,..."` tags. Every string field is trimmed
+   before validation so whitespace-only input fails `required` /
+   `min`. No DB `CHECK` constraints — the DB has only NOT NULL, PK,
+   FK.
 10. **Events are built inline with named `buildXxxEvent` functions.**
     No generic mappers. Each event has one builder that knows its
     exact proto type and assembles it inline. Each proto event file

@@ -13,13 +13,14 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // UpdateEmployeePositionCommand carries the inputs required to change an
 // employee's position. Position nil means "clear the position".
 type UpdateEmployeePositionCommand struct {
-	ID       uuid.UUID
-	Position *string
+	ID       uuid.UUID `validate:"required"`
+	Position *string   `validate:"omitnil,min=2,max=256"`
 }
 
 // UpdatePosition changes an employee's position. Idempotent: if the
@@ -28,18 +29,8 @@ type UpdateEmployeePositionCommand struct {
 // updates; last-writer-wins is NOT acceptable because it would emit
 // events describing overwritten intermediate states.
 func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployeePositionCommand) error {
-	var errs []error
-	if cmd.ID == uuid.Nil {
-		errs = append(errs, oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id is empty"))
-	}
-	if err := validatePosition(cmd.Position); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	var newPos null.String

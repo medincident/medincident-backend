@@ -12,11 +12,12 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // TerminateEmployeeCommand carries the ID of the employee to remove.
 type TerminateEmployeeCommand struct {
-	ID uuid.UUID
+	ID uuid.UUID `validate:"required"`
 }
 
 // Terminate deletes the employee row. ON DELETE CASCADE on
@@ -24,11 +25,8 @@ type TerminateEmployeeCommand struct {
 // same statement. Publishes EmployeeTerminated with an empty payload
 // (aggregate_id in the envelope is sufficient for consumers).
 func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCommand) error {
-	if cmd.ID == uuid.Nil {
-		return oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id is empty")
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

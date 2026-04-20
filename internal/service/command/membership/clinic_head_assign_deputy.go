@@ -12,34 +12,22 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // AssignClinicHeadDeputyCommand carries the identifiers needed to set
 // the deputy slot on an existing CH role.
 type AssignClinicHeadDeputyCommand struct {
-	ClinicID         uuid.UUID
-	EmployeeID       uuid.UUID
-	DeputyEmployeeID uuid.UUID
+	ClinicID         uuid.UUID `validate:"required"`
+	EmployeeID       uuid.UUID `validate:"required"`
+	DeputyEmployeeID uuid.UUID `validate:"required"`
 }
 
 // AssignClinicHeadDeputy sets the deputy slot on an existing CH role.
 // See spec §8.5 (ClinicHead variant).
 func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd AssignClinicHeadDeputyCommand) error {
-	var errs []error
-	if cmd.ClinicID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).Code(ErrCodeClinicIDEmpty).
-			Public("Clinic ID is required.").Errorf("clinic id empty"))
-	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if cmd.DeputyEmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).Code(ErrCodeDeputyEmployeeIDEmpty).
-			Public("Deputy employee ID is required.").Errorf("deputy id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

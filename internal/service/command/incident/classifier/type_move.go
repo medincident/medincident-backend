@@ -12,36 +12,29 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 const (
 	ErrCodeIncidentTypeMoveOrganizationMismatch = "incident_type_move_organization_mismatch"
 )
 
+// MoveIncidentTypeCommand carries the identifiers needed to move an
+// incident type into a different category.
 type MoveIncidentTypeCommand struct {
-	TypeID        uuid.UUID
-	NewCategoryID uuid.UUID
+	TypeID        uuid.UUID `validate:"required"`
+	NewCategoryID uuid.UUID `validate:"required"`
 }
 
+// MoveIncidentTypeResult is empty.
 type MoveIncidentTypeResult struct{}
 
 func (s *IncidentTypeService) Move(
 	ctx context.Context,
 	cmd MoveIncidentTypeCommand,
 ) (MoveIncidentTypeResult, error) {
-	var errs []error
-	if err := requireTypeID(cmd.TypeID); err != nil {
-		errs = append(errs, err)
-	}
-	if cmd.NewCategoryID == uuid.Nil {
-		errs = append(errs, oops.In("services.incident.classifier.type").
-			Code(ErrCodeIncidentCategoryIDEmpty).
-			Public("New incident category ID is required.").
-			With("field", "new_category_id").
-			Errorf("new category id is empty"))
-	}
-	if len(errs) > 0 {
-		return MoveIncidentTypeResult{}, errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return MoveIncidentTypeResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var moving model.IncidentType

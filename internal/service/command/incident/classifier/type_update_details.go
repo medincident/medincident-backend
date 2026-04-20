@@ -13,36 +13,26 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// UpdateIncidentTypeDetailsCommand carries the new name and (optional)
+// description for an existing incident type.
 type UpdateIncidentTypeDetailsCommand struct {
-	TypeID      uuid.UUID
-	Name        string
-	Description *string
+	TypeID      uuid.UUID `validate:"required"`
+	Name        string    `validate:"required,min=2,max=256"`
+	Description *string   `validate:"omitnil,min=8,max=2048"`
 }
 
+// UpdateIncidentTypeDetailsResult is empty.
 type UpdateIncidentTypeDetailsResult struct{}
 
 func (s *IncidentTypeService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateIncidentTypeDetailsCommand,
 ) (UpdateIncidentTypeDetailsResult, error) {
-	var errs []error
-	if cmd.TypeID == uuid.Nil {
-		errs = append(errs, oops.In("services.incident.classifier.type").
-			Code(ErrCodeIncidentTypeIDEmpty).
-			Public("Incident type ID is required.").
-			With("field", "type_id").
-			Errorf("type id empty"))
-	}
-	if err := validateIncidentTypeName(cmd.Name); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateIncidentTypeDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return UpdateIncidentTypeDetailsResult{}, errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return UpdateIncidentTypeDetailsResult{}, err
 	}
 
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -67,7 +57,10 @@ func (s *IncidentTypeService) UpdateDetails(
 		}
 
 		newName := strings.TrimSpace(cmd.Name)
-		newDescription := null.StringFromPtr(trimmedStringPtr(cmd.Description))
+		var newDescription null.String
+		if cmd.Description != nil {
+			newDescription = null.StringFrom(strings.TrimSpace(*cmd.Description))
+		}
 		if row.Name == newName && row.Description == newDescription {
 			return nil
 		}

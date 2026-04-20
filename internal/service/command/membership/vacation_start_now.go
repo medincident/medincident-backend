@@ -13,29 +13,27 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // StartVacationNowCommand carries everything the service needs to
 // start a vacation at the current time.
 type StartVacationNowCommand struct {
-	EmployeeID uuid.UUID
+	EmployeeID uuid.UUID `validate:"required"`
 	EndsAt     *time.Time
 }
 
 // StartVacationNowResult holds the ID of the newly created vacation.
 type StartVacationNowResult struct {
-	ID uuid.UUID
+	ID uuid.UUID `validate:"required"`
 }
 
 // StartVacationNow starts a vacation at the current time. EndsAt may
 // be nil (unlimited). Overlap with existing vacations of the same
 // employee is rejected by the exclusion constraint on the table.
 func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacationNowCommand) (StartVacationNowResult, error) {
-	if cmd.EmployeeID == uuid.Nil {
-		return StartVacationNowResult{}, oops.In(scopeVacation).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id is empty")
+	if err := validation.Struct(cmd); err != nil {
+		return StartVacationNowResult{}, err
 	}
 
 	var result StartVacationNowResult

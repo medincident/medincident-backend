@@ -19,24 +19,6 @@ import (
 // file, so the command bodies read as "validate → exist → load emp →
 // scope → insert" instead of 100 lines of copy-paste.
 
-// validateOrgRoleKeys returns a joined error when either identifier
-// is uuid.Nil, matching the multi-error validation contract.
-func validateOrgRoleKeys(scope string, orgID, empID uuid.UUID) error {
-	var errs []error
-	if orgID == uuid.Nil {
-		errs = append(errs, oops.In(scope).Code(ErrCodeOrganizationIDEmpty).
-			Public("Organization ID is required.").Errorf("organization id empty"))
-	}
-	if empID == uuid.Nil {
-		errs = append(errs, oops.In(scope).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
-	}
-	return nil
-}
-
 // requireOrganizationExists fails with ErrCodeOrganizationNotFound if
 // the row is missing, or wraps other driver errors with
 // ErrCodeOrganizationLookupFailed.

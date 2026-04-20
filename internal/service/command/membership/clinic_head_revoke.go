@@ -12,30 +12,22 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // RevokeClinicHeadCommand carries the identifiers needed to remove an
 // employee's clinic head role.
 type RevokeClinicHeadCommand struct {
-	ClinicID   uuid.UUID
-	EmployeeID uuid.UUID
+	ClinicID   uuid.UUID `validate:"required"`
+	EmployeeID uuid.UUID `validate:"required"`
 }
 
 // RevokeClinicHead removes the role row and publishes the Revoked
 // event. If a deputy was assigned, a DeputyRemoved event is published
 // FIRST (Rule 2 — cleanup before terminate). See spec §8.6.
 func (s *EmployeeService) RevokeClinicHead(ctx context.Context, cmd RevokeClinicHeadCommand) error {
-	var errs []error
-	if cmd.ClinicID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).Code(ErrCodeClinicIDEmpty).
-			Public("Clinic ID is required.").Errorf("clinic id empty"))
-	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

@@ -12,34 +12,22 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // AssignOrganizationHeadDeputyCommand carries the identifiers needed
 // to set the deputy slot on an existing OrgHead role.
 type AssignOrganizationHeadDeputyCommand struct {
-	OrganizationID   uuid.UUID
-	EmployeeID       uuid.UUID
-	DeputyEmployeeID uuid.UUID
+	OrganizationID   uuid.UUID `validate:"required"`
+	EmployeeID       uuid.UUID `validate:"required"`
+	DeputyEmployeeID uuid.UUID `validate:"required"`
 }
 
 // AssignOrganizationHeadDeputy sets the deputy slot on an existing
 // OrgHead role. See spec §8.5 (OrgHead variant).
 func (s *EmployeeService) AssignOrganizationHeadDeputy(ctx context.Context, cmd AssignOrganizationHeadDeputyCommand) error {
-	var errs []error
-	if cmd.OrganizationID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgHead).Code(ErrCodeOrganizationIDEmpty).
-			Public("Organization ID is required.").Errorf("organization id empty"))
-	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgHead).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if cmd.DeputyEmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgHead).Code(ErrCodeDeputyEmployeeIDEmpty).
-			Public("Deputy employee ID is required.").Errorf("deputy id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

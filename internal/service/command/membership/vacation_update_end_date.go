@@ -13,12 +13,13 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // UpdateVacationEndDateCommand carries the vacation to update and the
 // desired new end date.
 type UpdateVacationEndDateCommand struct {
-	VacationID uuid.UUID
+	VacationID uuid.UUID `validate:"required"`
 	EndsAt     time.Time
 }
 
@@ -28,21 +29,8 @@ type UpdateVacationEndDateCommand struct {
 // a concurrent ForceEndVacation (which would otherwise allow this
 // command to resurrect a manually-ended vacation from a stale read).
 func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateVacationEndDateCommand) error {
-	var errs []error
-	if cmd.VacationID == uuid.Nil {
-		errs = append(errs, oops.In(scopeVacation).
-			Code(ErrCodeVacationIDEmpty).
-			Public("Vacation ID is required.").
-			Errorf("vacation id is empty"))
-	}
-	if cmd.EndsAt.IsZero() {
-		errs = append(errs, oops.In(scopeVacation).
-			Code(ErrCodeVacationEndBeforeStart).
-			Public("Vacation end is required.").
-			Errorf("vacation end must be after start"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

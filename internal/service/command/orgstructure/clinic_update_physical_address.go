@@ -13,23 +13,23 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// UpdateClinicPhysicalAddressCommand carries the new physical address
+// for an existing clinic.
 type UpdateClinicPhysicalAddressCommand struct {
-	ID      uuid.UUID
+	ID      uuid.UUID `validate:"required"`
 	Address AddressInput
 }
 
+// UpdatePhysicalAddress replaces the clinic's physical address.
 func (s *ClinicService) UpdatePhysicalAddress(
 	ctx context.Context,
 	cmd UpdateClinicPhysicalAddressCommand,
 ) error {
-	var errs []error
-	if err := validateAddressInput(cmd.Address); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

@@ -11,19 +11,23 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// DeactivateIncidentTypeCommand identifies the incident type to
+// deactivate.
 type DeactivateIncidentTypeCommand struct {
-	TypeID uuid.UUID
+	TypeID uuid.UUID `validate:"required"`
 }
 
+// DeactivateIncidentTypeResult is empty.
 type DeactivateIncidentTypeResult struct{}
 
 func (s *IncidentTypeService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateIncidentTypeCommand,
 ) (DeactivateIncidentTypeResult, error) {
-	if err := requireTypeID(cmd.TypeID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return DeactivateIncidentTypeResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

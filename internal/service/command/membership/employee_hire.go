@@ -13,6 +13,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
 
@@ -20,9 +21,9 @@ import (
 // a new Employee row. The organisation is derived from the
 // department's parent lineage; callers pass only the department.
 type HireEmployeeCommand struct {
-	ZitadelUserID string
-	DepartmentID  uuid.UUID
-	Position      *string
+	ZitadelUserID string    `validate:"required"`
+	DepartmentID  uuid.UUID `validate:"required"`
+	Position      *string   `validate:"omitnil,min=2,max=256"`
 }
 
 // HireEmployeeResult holds the identifiers of the newly created employee.
@@ -34,25 +35,8 @@ type HireEmployeeResult struct {
 // the organisation via a JOIN on domain.departments → domain.clinics.
 // Invariants and error codes are spelled out in the spec.
 func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (HireEmployeeResult, error) {
-	// Phase 1: multi-error local validation.
-	var errs []error
-	if strings.TrimSpace(cmd.ZitadelUserID) == "" {
-		errs = append(errs, oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeZitadelUserIDEmpty).
-			Public("Zitadel user ID is required.").
-			Errorf("zitadel user id is empty"))
-	}
-	if cmd.DepartmentID == uuid.Nil {
-		errs = append(errs, oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeDepartmentIDEmpty).
-			Public("Department ID is required.").
-			Errorf("department id is empty"))
-	}
-	if err := validatePosition(cmd.Position); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return HireEmployeeResult{}, errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return HireEmployeeResult{}, err
 	}
 
 	zitadelUserID := strings.TrimSpace(cmd.ZitadelUserID)

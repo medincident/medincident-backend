@@ -12,13 +12,14 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // Error codes emitted by CreateIncidentCategory and shared with other
-// category service methods.
+// category service methods. Validation-level codes (required, length
+// bounds) are generic and live in internal/validation.
 const (
 	ErrCodeIncidentCategoryIDGenerationFailed         = "incident_category_id_generation_failed"
-	ErrCodeIncidentCategoryIDEmpty                    = "incident_category_id_empty"
 	ErrCodeIncidentCategorySaveFailed                 = "incident_category_save_failed"
 	ErrCodeIncidentCategoryLoadFailed                 = "incident_category_load_failed"
 	ErrCodeIncidentCategoryNotFound                   = "incident_category_not_found"
@@ -31,10 +32,10 @@ const (
 
 // CreateIncidentCategoryCommand is the input of IncidentCategoryService.Create.
 type CreateIncidentCategoryCommand struct {
-	OrganizationID   uuid.UUID
-	ParentCategoryID *uuid.UUID
-	Name             string
-	Description      *string
+	OrganizationID   uuid.UUID  `validate:"required"`
+	ParentCategoryID *uuid.UUID `validate:"omitnil,required"`
+	Name             string     `validate:"required,min=2,max=256"`
+	Description      *string    `validate:"omitnil,min=8,max=2048"`
 }
 
 // CreateIncidentCategoryResult is the output of IncidentCategoryService.Create.
@@ -70,15 +71,8 @@ func (s *IncidentCategoryService) Create(
 	ctx context.Context,
 	cmd CreateIncidentCategoryCommand,
 ) (CreateIncidentCategoryResult, error) {
-	var errs []error
-	if err := validateIncidentCategoryName(cmd.Name); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateIncidentCategoryDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return CreateIncidentCategoryResult{}, errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return CreateIncidentCategoryResult{}, err
 	}
 
 	id, err := uuid.NewV7()
@@ -93,8 +87,10 @@ func (s *IncidentCategoryService) Create(
 		ID:             id,
 		OrganizationID: cmd.OrganizationID,
 		Name:           strings.TrimSpace(cmd.Name),
-		Description:    null.StringFromPtr(trimmedStringPtr(cmd.Description)),
 		IsActive:       true,
+	}
+	if cmd.Description != nil {
+		cat.Description = null.StringFrom(strings.TrimSpace(*cmd.Description))
 	}
 	if cmd.ParentCategoryID != nil {
 		cat.ParentCategoryID = uuid.NullUUID{UUID: *cmd.ParentCategoryID, Valid: true}

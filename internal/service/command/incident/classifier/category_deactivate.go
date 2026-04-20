@@ -12,12 +12,17 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// DeactivateIncidentCategoryCommand identifies the incident category
+// to deactivate (cascades to descendants and types).
 type DeactivateIncidentCategoryCommand struct {
-	CategoryID uuid.UUID
+	CategoryID uuid.UUID `validate:"required"`
 }
 
+// DeactivateIncidentCategoryResult is empty — events carry the real
+// outcome.
 type DeactivateIncidentCategoryResult struct{}
 
 // Deactivate performs a cascading deactivation: the target category,
@@ -28,7 +33,7 @@ func (s *IncidentCategoryService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateIncidentCategoryCommand,
 ) (DeactivateIncidentCategoryResult, error) {
-	if err := requireCategoryID(cmd.CategoryID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return DeactivateIncidentCategoryResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

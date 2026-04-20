@@ -12,34 +12,22 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // UpdateEmployeeDepartmentCommand carries the inputs required to move
 // an employee to a different department.
 type UpdateEmployeeDepartmentCommand struct {
-	ID           uuid.UUID
-	DepartmentID uuid.UUID
+	ID           uuid.UUID `validate:"required"`
+	DepartmentID uuid.UUID `validate:"required"`
 }
 
 // UpdateDepartment moves an employee to a different department. The
 // target department must belong to the same organisation as the
 // current employee row; moving across organisations is forbidden.
 func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmployeeDepartmentCommand) error {
-	var errs []error
-	if cmd.ID == uuid.Nil {
-		errs = append(errs, oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id is empty"))
-	}
-	if cmd.DepartmentID == uuid.Nil {
-		errs = append(errs, oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeDepartmentIDEmpty).
-			Public("Department ID is required.").
-			Errorf("department id is empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -68,9 +56,9 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 		// decide whether the move is cross-clinic and to validate that the
 		// target department belongs to the employee's organisation.
 		var lookup struct {
-			OldClinicID uuid.UUID
-			NewClinicID uuid.UUID
-			NewOrgID    uuid.UUID
+			OldClinicID uuid.UUID `validate:"required"`
+			NewClinicID uuid.UUID `validate:"required"`
+			NewOrgID    uuid.UUID `validate:"required"`
 		}
 		err := tx.Raw(`
 			SELECT old_c.id           AS old_clinic_id,

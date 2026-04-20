@@ -13,32 +13,27 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// UpdateIncidentCategoryDetailsCommand carries the new name and
+// (optional) description for an existing incident category.
 type UpdateIncidentCategoryDetailsCommand struct {
-	CategoryID  uuid.UUID
-	Name        string
-	Description *string
+	CategoryID  uuid.UUID `validate:"required"`
+	Name        string    `validate:"required,min=2,max=256"`
+	Description *string   `validate:"omitnil,min=8,max=2048"`
 }
 
+// UpdateIncidentCategoryDetailsResult is empty — the event is the
+// meaningful result.
 type UpdateIncidentCategoryDetailsResult struct{}
 
 func (s *IncidentCategoryService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateIncidentCategoryDetailsCommand,
 ) (UpdateIncidentCategoryDetailsResult, error) {
-	var errs []error
-	if err := requireCategoryID(cmd.CategoryID); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateIncidentCategoryName(cmd.Name); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateIncidentCategoryDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return UpdateIncidentCategoryDetailsResult{}, errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return UpdateIncidentCategoryDetailsResult{}, err
 	}
 
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -63,7 +58,10 @@ func (s *IncidentCategoryService) UpdateDetails(
 		}
 
 		newName := strings.TrimSpace(cmd.Name)
-		newDescription := null.StringFromPtr(trimmedStringPtr(cmd.Description))
+		var newDescription null.String
+		if cmd.Description != nil {
+			newDescription = null.StringFrom(strings.TrimSpace(*cmd.Description))
+		}
 		if cat.Name == newName && cat.Description == newDescription {
 			return nil
 		}

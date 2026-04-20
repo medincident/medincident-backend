@@ -11,19 +11,22 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// DeleteIncidentTypeCommand identifies the incident type to delete.
 type DeleteIncidentTypeCommand struct {
-	TypeID uuid.UUID
+	TypeID uuid.UUID `validate:"required"`
 }
 
+// DeleteIncidentTypeResult is empty.
 type DeleteIncidentTypeResult struct{}
 
 func (s *IncidentTypeService) Delete(
 	ctx context.Context,
 	cmd DeleteIncidentTypeCommand,
 ) (DeleteIncidentTypeResult, error) {
-	if err := requireTypeID(cmd.TypeID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return DeleteIncidentTypeResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

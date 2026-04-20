@@ -12,20 +12,21 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // RevokeOrganizationAdminCommand carries the identifiers needed to
 // remove an employee's organization admin role.
 type RevokeOrganizationAdminCommand struct {
-	OrganizationID uuid.UUID
-	EmployeeID     uuid.UUID
+	OrganizationID uuid.UUID `validate:"required"`
+	EmployeeID     uuid.UUID `validate:"required"`
 }
 
 // RevokeOrganizationAdmin removes the role row and publishes the
 // Revoked event. If a deputy was assigned, a DeputyRemoved event is
 // published FIRST (Rule 2 — cleanup before terminate). See spec §8.6.
 func (s *EmployeeService) RevokeOrganizationAdmin(ctx context.Context, cmd RevokeOrganizationAdminCommand) error {
-	if err := validateOrgRoleKeys(scopeOrgAdmin, cmd.OrganizationID, cmd.EmployeeID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return err
 	}
 

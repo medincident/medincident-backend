@@ -13,27 +13,24 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// UpdateDepartmentDetailsCommand carries the new name and (optional)
+// description for an existing department.
 type UpdateDepartmentDetailsCommand struct {
-	ID          uuid.UUID
-	Name        string
-	Description *string
+	ID          uuid.UUID `validate:"required"`
+	Name        string    `validate:"required,min=4,max=256"`
+	Description *string   `validate:"omitnil,min=8,max=2048"`
 }
 
+// UpdateDetails changes a department's name and description.
 func (s *DepartmentService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateDepartmentDetailsCommand,
 ) error {
-	var errs []error
-	if err := validateDepartmentName(cmd.Name); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateDepartmentDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -54,7 +51,10 @@ func (s *DepartmentService) UpdateDetails(
 		}
 
 		newName := strings.TrimSpace(cmd.Name)
-		newDesc := null.StringFromPtr(cmd.Description)
+		var newDesc null.String
+		if cmd.Description != nil {
+			newDesc = null.StringFrom(strings.TrimSpace(*cmd.Description))
+		}
 		if dept.Name == newName && dept.Description == newDesc {
 			return nil
 		}

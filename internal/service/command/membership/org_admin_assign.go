@@ -10,20 +10,21 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // AssignOrganizationAdminCommand carries the identifiers needed to link
 // an employee to an organization as its admin.
 type AssignOrganizationAdminCommand struct {
-	OrganizationID uuid.UUID
-	EmployeeID     uuid.UUID
+	OrganizationID uuid.UUID `validate:"required"`
+	EmployeeID     uuid.UUID `validate:"required"`
 }
 
 // AssignOrganizationAdmin links the employee to the organization as its
 // admin. The employee must currently belong to that organization
 // (organization_id is denormalized on employees). See spec §8.2 (OrgAdmin variant).
 func (s *EmployeeService) AssignOrganizationAdmin(ctx context.Context, cmd AssignOrganizationAdminCommand) error {
-	if err := validateOrgRoleKeys(scopeOrgAdmin, cmd.OrganizationID, cmd.EmployeeID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return err
 	}
 

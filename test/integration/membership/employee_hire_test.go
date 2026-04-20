@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 func hireBob(t *testing.T, f fixture) (employeeID string) {
@@ -69,7 +70,7 @@ func TestHireEmployee_WhitespaceOnlyPositionRejected(t *testing.T) {
 		Position:      &empty,
 	})
 	require.Error(t, err)
-	assert.Equal(t, membership.ErrCodeEmployeePositionTooShort, oopsCode(t, err))
+	assert.Equal(t, validation.CodeStringTooShort, oopsCode(t, err))
 }
 
 func TestHireEmployee_ZitadelUserNotFound(t *testing.T) {
@@ -116,7 +117,7 @@ func TestHireEmployee_PositionTooShort(t *testing.T) {
 		Position:      &short,
 	})
 	require.Error(t, err)
-	assert.Contains(t, oopsCode(t, err), "position_too_short")
+	assert.Equal(t, validation.CodeStringTooShort, oopsCode(t, err))
 }
 
 func TestHireEmployee_PositionTooLong(t *testing.T) {
@@ -128,7 +129,7 @@ func TestHireEmployee_PositionTooLong(t *testing.T) {
 		Position:      &long,
 	})
 	require.Error(t, err)
-	assert.Contains(t, oopsCode(t, err), "position_too_long")
+	assert.Equal(t, validation.CodeStringTooLong, oopsCode(t, err))
 }
 
 func TestHireEmployee_MultiErrorReturnsAllViolations(t *testing.T) {
@@ -138,7 +139,7 @@ func TestHireEmployee_MultiErrorReturnsAllViolations(t *testing.T) {
 		Position:      &tooShort,
 	})
 	codes := oopsCodes(t, err)
-	assert.Contains(t, codes, membership.ErrCodeEmployeeZitadelUserIDEmpty)
-	assert.Contains(t, codes, membership.ErrCodeEmployeeDepartmentIDEmpty)
-	assert.Contains(t, codes, membership.ErrCodeEmployeePositionTooShort)
+	assert.Contains(t, codes, validation.CodeStringRequired)
+	assert.Contains(t, codes, validation.CodeUUIDRequired)
+	assert.Contains(t, codes, validation.CodeStringTooShort)
 }

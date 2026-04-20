@@ -12,34 +12,22 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // AssignDepartmentResponsibleDeputyCommand carries the identifiers
 // needed to set the deputy slot on an existing DR role.
 type AssignDepartmentResponsibleDeputyCommand struct {
-	DepartmentID     uuid.UUID
-	EmployeeID       uuid.UUID
-	DeputyEmployeeID uuid.UUID
+	DepartmentID     uuid.UUID `validate:"required"`
+	EmployeeID       uuid.UUID `validate:"required"`
+	DeputyEmployeeID uuid.UUID `validate:"required"`
 }
 
 // AssignDepartmentResponsibleDeputy sets the deputy slot on an
 // existing DR role. See spec §8.5.
 func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context, cmd AssignDepartmentResponsibleDeputyCommand) error {
-	var errs []error
-	if cmd.DepartmentID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentIDEmpty).
-			Public("Department ID is required.").Errorf("department id empty"))
-	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if cmd.DeputyEmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).Code(ErrCodeDeputyEmployeeIDEmpty).
-			Public("Deputy employee ID is required.").Errorf("deputy id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

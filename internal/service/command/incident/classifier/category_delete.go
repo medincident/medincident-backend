@@ -11,12 +11,17 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// DeleteIncidentCategoryCommand identifies the incident category to
+// delete along with its entire subtree.
 type DeleteIncidentCategoryCommand struct {
-	CategoryID uuid.UUID
+	CategoryID uuid.UUID `validate:"required"`
 }
 
+// DeleteIncidentCategoryResult is empty — events carry the real
+// outcome.
 type DeleteIncidentCategoryResult struct{}
 
 // lockCategorySubtreeIDs returns the full list of category ids in the
@@ -72,7 +77,7 @@ func (s *IncidentCategoryService) Delete(
 	ctx context.Context,
 	cmd DeleteIncidentCategoryCommand,
 ) (DeleteIncidentCategoryResult, error) {
-	if err := requireCategoryID(cmd.CategoryID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return DeleteIncidentCategoryResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

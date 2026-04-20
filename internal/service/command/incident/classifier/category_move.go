@@ -12,6 +12,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 const (
@@ -20,11 +21,14 @@ const (
 	ErrCodeIncidentCategoryMoveOrganizationMismatch = "incident_category_move_organization_mismatch"
 )
 
+// MoveIncidentCategoryCommand carries the identifiers needed to
+// reparent an incident category.
 type MoveIncidentCategoryCommand struct {
-	CategoryID          uuid.UUID
+	CategoryID          uuid.UUID `validate:"required"`
 	NewParentCategoryID *uuid.UUID
 }
 
+// MoveIncidentCategoryResult is empty — the event is the real result.
 type MoveIncidentCategoryResult struct{}
 
 // categorySubtreeDepth returns the internal depth of the subtree rooted
@@ -75,7 +79,7 @@ func (s *IncidentCategoryService) Move(
 	ctx context.Context,
 	cmd MoveIncidentCategoryCommand,
 ) (MoveIncidentCategoryResult, error) {
-	if err := requireCategoryID(cmd.CategoryID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return MoveIncidentCategoryResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

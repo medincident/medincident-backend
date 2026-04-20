@@ -12,22 +12,20 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // CancelScheduledVacationCommand identifies the future vacation to remove.
 type CancelScheduledVacationCommand struct {
-	VacationID uuid.UUID
+	VacationID uuid.UUID `validate:"required"`
 }
 
 // CancelScheduledVacation removes a not-yet-started vacation. For a
 // vacation whose starts_at has already passed, use ForceEndVacation
 // instead.
 func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd CancelScheduledVacationCommand) error {
-	if cmd.VacationID == uuid.Nil {
-		return oops.In(scopeVacation).
-			Code(ErrCodeVacationIDEmpty).
-			Public("Vacation ID is required.").
-			Errorf("vacation id is empty")
+	if err := validation.Struct(cmd); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

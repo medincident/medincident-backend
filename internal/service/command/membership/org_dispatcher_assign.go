@@ -10,20 +10,21 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // AssignOrganizationDispatcherCommand carries the identifiers needed to link
 // an employee to an organization as its dispatcher.
 type AssignOrganizationDispatcherCommand struct {
-	OrganizationID uuid.UUID
-	EmployeeID     uuid.UUID
+	OrganizationID uuid.UUID `validate:"required"`
+	EmployeeID     uuid.UUID `validate:"required"`
 }
 
 // AssignOrganizationDispatcher links the employee to the organization as its
 // dispatcher. The employee must currently belong to that organization
 // (organization_id is denormalized on employees). See spec §8.2 (OrgDispatcher variant).
 func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd AssignOrganizationDispatcherCommand) error {
-	if err := validateOrgRoleKeys(scopeOrgDispatcher, cmd.OrganizationID, cmd.EmployeeID); err != nil {
+	if err := validation.Struct(cmd); err != nil {
 		return err
 	}
 

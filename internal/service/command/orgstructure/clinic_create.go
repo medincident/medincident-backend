@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"strings"
-	"unicode/utf8"
 
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
@@ -13,22 +12,13 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
+// Error codes emitted by Clinic-aggregate commands that are not
+// primitive validation. Validation codes are generic and live in
+// internal/validation.
 const (
-	clinicMinNameLen = 4
-	clinicMaxNameLen = 256
-	clinicMinDescLen = 8
-	clinicMaxDescLen = 2048
-)
-
-const (
-	ErrCodeClinicNameEmpty           = "clinic_name_empty"
-	ErrCodeClinicNameTooShort        = "clinic_name_too_short"
-	ErrCodeClinicNameTooLong         = "clinic_name_too_long"
-	ErrCodeClinicDescriptionTooShort = "clinic_description_too_short"
-	ErrCodeClinicDescriptionTooLong  = "clinic_description_too_long"
-
 	ErrCodeClinicIDGenerationFailed   = "clinic_id_generation_failed"
 	ErrCodeClinicSaveFailed           = "clinic_save_failed"
 	ErrCodeClinicLoadFailed           = "clinic_load_failed"
@@ -36,91 +26,26 @@ const (
 	ErrCodeClinicOrganizationNotFound = "clinic_organization_not_found"
 )
 
+// CreateClinicCommand is the input of ClinicService.Create.
 type CreateClinicCommand struct {
-	OrganizationID  uuid.UUID
-	Name            string
-	Description     *string
+	OrganizationID  uuid.UUID `validate:"required"`
+	Name            string    `validate:"required,min=4,max=256"`
+	Description     *string   `validate:"omitnil,min=8,max=2048"`
 	PhysicalAddress AddressInput
 }
 
+// CreateClinicResult is the output of ClinicService.Create.
 type CreateClinicResult struct {
 	ID uuid.UUID
 }
 
-func validateClinicName(name string) error {
-	trimmed := strings.TrimSpace(name)
-	if trimmed == "" {
-		return oops.In("services.orgstructure.clinic").
-			Code(ErrCodeClinicNameEmpty).
-			Public("Clinic name is required.").
-			With("field", "name").
-			Errorf("name is empty")
-	}
-	n := utf8.RuneCountInString(trimmed)
-	if n < clinicMinNameLen {
-		return oops.In("services.orgstructure.clinic").
-			Code(ErrCodeClinicNameTooShort).
-			Public("Clinic name is too short.").
-			With("field", "name").
-			With("actual_length", n).
-			With("min_length", clinicMinNameLen).
-			Errorf("name too short")
-	}
-	if n > clinicMaxNameLen {
-		return oops.In("services.orgstructure.clinic").
-			Code(ErrCodeClinicNameTooLong).
-			Public("Clinic name is too long.").
-			With("field", "name").
-			With("actual_length", n).
-			With("max_length", clinicMaxNameLen).
-			Errorf("name too long")
-	}
-	return nil
-}
-
-func validateClinicDescription(desc *string) error {
-	if desc == nil {
-		return nil
-	}
-	trimmed := strings.TrimSpace(*desc)
-	n := utf8.RuneCountInString(trimmed)
-	if n < clinicMinDescLen {
-		return oops.In("services.orgstructure.clinic").
-			Code(ErrCodeClinicDescriptionTooShort).
-			Public("Clinic description is too short.").
-			With("field", "description").
-			With("actual_length", n).
-			With("min_length", clinicMinDescLen).
-			Errorf("description too short")
-	}
-	if n > clinicMaxDescLen {
-		return oops.In("services.orgstructure.clinic").
-			Code(ErrCodeClinicDescriptionTooLong).
-			Public("Clinic description is too long.").
-			With("field", "description").
-			With("actual_length", n).
-			With("max_length", clinicMaxDescLen).
-			Errorf("description too long")
-	}
-	return nil
-}
-
+// Create persists a new Clinic under the given organization.
 func (s *ClinicService) Create(
 	ctx context.Context,
 	cmd CreateClinicCommand,
 ) (CreateClinicResult, error) {
-	var errs []error
-	if err := validateClinicName(cmd.Name); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateClinicDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateAddressInput(cmd.PhysicalAddress); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return CreateClinicResult{}, errors.Join(errs...)
+	if err := validation.Struct(cmd); err != nil {
+		return CreateClinicResult{}, err
 	}
 
 	id, err := uuid.NewV7()
@@ -135,10 +60,12 @@ func (s *ClinicService) Create(
 		ID:             id,
 		OrganizationID: cmd.OrganizationID,
 		Name:           strings.TrimSpace(cmd.Name),
-		Description:    null.StringFromPtr(cmd.Description),
 		PhysicalAddress: model.Address{
 			Text: strings.TrimSpace(cmd.PhysicalAddress.Text),
 		},
+	}
+	if cmd.Description != nil {
+		clinic.Description = null.StringFrom(strings.TrimSpace(*cmd.Description))
 	}
 	if cmd.PhysicalAddress.Point != nil {
 		clinic.PhysicalAddress.Point = null.ValueFrom(model.Point{

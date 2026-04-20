@@ -14,6 +14,7 @@ import (
 
 	"github.com/medincident/medincident-command-service/internal/model"
 	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 // codeOf extracts the oops Code as a string from any error in a joined
@@ -100,11 +101,9 @@ func TestOrganization_Create_MultiFieldViolations(t *testing.T) {
 		collect(leaf)
 	}
 
-	assert.True(t, codes[orgsvc.ErrCodeOrganizationNameEmpty], "name_empty expected")
-	assert.True(t, codes[orgsvc.ErrCodeOrganizationDescriptionTooShort], "description_too_short expected")
-	assert.True(t, codes[orgsvc.ErrCodeAddressTextTooShort], "address_text_too_short expected")
-	assert.True(t, codes[orgsvc.ErrCodeAddressLongitudeOutOfRange], "longitude_out_of_range expected")
-	assert.True(t, codes[orgsvc.ErrCodeAddressLatitudeOutOfRange], "latitude_out_of_range expected")
+	assert.True(t, codes[validation.CodeStringRequired], "string_required expected for empty name")
+	assert.True(t, codes[validation.CodeStringTooShort], "string_too_short expected for short description / address text")
+	assert.True(t, codes[validation.CodeFloatOutOfRange], "float_out_of_range expected for bad coordinates")
 
 	assert.Equal(t, 0, countOrganizations(t))
 	assert.Equal(t, 0, countProjectionOrganizations(t))
