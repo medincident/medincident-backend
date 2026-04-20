@@ -42,7 +42,7 @@ func NewIncidentClassifierHandler(
 func parseOrganizationID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.incident.classifier").
+		return uuid.Nil, oops.In("handler.command.incident.classifier").
 			Code(ErrCodeHandlerInvalidOrganizationID).
 			Public("Invalid organization id.").
 			With("organization_id", raw).
@@ -54,7 +54,7 @@ func parseOrganizationID(raw string) (uuid.UUID, error) {
 func parseIncidentCategoryID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.incident.classifier").
+		return uuid.Nil, oops.In("handler.command.incident.classifier").
 			Code(ErrCodeHandlerInvalidIncidentCategoryID).
 			Public("Invalid incident category id.").
 			With("incident_category_id", raw).
@@ -66,7 +66,7 @@ func parseIncidentCategoryID(raw string) (uuid.UUID, error) {
 func parseIncidentTypeID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.incident.classifier").
+		return uuid.Nil, oops.In("handler.command.incident.classifier").
 			Code(ErrCodeHandlerInvalidIncidentTypeID).
 			Public("Invalid incident type id.").
 			With("incident_type_id", raw).

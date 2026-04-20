@@ -64,7 +64,7 @@ func addressInputFromProto(in *orgstructurev1.AddressInput) orgsvc.AddressInput 
 func parseOrganizationID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.orgstructure").
+		return uuid.Nil, oops.In("handler.command.orgstructure").
 			Code(ErrCodeHandlerInvalidOrganizationID).
 			Public("Invalid organization id.").
 			With("organization_id", raw).
@@ -77,7 +77,7 @@ func parseOrganizationID(raw string) (uuid.UUID, error) {
 func parseClinicID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.orgstructure").
+		return uuid.Nil, oops.In("handler.command.orgstructure").
 			Code(ErrCodeHandlerInvalidClinicID).
 			Public("Invalid clinic id.").
 			With("clinic_id", raw).
@@ -90,7 +90,7 @@ func parseClinicID(raw string) (uuid.UUID, error) {
 func parseDepartmentID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.orgstructure").
+		return uuid.Nil, oops.In("handler.command.orgstructure").
 			Code(ErrCodeHandlerInvalidDepartmentID).
 			Public("Invalid department id.").
 			With("department_id", raw).

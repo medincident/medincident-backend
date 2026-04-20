@@ -5,6 +5,7 @@ import (
 	"github.com/samber/oops"
 )
 
+// Error codes emitted by handler-layer request parsing.
 const (
 	ErrCodeHandlerInvalidEmployeeID     = "employee_id_invalid"
 	ErrCodeHandlerInvalidDepartmentID   = "department_id_invalid"

@@ -52,7 +52,7 @@ func NewMembershipHandler(empSvc *membership.EmployeeService, az *authz.Authz) *
 func parseEmployeeID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.membership").
+		return uuid.Nil, oops.In("handler.command.membership").
 			Code(ErrCodeHandlerInvalidEmployeeID).
 			Public("employee_id is not a valid UUID.").
 			Wrap(err)
@@ -63,7 +63,7 @@ func parseEmployeeID(raw string) (uuid.UUID, error) {
 func parseDepartmentID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.membership").
+		return uuid.Nil, oops.In("handler.command.membership").
 			Code(ErrCodeHandlerInvalidDepartmentID).
 			Public("department_id is not a valid UUID.").
 			Wrap(err)
@@ -74,7 +74,7 @@ func parseDepartmentID(raw string) (uuid.UUID, error) {
 func parseClinicID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.membership").
+		return uuid.Nil, oops.In("handler.command.membership").
 			Code(ErrCodeHandlerInvalidClinicID).
 			Public("clinic_id is not a valid UUID.").
 			Wrap(err)
@@ -85,7 +85,7 @@ func parseClinicID(raw string) (uuid.UUID, error) {
 func parseVacationID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.membership").
+		return uuid.Nil, oops.In("handler.command.membership").
 			Code(ErrCodeHandlerInvalidVacationID).
 			Public("vacation_id is not a valid UUID.").
 			Wrap(err)
@@ -96,7 +96,7 @@ func parseVacationID(raw string) (uuid.UUID, error) {
 func parseDeputyEmployeeID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.membership").
+		return uuid.Nil, oops.In("handler.command.membership").
 			Code(ErrCodeHandlerInvalidDeputyEmployeeID).
 			Public("deputy_employee_id is not a valid UUID.").
 			Wrap(err)
@@ -107,7 +107,7 @@ func parseDeputyEmployeeID(raw string) (uuid.UUID, error) {
 func parseOrganizationID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.membership").
+		return uuid.Nil, oops.In("handler.command.membership").
 			Code(ErrCodeHandlerInvalidOrganizationID).
 			Public("organization_id is not a valid UUID.").
 			Wrap(err)

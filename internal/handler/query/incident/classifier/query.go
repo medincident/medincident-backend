@@ -162,7 +162,7 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 func parseCategoryID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.incident.classifier.query").
+		return uuid.Nil, oops.In("handler.query.incident.classifier").
 			Code(ErrCodeHandlerInvalidCategoryID).
 			Public("category_id is not a valid UUID.").
 			Wrap(err)
@@ -174,7 +174,7 @@ func parseCategoryID(raw string) (uuid.UUID, error) {
 func parseTypeID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
-		return uuid.Nil, oops.In("handler.incident.classifier.query").
+		return uuid.Nil, oops.In("handler.query.incident.classifier").
 			Code(ErrCodeHandlerInvalidTypeID).
 			Public("type_id is not a valid UUID.").
 			Wrap(err)
