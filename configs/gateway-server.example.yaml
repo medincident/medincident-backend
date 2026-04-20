@@ -2,7 +2,8 @@
 #
 # Loaded by cmd/gateway-server/main.go via config.ReadGatewayServerConfig.
 # ${VAR} and $VAR references are expanded from the process environment
-# before YAML parsing.
+# before YAML parsing, so secrets should be injected via env rather
+# than hard-coded.
 #
 # The gateway is a thin HTTP → gRPC translator. It does NOT validate
 # JWTs; it forwards the Authorization header into gRPC metadata, and
@@ -15,6 +16,7 @@ server:
     # TCP listen address for the HTTP gateway. All three binaries in this
     # repo default to :8080 inside their containers; the operator maps
     # external ports at deploy time (Docker `-p`, k8s Service, ingress).
+    # For local multi-binary runs, override here (e.g. ":8082").
     address: ":8080"
 
     # Optional CORS block. Remove the block entirely to disable CORS.
