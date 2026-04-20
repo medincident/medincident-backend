@@ -89,6 +89,23 @@ Command никогда не читает проекции и не знает о 
 - `internal/di/` — samber/do/v2 фабрики (postgres, services, handler, grpc)
 - `test/integration/orgstructure/` — testcontainers-backed integration suite
 
+## Порты
+
+Все три бинаря дефолтно слушают **один и тот же порт `:8080`** внутри
+своего процесса/контейнера. Внешний маппинг портов — зона ответственности
+операций (Docker `-p 9090:8080`, k8s `Service`, ingress). В Dockerfile'ах
+тоже стоит `EXPOSE 8080`, а не три разных порта.
+
+Для **локального запуска нескольких бинарей на одном хосте** одновременно
+этот дефолт нужно перебить через собственный конфиг — примеры комментируют
+это в `configs/*.example.yaml`:
+
+- `command-server`: например `server.grpc.address: ":9090"`
+- `query-server`: например `server.grpc.address: ":9091"`
+- `gateway-server`: например `server.http.address: ":8080"` +
+  `upstreams.command.address: "localhost:9090"` +
+  `upstreams.query.address: "localhost:9091"`
+
 ## Запуск локально
 
 Требуется Postgres 17+ и переменная `DATABASE_URL`:
@@ -107,9 +124,8 @@ go run ./cmd/gateway-server --config configs/gateway-server.example.yaml
 
 Требует, чтобы `command-server` и `query-server` уже были подняты —
 их адреса задаются в `upstreams.command.address` и
-`upstreams.query.address`. Gateway слушает HTTP на `:8080`, рядом
-живут `/healthz` (liveness) и `/readyz` (readiness с проверкой обоих
-upstream'ов).
+`upstreams.query.address`. Рядом с gateway'ем живут `/healthz` (liveness)
+и `/readyz` (readiness с проверкой обоих upstream'ов).
 
 ## Тестирование
 

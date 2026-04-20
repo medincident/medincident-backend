@@ -12,7 +12,9 @@
 
 server:
   http:
-    # TCP listen address for the HTTP gateway.
+    # TCP listen address for the HTTP gateway. All three binaries in this
+    # repo default to :8080 inside their containers; the operator maps
+    # external ports at deploy time (Docker `-p`, k8s Service, ingress).
     address: ":8080"
 
     # Optional CORS block. Remove the block entirely to disable CORS.
@@ -44,9 +46,9 @@ server:
 # the proto package of each generated .pb.gw.go registrar.
 upstreams:
   command:
-    address: "command-server:9090"
+    address: "command-server:8080"
   query:
-    address: "query-server:9091"
+    address: "query-server:8080"
 
 zerolog:
   level: info

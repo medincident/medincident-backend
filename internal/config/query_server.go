@@ -33,7 +33,7 @@ func defaultQueryServerConfig() QueryServerConfig {
 	return QueryServerConfig{
 		Server: QueryServerNetConfig{
 			GRPC: GRPCServerConfig{
-				Address:        ":9091",
+				Address:        ":8080",
 				MaxRecvMsgSize: 4 * 1024 * 1024,
 			},
 		},

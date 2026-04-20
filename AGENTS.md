@@ -146,6 +146,24 @@ test/integration/orgstructure/           — testcontainers-backed integration s
 configs/                                 — command-server.example.yaml + query-server.example.yaml + gateway-server.example.yaml
 ```
 
+## Ports
+
+All three binaries default to `:8080` inside their process / container:
+
+- `command-server` — gRPC on `:8080`
+- `query-server` — gRPC on `:8080`
+- `gateway-server` — HTTP on `:8080`
+
+`Dockerfile` `EXPOSE 8080` everywhere. External port mapping is ops'
+responsibility (Docker `-p`, k8s `Service`, ingress). No port variance
+in the image layer.
+
+For local multi-binary runs on the same host, override the listen
+address in the binary-specific YAML (see comments in
+`configs/*.example.yaml`). Never hard-code per-binary ports in Go —
+the default in every `defaultXxxServerConfig()` is `:8080` without
+exception.
+
 ## Subject scheme
 
 Outbox subjects follow `medincident.event.<aggregate>.v1.<action>`:

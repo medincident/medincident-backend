@@ -7,10 +7,11 @@
 
 server:
   grpc:
-    # TCP listen address for the gRPC server.
-    # Different port than command-server (:9090) so both binaries can
-    # run on the same host in dev.
-    address: ":9091"
+    # TCP listen address for the gRPC server. All three binaries in this
+    # repo default to :8080 inside their containers; the operator maps
+    # external ports at deploy time (Docker `-p`, k8s Service, ingress).
+    # For local multi-binary runs, override here (e.g. ":9091").
+    address: ":8080"
     # Maximum inbound message size in bytes. Covers a single request.
     max_recv_msg_size: 4194304  # 4 MiB
 

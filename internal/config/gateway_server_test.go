@@ -24,9 +24,9 @@ server:
     address: ":8080"
 upstreams:
   command:
-    address: "command-server:9090"
+    address: "command-server:8080"
   query:
-    address: "query-server:9091"
+    address: "query-server:8080"
 zerolog:
   level: info
   timestamp: true
@@ -42,10 +42,10 @@ zerolog:
 	if cfg.Server.HTTP.Address != ":8080" {
 		t.Errorf("address = %q, want :8080", cfg.Server.HTTP.Address)
 	}
-	if cfg.Upstreams.Command.Address != "command-server:9090" {
+	if cfg.Upstreams.Command.Address != "command-server:8080" {
 		t.Errorf("command upstream = %q", cfg.Upstreams.Command.Address)
 	}
-	if cfg.Upstreams.Query.Address != "query-server:9091" {
+	if cfg.Upstreams.Query.Address != "query-server:8080" {
 		t.Errorf("query upstream = %q", cfg.Upstreams.Query.Address)
 	}
 	if cfg.Server.HTTP.CORS != nil {
@@ -64,8 +64,8 @@ server:
       allowed_headers: ["Authorization"]
       max_age_seconds: 600
 upstreams:
-  command: {address: "127.0.0.1:9090"}
-  query:   {address: "127.0.0.1:9091"}
+  command: {address: "127.0.0.1:8080"}
+  query:   {address: "127.0.0.1:8080"}
 zerolog:
   level: info
   outputs:
@@ -93,7 +93,7 @@ server:
   http:
     address: ":8080"
 upstreams:
-  command: {address: "127.0.0.1:9090"}
+  command: {address: "127.0.0.1:8080"}
 zerolog:
   level: info
   outputs:
@@ -115,8 +115,8 @@ server:
   http:
     address: "not-a-host-port"
 upstreams:
-  command: {address: "127.0.0.1:9090"}
-  query:   {address: "127.0.0.1:9091"}
+  command: {address: "127.0.0.1:8080"}
+  query:   {address: "127.0.0.1:8080"}
 zerolog:
   level: info
   outputs:

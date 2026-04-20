@@ -17,5 +17,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 FROM gcr.io/distroless/static-debian12:nonroot
 COPY --from=build /out/command-server /usr/local/bin/command-server
 USER nonroot:nonroot
-EXPOSE 9090
+EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/command-server"]

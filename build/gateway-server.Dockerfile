@@ -1,6 +1,6 @@
 # Multi-stage build for the gateway-server binary. Mirrors
 # command-server.Dockerfile and query-server.Dockerfile; differs
-# only in the build target and the exposed HTTP port.
+# only in the build target.
 
 ARG GO_VERSION=1.26
 
