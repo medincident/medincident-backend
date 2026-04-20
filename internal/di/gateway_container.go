@@ -2,7 +2,9 @@ package di
 
 import (
 	"context"
+	"errors"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -13,12 +15,22 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/medincident/medincident-command-service/internal/config"
-	"github.com/medincident/medincident-command-service/internal/service/gateway"
+	gwhandler "github.com/medincident/medincident-command-service/internal/handler/gateway"
+	"github.com/medincident/medincident-command-service/internal/middleware"
+	cmdclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
+	cmdmembershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
+	cmdorgv1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
+	qidentityv1 "github.com/medincident/medincident-command-service/pkg/query/identity/v1"
+	qclassifierv1 "github.com/medincident/medincident-command-service/pkg/query/incident/classifier/v1"
+	qmembershipv1 "github.com/medincident/medincident-command-service/pkg/query/membership/v1"
+	qorgv1 "github.com/medincident/medincident-command-service/pkg/query/orgstructure/v1"
+	qstatsv1 "github.com/medincident/medincident-command-service/pkg/query/stats/v1"
 )
 
 // Error codes emitted by this DI init.
 const (
-	ErrCodeGatewayDialFailed = "gateway_dial_failed"
+	ErrCodeGatewayDialFailed     = "gateway_dial_failed"
+	ErrCodeGatewayRegisterFailed = "gateway_register_failed"
 )
 
 // gatewayReadHeaderTimeout is the maximum time allowed to read request
@@ -127,6 +139,17 @@ func provideQueryClientConnWrapper(injector do.Injector) (*queryClientConnWrappe
 
 // --- gateway mux ---
 
+// gatewayIncomingHeaderMatcher forwards the Authorization header into
+// gRPC metadata as the canonical lowercase "authorization" key so the
+// downstream Zitadel authn interceptor can read it. Everything else
+// delegates to grpc-gateway's default matcher.
+func gatewayIncomingHeaderMatcher(key string) (string, bool) {
+	if strings.EqualFold(key, "Authorization") {
+		return "authorization", true
+	}
+	return runtime.DefaultHeaderMatcher(key)
+}
+
 func provideGatewayMux(injector do.Injector) (*runtime.ServeMux, error) {
 	cmdW, err := do.Invoke[*commandClientConnWrapper](injector)
 	if err != nil {
@@ -136,7 +159,27 @@ func provideGatewayMux(injector do.Injector) (*runtime.ServeMux, error) {
 	if err != nil {
 		return nil, err
 	}
-	return gateway.NewServeMux(context.Background(), cmdW.ClientConn, qryW.ClientConn)
+
+	mux := runtime.NewServeMux(
+		runtime.WithIncomingHeaderMatcher(gatewayIncomingHeaderMatcher),
+	)
+	ctx := context.Background()
+	errs := []error{
+		// Command side.
+		cmdorgv1.RegisterOrgStructureCommandServiceHandler(ctx, mux, cmdW.ClientConn),
+		cmdmembershipv1.RegisterMembershipCommandServiceHandler(ctx, mux, cmdW.ClientConn),
+		cmdclassifierv1.RegisterIncidentClassifierCommandServiceHandler(ctx, mux, cmdW.ClientConn),
+		// Query side.
+		qorgv1.RegisterOrgStructureQueryServiceHandler(ctx, mux, qryW.ClientConn),
+		qmembershipv1.RegisterMembershipQueryServiceHandler(ctx, mux, qryW.ClientConn),
+		qclassifierv1.RegisterIncidentClassifierQueryServiceHandler(ctx, mux, qryW.ClientConn),
+		qstatsv1.RegisterStatsQueryServiceHandler(ctx, mux, qryW.ClientConn),
+		qidentityv1.RegisterIdentityQueryServiceHandler(ctx, mux, qryW.ClientConn),
+	}
+	if err := errors.Join(errs...); err != nil {
+		return nil, oops.In("di.gateway").Code(ErrCodeGatewayRegisterFailed).Wrap(err)
+	}
+	return mux, nil
 }
 
 // --- HTTP server ---
@@ -167,13 +210,19 @@ func provideGatewayHTTPServer(injector do.Injector) (*http.Server, error) {
 		return nil, err
 	}
 
-	handler := gateway.BuildHandler(
-		mux,
-		gateway.Liveness(),
-		gateway.Readiness(cmdW.ClientConn, qryW.ClientConn),
-		gateway.AccessLog(logger),
-		gateway.CORSMiddleware(cfg.Server.HTTP.CORS),
-	)
+	// Route: /healthz + /readyz served by handler/gateway, everything
+	// else falls through to the grpc-gateway mux. Wrap with access log
+	// (always) then CORS (if configured).
+	router := http.NewServeMux()
+	router.Handle("/healthz", gwhandler.Liveness())
+	router.Handle("/readyz", gwhandler.Readiness(cmdW.ClientConn, qryW.ClientConn))
+	router.Handle("/", mux)
+
+	var handler http.Handler = router
+	handler = middleware.HTTPAccessLog(logger)(handler)
+	if cors := middleware.HTTPCORS(cfg.Server.HTTP.CORS); cors != nil {
+		handler = cors(handler)
+	}
 
 	return &http.Server{
 		Addr:              cfg.Server.HTTP.Address,

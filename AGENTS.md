@@ -100,14 +100,15 @@ internal/
     gateway_container.go                 — NewGatewayContainer + do.Provide wiring
     handler.go                           — handler providers
   model/                                 — gorm models. ONLY place `null.X` lives.
+  middleware/                            — HTTP and gRPC middleware
+    authn.go                             — gRPC unary authn interceptor (Zitadel JWT)
+    caller.go                            — caller-ID extraction (gRPC)
+    error.go                             — error → gRPC status mapping
+    http_access_log.go                   — HTTP access log via rs/zerolog/hlog
+    http_cors.go                         — HTTP CORS wrapper over rs/cors
   service/
     authz/                               — role-based check helpers (shared)
     zitadel/                             — Zitadel client (today: user verify)
-    gateway/                             — HTTP → gRPC surface of gateway-server
-      server.go                          — ServerWrapper + NewServeMux + BuildHandler
-      middleware.go                      — access log + CORS
-      health.go                          — /healthz + /readyz
-      headers.go                         — IncomingHeaderMatcher
     command/orgstructure/                — write-side business logic, one file per method
       service.go                         — three service struct types + constructors
       address.go                         — shared Address/Point validators
@@ -124,6 +125,8 @@ internal/
     department_{create,update_details}.go
   handler/membership/command.go + per-RPC files
   handler/incident/classifier/command.go + per-RPC files
+  handler/gateway/                       — HTTP handlers served by gateway-server
+    health.go                            — /healthz + /readyz
 api/proto/                               — proto contracts (source of truth)
   buf.yaml                               — module config (lint, breaking, deps)
   event/v1/envelope.proto                — Envelope (transport wrapper)
