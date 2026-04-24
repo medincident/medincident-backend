@@ -20,9 +20,21 @@ service MembershipQueryService {
   rpc ListEmployeesByOrganization(ListEmployeesByOrganizationRequest) returns (ListEmployeesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/employees"};
   }
+  rpc CountEmployeesByDepartment(CountEmployeesByDepartmentRequest) returns (CountEmployeesByDepartmentResponse) {
+    option (google.api.http) = {get: "/v1/query/departments/{department_id}/employees:count"};
+  }
+  rpc CountEmployeesByClinic(CountEmployeesByClinicRequest) returns (CountEmployeesByClinicResponse) {
+    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/employees:count"};
+  }
+  rpc CountEmployeesByOrganization(CountEmployeesByOrganizationRequest) returns (CountEmployeesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/employees:count"};
+  }
 
   rpc ListVacationsByEmployee(ListVacationsByEmployeeRequest) returns (ListVacationsByEmployeeResponse) {
     option (google.api.http) = {get: "/v1/query/employees/{employee_id}/vacations"};
+  }
+  rpc CountVacationsByEmployee(CountVacationsByEmployeeRequest) returns (CountVacationsByEmployeeResponse) {
+    option (google.api.http) = {get: "/v1/query/employees/{employee_id}/vacations:count"};
   }
 
   rpc GetClinicHead(GetClinicHeadRequest) returns (GetClinicHeadResponse) {
@@ -129,6 +141,27 @@ message ListEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;
 }
 
+message CountEmployeesByDepartmentRequest {
+  string department_id = 1;
+}
+message CountEmployeesByDepartmentResponse {
+  int64 total = 1;
+}
+
+message CountEmployeesByClinicRequest {
+  string clinic_id = 1;
+}
+message CountEmployeesByClinicResponse {
+  int64 total = 1;
+}
+
+message CountEmployeesByOrganizationRequest {
+  string organization_id = 1;
+}
+message CountEmployeesByOrganizationResponse {
+  int64 total = 1;
+}
+
 message ListVacationsByEmployeeRequest {
   string employee_id = 1;
   // Optional state filter. When empty, all states are returned.
@@ -137,6 +170,16 @@ message ListVacationsByEmployeeRequest {
 }
 message ListVacationsByEmployeeResponse {
   repeated VacationView items = 1;
+}
+
+message CountVacationsByEmployeeRequest {
+  string employee_id = 1;
+  // Optional state filter. When empty, counts all states.
+  // Valid values: scheduled, active, ended, cancelled.
+  string state = 2;
+}
+message CountVacationsByEmployeeResponse {
+  int64 total = 1;
 }
 
 message GetClinicHeadRequest {

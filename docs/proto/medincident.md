@@ -161,6 +161,14 @@
     - [IncidentClassifierQueryService](#query-incident-classifier-v1-IncidentClassifierQueryService)
 
 - [query/membership/v1/membership.proto](#query_membership_v1_membership-proto)
+    - [CountEmployeesByClinicRequest](#query-membership-v1-CountEmployeesByClinicRequest)
+    - [CountEmployeesByClinicResponse](#query-membership-v1-CountEmployeesByClinicResponse)
+    - [CountEmployeesByDepartmentRequest](#query-membership-v1-CountEmployeesByDepartmentRequest)
+    - [CountEmployeesByDepartmentResponse](#query-membership-v1-CountEmployeesByDepartmentResponse)
+    - [CountEmployeesByOrganizationRequest](#query-membership-v1-CountEmployeesByOrganizationRequest)
+    - [CountEmployeesByOrganizationResponse](#query-membership-v1-CountEmployeesByOrganizationResponse)
+    - [CountVacationsByEmployeeRequest](#query-membership-v1-CountVacationsByEmployeeRequest)
+    - [CountVacationsByEmployeeResponse](#query-membership-v1-CountVacationsByEmployeeResponse)
     - [EmployeeCardView](#query-membership-v1-EmployeeCardView)
     - [GetClinicHeadRequest](#query-membership-v1-GetClinicHeadRequest)
     - [GetClinicHeadResponse](#query-membership-v1-GetClinicHeadResponse)
@@ -194,6 +202,10 @@
     - [Address](#query-orgstructure-v1-Address)
     - [Clinic](#query-orgstructure-v1-Clinic)
     - [ClinicListItem](#query-orgstructure-v1-ClinicListItem)
+    - [CountClinicsByOrganizationRequest](#query-orgstructure-v1-CountClinicsByOrganizationRequest)
+    - [CountClinicsByOrganizationResponse](#query-orgstructure-v1-CountClinicsByOrganizationResponse)
+    - [CountDepartmentsByClinicRequest](#query-orgstructure-v1-CountDepartmentsByClinicRequest)
+    - [CountDepartmentsByClinicResponse](#query-orgstructure-v1-CountDepartmentsByClinicResponse)
     - [CountOrganizationsRequest](#query-orgstructure-v1-CountOrganizationsRequest)
     - [CountOrganizationsResponse](#query-orgstructure-v1-CountOrganizationsResponse)
     - [Department](#query-orgstructure-v1-Department)
@@ -2385,6 +2397,127 @@ CTEs in the reader; the RPC surface stays flat.
 
 
 
+<a name="query-membership-v1-CountEmployeesByClinicRequest"></a>
+
+### CountEmployeesByClinicRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-CountEmployeesByClinicResponse"></a>
+
+### CountEmployeesByClinicResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-CountEmployeesByDepartmentRequest"></a>
+
+### CountEmployeesByDepartmentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-CountEmployeesByDepartmentResponse"></a>
+
+### CountEmployeesByDepartmentResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-CountEmployeesByOrganizationRequest"></a>
+
+### CountEmployeesByOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-CountEmployeesByOrganizationResponse"></a>
+
+### CountEmployeesByOrganizationResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-CountVacationsByEmployeeRequest"></a>
+
+### CountVacationsByEmployeeRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee_id | [string](#string) |  |  |
+| state | [string](#string) |  | Optional state filter. When empty, counts all states. Valid values: scheduled, active, ended, cancelled. |
+
+
+
+
+
+
+<a name="query-membership-v1-CountVacationsByEmployeeResponse"></a>
+
+### CountVacationsByEmployeeResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+
+
+
+
+
+
 <a name="query-membership-v1-EmployeeCardView"></a>
 
 ### EmployeeCardView
@@ -2826,7 +2959,11 @@ department responsibles, org admins/heads/dispatchers, system admins).
 | ListEmployeesByDepartment | [ListEmployeesByDepartmentRequest](#query-membership-v1-ListEmployeesByDepartmentRequest) | [ListEmployeesByDepartmentResponse](#query-membership-v1-ListEmployeesByDepartmentResponse) |  |
 | ListEmployeesByClinic | [ListEmployeesByClinicRequest](#query-membership-v1-ListEmployeesByClinicRequest) | [ListEmployeesByClinicResponse](#query-membership-v1-ListEmployeesByClinicResponse) |  |
 | ListEmployeesByOrganization | [ListEmployeesByOrganizationRequest](#query-membership-v1-ListEmployeesByOrganizationRequest) | [ListEmployeesByOrganizationResponse](#query-membership-v1-ListEmployeesByOrganizationResponse) |  |
+| CountEmployeesByDepartment | [CountEmployeesByDepartmentRequest](#query-membership-v1-CountEmployeesByDepartmentRequest) | [CountEmployeesByDepartmentResponse](#query-membership-v1-CountEmployeesByDepartmentResponse) |  |
+| CountEmployeesByClinic | [CountEmployeesByClinicRequest](#query-membership-v1-CountEmployeesByClinicRequest) | [CountEmployeesByClinicResponse](#query-membership-v1-CountEmployeesByClinicResponse) |  |
+| CountEmployeesByOrganization | [CountEmployeesByOrganizationRequest](#query-membership-v1-CountEmployeesByOrganizationRequest) | [CountEmployeesByOrganizationResponse](#query-membership-v1-CountEmployeesByOrganizationResponse) |  |
 | ListVacationsByEmployee | [ListVacationsByEmployeeRequest](#query-membership-v1-ListVacationsByEmployeeRequest) | [ListVacationsByEmployeeResponse](#query-membership-v1-ListVacationsByEmployeeResponse) |  |
+| CountVacationsByEmployee | [CountVacationsByEmployeeRequest](#query-membership-v1-CountVacationsByEmployeeRequest) | [CountVacationsByEmployeeResponse](#query-membership-v1-CountVacationsByEmployeeResponse) |  |
 | GetClinicHead | [GetClinicHeadRequest](#query-membership-v1-GetClinicHeadRequest) | [GetClinicHeadResponse](#query-membership-v1-GetClinicHeadResponse) |  |
 | GetDepartmentResponsible | [GetDepartmentResponsibleRequest](#query-membership-v1-GetDepartmentResponsibleRequest) | [GetDepartmentResponsibleResponse](#query-membership-v1-GetDepartmentResponsibleResponse) |  |
 | ListOrgAdmins | [ListOrgAdminsRequest](#query-membership-v1-ListOrgAdminsRequest) | [ListOrgAdminsResponse](#query-membership-v1-ListOrgAdminsResponse) |  |
@@ -2894,6 +3031,66 @@ ClinicListItem is the minimal shape returned by list endpoints.
 | id | [string](#string) |  |  |
 | organization_id | [string](#string) |  |  |
 | name | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-orgstructure-v1-CountClinicsByOrganizationRequest"></a>
+
+### CountClinicsByOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-orgstructure-v1-CountClinicsByOrganizationResponse"></a>
+
+### CountClinicsByOrganizationResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-orgstructure-v1-CountDepartmentsByClinicRequest"></a>
+
+### CountDepartmentsByClinicRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-orgstructure-v1-CountDepartmentsByClinicResponse"></a>
+
+### CountDepartmentsByClinicResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
 
 
 
@@ -3223,8 +3420,10 @@ both values.
 | CountOrganizations | [CountOrganizationsRequest](#query-orgstructure-v1-CountOrganizationsRequest) | [CountOrganizationsResponse](#query-orgstructure-v1-CountOrganizationsResponse) |  |
 | GetClinic | [GetClinicRequest](#query-orgstructure-v1-GetClinicRequest) | [GetClinicResponse](#query-orgstructure-v1-GetClinicResponse) |  |
 | ListClinicsByOrganization | [ListClinicsByOrganizationRequest](#query-orgstructure-v1-ListClinicsByOrganizationRequest) | [ListClinicsByOrganizationResponse](#query-orgstructure-v1-ListClinicsByOrganizationResponse) |  |
+| CountClinicsByOrganization | [CountClinicsByOrganizationRequest](#query-orgstructure-v1-CountClinicsByOrganizationRequest) | [CountClinicsByOrganizationResponse](#query-orgstructure-v1-CountClinicsByOrganizationResponse) |  |
 | GetDepartment | [GetDepartmentRequest](#query-orgstructure-v1-GetDepartmentRequest) | [GetDepartmentResponse](#query-orgstructure-v1-GetDepartmentResponse) |  |
 | ListDepartmentsByClinic | [ListDepartmentsByClinicRequest](#query-orgstructure-v1-ListDepartmentsByClinicRequest) | [ListDepartmentsByClinicResponse](#query-orgstructure-v1-ListDepartmentsByClinicResponse) |  |
+| CountDepartmentsByClinic | [CountDepartmentsByClinicRequest](#query-orgstructure-v1-CountDepartmentsByClinicRequest) | [CountDepartmentsByClinicResponse](#query-orgstructure-v1-CountDepartmentsByClinicResponse) |  |
 
 
 

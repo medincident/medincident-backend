@@ -85,6 +85,32 @@ func (r *ClinicReader) Get(
 	return &out, nil
 }
 
+// CountByOrganization returns the total number of clinics belonging
+// to the given organization. Authorization:
+// authz.ReaderOf.Organization(organizationID).
+func (r *ClinicReader) CountByOrganization(
+	ctx context.Context,
+	caller authz.Caller,
+	organizationID uuid.UUID,
+) (int64, error) {
+	if err := r.authz.Require(
+		ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(organizationID),
+	); err != nil {
+		return 0, err
+	}
+	var total int64
+	if err := r.db.WithContext(ctx).Raw(
+		`SELECT count(*) FROM projections.clinics WHERE organization_id = ?`,
+		organizationID,
+	).Row().Scan(&total); err != nil {
+		return 0, oops.In("reader.orgstructure.clinic").
+			Code(ErrCodeClinicCountFailed).
+			With("organization_id", organizationID).
+			Wrap(err)
+	}
+	return total, nil
+}
+
 // ListByOrganization returns up to q.Limit clinics belonging to the
 // given organization, ordered most-recently-created first. Authorization:
 // authz.ReaderOf.Organization(organizationID). Pagination bounds are

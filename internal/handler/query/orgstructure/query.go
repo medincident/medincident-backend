@@ -140,6 +140,28 @@ func (h *OrgStructureQueryHandler) ListClinicsByOrganization(
 	return &orgqueryv1.ListClinicsByOrganizationResponse{Items: out}, nil
 }
 
+// CountClinicsByOrganization returns the total clinics count for one
+// organization.
+func (h *OrgStructureQueryHandler) CountClinicsByOrganization(
+	ctx context.Context,
+	req *orgqueryv1.CountClinicsByOrganizationRequest,
+) (*orgqueryv1.CountClinicsByOrganizationResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	orgID, err := parseOrganizationID(req.GetOrganizationId())
+	if err != nil {
+		return nil, err
+	}
+	total, err := h.clinReader.CountByOrganization(ctx, caller, orgID)
+	if err != nil {
+		return nil, err
+	}
+	return &orgqueryv1.CountClinicsByOrganizationResponse{Total: total}, nil
+}
+
 // GetDepartment returns the full card for one department.
 func (h *OrgStructureQueryHandler) GetDepartment(
 	ctx context.Context,
@@ -191,6 +213,28 @@ func (h *OrgStructureQueryHandler) ListDepartmentsByClinic(
 		})
 	}
 	return &orgqueryv1.ListDepartmentsByClinicResponse{Items: out}, nil
+}
+
+// CountDepartmentsByClinic returns the total departments count for one
+// clinic.
+func (h *OrgStructureQueryHandler) CountDepartmentsByClinic(
+	ctx context.Context,
+	req *orgqueryv1.CountDepartmentsByClinicRequest,
+) (*orgqueryv1.CountDepartmentsByClinicResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	clinicID, err := parseClinicID(req.GetClinicId())
+	if err != nil {
+		return nil, err
+	}
+	total, err := h.deptReader.CountByClinic(ctx, caller, clinicID)
+	if err != nil {
+		return nil, err
+	}
+	return &orgqueryv1.CountDepartmentsByClinicResponse{Total: total}, nil
 }
 
 // organizationToProto adapts an OrganizationDetails into the wire type.
