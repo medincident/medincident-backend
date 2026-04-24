@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	memberread "github.com/medincident/medincident-backend/internal/service/query/membership"
 	membershipqueryv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
@@ -35,10 +36,11 @@ func (h *MembershipQueryHandler) GetEmployee(
 	ctx context.Context,
 	req *membershipqueryv1.GetEmployeeRequest,
 ) (*membershipqueryv1.GetEmployeeResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseEmployeeID(req.GetId())
 	if err != nil {
 		return nil, err
@@ -55,10 +57,11 @@ func (h *MembershipQueryHandler) ListEmployeesByDepartment(
 	ctx context.Context,
 	req *membershipqueryv1.ListEmployeesByDepartmentRequest,
 ) (*membershipqueryv1.ListEmployeesByDepartmentResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseDepartmentID(req.GetDepartmentId())
 	if err != nil {
 		return nil, err
@@ -80,10 +83,11 @@ func (h *MembershipQueryHandler) ListEmployeesByClinic(
 	ctx context.Context,
 	req *membershipqueryv1.ListEmployeesByClinicRequest,
 ) (*membershipqueryv1.ListEmployeesByClinicResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseClinicID(req.GetClinicId())
 	if err != nil {
 		return nil, err
@@ -105,10 +109,11 @@ func (h *MembershipQueryHandler) ListEmployeesByOrganization(
 	ctx context.Context,
 	req *membershipqueryv1.ListEmployeesByOrganizationRequest,
 ) (*membershipqueryv1.ListEmployeesByOrganizationResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -130,10 +135,11 @@ func (h *MembershipQueryHandler) ListVacationsByEmployee(
 	ctx context.Context,
 	req *membershipqueryv1.ListVacationsByEmployeeRequest,
 ) (*membershipqueryv1.ListVacationsByEmployeeResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseEmployeeID(req.GetEmployeeId())
 	if err != nil {
 		return nil, err
@@ -167,10 +173,11 @@ func (h *MembershipQueryHandler) GetClinicHead(
 	ctx context.Context,
 	req *membershipqueryv1.GetClinicHeadRequest,
 ) (*membershipqueryv1.GetClinicHeadResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseClinicID(req.GetClinicId())
 	if err != nil {
 		return nil, err
@@ -190,10 +197,11 @@ func (h *MembershipQueryHandler) GetDepartmentResponsible(
 	ctx context.Context,
 	req *membershipqueryv1.GetDepartmentResponsibleRequest,
 ) (*membershipqueryv1.GetDepartmentResponsibleResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseDepartmentID(req.GetDepartmentId())
 	if err != nil {
 		return nil, err
@@ -213,10 +221,11 @@ func (h *MembershipQueryHandler) ListOrgAdmins(
 	ctx context.Context,
 	req *membershipqueryv1.ListOrgAdminsRequest,
 ) (*membershipqueryv1.ListOrgAdminsResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -233,10 +242,11 @@ func (h *MembershipQueryHandler) ListOrgDispatchers(
 	ctx context.Context,
 	req *membershipqueryv1.ListOrgDispatchersRequest,
 ) (*membershipqueryv1.ListOrgDispatchersResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -253,10 +263,11 @@ func (h *MembershipQueryHandler) ListOrgHeads(
 	ctx context.Context,
 	req *membershipqueryv1.ListOrgHeadsRequest,
 ) (*membershipqueryv1.ListOrgHeadsResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -273,10 +284,11 @@ func (h *MembershipQueryHandler) ListSystemAdmins(
 	ctx context.Context,
 	_ *membershipqueryv1.ListSystemAdminsRequest,
 ) (*membershipqueryv1.ListSystemAdminsResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	items, err := h.roleReader.ListSystemAdmins(ctx, caller)
 	if err != nil {
 		return nil, err
