@@ -11,6 +11,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 	"github.com/stretchr/testify/require"
+
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 // fixture holds the IDs of pre-seeded org/clinic/department rows that
@@ -147,9 +149,36 @@ func oopsCode(t *testing.T, err error) string {
 	return code
 }
 
+// assertHasViolation fails the test unless violations contains an
+// entry with the given field path and rule. Used by tests that expect
+// a single struct-tag rule to fire on a known field.
+func assertHasViolation(t *testing.T, violations []validation.Violation, field, rule string) {
+	t.Helper()
+	for _, v := range violations {
+		if v.Field == field && v.Rule == rule {
+			return
+		}
+	}
+	t.Fatalf("expected violation {field=%q rule=%q}, got %+v", field, rule, violations)
+}
+
+// validationViolations returns the []validation.Violation stashed in
+// the oops context by the validation translator. Fails the test if err
+// is not a single validation_failed oops leaf.
+func validationViolations(t *testing.T, err error) []validation.Violation {
+	t.Helper()
+	require.Error(t, err)
+	var oe oops.OopsError
+	require.True(t, errors.As(err, &oe), "error is not an oops error: %v", err)
+	require.Equal(t, validation.CodeValidationFailed, oe.Code(), "expected validation_failed, got %v", oe.Code())
+	vs, ok := oe.Context()[validation.ContextKeyViolations].([]validation.Violation)
+	require.True(t, ok, "expected []validation.Violation in context, got %T", oe.Context()[validation.ContextKeyViolations])
+	return vs
+}
+
 // oopsCodes walks a joined error chain (errors.Join output) and
 // collects the oops .Code() string from every oops error in the tree.
-// Used by tests that assert multiple field-level violations are all
+// Used by tests that assert multiple aggregate-level violations are
 // surfaced by a single multi-error return.
 func oopsCodes(t *testing.T, err error) []string {
 	t.Helper()

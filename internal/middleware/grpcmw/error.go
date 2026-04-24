@@ -11,8 +11,15 @@
 //
 // Mapping rules:
 //
-//   - `errors.Join` results (multi-error validation) are flattened into
-//     a single codes.InvalidArgument status with one
+//   - A single oops leaf with code validation_failed (emitted by
+//     internal/service/validation on struct-tag failure) is unpacked
+//     into a codes.InvalidArgument status with one
+//     BadRequest.FieldViolation per entry in its "violations" context
+//     slice. Reason is the raw validator tag ("required", "min", …);
+//     the field path already implies the type, so no type-prefixed
+//     codes are emitted.
+//   - `errors.Join` results (multiple aggregate-level leaves) are
+//     flattened into a single codes.InvalidArgument status with one
 //     BadRequest.FieldViolation per leaf. Field name comes from the
 //     leaf's oops context under key "field" when set, otherwise the
 //     leaf's Code() string.
@@ -34,6 +41,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 // ErrorInterceptor returns a grpc.UnaryServerInterceptor that runs the
@@ -56,6 +65,16 @@ func translateError(logger *zerolog.Logger, method string, err error) error {
 	if len(leaves) == 0 {
 		logger.Error().Err(err).Str("grpc_method", method).Msg("handler returned non-oops error")
 		return status.Error(codes.Internal, "internal error")
+	}
+
+	// Struct-tag validation collapses every FieldError into one oops
+	// leaf whose context carries the full violation list. Unpack it
+	// here so clients see one FieldViolation per rule failure, without
+	// the validation package having to fan-out into errors.Join.
+	if len(leaves) == 1 && errorCodeString(leaves[0]) == validation.CodeValidationFailed {
+		if vs, ok := leaves[0].Context()[validation.ContextKeyViolations].([]validation.Violation); ok && len(vs) > 0 {
+			return buildValidationBadRequest(logger, method, leaves[0], vs)
+		}
 	}
 
 	if len(leaves) > 1 {
@@ -88,6 +107,39 @@ func flattenErrorLeaves(err error) []*oops.OopsError {
 	}
 	walk(err)
 	return leaves
+}
+
+func buildValidationBadRequest(logger *zerolog.Logger, method string, leaf *oops.OopsError, violations []validation.Violation) error {
+	fvs := make([]*errdetails.BadRequest_FieldViolation, 0, len(violations))
+	for _, v := range violations {
+		fvs = append(fvs, &errdetails.BadRequest_FieldViolation{
+			Field:       v.Field,
+			Description: v.Message,
+			Reason:      v.Rule,
+		})
+	}
+	st := status.New(codes.InvalidArgument, "request is invalid")
+	withDetails, detailErr := st.WithDetails(&errdetails.BadRequest{FieldViolations: fvs})
+	if detailErr != nil {
+		logger.Error().Err(detailErr).Str("grpc_method", method).Msg("failed to attach BadRequest details")
+		return st.Err()
+	}
+	logValidationBadRequest(logger, method, leaf, violations)
+	return withDetails.Err()
+}
+
+func logValidationBadRequest(logger *zerolog.Logger, method string, leaf *oops.OopsError, violations []validation.Violation) {
+	fields := make([]string, len(violations))
+	for i, v := range violations {
+		fields[i] = v.Field + "=" + v.Rule
+	}
+	logger.Debug().
+		Str("grpc_method", method).
+		Str("grpc_code", codes.InvalidArgument.String()).
+		Str("error_code", errorCodeString(leaf)).
+		Str("error_domain", leaf.Domain()).
+		Strs("violations", fields).
+		Msg("invalid request")
 }
 
 func buildBadRequestStatus(logger *zerolog.Logger, method string, leaves []*oops.OopsError) error {
@@ -254,7 +306,7 @@ var errorCodeOverrides = map[string]codes.Code{
 	"zitadel_verify_failed":       codes.Unavailable,
 	"zitadel_client_build_failed": codes.Internal,
 	"read_failed":                 codes.Internal,
-	"validate_failed":             codes.InvalidArgument,
+	"validation_failed":           codes.InvalidArgument,
 	"unmarshal_failed":            codes.Internal,
 	"cleanup_failed":              codes.Internal,
 	"unauthenticated":             codes.Unauthenticated,
@@ -290,15 +342,13 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_open_failed", grpcCode: codes.Internal},
 	{suffix: "_tune_failed", grpcCode: codes.Internal},
 
-	// Client input validation (InvalidArgument). Generic codes
-	// (string_required, uuid_required, float_out_of_range, …) emitted
-	// by internal/service/validation/ match the _required / _too_short /
-	// _too_long / _out_of_range suffixes below. Aggregate-specific
-	// codes (vacation_start_required, vacation_end_before_start, …)
-	// keep their own tail-matches.
+	// Client input validation (InvalidArgument). Struct-tag
+	// validation goes through the explicit `validation_failed`
+	// override above and never reaches these suffixes; what remains
+	// are aggregate-specific codes emitted directly by services
+	// (vacation_start_required, vacation_end_before_start,
+	// list_limit_out_of_range, …).
 	{suffix: "_required", grpcCode: codes.InvalidArgument},
-	{suffix: "_too_short", grpcCode: codes.InvalidArgument},
-	{suffix: "_too_long", grpcCode: codes.InvalidArgument},
 	{suffix: "_out_of_range", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_before_start", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_in_past", grpcCode: codes.InvalidArgument},

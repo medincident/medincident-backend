@@ -88,28 +88,21 @@ func TestOrganization_Create_MultiFieldViolations(t *testing.T) {
 	})
 	require.Error(t, err)
 
-	unwrapper, ok := err.(interface{ Unwrap() []error })
-	require.True(t, ok, "expected errors.Join-style error, got %T", err)
-	leaves := unwrapper.Unwrap()
+	var oe oops.OopsError
+	require.True(t, errors.As(err, &oe), "expected oops error, got %T", err)
+	require.Equal(t, validation.CodeValidationFailed, oe.Code())
+	violations, ok := oe.Context()[validation.ContextKeyViolations].([]validation.Violation)
+	require.True(t, ok, "expected []validation.Violation in context, got %T", oe.Context()[validation.ContextKeyViolations])
 
-	codes := make(map[string]bool)
-	var collect func(error)
-	collect = func(e error) {
-		if inner, ok := e.(interface{ Unwrap() []error }); ok {
-			for _, sub := range inner.Unwrap() {
-				collect(sub)
-			}
-			return
-		}
-		codes[codeOf(t, e)] = true
+	rules := map[string]string{}
+	for _, v := range violations {
+		rules[v.Field] = v.Rule
 	}
-	for _, leaf := range leaves {
-		collect(leaf)
-	}
-
-	assert.True(t, codes[validation.CodeStringRequired], "string_required expected for empty name")
-	assert.True(t, codes[validation.CodeStringTooShort], "string_too_short expected for short description / address text")
-	assert.True(t, codes[validation.CodeFloatOutOfRange], "float_out_of_range expected for bad coordinates")
+	assert.Equal(t, "required", rules["name"], "name should fail required, got violations=%+v", violations)
+	assert.Equal(t, "min", rules["description"], "description should fail min, got violations=%+v", violations)
+	assert.Equal(t, "min", rules["legal_address.text"], "legal_address.text should fail min, got violations=%+v", violations)
+	assert.Equal(t, "max", rules["legal_address.point.longitude"], "longitude should fail max, got violations=%+v", violations)
+	assert.Equal(t, "min", rules["legal_address.point.latitude"], "latitude should fail min, got violations=%+v", violations)
 
 	assert.Equal(t, 0, countOrganizations(t))
 	assert.Equal(t, 0, countProjectionOrganizations(t))

@@ -10,6 +10,8 @@ import (
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 func silentLogger() *zerolog.Logger {
@@ -21,7 +23,7 @@ func TestGRPCCodeForError_Overrides(t *testing.T) {
 	cases := map[string]codes.Code{
 		"zitadel_verify_failed":       codes.Unavailable,
 		"zitadel_client_build_failed": codes.Internal,
-		"validate_failed":             codes.InvalidArgument,
+		"validation_failed":           codes.InvalidArgument,
 		"cleanup_failed":              codes.Internal,
 	}
 	for code, want := range cases {
@@ -41,14 +43,11 @@ func TestGRPCCodeForError_SuffixRules(t *testing.T) {
 		"vacation_id_generation_failed":  codes.Internal,
 		"department_lookup_failed":       codes.Internal,
 		"postgres_open_failed":           codes.Internal,
-		// InvalidArgument — generic validation codes (emitted by
-		// internal/validation) and aggregate-specific time codes.
-		"string_required":           codes.InvalidArgument,
-		"string_too_short":          codes.InvalidArgument,
-		"string_too_long":           codes.InvalidArgument,
-		"int_out_of_range":          codes.InvalidArgument,
-		"float_out_of_range":        codes.InvalidArgument,
-		"uuid_required":             codes.InvalidArgument,
+		// InvalidArgument — aggregate-specific codes emitted directly
+		// by services. Struct-tag validation never reaches the suffix
+		// table (it hits the validation_failed override).
+		"list_limit_out_of_range":   codes.InvalidArgument,
+		"list_offset_out_of_range":  codes.InvalidArgument,
 		"vacation_start_required":   codes.InvalidArgument,
 		"vacation_end_before_start": codes.InvalidArgument,
 		"vacation_end_in_past":      codes.InvalidArgument,
@@ -144,20 +143,18 @@ func TestTranslateError_SingleLeaf_MapsCode(t *testing.T) {
 	}
 }
 
-func TestTranslateError_MultiError_EmitsBadRequest(t *testing.T) {
-	f1 := oops.In("validation").
-		Code("string_required").
-		Public("required").
-		With("field", "zitadel_user_id").
-		Errorf("empty")
-	f2 := oops.In("validation").
-		Code("string_too_long").
-		Public("length must be at most 256 characters").
-		With("field", "position").
-		Errorf("too long")
+func TestTranslateError_ValidationFailed_EmitsBadRequest(t *testing.T) {
+	violations := []validation.Violation{
+		{Field: "zitadel_user_id", Rule: "required", Message: "required"},
+		{Field: "position", Rule: "max", Param: "256", Message: "length must be at most 256 characters"},
+	}
+	err := oops.In("validation").
+		Code(validation.CodeValidationFailed).
+		With(validation.ContextKeyViolations, violations).
+		Public("request is invalid").
+		Errorf("validation failed: %d violation(s)", len(violations))
 
-	joined := errors.Join(f1, f2)
-	got := translateError(silentLogger(), "/svc/Hire", joined)
+	got := translateError(silentLogger(), "/svc/Hire", err)
 	st, ok := status.FromError(got)
 	if !ok {
 		t.Fatalf("expected status error, got %T", got)
@@ -180,15 +177,57 @@ func TestTranslateError_MultiError_EmitsBadRequest(t *testing.T) {
 		t.Fatalf("expected 2 violations, got %d", len(bad.GetFieldViolations()))
 	}
 
+	byField := map[string]*errdetails.BadRequest_FieldViolation{}
+	for _, v := range bad.GetFieldViolations() {
+		byField[v.GetField()] = v
+	}
+	if got := byField["zitadel_user_id"]; got == nil || got.GetReason() != "required" {
+		t.Errorf("zitadel_user_id violation: got %+v", got)
+	}
+	if got := byField["position"]; got == nil || got.GetReason() != "max" || got.GetDescription() == "" {
+		t.Errorf("position violation: got %+v", got)
+	}
+}
+
+func TestTranslateError_MultiError_EmitsBadRequest(t *testing.T) {
+	f1 := oops.In("service.vacation").
+		Code("vacation_start_required").
+		With("field", "start").
+		Errorf("empty")
+	f2 := oops.In("service.vacation").
+		Code("vacation_end_before_start").
+		With("field", "end").
+		Errorf("order")
+
+	got := translateError(silentLogger(), "/svc/Schedule", errors.Join(f1, f2))
+	st, ok := status.FromError(got)
+	if !ok {
+		t.Fatalf("expected status error, got %T", got)
+	}
+	if st.Code() != codes.InvalidArgument {
+		t.Errorf("expected InvalidArgument, got %v", st.Code())
+	}
+
+	var bad *errdetails.BadRequest
+	for _, detail := range st.Details() {
+		if br, ok := detail.(*errdetails.BadRequest); ok {
+			bad = br
+			break
+		}
+	}
+	if bad == nil || len(bad.GetFieldViolations()) != 2 {
+		t.Fatalf("expected 2 violations, got %+v", bad)
+	}
+
 	fields := map[string]string{}
 	for _, v := range bad.GetFieldViolations() {
 		fields[v.GetField()] = v.GetReason()
 	}
-	if fields["zitadel_user_id"] != "string_required" {
-		t.Errorf("missing zitadel_user_id violation: %v", fields)
+	if fields["start"] != "vacation_start_required" {
+		t.Errorf("missing start violation: %v", fields)
 	}
-	if fields["position"] != "string_too_long" {
-		t.Errorf("missing position violation: %v", fields)
+	if fields["end"] != "vacation_end_before_start" {
+		t.Errorf("missing end violation: %v", fields)
 	}
 }
 
