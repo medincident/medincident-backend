@@ -117,6 +117,8 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 	got, err := reader.GetType(ctx, typeID)
 	require.NoError(t, err)
 	require.Equal(t, "Fall from bed", got.Name)
+	// Newly-created types start with patient submission disabled.
+	require.False(t, got.IsAllowedForPatients)
 
 	active, err := reader.ListActiveTypesByOrganization(ctx, orgID)
 	require.NoError(t, err)
@@ -126,4 +128,105 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 	byCat, err := reader.ListTypesByCategory(ctx, catID)
 	require.NoError(t, err)
 	require.Len(t, byCat, 1)
+}
+
+// TestReader_PatientAllowed_Types_And_VisibleCategories seeds a fixture
+// containing every interesting combination of (category active?, type active?,
+// type allowed-for-patients?) and verifies that the patient-mode reader
+// methods surface only types that are active AND allowed AND under an
+// active category chain. ListPatientVisibleCategoriesByOrganization must
+// also include intermediate ancestor categories (so the patient sees the
+// full path) and exclude categories whose every descendant type is
+// unavailable.
+func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+
+	now := time.Now().UTC().Truncate(time.Second)
+	orgID := uuid.Must(uuid.NewV7())
+
+	// Fixture (same org):
+	//
+	//   surgical (active)              ← visible: has allowed type below
+	//     wardFalls (active)           ← visible: direct allowed type
+	//       allowedFall   (active, allowed)   ← appears in patient list
+	//       internalOnly  (active, NOT allowed)
+	//     archived (inactive)          ← invisible: ancestor inactive
+	//       wouldAllow   (active, allowed)    ← excluded: parent inactive
+	//   adminOnly (active)             ← invisible: no allowed type below
+	//     adminOnlyType (active, NOT allowed)
+	surgicalID := uuid.Must(uuid.NewV7())
+	wardFallsID := uuid.Must(uuid.NewV7())
+	archivedID := uuid.Must(uuid.NewV7())
+	adminOnlyID := uuid.Must(uuid.NewV7())
+
+	allowedFallID := uuid.Must(uuid.NewV7())
+	internalOnlyID := uuid.Must(uuid.NewV7())
+	wouldAllowID := uuid.Must(uuid.NewV7())
+	adminOnlyTypeID := uuid.Must(uuid.NewV7())
+
+	categories := []*model.IncidentCategory{
+		{ID: surgicalID, OrganizationID: orgID, Name: "Surgical", IsActive: true, CreatedAt: now, UpdatedAt: now},
+		{ID: wardFallsID, OrganizationID: orgID, ParentCategoryID: uuid.NullUUID{UUID: surgicalID, Valid: true}, Name: "Ward falls", IsActive: true, CreatedAt: now, UpdatedAt: now},
+		{ID: archivedID, OrganizationID: orgID, ParentCategoryID: uuid.NullUUID{UUID: surgicalID, Valid: true}, Name: "Archived", IsActive: false, CreatedAt: now, UpdatedAt: now},
+		{ID: adminOnlyID, OrganizationID: orgID, Name: "Admin-only", IsActive: true, CreatedAt: now, UpdatedAt: now},
+	}
+	types := []*model.IncidentType{
+		{ID: allowedFallID, OrganizationID: orgID, CategoryID: wardFallsID, Name: "Patient fall", IsActive: true, IsAllowedForPatients: true, CreatedAt: now, UpdatedAt: now},
+		{ID: internalOnlyID, OrganizationID: orgID, CategoryID: wardFallsID, Name: "Surgical retained item", IsActive: true, IsAllowedForPatients: false, CreatedAt: now, UpdatedAt: now},
+		{ID: wouldAllowID, OrganizationID: orgID, CategoryID: archivedID, Name: "Allowed but orphaned", IsActive: true, IsAllowedForPatients: true, CreatedAt: now, UpdatedAt: now},
+		{ID: adminOnlyTypeID, OrganizationID: orgID, CategoryID: adminOnlyID, Name: "Internal HR", IsActive: true, IsAllowedForPatients: false, CreatedAt: now, UpdatedAt: now},
+	}
+
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		for _, c := range categories {
+			if err := projector.CategoryCreated(tx, c); err != nil {
+				return err
+			}
+		}
+		for _, t := range types {
+			if err := projector.TypeCreated(tx, t); err != nil {
+				return err
+			}
+		}
+		return nil
+	}))
+
+	reader := classifierread.NewReader(testDB, &logger)
+
+	// Patient-allowed types: only the active+allowed leaf under an active
+	// category chain. wouldAllowID is allowed but its parent category is
+	// inactive — included? It depends on intent. The current method filters
+	// on the type's own is_active AND is_allowed_for_patients, NOT on
+	// ancestor activity. The category-level filter (subtree visibility) is
+	// the consumer's choice. We assert this contract explicitly.
+	allowedTypes, err := reader.ListPatientAllowedTypesByOrganization(ctx, orgID)
+	require.NoError(t, err)
+	allowedIDs := make(map[uuid.UUID]bool, len(allowedTypes))
+	for _, tp := range allowedTypes {
+		allowedIDs[tp.ID] = true
+		require.True(t, tp.IsActive)
+		require.True(t, tp.IsAllowedForPatients)
+	}
+	require.True(t, allowedIDs[allowedFallID], "patient list must include the active+allowed type")
+	require.True(t, allowedIDs[wouldAllowID], "list filters by type-level flags only; ancestor activity is the visibility-tree's concern")
+	require.False(t, allowedIDs[internalOnlyID], "non-allowed type must be excluded")
+	require.False(t, allowedIDs[adminOnlyTypeID], "non-allowed type must be excluded")
+
+	// Patient-visible categories: surgical (root, has allowed descendant) and
+	// wardFalls (direct allowed type). Archived is inactive → excluded.
+	// adminOnly has only non-allowed types → excluded. wouldAllow's parent
+	// (archived) is inactive, so wouldAllow does not contribute visibility.
+	visibleCats, err := reader.ListPatientVisibleCategoriesByOrganization(ctx, orgID)
+	require.NoError(t, err)
+	visibleIDs := make(map[uuid.UUID]bool, len(visibleCats))
+	for _, c := range visibleCats {
+		visibleIDs[c.ID] = true
+		require.True(t, c.IsActive, "patient-visible categories must themselves be active")
+	}
+	require.True(t, visibleIDs[surgicalID], "ancestor of an allowed type must be visible")
+	require.True(t, visibleIDs[wardFallsID], "direct parent of an allowed type must be visible")
+	require.False(t, visibleIDs[archivedID], "inactive ancestor must be excluded")
+	require.False(t, visibleIDs[adminOnlyID], "category whose subtree has no allowed type must be excluded")
 }

@@ -32,14 +32,15 @@ type CategoryView struct {
 
 // TypeView mirrors projections.incident_types.
 type TypeView struct {
-	ID             uuid.UUID
-	OrganizationID uuid.UUID
-	CategoryID     uuid.UUID
-	Name           string
-	Description    *string
-	IsActive       bool
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
+	ID                   uuid.UUID
+	OrganizationID       uuid.UUID
+	CategoryID           uuid.UUID
+	Name                 string
+	Description          *string
+	IsActive             bool
+	IsAllowedForPatients bool
+	CreatedAt            time.Time
+	UpdatedAt            time.Time
 }
 
 const selectCategory = `
@@ -49,7 +50,7 @@ const selectCategory = `
 
 const selectType = `
 	SELECT id, organization_id, category_id, name, description,
-	       is_active, created_at, updated_at
+	       is_active, is_allowed_for_patients, created_at, updated_at
 	  FROM projections.incident_types`
 
 // scanCategory scans one row into a CategoryView.
@@ -70,7 +71,7 @@ func scanType(scanner interface {
 ) error {
 	return scanner.Scan(
 		&out.ID, &out.OrganizationID, &out.CategoryID, &out.Name, &out.Description,
-		&out.IsActive, &out.CreatedAt, &out.UpdatedAt,
+		&out.IsActive, &out.IsAllowedForPatients, &out.CreatedAt, &out.UpdatedAt,
 	)
 }
 
@@ -289,6 +290,100 @@ func (r *Reader) ListActiveTypesByOrganization(ctx context.Context, orgID uuid.U
 	if err := rows.Err(); err != nil {
 		return nil, oops.In("reader.incident.classifier.type").
 			Code(ErrCodeTypeLoadFailed).
+			Wrap(err)
+	}
+	return out, nil
+}
+
+// ListPatientAllowedTypesByOrganization returns every type in the org that
+// is both active AND allowed for patient submission. This is the flat menu
+// of incident types a patient may pick from when filing an incident.
+func (r *Reader) ListPatientAllowedTypesByOrganization(ctx context.Context, orgID uuid.UUID) ([]TypeView, error) {
+	rows, err := r.db.WithContext(ctx).Raw(selectType+`
+		 WHERE organization_id = ?
+		   AND is_active = TRUE
+		   AND is_allowed_for_patients = TRUE
+		 ORDER BY name ASC, id ASC`, orgID,
+	).Rows()
+	if err != nil {
+		return nil, oops.In("reader.incident.classifier.type").
+			Code(ErrCodeTypeLoadFailed).
+			With("organization_id", orgID).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]TypeView, 0)
+	for rows.Next() {
+		var v TypeView
+		if err := scanType(rows, &v); err != nil {
+			return nil, oops.In("reader.incident.classifier.type").
+				Code(ErrCodeTypeLoadFailed).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, oops.In("reader.incident.classifier.type").
+			Code(ErrCodeTypeLoadFailed).
+			Wrap(err)
+	}
+	return out, nil
+}
+
+// ListPatientVisibleCategoriesByOrganization returns every category in the
+// org that a patient may see when navigating the classifier. A category is
+// patient-visible iff it is active AND it (or any of its descendants)
+// directly contains at least one type that is active AND allowed for
+// patients. Empty subtrees (categories whose every leaf type is unavailable
+// to patients) are excluded so the patient never sees a dead-end branch.
+func (r *Reader) ListPatientVisibleCategoriesByOrganization(ctx context.Context, orgID uuid.UUID) ([]CategoryView, error) {
+	const query = `
+		WITH RECURSIVE
+		  -- Categories that directly own at least one patient-allowed active type.
+		  direct AS (
+		    SELECT DISTINCT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN projections.incident_types t ON t.category_id = c.id
+		     WHERE c.organization_id = ?
+		       AND c.is_active = TRUE
+		       AND t.is_active = TRUE
+		       AND t.is_allowed_for_patients = TRUE
+		  ),
+		  -- Walk up: include every active ancestor on the path to the root.
+		  visible(id, parent_category_id) AS (
+		    SELECT id, parent_category_id FROM direct
+		    UNION
+		    SELECT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN visible v ON v.parent_category_id = c.id
+		     WHERE c.is_active = TRUE
+		  )
+		SELECT id, organization_id, parent_category_id, name, description,
+		       is_active, created_at, updated_at
+		  FROM projections.incident_categories
+		 WHERE id IN (SELECT id FROM visible)
+		 ORDER BY name ASC, id ASC`
+	rows, err := r.db.WithContext(ctx).Raw(query, orgID).Rows()
+	if err != nil {
+		return nil, oops.In("reader.incident.classifier.category").
+			Code(ErrCodeCategoryLoadFailed).
+			With("organization_id", orgID).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]CategoryView, 0)
+	for rows.Next() {
+		var v CategoryView
+		if err := scanCategory(rows, &v); err != nil {
+			return nil, oops.In("reader.incident.classifier.category").
+				Code(ErrCodeCategoryLoadFailed).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, oops.In("reader.incident.classifier.category").
+			Code(ErrCodeCategoryLoadFailed).
 			Wrap(err)
 	}
 	return out, nil
