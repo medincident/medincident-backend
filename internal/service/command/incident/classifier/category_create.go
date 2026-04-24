@@ -35,8 +35,8 @@ const (
 type CreateIncidentCategoryPayload struct {
 	OrganizationID   string  `validate:"required,uuid"`
 	ParentCategoryID *string `validate:"omitnil,uuid"`
-	Name             string  `validate:"required,min=2,max=256"`
-	Description      *string `validate:"omitnil,min=8,max=2048"`
+	Name             string  `validate:"required,no_extra_ws,min=2,max=256"`
+	Description      *string `validate:"omitnil,no_extra_ws,min=8,max=2048"`
 }
 
 // CreateIncidentCategoryCommand = caller + payload.

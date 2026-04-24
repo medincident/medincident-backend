@@ -28,14 +28,22 @@ import (
 // int_out_of_range, float_out_of_range) so the mapping to
 // codes.InvalidArgument / BadRequest.FieldViolation stays intact.
 const (
-	CodeStringRequired  = "string_required"
-	CodeStringTooShort  = "string_too_short"
-	CodeStringTooLong   = "string_too_long"
-	CodeUUIDRequired    = "uuid_required"
-	CodeTimeRequired    = "time_required"
-	CodeIntOutOfRange   = "int_out_of_range"
-	CodeFloatOutOfRange = "float_out_of_range"
+	CodeStringRequired        = "string_required"
+	CodeStringTooShort        = "string_too_short"
+	CodeStringTooLong         = "string_too_long"
+	CodeStringExtraWhitespace = "string_extra_whitespace"
+	CodeUUIDRequired          = "uuid_required"
+	CodeTimeRequired          = "time_required"
+	CodeIntOutOfRange         = "int_out_of_range"
+	CodeFloatOutOfRange       = "float_out_of_range"
 )
+
+// TagNoExtraWhitespace is the struct-tag name for the custom string
+// cleanliness rule. It rejects strings with leading or trailing
+// whitespace and strings containing two or more consecutive whitespace
+// runes anywhere inside. An empty string passes — combine it with
+// `required` when emptiness must also be rejected.
+const TagNoExtraWhitespace = "no_extra_ws"
 
 // v is shared across every caller. validator.Validate is documented
 // as safe for concurrent Struct calls.
@@ -56,58 +64,49 @@ func newValidator() *validator.Validate {
 	inst.RegisterTagNameFunc(func(fld reflect.StructField) string {
 		return toSnakeCase(fld.Name)
 	})
+	if err := inst.RegisterValidation(TagNoExtraWhitespace, validateNoExtraWhitespace); err != nil {
+		panic(fmt.Errorf("register %q validator: %w", TagNoExtraWhitespace, err))
+	}
 	return inst
 }
 
-// Struct validates cmd against its struct tags. Every string field
-// (including pointer-to-string and nested structs) is trimmed in a
-// local copy first so that whitespace-only input is treated as empty
-// and caught by required / min rules. Every violation is returned as
-// errors.Join of oops leaves, each carrying a generic oops Code
-// (string_required, string_too_short, float_out_of_range, …) plus a
-// dotted "field" context so the existing error interceptor maps them
-// to codes.InvalidArgument / BadRequest.FieldViolation without
-// changes.
+// Struct validates cmd against its struct tags. Every violation is
+// returned as errors.Join of oops leaves, each carrying a generic oops
+// Code (string_required, string_too_short, float_out_of_range, …) plus
+// a dotted "field" context so the existing error interceptor maps them
+// to codes.InvalidArgument / BadRequest.FieldViolation without changes.
 func Struct(cmd any) error {
-	rv := reflect.ValueOf(cmd)
-	if rv.Kind() == reflect.Pointer {
-		trimStrings(rv.Elem())
-	} else {
-		cp := reflect.New(rv.Type())
-		cp.Elem().Set(rv)
-		trimStrings(cp.Elem())
-		cmd = cp.Elem().Interface()
-	}
 	if err := v.Struct(cmd); err != nil {
 		return translate(err)
 	}
 	return nil
 }
 
-// trimStrings walks v and strings.TrimSpace every settable string,
-// including pointer-to-string and fields of nested structs and
-// struct pointers. Non-addressable values are silently skipped.
-func trimStrings(v reflect.Value) {
-	if !v.IsValid() {
-		return
+// validateNoExtraWhitespace returns false if s has leading or trailing
+// whitespace, or contains two or more consecutive whitespace runes
+// (per unicode.IsSpace). Empty strings pass — compose with `required`
+// to reject emptiness.
+func validateNoExtraWhitespace(fl validator.FieldLevel) bool {
+	s := fl.Field().String()
+	if s == "" {
+		return true
 	}
-	if v.Kind() == reflect.Pointer {
-		if v.IsNil() {
-			return
+	var prevSpace bool
+	first := true
+	for _, r := range s {
+		space := unicode.IsSpace(r)
+		if first {
+			if space {
+				return false
+			}
+			first = false
 		}
-		v = v.Elem()
+		if space && prevSpace {
+			return false
+		}
+		prevSpace = space
 	}
-	//nolint:exhaustive // only struct and string need handling; other kinds are intentionally no-op.
-	switch v.Kind() {
-	case reflect.Struct:
-		for i := 0; i < v.NumField(); i++ {
-			trimStrings(v.Field(i))
-		}
-	case reflect.String:
-		if v.CanSet() {
-			v.SetString(strings.TrimSpace(v.String()))
-		}
-	}
+	return !prevSpace
 }
 
 // translate converts a validator error into the oops multi-error
@@ -164,6 +163,8 @@ func classify(fe validator.FieldError) (code, public string) {
 			return CodeTimeRequired, "required"
 		}
 		return CodeStringRequired, "required"
+	case TagNoExtraWhitespace:
+		return CodeStringExtraWhitespace, "must not contain leading, trailing, or duplicate whitespace"
 	case "min":
 		//nolint:exhaustive // only the kinds that carry a "min" rule matter; others fall through to the generic fallback below.
 		switch fe.Kind() {

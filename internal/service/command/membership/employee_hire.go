@@ -22,9 +22,9 @@ import (
 // a new Employee row. The organisation is derived from the
 // department's parent lineage; callers pass only the department.
 type HireEmployeePayload struct {
-	ZitadelUserID string  `validate:"required"`
+	ZitadelUserID string  `validate:"required,no_extra_ws"`
 	DepartmentID  string  `validate:"required,uuid"`
-	Position      *string `validate:"omitnil,min=2,max=256"`
+	Position      *string `validate:"omitnil,no_extra_ws,min=2,max=256"`
 }
 
 // HireEmployeeCommand = caller + payload.

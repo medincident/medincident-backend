@@ -21,7 +21,7 @@ import (
 // employee's position. Position nil means "clear the position".
 type UpdateEmployeePositionPayload struct {
 	ID       string  `validate:"required,uuid"`
-	Position *string `validate:"omitnil,min=2,max=256"`
+	Position *string `validate:"omitnil,no_extra_ws,min=2,max=256"`
 }
 
 // UpdateEmployeePositionCommand = caller + payload.

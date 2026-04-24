@@ -4,7 +4,7 @@ package orgstructure
 // required and bounded; Point is optional and, when present, both
 // coordinates must be inside their valid ranges.
 type AddressInput struct {
-	Text  string      `validate:"required,min=4,max=128"`
+	Text  string      `validate:"required,no_extra_ws,min=4,max=128"`
 	Point *PointInput `validate:"omitnil"`
 }
 

@@ -15,7 +15,7 @@ import (
 
 // RevokeSystemAdminPayload carries the Zitadel user ID to remove from system admin.
 type RevokeSystemAdminPayload struct {
-	ZitadelUserID string `validate:"required"`
+	ZitadelUserID string `validate:"required,no_extra_ws"`
 }
 
 // RevokeSystemAdminCommand = caller + payload.

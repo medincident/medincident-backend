@@ -299,6 +299,7 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_required", grpcCode: codes.InvalidArgument},
 	{suffix: "_too_short", grpcCode: codes.InvalidArgument},
 	{suffix: "_too_long", grpcCode: codes.InvalidArgument},
+	{suffix: "_extra_whitespace", grpcCode: codes.InvalidArgument},
 	{suffix: "_out_of_range", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_before_start", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_in_past", grpcCode: codes.InvalidArgument},

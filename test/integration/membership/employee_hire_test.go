@@ -82,7 +82,7 @@ func TestHireEmployee_WhitespaceOnlyPositionRejected(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	assert.Equal(t, validation.CodeStringTooShort, oopsCode(t, err))
+	assert.Equal(t, validation.CodeStringExtraWhitespace, oopsCode(t, err))
 }
 
 func TestHireEmployee_ZitadelUserNotFound(t *testing.T) {

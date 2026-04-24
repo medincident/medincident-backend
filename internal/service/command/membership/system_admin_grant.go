@@ -18,7 +18,7 @@ import (
 
 // GrantSystemAdminPayload carries the Zitadel user ID to promote to system admin.
 type GrantSystemAdminPayload struct {
-	ZitadelUserID string `validate:"required"`
+	ZitadelUserID string `validate:"required,no_extra_ws"`
 }
 
 // GrantSystemAdminCommand = caller + payload.
