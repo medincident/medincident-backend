@@ -3,6 +3,7 @@ package membership
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
@@ -69,6 +70,10 @@ func (h *MembershipQueryHandler) ListEmployeesByDepartment(
 	items, err := h.empReader.ListByDepartment(ctx, caller, id, memberread.ListQuery{
 		Limit:  int(req.GetLimit()),
 		Offset: int(req.GetOffset()),
+	}, memberread.EmployeeFilter{
+		IncludeTerminated: req.GetIncludeTerminated(),
+		OnVacation:        req.GetOnVacation(),
+		Position:          strings.TrimSpace(req.GetPosition()),
 	})
 	if err != nil {
 		return nil, err
@@ -95,6 +100,10 @@ func (h *MembershipQueryHandler) ListEmployeesByClinic(
 	items, err := h.empReader.ListByClinic(ctx, caller, id, memberread.ListQuery{
 		Limit:  int(req.GetLimit()),
 		Offset: int(req.GetOffset()),
+	}, memberread.EmployeeFilter{
+		IncludeTerminated: req.GetIncludeTerminated(),
+		OnVacation:        req.GetOnVacation(),
+		Position:          strings.TrimSpace(req.GetPosition()),
 	})
 	if err != nil {
 		return nil, err
@@ -121,6 +130,10 @@ func (h *MembershipQueryHandler) ListEmployeesByOrganization(
 	items, err := h.empReader.ListByOrganization(ctx, caller, id, memberread.ListQuery{
 		Limit:  int(req.GetLimit()),
 		Offset: int(req.GetOffset()),
+	}, memberread.EmployeeFilter{
+		IncludeTerminated: req.GetIncludeTerminated(),
+		OnVacation:        req.GetOnVacation(),
+		Position:          strings.TrimSpace(req.GetPosition()),
 	})
 	if err != nil {
 		return nil, err
@@ -144,7 +157,11 @@ func (h *MembershipQueryHandler) CountEmployeesByDepartment(
 	if err != nil {
 		return nil, err
 	}
-	total, err := h.empReader.CountByDepartment(ctx, caller, id)
+	total, err := h.empReader.CountByDepartment(ctx, caller, id, memberread.EmployeeFilter{
+		IncludeTerminated: req.GetIncludeTerminated(),
+		OnVacation:        req.GetOnVacation(),
+		Position:          strings.TrimSpace(req.GetPosition()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +182,11 @@ func (h *MembershipQueryHandler) CountEmployeesByClinic(
 	if err != nil {
 		return nil, err
 	}
-	total, err := h.empReader.CountByClinic(ctx, caller, id)
+	total, err := h.empReader.CountByClinic(ctx, caller, id, memberread.EmployeeFilter{
+		IncludeTerminated: req.GetIncludeTerminated(),
+		OnVacation:        req.GetOnVacation(),
+		Position:          strings.TrimSpace(req.GetPosition()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -186,7 +207,11 @@ func (h *MembershipQueryHandler) CountEmployeesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	total, err := h.empReader.CountByOrganization(ctx, caller, id)
+	total, err := h.empReader.CountByOrganization(ctx, caller, id, memberread.EmployeeFilter{
+		IncludeTerminated: req.GetIncludeTerminated(),
+		OnVacation:        req.GetOnVacation(),
+		Position:          strings.TrimSpace(req.GetPosition()),
+	})
 	if err != nil {
 		return nil, err
 	}
