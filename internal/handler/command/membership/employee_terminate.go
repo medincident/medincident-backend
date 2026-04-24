@@ -12,18 +12,16 @@ import (
 // TerminateEmployee translates a gRPC TerminateEmployeeRequest into a
 // service command and returns an empty response on success.
 func (h *MembershipHandler) TerminateEmployee(ctx context.Context, req *membershipv1.TerminateEmployeeRequest) (*membershipv1.TerminateEmployeeResponse, error) {
-	id, err := parseEmployeeID(req.GetEmployeeId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Employee(id)); err != nil {
-		return nil, err
-	}
-	if err := h.empSvc.Terminate(ctx, membership.TerminateEmployeeCommand{ID: id}); err != nil {
+	if err := h.empSvc.Terminate(ctx, membership.TerminateEmployeeCommand{
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.TerminateEmployeePayload{
+			ID: req.GetEmployeeId(),
+		},
+	}); err != nil {
 		return nil, err
 	}
 	return &membershipv1.TerminateEmployeeResponse{}, nil

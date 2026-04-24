@@ -17,13 +17,13 @@ func (h *OrgStructureHandler) CreateOrganization(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.SystemAdmin); err != nil {
-		return nil, err
-	}
 	result, err := h.orgSvc.Create(ctx, orgsvc.CreateOrganizationCommand{
-		Name:         req.GetName(),
-		Description:  req.Description,
-		LegalAddress: addressInputFromProto(req.GetLegalAddress()),
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: orgsvc.CreateOrganizationPayload{
+			Name:         req.GetName(),
+			Description:  req.Description,
+			LegalAddress: addressInputFromProto(req.GetLegalAddress()),
+		},
 	})
 	if err != nil {
 		return nil, err

@@ -19,16 +19,22 @@ func TestType_CreateUnderRoot(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	cat, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Surgical",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Surgical",
+		},
 	})
 	require.NoError(t, err)
 
 	desc := "Fall of patient on ward"
 	res, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID:  cat.ID,
-		Name:        "Patient fall",
-		Description: &desc,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID:  cat.ID.String(),
+			Name:        "Patient fall",
+			Description: &desc,
+		},
 	})
 	require.NoError(t, err)
 	require.NotEqual(t, uuid.Nil, res.ID)
@@ -56,20 +62,29 @@ func TestType_CreateUnderNestedCategory(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	root, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Root",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Root",
+		},
 	})
 	require.NoError(t, err)
 	nested, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID:   orgID,
-		ParentCategoryID: &root.ID,
-		Name:             "Nested",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID:   orgID.String(),
+			ParentCategoryID: uuidStrPtr(root.ID),
+			Name:             "Nested",
+		},
 	})
 	require.NoError(t, err)
 
 	_, err = typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: nested.ID,
-		Name:       "Leaf type",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: nested.ID.String(),
+			Name:       "Leaf type",
+		},
 	})
 	require.NoError(t, err)
 }
@@ -80,8 +95,11 @@ func TestType_CreateCategoryNotFound(t *testing.T) {
 
 	missing := uuid.New()
 	_, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: missing,
-		Name:       "Ghost",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: missing.String(),
+			Name:       "Ghost",
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentTypeCategoryNotFound, codeOf(t, err))
@@ -93,24 +111,36 @@ func TestType_CreateGlobalNameConflict(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	c1, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "C1",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "C1",
+		},
 	})
 	require.NoError(t, err)
 	c2, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "C2",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "C2",
+		},
 	})
 	require.NoError(t, err)
 
 	_, err = typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: c1.ID,
-		Name:       "SameName",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: c1.ID.String(),
+			Name:       "SameName",
+		},
 	})
 	require.NoError(t, err)
 	_, err = typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: c2.ID,
-		Name:       "SameName",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: c2.ID.String(),
+			Name:       "SameName",
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentTypeNameConflict, codeOf(t, err))
@@ -121,21 +151,30 @@ func TestType_UpdateDetails(t *testing.T) {
 	ctx := context.Background()
 	orgID := insertOrganization(t, "Org")
 	cat, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Cat",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Cat",
+		},
 	})
 	require.NoError(t, err)
 	res, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: cat.ID,
-		Name:       "Old",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: cat.ID.String(),
+			Name:       "Old",
+		},
 	})
 	require.NoError(t, err)
 
 	desc := "A better description"
 	_, err = typeSvc.UpdateDetails(ctx, classifiersvc.UpdateIncidentTypeDetailsCommand{
-		TypeID:      res.ID,
-		Name:        "New name",
-		Description: &desc,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.UpdateIncidentTypeDetailsPayload{
+			TypeID:      res.ID.String(),
+			Name:        "New name",
+			Description: &desc,
+		},
 	})
 	require.NoError(t, err)
 
@@ -150,24 +189,36 @@ func TestType_MoveSameOrg(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	c1, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "C1",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "C1",
+		},
 	})
 	require.NoError(t, err)
 	c2, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "C2",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "C2",
+		},
 	})
 	require.NoError(t, err)
 	res, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: c1.ID,
-		Name:       "Movable",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: c1.ID.String(),
+			Name:       "Movable",
+		},
 	})
 	require.NoError(t, err)
 
 	_, err = typeSvc.Move(ctx, classifiersvc.MoveIncidentTypeCommand{
-		TypeID:        res.ID,
-		NewCategoryID: c2.ID,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.MoveIncidentTypePayload{
+			TypeID:        res.ID.String(),
+			NewCategoryID: c2.ID.String(),
+		},
 	})
 	require.NoError(t, err)
 	row := loadType(t, res.ID)
@@ -181,24 +232,36 @@ func TestType_MoveCrossOrg(t *testing.T) {
 	orgB := insertOrganization(t, "Org B")
 
 	catA, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgA,
-		Name:           "Cat A",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgA.String(),
+			Name:           "Cat A",
+		},
 	})
 	require.NoError(t, err)
 	catB, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgB,
-		Name:           "Cat B",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgB.String(),
+			Name:           "Cat B",
+		},
 	})
 	require.NoError(t, err)
 	res, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: catA.ID,
-		Name:       "Type",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: catA.ID.String(),
+			Name:       "Type",
+		},
 	})
 	require.NoError(t, err)
 
 	_, err = typeSvc.Move(ctx, classifiersvc.MoveIncidentTypeCommand{
-		TypeID:        res.ID,
-		NewCategoryID: catB.ID,
+		Caller: sysadminCaller,
+		Payload: classifiersvc.MoveIncidentTypePayload{
+			TypeID:        res.ID.String(),
+			NewCategoryID: catB.ID.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentTypeMoveOrganizationMismatch, codeOf(t, err))
@@ -209,17 +272,26 @@ func TestType_Deactivate(t *testing.T) {
 	ctx := context.Background()
 	orgID := insertOrganization(t, "Org")
 	cat, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Cat",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Cat",
+		},
 	})
 	require.NoError(t, err)
 	res, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: cat.ID,
-		Name:       "Type1",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: cat.ID.String(),
+			Name:       "Type1",
+		},
 	})
 	require.NoError(t, err)
 
-	_, err = typeSvc.Deactivate(ctx, classifiersvc.DeactivateIncidentTypeCommand{TypeID: res.ID})
+	_, err = typeSvc.Deactivate(ctx, classifiersvc.DeactivateIncidentTypeCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeactivateIncidentTypePayload{TypeID: res.ID.String()},
+	})
 	require.NoError(t, err)
 	assert.False(t, loadType(t, res.ID).IsActive)
 }
@@ -230,21 +302,33 @@ func TestType_ReactivateBlockedByInactiveCategory(t *testing.T) {
 	orgID := insertOrganization(t, "Org")
 
 	cat, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Cat",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Cat",
+		},
 	})
 	require.NoError(t, err)
 	res, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: cat.ID,
-		Name:       "Type1",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: cat.ID.String(),
+			Name:       "Type1",
+		},
 	})
 	require.NoError(t, err)
 
 	// Deactivate category (cascades to the type too).
-	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{CategoryID: cat.ID})
+	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeactivateIncidentCategoryPayload{CategoryID: cat.ID.String()},
+	})
 	require.NoError(t, err)
 
-	_, err = typeSvc.Reactivate(ctx, classifiersvc.ReactivateIncidentTypeCommand{TypeID: res.ID})
+	_, err = typeSvc.Reactivate(ctx, classifiersvc.ReactivateIncidentTypeCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.ReactivateIncidentTypePayload{TypeID: res.ID.String()},
+	})
 	require.Error(t, err)
 	assert.Equal(t, classifiersvc.ErrCodeIncidentTypeReactivateInactiveAncestor, codeOf(t, err))
 }
@@ -254,17 +338,26 @@ func TestType_Delete(t *testing.T) {
 	ctx := context.Background()
 	orgID := insertOrganization(t, "Org")
 	cat, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
-		OrganizationID: orgID,
-		Name:           "Cat",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Cat",
+		},
 	})
 	require.NoError(t, err)
 	res, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
-		CategoryID: cat.ID,
-		Name:       "Type1",
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: cat.ID.String(),
+			Name:       "Type1",
+		},
 	})
 	require.NoError(t, err)
 
-	_, err = typeSvc.Delete(ctx, classifiersvc.DeleteIncidentTypeCommand{TypeID: res.ID})
+	_, err = typeSvc.Delete(ctx, classifiersvc.DeleteIncidentTypeCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeleteIncidentTypePayload{TypeID: res.ID.String()},
+	})
 	require.NoError(t, err)
 	assert.Equal(t, 0, countIncidentTypes(t))
 }

@@ -11,52 +11,57 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 const (
 	ErrCodeIncidentTypeMoveOrganizationMismatch = "incident_type_move_organization_mismatch"
 )
 
-type MoveIncidentTypeCommand struct {
-	TypeID        uuid.UUID
-	NewCategoryID uuid.UUID
+// MoveIncidentTypePayload carries the identifiers needed to move an
+// incident type into a different category.
+type MoveIncidentTypePayload struct {
+	TypeID        string `validate:"required,uuid"`
+	NewCategoryID string `validate:"required,uuid"`
 }
 
+// MoveIncidentTypeCommand = caller + payload.
+type MoveIncidentTypeCommand struct {
+	Caller  authz.Caller
+	Payload MoveIncidentTypePayload
+}
+
+// MoveIncidentTypeResult is empty.
 type MoveIncidentTypeResult struct{}
 
 func (s *IncidentTypeService) Move(
 	ctx context.Context,
 	cmd MoveIncidentTypeCommand,
 ) (MoveIncidentTypeResult, error) {
-	var errs []error
-	if err := requireTypeID(cmd.TypeID); err != nil {
-		errs = append(errs, err)
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return MoveIncidentTypeResult{}, err
 	}
-	if cmd.NewCategoryID == uuid.Nil {
-		errs = append(errs, oops.In("services.incident.classifier.type").
-			Code(ErrCodeIncidentCategoryIDEmpty).
-			Public("New incident category ID is required.").
-			With("field", "new_category_id").
-			Errorf("new category id is empty"))
-	}
-	if len(errs) > 0 {
-		return MoveIncidentTypeResult{}, errors.Join(errs...)
+	typeID := uuid.MustParse(cmd.Payload.TypeID)
+	newCategoryID := uuid.MustParse(cmd.Payload.NewCategoryID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.IncidentType(typeID)); err != nil {
+		return MoveIncidentTypeResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var moving model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&moving, "id = ?", cmd.TypeID).Error; err != nil {
+			First(&moving, "id = ?", typeID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeNotFound).
 					Public("Incident type not found.").
-					With("incident_type_id", cmd.TypeID).
+					With("incident_type_id", typeID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.type").
 				Code(ErrCodeIncidentTypeLoadFailed).
-				With("incident_type_id", cmd.TypeID).
+				With("incident_type_id", typeID).
 				Wrap(err)
 		}
 
@@ -66,17 +71,17 @@ func (s *IncidentTypeService) Move(
 
 		var newCategory model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthShare}).
-			First(&newCategory, "id = ?", cmd.NewCategoryID).Error; err != nil {
+			First(&newCategory, "id = ?", newCategoryID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeCategoryNotFound).
 					Public("New incident category not found.").
-					With("incident_category_id", cmd.NewCategoryID).
+					With("incident_category_id", newCategoryID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.type").
 				Code(ErrCodeIncidentTypeLoadFailed).
-				With("incident_category_id", cmd.NewCategoryID).
+				With("incident_category_id", newCategoryID).
 				Wrap(err)
 		}
 

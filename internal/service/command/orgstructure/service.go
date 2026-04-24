@@ -3,37 +3,45 @@ package orgstructure
 import (
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
+
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 )
 
 // OrganizationService handles mutations of domain.organizations.
 type OrganizationService struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewOrganizationService returns a service bound to the given gorm DB.
-func NewOrganizationService(db *gorm.DB, logger *zerolog.Logger) *OrganizationService {
-	return &OrganizationService{db: db, logger: logger}
+// NewOrganizationService returns a service bound to the given gorm DB
+// and authorization service.
+func NewOrganizationService(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *OrganizationService {
+	return &OrganizationService{db: db, authz: az, logger: logger}
 }
 
 // ClinicService handles mutations of domain.clinics.
 type ClinicService struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewClinicService returns a service bound to the given gorm DB.
-func NewClinicService(db *gorm.DB, logger *zerolog.Logger) *ClinicService {
-	return &ClinicService{db: db, logger: logger}
+// NewClinicService returns a service bound to the given gorm DB and
+// authorization service.
+func NewClinicService(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *ClinicService {
+	return &ClinicService{db: db, authz: az, logger: logger}
 }
 
 // DepartmentService handles mutations of domain.departments.
 type DepartmentService struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewDepartmentService returns a service bound to the given gorm DB.
-func NewDepartmentService(db *gorm.DB, logger *zerolog.Logger) *DepartmentService {
-	return &DepartmentService{db: db, logger: logger}
+// NewDepartmentService returns a service bound to the given gorm DB
+// and authorization service.
+func NewDepartmentService(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *DepartmentService {
+	return &DepartmentService{db: db, authz: az, logger: logger}
 }

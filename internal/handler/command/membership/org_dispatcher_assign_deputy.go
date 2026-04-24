@@ -12,24 +12,17 @@ import (
 // AssignOrganizationDispatcherDeputy translates a gRPC request into a
 // service command and sets the deputy slot on an existing OrgDispatcher role.
 func (h *MembershipHandler) AssignOrganizationDispatcherDeputy(ctx context.Context, req *membershipv1.AssignOrganizationDispatcherDeputyRequest) (*membershipv1.AssignOrganizationDispatcherDeputyResponse, error) {
-	var ids idErrs
-	orgID := ids.parse(req.GetOrganizationId(), parseOrganizationID)
-	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
-	deputyID := ids.parse(req.GetDeputyEmployeeId(), parseDeputyEmployeeID)
-	if err := ids.err(); err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Organization(orgID)); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.AssignOrganizationDispatcherDeputy(ctx, membership.AssignOrganizationDispatcherDeputyCommand{
-		OrganizationID:   orgID,
-		EmployeeID:       empID,
-		DeputyEmployeeID: deputyID,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.AssignOrganizationDispatcherDeputyPayload{
+			OrganizationID:   req.GetOrganizationId(),
+			EmployeeID:       req.GetEmployeeId(),
+			DeputyEmployeeID: req.GetDeputyEmployeeId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

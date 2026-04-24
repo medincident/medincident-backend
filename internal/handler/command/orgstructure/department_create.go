@@ -13,21 +13,17 @@ func (h *OrgStructureHandler) CreateDepartment(
 	ctx context.Context,
 	req *orgstructurev1.CreateDepartmentRequest,
 ) (*orgstructurev1.CreateDepartmentResponse, error) {
-	clinicID, err := parseClinicID(req.GetClinicId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Clinic(clinicID)); err != nil {
-		return nil, err
-	}
 	result, err := h.deptSvc.Create(ctx, orgsvc.CreateDepartmentCommand{
-		ClinicID:    clinicID,
-		Name:        req.GetName(),
-		Description: req.Description,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: orgsvc.CreateDepartmentPayload{
+			ClinicID:    req.GetClinicId(),
+			Name:        req.GetName(),
+			Description: req.Description,
+		},
 	})
 	if err != nil {
 		return nil, err

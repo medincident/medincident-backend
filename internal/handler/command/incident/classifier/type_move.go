@@ -13,24 +13,16 @@ func (h *IncidentClassifierHandler) MoveIncidentType(
 	ctx context.Context,
 	req *incidentclassifierv1.MoveIncidentTypeRequest,
 ) (*incidentclassifierv1.MoveIncidentTypeResponse, error) {
-	typeID, err := parseIncidentTypeID(req.GetTypeId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.IncidentType(typeID)); err != nil {
-		return nil, err
-	}
-	newCategoryID, err := parseIncidentCategoryID(req.GetNewCategoryId())
-	if err != nil {
-		return nil, err
-	}
 	if _, err := h.typeSvc.Move(ctx, classifiersvc.MoveIncidentTypeCommand{
-		TypeID:        typeID,
-		NewCategoryID: newCategoryID,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: classifiersvc.MoveIncidentTypePayload{
+			TypeID:        req.GetTypeId(),
+			NewCategoryID: req.GetNewCategoryId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

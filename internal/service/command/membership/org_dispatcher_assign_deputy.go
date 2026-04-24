@@ -11,79 +11,80 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// AssignOrganizationDispatcherDeputyCommand carries the identifiers needed
+// AssignOrganizationDispatcherDeputyPayload carries the identifiers needed
 // to set the deputy slot on an existing OrgDispatcher role.
+type AssignOrganizationDispatcherDeputyPayload struct {
+	OrganizationID   string `validate:"required,uuid"`
+	EmployeeID       string `validate:"required,uuid"`
+	DeputyEmployeeID string `validate:"required,uuid"`
+}
+
+// AssignOrganizationDispatcherDeputyCommand = caller + payload.
 type AssignOrganizationDispatcherDeputyCommand struct {
-	OrganizationID   uuid.UUID
-	EmployeeID       uuid.UUID
-	DeputyEmployeeID uuid.UUID
+	Caller  authz.Caller
+	Payload AssignOrganizationDispatcherDeputyPayload
 }
 
 // AssignOrganizationDispatcherDeputy sets the deputy slot on an existing
 // OrgDispatcher role. See spec §8.5 (OrgDispatcher variant).
 func (s *EmployeeService) AssignOrganizationDispatcherDeputy(ctx context.Context, cmd AssignOrganizationDispatcherDeputyCommand) error {
-	var errs []error
-	if cmd.OrganizationID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationIDEmpty).
-			Public("Organization ID is required.").Errorf("organization id empty"))
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
 	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgDispatcher).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if cmd.DeputyEmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgDispatcher).Code(ErrCodeDeputyEmployeeIDEmpty).
-			Public("Deputy employee ID is required.").Errorf("deputy id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	organizationID := uuid.MustParse(cmd.Payload.OrganizationID)
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	deputyEmployeeID := uuid.MustParse(cmd.Payload.DeputyEmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Organization(organizationID)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var row model.OrgDispatcher
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("organization_id = ? AND employee_id = ?", cmd.OrganizationID, cmd.EmployeeID).
+			Where("organization_id = ? AND employee_id = ?", organizationID, employeeID).
 			First(&row).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeOrgDispatcher).
 					Code(ErrCodeOrganizationDispatcherNotFound).
 					Public("Organization dispatcher not found.").
-					With("organization_id", cmd.OrganizationID).
-					With("employee_id", cmd.EmployeeID).
+					With("organization_id", organizationID).
+					With("employee_id", employeeID).
 					Errorf("not found")
 			}
 			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherLoadFailed).Wrap(err)
 		}
 
 		var deputy model.Employee
-		err = tx.Where("id = ?", cmd.DeputyEmployeeID).First(&deputy).Error
+		err = tx.Where("id = ?", deputyEmployeeID).First(&deputy).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeOrgDispatcher).
 					Code(ErrCodeDeputyNotFound).
 					Public("Deputy employee not found.").
-					With("deputy_employee_id", cmd.DeputyEmployeeID).
+					With("deputy_employee_id", deputyEmployeeID).
 					Errorf("deputy not found")
 			}
 			return oops.In(scopeOrgDispatcher).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
 		}
 
 		// Scope check: organization_id is denormalized on employees — direct compare.
-		if deputy.OrganizationID != cmd.OrganizationID {
+		if deputy.OrganizationID != organizationID {
 			return oops.In(scopeOrgDispatcher).
 				Code(ErrCodeDeputyNotInOrganization).
 				Public("Deputy employee does not belong to this organization.").
-				With("deputy_employee_id", cmd.DeputyEmployeeID).
+				With("deputy_employee_id", deputyEmployeeID).
 				With("deputy_organization_id", deputy.OrganizationID).
-				With("target_organization_id", cmd.OrganizationID).
+				With("target_organization_id", organizationID).
 				Errorf("deputy not in target organization")
 		}
 
-		if cmd.DeputyEmployeeID == cmd.EmployeeID {
+		if deputyEmployeeID == employeeID {
 			return oops.In(scopeOrgDispatcher).
 				Code(ErrCodeDeputyIsHolder).
 				Public("Deputy cannot be the same employee as the role holder.").
@@ -98,8 +99,7 @@ func (s *EmployeeService) AssignOrganizationDispatcherDeputy(ctx context.Context
 				Errorf("deputy already assigned")
 		}
 
-		deputyID := cmd.DeputyEmployeeID
-		row.DeputyEmployeeID = null.ValueFrom(deputyID)
+		row.DeputyEmployeeID = null.ValueFrom(deputyEmployeeID)
 		if err := tx.Save(&row).Error; err != nil {
 			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherSaveFailed).Wrap(err)
 		}

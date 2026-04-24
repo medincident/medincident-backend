@@ -12,49 +12,55 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-type UpdateIncidentCategoryDetailsCommand struct {
-	CategoryID  uuid.UUID
-	Name        string
-	Description *string
+// UpdateIncidentCategoryDetailsPayload carries the new name and
+// (optional) description for an existing incident category.
+type UpdateIncidentCategoryDetailsPayload struct {
+	CategoryID  string  `validate:"required,uuid"`
+	Name        string  `validate:"required,min=2,max=256"`
+	Description *string `validate:"omitnil,min=8,max=2048"`
 }
 
+// UpdateIncidentCategoryDetailsCommand = caller + payload.
+type UpdateIncidentCategoryDetailsCommand struct {
+	Caller  authz.Caller
+	Payload UpdateIncidentCategoryDetailsPayload
+}
+
+// UpdateIncidentCategoryDetailsResult is empty — the event is the
+// meaningful result.
 type UpdateIncidentCategoryDetailsResult struct{}
 
 func (s *IncidentCategoryService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateIncidentCategoryDetailsCommand,
 ) (UpdateIncidentCategoryDetailsResult, error) {
-	var errs []error
-	if err := requireCategoryID(cmd.CategoryID); err != nil {
-		errs = append(errs, err)
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return UpdateIncidentCategoryDetailsResult{}, err
 	}
-	if err := validateIncidentCategoryName(cmd.Name); err != nil {
-		errs = append(errs, err)
-	}
-	if err := validateIncidentCategoryDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return UpdateIncidentCategoryDetailsResult{}, errors.Join(errs...)
+	categoryID := uuid.MustParse(cmd.Payload.CategoryID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Category(categoryID)); err != nil {
+		return UpdateIncidentCategoryDetailsResult{}, err
 	}
 
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var cat model.IncidentCategory
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&cat, "id = ?", cmd.CategoryID).Error; err != nil {
+			First(&cat, "id = ?", categoryID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryNotFound).
 					Public("Incident category not found.").
-					With("incident_category_id", cmd.CategoryID).
+					With("incident_category_id", categoryID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.category").
 				Code(ErrCodeIncidentCategoryLoadFailed).
-				With("incident_category_id", cmd.CategoryID).
+				With("incident_category_id", categoryID).
 				Wrap(err)
 		}
 
@@ -62,8 +68,11 @@ func (s *IncidentCategoryService) UpdateDetails(
 			return err
 		}
 
-		newName := strings.TrimSpace(cmd.Name)
-		newDescription := null.StringFromPtr(trimmedStringPtr(cmd.Description))
+		newName := strings.TrimSpace(cmd.Payload.Name)
+		var newDescription null.String
+		if cmd.Payload.Description != nil {
+			newDescription = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
+		}
 		if cat.Name == newName && cat.Description == newDescription {
 			return nil
 		}

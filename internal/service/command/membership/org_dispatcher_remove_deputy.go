@@ -12,29 +12,33 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// RemoveOrganizationDispatcherDeputyCommand carries the identifiers needed
+// RemoveOrganizationDispatcherDeputyPayload carries the identifiers needed
 // to clear the deputy slot on an OrgDispatcher role.
+type RemoveOrganizationDispatcherDeputyPayload struct {
+	OrganizationID string `validate:"required,uuid"`
+	EmployeeID     string `validate:"required,uuid"`
+}
+
+// RemoveOrganizationDispatcherDeputyCommand = caller + payload.
 type RemoveOrganizationDispatcherDeputyCommand struct {
-	OrganizationID uuid.UUID
-	EmployeeID     uuid.UUID
+	Caller  authz.Caller
+	Payload RemoveOrganizationDispatcherDeputyPayload
 }
 
 // RemoveOrganizationDispatcherDeputy clears the deputy slot. Fails if the
 // slot is already empty (no idempotent no-op per spec §4.7).
 func (s *EmployeeService) RemoveOrganizationDispatcherDeputy(ctx context.Context, cmd RemoveOrganizationDispatcherDeputyCommand) error {
-	var errs []error
-	if cmd.OrganizationID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationIDEmpty).
-			Public("Organization ID is required.").Errorf("organization id empty"))
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
 	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeOrgDispatcher).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	organizationID := uuid.MustParse(cmd.Payload.OrganizationID)
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Organization(organizationID)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -42,15 +46,15 @@ func (s *EmployeeService) RemoveOrganizationDispatcherDeputy(ctx context.Context
 
 		var row model.OrgDispatcher
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("organization_id = ? AND employee_id = ?", cmd.OrganizationID, cmd.EmployeeID).
+			Where("organization_id = ? AND employee_id = ?", organizationID, employeeID).
 			First(&row).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeOrgDispatcher).
 					Code(ErrCodeOrganizationDispatcherNotFound).
 					Public("Organization dispatcher not found.").
-					With("organization_id", cmd.OrganizationID).
-					With("employee_id", cmd.EmployeeID).
+					With("organization_id", organizationID).
+					With("employee_id", employeeID).
 					Errorf("not found")
 			}
 			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherLoadFailed).Wrap(err)
@@ -60,8 +64,8 @@ func (s *EmployeeService) RemoveOrganizationDispatcherDeputy(ctx context.Context
 			return oops.In(scopeOrgDispatcher).
 				Code(ErrCodeDeputyNotAssigned).
 				Public("No deputy is assigned to this role.").
-				With("organization_id", cmd.OrganizationID).
-				With("employee_id", cmd.EmployeeID).
+				With("organization_id", organizationID).
+				With("employee_id", employeeID).
 				Errorf("deputy not assigned")
 		}
 
@@ -70,6 +74,6 @@ func (s *EmployeeService) RemoveOrganizationDispatcherDeputy(ctx context.Context
 			return oops.In(scopeOrgDispatcher).Code(ErrCodeOrganizationDispatcherSaveFailed).Wrap(err)
 		}
 
-		return publishOrgDispatcherDeputyRemoved(tx, cmd.OrganizationID, cmd.EmployeeID, now)
+		return publishOrgDispatcherDeputyRemoved(tx, organizationID, employeeID, now)
 	})
 }

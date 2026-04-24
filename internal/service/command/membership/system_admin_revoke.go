@@ -8,25 +8,33 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// RevokeSystemAdminCommand carries the Zitadel user ID to remove from system admin.
+// RevokeSystemAdminPayload carries the Zitadel user ID to remove from system admin.
+type RevokeSystemAdminPayload struct {
+	ZitadelUserID string `validate:"required"`
+}
+
+// RevokeSystemAdminCommand = caller + payload.
 type RevokeSystemAdminCommand struct {
-	ZitadelUserID string
+	Caller  authz.Caller
+	Payload RevokeSystemAdminPayload
 }
 
 // RevokeSystemAdmin removes a SystemAdmin grant. No Zitadel verify —
 // a stale admin entry should be removable even if the user has been
 // deleted from Zitadel. See spec §8.9.
 func (s *EmployeeService) RevokeSystemAdmin(ctx context.Context, cmd RevokeSystemAdminCommand) error {
-	id := strings.TrimSpace(cmd.ZitadelUserID)
-	if id == "" {
-		return oops.In(scopeSystemAdmin).
-			Code(ErrCodeSystemAdminZitadelUserIDEmpty).
-			Public("Zitadel user ID is required.").
-			Errorf("zitadel user id empty")
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
 	}
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.SystemAdmin); err != nil {
+		return err
+	}
+	id := strings.TrimSpace(cmd.Payload.ZitadelUserID)
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		res := tx.Delete(&model.SystemAdmin{}, "zitadel_user_id = ?", id)

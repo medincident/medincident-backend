@@ -84,16 +84,16 @@ func main() {
 
 	az := authz.New(db)
 
-	orgSvc := orgsvc.NewOrganizationService(db, logger)
-	clinSvc := orgsvc.NewClinicService(db, logger)
-	deptSvc := orgsvc.NewDepartmentService(db, logger)
-	empSvc := membershipsvc.NewEmployeeService(db, zitadelService, logger)
-	catSvc := classifiersvc.NewIncidentCategoryService(db, logger)
-	typSvc := classifiersvc.NewIncidentTypeService(db, logger)
+	orgSvc := orgsvc.NewOrganizationService(db, az, logger)
+	clinSvc := orgsvc.NewClinicService(db, az, logger)
+	deptSvc := orgsvc.NewDepartmentService(db, az, logger)
+	empSvc := membershipsvc.NewEmployeeService(db, az, zitadelService, logger)
+	catSvc := classifiersvc.NewIncidentCategoryService(db, az, logger)
+	typSvc := classifiersvc.NewIncidentTypeService(db, az, logger)
 
-	orgStructureHandler := orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc, az)
-	membershipH := membershiphandler.NewMembershipHandler(empSvc, az)
-	classifierH := classifierhandler.NewIncidentClassifierHandler(catSvc, typSvc, az)
+	orgStructureHandler := orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc)
+	membershipH := membershiphandler.NewMembershipHandler(empSvc)
+	classifierH := classifierhandler.NewIncidentClassifierHandler(catSvc, typSvc)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),

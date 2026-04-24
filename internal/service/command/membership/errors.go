@@ -1,25 +1,18 @@
 package membership
 
-// Error codes used throughout the membership service. Grouped by
-// concern for readability.
+// Error codes used throughout the membership service. Generic
+// request-validation codes (string_required, uuid_required, …) live
+// in internal/validation; this file only declares aggregate-specific
+// codes (business preconditions, concurrency, infrastructure).
 const (
-	// Input validation — 422-class.
-	ErrCodeEmployeeZitadelUserIDEmpty = "employee_zitadel_user_id_empty"
-	ErrCodeEmployeeDepartmentIDEmpty  = "employee_department_id_empty"
-	ErrCodeEmployeeIDEmpty            = "employee_id_empty"
-	ErrCodeEmployeePositionTooShort   = "employee_position_too_short"
-	ErrCodeEmployeePositionTooLong    = "employee_position_too_long"
-	ErrCodeVacationIDEmpty            = "vacation_id_empty"
-	ErrCodeVacationEndBeforeStart     = "vacation_end_before_start"
-	ErrCodeVacationEndInPast          = "vacation_end_in_past"
-	ErrCodeVacationStartRequired      = "vacation_start_required"
-	ErrCodeVacationStartInPast        = "vacation_start_in_past"
-
-	ErrCodeDepartmentIDEmpty             = "department_id_empty"
-	ErrCodeClinicIDEmpty                 = "clinic_id_empty"
-	ErrCodeOrganizationIDEmpty           = "organization_id_empty"
-	ErrCodeDeputyEmployeeIDEmpty         = "deputy_employee_id_empty"
-	ErrCodeSystemAdminZitadelUserIDEmpty = "system_admin_zitadel_user_id_empty"
+	// Domain-specific input validation — codes that do not map to a
+	// generic validation primitive because they express aggregate-level
+	// constraints on time, not structural field rules.
+	ErrCodeVacationEndBeforeStart = "vacation_end_before_start"
+	ErrCodeVacationEndInPast      = "vacation_end_in_past"
+	ErrCodeVacationEndRequired    = "vacation_end_required"
+	ErrCodeVacationStartRequired  = "vacation_start_required"
+	ErrCodeVacationStartInPast    = "vacation_start_in_past"
 
 	// Business preconditions — 409/422-class.
 	ErrCodeEmployeeAlreadyHired            = "employee_already_hired"

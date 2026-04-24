@@ -12,22 +12,16 @@ import (
 // AssignOrganizationDispatcher translates a gRPC request into a service
 // command and links the employee to the organization as its dispatcher.
 func (h *MembershipHandler) AssignOrganizationDispatcher(ctx context.Context, req *membershipv1.AssignOrganizationDispatcherRequest) (*membershipv1.AssignOrganizationDispatcherResponse, error) {
-	var ids idErrs
-	orgID := ids.parse(req.GetOrganizationId(), parseOrganizationID)
-	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
-	if err := ids.err(); err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Organization(orgID)); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.AssignOrganizationDispatcher(ctx, membership.AssignOrganizationDispatcherCommand{
-		OrganizationID: orgID,
-		EmployeeID:     empID,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.AssignOrganizationDispatcherPayload{
+			OrganizationID: req.GetOrganizationId(),
+			EmployeeID:     req.GetEmployeeId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

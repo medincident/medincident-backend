@@ -290,17 +290,16 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_open_failed", grpcCode: codes.Internal},
 	{suffix: "_tune_failed", grpcCode: codes.Internal},
 
-	// Client input validation (InvalidArgument).
-	{suffix: "_id_empty", grpcCode: codes.InvalidArgument},
-	{suffix: "_id_invalid", grpcCode: codes.InvalidArgument},
-	{suffix: "_name_empty", grpcCode: codes.InvalidArgument},
-	{suffix: "_description_empty", grpcCode: codes.InvalidArgument},
-	{suffix: "_text_empty", grpcCode: codes.InvalidArgument},
-	{suffix: "_zitadel_user_id_empty", grpcCode: codes.InvalidArgument},
+	// Client input validation (InvalidArgument). Generic codes
+	// (string_required, uuid_required, float_out_of_range, …) emitted
+	// by internal/service/validation/ match the _required / _too_short /
+	// _too_long / _out_of_range suffixes below. Aggregate-specific
+	// codes (vacation_start_required, vacation_end_before_start, …)
+	// keep their own tail-matches.
+	{suffix: "_required", grpcCode: codes.InvalidArgument},
 	{suffix: "_too_short", grpcCode: codes.InvalidArgument},
 	{suffix: "_too_long", grpcCode: codes.InvalidArgument},
 	{suffix: "_out_of_range", grpcCode: codes.InvalidArgument},
-	{suffix: "_start_required", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_before_start", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_in_past", grpcCode: codes.InvalidArgument},
 	{suffix: "_start_in_past", grpcCode: codes.InvalidArgument},
@@ -336,7 +335,9 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_category_inactive", grpcCode: codes.FailedPrecondition},
 
 	// Fallback buckets kept last so the specific rules above win.
-	{suffix: "_required", grpcCode: codes.InvalidArgument},
+	// `_required` is declared once in the InvalidArgument group above;
+	// `_empty` / `_invalid` live here as catch-alls for codes that
+	// predate the unified validation vocabulary.
 	{suffix: "_empty", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid", grpcCode: codes.InvalidArgument},
 }

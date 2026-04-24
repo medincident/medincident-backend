@@ -12,22 +12,16 @@ import (
 // RevokeClinicHead translates a gRPC request into a service command
 // and removes the employee's clinic head role.
 func (h *MembershipHandler) RevokeClinicHead(ctx context.Context, req *membershipv1.RevokeClinicHeadRequest) (*membershipv1.RevokeClinicHeadResponse, error) {
-	var ids idErrs
-	clinicID := ids.parse(req.GetClinicId(), parseClinicID)
-	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
-	if err := ids.err(); err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Clinic(clinicID)); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.RevokeClinicHead(ctx, membership.RevokeClinicHeadCommand{
-		ClinicID:   clinicID,
-		EmployeeID: empID,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.RevokeClinicHeadPayload{
+			ClinicID:   req.GetClinicId(),
+			EmployeeID: req.GetEmployeeId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

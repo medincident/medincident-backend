@@ -10,13 +10,17 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
 func hireBob(t *testing.T, f fixture) (employeeID string) {
 	t.Helper()
 	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserBobID,
-		DepartmentID:  f.DeptA1a,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserBobID,
+			DepartmentID:  f.DeptA1a.String(),
+		},
 	})
 	require.NoError(t, err)
 	return res.ID.String()
@@ -26,9 +30,12 @@ func TestHireEmployee_Success_WithPosition(t *testing.T) {
 	f := takeFixture(t)
 	pos := "Senior nurse"
 	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAliceID,
-		DepartmentID:  f.DeptA1a,
-		Position:      &pos,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserAliceID,
+			DepartmentID:  f.DeptA1a.String(),
+			Position:      &pos,
+		},
 	})
 	require.NoError(t, err)
 	require.NotEqual(t, "", res.ID.String())
@@ -50,8 +57,11 @@ func TestHireEmployee_Success_WithPosition(t *testing.T) {
 func TestHireEmployee_Success_NoPosition(t *testing.T) {
 	f := takeFixture(t)
 	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserBobID,
-		DepartmentID:  f.DeptA1a,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserBobID,
+			DepartmentID:  f.DeptA1a.String(),
+		},
 	})
 	require.NoError(t, err)
 
@@ -64,19 +74,25 @@ func TestHireEmployee_WhitespaceOnlyPositionRejected(t *testing.T) {
 	f := takeFixture(t)
 	empty := "   "
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAliceID,
-		DepartmentID:  f.DeptA1a,
-		Position:      &empty,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserAliceID,
+			DepartmentID:  f.DeptA1a.String(),
+			Position:      &empty,
+		},
 	})
 	require.Error(t, err)
-	assert.Equal(t, membership.ErrCodeEmployeePositionTooShort, oopsCode(t, err))
+	assert.Equal(t, validation.CodeStringTooShort, oopsCode(t, err))
 }
 
 func TestHireEmployee_ZitadelUserNotFound(t *testing.T) {
 	f := takeFixture(t)
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: "nonexistent-user-id",
-		DepartmentID:  f.DeptA1a,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: "nonexistent-user-id",
+			DepartmentID:  f.DeptA1a.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeZitadelUserNotFound, oopsCode(t, err))
@@ -85,8 +101,11 @@ func TestHireEmployee_ZitadelUserNotFound(t *testing.T) {
 func TestHireEmployee_DepartmentNotFound(t *testing.T) {
 	_ = takeFixture(t)
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAliceID,
-		DepartmentID:  uuidMustV7(),
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserAliceID,
+			DepartmentID:  uuidMustV7().String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeDepartmentNotFound, oopsCode(t, err))
@@ -95,13 +114,19 @@ func TestHireEmployee_DepartmentNotFound(t *testing.T) {
 func TestHireEmployee_AlreadyHired(t *testing.T) {
 	f := takeFixture(t)
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAliceID,
-		DepartmentID:  f.DeptA1a,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserAliceID,
+			DepartmentID:  f.DeptA1a.String(),
+		},
 	})
 	require.NoError(t, err)
 	_, err = empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAliceID,
-		DepartmentID:  f.DeptA1a,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserAliceID,
+			DepartmentID:  f.DeptA1a.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeEmployeeAlreadyHired, oopsCode(t, err))
@@ -111,34 +136,46 @@ func TestHireEmployee_PositionTooShort(t *testing.T) {
 	f := takeFixture(t)
 	short := "A"
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAliceID,
-		DepartmentID:  f.DeptA1a,
-		Position:      &short,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserAliceID,
+			DepartmentID:  f.DeptA1a.String(),
+			Position:      &short,
+		},
 	})
 	require.Error(t, err)
-	assert.Contains(t, oopsCode(t, err), "position_too_short")
+	assert.Equal(t, validation.CodeStringTooShort, oopsCode(t, err))
 }
 
 func TestHireEmployee_PositionTooLong(t *testing.T) {
 	f := takeFixture(t)
 	long := strings.Repeat("x", 257)
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserAliceID,
-		DepartmentID:  f.DeptA1a,
-		Position:      &long,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserAliceID,
+			DepartmentID:  f.DeptA1a.String(),
+			Position:      &long,
+		},
 	})
 	require.Error(t, err)
-	assert.Contains(t, oopsCode(t, err), "position_too_long")
+	assert.Equal(t, validation.CodeStringTooLong, oopsCode(t, err))
 }
 
 func TestHireEmployee_MultiErrorReturnsAllViolations(t *testing.T) {
 	tooShort := "A"
 	_, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: "",
-		Position:      &tooShort,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: "",
+			Position:      &tooShort,
+		},
 	})
+	// Both ZitadelUserID and DepartmentID are empty strings with a
+	// `required` rule, so each emits string_required (distinct fields).
+	// Position="A" trips string_too_short. The translator returns an
+	// errors.Join of oops leaves — three in total.
 	codes := oopsCodes(t, err)
-	assert.Contains(t, codes, membership.ErrCodeEmployeeZitadelUserIDEmpty)
-	assert.Contains(t, codes, membership.ErrCodeEmployeeDepartmentIDEmpty)
-	assert.Contains(t, codes, membership.ErrCodeEmployeePositionTooShort)
+	assert.Contains(t, codes, validation.CodeStringRequired)
+	assert.Contains(t, codes, validation.CodeStringTooShort)
 }

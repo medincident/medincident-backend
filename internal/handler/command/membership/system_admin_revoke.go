@@ -14,11 +14,11 @@ func (h *MembershipHandler) RevokeSystemAdmin(ctx context.Context, req *membersh
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.SystemAdmin); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.RevokeSystemAdmin(ctx, membership.RevokeSystemAdminCommand{
-		ZitadelUserID: req.GetZitadelUserId(),
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.RevokeSystemAdminPayload{
+			ZitadelUserID: req.GetZitadelUserId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

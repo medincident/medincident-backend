@@ -12,22 +12,16 @@ import (
 // UpdateEmployeeDepartment translates a gRPC UpdateEmployeeDepartmentRequest
 // into a service command and returns an empty response on success.
 func (h *MembershipHandler) UpdateEmployeeDepartment(ctx context.Context, req *membershipv1.UpdateEmployeeDepartmentRequest) (*membershipv1.UpdateEmployeeDepartmentResponse, error) {
-	var ids idErrs
-	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
-	depID := ids.parse(req.GetDepartmentId(), parseDepartmentID)
-	if err := ids.err(); err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Employee(empID)); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.UpdateDepartment(ctx, membership.UpdateEmployeeDepartmentCommand{
-		ID:           empID,
-		DepartmentID: depID,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID:           req.GetEmployeeId(),
+			DepartmentID: req.GetDepartmentId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

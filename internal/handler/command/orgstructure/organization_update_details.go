@@ -13,21 +13,17 @@ func (h *OrgStructureHandler) UpdateOrganizationDetails(
 	ctx context.Context,
 	req *orgstructurev1.UpdateOrganizationDetailsRequest,
 ) (*orgstructurev1.UpdateOrganizationDetailsResponse, error) {
-	id, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Organization(id)); err != nil {
-		return nil, err
-	}
 	if err := h.orgSvc.UpdateDetails(ctx, orgsvc.UpdateOrganizationDetailsCommand{
-		ID:          id,
-		Name:        req.GetName(),
-		Description: req.Description,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: orgsvc.UpdateOrganizationDetailsPayload{
+			ID:          req.GetOrganizationId(),
+			Name:        req.GetName(),
+			Description: req.Description,
+		},
 	}); err != nil {
 		return nil, err
 	}

@@ -24,6 +24,7 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/membership"
 	"github.com/medincident/medincident-command-service/internal/service/zitadel"
 )
@@ -37,7 +38,8 @@ var (
 	testDB     *gorm.DB
 	testLogger = zerolog.Nop()
 
-	empSvc *membership.EmployeeService
+	authzSvc *authz.Authz
+	empSvc   *membership.EmployeeService
 
 	zitadelBaseURL string
 	zitadelPAT     string
@@ -47,8 +49,18 @@ var (
 	testUserBobID   string
 	testUserCarolID string
 
+	// sysadminZitadelID is the Zitadel user ID used as the caller for
+	// every command. Seeded into domain.system_admins by resetDB so the
+	// authz.SystemAdmin branch of AdminOf.* always succeeds regardless
+	// of which scope the test exercises.
+	sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
+
 	cleanupFuncs []func()
 )
+
+// sysadminZitadelID is the Zitadel user ID seeded in resetDB and used
+// by every test as the command caller.
+const sysadminZitadelID = "sysadmin"
 
 func TestMain(m *testing.M) {
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Minute)
@@ -213,7 +225,8 @@ func setup(ctx context.Context) error {
 		return fmt.Errorf("build zitadel service: %w", err)
 	}
 
-	empSvc = membership.NewEmployeeService(testDB, zsvc, &testLogger)
+	authzSvc = authz.New(testDB)
+	empSvc = membership.NewEmployeeService(testDB, authzSvc, zsvc, &testLogger)
 	return nil
 }
 

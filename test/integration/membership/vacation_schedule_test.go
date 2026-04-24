@@ -17,7 +17,10 @@ func TestScheduleVacation_Success_Unlimited(t *testing.T) {
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
 	start := time.Now().Add(72 * time.Hour)
-	res, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{EmployeeID: id, StartsAt: start})
+	res, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.ScheduleVacationPayload{EmployeeID: id.String(), StartsAt: start},
+	})
 	require.NoError(t, err)
 
 	var projState string
@@ -31,7 +34,10 @@ func TestScheduleVacation_Success_WithEnd(t *testing.T) {
 	id := mustParseUUID(t, empID)
 	start := time.Now().Add(72 * time.Hour)
 	end := start.Add(48 * time.Hour)
-	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{EmployeeID: id, StartsAt: start, EndsAt: &end})
+	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.ScheduleVacationPayload{EmployeeID: id.String(), StartsAt: start, EndsAt: &end},
+	})
 	require.NoError(t, err)
 }
 
@@ -40,7 +46,10 @@ func TestScheduleVacation_StartInPast(t *testing.T) {
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
 	start := time.Now().Add(-1 * time.Hour)
-	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{EmployeeID: id, StartsAt: start})
+	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.ScheduleVacationPayload{EmployeeID: id.String(), StartsAt: start},
+	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeVacationStartInPast, oopsCode(t, err))
 }
@@ -51,7 +60,10 @@ func TestScheduleVacation_EndBeforeStart(t *testing.T) {
 	id := mustParseUUID(t, empID)
 	start := time.Now().Add(72 * time.Hour)
 	end := start.Add(-1 * time.Hour)
-	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{EmployeeID: id, StartsAt: start, EndsAt: &end})
+	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.ScheduleVacationPayload{EmployeeID: id.String(), StartsAt: start, EndsAt: &end},
+	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeVacationEndBeforeStart, oopsCode(t, err))
 }
@@ -62,12 +74,18 @@ func TestScheduleVacation_Overlap(t *testing.T) {
 	id := mustParseUUID(t, empID)
 	start1 := time.Now().Add(72 * time.Hour)
 	end1 := start1.Add(48 * time.Hour)
-	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{EmployeeID: id, StartsAt: start1, EndsAt: &end1})
+	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.ScheduleVacationPayload{EmployeeID: id.String(), StartsAt: start1, EndsAt: &end1},
+	})
 	require.NoError(t, err)
 	// Overlapping second vacation.
 	start2 := start1.Add(24 * time.Hour)
 	end2 := start2.Add(48 * time.Hour)
-	_, err = empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{EmployeeID: id, StartsAt: start2, EndsAt: &end2})
+	_, err = empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.ScheduleVacationPayload{EmployeeID: id.String(), StartsAt: start2, EndsAt: &end2},
+	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeVacationOverlap, oopsCode(t, err))
 }
@@ -79,12 +97,18 @@ func TestStartVacationNow_Overlap_WithScheduled(t *testing.T) {
 	id := mustParseUUID(t, empID)
 	futureStart := time.Now().Add(1 * time.Hour)
 	_, err := empSvc.ScheduleVacation(ctxT(t), membership.ScheduleVacationCommand{
-		EmployeeID: id,
-		StartsAt:   futureStart,
+		Caller: sysadminCaller,
+		Payload: membership.ScheduleVacationPayload{
+			EmployeeID: id.String(),
+			StartsAt:   futureStart,
+		},
 	})
 	require.NoError(t, err)
 	// Start now with unlimited end → overlaps with the scheduled one.
-	_, err = empSvc.StartVacationNow(ctxT(t), membership.StartVacationNowCommand{EmployeeID: id})
+	_, err = empSvc.StartVacationNow(ctxT(t), membership.StartVacationNowCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.StartVacationNowPayload{EmployeeID: id.String()},
+	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeVacationOverlap, oopsCode(t, err))
 }

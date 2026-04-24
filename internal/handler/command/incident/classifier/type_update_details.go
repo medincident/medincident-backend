@@ -13,21 +13,17 @@ func (h *IncidentClassifierHandler) UpdateIncidentTypeDetails(
 	ctx context.Context,
 	req *incidentclassifierv1.UpdateIncidentTypeDetailsRequest,
 ) (*incidentclassifierv1.UpdateIncidentTypeDetailsResponse, error) {
-	typeID, err := parseIncidentTypeID(req.GetTypeId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.IncidentType(typeID)); err != nil {
-		return nil, err
-	}
 	if _, err := h.typeSvc.UpdateDetails(ctx, classifiersvc.UpdateIncidentTypeDetailsCommand{
-		TypeID:      typeID,
-		Name:        req.GetName(),
-		Description: req.Description,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: classifiersvc.UpdateIncidentTypeDetailsPayload{
+			TypeID:      req.GetTypeId(),
+			Name:        req.GetName(),
+			Description: req.Description,
+		},
 	}); err != nil {
 		return nil, err
 	}

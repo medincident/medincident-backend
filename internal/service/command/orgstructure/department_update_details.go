@@ -12,49 +12,60 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-type UpdateDepartmentDetailsCommand struct {
-	ID          uuid.UUID
-	Name        string
-	Description *string
+// UpdateDepartmentDetailsPayload carries the new name and (optional)
+// description for an existing department.
+type UpdateDepartmentDetailsPayload struct {
+	ID          string  `validate:"required,uuid"`
+	Name        string  `validate:"required,min=4,max=256"`
+	Description *string `validate:"omitnil,min=8,max=2048"`
 }
 
+// UpdateDepartmentDetailsCommand = caller + payload.
+type UpdateDepartmentDetailsCommand struct {
+	Caller  authz.Caller
+	Payload UpdateDepartmentDetailsPayload
+}
+
+// UpdateDetails changes a department's name and description.
 func (s *DepartmentService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateDepartmentDetailsCommand,
 ) error {
-	var errs []error
-	if err := validateDepartmentName(cmd.Name); err != nil {
-		errs = append(errs, err)
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
 	}
-	if err := validateDepartmentDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	id := uuid.MustParse(cmd.Payload.ID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Department(id)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var dept model.Department
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&dept, "id = ?", cmd.ID).Error; err != nil {
+			First(&dept, "id = ?", id).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.orgstructure.department").
 					Code(ErrCodeDepartmentNotFound).
 					Public("Department not found.").
-					With("department_id", cmd.ID).
+					With("department_id", id).
 					Errorf("department not found")
 			}
 			return oops.In("services.orgstructure.department").
 				Code(ErrCodeDepartmentLoadFailed).
-				With("department_id", cmd.ID).
+				With("department_id", id).
 				Wrap(err)
 		}
 
-		newName := strings.TrimSpace(cmd.Name)
-		newDesc := null.StringFromPtr(cmd.Description)
+		newName := strings.TrimSpace(cmd.Payload.Name)
+		var newDesc null.String
+		if cmd.Payload.Description != nil {
+			newDesc = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
+		}
 		if dept.Name == newName && dept.Description == newDesc {
 			return nil
 		}
@@ -63,7 +74,7 @@ func (s *DepartmentService) UpdateDetails(
 		if err := tx.Save(&dept).Error; err != nil {
 			return oops.In("services.orgstructure.department").
 				Code(ErrCodeDepartmentSaveFailed).
-				With("department_id", cmd.ID).
+				With("department_id", id).
 				Wrap(err)
 		}
 

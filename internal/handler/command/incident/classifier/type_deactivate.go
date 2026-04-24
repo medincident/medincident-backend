@@ -13,18 +13,14 @@ func (h *IncidentClassifierHandler) DeactivateIncidentType(
 	ctx context.Context,
 	req *incidentclassifierv1.DeactivateIncidentTypeRequest,
 ) (*incidentclassifierv1.DeactivateIncidentTypeResponse, error) {
-	typeID, err := parseIncidentTypeID(req.GetTypeId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.IncidentType(typeID)); err != nil {
-		return nil, err
-	}
-	if _, err := h.typeSvc.Deactivate(ctx, classifiersvc.DeactivateIncidentTypeCommand{TypeID: typeID}); err != nil {
+	if _, err := h.typeSvc.Deactivate(ctx, classifiersvc.DeactivateIncidentTypeCommand{
+		Caller:  authz.Caller{ZitadelUserID: callerID},
+		Payload: classifiersvc.DeactivateIncidentTypePayload{TypeID: req.GetTypeId()},
+	}); err != nil {
 		return nil, err
 	}
 	return &incidentclassifierv1.DeactivateIncidentTypeResponse{}, nil

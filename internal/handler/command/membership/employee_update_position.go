@@ -12,20 +12,16 @@ import (
 // UpdateEmployeePosition translates a gRPC UpdateEmployeePositionRequest
 // into a service command and returns an empty response on success.
 func (h *MembershipHandler) UpdateEmployeePosition(ctx context.Context, req *membershipv1.UpdateEmployeePositionRequest) (*membershipv1.UpdateEmployeePositionResponse, error) {
-	id, err := parseEmployeeID(req.GetEmployeeId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Employee(id)); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.UpdatePosition(ctx, membership.UpdateEmployeePositionCommand{
-		ID:       id,
-		Position: req.Position,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.UpdateEmployeePositionPayload{
+			ID:       req.GetEmployeeId(),
+			Position: req.Position,
+		},
 	}); err != nil {
 		return nil, err
 	}

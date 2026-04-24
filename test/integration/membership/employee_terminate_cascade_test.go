@@ -15,10 +15,16 @@ func TestTerminateEmployee_CascadeRevokesDRAsHolder(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	require.NoError(t, empSvc.AssignDepartmentResponsible(ctxT(t), membership.AssignDepartmentResponsibleCommand{
-		DepartmentID: f.DeptA1a, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignDepartmentResponsiblePayload{
+			DepartmentID: f.DeptA1a.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: aliceID}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: aliceID.String()},
+	}))
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -31,10 +37,16 @@ func TestTerminateEmployee_CascadeRevokesCHAsHolder(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
-		ClinicID: f.ClinicA1, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignClinicHeadPayload{
+			ClinicID: f.ClinicA1.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: aliceID}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: aliceID.String()},
+	}))
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -47,10 +59,16 @@ func TestTerminateEmployee_CascadeRevokesOrgAdminAsHolder(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: aliceID}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: aliceID.String()},
+	}))
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -63,10 +81,16 @@ func TestTerminateEmployee_CascadeRevokesOrgHeadAsHolder(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	require.NoError(t, empSvc.AssignOrganizationHead(ctxT(t), membership.AssignOrganizationHeadCommand{
-		OrganizationID: f.OrgA, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationHeadPayload{
+			OrganizationID: f.OrgA.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: aliceID}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: aliceID.String()},
+	}))
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -79,10 +103,16 @@ func TestTerminateEmployee_CascadeRevokesOrgDispatcherAsHolder(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	require.NoError(t, empSvc.AssignOrganizationDispatcher(ctxT(t), membership.AssignOrganizationDispatcherCommand{
-		OrganizationID: f.OrgA, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationDispatcherPayload{
+			OrganizationID: f.OrgA.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: aliceID}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: aliceID.String()},
+	}))
 
 	var count int64
 	require.NoError(t, testDB.Raw(
@@ -96,14 +126,23 @@ func TestTerminateEmployee_CascadeClearsDRDeputy(t *testing.T) {
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	bobID := mustParseUUID(t, hireBob(t, f))
 	require.NoError(t, empSvc.AssignDepartmentResponsible(ctxT(t), membership.AssignDepartmentResponsibleCommand{
-		DepartmentID: f.DeptA1a, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignDepartmentResponsiblePayload{
+			DepartmentID: f.DeptA1a.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 	require.NoError(t, empSvc.AssignDepartmentResponsibleDeputy(ctxT(t), membership.AssignDepartmentResponsibleDeputyCommand{
-		DepartmentID: f.DeptA1a, EmployeeID: aliceID, DeputyEmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignDepartmentResponsibleDeputyPayload{
+			DepartmentID: f.DeptA1a.String(), EmployeeID: aliceID.String(), DeputyEmployeeID: bobID.String(),
+		},
 	}))
 
 	// Terminate Bob — he was the deputy, not the holder. Alice's role remains.
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: bobID}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: bobID.String()},
+	}))
 
 	var deputyCount int64
 	require.NoError(t, testDB.Raw(

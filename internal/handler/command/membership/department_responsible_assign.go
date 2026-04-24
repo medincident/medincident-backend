@@ -12,22 +12,16 @@ import (
 // AssignDepartmentResponsible translates a gRPC request into a service
 // command and links the employee to the department as its responsible.
 func (h *MembershipHandler) AssignDepartmentResponsible(ctx context.Context, req *membershipv1.AssignDepartmentResponsibleRequest) (*membershipv1.AssignDepartmentResponsibleResponse, error) {
-	var ids idErrs
-	depID := ids.parse(req.GetDepartmentId(), parseDepartmentID)
-	empID := ids.parse(req.GetEmployeeId(), parseEmployeeID)
-	if err := ids.err(); err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Department(depID)); err != nil {
-		return nil, err
-	}
 	if err := h.empSvc.AssignDepartmentResponsible(ctx, membership.AssignDepartmentResponsibleCommand{
-		DepartmentID: depID,
-		EmployeeID:   empID,
+		Caller: authz.Caller{ZitadelUserID: callerID},
+		Payload: membership.AssignDepartmentResponsiblePayload{
+			DepartmentID: req.GetDepartmentId(),
+			EmployeeID:   req.GetEmployeeId(),
+		},
 	}); err != nil {
 		return nil, err
 	}

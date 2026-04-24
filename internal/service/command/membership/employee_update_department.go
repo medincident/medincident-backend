@@ -11,53 +11,53 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-command-service/internal/model"
+	"github.com/medincident/medincident-command-service/internal/service/authz"
 	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-command-service/internal/service/validation"
 )
 
-// UpdateEmployeeDepartmentCommand carries the inputs required to move
+// UpdateEmployeeDepartmentPayload carries the inputs required to move
 // an employee to a different department.
+type UpdateEmployeeDepartmentPayload struct {
+	ID           string `validate:"required,uuid"`
+	DepartmentID string `validate:"required,uuid"`
+}
+
+// UpdateEmployeeDepartmentCommand = caller + payload.
 type UpdateEmployeeDepartmentCommand struct {
-	ID           uuid.UUID
-	DepartmentID uuid.UUID
+	Caller  authz.Caller
+	Payload UpdateEmployeeDepartmentPayload
 }
 
 // UpdateDepartment moves an employee to a different department. The
 // target department must belong to the same organisation as the
 // current employee row; moving across organisations is forbidden.
 func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmployeeDepartmentCommand) error {
-	var errs []error
-	if cmd.ID == uuid.Nil {
-		errs = append(errs, oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id is empty"))
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
 	}
-	if cmd.DepartmentID == uuid.Nil {
-		errs = append(errs, oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeDepartmentIDEmpty).
-			Public("Department ID is required.").
-			Errorf("department id is empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	employeeID := uuid.MustParse(cmd.Payload.ID)
+	departmentID := uuid.MustParse(cmd.Payload.DepartmentID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Employee(employeeID)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var emp model.Employee
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.ID).
+			Where("id = ?", employeeID).
 			First(&emp).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeEmployee).
 					Code(ErrCodeEmployeeNotFound).
 					Public("Employee not found.").
-					With("employee_id", cmd.ID).
+					With("employee_id", employeeID).
 					Errorf("employee not found")
 			}
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
 		}
 
-		if cmd.DepartmentID == emp.DepartmentID {
+		if departmentID == emp.DepartmentID {
 			return nil
 		}
 
@@ -80,19 +80,19 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 			JOIN domain.clinics     old_c ON old_c.id = old_d.clinic_id
 			JOIN domain.departments new_d ON new_d.id = ?
 			JOIN domain.clinics     new_c ON new_c.id = new_d.clinic_id
-			WHERE old_d.id = ?`, cmd.DepartmentID, oldDepartmentID,
+			WHERE old_d.id = ?`, departmentID, oldDepartmentID,
 		).Row().Scan(&lookup.OldClinicID, &lookup.NewClinicID, &lookup.NewOrgID)
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
 				return oops.In(scopeEmployee).
 					Code(ErrCodeDepartmentNotFound).
 					Public("Department not found.").
-					With("department_id", cmd.DepartmentID).
+					With("department_id", departmentID).
 					Errorf("department not found")
 			}
 			return oops.In(scopeEmployee).
 				Code(ErrCodeDepartmentLookupFailed).
-				With("department_id", cmd.DepartmentID).
+				With("department_id", departmentID).
 				Wrap(err)
 		}
 		if lookup.NewOrgID != emp.OrganizationID {
@@ -104,7 +104,7 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 				Errorf("department is in a different organization")
 		}
 
-		emp.DepartmentID = cmd.DepartmentID
+		emp.DepartmentID = departmentID
 		if err := tx.Save(&emp).Error; err != nil {
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
 		}

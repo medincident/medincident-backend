@@ -12,26 +12,24 @@ import (
 // ScheduleVacation translates a gRPC ScheduleVacationRequest into a
 // service command and returns the new vacation ID on success.
 func (h *MembershipHandler) ScheduleVacation(ctx context.Context, req *membershipv1.ScheduleVacationRequest) (*membershipv1.ScheduleVacationResponse, error) {
-	id, err := parseEmployeeID(req.GetEmployeeId())
-	if err != nil {
-		return nil, err
-	}
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
-	if err := h.authz.Require(ctx, callerID, authz.AdminOf.Employee(id)); err != nil {
-		return nil, err
+	payload := membership.ScheduleVacationPayload{
+		EmployeeID: req.GetEmployeeId(),
 	}
-	cmd := membership.ScheduleVacationCommand{EmployeeID: id}
 	if ts := req.GetStartsAt(); ts != nil {
-		cmd.StartsAt = ts.AsTime()
+		payload.StartsAt = ts.AsTime()
 	}
 	if ts := req.GetEndsAt(); ts != nil {
 		t := ts.AsTime()
-		cmd.EndsAt = &t
+		payload.EndsAt = &t
 	}
-	res, err := h.empSvc.ScheduleVacation(ctx, cmd)
+	res, err := h.empSvc.ScheduleVacation(ctx, membership.ScheduleVacationCommand{
+		Caller:  authz.Caller{ZitadelUserID: callerID},
+		Payload: payload,
+	})
 	if err != nil {
 		return nil, err
 	}
