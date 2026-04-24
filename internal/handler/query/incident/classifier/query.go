@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
@@ -49,10 +50,11 @@ func (h *IncidentClassifierQueryHandler) GetCategory(
 	ctx context.Context,
 	req *classifierqueryv1.GetCategoryRequest,
 ) (*classifierqueryv1.GetCategoryResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseCategoryID(req.GetId())
 	if err != nil {
 		return nil, err
@@ -69,10 +71,11 @@ func (h *IncidentClassifierQueryHandler) ListCategoriesByOrganization(
 	ctx context.Context,
 	req *classifierqueryv1.ListCategoriesByOrganizationRequest,
 ) (*classifierqueryv1.ListCategoriesByOrganizationResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -92,10 +95,11 @@ func (h *IncidentClassifierQueryHandler) ListActiveRootCategories(
 	ctx context.Context,
 	req *classifierqueryv1.ListActiveRootCategoriesRequest,
 ) (*classifierqueryv1.ListActiveRootCategoriesResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -112,10 +116,11 @@ func (h *IncidentClassifierQueryHandler) ListCategorySubtree(
 	ctx context.Context,
 	req *classifierqueryv1.ListCategorySubtreeRequest,
 ) (*classifierqueryv1.ListCategorySubtreeResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseCategoryID(req.GetRootCategoryId())
 	if err != nil {
 		return nil, err
@@ -132,10 +137,11 @@ func (h *IncidentClassifierQueryHandler) GetType(
 	ctx context.Context,
 	req *classifierqueryv1.GetTypeRequest,
 ) (*classifierqueryv1.GetTypeResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseTypeID(req.GetId())
 	if err != nil {
 		return nil, err
@@ -152,10 +158,11 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 	ctx context.Context,
 	req *classifierqueryv1.ListTypesByCategoryRequest,
 ) (*classifierqueryv1.ListTypesByCategoryResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseCategoryID(req.GetCategoryId())
 	if err != nil {
 		return nil, err
@@ -172,10 +179,11 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 	ctx context.Context,
 	req *classifierqueryv1.ListActiveTypesByOrganizationRequest,
 ) (*classifierqueryv1.ListActiveTypesByOrganizationResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -193,10 +201,11 @@ func (h *IncidentClassifierQueryHandler) ListPatientAllowedTypesByOrganization(
 	ctx context.Context,
 	req *classifierqueryv1.ListPatientAllowedTypesByOrganizationRequest,
 ) (*classifierqueryv1.ListPatientAllowedTypesByOrganizationResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -215,10 +224,11 @@ func (h *IncidentClassifierQueryHandler) ListPatientVisibleCategoriesByOrganizat
 	ctx context.Context,
 	req *classifierqueryv1.ListPatientVisibleCategoriesByOrganizationRequest,
 ) (*classifierqueryv1.ListPatientVisibleCategoriesByOrganizationResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err

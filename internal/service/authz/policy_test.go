@@ -184,6 +184,24 @@ func TestAuthenticated_Describe(t *testing.T) {
 	assert.Equal(t, "an authenticated caller", Authenticated.describe())
 }
 
+// Require short-circuits Authenticated without a DB round-trip. We
+// assert the empty-caller branch denies; the success branch cannot
+// execute in a unit test without a DB, and the code path is the same
+// either way — it never reaches a.db.
+func TestRequire_Authenticated_EmptyCaller_Denies(t *testing.T) {
+	a := &Authz{}
+	err := a.Require(t.Context(), "", Authenticated)
+	require.Error(t, err)
+	var oe oops.OopsError
+	require.True(t, errors.As(err, &oe))
+	assert.Equal(t, ErrCodePermissionDenied, oe.Code())
+}
+
+func TestRequire_Authenticated_NonEmptyCaller_Allows(t *testing.T) {
+	a := &Authz{}
+	require.NoError(t, a.Require(t.Context(), "bob", Authenticated))
+}
+
 func TestMemberOf_Category_WidensToOrganization(t *testing.T) {
 	bc := &branchCtx{callerID: "bob"}
 	bs := MemberOf.Category(uuid.MustParse("cccccccc-cccc-cccc-cccc-cccccccccccc")).branches(bc)

@@ -520,6 +520,21 @@ func (a *Authz) Require(ctx context.Context, callerID string, p Policy) error {
 			With("caller_id", callerID).
 			Errorf("nil policy")
 	}
+	// Authenticated-only gate: the authn interceptor upstream rejects
+	// empty caller IDs, but Require is exported and can be called from
+	// tests or future code paths that skip the interceptor. Guard
+	// explicitly and short-circuit the DB round-trip — Authenticated
+	// never depends on a scope or row, so the EXISTS query would only
+	// add latency.
+	if _, ok := p.(authenticatedPolicy); ok {
+		if callerID == "" {
+			return oops.In("service.authz").
+				Code(ErrCodePermissionDenied).
+				Public("Access denied: requires an authenticated caller.").
+				Errorf("empty caller id for authenticated policy")
+		}
+		return nil
+	}
 	bc := &branchCtx{callerID: callerID}
 	branches := p.branches(bc)
 	if len(branches) == 0 {
