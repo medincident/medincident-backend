@@ -743,8 +743,8 @@ github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsI
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 h1:iCEnooe7UlwOQYpKFhBabPMi4aNAfoODPEFNiAnClxo=
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761/go.mod h1:5TJZWKEWniPve33vlWYSoGYefn3gLQRzjfDlhSJ9ZKM=
-github.com/jackc/pgx/v5 v5.6.0 h1:SWJzexBzPL5jb0GEsrPMLIsi/3jOo7RHlzTjcAeDrPY=
-github.com/jackc/pgx/v5 v5.6.0/go.mod h1:DNZ/vlrUnhWCoFGxHAG8U2ljioxukquj7utPDgtQdTw=
+github.com/jackc/pgx/v5 v5.9.2 h1:3ZhOzMWnR4yJ+RW1XImIPsD1aNSz4T4fyP7zlQb56hw=
+github.com/jackc/pgx/v5 v5.9.2/go.mod h1:mal1tBGAFfLHvZzaYh77YS/eC6IX9OWbRV1QIIM0Jn4=
 github.com/jackc/puddle/v2 v2.2.2 h1:PR8nw+E/1w0GLuRFSmiioY6UooMp6KJv0/61nB7icHo=
 github.com/jackc/puddle/v2 v2.2.2/go.mod h1:vriiEXHvEE654aYKXXjOvZM39qJ0q+azkZFrfEOc3H4=
 github.com/jdx/go-netrc v1.0.0 h1:QbLMLyCZGj0NA8glAhxUpf1zDg6cxnWgMBbjq40W0gQ=
@@ -1177,12 +1177,12 @@ github.com/zenizh/go-capturer v0.0.0-20211219060012-52ea6c8fed04 h1:qXafrlZL1WsJ
 github.com/zenizh/go-capturer v0.0.0-20211219060012-52ea6c8fed04/go.mod h1:FiwNQxz6hGoNFBC4nIx+CxZhI3nne5RmIOlT/MXcSD4=
 github.com/zitadel/logging v0.7.0 h1:eugftwMM95Wgqwftsvj81isL0JK/hoScVqp/7iA2adQ=
 github.com/zitadel/logging v0.7.0/go.mod h1:9A6h9feBF/3u0IhA4uffdzSDY7mBaf7RE78H5sFMINQ=
-github.com/zitadel/oidc/v3 v3.47.2 h1:gOVj4h38miymcu1uiCMR991UpBVm9wNVf8hpt/3Fjg0=
-github.com/zitadel/oidc/v3 v3.47.2/go.mod h1:XxFh0666HRXycyrKmono+3gY0RACpYJLgy4r/+kliKY=
+github.com/zitadel/oidc/v3 v3.47.5 h1:cR2z0oqa5XZkwpXQiPCUGqKtndrjHgEXb81y3oXocK4=
+github.com/zitadel/oidc/v3 v3.47.5/go.mod h1:XxFh0666HRXycyrKmono+3gY0RACpYJLgy4r/+kliKY=
 github.com/zitadel/schema v1.3.2 h1:gfJvt7dOMfTmxzhscZ9KkapKo3Nei3B6cAxjav+lyjI=
 github.com/zitadel/schema v1.3.2/go.mod h1:IZmdfF9Wu62Zu6tJJTH3UsArevs3Y4smfJIj3L8fzxw=
-github.com/zitadel/zitadel-go/v3 v3.28.0 h1:CAjDziZcyb7uK+4KGDWadzfCfJ1kA/0swvFW9Gi5R+o=
-github.com/zitadel/zitadel-go/v3 v3.28.0/go.mod h1:8UaWIIUR+c9jstT6bjoiknaxttxFZKNc7RYs32v03jw=
+github.com/zitadel/zitadel-go/v3 v3.29.0 h1:mzBWU/ZTqPpomOgHv1//x27P/KoFGJMaAl6rZ4mptPY=
+github.com/zitadel/zitadel-go/v3 v3.29.0/go.mod h1:w+g7h96wj4mGGKa+jXapKMTTXIQhk7Gqyr93YG/i1Mo=
 gitlab.com/bosi/decorder v0.4.2 h1:qbQaV3zgwnBZ4zPMhGLW4KZe7A7NwxEhJx39R3shffo=
 gitlab.com/bosi/decorder v0.4.2/go.mod h1:muuhHoaJkA9QLcYHq4Mj8FJUwDZ+EirSHRiaTcTf6T8=
 go-simpler.org/assert v0.9.0 h1:PfpmcSvL7yAnWyChSjOz6Sp6m9j5lyK8Ok9pEL31YkQ=
