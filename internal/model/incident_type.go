@@ -12,14 +12,15 @@ import (
 // is denormalised for the same reason as in IncidentCategory — to power
 // the active-only unique index.
 type IncidentType struct {
-	ID             uuid.UUID   `gorm:"primaryKey;<-:create"`
-	OrganizationID uuid.UUID   `gorm:"<-:create"`
-	CategoryID     uuid.UUID   `gorm:"<-"`
-	Name           string      `gorm:"<-"`
-	Description    null.String `gorm:"<-"`
-	IsActive       bool        `gorm:"<-"`
-	CreatedAt      time.Time   `gorm:"<-:create"`
-	UpdatedAt      time.Time   `gorm:"<-"`
+	ID                   uuid.UUID   `gorm:"primaryKey;<-:create"`
+	OrganizationID       uuid.UUID   `gorm:"<-:create"`
+	CategoryID           uuid.UUID   `gorm:"<-"`
+	Name                 string      `gorm:"<-"`
+	Description          null.String `gorm:"<-"`
+	IsActive             bool        `gorm:"<-"`
+	IsAllowedForPatients bool        `gorm:"<-"`
+	CreatedAt            time.Time   `gorm:"<-:create"`
+	UpdatedAt            time.Time   `gorm:"<-"`
 }
 
 func (IncidentType) TableName() string { return "domain.incident_types" }

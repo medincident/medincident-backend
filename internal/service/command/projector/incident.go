@@ -108,10 +108,10 @@ func TypeCreated(tx *gorm.DB, t *model.IncidentType) error {
 	if err := tx.Exec(`
 		INSERT INTO projections.incident_types
 		    (id, organization_id, category_id, name, description,
-		     is_active, created_at, updated_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+		     is_active, is_allowed_for_patients, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		t.ID, t.OrganizationID, t.CategoryID, t.Name, t.Description,
-		t.IsActive, t.CreatedAt, t.UpdatedAt,
+		t.IsActive, t.IsAllowedForPatients, t.CreatedAt, t.UpdatedAt,
 	).Error; err != nil {
 		return wrapIncident(err, "type", t.ID)
 	}
@@ -162,6 +162,32 @@ func TypeReactivate(tx *gorm.DB, typeID uuid.UUID, updatedAt time.Time) error {
 	if err := tx.Exec(`
 		UPDATE projections.incident_types
 		   SET is_active = TRUE, updated_at = ?
+		 WHERE id = ?`,
+		updatedAt, typeID,
+	).Error; err != nil {
+		return wrapIncident(err, "type", typeID)
+	}
+	return nil
+}
+
+// TypeAllowForPatients flips is_allowed_for_patients TRUE on a type row.
+func TypeAllowForPatients(tx *gorm.DB, typeID uuid.UUID, updatedAt time.Time) error {
+	if err := tx.Exec(`
+		UPDATE projections.incident_types
+		   SET is_allowed_for_patients = TRUE, updated_at = ?
+		 WHERE id = ?`,
+		updatedAt, typeID,
+	).Error; err != nil {
+		return wrapIncident(err, "type", typeID)
+	}
+	return nil
+}
+
+// TypeDisallowForPatients flips is_allowed_for_patients FALSE on a type row.
+func TypeDisallowForPatients(tx *gorm.DB, typeID uuid.UUID, updatedAt time.Time) error {
+	if err := tx.Exec(`
+		UPDATE projections.incident_types
+		   SET is_allowed_for_patients = FALSE, updated_at = ?
 		 WHERE id = ?`,
 		updatedAt, typeID,
 	).Error; err != nil {
