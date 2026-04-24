@@ -34,6 +34,13 @@ import (
 // BadRequest.FieldViolation details.
 const CodeValidationFailed = "validation_failed"
 
+// CodeValidatorInvocationFailed is emitted when go-playground/validator
+// itself refuses the input (e.g. validator.InvalidValidationError when
+// a non-struct is passed to Struct). This is a developer bug, never a
+// client input error, so the interceptor leaves it to fall through to
+// the default codes.Internal mapping — no explicit override is needed.
+const CodeValidatorInvocationFailed = "validator_invocation_failed"
+
 // ContextKeyViolations is the oops-context key under which translate
 // stashes the []Violation produced from a validator.ValidationErrors.
 // The interceptor looks this up by name to stay decoupled from the
@@ -124,14 +131,16 @@ func trimStrings(v reflect.Value) {
 }
 
 // translate converts a validator error into a single oops error with
-// code CodeValidationFailed. Non-ValidationErrors (e.g.
-// InvalidValidationError) are wrapped unchanged so they surface as
-// codes.Internal via the default interceptor mapping.
+// code CodeValidationFailed for client-side field violations. Anything
+// else returned by the validator (e.g. InvalidValidationError when a
+// non-struct is passed to Struct) is a developer misuse: it is tagged
+// with CodeValidatorInvocationFailed so the interceptor surfaces it as
+// codes.Internal rather than leaking a spurious InvalidArgument.
 func translate(err error) error {
 	var ves validator.ValidationErrors
 	if !errors.As(err, &ves) {
 		return oops.In("validation").
-			Code(CodeValidationFailed).
+			Code(CodeValidatorInvocationFailed).
 			Wrap(err)
 	}
 	violations := make([]Violation, 0, len(ves))
