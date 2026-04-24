@@ -8,6 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Error codes emitted by EmployeeReader.
@@ -67,8 +69,17 @@ func scanEmployeeCard(scanner interface {
 	)
 }
 
-// Get returns the employee_card row for the given id.
-func (r *EmployeeReader) Get(ctx context.Context, id uuid.UUID) (*EmployeeCardView, error) {
+// Get returns the employee_card row for the given id. Authorization:
+// authz.ReaderOf.Employee(id) — system admin, organization admin of
+// the employee's org, or any employee of the same organization.
+func (r *EmployeeReader) Get(
+	ctx context.Context,
+	caller authz.Caller,
+	id uuid.UUID,
+) (*EmployeeCardView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Employee(id)); err != nil {
+		return nil, err
+	}
 	var out EmployeeCardView
 	err := scanEmployeeCard(
 		r.db.WithContext(ctx).Raw(selectEmployeeCard+` WHERE employee_id = ?`, id).Row(),
@@ -132,18 +143,45 @@ func (r *EmployeeReader) listByField(
 	return out, nil
 }
 
-// ListByDepartment returns cards under a department.
-func (r *EmployeeReader) ListByDepartment(ctx context.Context, deptID uuid.UUID, q ListQuery) ([]EmployeeCardView, error) {
+// ListByDepartment returns cards under a department. Authorization:
+// authz.ReaderOf.Department(deptID).
+func (r *EmployeeReader) ListByDepartment(
+	ctx context.Context,
+	caller authz.Caller,
+	deptID uuid.UUID,
+	q ListQuery,
+) ([]EmployeeCardView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(deptID)); err != nil {
+		return nil, err
+	}
 	return r.listByField(ctx, "department_id", deptID, q)
 }
 
-// ListByClinic returns cards under a clinic.
-func (r *EmployeeReader) ListByClinic(ctx context.Context, clinicID uuid.UUID, q ListQuery) ([]EmployeeCardView, error) {
+// ListByClinic returns cards under a clinic. Authorization:
+// authz.ReaderOf.Clinic(clinicID).
+func (r *EmployeeReader) ListByClinic(
+	ctx context.Context,
+	caller authz.Caller,
+	clinicID uuid.UUID,
+	q ListQuery,
+) ([]EmployeeCardView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
+		return nil, err
+	}
 	return r.listByField(ctx, "clinic_id", clinicID, q)
 }
 
-// ListByOrganization returns cards under an organization.
-func (r *EmployeeReader) ListByOrganization(ctx context.Context, orgID uuid.UUID, q ListQuery) ([]EmployeeCardView, error) {
+// ListByOrganization returns cards under an organization. Authorization:
+// authz.ReaderOf.Organization(orgID).
+func (r *EmployeeReader) ListByOrganization(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+	q ListQuery,
+) ([]EmployeeCardView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
 	return r.listByField(ctx, "organization_id", orgID, q)
 }
 
@@ -159,12 +197,26 @@ type VacationView struct {
 }
 
 // ListVacationsByEmployee returns vacation rows for an employee. If
-// state is non-empty, it is used as an exact-match filter.
+// state is non-empty, it is used as an exact-match filter. Authorization
+// is tighter than the employee card: only system admins, admins of the
+// owning organization, and the employee themselves may read vacations —
+// no sibling-employee access. The policy is composed inline because
+// the "self" branch is specific to this read and does not reuse the
+// ReaderOf battery.
 func (r *EmployeeReader) ListVacationsByEmployee(
 	ctx context.Context,
+	caller authz.Caller,
 	employeeID uuid.UUID,
 	state string,
 ) ([]VacationView, error) {
+	policy := authz.AnyOf(
+		authz.SystemAdmin,
+		authz.OrgAdminOf.Employee(employeeID),
+		authz.SelfEmployee(employeeID),
+	)
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, policy); err != nil {
+		return nil, err
+	}
 	var (
 		rows *sql.Rows
 		err  error

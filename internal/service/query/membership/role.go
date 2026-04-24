@@ -8,6 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Error codes emitted by RoleReader.
@@ -28,29 +30,70 @@ type RoleHolderView struct {
 }
 
 // GetClinicHead returns the clinic-head assignment for the clinic, or
-// ErrRoleVacant if none exists.
-func (r *RoleReader) GetClinicHead(ctx context.Context, clinicID uuid.UUID) (*RoleHolderView, error) {
+// ErrRoleVacant if none exists. Authorization: authz.ReaderOf.Clinic.
+func (r *RoleReader) GetClinicHead(
+	ctx context.Context,
+	caller authz.Caller,
+	clinicID uuid.UUID,
+) (*RoleHolderView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
+		return nil, err
+	}
 	return r.oneRoleByParent(ctx, "projections.clinic_heads", "clinic_id", clinicID)
 }
 
 // GetDepartmentResponsible returns the responsible assignment for the
-// department, or ErrRoleVacant if none exists.
-func (r *RoleReader) GetDepartmentResponsible(ctx context.Context, departmentID uuid.UUID) (*RoleHolderView, error) {
+// department, or ErrRoleVacant if none exists. Authorization:
+// authz.ReaderOf.Department.
+func (r *RoleReader) GetDepartmentResponsible(
+	ctx context.Context,
+	caller authz.Caller,
+	departmentID uuid.UUID,
+) (*RoleHolderView, error) {
+	if err := r.authz.Require(
+		ctx, caller.ZitadelUserID, authz.ReaderOf.Department(departmentID),
+	); err != nil {
+		return nil, err
+	}
 	return r.oneRoleByParent(ctx, "projections.department_responsibles", "department_id", departmentID)
 }
 
 // ListOrgAdmins returns all org-admin holders for the organization.
-func (r *RoleReader) ListOrgAdmins(ctx context.Context, orgID uuid.UUID) ([]RoleHolderView, error) {
+// Authorization: authz.ReaderOf.Organization.
+func (r *RoleReader) ListOrgAdmins(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+) ([]RoleHolderView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
 	return r.listRolesByParent(ctx, "projections.org_admins", "organization_id", orgID)
 }
 
-// ListOrgDispatchers returns all org-dispatcher holders for the organization.
-func (r *RoleReader) ListOrgDispatchers(ctx context.Context, orgID uuid.UUID) ([]RoleHolderView, error) {
+// ListOrgDispatchers returns all org-dispatcher holders for the
+// organization. Authorization: authz.ReaderOf.Organization.
+func (r *RoleReader) ListOrgDispatchers(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+) ([]RoleHolderView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
 	return r.listRolesByParent(ctx, "projections.org_dispatchers", "organization_id", orgID)
 }
 
 // ListOrgHeads returns all org-head holders for the organization.
-func (r *RoleReader) ListOrgHeads(ctx context.Context, orgID uuid.UUID) ([]RoleHolderView, error) {
+// Authorization: authz.ReaderOf.Organization.
+func (r *RoleReader) ListOrgHeads(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+) ([]RoleHolderView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
 	return r.listRolesByParent(ctx, "projections.org_heads", "organization_id", orgID)
 }
 
@@ -60,8 +103,15 @@ type SystemAdminView struct {
 	CreatedAt     time.Time
 }
 
-// ListSystemAdmins returns every system-admin row.
-func (r *RoleReader) ListSystemAdmins(ctx context.Context) ([]SystemAdminView, error) {
+// ListSystemAdmins returns every system-admin row. Authorization:
+// authz.SystemAdmin — only system admins can enumerate their peers.
+func (r *RoleReader) ListSystemAdmins(
+	ctx context.Context,
+	caller authz.Caller,
+) ([]SystemAdminView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.SystemAdmin); err != nil {
+		return nil, err
+	}
 	rows, err := r.db.WithContext(ctx).Raw(`
 		SELECT zitadel_user_id, created_at
 		  FROM projections.system_admins

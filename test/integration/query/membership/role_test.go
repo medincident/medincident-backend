@@ -27,9 +27,9 @@ func TestRoleReader_GetClinicHead(t *testing.T) {
 	now := time.Now().UTC().Truncate(time.Second)
 	_, clinicID, _ := seedOrgClinicDept(t, ctx, now)
 
-	reader := memberread.NewRoleReader(testDB, &logger)
+	reader := memberread.NewRoleReader(testDB, authzSvc, &logger)
 
-	view, err := reader.GetClinicHead(ctx, clinicID)
+	view, err := reader.GetClinicHead(ctx, sysadminCaller, clinicID)
 	require.ErrorIs(t, err, memberread.ErrRoleVacant)
 	require.Nil(t, view)
 
@@ -42,7 +42,7 @@ func TestRoleReader_GetClinicHead(t *testing.T) {
 		return projector.ClinicHeadAssigned(tx, head)
 	}))
 
-	view, err = reader.GetClinicHead(ctx, clinicID)
+	view, err = reader.GetClinicHead(ctx, sysadminCaller, clinicID)
 	require.NoError(t, err)
 	require.NotNil(t, view)
 	require.Equal(t, empID, view.EmployeeID)
@@ -62,8 +62,8 @@ func TestRoleReader_ListSystemAdmins(t *testing.T) {
 		return projector.SystemAdminGranted(tx, "zit-b", now.Add(time.Second))
 	}))
 
-	reader := memberread.NewRoleReader(testDB, &logger)
-	items, err := reader.ListSystemAdmins(ctx)
+	reader := memberread.NewRoleReader(testDB, authzSvc, &logger)
+	items, err := reader.ListSystemAdmins(ctx, sysadminCaller)
 	require.NoError(t, err)
 	require.Len(t, items, 2)
 	require.Equal(t, "zit-b", items[0].ZitadelUserID)
