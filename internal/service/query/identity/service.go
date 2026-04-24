@@ -17,6 +17,8 @@ package identity
 import (
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Projector applies Zitadel user / session events to the
@@ -33,12 +35,22 @@ func NewProjector(db *gorm.DB, logger *zerolog.Logger) *Projector {
 }
 
 // Reader exposes read methods for the identity projections.
+//
+// Authorization model: identity rows describe the caller or their
+// sessions, so reads are gated by self-or-sysadmin. GetUser compares
+// the caller's Zitadel ID to the target id in Go (both are string
+// identifiers); mismatches fall back to authz.SystemAdmin. GetSession
+// goes through authz with AnyOf(SystemAdmin, SelfSession) so the
+// ownership check is performed in the same EXISTS round trip and
+// non-owners cannot enumerate session IDs.
 type Reader struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewReader returns a Reader bound to the given db.
-func NewReader(db *gorm.DB, logger *zerolog.Logger) *Reader {
-	return &Reader{db: db, logger: logger}
+// NewReader returns a Reader bound to the given db and authorization
+// service.
+func NewReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *Reader {
+	return &Reader{db: db, authz: az, logger: logger}
 }

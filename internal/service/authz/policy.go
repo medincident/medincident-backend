@@ -331,6 +331,41 @@ func (adminOfBattery) IncidentType(id uuid.UUID) Policy {
 }
 
 // ---------------------------------------------------------------------
+// SelfSession — caller owns the Zitadel session row
+// ---------------------------------------------------------------------
+
+type selfSessionPolicy struct{ id string }
+
+// SelfSession authorizes the caller when they own the Zitadel session
+// identified by id. Session IDs arrive from the client as opaque
+// Zitadel strings, not UUIDs, so the policy carries its own
+// string-typed scope (set directly via sql.Named) instead of going
+// through branchCtx.addScope which is UUID-only.
+//
+// Composed with authz.SystemAdmin in the identity reader so non-owners
+// who are not system admins see permission_denied with no distinction
+// between "session does not exist" and "you don't own it" — matching
+// the package contract.
+func SelfSession(id string) Policy { return selfSessionPolicy{id: id} }
+
+func (p selfSessionPolicy) branches(bc *branchCtx) []string {
+	scope := fmt.Sprintf("scope%d", bc.nextScope)
+	bc.args = append(bc.args, sql.Named(scope, p.id))
+	bc.nextScope++
+	caller := bc.addCaller()
+	return []string{fmt.Sprintf(
+		`SELECT 1 FROM projections.sessions
+WHERE id = @%s AND user_id = @%s`, scope, caller)}
+}
+
+func (selfSessionPolicy) describe() string { return "the session owner" }
+
+//nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
+func (p selfSessionPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder {
+	return b.With("session_id", p.id)
+}
+
+// ---------------------------------------------------------------------
 // MemberOf — organization membership (any employee of the scope)
 // ---------------------------------------------------------------------
 

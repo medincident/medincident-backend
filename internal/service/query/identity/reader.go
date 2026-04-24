@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Error codes emitted by Reader methods.
@@ -48,7 +50,20 @@ type SessionView struct {
 }
 
 // GetUser returns the User projection row for the given Zitadel id.
-func (r *Reader) GetUser(ctx context.Context, userID string) (*UserView, error) {
+// Authorization: the caller must be the target user themselves, or a
+// system admin. The comparison runs in Go because both identifiers
+// are opaque Zitadel strings, so no SQL round trip is needed to gate
+// the "self" case.
+func (r *Reader) GetUser(
+	ctx context.Context,
+	caller authz.Caller,
+	userID string,
+) (*UserView, error) {
+	if caller.ZitadelUserID != userID {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.SystemAdmin); err != nil {
+			return nil, err
+		}
+	}
 	var v UserView
 	err := r.db.WithContext(ctx).Raw(`
 		SELECT id, user_name, first_name, last_name, display_name, nick_name,
@@ -78,7 +93,18 @@ func (r *Reader) GetUser(ctx context.Context, userID string) (*UserView, error) 
 }
 
 // GetSession returns the Session projection row for the given id.
-func (r *Reader) GetSession(ctx context.Context, sessionID string) (*SessionView, error) {
+// Authorization: AnyOf(SystemAdmin, SelfSession(id)) — a non-owner
+// who is not a system admin receives permission_denied with no
+// distinction from "session does not exist".
+func (r *Reader) GetSession(
+	ctx context.Context,
+	caller authz.Caller,
+	sessionID string,
+) (*SessionView, error) {
+	policy := authz.AnyOf(authz.SystemAdmin, authz.SelfSession(sessionID))
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, policy); err != nil {
+		return nil, err
+	}
 	var v SessionView
 	err := r.db.WithContext(ctx).Raw(`
 		SELECT id, user_id, user_resource_owner, preferred_language, checked_at,

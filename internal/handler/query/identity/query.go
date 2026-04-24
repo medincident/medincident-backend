@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 	identityqueryv1 "github.com/medincident/medincident-backend/pkg/query/identity/v1"
 )
@@ -27,7 +28,11 @@ func (h *IdentityQueryHandler) GetUser(
 	ctx context.Context,
 	req *identityqueryv1.GetUserRequest,
 ) (*identityqueryv1.GetUserResponse, error) {
-	v, err := h.reader.GetUser(ctx, req.GetId())
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
+	v, err := h.reader.GetUser(ctx, caller, req.GetId())
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +44,11 @@ func (h *IdentityQueryHandler) GetSession(
 	ctx context.Context,
 	req *identityqueryv1.GetSessionRequest,
 ) (*identityqueryv1.GetSessionResponse, error) {
-	v, err := h.reader.GetSession(ctx, req.GetId())
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
+	v, err := h.reader.GetSession(ctx, caller, req.GetId())
 	if err != nil {
 		return nil, err
 	}

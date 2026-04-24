@@ -169,6 +169,33 @@ func TestMemberOf_Describe(t *testing.T) {
 	assert.Equal(t, "organization member", MemberOf.Department(id).describe())
 }
 
+func TestSelfSession_Branches_ChecksOwnership(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := SelfSession("sess-abc").branches(bc)
+	require.Len(t, bs, 1)
+	assert.Contains(t, bs[0], "FROM projections.sessions")
+	assert.Contains(t, bs[0], "WHERE id = @scope0 AND user_id = @caller0")
+
+	require.Len(t, bc.args, 2)
+	s, ok := bc.args[0].(sql.NamedArg)
+	require.True(t, ok)
+	assert.Equal(t, "scope0", s.Name)
+	assert.Equal(t, "sess-abc", s.Value)
+}
+
+func TestSelfSession_Describe(t *testing.T) {
+	assert.Equal(t, "the session owner", SelfSession("x").describe())
+}
+
+func TestSelfSession_StringScope_DoesNotTriggerZeroScope(t *testing.T) {
+	bc := &branchCtx{callerID: "x"}
+	SelfSession("").branches(bc)
+	// Empty string scope is still a non-UUID arg, so hasZeroScope
+	// (which only flags uuid.Nil) does not misfire on it. The EXISTS
+	// will naturally return zero rows for an empty id — fail-safe.
+	assert.False(t, bc.hasZeroScope())
+}
+
 func TestAuthenticated_Branches_ConstantTrue(t *testing.T) {
 	bc := &branchCtx{callerID: "bob"}
 	bs := Authenticated.branches(bc)
