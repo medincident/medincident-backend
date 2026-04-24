@@ -38,7 +38,8 @@ func New(db *gorm.DB) *Authz {
 //
 // Postgres now() returns TIMESTAMPTZ, and starts_at / ends_at are
 // TIMESTAMPTZ columns (see db/migrations/*employee_vacations*), so
-// comparisons are timezone-correct. Do not "normalize" to
-// CURRENT_TIMESTAMP or now() AT TIME ZONE 'UTC' — that would either
-// no-op or introduce a naive timestamp into the comparison.
+// comparisons are timezone-correct. CURRENT_TIMESTAMP is equivalent
+// here; avoid expressions like now() AT TIME ZONE 'UTC' or casts to
+// timestamp, which would drop the time zone and feed a naive value
+// into the comparison.
 const activeVacationPredicate = `v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`

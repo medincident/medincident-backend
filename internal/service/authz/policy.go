@@ -72,8 +72,8 @@ func (bc *branchCtx) addScope(id uuid.UUID) string {
 // hasZeroScope reports whether any scope bound into bc is the zero
 // UUID. The zero UUID passes go-playground/validator's "uuid" tag,
 // which would otherwise let a whitespace bug at the transport layer
-// turn into a "silently denies everything" query. Require short-
-// circuits to ErrCodeAuthzCheckFailed when this is true.
+// turn into a "silently denies everything" query. Require
+// short-circuits to ErrCodeAuthzCheckFailed when this is true.
 func (bc *branchCtx) hasZeroScope() bool {
 	for _, arg := range bc.args {
 		named, ok := arg.(sql.NamedArg)
