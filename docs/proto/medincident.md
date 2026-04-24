@@ -227,6 +227,8 @@
     - [Organization](#query-orgstructure-v1-Organization)
     - [OrganizationListItem](#query-orgstructure-v1-OrganizationListItem)
     - [Point](#query-orgstructure-v1-Point)
+    - [SearchOrganizationsRequest](#query-orgstructure-v1-SearchOrganizationsRequest)
+    - [SearchOrganizationsResponse](#query-orgstructure-v1-SearchOrganizationsResponse)
 
     - [OrgStructureQueryService](#query-orgstructure-v1-OrgStructureQueryService)
 
@@ -3480,6 +3482,38 @@ projection row has neither longitude nor latitude.
 
 
 
+<a name="query-orgstructure-v1-SearchOrganizationsRequest"></a>
+
+### SearchOrganizationsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| query | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-orgstructure-v1-SearchOrganizationsResponse"></a>
+
+### SearchOrganizationsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [OrganizationListItem](#query-orgstructure-v1-OrganizationListItem) | repeated |  |
+
+
+
+
+
+
 
 
 
@@ -3499,6 +3533,7 @@ both values.
 | GetOrganization | [GetOrganizationRequest](#query-orgstructure-v1-GetOrganizationRequest) | [GetOrganizationResponse](#query-orgstructure-v1-GetOrganizationResponse) |  |
 | ListOrganizations | [ListOrganizationsRequest](#query-orgstructure-v1-ListOrganizationsRequest) | [ListOrganizationsResponse](#query-orgstructure-v1-ListOrganizationsResponse) |  |
 | CountOrganizations | [CountOrganizationsRequest](#query-orgstructure-v1-CountOrganizationsRequest) | [CountOrganizationsResponse](#query-orgstructure-v1-CountOrganizationsResponse) |  |
+| SearchOrganizations | [SearchOrganizationsRequest](#query-orgstructure-v1-SearchOrganizationsRequest) | [SearchOrganizationsResponse](#query-orgstructure-v1-SearchOrganizationsResponse) |  |
 | GetClinic | [GetClinicRequest](#query-orgstructure-v1-GetClinicRequest) | [GetClinicResponse](#query-orgstructure-v1-GetClinicResponse) |  |
 | ListClinicsByOrganization | [ListClinicsByOrganizationRequest](#query-orgstructure-v1-ListClinicsByOrganizationRequest) | [ListClinicsByOrganizationResponse](#query-orgstructure-v1-ListClinicsByOrganizationResponse) |  |
 | CountClinicsByOrganization | [CountClinicsByOrganizationRequest](#query-orgstructure-v1-CountClinicsByOrganizationRequest) | [CountClinicsByOrganizationResponse](#query-orgstructure-v1-CountClinicsByOrganizationResponse) |  |

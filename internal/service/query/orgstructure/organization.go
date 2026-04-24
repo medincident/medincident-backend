@@ -12,10 +12,16 @@ import (
 
 // Error codes emitted by OrganizationReader methods.
 const (
-	ErrCodeOrganizationNotFound    = "organization_not_found"
-	ErrCodeOrganizationLoadFailed  = "organization_load_failed"
-	ErrCodeOrganizationCountFailed = "organization_count_failed"
+	ErrCodeOrganizationNotFound           = "organization_not_found"
+	ErrCodeOrganizationLoadFailed         = "organization_load_failed"
+	ErrCodeOrganizationCountFailed        = "organization_count_failed"
+	ErrCodeOrganizationSearchQueryTooLong = "organization_search_query_too_long"
 )
+
+// organizationSearchMaxQueryLength caps the user-supplied query for
+// Search. Over-long inputs are rejected before any DB round-trip so a
+// multi-megabyte pattern cannot tie up the projection.
+const organizationSearchMaxQueryLength = 256
 
 // PointView is the optional coordinate pair attached to an AddressView.
 type PointView struct {
@@ -99,6 +105,58 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) ([]Organizat
 		 ORDER BY created_at DESC, id DESC
 		 LIMIT ? OFFSET ?`, q.Limit, q.Offset,
 	).Rows()
+	if err != nil {
+		return nil, oops.In("reader.orgstructure.organization").
+			Code(ErrCodeOrganizationLoadFailed).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+
+	out := make([]OrganizationListItem, 0, q.Limit)
+	for rows.Next() {
+		var v OrganizationListItem
+		if err := rows.Scan(&v.ID, &v.Name); err != nil {
+			return nil, oops.In("reader.orgstructure.organization").
+				Code(ErrCodeOrganizationLoadFailed).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, oops.In("reader.orgstructure.organization").
+			Code(ErrCodeOrganizationLoadFailed).
+			Wrap(err)
+	}
+	return out, nil
+}
+
+// Search returns organizations whose name contains the given substring
+// (case-insensitive, ILIKE %query%). An empty query (after trimming at
+// the handler boundary) degenerates to the same SQL shape as List so
+// callers can swap endpoints without reshaping their page model. The
+// query is length-capped BEFORE any DB round-trip; the pattern is
+// always bound positionally so users cannot inject SQL.
+func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQuery) ([]OrganizationListItem, error) {
+	if len(query) > organizationSearchMaxQueryLength {
+		return nil, oops.In("reader.orgstructure.organization").
+			Code(ErrCodeOrganizationSearchQueryTooLong).
+			Public("Search query is too long.").
+			With("max_length", organizationSearchMaxQueryLength).
+			With("actual_length", len(query)).
+			Errorf("search query too long")
+	}
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
+	sqlBuf := `SELECT id, name FROM projections.organizations`
+	args := make([]any, 0, 3)
+	if query != "" {
+		sqlBuf += ` WHERE COALESCE(name, '') ILIKE ?`
+		args = append(args, "%"+query+"%")
+	}
+	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?`
+	args = append(args, q.Limit, q.Offset)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
 		return nil, oops.In("reader.orgstructure.organization").
 			Code(ErrCodeOrganizationLoadFailed).

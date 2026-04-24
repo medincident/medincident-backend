@@ -2,6 +2,7 @@ package orgstructure
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
@@ -73,6 +74,32 @@ func (h *OrgStructureQueryHandler) ListOrganizations(
 		})
 	}
 	return &orgqueryv1.ListOrganizationsResponse{Items: out}, nil
+}
+
+// SearchOrganizations returns organizations whose name matches the
+// given case-insensitive substring. Empty query degenerates to
+// ListOrganizations semantics. Authorization mirrors ListOrganizations
+// — organizations are the public catalog of the platform, so any
+// authenticated caller may search them.
+func (h *OrgStructureQueryHandler) SearchOrganizations(
+	ctx context.Context,
+	req *orgqueryv1.SearchOrganizationsRequest,
+) (*orgqueryv1.SearchOrganizationsResponse, error) {
+	items, err := h.orgReader.Search(ctx, strings.TrimSpace(req.GetQuery()), orgread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
+	if err != nil {
+		return nil, err
+	}
+	out := make([]*orgqueryv1.OrganizationListItem, 0, len(items))
+	for _, item := range items {
+		out = append(out, &orgqueryv1.OrganizationListItem{
+			Id:   item.ID.String(),
+			Name: item.Name,
+		})
+	}
+	return &orgqueryv1.SearchOrganizationsResponse{Items: out}, nil
 }
 
 // CountOrganizations returns the total organizations count.

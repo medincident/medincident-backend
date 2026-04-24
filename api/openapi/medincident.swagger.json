@@ -3259,6 +3259,50 @@
         ]
       }
     },
+    "/v1/query/organizations:search": {
+      "get": {
+        "operationId": "OrgStructureQueryService_SearchOrganizations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SearchOrganizationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
+        ]
+      }
+    },
     "/v1/query/sessions/{id}": {
       "get": {
         "operationId": "IdentityQueryService_GetSession",
@@ -4856,6 +4900,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1EmployeeCardView"
+          }
+        }
+      }
+    },
+    "v1SearchOrganizationsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1OrganizationListItem"
           }
         }
       }
