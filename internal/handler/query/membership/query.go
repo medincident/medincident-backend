@@ -228,7 +228,10 @@ func (h *MembershipQueryHandler) ListVacationsByEmployee(
 	if err != nil {
 		return nil, err
 	}
-	vacs, err := h.empReader.ListVacationsByEmployee(ctx, caller, id, req.GetState())
+	vacs, err := h.empReader.ListVacationsByEmployee(ctx, caller, id, req.GetState(), memberread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -314,7 +317,10 @@ func (h *MembershipQueryHandler) ListOrgAdmins(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgAdmins(ctx, caller, id)
+	items, err := h.roleReader.ListOrgAdmins(ctx, caller, id, memberread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -335,7 +341,10 @@ func (h *MembershipQueryHandler) ListOrgDispatchers(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgDispatchers(ctx, caller, id)
+	items, err := h.roleReader.ListOrgDispatchers(ctx, caller, id, memberread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -356,7 +365,10 @@ func (h *MembershipQueryHandler) ListOrgHeads(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgHeads(ctx, caller, id)
+	items, err := h.roleReader.ListOrgHeads(ctx, caller, id, memberread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -366,14 +378,17 @@ func (h *MembershipQueryHandler) ListOrgHeads(
 // ListSystemAdmins returns every system-admin row.
 func (h *MembershipQueryHandler) ListSystemAdmins(
 	ctx context.Context,
-	_ *membershipqueryv1.ListSystemAdminsRequest,
+	req *membershipqueryv1.ListSystemAdminsRequest,
 ) (*membershipqueryv1.ListSystemAdminsResponse, error) {
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
 	caller := authz.Caller{ZitadelUserID: callerID}
-	items, err := h.roleReader.ListSystemAdmins(ctx, caller)
+	items, err := h.roleReader.ListSystemAdmins(ctx, caller, memberread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}

@@ -2134,6 +2134,8 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2164,6 +2166,8 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2256,6 +2260,8 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2286,6 +2292,8 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2316,6 +2324,8 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | category_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2746,6 +2756,8 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2776,6 +2788,8 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2806,6 +2820,8 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2831,6 +2847,12 @@ when the backing column is NULL.
 
 ### ListSystemAdminsRequest
 
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 
@@ -2862,6 +2884,8 @@ when the backing column is NULL.
 | ----- | ---- | ----- | ----------- |
 | employee_id | [string](#string) |  |  |
 | state | [string](#string) |  | Optional state filter. When empty, all states are returned. Valid values: scheduled, active, ended, cancelled. |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
 
 
 

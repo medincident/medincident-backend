@@ -104,7 +104,10 @@ func (h *IncidentClassifierQueryHandler) ListActiveRootCategories(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListActiveRootCategories(ctx, caller, id)
+	items, err := h.reader.ListActiveRootCategories(ctx, caller, id, classifierread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +170,10 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListTypesByCategory(ctx, caller, id)
+	items, err := h.reader.ListTypesByCategory(ctx, caller, id, classifierread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -188,7 +194,10 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListActiveTypesByOrganization(ctx, caller, id)
+	items, err := h.reader.ListActiveTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -210,7 +219,10 @@ func (h *IncidentClassifierQueryHandler) ListPatientAllowedTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListPatientAllowedTypesByOrganization(ctx, caller, id)
+	items, err := h.reader.ListPatientAllowedTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -233,7 +245,10 @@ func (h *IncidentClassifierQueryHandler) ListPatientVisibleCategoriesByOrganizat
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListPatientVisibleCategoriesByOrganization(ctx, caller, id)
+	items, err := h.reader.ListPatientVisibleCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit:  int(req.GetLimit()),
+		Offset: int(req.GetOffset()),
+	})
 	if err != nil {
 		return nil, err
 	}

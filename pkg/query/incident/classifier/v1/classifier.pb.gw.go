@@ -127,6 +127,8 @@ func local_request_IncidentClassifierQueryService_ListCategoriesByOrganization_0
 	return msg, metadata, err
 }
 
+var filter_IncidentClassifierQueryService_ListActiveRootCategories_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
 func request_IncidentClassifierQueryService_ListActiveRootCategories_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListActiveRootCategoriesRequest
@@ -143,6 +145,12 @@ func request_IncidentClassifierQueryService_ListActiveRootCategories_0(ctx conte
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListActiveRootCategories_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListActiveRootCategories(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -161,6 +169,12 @@ func local_request_IncidentClassifierQueryService_ListActiveRootCategories_0(ctx
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListActiveRootCategories_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.ListActiveRootCategories(ctx, &protoReq)
 	return msg, metadata, err
@@ -244,6 +258,8 @@ func local_request_IncidentClassifierQueryService_GetType_0(ctx context.Context,
 	return msg, metadata, err
 }
 
+var filter_IncidentClassifierQueryService_ListTypesByCategory_0 = &utilities.DoubleArray{Encoding: map[string]int{"category_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
 func request_IncidentClassifierQueryService_ListTypesByCategory_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListTypesByCategoryRequest
@@ -260,6 +276,12 @@ func request_IncidentClassifierQueryService_ListTypesByCategory_0(ctx context.Co
 	protoReq.CategoryId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "category_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListTypesByCategory_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListTypesByCategory(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -279,9 +301,17 @@ func local_request_IncidentClassifierQueryService_ListTypesByCategory_0(ctx cont
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "category_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListTypesByCategory_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.ListTypesByCategory(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_IncidentClassifierQueryService_ListActiveTypesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -299,6 +329,12 @@ func request_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(ctx 
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListActiveTypesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListActiveTypesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -318,9 +354,17 @@ func local_request_IncidentClassifierQueryService_ListActiveTypesByOrganization_
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListActiveTypesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.ListActiveTypesByOrganization(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -338,6 +382,12 @@ func request_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganizatio
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListPatientAllowedTypesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -357,9 +407,17 @@ func local_request_IncidentClassifierQueryService_ListPatientAllowedTypesByOrgan
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.ListPatientAllowedTypesByOrganization(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -378,6 +436,12 @@ func request_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrgani
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := client.ListPatientVisibleCategoriesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -395,6 +459,12 @@ func local_request_IncidentClassifierQueryService_ListPatientVisibleCategoriesBy
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.ListPatientVisibleCategoriesByOrganization(ctx, &protoReq)
 	return msg, metadata, err

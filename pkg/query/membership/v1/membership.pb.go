@@ -1063,6 +1063,8 @@ type ListVacationsByEmployeeRequest struct {
 	// Optional state filter. When empty, all states are returned.
 	// Valid values: scheduled, active, ended, cancelled.
 	State         string `protobuf:"bytes,2,opt,name=state,proto3" json:"state,omitempty"`
+	Limit         int32  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset        int32  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1109,6 +1111,20 @@ func (x *ListVacationsByEmployeeRequest) GetState() string {
 		return x.State
 	}
 	return ""
+}
+
+func (x *ListVacationsByEmployeeRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListVacationsByEmployeeRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListVacationsByEmployeeResponse struct {
@@ -1432,6 +1448,8 @@ func (x *GetDepartmentResponsibleResponse) GetHolder() *RoleHolder {
 type ListOrgAdminsRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1471,6 +1489,20 @@ func (x *ListOrgAdminsRequest) GetOrganizationId() string {
 		return x.OrganizationId
 	}
 	return ""
+}
+
+func (x *ListOrgAdminsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListOrgAdminsRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListOrgAdminsResponse struct {
@@ -1520,6 +1552,8 @@ func (x *ListOrgAdminsResponse) GetItems() []*RoleHolder {
 type ListOrgDispatchersRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1559,6 +1593,20 @@ func (x *ListOrgDispatchersRequest) GetOrganizationId() string {
 		return x.OrganizationId
 	}
 	return ""
+}
+
+func (x *ListOrgDispatchersRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListOrgDispatchersRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListOrgDispatchersResponse struct {
@@ -1608,6 +1656,8 @@ func (x *ListOrgDispatchersResponse) GetItems() []*RoleHolder {
 type ListOrgHeadsRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1647,6 +1697,20 @@ func (x *ListOrgHeadsRequest) GetOrganizationId() string {
 		return x.OrganizationId
 	}
 	return ""
+}
+
+func (x *ListOrgHeadsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListOrgHeadsRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListOrgHeadsResponse struct {
@@ -1695,6 +1759,8 @@ func (x *ListOrgHeadsResponse) GetItems() []*RoleHolder {
 
 type ListSystemAdminsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1727,6 +1793,20 @@ func (x *ListSystemAdminsRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListSystemAdminsRequest.ProtoReflect.Descriptor instead.
 func (*ListSystemAdminsRequest) Descriptor() ([]byte, []int) {
 	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *ListSystemAdminsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListSystemAdminsRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListSystemAdminsResponse struct {
@@ -1870,11 +1950,13 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"#CountEmployeesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"<\n" +
 	"$CountEmployeesByOrganizationResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total\"W\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\"\x85\x01\n" +
 	"\x1eListVacationsByEmployeeRequest\x12\x1f\n" +
 	"\vemployee_id\x18\x01 \x01(\tR\n" +
 	"employeeId\x12\x14\n" +
-	"\x05state\x18\x02 \x01(\tR\x05state\"Z\n" +
+	"\x05state\x18\x02 \x01(\tR\x05state\x12\x14\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x04 \x01(\x05R\x06offset\"Z\n" +
 	"\x1fListVacationsByEmployeeResponse\x127\n" +
 	"\x05items\x18\x01 \x03(\v2!.query.membership.v1.VacationViewR\x05items\"X\n" +
 	"\x1fCountVacationsByEmployeeRequest\x12\x1f\n" +
@@ -1892,20 +1974,28 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\"k\n" +
 	" GetDepartmentResponsibleResponse\x12<\n" +
 	"\x06holder\x18\x01 \x01(\v2\x1f.query.membership.v1.RoleHolderH\x00R\x06holder\x88\x01\x01B\t\n" +
-	"\a_holder\"?\n" +
+	"\a_holder\"m\n" +
 	"\x14ListOrgAdminsRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"N\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"N\n" +
 	"\x15ListOrgAdminsResponse\x125\n" +
-	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\"D\n" +
+	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\"r\n" +
 	"\x19ListOrgDispatchersRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"S\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"S\n" +
 	"\x1aListOrgDispatchersResponse\x125\n" +
-	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\">\n" +
+	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\"l\n" +
 	"\x13ListOrgHeadsRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"M\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"M\n" +
 	"\x14ListOrgHeadsResponse\x125\n" +
-	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\"\x19\n" +
-	"\x17ListSystemAdminsRequest\"V\n" +
+	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\"G\n" +
+	"\x17ListSystemAdminsRequest\x12\x14\n" +
+	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x02 \x01(\x05R\x06offset\"V\n" +
 	"\x18ListSystemAdminsResponse\x12:\n" +
 	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items2\xaf\x15\n" +
 	"\x16MembershipQueryService\x12\x82\x01\n" +

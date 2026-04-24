@@ -319,7 +319,11 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 	caller authz.Caller,
 	employeeID uuid.UUID,
 	state string,
+	q ListQuery,
 ) ([]VacationView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, vacationAuthzPolicy(employeeID)); err != nil {
 		return nil, err
 	}
@@ -332,14 +336,16 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 			SELECT id, employee_id, state, starts_at, ends_at, created_at, updated_at
 			  FROM projections.employee_vacations
 			 WHERE employee_id = ?
-			 ORDER BY starts_at DESC, id DESC`, employeeID,
+			 ORDER BY starts_at DESC, id DESC
+			 LIMIT ? OFFSET ?`, employeeID, q.Limit, q.Offset,
 		).Rows()
 	} else {
 		rows, err = r.db.WithContext(ctx).Raw(`
 			SELECT id, employee_id, state, starts_at, ends_at, created_at, updated_at
 			  FROM projections.employee_vacations
 			 WHERE employee_id = ? AND state = ?
-			 ORDER BY starts_at DESC, id DESC`, employeeID, state,
+			 ORDER BY starts_at DESC, id DESC
+			 LIMIT ? OFFSET ?`, employeeID, state, q.Limit, q.Offset,
 		).Rows()
 	}
 	if err != nil {
@@ -351,7 +357,7 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 	}
 	defer func() { _ = rows.Close() }()
 
-	out := make([]VacationView, 0)
+	out := make([]VacationView, 0, q.Limit)
 	for rows.Next() {
 		var v VacationView
 		if err := rows.Scan(&v.ID, &v.EmployeeID, &v.State, &v.StartsAt, &v.EndsAt, &v.CreatedAt, &v.UpdatedAt); err != nil {
