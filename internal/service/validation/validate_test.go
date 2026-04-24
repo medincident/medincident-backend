@@ -91,3 +91,55 @@ func TestStruct_OrderingWithOtherRules(t *testing.T) {
 	err = validation.Struct(orderPayload{Value: "alpha beta"})
 	require.NoError(t, err)
 }
+
+type pointerPayload struct {
+	Value *string `validate:"omitnil,no_extra_ws,min=2"`
+}
+
+func TestStruct_NoExtraWhitespace_PointerField(t *testing.T) {
+	t.Parallel()
+
+	strPtr := func(s string) *string { return &s }
+
+	t.Run("nil pointer skips rule", func(t *testing.T) {
+		t.Parallel()
+		require.NoError(t, validation.Struct(pointerPayload{Value: nil}))
+	})
+
+	t.Run("clean non-nil passes", func(t *testing.T) {
+		t.Parallel()
+		require.NoError(t, validation.Struct(pointerPayload{Value: strPtr("alpha beta")}))
+	})
+
+	t.Run("leading space on non-nil fails with extra_whitespace", func(t *testing.T) {
+		t.Parallel()
+		err := validation.Struct(pointerPayload{Value: strPtr(" abc")})
+		require.Error(t, err)
+		leaves := flattenJoin(err)
+		require.Len(t, leaves, 1)
+		o, ok := oops.AsOops(leaves[0])
+		require.True(t, ok)
+		assert.Equal(t, validation.CodeStringExtraWhitespace, o.Code())
+		assert.Equal(t, "value", o.Context()["field"])
+	})
+
+	t.Run("double inner space on non-nil fails with extra_whitespace", func(t *testing.T) {
+		t.Parallel()
+		err := validation.Struct(pointerPayload{Value: strPtr("a  b")})
+		require.Error(t, err)
+		leaves := flattenJoin(err)
+		require.Len(t, leaves, 1)
+		o, _ := oops.AsOops(leaves[0])
+		assert.Equal(t, validation.CodeStringExtraWhitespace, o.Code())
+	})
+
+	t.Run("empty non-nil pointer passes no_extra_ws but trips min", func(t *testing.T) {
+		t.Parallel()
+		err := validation.Struct(pointerPayload{Value: strPtr("")})
+		require.Error(t, err)
+		leaves := flattenJoin(err)
+		require.Len(t, leaves, 1)
+		o, _ := oops.AsOops(leaves[0])
+		assert.Equal(t, validation.CodeStringTooShort, o.Code())
+	})
+}
