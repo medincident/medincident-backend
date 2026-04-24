@@ -124,3 +124,22 @@ func TestRequire_EmptyAnyOf_ReturnsAuthzCheckFailed(t *testing.T) {
 	require.True(t, errors.As(err, &oe))
 	assert.Equal(t, ErrCodeAuthzCheckFailed, oe.Code())
 }
+
+func TestRequire_ZeroScope_ReturnsAuthzCheckFailed(t *testing.T) {
+	a := &Authz{}
+	err := a.Require(t.Context(), "x", OrgAdminOf.Clinic(uuid.Nil))
+	require.Error(t, err)
+	var oe oops.OopsError
+	require.True(t, errors.As(err, &oe))
+	assert.Equal(t, ErrCodeAuthzCheckFailed, oe.Code())
+}
+
+func TestBranchCtx_HasZeroScope(t *testing.T) {
+	bc := &branchCtx{callerID: "x"}
+	bc.addCaller()
+	bc.addScope(uuid.MustParse("11111111-1111-1111-1111-111111111111"))
+	assert.False(t, bc.hasZeroScope())
+
+	bc.addScope(uuid.Nil)
+	assert.True(t, bc.hasZeroScope())
+}

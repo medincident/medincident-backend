@@ -10,6 +10,10 @@
 // end in the same zero-row EXISTS result and surface as
 // permission_denied. Only system admins — who are authorized for any
 // scope — can observe the service layer's not_found errors downstream.
+//
+// Policy.describe() strings are English-only and reach clients verbatim
+// via the Public message on permission_denied. They are part of the
+// external surface — changing or translating them is a breaking change.
 package authz
 
 import "gorm.io/gorm"
@@ -31,4 +35,10 @@ func New(db *gorm.DB) *Authz {
 // ends_at is either open-ended or still in the future". Injected
 // inline via fmt.Sprintf at query build time — no user input is
 // concatenated.
+//
+// Postgres now() returns TIMESTAMPTZ, and starts_at / ends_at are
+// TIMESTAMPTZ columns (see db/migrations/*employee_vacations*), so
+// comparisons are timezone-correct. Do not "normalize" to
+// CURRENT_TIMESTAMP or now() AT TIME ZONE 'UTC' — that would either
+// no-op or introduce a naive timestamp into the comparison.
 const activeVacationPredicate = `v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`

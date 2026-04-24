@@ -69,6 +69,24 @@ func (bc *branchCtx) addScope(id uuid.UUID) string {
 	return name
 }
 
+// hasZeroScope reports whether any scope bound into bc is the zero
+// UUID. The zero UUID passes go-playground/validator's "uuid" tag,
+// which would otherwise let a whitespace bug at the transport layer
+// turn into a "silently denies everything" query. Require short-
+// circuits to ErrCodeAuthzCheckFailed when this is true.
+func (bc *branchCtx) hasZeroScope() bool {
+	for _, arg := range bc.args {
+		named, ok := arg.(sql.NamedArg)
+		if !ok {
+			continue
+		}
+		if id, ok := named.Value.(uuid.UUID); ok && id == uuid.Nil {
+			return true
+		}
+	}
+	return false
+}
+
 // ---------------------------------------------------------------------
 // SystemAdmin — scope-less role
 // ---------------------------------------------------------------------
@@ -118,6 +136,16 @@ func (p anyOfPolicy) describe() string {
 	return strings.Join(parts, " or ")
 }
 
+// anyOfPolicy.with accumulates context from every item, not just the
+// one that would have matched — there is no "matched" item on the
+// deny path. This is intentional but has a subtle consequence: if you
+// compose AnyOf of two scope-bearing policies (e.g.
+// AnyOf(OrgAdminOf.Organization(a), OrgAdminOf.Clinic(b))), the
+// emitted error carries both "organization_id" and "clinic_id" tags.
+// In practice every AdminOf.X is AnyOf(SystemAdmin, OrgAdminOf.X(id))
+// and sysAdminPolicy.with is a no-op, so exactly one scope key is
+// added. Preserve this shape if you add new top-level batteries.
+//
 //nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
 func (p anyOfPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder {
 	for _, item := range p.items {
@@ -136,6 +164,13 @@ type orgAdminOfRole struct{}
 // one of the supported child entities. Each method produces a Policy
 // with two branches: "caller is the direct holder" and "caller is the
 // deputy while the holder is on an active vacation".
+//
+// Production call sites should prefer AdminOf.X(id) — which is
+// AnyOf(SystemAdmin, OrgAdminOf.X(id)) — so the sysadmin bypass stays
+// visible at the call. OrgAdminOf.X(id) alone intentionally omits the
+// sysadmin disjunct and is exported only because integration tests
+// need to exercise the bare branch in isolation. Using it from a
+// service method silently excludes system admins from the operation.
 var OrgAdminOf orgAdminOfRole
 
 type orgAdminPolicy struct {
@@ -295,6 +330,12 @@ func (a *Authz) Require(ctx context.Context, callerID string, p Policy) error {
 			Code(ErrCodeAuthzCheckFailed).
 			With("caller_id", callerID).
 			Errorf("policy produced no branches")
+	}
+	if bc.hasZeroScope() {
+		return oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Errorf("policy scope is zero uuid")
 	}
 	query := "SELECT EXISTS(" + strings.Join(branches, " UNION ALL ") + ")"
 
