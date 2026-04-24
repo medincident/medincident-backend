@@ -8,6 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Error codes emitted by ClinicReader methods.
@@ -36,8 +38,17 @@ type ClinicListItem struct {
 	Name           string
 }
 
-// Get returns the ClinicDetails for the given id.
-func (r *ClinicReader) Get(ctx context.Context, id uuid.UUID) (*ClinicDetails, error) {
+// Get returns the ClinicDetails for the given id. Authorization:
+// authz.ReaderOf.Clinic(id) — system admin, organization admin of the
+// owning org, or any employee of the owning org.
+func (r *ClinicReader) Get(
+	ctx context.Context,
+	caller authz.Caller,
+	id uuid.UUID,
+) (*ClinicDetails, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(id)); err != nil {
+		return nil, err
+	}
 	var (
 		out      ClinicDetails
 		addrText string
@@ -75,12 +86,19 @@ func (r *ClinicReader) Get(ctx context.Context, id uuid.UUID) (*ClinicDetails, e
 }
 
 // ListByOrganization returns up to q.Limit clinics belonging to the
-// given organization, ordered most-recently-created first.
+// given organization, ordered most-recently-created first. Authorization:
+// authz.ReaderOf.Organization(organizationID).
 func (r *ClinicReader) ListByOrganization(
 	ctx context.Context,
+	caller authz.Caller,
 	organizationID uuid.UUID,
 	q ListQuery,
 ) ([]ClinicListItem, error) {
+	if err := r.authz.Require(
+		ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(organizationID),
+	); err != nil {
+		return nil, err
+	}
 	if err := q.normalize(); err != nil {
 		return nil, err
 	}

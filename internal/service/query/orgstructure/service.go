@@ -6,11 +6,23 @@
 //
 // Transport (gRPC/HTTP) is plugged in by a higher layer; readers take
 // plain Go inputs and return per-query view structs directly.
+//
+// Authorization model: organizations are the public catalog of the
+// platform — any authenticated caller can list and fetch them, so
+// OrganizationReader does not consult authz. Everything below the
+// organization (clinics, departments) is scoped via authz.ReaderOf.X:
+// system admins, organization admins, and members of the containing
+// organization may read. A caller outside that set receives
+// permission_denied with no distinction between "scope does not
+// exist" and "you are not authorized" — see the package authz
+// preamble for the rationale.
 package orgstructure
 
 import (
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Bounds applied to List pagination. Readers reject inputs outside
@@ -22,7 +34,9 @@ const (
 )
 
 // OrganizationReader exposes read methods for the Organization
-// projection.
+// projection. Organizations are public to any authenticated caller, so
+// this reader takes no *authz.Authz — authentication is enforced by
+// the gRPC interceptor chain upstream.
 type OrganizationReader struct {
 	db     *gorm.DB
 	logger *zerolog.Logger
@@ -34,25 +48,31 @@ func NewOrganizationReader(db *gorm.DB, logger *zerolog.Logger) *OrganizationRea
 	return &OrganizationReader{db: db, logger: logger}
 }
 
-// ClinicReader exposes read methods for the Clinic projection.
+// ClinicReader exposes read methods for the Clinic projection. Reads
+// are gated by authz.ReaderOf.{Clinic,Organization}, so the caller's
+// identity must be supplied on every method.
 type ClinicReader struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewClinicReader returns a ClinicReader bound to the given gorm DB.
-func NewClinicReader(db *gorm.DB, logger *zerolog.Logger) *ClinicReader {
-	return &ClinicReader{db: db, logger: logger}
+// NewClinicReader returns a ClinicReader bound to the given gorm DB
+// and authorization service.
+func NewClinicReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *ClinicReader {
+	return &ClinicReader{db: db, authz: az, logger: logger}
 }
 
 // DepartmentReader exposes read methods for the Department projection.
+// Reads are gated by authz.ReaderOf.{Department,Clinic}.
 type DepartmentReader struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
 // NewDepartmentReader returns a DepartmentReader bound to the given
-// gorm DB.
-func NewDepartmentReader(db *gorm.DB, logger *zerolog.Logger) *DepartmentReader {
-	return &DepartmentReader{db: db, logger: logger}
+// gorm DB and authorization service.
+func NewDepartmentReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *DepartmentReader {
+	return &DepartmentReader{db: db, authz: az, logger: logger}
 }

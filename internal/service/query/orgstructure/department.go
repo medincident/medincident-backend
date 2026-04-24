@@ -8,6 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Error codes emitted by DepartmentReader methods.
@@ -35,8 +37,17 @@ type DepartmentListItem struct {
 	Name     string
 }
 
-// Get returns the DepartmentDetails for the given id.
-func (r *DepartmentReader) Get(ctx context.Context, id uuid.UUID) (*DepartmentDetails, error) {
+// Get returns the DepartmentDetails for the given id. Authorization:
+// authz.ReaderOf.Department(id) — system admin, organization admin
+// of the owning org, or any employee of the owning org.
+func (r *DepartmentReader) Get(
+	ctx context.Context,
+	caller authz.Caller,
+	id uuid.UUID,
+) (*DepartmentDetails, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(id)); err != nil {
+		return nil, err
+	}
 	var out DepartmentDetails
 	err := r.db.WithContext(ctx).Raw(`
 		SELECT id, clinic_id, name, description, created_at, updated_at
@@ -62,12 +73,19 @@ func (r *DepartmentReader) Get(ctx context.Context, id uuid.UUID) (*DepartmentDe
 }
 
 // ListByClinic returns up to q.Limit departments belonging to the
-// given clinic, ordered most-recently-created first.
+// given clinic, ordered most-recently-created first. Authorization:
+// authz.ReaderOf.Clinic(clinicID).
 func (r *DepartmentReader) ListByClinic(
 	ctx context.Context,
+	caller authz.Caller,
 	clinicID uuid.UUID,
 	q ListQuery,
 ) ([]DepartmentListItem, error) {
+	if err := r.authz.Require(
+		ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID),
+	); err != nil {
+		return nil, err
+	}
 	if err := q.normalize(); err != nil {
 		return nil, err
 	}
