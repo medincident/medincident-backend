@@ -8,6 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Error codes emitted by the classifier reader.
@@ -75,8 +77,16 @@ func scanType(scanner interface {
 	)
 }
 
-// GetCategory returns one incident category by id.
-func (r *Reader) GetCategory(ctx context.Context, id uuid.UUID) (*CategoryView, error) {
+// GetCategory returns one incident category by id. Authorization:
+// authz.ReaderOf.Category(id).
+func (r *Reader) GetCategory(
+	ctx context.Context,
+	caller authz.Caller,
+	id uuid.UUID,
+) (*CategoryView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(id)); err != nil {
+		return nil, err
+	}
 	var out CategoryView
 	err := scanCategory(r.db.WithContext(ctx).Raw(selectCategory+` WHERE id = ?`, id).Row(), &out)
 	if err != nil {
@@ -96,11 +106,16 @@ func (r *Reader) GetCategory(ctx context.Context, id uuid.UUID) (*CategoryView, 
 }
 
 // ListCategoriesByOrganization paginates categories for one org.
+// Authorization: authz.ReaderOf.Organization(orgID).
 func (r *Reader) ListCategoriesByOrganization(
 	ctx context.Context,
+	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
 ) ([]CategoryView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
 	if err := q.normalize(); err != nil {
 		return nil, err
 	}
@@ -135,8 +150,16 @@ func (r *Reader) ListCategoriesByOrganization(
 }
 
 // ListActiveRootCategories returns top-level active categories for an
-// organization (rows whose parent_category_id IS NULL).
-func (r *Reader) ListActiveRootCategories(ctx context.Context, orgID uuid.UUID) ([]CategoryView, error) {
+// organization (rows whose parent_category_id IS NULL). Authorization:
+// authz.ReaderOf.Organization(orgID).
+func (r *Reader) ListActiveRootCategories(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+) ([]CategoryView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
 	rows, err := r.db.WithContext(ctx).Raw(selectCategory+`
 		 WHERE organization_id = ?
 		   AND parent_category_id IS NULL
@@ -169,8 +192,17 @@ func (r *Reader) ListActiveRootCategories(ctx context.Context, orgID uuid.UUID) 
 }
 
 // ListCategorySubtree returns every descendant of the given root
-// (inclusive), flattened, using a recursive CTE.
-func (r *Reader) ListCategorySubtree(ctx context.Context, rootID uuid.UUID) ([]CategoryView, error) {
+// (inclusive), flattened, using a recursive CTE. Authorization:
+// authz.ReaderOf.Category(rootID) — the root category's org scopes
+// the whole subtree.
+func (r *Reader) ListCategorySubtree(
+	ctx context.Context,
+	caller authz.Caller,
+	rootID uuid.UUID,
+) ([]CategoryView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(rootID)); err != nil {
+		return nil, err
+	}
 	const query = `
 		WITH RECURSIVE tree AS (
 		  SELECT id, organization_id, parent_category_id, name, description,
@@ -213,8 +245,16 @@ func (r *Reader) ListCategorySubtree(ctx context.Context, rootID uuid.UUID) ([]C
 	return out, nil
 }
 
-// GetType returns one incident type by id.
-func (r *Reader) GetType(ctx context.Context, id uuid.UUID) (*TypeView, error) {
+// GetType returns one incident type by id. Authorization:
+// authz.ReaderOf.IncidentType(id).
+func (r *Reader) GetType(
+	ctx context.Context,
+	caller authz.Caller,
+	id uuid.UUID,
+) (*TypeView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.IncidentType(id)); err != nil {
+		return nil, err
+	}
 	var out TypeView
 	err := scanType(r.db.WithContext(ctx).Raw(selectType+` WHERE id = ?`, id).Row(), &out)
 	if err != nil {
@@ -234,7 +274,15 @@ func (r *Reader) GetType(ctx context.Context, id uuid.UUID) (*TypeView, error) {
 }
 
 // ListTypesByCategory returns every type under one category.
-func (r *Reader) ListTypesByCategory(ctx context.Context, categoryID uuid.UUID) ([]TypeView, error) {
+// Authorization: authz.ReaderOf.Category(categoryID).
+func (r *Reader) ListTypesByCategory(
+	ctx context.Context,
+	caller authz.Caller,
+	categoryID uuid.UUID,
+) ([]TypeView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(categoryID)); err != nil {
+		return nil, err
+	}
 	rows, err := r.db.WithContext(ctx).Raw(selectType+`
 		 WHERE category_id = ?
 		 ORDER BY name ASC, id ASC`, categoryID,
@@ -265,7 +313,15 @@ func (r *Reader) ListTypesByCategory(ctx context.Context, categoryID uuid.UUID) 
 }
 
 // ListActiveTypesByOrganization returns every active type for one org.
-func (r *Reader) ListActiveTypesByOrganization(ctx context.Context, orgID uuid.UUID) ([]TypeView, error) {
+// Authorization: authz.ReaderOf.Organization(orgID).
+func (r *Reader) ListActiveTypesByOrganization(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+) ([]TypeView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
 	rows, err := r.db.WithContext(ctx).Raw(selectType+`
 		 WHERE organization_id = ? AND is_active = TRUE
 		 ORDER BY name ASC, id ASC`, orgID,
@@ -298,7 +354,16 @@ func (r *Reader) ListActiveTypesByOrganization(ctx context.Context, orgID uuid.U
 // ListPatientAllowedTypesByOrganization returns every type in the org that
 // is both active AND allowed for patient submission. This is the flat menu
 // of incident types a patient may pick from when filing an incident.
-func (r *Reader) ListPatientAllowedTypesByOrganization(ctx context.Context, orgID uuid.UUID) ([]TypeView, error) {
+// Authorization: authz.Authenticated — patients are not organization
+// members, so membership is not required, but the endpoint is not public.
+func (r *Reader) ListPatientAllowedTypesByOrganization(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+) ([]TypeView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
+		return nil, err
+	}
 	rows, err := r.db.WithContext(ctx).Raw(selectType+`
 		 WHERE organization_id = ?
 		   AND is_active = TRUE
@@ -336,7 +401,16 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(ctx context.Context, orgI
 // directly contains at least one type that is active AND allowed for
 // patients. Empty subtrees (categories whose every leaf type is unavailable
 // to patients) are excluded so the patient never sees a dead-end branch.
-func (r *Reader) ListPatientVisibleCategoriesByOrganization(ctx context.Context, orgID uuid.UUID) ([]CategoryView, error) {
+// Authorization: authz.Authenticated — same rationale as
+// ListPatientAllowedTypesByOrganization.
+func (r *Reader) ListPatientVisibleCategoriesByOrganization(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+) ([]CategoryView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
+		return nil, err
+	}
 	// Defense in depth: every CTE step and the final SELECT carry an
 	// explicit organization_id guard. Projections have no FKs, so a
 	// cross-org parent_category_id pointer (data-projection bug) would

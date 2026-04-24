@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 )
@@ -48,11 +49,15 @@ func (h *IncidentClassifierQueryHandler) GetCategory(
 	ctx context.Context,
 	req *classifierqueryv1.GetCategoryRequest,
 ) (*classifierqueryv1.GetCategoryResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseCategoryID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
-	view, err := h.reader.GetCategory(ctx, id)
+	view, err := h.reader.GetCategory(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -64,11 +69,15 @@ func (h *IncidentClassifierQueryHandler) ListCategoriesByOrganization(
 	ctx context.Context,
 	req *classifierqueryv1.ListCategoriesByOrganizationRequest,
 ) (*classifierqueryv1.ListCategoriesByOrganizationResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListCategoriesByOrganization(ctx, id, classifierread.ListQuery{
+	items, err := h.reader.ListCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
 		Limit:  int(req.GetLimit()),
 		Offset: int(req.GetOffset()),
 	})
@@ -83,11 +92,15 @@ func (h *IncidentClassifierQueryHandler) ListActiveRootCategories(
 	ctx context.Context,
 	req *classifierqueryv1.ListActiveRootCategoriesRequest,
 ) (*classifierqueryv1.ListActiveRootCategoriesResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListActiveRootCategories(ctx, id)
+	items, err := h.reader.ListActiveRootCategories(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -99,11 +112,15 @@ func (h *IncidentClassifierQueryHandler) ListCategorySubtree(
 	ctx context.Context,
 	req *classifierqueryv1.ListCategorySubtreeRequest,
 ) (*classifierqueryv1.ListCategorySubtreeResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseCategoryID(req.GetRootCategoryId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListCategorySubtree(ctx, id)
+	items, err := h.reader.ListCategorySubtree(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -115,11 +132,15 @@ func (h *IncidentClassifierQueryHandler) GetType(
 	ctx context.Context,
 	req *classifierqueryv1.GetTypeRequest,
 ) (*classifierqueryv1.GetTypeResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseTypeID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
-	view, err := h.reader.GetType(ctx, id)
+	view, err := h.reader.GetType(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -131,11 +152,15 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 	ctx context.Context,
 	req *classifierqueryv1.ListTypesByCategoryRequest,
 ) (*classifierqueryv1.ListTypesByCategoryResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseCategoryID(req.GetCategoryId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListTypesByCategory(ctx, id)
+	items, err := h.reader.ListTypesByCategory(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -147,11 +172,15 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 	ctx context.Context,
 	req *classifierqueryv1.ListActiveTypesByOrganizationRequest,
 ) (*classifierqueryv1.ListActiveTypesByOrganizationResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListActiveTypesByOrganization(ctx, id)
+	items, err := h.reader.ListActiveTypesByOrganization(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -164,11 +193,15 @@ func (h *IncidentClassifierQueryHandler) ListPatientAllowedTypesByOrganization(
 	ctx context.Context,
 	req *classifierqueryv1.ListPatientAllowedTypesByOrganizationRequest,
 ) (*classifierqueryv1.ListPatientAllowedTypesByOrganizationResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListPatientAllowedTypesByOrganization(ctx, id)
+	items, err := h.reader.ListPatientAllowedTypesByOrganization(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -182,11 +215,15 @@ func (h *IncidentClassifierQueryHandler) ListPatientVisibleCategoriesByOrganizat
 	ctx context.Context,
 	req *classifierqueryv1.ListPatientVisibleCategoriesByOrganizationRequest,
 ) (*classifierqueryv1.ListPatientVisibleCategoriesByOrganizationResponse, error) {
+	caller, err := authz.CallerFromCtx(ctx)
+	if err != nil {
+		return nil, err
+	}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListPatientVisibleCategoriesByOrganization(ctx, id)
+	items, err := h.reader.ListPatientVisibleCategoriesByOrganization(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}

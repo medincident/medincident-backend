@@ -16,9 +16,18 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
-var testDB *gorm.DB
+const sysadminZitadelID = "sysadmin"
+
+var sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
+
+var (
+	testDB   *gorm.DB
+	authzSvc *authz.Authz
+)
 
 func TestMain(m *testing.M) {
 	ctx := context.Background()
@@ -68,6 +77,8 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
+	authzSvc = authz.New(testDB)
+
 	os.Exit(m.Run())
 }
 
@@ -78,8 +89,17 @@ func resetProjections(t *testing.T) {
 		t.Fatalf("get raw db: %v", err)
 	}
 	if _, err := raw.Exec(`TRUNCATE TABLE
+		domain.system_admins,
+		domain.incident_types,
+		domain.incident_categories,
 		projections.incident_types,
 		projections.incident_categories CASCADE`); err != nil {
 		t.Fatalf("truncate projections: %v", err)
+	}
+	if _, err := raw.Exec(
+		`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1)`,
+		sysadminZitadelID,
+	); err != nil {
+		t.Fatalf("seed sysadmin: %v", err)
 	}
 }

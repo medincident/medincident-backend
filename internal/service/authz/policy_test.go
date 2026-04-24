@@ -169,6 +169,46 @@ func TestMemberOf_Describe(t *testing.T) {
 	assert.Equal(t, "organization member", MemberOf.Department(id).describe())
 }
 
+func TestAuthenticated_Branches_ConstantTrue(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := Authenticated.branches(bc)
+	require.Len(t, bs, 1)
+	assert.Equal(t, "SELECT 1", bs[0])
+	// No placeholders — Authenticated is scope-less and does not
+	// touch the caller ID in SQL. The upstream authn interceptor has
+	// already rejected empty caller IDs by the time Require runs.
+	assert.Empty(t, bc.args)
+}
+
+func TestAuthenticated_Describe(t *testing.T) {
+	assert.Equal(t, "an authenticated caller", Authenticated.describe())
+}
+
+func TestMemberOf_Category_WidensToOrganization(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := MemberOf.Category(uuid.MustParse("cccccccc-cccc-cccc-cccc-cccccccccccc")).branches(bc)
+	require.Len(t, bs, 1)
+	assert.Contains(t, bs[0], "JOIN domain.incident_categories ic ON ic.organization_id = e.organization_id")
+	assert.Contains(t, bs[0], "WHERE ic.id = @scope0")
+}
+
+func TestMemberOf_IncidentType_WidensToOrganization(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := MemberOf.IncidentType(uuid.MustParse("dddddddd-dddd-dddd-dddd-dddddddddddd")).branches(bc)
+	require.Len(t, bs, 1)
+	assert.Contains(t, bs[0], "JOIN domain.incident_types it ON it.organization_id = e.organization_id")
+	assert.Contains(t, bs[0], "WHERE it.id = @scope0")
+}
+
+func TestReaderOf_Category_IsAnyOf_SystemAdmin_OrgAdmin_Member(t *testing.T) {
+	id := uuid.MustParse("eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee")
+	bc1 := &branchCtx{callerID: "x"}
+	bc2 := &branchCtx{callerID: "x"}
+	got := ReaderOf.Category(id).branches(bc1)
+	want := AnyOf(SystemAdmin, OrgAdminOf.Category(id), MemberOf.Category(id)).branches(bc2)
+	assert.Equal(t, want, got)
+}
+
 func TestMemberOf_Employee_WidensToOrganization(t *testing.T) {
 	bc := &branchCtx{callerID: "bob"}
 	bs := MemberOf.Employee(uuid.MustParse("99999999-9999-9999-9999-999999999999")).branches(bc)

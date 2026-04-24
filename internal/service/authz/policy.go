@@ -88,6 +88,33 @@ func (bc *branchCtx) hasZeroScope() bool {
 }
 
 // ---------------------------------------------------------------------
+// Authenticated — scope-less "caller is logged in" policy
+// ---------------------------------------------------------------------
+
+type authenticatedPolicy struct{}
+
+// Authenticated authorizes any caller that reached the policy check —
+// the authn interceptor upstream rejects empty caller IDs, so
+// reaching Require with a non-empty caller ID is itself the proof.
+// The branch is a constant `SELECT 1` that returns a row regardless
+// of database state, so the composed EXISTS always evaluates true.
+//
+// Use for reads that must be gated by authentication but not by
+// membership — e.g. the patient-facing classifier endpoints, where
+// patients pick an organization to file an incident against without
+// being employees of it.
+var Authenticated Policy = authenticatedPolicy{}
+
+func (authenticatedPolicy) branches(_ *branchCtx) []string {
+	return []string{"SELECT 1"}
+}
+
+func (authenticatedPolicy) describe() string { return "an authenticated caller" }
+
+//nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
+func (authenticatedPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder { return b }
+
+// ---------------------------------------------------------------------
 // SystemAdmin — scope-less role
 // ---------------------------------------------------------------------
 
@@ -390,6 +417,22 @@ func (memberOfRole) Employee(id uuid.UUID) Policy {
 	}
 }
 
+func (memberOfRole) Category(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field:     "category_id",
+		id:        id,
+		clauseFmt: "JOIN domain.incident_categories ic ON ic.organization_id = e.organization_id WHERE ic.id = @%s",
+	}
+}
+
+func (memberOfRole) IncidentType(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field:     "type_id",
+		id:        id,
+		clauseFmt: "JOIN domain.incident_types it ON it.organization_id = e.organization_id WHERE it.id = @%s",
+	}
+}
+
 // ---------------------------------------------------------------------
 // SelfEmployee — caller IS the target employee
 // ---------------------------------------------------------------------
@@ -447,6 +490,14 @@ func (readerOfBattery) Department(id uuid.UUID) Policy {
 
 func (readerOfBattery) Employee(id uuid.UUID) Policy {
 	return AnyOf(SystemAdmin, OrgAdminOf.Employee(id), MemberOf.Employee(id))
+}
+
+func (readerOfBattery) Category(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Category(id), MemberOf.Category(id))
+}
+
+func (readerOfBattery) IncidentType(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.IncidentType(id), MemberOf.IncidentType(id))
 }
 
 // ---------------------------------------------------------------------

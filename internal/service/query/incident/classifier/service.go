@@ -2,12 +2,22 @@
 // projections (projections.incident_categories,
 // projections.incident_types). Subtree walks use PostgreSQL recursive
 // CTEs in raw SQL.
+//
+// Authorization model: catalog reads (Get / List / Subtree) are gated
+// by authz.ReaderOf.{Category,IncidentType,Organization} — any employee
+// of the owning organization may read. Patient-facing endpoints
+// (ListPatientAllowed*, ListPatientVisible*) run under authz.Authenticated:
+// patients are not employees, but they must pick an organization to
+// file an incident against, so the classifier menu stays open to any
+// logged-in caller. Cross-org reads by employees fail permission_denied.
 package classifier
 
 import (
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Bounds applied to List pagination.
@@ -59,10 +69,12 @@ func (q *ListQuery) normalize() error {
 // Reader exposes read methods for both aggregates in this domain.
 type Reader struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewReader returns a Reader bound to the given db.
-func NewReader(db *gorm.DB, logger *zerolog.Logger) *Reader {
-	return &Reader{db: db, logger: logger}
+// NewReader returns a Reader bound to the given db and authorization
+// service.
+func NewReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *Reader {
+	return &Reader{db: db, authz: az, logger: logger}
 }
