@@ -4,6 +4,8 @@
 ## Table of Contents
 
 - [command/incident/classifier/v1/incident_classifier.proto](#command_incident_classifier_v1_incident_classifier-proto)
+    - [AllowIncidentTypeForPatientsRequest](#command-incident-classifier-v1-AllowIncidentTypeForPatientsRequest)
+    - [AllowIncidentTypeForPatientsResponse](#command-incident-classifier-v1-AllowIncidentTypeForPatientsResponse)
     - [CreateIncidentCategoryRequest](#command-incident-classifier-v1-CreateIncidentCategoryRequest)
     - [CreateIncidentCategoryResponse](#command-incident-classifier-v1-CreateIncidentCategoryResponse)
     - [CreateIncidentTypeRequest](#command-incident-classifier-v1-CreateIncidentTypeRequest)
@@ -16,6 +18,8 @@
     - [DeleteIncidentCategoryResponse](#command-incident-classifier-v1-DeleteIncidentCategoryResponse)
     - [DeleteIncidentTypeRequest](#command-incident-classifier-v1-DeleteIncidentTypeRequest)
     - [DeleteIncidentTypeResponse](#command-incident-classifier-v1-DeleteIncidentTypeResponse)
+    - [DisallowIncidentTypeForPatientsRequest](#command-incident-classifier-v1-DisallowIncidentTypeForPatientsRequest)
+    - [DisallowIncidentTypeForPatientsResponse](#command-incident-classifier-v1-DisallowIncidentTypeForPatientsResponse)
     - [MoveIncidentCategoryRequest](#command-incident-classifier-v1-MoveIncidentCategoryRequest)
     - [MoveIncidentCategoryResponse](#command-incident-classifier-v1-MoveIncidentCategoryResponse)
     - [MoveIncidentTypeRequest](#command-incident-classifier-v1-MoveIncidentTypeRequest)
@@ -232,6 +236,31 @@
 
 
 
+<a name="command-incident-classifier-v1-AllowIncidentTypeForPatientsRequest"></a>
+
+### AllowIncidentTypeForPatientsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| type_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-classifier-v1-AllowIncidentTypeForPatientsResponse"></a>
+
+### AllowIncidentTypeForPatientsResponse
+
+
+
+
+
+
+
 <a name="command-incident-classifier-v1-CreateIncidentCategoryRequest"></a>
 
 ### CreateIncidentCategoryRequest
@@ -390,6 +419,31 @@
 <a name="command-incident-classifier-v1-DeleteIncidentTypeResponse"></a>
 
 ### DeleteIncidentTypeResponse
+
+
+
+
+
+
+
+<a name="command-incident-classifier-v1-DisallowIncidentTypeForPatientsRequest"></a>
+
+### DisallowIncidentTypeForPatientsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| type_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-classifier-v1-DisallowIncidentTypeForPatientsResponse"></a>
+
+### DisallowIncidentTypeForPatientsResponse
 
 
 
@@ -583,6 +637,8 @@ touched row.
 | DeactivateIncidentType | [DeactivateIncidentTypeRequest](#command-incident-classifier-v1-DeactivateIncidentTypeRequest) | [DeactivateIncidentTypeResponse](#command-incident-classifier-v1-DeactivateIncidentTypeResponse) |  |
 | ReactivateIncidentType | [ReactivateIncidentTypeRequest](#command-incident-classifier-v1-ReactivateIncidentTypeRequest) | [ReactivateIncidentTypeResponse](#command-incident-classifier-v1-ReactivateIncidentTypeResponse) |  |
 | DeleteIncidentType | [DeleteIncidentTypeRequest](#command-incident-classifier-v1-DeleteIncidentTypeRequest) | [DeleteIncidentTypeResponse](#command-incident-classifier-v1-DeleteIncidentTypeResponse) |  |
+| AllowIncidentTypeForPatients | [AllowIncidentTypeForPatientsRequest](#command-incident-classifier-v1-AllowIncidentTypeForPatientsRequest) | [AllowIncidentTypeForPatientsResponse](#command-incident-classifier-v1-AllowIncidentTypeForPatientsResponse) |  |
+| DisallowIncidentTypeForPatients | [DisallowIncidentTypeForPatientsRequest](#command-incident-classifier-v1-DisallowIncidentTypeForPatientsRequest) | [DisallowIncidentTypeForPatientsResponse](#command-incident-classifier-v1-DisallowIncidentTypeForPatientsResponse) |  |
 
 
 

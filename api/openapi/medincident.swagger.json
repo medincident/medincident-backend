@@ -1052,6 +1052,66 @@
         ]
       }
     },
+    "/v1/incident-types/{typeId}/patient-permission/allowances": {
+      "post": {
+        "operationId": "IncidentClassifierCommandService_AllowIncidentTypeForPatients",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AllowIncidentTypeForPatientsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/incident-types/{typeId}/patient-permission/disallowances": {
+      "post": {
+        "operationId": "IncidentClassifierCommandService_DisallowIncidentTypeForPatients",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DisallowIncidentTypeForPatientsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierCommandService"
+        ]
+      }
+    },
     "/v1/incident-types/{typeId}/reactivations": {
       "post": {
         "operationId": "IncidentClassifierCommandService_ReactivateIncidentType",
@@ -3296,6 +3356,9 @@
         "text"
       ]
     },
+    "v1AllowIncidentTypeForPatientsResponse": {
+      "type": "object"
+    },
     "v1AssignClinicHeadDeputyResponse": {
       "type": "object"
     },
@@ -3563,6 +3626,9 @@
           "format": "int64"
         }
       }
+    },
+    "v1DisallowIncidentTypeForPatientsResponse": {
+      "type": "object"
     },
     "v1EmployeeCardView": {
       "type": "object",

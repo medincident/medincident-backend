@@ -19,18 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IncidentClassifierCommandService_CreateIncidentCategory_FullMethodName        = "/command.incident.classifier.v1.IncidentClassifierCommandService/CreateIncidentCategory"
-	IncidentClassifierCommandService_UpdateIncidentCategoryDetails_FullMethodName = "/command.incident.classifier.v1.IncidentClassifierCommandService/UpdateIncidentCategoryDetails"
-	IncidentClassifierCommandService_MoveIncidentCategory_FullMethodName          = "/command.incident.classifier.v1.IncidentClassifierCommandService/MoveIncidentCategory"
-	IncidentClassifierCommandService_DeactivateIncidentCategory_FullMethodName    = "/command.incident.classifier.v1.IncidentClassifierCommandService/DeactivateIncidentCategory"
-	IncidentClassifierCommandService_ReactivateIncidentCategory_FullMethodName    = "/command.incident.classifier.v1.IncidentClassifierCommandService/ReactivateIncidentCategory"
-	IncidentClassifierCommandService_DeleteIncidentCategory_FullMethodName        = "/command.incident.classifier.v1.IncidentClassifierCommandService/DeleteIncidentCategory"
-	IncidentClassifierCommandService_CreateIncidentType_FullMethodName            = "/command.incident.classifier.v1.IncidentClassifierCommandService/CreateIncidentType"
-	IncidentClassifierCommandService_UpdateIncidentTypeDetails_FullMethodName     = "/command.incident.classifier.v1.IncidentClassifierCommandService/UpdateIncidentTypeDetails"
-	IncidentClassifierCommandService_MoveIncidentType_FullMethodName              = "/command.incident.classifier.v1.IncidentClassifierCommandService/MoveIncidentType"
-	IncidentClassifierCommandService_DeactivateIncidentType_FullMethodName        = "/command.incident.classifier.v1.IncidentClassifierCommandService/DeactivateIncidentType"
-	IncidentClassifierCommandService_ReactivateIncidentType_FullMethodName        = "/command.incident.classifier.v1.IncidentClassifierCommandService/ReactivateIncidentType"
-	IncidentClassifierCommandService_DeleteIncidentType_FullMethodName            = "/command.incident.classifier.v1.IncidentClassifierCommandService/DeleteIncidentType"
+	IncidentClassifierCommandService_CreateIncidentCategory_FullMethodName          = "/command.incident.classifier.v1.IncidentClassifierCommandService/CreateIncidentCategory"
+	IncidentClassifierCommandService_UpdateIncidentCategoryDetails_FullMethodName   = "/command.incident.classifier.v1.IncidentClassifierCommandService/UpdateIncidentCategoryDetails"
+	IncidentClassifierCommandService_MoveIncidentCategory_FullMethodName            = "/command.incident.classifier.v1.IncidentClassifierCommandService/MoveIncidentCategory"
+	IncidentClassifierCommandService_DeactivateIncidentCategory_FullMethodName      = "/command.incident.classifier.v1.IncidentClassifierCommandService/DeactivateIncidentCategory"
+	IncidentClassifierCommandService_ReactivateIncidentCategory_FullMethodName      = "/command.incident.classifier.v1.IncidentClassifierCommandService/ReactivateIncidentCategory"
+	IncidentClassifierCommandService_DeleteIncidentCategory_FullMethodName          = "/command.incident.classifier.v1.IncidentClassifierCommandService/DeleteIncidentCategory"
+	IncidentClassifierCommandService_CreateIncidentType_FullMethodName              = "/command.incident.classifier.v1.IncidentClassifierCommandService/CreateIncidentType"
+	IncidentClassifierCommandService_UpdateIncidentTypeDetails_FullMethodName       = "/command.incident.classifier.v1.IncidentClassifierCommandService/UpdateIncidentTypeDetails"
+	IncidentClassifierCommandService_MoveIncidentType_FullMethodName                = "/command.incident.classifier.v1.IncidentClassifierCommandService/MoveIncidentType"
+	IncidentClassifierCommandService_DeactivateIncidentType_FullMethodName          = "/command.incident.classifier.v1.IncidentClassifierCommandService/DeactivateIncidentType"
+	IncidentClassifierCommandService_ReactivateIncidentType_FullMethodName          = "/command.incident.classifier.v1.IncidentClassifierCommandService/ReactivateIncidentType"
+	IncidentClassifierCommandService_DeleteIncidentType_FullMethodName              = "/command.incident.classifier.v1.IncidentClassifierCommandService/DeleteIncidentType"
+	IncidentClassifierCommandService_AllowIncidentTypeForPatients_FullMethodName    = "/command.incident.classifier.v1.IncidentClassifierCommandService/AllowIncidentTypeForPatients"
+	IncidentClassifierCommandService_DisallowIncidentTypeForPatients_FullMethodName = "/command.incident.classifier.v1.IncidentClassifierCommandService/DisallowIncidentTypeForPatients"
 )
 
 // IncidentClassifierCommandServiceClient is the client API for IncidentClassifierCommandService service.
@@ -58,6 +60,8 @@ type IncidentClassifierCommandServiceClient interface {
 	DeactivateIncidentType(ctx context.Context, in *DeactivateIncidentTypeRequest, opts ...grpc.CallOption) (*DeactivateIncidentTypeResponse, error)
 	ReactivateIncidentType(ctx context.Context, in *ReactivateIncidentTypeRequest, opts ...grpc.CallOption) (*ReactivateIncidentTypeResponse, error)
 	DeleteIncidentType(ctx context.Context, in *DeleteIncidentTypeRequest, opts ...grpc.CallOption) (*DeleteIncidentTypeResponse, error)
+	AllowIncidentTypeForPatients(ctx context.Context, in *AllowIncidentTypeForPatientsRequest, opts ...grpc.CallOption) (*AllowIncidentTypeForPatientsResponse, error)
+	DisallowIncidentTypeForPatients(ctx context.Context, in *DisallowIncidentTypeForPatientsRequest, opts ...grpc.CallOption) (*DisallowIncidentTypeForPatientsResponse, error)
 }
 
 type incidentClassifierCommandServiceClient struct {
@@ -188,6 +192,26 @@ func (c *incidentClassifierCommandServiceClient) DeleteIncidentType(ctx context.
 	return out, nil
 }
 
+func (c *incidentClassifierCommandServiceClient) AllowIncidentTypeForPatients(ctx context.Context, in *AllowIncidentTypeForPatientsRequest, opts ...grpc.CallOption) (*AllowIncidentTypeForPatientsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AllowIncidentTypeForPatientsResponse)
+	err := c.cc.Invoke(ctx, IncidentClassifierCommandService_AllowIncidentTypeForPatients_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *incidentClassifierCommandServiceClient) DisallowIncidentTypeForPatients(ctx context.Context, in *DisallowIncidentTypeForPatientsRequest, opts ...grpc.CallOption) (*DisallowIncidentTypeForPatientsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DisallowIncidentTypeForPatientsResponse)
+	err := c.cc.Invoke(ctx, IncidentClassifierCommandService_DisallowIncidentTypeForPatients_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // IncidentClassifierCommandServiceServer is the server API for IncidentClassifierCommandService service.
 // All implementations must embed UnimplementedIncidentClassifierCommandServiceServer
 // for forward compatibility.
@@ -213,6 +237,8 @@ type IncidentClassifierCommandServiceServer interface {
 	DeactivateIncidentType(context.Context, *DeactivateIncidentTypeRequest) (*DeactivateIncidentTypeResponse, error)
 	ReactivateIncidentType(context.Context, *ReactivateIncidentTypeRequest) (*ReactivateIncidentTypeResponse, error)
 	DeleteIncidentType(context.Context, *DeleteIncidentTypeRequest) (*DeleteIncidentTypeResponse, error)
+	AllowIncidentTypeForPatients(context.Context, *AllowIncidentTypeForPatientsRequest) (*AllowIncidentTypeForPatientsResponse, error)
+	DisallowIncidentTypeForPatients(context.Context, *DisallowIncidentTypeForPatientsRequest) (*DisallowIncidentTypeForPatientsResponse, error)
 	mustEmbedUnimplementedIncidentClassifierCommandServiceServer()
 }
 
@@ -258,6 +284,12 @@ func (UnimplementedIncidentClassifierCommandServiceServer) ReactivateIncidentTyp
 }
 func (UnimplementedIncidentClassifierCommandServiceServer) DeleteIncidentType(context.Context, *DeleteIncidentTypeRequest) (*DeleteIncidentTypeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteIncidentType not implemented")
+}
+func (UnimplementedIncidentClassifierCommandServiceServer) AllowIncidentTypeForPatients(context.Context, *AllowIncidentTypeForPatientsRequest) (*AllowIncidentTypeForPatientsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AllowIncidentTypeForPatients not implemented")
+}
+func (UnimplementedIncidentClassifierCommandServiceServer) DisallowIncidentTypeForPatients(context.Context, *DisallowIncidentTypeForPatientsRequest) (*DisallowIncidentTypeForPatientsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DisallowIncidentTypeForPatients not implemented")
 }
 func (UnimplementedIncidentClassifierCommandServiceServer) mustEmbedUnimplementedIncidentClassifierCommandServiceServer() {
 }
@@ -497,6 +529,42 @@ func _IncidentClassifierCommandService_DeleteIncidentType_Handler(srv interface{
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IncidentClassifierCommandService_AllowIncidentTypeForPatients_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AllowIncidentTypeForPatientsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IncidentClassifierCommandServiceServer).AllowIncidentTypeForPatients(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IncidentClassifierCommandService_AllowIncidentTypeForPatients_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IncidentClassifierCommandServiceServer).AllowIncidentTypeForPatients(ctx, req.(*AllowIncidentTypeForPatientsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _IncidentClassifierCommandService_DisallowIncidentTypeForPatients_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DisallowIncidentTypeForPatientsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IncidentClassifierCommandServiceServer).DisallowIncidentTypeForPatients(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IncidentClassifierCommandService_DisallowIncidentTypeForPatients_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IncidentClassifierCommandServiceServer).DisallowIncidentTypeForPatients(ctx, req.(*DisallowIncidentTypeForPatientsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // IncidentClassifierCommandService_ServiceDesc is the grpc.ServiceDesc for IncidentClassifierCommandService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -551,6 +619,14 @@ var IncidentClassifierCommandService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteIncidentType",
 			Handler:    _IncidentClassifierCommandService_DeleteIncidentType_Handler,
+		},
+		{
+			MethodName: "AllowIncidentTypeForPatients",
+			Handler:    _IncidentClassifierCommandService_AllowIncidentTypeForPatients_Handler,
+		},
+		{
+			MethodName: "DisallowIncidentTypeForPatients",
+			Handler:    _IncidentClassifierCommandService_DisallowIncidentTypeForPatients_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
