@@ -133,7 +133,7 @@ func resetProjections(t *testing.T) {
 		projections.system_admins,
 		projections.incident_categories,
 		projections.incident_types CASCADE`); err != nil {
-		t.Fatalf("truncate projections: %v", err)
+		t.Fatalf("truncate domain and projections tables: %v", err)
 	}
 	if _, err := raw.Exec(
 		`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1)`,

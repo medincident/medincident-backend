@@ -87,19 +87,22 @@ func (r *ClinicReader) Get(
 
 // ListByOrganization returns up to q.Limit clinics belonging to the
 // given organization, ordered most-recently-created first. Authorization:
-// authz.ReaderOf.Organization(organizationID).
+// authz.ReaderOf.Organization(organizationID). Pagination bounds are
+// normalized first so a malformed Limit/Offset cannot trigger a
+// gratuitous authz DB round-trip — matching the validate→authorize
+// order used on the command side.
 func (r *ClinicReader) ListByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	organizationID uuid.UUID,
 	q ListQuery,
 ) ([]ClinicListItem, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(
 		ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(organizationID),
 	); err != nil {
-		return nil, err
-	}
-	if err := q.normalize(); err != nil {
 		return nil, err
 	}
 	rows, err := r.db.WithContext(ctx).Raw(`

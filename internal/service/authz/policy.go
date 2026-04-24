@@ -328,9 +328,17 @@ type memberOfRole struct{}
 var MemberOf memberOfRole
 
 type memberOfPolicy struct {
-	field     string
-	id        uuid.UUID
-	clauseFmt string // format string with one %s for the scope placeholder
+	field string
+	id    uuid.UUID
+	// clauseFmt is a SQL fragment that joins domain.employees `e` to
+	// the scope being checked and restricts it by the scope id. The
+	// fragment MUST be an optional JOIN chain followed by a WHERE
+	// clause on the scope placeholder — branches appends
+	// "AND e.zitadel_user_id = @caller..." so the fragment is required
+	// to end on a filter predicate rather than a plain join. Every
+	// constructor below follows that shape; break the convention and
+	// rendered SQL becomes invalid at runtime.
+	clauseFmt string // "(JOIN ...)* WHERE <scope>.id = @%s"
 }
 
 func (p memberOfPolicy) branches(bc *branchCtx) []string {

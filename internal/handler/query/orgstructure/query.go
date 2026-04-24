@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
 	orgqueryv1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
@@ -91,10 +92,11 @@ func (h *OrgStructureQueryHandler) GetClinic(
 	ctx context.Context,
 	req *orgqueryv1.GetClinicRequest,
 ) (*orgqueryv1.GetClinicResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseClinicID(req.GetId())
 	if err != nil {
 		return nil, err
@@ -111,10 +113,11 @@ func (h *OrgStructureQueryHandler) ListClinicsByOrganization(
 	ctx context.Context,
 	req *orgqueryv1.ListClinicsByOrganizationRequest,
 ) (*orgqueryv1.ListClinicsByOrganizationResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	orgID, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -142,10 +145,11 @@ func (h *OrgStructureQueryHandler) GetDepartment(
 	ctx context.Context,
 	req *orgqueryv1.GetDepartmentRequest,
 ) (*orgqueryv1.GetDepartmentResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseDepartmentID(req.GetId())
 	if err != nil {
 		return nil, err
@@ -162,10 +166,11 @@ func (h *OrgStructureQueryHandler) ListDepartmentsByClinic(
 	ctx context.Context,
 	req *orgqueryv1.ListDepartmentsByClinicRequest,
 ) (*orgqueryv1.ListDepartmentsByClinicResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	clinicID, err := parseClinicID(req.GetClinicId())
 	if err != nil {
 		return nil, err

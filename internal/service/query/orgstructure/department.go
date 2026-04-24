@@ -74,19 +74,22 @@ func (r *DepartmentReader) Get(
 
 // ListByClinic returns up to q.Limit departments belonging to the
 // given clinic, ordered most-recently-created first. Authorization:
-// authz.ReaderOf.Clinic(clinicID).
+// authz.ReaderOf.Clinic(clinicID). Pagination bounds are normalized
+// first so a malformed Limit/Offset cannot trigger a gratuitous authz
+// DB round-trip — matching the validate→authorize order used on the
+// command side.
 func (r *DepartmentReader) ListByClinic(
 	ctx context.Context,
 	caller authz.Caller,
 	clinicID uuid.UUID,
 	q ListQuery,
 ) ([]DepartmentListItem, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(
 		ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID),
 	); err != nil {
-		return nil, err
-	}
-	if err := q.normalize(); err != nil {
 		return nil, err
 	}
 	rows, err := r.db.WithContext(ctx).Raw(`
