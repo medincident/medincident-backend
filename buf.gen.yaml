@@ -14,7 +14,7 @@ managed:
   enabled: true
   override:
     - file_option: go_package_prefix
-      value: github.com/medincident/medincident-command-service/pkg
+      value: github.com/medincident/medincident-backend/pkg
   disable:
     - file_option: go_package_prefix
       module: buf.build/googleapis/googleapis

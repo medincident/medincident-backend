@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
-	classifierread "github.com/medincident/medincident-command-service/internal/service/query/incident/classifier"
-	classifierqueryv1 "github.com/medincident/medincident-command-service/pkg/query/incident/classifier/v1"
+	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
+	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 )
 
 // Error codes emitted by query-handler ID parsing.

@@ -7,8 +7,8 @@
 package membership
 
 import (
-	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	membershipv1 "github.com/medincident/medincident-command-service/pkg/command/membership/v1"
+	"github.com/medincident/medincident-backend/internal/service/command/membership"
+	membershipv1 "github.com/medincident/medincident-backend/pkg/command/membership/v1"
 )
 
 // MembershipHandler implements membershipv1.MembershipCommandServiceServer.

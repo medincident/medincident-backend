@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"time"
 
-	identityread "github.com/medincident/medincident-command-service/internal/service/query/identity"
-	identityqueryv1 "github.com/medincident/medincident-command-service/pkg/query/identity/v1"
+	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
+	identityqueryv1 "github.com/medincident/medincident-backend/pkg/query/identity/v1"
 )
 
 // IdentityQueryHandler implements identityqueryv1.IdentityQueryServiceServer.

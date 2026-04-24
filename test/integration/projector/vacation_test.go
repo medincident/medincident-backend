@@ -12,8 +12,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/command/projector"
 )
 
 // seedEmployee creates an org+clinic+dept+employee chain via the

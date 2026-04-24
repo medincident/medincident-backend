@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	memberread "github.com/medincident/medincident-command-service/internal/service/query/membership"
+	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	memberread "github.com/medincident/medincident-backend/internal/service/query/membership"
 )
 
 // seedOrgClinicDept inserts an organization + clinic + department

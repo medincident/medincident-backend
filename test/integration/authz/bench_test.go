@@ -8,7 +8,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/medincident/medincident-command-service/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // resetDBBench mirrors resetDB but accepts *testing.B.

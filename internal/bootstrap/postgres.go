@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	"github.com/medincident/medincident-command-service/internal/config"
+	"github.com/medincident/medincident-backend/internal/config"
 )
 
 // Error codes emitted by OpenPostgres.

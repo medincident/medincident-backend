@@ -8,8 +8,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
-	statsread "github.com/medincident/medincident-command-service/internal/service/query/stats"
-	statsqueryv1 "github.com/medincident/medincident-command-service/pkg/query/stats/v1"
+	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
+	statsqueryv1 "github.com/medincident/medincident-backend/pkg/query/stats/v1"
 )
 
 // Error codes emitted by query-handler ID parsing.

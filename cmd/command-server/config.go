@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/medincident/medincident-command-service/internal/config"
+	"github.com/medincident/medincident-backend/internal/config"
 )
 
 // Config is the YAML-backed runtime configuration for the

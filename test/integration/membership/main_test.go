@@ -24,9 +24,9 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	"github.com/medincident/medincident-command-service/internal/service/authz"
-	"github.com/medincident/medincident-command-service/internal/service/command/membership"
-	"github.com/medincident/medincident-command-service/internal/service/zitadel"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/command/membership"
+	"github.com/medincident/medincident-backend/internal/service/zitadel"
 )
 
 const (

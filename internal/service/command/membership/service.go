@@ -8,8 +8,8 @@ import (
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/service/authz"
-	"github.com/medincident/medincident-command-service/internal/service/zitadel"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/zitadel"
 )
 
 // EmployeeService holds the command-side methods for managing

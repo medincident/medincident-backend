@@ -11,10 +11,10 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
-	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/authz"
-	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	"github.com/medincident/medincident-command-service/internal/service/validation"
+	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 // UpdateVacationEndDatePayload carries the vacation to update and the

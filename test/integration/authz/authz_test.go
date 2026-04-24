@@ -8,7 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 
-	"github.com/medincident/medincident-command-service/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // Tests in this file share the requireDenied helper and public-message

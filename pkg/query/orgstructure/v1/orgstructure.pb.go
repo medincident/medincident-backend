@@ -1314,8 +1314,8 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\tGetClinic\x12'.query.orgstructure.v1.GetClinicRequest\x1a(.query.orgstructure.v1.GetClinicResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/query/clinics/{id}\x12\xc9\x01\n" +
 	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/query/organizations/{organization_id}/clinics\x12\x8e\x01\n" +
 	"\rGetDepartment\x12+.query.orgstructure.v1.GetDepartmentRequest\x1a,.query.orgstructure.v1.GetDepartmentResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/v1/query/departments/{id}\x12\xbb\x01\n" +
-	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/query/clinics/{clinic_id}/departmentsB\x81\x02\n" +
-	"\x19com.query.orgstructure.v1B\x11OrgstructureProtoP\x01Z[github.com/medincident/medincident-command-service/pkg/query/orgstructure/v1;orgstructurev1\xa2\x02\x03QOX\xaa\x02\x15Query.Orgstructure.V1\xca\x02\x15Query\\Orgstructure\\V1\xe2\x02!Query\\Orgstructure\\V1\\GPBMetadata\xea\x02\x17Query::Orgstructure::V1b\x06proto3"
+	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/query/clinics/{clinic_id}/departmentsB\xf9\x01\n" +
+	"\x19com.query.orgstructure.v1B\x11OrgstructureProtoP\x01ZSgithub.com/medincident/medincident-backend/pkg/query/orgstructure/v1;orgstructurev1\xa2\x02\x03QOX\xaa\x02\x15Query.Orgstructure.V1\xca\x02\x15Query\\Orgstructure\\V1\xe2\x02!Query\\Orgstructure\\V1\\GPBMetadata\xea\x02\x17Query::Orgstructure::V1b\x06proto3"
 
 var (
 	file_query_orgstructure_v1_orgstructure_proto_rawDescOnce sync.Once

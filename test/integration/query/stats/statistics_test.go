@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	statsread "github.com/medincident/medincident-command-service/internal/service/query/stats"
+	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
 )
 
 // TestReader_GetOrganizationStats returns counter values seeded by the

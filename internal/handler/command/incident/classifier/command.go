@@ -5,8 +5,8 @@
 package classifier
 
 import (
-	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
-	incidentclassifierv1 "github.com/medincident/medincident-command-service/pkg/command/incident/classifier/v1"
+	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
+	incidentclassifierv1 "github.com/medincident/medincident-backend/pkg/command/incident/classifier/v1"
 )
 
 // IncidentClassifierHandler implements incidentclassifierv1.IncidentClassifierCommandServiceServer.

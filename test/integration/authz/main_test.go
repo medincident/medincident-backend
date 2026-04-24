@@ -19,7 +19,7 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	"github.com/medincident/medincident-command-service/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 var (

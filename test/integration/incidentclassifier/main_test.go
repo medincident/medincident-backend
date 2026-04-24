@@ -21,9 +21,9 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
-	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/authz"
-	classifiersvc "github.com/medincident/medincident-command-service/internal/service/command/incident/classifier"
+	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
 )
 
 // sysadminZitadelID is the Zitadel user ID of the seeded system-admin

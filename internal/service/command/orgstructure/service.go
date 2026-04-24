@@ -4,7 +4,7 @@ import (
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // OrganizationService handles mutations of domain.organizations.

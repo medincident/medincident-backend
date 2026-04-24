@@ -614,8 +614,8 @@ const file_query_identity_v1_identity_proto_rawDesc = "" +
 	"\x14IdentityQueryService\x12n\n" +
 	"\aGetUser\x12!.query.identity.v1.GetUserRequest\x1a\".query.identity.v1.GetUserResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/query/users/{id}\x12z\n" +
 	"\n" +
-	"GetSession\x12$.query.identity.v1.GetSessionRequest\x1a%.query.identity.v1.GetSessionResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/query/sessions/{id}B\xe1\x01\n" +
-	"\x15com.query.identity.v1B\rIdentityProtoP\x01ZSgithub.com/medincident/medincident-command-service/pkg/query/identity/v1;identityv1\xa2\x02\x03QIX\xaa\x02\x11Query.Identity.V1\xca\x02\x11Query\\Identity\\V1\xe2\x02\x1dQuery\\Identity\\V1\\GPBMetadata\xea\x02\x13Query::Identity::V1b\x06proto3"
+	"GetSession\x12$.query.identity.v1.GetSessionRequest\x1a%.query.identity.v1.GetSessionResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/query/sessions/{id}B\xd9\x01\n" +
+	"\x15com.query.identity.v1B\rIdentityProtoP\x01ZKgithub.com/medincident/medincident-backend/pkg/query/identity/v1;identityv1\xa2\x02\x03QIX\xaa\x02\x11Query.Identity.V1\xca\x02\x11Query\\Identity\\V1\xe2\x02\x1dQuery\\Identity\\V1\\GPBMetadata\xea\x02\x13Query::Identity::V1b\x06proto3"
 
 var (
 	file_query_identity_v1_identity_proto_rawDescOnce sync.Once

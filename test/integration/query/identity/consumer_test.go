@@ -18,8 +18,8 @@ import (
 	zitadelv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/events/v1"
 	usersv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/users/v1"
 
-	"github.com/medincident/medincident-command-service/internal/config"
-	identityread "github.com/medincident/medincident-command-service/internal/service/query/identity"
+	"github.com/medincident/medincident-backend/internal/config"
+	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 )
 
 // TestConsumer_UserHumanAdded_EndToEnd publishes a Zitadel user-added

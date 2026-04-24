@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/medincident/medincident-command-service/internal/util/ignore"
+	"github.com/medincident/medincident-backend/internal/util/ignore"
 )
 
 func TestAny_DiscardsSecondReturnRegardlessOfType(t *testing.T) {

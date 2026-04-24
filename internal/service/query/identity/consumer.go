@@ -15,7 +15,7 @@ import (
 	sessionsv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/sessions/v1"
 	usersv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/users/v1"
 
-	"github.com/medincident/medincident-command-service/internal/config"
+	"github.com/medincident/medincident-backend/internal/config"
 )
 
 // Zitadel event_type discriminators emitted by the zitadel-actions

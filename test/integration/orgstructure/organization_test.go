@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/medincident/medincident-command-service/internal/model"
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
-	"github.com/medincident/medincident-command-service/internal/service/validation"
+	"github.com/medincident/medincident-backend/internal/model"
+	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 // codeOf extracts the oops Code as a string from any error in a joined

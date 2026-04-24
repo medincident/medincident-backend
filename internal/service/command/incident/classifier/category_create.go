@@ -10,10 +10,10 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-command-service/internal/model"
-	"github.com/medincident/medincident-command-service/internal/service/authz"
-	"github.com/medincident/medincident-command-service/internal/service/command/projector"
-	"github.com/medincident/medincident-command-service/internal/service/validation"
+	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 // Error codes emitted by CreateIncidentCategory and shared with other

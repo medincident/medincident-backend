@@ -1539,8 +1539,8 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"8\x82\xd3\xe4\x93\x022\x120/v1/query/organizations/{organization_id}/admins\x12\xb4\x01\n" +
 	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"=\x82\xd3\xe4\x93\x027\x125/v1/query/organizations/{organization_id}/dispatchers\x12\x9c\x01\n" +
 	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/query/organizations/{organization_id}/heads\x12\x90\x01\n" +
-	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/query/system-adminsB\xf1\x01\n" +
-	"\x17com.query.membership.v1B\x0fMembershipProtoP\x01ZWgithub.com/medincident/medincident-command-service/pkg/query/membership/v1;membershipv1\xa2\x02\x03QMX\xaa\x02\x13Query.Membership.V1\xca\x02\x13Query\\Membership\\V1\xe2\x02\x1fQuery\\Membership\\V1\\GPBMetadata\xea\x02\x15Query::Membership::V1b\x06proto3"
+	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/query/system-adminsB\xe9\x01\n" +
+	"\x17com.query.membership.v1B\x0fMembershipProtoP\x01ZOgithub.com/medincident/medincident-backend/pkg/query/membership/v1;membershipv1\xa2\x02\x03QMX\xaa\x02\x13Query.Membership.V1\xca\x02\x13Query\\Membership\\V1\xe2\x02\x1fQuery\\Membership\\V1\\GPBMetadata\xea\x02\x15Query::Membership::V1b\x06proto3"
 
 var (
 	file_query_membership_v1_membership_proto_rawDescOnce sync.Once

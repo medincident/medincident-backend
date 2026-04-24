@@ -2993,8 +2993,8 @@ const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\"AssignOrganizationDispatcherDeputy\x12@.command.membership.v1.AssignOrganizationDispatcherDeputyRequest\x1aA.command.membership.v1.AssignOrganizationDispatcherDeputyResponse\"O\x82\xd3\xe4\x93\x02I:\x01*\"D/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy\x12\xf7\x01\n" +
 	"\"RemoveOrganizationDispatcherDeputy\x12@.command.membership.v1.RemoveOrganizationDispatcherDeputyRequest\x1aA.command.membership.v1.RemoveOrganizationDispatcherDeputyResponse\"L\x82\xd3\xe4\x93\x02F*D/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy\x12\x91\x01\n" +
 	"\x10GrantSystemAdmin\x12..command.membership.v1.GrantSystemAdminRequest\x1a/.command.membership.v1.GrantSystemAdminResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/system-admins\x12\xa3\x01\n" +
-	"\x11RevokeSystemAdmin\x12/.command.membership.v1.RevokeSystemAdminRequest\x1a0.command.membership.v1.RevokeSystemAdminResponse\"+\x82\xd3\xe4\x93\x02%*#/v1/system-admins/{zitadel_user_id}B\xfd\x01\n" +
-	"\x19com.command.membership.v1B\x0fMembershipProtoP\x01ZYgithub.com/medincident/medincident-command-service/pkg/command/membership/v1;membershipv1\xa2\x02\x03CMX\xaa\x02\x15Command.Membership.V1\xca\x02\x15Command\\Membership\\V1\xe2\x02!Command\\Membership\\V1\\GPBMetadata\xea\x02\x17Command::Membership::V1b\x06proto3"
+	"\x11RevokeSystemAdmin\x12/.command.membership.v1.RevokeSystemAdminRequest\x1a0.command.membership.v1.RevokeSystemAdminResponse\"+\x82\xd3\xe4\x93\x02%*#/v1/system-admins/{zitadel_user_id}B\xf5\x01\n" +
+	"\x19com.command.membership.v1B\x0fMembershipProtoP\x01ZQgithub.com/medincident/medincident-backend/pkg/command/membership/v1;membershipv1\xa2\x02\x03CMX\xaa\x02\x15Command.Membership.V1\xca\x02\x15Command\\Membership\\V1\xe2\x02!Command\\Membership\\V1\\GPBMetadata\xea\x02\x17Command::Membership::V1b\x06proto3"
 
 var (
 	file_command_membership_v1_membership_proto_rawDescOnce sync.Once

@@ -2,8 +2,8 @@
 package orgstructure
 
 import (
-	orgsvc "github.com/medincident/medincident-command-service/internal/service/command/orgstructure"
-	orgstructurev1 "github.com/medincident/medincident-command-service/pkg/command/orgstructure/v1"
+	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
+	orgstructurev1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
 )
 
 // OrgStructureHandler implements orgstructurev1.OrgStructureCommandServiceServer.

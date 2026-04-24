@@ -45,6 +45,3 @@ dist/
 drafts/
 .claude/
 .claude/*.lock
-
-# Superpowers internal docs — never committed
-docs/superpowers/
