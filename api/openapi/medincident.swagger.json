@@ -4387,8 +4387,8 @@
     "v1GetClinicHeadResponse": {
       "type": "object",
       "properties": {
-        "holder": {
-          "$ref": "#/definitions/v1RoleHolder"
+        "assignment": {
+          "$ref": "#/definitions/v1RoleAssignment"
         }
       }
     },
@@ -4419,8 +4419,8 @@
     "v1GetDepartmentResponsibleResponse": {
       "type": "object",
       "properties": {
-        "holder": {
-          "$ref": "#/definitions/v1RoleHolder"
+        "assignment": {
+          "$ref": "#/definitions/v1RoleAssignment"
         }
       }
     },
@@ -4635,7 +4635,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v1RoleHolder"
+            "$ref": "#/definitions/v1RoleAssignment"
           }
         }
       }
@@ -4647,7 +4647,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v1RoleHolder"
+            "$ref": "#/definitions/v1RoleAssignment"
           }
         }
       }
@@ -4659,7 +4659,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v1RoleHolder"
+            "$ref": "#/definitions/v1RoleAssignment"
           }
         }
       }
@@ -4872,17 +4872,17 @@
     "v1RevokeSystemAdminResponse": {
       "type": "object"
     },
-    "v1RoleHolder": {
+    "v1RoleAssignment": {
       "type": "object",
       "properties": {
-        "employeeId": {
-          "type": "string"
+        "holder": {
+          "$ref": "#/definitions/v1EmployeeCardView"
         },
-        "deputyEmployeeId": {
-          "type": "string"
+        "deputy": {
+          "$ref": "#/definitions/v1EmployeeCardView"
         }
       },
-      "description": "RoleHolder represents a single role assignment. deputy_employee_id\nstays empty when the holder has no deputy (or the row is itself a\ndeputy-less holder)."
+      "description": "RoleAssignment is a role row enriched with the denormalised card for\nthe holder and, when present, the deputy. Read-model callers use\nthis so they do not need to follow role lookups with N+1 GetEmployee\ncalls to render a name or email."
     },
     "v1ScheduleVacationResponse": {
       "type": "object",

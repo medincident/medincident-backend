@@ -329,14 +329,14 @@ func (h *MembershipQueryHandler) GetClinicHead(
 	if err != nil {
 		return nil, err
 	}
-	h1, err := h.roleReader.GetClinicHead(ctx, caller, id)
+	a, err := h.roleReader.GetClinicHead(ctx, caller, id)
 	if err != nil {
 		if errors.Is(err, memberread.ErrRoleVacant) {
 			return &membershipqueryv1.GetClinicHeadResponse{}, nil
 		}
 		return nil, err
 	}
-	return &membershipqueryv1.GetClinicHeadResponse{Holder: roleHolderToProto(h1)}, nil
+	return &membershipqueryv1.GetClinicHeadResponse{Assignment: roleAssignmentToProto(a)}, nil
 }
 
 // GetDepartmentResponsible returns the responsible assignment or nil.
@@ -353,14 +353,14 @@ func (h *MembershipQueryHandler) GetDepartmentResponsible(
 	if err != nil {
 		return nil, err
 	}
-	h1, err := h.roleReader.GetDepartmentResponsible(ctx, caller, id)
+	a, err := h.roleReader.GetDepartmentResponsible(ctx, caller, id)
 	if err != nil {
 		if errors.Is(err, memberread.ErrRoleVacant) {
 			return &membershipqueryv1.GetDepartmentResponsibleResponse{}, nil
 		}
 		return nil, err
 	}
-	return &membershipqueryv1.GetDepartmentResponsibleResponse{Holder: roleHolderToProto(h1)}, nil
+	return &membershipqueryv1.GetDepartmentResponsibleResponse{Assignment: roleAssignmentToProto(a)}, nil
 }
 
 // ListOrgAdmins returns every org-admin holder.
@@ -384,7 +384,7 @@ func (h *MembershipQueryHandler) ListOrgAdmins(
 	if err != nil {
 		return nil, err
 	}
-	return &membershipqueryv1.ListOrgAdminsResponse{Items: roleHoldersToProto(items)}, nil
+	return &membershipqueryv1.ListOrgAdminsResponse{Items: roleAssignmentsToProto(items)}, nil
 }
 
 // ListOrgDispatchers returns every org-dispatcher holder.
@@ -408,7 +408,7 @@ func (h *MembershipQueryHandler) ListOrgDispatchers(
 	if err != nil {
 		return nil, err
 	}
-	return &membershipqueryv1.ListOrgDispatchersResponse{Items: roleHoldersToProto(items)}, nil
+	return &membershipqueryv1.ListOrgDispatchersResponse{Items: roleAssignmentsToProto(items)}, nil
 }
 
 // ListOrgHeads returns every org-head holder.
@@ -432,7 +432,7 @@ func (h *MembershipQueryHandler) ListOrgHeads(
 	if err != nil {
 		return nil, err
 	}
-	return &membershipqueryv1.ListOrgHeadsResponse{Items: roleHoldersToProto(items)}, nil
+	return &membershipqueryv1.ListOrgHeadsResponse{Items: roleAssignmentsToProto(items)}, nil
 }
 
 // ListSystemAdmins returns every system-admin row.
@@ -506,24 +506,25 @@ func employeeCardsToProto(views []memberread.EmployeeCardView) []*membershipquer
 	return out
 }
 
-// roleHolderToProto adapts a (possibly nil) RoleHolderView.
-func roleHolderToProto(v *memberread.RoleHolderView) *membershipqueryv1.RoleHolder {
+// roleAssignmentToProto adapts a (possibly nil) RoleAssignmentView. The
+// deputy card reuses employeeCardToProto so the nil case is handled
+// uniformly with the rest of the adapter layer.
+func roleAssignmentToProto(v *memberread.RoleAssignmentView) *membershipqueryv1.RoleAssignment {
 	if v == nil {
 		return nil
 	}
-	out := &membershipqueryv1.RoleHolder{EmployeeId: v.EmployeeID.String()}
-	if v.DeputyEmployeeID != nil {
-		s := v.DeputyEmployeeID.String()
-		out.DeputyEmployeeId = &s
+	out := &membershipqueryv1.RoleAssignment{Holder: employeeCardToProto(&v.Holder)}
+	if v.Deputy != nil {
+		out.Deputy = employeeCardToProto(v.Deputy)
 	}
 	return out
 }
 
-// roleHoldersToProto adapts a slice of RoleHolderView.
-func roleHoldersToProto(views []memberread.RoleHolderView) []*membershipqueryv1.RoleHolder {
-	out := make([]*membershipqueryv1.RoleHolder, 0, len(views))
+// roleAssignmentsToProto adapts a slice of RoleAssignmentView.
+func roleAssignmentsToProto(views []memberread.RoleAssignmentView) []*membershipqueryv1.RoleAssignment {
+	out := make([]*membershipqueryv1.RoleAssignment, 0, len(views))
 	for i := range views {
-		if p := roleHolderToProto(&views[i]); p != nil {
+		if p := roleAssignmentToProto(&views[i]); p != nil {
 			out = append(out, p)
 		}
 	}

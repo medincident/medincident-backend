@@ -284,31 +284,32 @@ func (x *VacationView) GetUpdatedAt() string {
 	return ""
 }
 
-// RoleHolder represents a single role assignment. deputy_employee_id
-// stays empty when the holder has no deputy (or the row is itself a
-// deputy-less holder).
-type RoleHolder struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
-	DeputyEmployeeId *string                `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3,oneof" json:"deputy_employee_id,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+// RoleAssignment is a role row enriched with the denormalised card for
+// the holder and, when present, the deputy. Read-model callers use
+// this so they do not need to follow role lookups with N+1 GetEmployee
+// calls to render a name or email.
+type RoleAssignment struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Holder        *EmployeeCardView      `protobuf:"bytes,1,opt,name=holder,proto3" json:"holder,omitempty"`
+	Deputy        *EmployeeCardView      `protobuf:"bytes,2,opt,name=deputy,proto3,oneof" json:"deputy,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RoleHolder) Reset() {
-	*x = RoleHolder{}
+func (x *RoleAssignment) Reset() {
+	*x = RoleAssignment{}
 	mi := &file_query_membership_v1_membership_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RoleHolder) String() string {
+func (x *RoleAssignment) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RoleHolder) ProtoMessage() {}
+func (*RoleAssignment) ProtoMessage() {}
 
-func (x *RoleHolder) ProtoReflect() protoreflect.Message {
+func (x *RoleAssignment) ProtoReflect() protoreflect.Message {
 	mi := &file_query_membership_v1_membership_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -320,23 +321,23 @@ func (x *RoleHolder) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RoleHolder.ProtoReflect.Descriptor instead.
-func (*RoleHolder) Descriptor() ([]byte, []int) {
+// Deprecated: Use RoleAssignment.ProtoReflect.Descriptor instead.
+func (*RoleAssignment) Descriptor() ([]byte, []int) {
 	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *RoleHolder) GetEmployeeId() string {
+func (x *RoleAssignment) GetHolder() *EmployeeCardView {
 	if x != nil {
-		return x.EmployeeId
+		return x.Holder
 	}
-	return ""
+	return nil
 }
 
-func (x *RoleHolder) GetDeputyEmployeeId() string {
-	if x != nil && x.DeputyEmployeeId != nil {
-		return *x.DeputyEmployeeId
+func (x *RoleAssignment) GetDeputy() *EmployeeCardView {
+	if x != nil {
+		return x.Deputy
 	}
-	return ""
+	return nil
 }
 
 // SystemAdminView is the system-admin role; system admins are rooted in
@@ -1643,7 +1644,7 @@ func (x *GetClinicHeadRequest) GetClinicId() string {
 
 type GetClinicHeadResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Holder        *RoleHolder            `protobuf:"bytes,1,opt,name=holder,proto3,oneof" json:"holder,omitempty"`
+	Assignment    *RoleAssignment        `protobuf:"bytes,1,opt,name=assignment,proto3,oneof" json:"assignment,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1678,9 +1679,9 @@ func (*GetClinicHeadResponse) Descriptor() ([]byte, []int) {
 	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{25}
 }
 
-func (x *GetClinicHeadResponse) GetHolder() *RoleHolder {
+func (x *GetClinicHeadResponse) GetAssignment() *RoleAssignment {
 	if x != nil {
-		return x.Holder
+		return x.Assignment
 	}
 	return nil
 }
@@ -1731,7 +1732,7 @@ func (x *GetDepartmentResponsibleRequest) GetDepartmentId() string {
 
 type GetDepartmentResponsibleResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Holder        *RoleHolder            `protobuf:"bytes,1,opt,name=holder,proto3,oneof" json:"holder,omitempty"`
+	Assignment    *RoleAssignment        `protobuf:"bytes,1,opt,name=assignment,proto3,oneof" json:"assignment,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1766,9 +1767,9 @@ func (*GetDepartmentResponsibleResponse) Descriptor() ([]byte, []int) {
 	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{27}
 }
 
-func (x *GetDepartmentResponsibleResponse) GetHolder() *RoleHolder {
+func (x *GetDepartmentResponsibleResponse) GetAssignment() *RoleAssignment {
 	if x != nil {
-		return x.Holder
+		return x.Assignment
 	}
 	return nil
 }
@@ -1835,7 +1836,7 @@ func (x *ListOrgAdminsRequest) GetOffset() int32 {
 
 type ListOrgAdminsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*RoleHolder          `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	Items         []*RoleAssignment      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1870,7 +1871,7 @@ func (*ListOrgAdminsResponse) Descriptor() ([]byte, []int) {
 	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{29}
 }
 
-func (x *ListOrgAdminsResponse) GetItems() []*RoleHolder {
+func (x *ListOrgAdminsResponse) GetItems() []*RoleAssignment {
 	if x != nil {
 		return x.Items
 	}
@@ -1939,7 +1940,7 @@ func (x *ListOrgDispatchersRequest) GetOffset() int32 {
 
 type ListOrgDispatchersResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*RoleHolder          `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	Items         []*RoleAssignment      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1974,7 +1975,7 @@ func (*ListOrgDispatchersResponse) Descriptor() ([]byte, []int) {
 	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{31}
 }
 
-func (x *ListOrgDispatchersResponse) GetItems() []*RoleHolder {
+func (x *ListOrgDispatchersResponse) GetItems() []*RoleAssignment {
 	if x != nil {
 		return x.Items
 	}
@@ -2043,7 +2044,7 @@ func (x *ListOrgHeadsRequest) GetOffset() int32 {
 
 type ListOrgHeadsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*RoleHolder          `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	Items         []*RoleAssignment      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2078,7 +2079,7 @@ func (*ListOrgHeadsResponse) Descriptor() ([]byte, []int) {
 	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{33}
 }
 
-func (x *ListOrgHeadsResponse) GetItems() []*RoleHolder {
+func (x *ListOrgHeadsResponse) GetItems() []*RoleAssignment {
 	if x != nil {
 		return x.Items
 	}
@@ -2234,13 +2235,11 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\a \x01(\tR\tupdatedAtB\n" +
 	"\n" +
-	"\b_ends_at\"w\n" +
-	"\n" +
-	"RoleHolder\x12\x1f\n" +
-	"\vemployee_id\x18\x01 \x01(\tR\n" +
-	"employeeId\x121\n" +
-	"\x12deputy_employee_id\x18\x02 \x01(\tH\x00R\x10deputyEmployeeId\x88\x01\x01B\x15\n" +
-	"\x13_deputy_employee_id\"X\n" +
+	"\b_ends_at\"\x9e\x01\n" +
+	"\x0eRoleAssignment\x12=\n" +
+	"\x06holder\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\x06holder\x12B\n" +
+	"\x06deputy\x18\x02 \x01(\v2%.query.membership.v1.EmployeeCardViewH\x00R\x06deputy\x88\x01\x01B\t\n" +
+	"\a_deputy\"X\n" +
 	"\x0fSystemAdminView\x12&\n" +
 	"\x0fzitadel_user_id\x18\x01 \x01(\tR\rzitadelUserId\x12\x1d\n" +
 	"\n" +
@@ -2336,33 +2335,37 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	" CountVacationsByEmployeeResponse\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x03R\x05total\"3\n" +
 	"\x14GetClinicHeadRequest\x12\x1b\n" +
-	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\"`\n" +
-	"\x15GetClinicHeadResponse\x12<\n" +
-	"\x06holder\x18\x01 \x01(\v2\x1f.query.membership.v1.RoleHolderH\x00R\x06holder\x88\x01\x01B\t\n" +
-	"\a_holder\"F\n" +
+	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\"p\n" +
+	"\x15GetClinicHeadResponse\x12H\n" +
+	"\n" +
+	"assignment\x18\x01 \x01(\v2#.query.membership.v1.RoleAssignmentH\x00R\n" +
+	"assignment\x88\x01\x01B\r\n" +
+	"\v_assignment\"F\n" +
 	"\x1fGetDepartmentResponsibleRequest\x12#\n" +
-	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\"k\n" +
-	" GetDepartmentResponsibleResponse\x12<\n" +
-	"\x06holder\x18\x01 \x01(\v2\x1f.query.membership.v1.RoleHolderH\x00R\x06holder\x88\x01\x01B\t\n" +
-	"\a_holder\"m\n" +
+	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\"{\n" +
+	" GetDepartmentResponsibleResponse\x12H\n" +
+	"\n" +
+	"assignment\x18\x01 \x01(\v2#.query.membership.v1.RoleAssignmentH\x00R\n" +
+	"assignment\x88\x01\x01B\r\n" +
+	"\v_assignment\"m\n" +
 	"\x14ListOrgAdminsRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"N\n" +
-	"\x15ListOrgAdminsResponse\x125\n" +
-	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\"r\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"R\n" +
+	"\x15ListOrgAdminsResponse\x129\n" +
+	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\"r\n" +
 	"\x19ListOrgDispatchersRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"S\n" +
-	"\x1aListOrgDispatchersResponse\x125\n" +
-	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\"l\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"W\n" +
+	"\x1aListOrgDispatchersResponse\x129\n" +
+	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\"l\n" +
 	"\x13ListOrgHeadsRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"M\n" +
-	"\x14ListOrgHeadsResponse\x125\n" +
-	"\x05items\x18\x01 \x03(\v2\x1f.query.membership.v1.RoleHolderR\x05items\"G\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"Q\n" +
+	"\x14ListOrgHeadsResponse\x129\n" +
+	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\"G\n" +
 	"\x17ListSystemAdminsRequest\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x02 \x01(\x05R\x06offset\"V\n" +
@@ -2403,7 +2406,7 @@ var file_query_membership_v1_membership_proto_msgTypes = make([]protoimpl.Messag
 var file_query_membership_v1_membership_proto_goTypes = []any{
 	(*EmployeeCardView)(nil),                      // 0: query.membership.v1.EmployeeCardView
 	(*VacationView)(nil),                          // 1: query.membership.v1.VacationView
-	(*RoleHolder)(nil),                            // 2: query.membership.v1.RoleHolder
+	(*RoleAssignment)(nil),                        // 2: query.membership.v1.RoleAssignment
 	(*SystemAdminView)(nil),                       // 3: query.membership.v1.SystemAdminView
 	(*GetEmployeeRequest)(nil),                    // 4: query.membership.v1.GetEmployeeRequest
 	(*GetEmployeeResponse)(nil),                   // 5: query.membership.v1.GetEmployeeResponse
@@ -2439,55 +2442,57 @@ var file_query_membership_v1_membership_proto_goTypes = []any{
 	(*ListSystemAdminsResponse)(nil),              // 35: query.membership.v1.ListSystemAdminsResponse
 }
 var file_query_membership_v1_membership_proto_depIdxs = []int32{
-	0,  // 0: query.membership.v1.GetEmployeeResponse.employee:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 1: query.membership.v1.ListEmployeesByDepartmentResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 2: query.membership.v1.ListEmployeesByClinicResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 3: query.membership.v1.ListEmployeesByOrganizationResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 4: query.membership.v1.SearchEmployeesByOrganizationResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	1,  // 5: query.membership.v1.ListVacationsByEmployeeResponse.items:type_name -> query.membership.v1.VacationView
-	2,  // 6: query.membership.v1.GetClinicHeadResponse.holder:type_name -> query.membership.v1.RoleHolder
-	2,  // 7: query.membership.v1.GetDepartmentResponsibleResponse.holder:type_name -> query.membership.v1.RoleHolder
-	2,  // 8: query.membership.v1.ListOrgAdminsResponse.items:type_name -> query.membership.v1.RoleHolder
-	2,  // 9: query.membership.v1.ListOrgDispatchersResponse.items:type_name -> query.membership.v1.RoleHolder
-	2,  // 10: query.membership.v1.ListOrgHeadsResponse.items:type_name -> query.membership.v1.RoleHolder
-	3,  // 11: query.membership.v1.ListSystemAdminsResponse.items:type_name -> query.membership.v1.SystemAdminView
-	4,  // 12: query.membership.v1.MembershipQueryService.GetEmployee:input_type -> query.membership.v1.GetEmployeeRequest
-	6,  // 13: query.membership.v1.MembershipQueryService.ListEmployeesByDepartment:input_type -> query.membership.v1.ListEmployeesByDepartmentRequest
-	8,  // 14: query.membership.v1.MembershipQueryService.ListEmployeesByClinic:input_type -> query.membership.v1.ListEmployeesByClinicRequest
-	10, // 15: query.membership.v1.MembershipQueryService.ListEmployeesByOrganization:input_type -> query.membership.v1.ListEmployeesByOrganizationRequest
-	12, // 16: query.membership.v1.MembershipQueryService.CountEmployeesByDepartment:input_type -> query.membership.v1.CountEmployeesByDepartmentRequest
-	14, // 17: query.membership.v1.MembershipQueryService.CountEmployeesByClinic:input_type -> query.membership.v1.CountEmployeesByClinicRequest
-	16, // 18: query.membership.v1.MembershipQueryService.CountEmployeesByOrganization:input_type -> query.membership.v1.CountEmployeesByOrganizationRequest
-	18, // 19: query.membership.v1.MembershipQueryService.SearchEmployeesByOrganization:input_type -> query.membership.v1.SearchEmployeesByOrganizationRequest
-	20, // 20: query.membership.v1.MembershipQueryService.ListVacationsByEmployee:input_type -> query.membership.v1.ListVacationsByEmployeeRequest
-	22, // 21: query.membership.v1.MembershipQueryService.CountVacationsByEmployee:input_type -> query.membership.v1.CountVacationsByEmployeeRequest
-	24, // 22: query.membership.v1.MembershipQueryService.GetClinicHead:input_type -> query.membership.v1.GetClinicHeadRequest
-	26, // 23: query.membership.v1.MembershipQueryService.GetDepartmentResponsible:input_type -> query.membership.v1.GetDepartmentResponsibleRequest
-	28, // 24: query.membership.v1.MembershipQueryService.ListOrgAdmins:input_type -> query.membership.v1.ListOrgAdminsRequest
-	30, // 25: query.membership.v1.MembershipQueryService.ListOrgDispatchers:input_type -> query.membership.v1.ListOrgDispatchersRequest
-	32, // 26: query.membership.v1.MembershipQueryService.ListOrgHeads:input_type -> query.membership.v1.ListOrgHeadsRequest
-	34, // 27: query.membership.v1.MembershipQueryService.ListSystemAdmins:input_type -> query.membership.v1.ListSystemAdminsRequest
-	5,  // 28: query.membership.v1.MembershipQueryService.GetEmployee:output_type -> query.membership.v1.GetEmployeeResponse
-	7,  // 29: query.membership.v1.MembershipQueryService.ListEmployeesByDepartment:output_type -> query.membership.v1.ListEmployeesByDepartmentResponse
-	9,  // 30: query.membership.v1.MembershipQueryService.ListEmployeesByClinic:output_type -> query.membership.v1.ListEmployeesByClinicResponse
-	11, // 31: query.membership.v1.MembershipQueryService.ListEmployeesByOrganization:output_type -> query.membership.v1.ListEmployeesByOrganizationResponse
-	13, // 32: query.membership.v1.MembershipQueryService.CountEmployeesByDepartment:output_type -> query.membership.v1.CountEmployeesByDepartmentResponse
-	15, // 33: query.membership.v1.MembershipQueryService.CountEmployeesByClinic:output_type -> query.membership.v1.CountEmployeesByClinicResponse
-	17, // 34: query.membership.v1.MembershipQueryService.CountEmployeesByOrganization:output_type -> query.membership.v1.CountEmployeesByOrganizationResponse
-	19, // 35: query.membership.v1.MembershipQueryService.SearchEmployeesByOrganization:output_type -> query.membership.v1.SearchEmployeesByOrganizationResponse
-	21, // 36: query.membership.v1.MembershipQueryService.ListVacationsByEmployee:output_type -> query.membership.v1.ListVacationsByEmployeeResponse
-	23, // 37: query.membership.v1.MembershipQueryService.CountVacationsByEmployee:output_type -> query.membership.v1.CountVacationsByEmployeeResponse
-	25, // 38: query.membership.v1.MembershipQueryService.GetClinicHead:output_type -> query.membership.v1.GetClinicHeadResponse
-	27, // 39: query.membership.v1.MembershipQueryService.GetDepartmentResponsible:output_type -> query.membership.v1.GetDepartmentResponsibleResponse
-	29, // 40: query.membership.v1.MembershipQueryService.ListOrgAdmins:output_type -> query.membership.v1.ListOrgAdminsResponse
-	31, // 41: query.membership.v1.MembershipQueryService.ListOrgDispatchers:output_type -> query.membership.v1.ListOrgDispatchersResponse
-	33, // 42: query.membership.v1.MembershipQueryService.ListOrgHeads:output_type -> query.membership.v1.ListOrgHeadsResponse
-	35, // 43: query.membership.v1.MembershipQueryService.ListSystemAdmins:output_type -> query.membership.v1.ListSystemAdminsResponse
-	28, // [28:44] is the sub-list for method output_type
-	12, // [12:28] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	0,  // 0: query.membership.v1.RoleAssignment.holder:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 1: query.membership.v1.RoleAssignment.deputy:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 2: query.membership.v1.GetEmployeeResponse.employee:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 3: query.membership.v1.ListEmployeesByDepartmentResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 4: query.membership.v1.ListEmployeesByClinicResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 5: query.membership.v1.ListEmployeesByOrganizationResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 6: query.membership.v1.SearchEmployeesByOrganizationResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	1,  // 7: query.membership.v1.ListVacationsByEmployeeResponse.items:type_name -> query.membership.v1.VacationView
+	2,  // 8: query.membership.v1.GetClinicHeadResponse.assignment:type_name -> query.membership.v1.RoleAssignment
+	2,  // 9: query.membership.v1.GetDepartmentResponsibleResponse.assignment:type_name -> query.membership.v1.RoleAssignment
+	2,  // 10: query.membership.v1.ListOrgAdminsResponse.items:type_name -> query.membership.v1.RoleAssignment
+	2,  // 11: query.membership.v1.ListOrgDispatchersResponse.items:type_name -> query.membership.v1.RoleAssignment
+	2,  // 12: query.membership.v1.ListOrgHeadsResponse.items:type_name -> query.membership.v1.RoleAssignment
+	3,  // 13: query.membership.v1.ListSystemAdminsResponse.items:type_name -> query.membership.v1.SystemAdminView
+	4,  // 14: query.membership.v1.MembershipQueryService.GetEmployee:input_type -> query.membership.v1.GetEmployeeRequest
+	6,  // 15: query.membership.v1.MembershipQueryService.ListEmployeesByDepartment:input_type -> query.membership.v1.ListEmployeesByDepartmentRequest
+	8,  // 16: query.membership.v1.MembershipQueryService.ListEmployeesByClinic:input_type -> query.membership.v1.ListEmployeesByClinicRequest
+	10, // 17: query.membership.v1.MembershipQueryService.ListEmployeesByOrganization:input_type -> query.membership.v1.ListEmployeesByOrganizationRequest
+	12, // 18: query.membership.v1.MembershipQueryService.CountEmployeesByDepartment:input_type -> query.membership.v1.CountEmployeesByDepartmentRequest
+	14, // 19: query.membership.v1.MembershipQueryService.CountEmployeesByClinic:input_type -> query.membership.v1.CountEmployeesByClinicRequest
+	16, // 20: query.membership.v1.MembershipQueryService.CountEmployeesByOrganization:input_type -> query.membership.v1.CountEmployeesByOrganizationRequest
+	18, // 21: query.membership.v1.MembershipQueryService.SearchEmployeesByOrganization:input_type -> query.membership.v1.SearchEmployeesByOrganizationRequest
+	20, // 22: query.membership.v1.MembershipQueryService.ListVacationsByEmployee:input_type -> query.membership.v1.ListVacationsByEmployeeRequest
+	22, // 23: query.membership.v1.MembershipQueryService.CountVacationsByEmployee:input_type -> query.membership.v1.CountVacationsByEmployeeRequest
+	24, // 24: query.membership.v1.MembershipQueryService.GetClinicHead:input_type -> query.membership.v1.GetClinicHeadRequest
+	26, // 25: query.membership.v1.MembershipQueryService.GetDepartmentResponsible:input_type -> query.membership.v1.GetDepartmentResponsibleRequest
+	28, // 26: query.membership.v1.MembershipQueryService.ListOrgAdmins:input_type -> query.membership.v1.ListOrgAdminsRequest
+	30, // 27: query.membership.v1.MembershipQueryService.ListOrgDispatchers:input_type -> query.membership.v1.ListOrgDispatchersRequest
+	32, // 28: query.membership.v1.MembershipQueryService.ListOrgHeads:input_type -> query.membership.v1.ListOrgHeadsRequest
+	34, // 29: query.membership.v1.MembershipQueryService.ListSystemAdmins:input_type -> query.membership.v1.ListSystemAdminsRequest
+	5,  // 30: query.membership.v1.MembershipQueryService.GetEmployee:output_type -> query.membership.v1.GetEmployeeResponse
+	7,  // 31: query.membership.v1.MembershipQueryService.ListEmployeesByDepartment:output_type -> query.membership.v1.ListEmployeesByDepartmentResponse
+	9,  // 32: query.membership.v1.MembershipQueryService.ListEmployeesByClinic:output_type -> query.membership.v1.ListEmployeesByClinicResponse
+	11, // 33: query.membership.v1.MembershipQueryService.ListEmployeesByOrganization:output_type -> query.membership.v1.ListEmployeesByOrganizationResponse
+	13, // 34: query.membership.v1.MembershipQueryService.CountEmployeesByDepartment:output_type -> query.membership.v1.CountEmployeesByDepartmentResponse
+	15, // 35: query.membership.v1.MembershipQueryService.CountEmployeesByClinic:output_type -> query.membership.v1.CountEmployeesByClinicResponse
+	17, // 36: query.membership.v1.MembershipQueryService.CountEmployeesByOrganization:output_type -> query.membership.v1.CountEmployeesByOrganizationResponse
+	19, // 37: query.membership.v1.MembershipQueryService.SearchEmployeesByOrganization:output_type -> query.membership.v1.SearchEmployeesByOrganizationResponse
+	21, // 38: query.membership.v1.MembershipQueryService.ListVacationsByEmployee:output_type -> query.membership.v1.ListVacationsByEmployeeResponse
+	23, // 39: query.membership.v1.MembershipQueryService.CountVacationsByEmployee:output_type -> query.membership.v1.CountVacationsByEmployeeResponse
+	25, // 40: query.membership.v1.MembershipQueryService.GetClinicHead:output_type -> query.membership.v1.GetClinicHeadResponse
+	27, // 41: query.membership.v1.MembershipQueryService.GetDepartmentResponsible:output_type -> query.membership.v1.GetDepartmentResponsibleResponse
+	29, // 42: query.membership.v1.MembershipQueryService.ListOrgAdmins:output_type -> query.membership.v1.ListOrgAdminsResponse
+	31, // 43: query.membership.v1.MembershipQueryService.ListOrgDispatchers:output_type -> query.membership.v1.ListOrgDispatchersResponse
+	33, // 44: query.membership.v1.MembershipQueryService.ListOrgHeads:output_type -> query.membership.v1.ListOrgHeadsResponse
+	35, // 45: query.membership.v1.MembershipQueryService.ListSystemAdmins:output_type -> query.membership.v1.ListSystemAdminsResponse
+	30, // [30:46] is the sub-list for method output_type
+	14, // [14:30] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_query_membership_v1_membership_proto_init() }

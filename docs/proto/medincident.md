@@ -192,7 +192,7 @@
     - [ListSystemAdminsResponse](#query-membership-v1-ListSystemAdminsResponse)
     - [ListVacationsByEmployeeRequest](#query-membership-v1-ListVacationsByEmployeeRequest)
     - [ListVacationsByEmployeeResponse](#query-membership-v1-ListVacationsByEmployeeResponse)
-    - [RoleHolder](#query-membership-v1-RoleHolder)
+    - [RoleAssignment](#query-membership-v1-RoleAssignment)
     - [SearchEmployeesByOrganizationRequest](#query-membership-v1-SearchEmployeesByOrganizationRequest)
     - [SearchEmployeesByOrganizationResponse](#query-membership-v1-SearchEmployeesByOrganizationResponse)
     - [SystemAdminView](#query-membership-v1-SystemAdminView)
@@ -2597,7 +2597,7 @@ when the backing column is NULL.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| holder | [RoleHolder](#query-membership-v1-RoleHolder) | optional |  |
+| assignment | [RoleAssignment](#query-membership-v1-RoleAssignment) | optional |  |
 
 
 
@@ -2627,7 +2627,7 @@ when the backing column is NULL.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| holder | [RoleHolder](#query-membership-v1-RoleHolder) | optional |  |
+| assignment | [RoleAssignment](#query-membership-v1-RoleAssignment) | optional |  |
 
 
 
@@ -2794,7 +2794,7 @@ when the backing column is NULL.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| items | [RoleHolder](#query-membership-v1-RoleHolder) | repeated |  |
+| items | [RoleAssignment](#query-membership-v1-RoleAssignment) | repeated |  |
 
 
 
@@ -2826,7 +2826,7 @@ when the backing column is NULL.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| items | [RoleHolder](#query-membership-v1-RoleHolder) | repeated |  |
+| items | [RoleAssignment](#query-membership-v1-RoleAssignment) | repeated |  |
 
 
 
@@ -2858,7 +2858,7 @@ when the backing column is NULL.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| items | [RoleHolder](#query-membership-v1-RoleHolder) | repeated |  |
+| items | [RoleAssignment](#query-membership-v1-RoleAssignment) | repeated |  |
 
 
 
@@ -2929,18 +2929,19 @@ when the backing column is NULL.
 
 
 
-<a name="query-membership-v1-RoleHolder"></a>
+<a name="query-membership-v1-RoleAssignment"></a>
 
-### RoleHolder
-RoleHolder represents a single role assignment. deputy_employee_id
-stays empty when the holder has no deputy (or the row is itself a
-deputy-less holder).
+### RoleAssignment
+RoleAssignment is a role row enriched with the denormalised card for
+the holder and, when present, the deputy. Read-model callers use
+this so they do not need to follow role lookups with N&#43;1 GetEmployee
+calls to render a name or email.
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| employee_id | [string](#string) |  |  |
-| deputy_employee_id | [string](#string) | optional |  |
+| holder | [EmployeeCardView](#query-membership-v1-EmployeeCardView) |  |  |
+| deputy | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | optional |  |
 
 
 
