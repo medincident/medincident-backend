@@ -1,6 +1,7 @@
 package validation_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/samber/oops"
@@ -42,22 +43,26 @@ func TestStruct_NoExtraWhitespace(t *testing.T) {
 				require.NoError(t, err)
 				return
 			}
-			require.Error(t, err)
-			leaves := flattenJoin(err)
-			require.Len(t, leaves, 1)
-			o, ok := oops.AsOops(leaves[0])
-			require.True(t, ok)
-			assert.Equal(t, validation.CodeStringExtraWhitespace, o.Code())
-			assert.Equal(t, "value", o.Context()["field"])
+			vs := violationsOf(t, err)
+			require.Len(t, vs, 1)
+			assert.Equal(t, "value", vs[0].Field)
+			assert.Equal(t, validation.TagNoExtraWhitespace, vs[0].Rule)
 		})
 	}
 }
 
-func flattenJoin(err error) []error {
-	if u, ok := err.(interface{ Unwrap() []error }); ok {
-		return u.Unwrap()
-	}
-	return []error{err}
+// violationsOf pulls the []Violation slice from an oops error emitted
+// by validation.Struct. Fails the test if err is not a single
+// validation_failed oops leaf.
+func violationsOf(t *testing.T, err error) []validation.Violation {
+	t.Helper()
+	require.Error(t, err)
+	var oe oops.OopsError
+	require.True(t, errors.As(err, &oe), "error is not an oops error: %v", err)
+	require.Equal(t, validation.CodeValidationFailed, oe.Code())
+	vs, ok := oe.Context()[validation.ContextKeyViolations].([]validation.Violation)
+	require.True(t, ok, "expected []validation.Violation in context, got %T", oe.Context()[validation.ContextKeyViolations])
+	return vs
 }
 
 type orderPayload struct {
@@ -67,29 +72,22 @@ type orderPayload struct {
 func TestStruct_OrderingWithOtherRules(t *testing.T) {
 	t.Parallel()
 
-	err := validation.Struct(orderPayload{Value: ""})
-	require.Error(t, err)
-	leaves := flattenJoin(err)
-	require.Len(t, leaves, 1)
-	o, _ := oops.AsOops(leaves[0])
-	assert.Equal(t, validation.CodeStringRequired, o.Code())
+	vs := violationsOf(t, validation.Struct(orderPayload{Value: ""}))
+	require.Len(t, vs, 1)
+	assert.Equal(t, "value", vs[0].Field)
+	assert.Equal(t, "required", vs[0].Rule)
 
-	err = validation.Struct(orderPayload{Value: " abc"})
-	require.Error(t, err)
-	leaves = flattenJoin(err)
-	require.Len(t, leaves, 1)
-	o, _ = oops.AsOops(leaves[0])
-	assert.Equal(t, validation.CodeStringExtraWhitespace, o.Code())
+	vs = violationsOf(t, validation.Struct(orderPayload{Value: " abc"}))
+	require.Len(t, vs, 1)
+	assert.Equal(t, "value", vs[0].Field)
+	assert.Equal(t, validation.TagNoExtraWhitespace, vs[0].Rule)
 
-	err = validation.Struct(orderPayload{Value: "abc"})
-	require.Error(t, err)
-	leaves = flattenJoin(err)
-	require.Len(t, leaves, 1)
-	o, _ = oops.AsOops(leaves[0])
-	assert.Equal(t, validation.CodeStringTooShort, o.Code())
+	vs = violationsOf(t, validation.Struct(orderPayload{Value: "abc"}))
+	require.Len(t, vs, 1)
+	assert.Equal(t, "value", vs[0].Field)
+	assert.Equal(t, "min", vs[0].Rule)
 
-	err = validation.Struct(orderPayload{Value: "alpha beta"})
-	require.NoError(t, err)
+	require.NoError(t, validation.Struct(orderPayload{Value: "alpha beta"}))
 }
 
 type pointerPayload struct {
@@ -111,35 +109,25 @@ func TestStruct_NoExtraWhitespace_PointerField(t *testing.T) {
 		require.NoError(t, validation.Struct(pointerPayload{Value: strPtr("alpha beta")}))
 	})
 
-	t.Run("leading space on non-nil fails with extra_whitespace", func(t *testing.T) {
+	t.Run("leading space on non-nil fails with no_extra_ws", func(t *testing.T) {
 		t.Parallel()
-		err := validation.Struct(pointerPayload{Value: strPtr(" abc")})
-		require.Error(t, err)
-		leaves := flattenJoin(err)
-		require.Len(t, leaves, 1)
-		o, ok := oops.AsOops(leaves[0])
-		require.True(t, ok)
-		assert.Equal(t, validation.CodeStringExtraWhitespace, o.Code())
-		assert.Equal(t, "value", o.Context()["field"])
+		vs := violationsOf(t, validation.Struct(pointerPayload{Value: strPtr(" abc")}))
+		require.Len(t, vs, 1)
+		assert.Equal(t, "value", vs[0].Field)
+		assert.Equal(t, validation.TagNoExtraWhitespace, vs[0].Rule)
 	})
 
-	t.Run("double inner space on non-nil fails with extra_whitespace", func(t *testing.T) {
+	t.Run("double inner space on non-nil fails with no_extra_ws", func(t *testing.T) {
 		t.Parallel()
-		err := validation.Struct(pointerPayload{Value: strPtr("a  b")})
-		require.Error(t, err)
-		leaves := flattenJoin(err)
-		require.Len(t, leaves, 1)
-		o, _ := oops.AsOops(leaves[0])
-		assert.Equal(t, validation.CodeStringExtraWhitespace, o.Code())
+		vs := violationsOf(t, validation.Struct(pointerPayload{Value: strPtr("a  b")}))
+		require.Len(t, vs, 1)
+		assert.Equal(t, validation.TagNoExtraWhitespace, vs[0].Rule)
 	})
 
 	t.Run("empty non-nil pointer passes no_extra_ws but trips min", func(t *testing.T) {
 		t.Parallel()
-		err := validation.Struct(pointerPayload{Value: strPtr("")})
-		require.Error(t, err)
-		leaves := flattenJoin(err)
-		require.Len(t, leaves, 1)
-		o, _ := oops.AsOops(leaves[0])
-		assert.Equal(t, validation.CodeStringTooShort, o.Code())
+		vs := violationsOf(t, validation.Struct(pointerPayload{Value: strPtr("")}))
+		require.Len(t, vs, 1)
+		assert.Equal(t, "min", vs[0].Rule)
 	})
 }

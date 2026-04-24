@@ -16,9 +16,9 @@ import (
 )
 
 // Error codes emitted by Organization-aggregate commands that are not
-// primitive validation (infrastructure / existence / concurrency).
-// Primitive validation codes (string_required, string_too_short,
-// float_out_of_range, …) are produced by the validation translator.
+// struct-tag validation (infrastructure / existence / concurrency).
+// Struct-tag violations are collapsed into a single validation_failed
+// oops error by the validation translator.
 const (
 	ErrCodeOrganizationIDGenerationFailed = "organization_id_generation_failed"
 	ErrCodeOrganizationSaveFailed         = "organization_save_failed"
