@@ -19,21 +19,22 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MembershipQueryService_GetEmployee_FullMethodName                  = "/query.membership.v1.MembershipQueryService/GetEmployee"
-	MembershipQueryService_ListEmployeesByDepartment_FullMethodName    = "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment"
-	MembershipQueryService_ListEmployeesByClinic_FullMethodName        = "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic"
-	MembershipQueryService_ListEmployeesByOrganization_FullMethodName  = "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization"
-	MembershipQueryService_CountEmployeesByDepartment_FullMethodName   = "/query.membership.v1.MembershipQueryService/CountEmployeesByDepartment"
-	MembershipQueryService_CountEmployeesByClinic_FullMethodName       = "/query.membership.v1.MembershipQueryService/CountEmployeesByClinic"
-	MembershipQueryService_CountEmployeesByOrganization_FullMethodName = "/query.membership.v1.MembershipQueryService/CountEmployeesByOrganization"
-	MembershipQueryService_ListVacationsByEmployee_FullMethodName      = "/query.membership.v1.MembershipQueryService/ListVacationsByEmployee"
-	MembershipQueryService_CountVacationsByEmployee_FullMethodName     = "/query.membership.v1.MembershipQueryService/CountVacationsByEmployee"
-	MembershipQueryService_GetClinicHead_FullMethodName                = "/query.membership.v1.MembershipQueryService/GetClinicHead"
-	MembershipQueryService_GetDepartmentResponsible_FullMethodName     = "/query.membership.v1.MembershipQueryService/GetDepartmentResponsible"
-	MembershipQueryService_ListOrgAdmins_FullMethodName                = "/query.membership.v1.MembershipQueryService/ListOrgAdmins"
-	MembershipQueryService_ListOrgDispatchers_FullMethodName           = "/query.membership.v1.MembershipQueryService/ListOrgDispatchers"
-	MembershipQueryService_ListOrgHeads_FullMethodName                 = "/query.membership.v1.MembershipQueryService/ListOrgHeads"
-	MembershipQueryService_ListSystemAdmins_FullMethodName             = "/query.membership.v1.MembershipQueryService/ListSystemAdmins"
+	MembershipQueryService_GetEmployee_FullMethodName                   = "/query.membership.v1.MembershipQueryService/GetEmployee"
+	MembershipQueryService_ListEmployeesByDepartment_FullMethodName     = "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment"
+	MembershipQueryService_ListEmployeesByClinic_FullMethodName         = "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic"
+	MembershipQueryService_ListEmployeesByOrganization_FullMethodName   = "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization"
+	MembershipQueryService_CountEmployeesByDepartment_FullMethodName    = "/query.membership.v1.MembershipQueryService/CountEmployeesByDepartment"
+	MembershipQueryService_CountEmployeesByClinic_FullMethodName        = "/query.membership.v1.MembershipQueryService/CountEmployeesByClinic"
+	MembershipQueryService_CountEmployeesByOrganization_FullMethodName  = "/query.membership.v1.MembershipQueryService/CountEmployeesByOrganization"
+	MembershipQueryService_SearchEmployeesByOrganization_FullMethodName = "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization"
+	MembershipQueryService_ListVacationsByEmployee_FullMethodName       = "/query.membership.v1.MembershipQueryService/ListVacationsByEmployee"
+	MembershipQueryService_CountVacationsByEmployee_FullMethodName      = "/query.membership.v1.MembershipQueryService/CountVacationsByEmployee"
+	MembershipQueryService_GetClinicHead_FullMethodName                 = "/query.membership.v1.MembershipQueryService/GetClinicHead"
+	MembershipQueryService_GetDepartmentResponsible_FullMethodName      = "/query.membership.v1.MembershipQueryService/GetDepartmentResponsible"
+	MembershipQueryService_ListOrgAdmins_FullMethodName                 = "/query.membership.v1.MembershipQueryService/ListOrgAdmins"
+	MembershipQueryService_ListOrgDispatchers_FullMethodName            = "/query.membership.v1.MembershipQueryService/ListOrgDispatchers"
+	MembershipQueryService_ListOrgHeads_FullMethodName                  = "/query.membership.v1.MembershipQueryService/ListOrgHeads"
+	MembershipQueryService_ListSystemAdmins_FullMethodName              = "/query.membership.v1.MembershipQueryService/ListSystemAdmins"
 )
 
 // MembershipQueryServiceClient is the client API for MembershipQueryService service.
@@ -51,6 +52,7 @@ type MembershipQueryServiceClient interface {
 	CountEmployeesByDepartment(ctx context.Context, in *CountEmployeesByDepartmentRequest, opts ...grpc.CallOption) (*CountEmployeesByDepartmentResponse, error)
 	CountEmployeesByClinic(ctx context.Context, in *CountEmployeesByClinicRequest, opts ...grpc.CallOption) (*CountEmployeesByClinicResponse, error)
 	CountEmployeesByOrganization(ctx context.Context, in *CountEmployeesByOrganizationRequest, opts ...grpc.CallOption) (*CountEmployeesByOrganizationResponse, error)
+	SearchEmployeesByOrganization(ctx context.Context, in *SearchEmployeesByOrganizationRequest, opts ...grpc.CallOption) (*SearchEmployeesByOrganizationResponse, error)
 	ListVacationsByEmployee(ctx context.Context, in *ListVacationsByEmployeeRequest, opts ...grpc.CallOption) (*ListVacationsByEmployeeResponse, error)
 	CountVacationsByEmployee(ctx context.Context, in *CountVacationsByEmployeeRequest, opts ...grpc.CallOption) (*CountVacationsByEmployeeResponse, error)
 	GetClinicHead(ctx context.Context, in *GetClinicHeadRequest, opts ...grpc.CallOption) (*GetClinicHeadResponse, error)
@@ -133,6 +135,16 @@ func (c *membershipQueryServiceClient) CountEmployeesByOrganization(ctx context.
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CountEmployeesByOrganizationResponse)
 	err := c.cc.Invoke(ctx, MembershipQueryService_CountEmployeesByOrganization_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipQueryServiceClient) SearchEmployeesByOrganization(ctx context.Context, in *SearchEmployeesByOrganizationRequest, opts ...grpc.CallOption) (*SearchEmployeesByOrganizationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchEmployeesByOrganizationResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_SearchEmployeesByOrganization_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -234,6 +246,7 @@ type MembershipQueryServiceServer interface {
 	CountEmployeesByDepartment(context.Context, *CountEmployeesByDepartmentRequest) (*CountEmployeesByDepartmentResponse, error)
 	CountEmployeesByClinic(context.Context, *CountEmployeesByClinicRequest) (*CountEmployeesByClinicResponse, error)
 	CountEmployeesByOrganization(context.Context, *CountEmployeesByOrganizationRequest) (*CountEmployeesByOrganizationResponse, error)
+	SearchEmployeesByOrganization(context.Context, *SearchEmployeesByOrganizationRequest) (*SearchEmployeesByOrganizationResponse, error)
 	ListVacationsByEmployee(context.Context, *ListVacationsByEmployeeRequest) (*ListVacationsByEmployeeResponse, error)
 	CountVacationsByEmployee(context.Context, *CountVacationsByEmployeeRequest) (*CountVacationsByEmployeeResponse, error)
 	GetClinicHead(context.Context, *GetClinicHeadRequest) (*GetClinicHeadResponse, error)
@@ -272,6 +285,9 @@ func (UnimplementedMembershipQueryServiceServer) CountEmployeesByClinic(context.
 }
 func (UnimplementedMembershipQueryServiceServer) CountEmployeesByOrganization(context.Context, *CountEmployeesByOrganizationRequest) (*CountEmployeesByOrganizationResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CountEmployeesByOrganization not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) SearchEmployeesByOrganization(context.Context, *SearchEmployeesByOrganizationRequest) (*SearchEmployeesByOrganizationResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchEmployeesByOrganization not implemented")
 }
 func (UnimplementedMembershipQueryServiceServer) ListVacationsByEmployee(context.Context, *ListVacationsByEmployeeRequest) (*ListVacationsByEmployeeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListVacationsByEmployee not implemented")
@@ -441,6 +457,24 @@ func _MembershipQueryService_CountEmployeesByOrganization_Handler(srv interface{
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MembershipQueryServiceServer).CountEmployeesByOrganization(ctx, req.(*CountEmployeesByOrganizationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipQueryService_SearchEmployeesByOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchEmployeesByOrganizationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).SearchEmployeesByOrganization(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_SearchEmployeesByOrganization_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).SearchEmployeesByOrganization(ctx, req.(*SearchEmployeesByOrganizationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -623,6 +657,10 @@ var MembershipQueryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CountEmployeesByOrganization",
 			Handler:    _MembershipQueryService_CountEmployeesByOrganization_Handler,
+		},
+		{
+			MethodName: "SearchEmployeesByOrganization",
+			Handler:    _MembershipQueryService_SearchEmployeesByOrganization_Handler,
 		},
 		{
 			MethodName: "ListVacationsByEmployee",

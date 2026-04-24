@@ -29,6 +29,9 @@ service MembershipQueryService {
   rpc CountEmployeesByOrganization(CountEmployeesByOrganizationRequest) returns (CountEmployeesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/employees:count"};
   }
+  rpc SearchEmployeesByOrganization(SearchEmployeesByOrganizationRequest) returns (SearchEmployeesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/employees:search"};
+  }
 
   rpc ListVacationsByEmployee(ListVacationsByEmployeeRequest) returns (ListVacationsByEmployeeResponse) {
     option (google.api.http) = {get: "/v1/query/employees/{employee_id}/vacations"};
@@ -214,6 +217,31 @@ message CountEmployeesByOrganizationRequest {
 }
 message CountEmployeesByOrganizationResponse {
   int64 total = 1;
+}
+
+message SearchEmployeesByOrganizationRequest {
+  string organization_id = 1;
+  // Fuzzy substring matched case-insensitively (ILIKE %query%) against
+  // first_name, last_name, display_name, and email. Trimmed at the
+  // handler boundary; an empty query degenerates to the same behaviour
+  // as ListEmployeesByOrganization with the same filters. Maximum
+  // length 256 characters; over-long inputs are rejected before the
+  // authz round-trip.
+  string query = 2;
+  int32 limit = 3;
+  int32 offset = 4;
+  // When false (default), rows with terminated_at IS NOT NULL are
+  // hidden. Set true to include offboarded employees.
+  bool include_terminated = 5;
+  // When true, restrict to employees currently on an active vacation
+  // (current_vacation_ends_at IS NOT NULL AND > now()).
+  bool on_vacation = 6;
+  // Optional exact-match filter on employee_cards.position. Trimmed
+  // before comparison; all-whitespace is treated as unset.
+  optional string position = 7;
+}
+message SearchEmployeesByOrganizationResponse {
+  repeated EmployeeCardView items = 1;
 }
 
 message ListVacationsByEmployeeRequest {

@@ -193,6 +193,8 @@
     - [ListVacationsByEmployeeRequest](#query-membership-v1-ListVacationsByEmployeeRequest)
     - [ListVacationsByEmployeeResponse](#query-membership-v1-ListVacationsByEmployeeResponse)
     - [RoleHolder](#query-membership-v1-RoleHolder)
+    - [SearchEmployeesByOrganizationRequest](#query-membership-v1-SearchEmployeesByOrganizationRequest)
+    - [SearchEmployeesByOrganizationResponse](#query-membership-v1-SearchEmployeesByOrganizationResponse)
     - [SystemAdminView](#query-membership-v1-SystemAdminView)
     - [VacationView](#query-membership-v1-VacationView)
 
@@ -2943,6 +2945,42 @@ deputy-less holder).
 
 
 
+<a name="query-membership-v1-SearchEmployeesByOrganizationRequest"></a>
+
+### SearchEmployeesByOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| query | [string](#string) |  | Fuzzy substring matched case-insensitively (ILIKE %query%) against first_name, last_name, display_name, and email. Trimmed at the handler boundary; an empty query degenerates to the same behaviour as ListEmployeesByOrganization with the same filters. Maximum length 256 characters; over-long inputs are rejected before the authz round-trip. |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
+| include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
+| on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
+| position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
+
+
+
+
+
+
+<a name="query-membership-v1-SearchEmployeesByOrganizationResponse"></a>
+
+### SearchEmployeesByOrganizationResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+
+
+
+
+
+
 <a name="query-membership-v1-SystemAdminView"></a>
 
 ### SystemAdminView
@@ -3004,6 +3042,7 @@ department responsibles, org admins/heads/dispatchers, system admins).
 | CountEmployeesByDepartment | [CountEmployeesByDepartmentRequest](#query-membership-v1-CountEmployeesByDepartmentRequest) | [CountEmployeesByDepartmentResponse](#query-membership-v1-CountEmployeesByDepartmentResponse) |  |
 | CountEmployeesByClinic | [CountEmployeesByClinicRequest](#query-membership-v1-CountEmployeesByClinicRequest) | [CountEmployeesByClinicResponse](#query-membership-v1-CountEmployeesByClinicResponse) |  |
 | CountEmployeesByOrganization | [CountEmployeesByOrganizationRequest](#query-membership-v1-CountEmployeesByOrganizationRequest) | [CountEmployeesByOrganizationResponse](#query-membership-v1-CountEmployeesByOrganizationResponse) |  |
+| SearchEmployeesByOrganization | [SearchEmployeesByOrganizationRequest](#query-membership-v1-SearchEmployeesByOrganizationRequest) | [SearchEmployeesByOrganizationResponse](#query-membership-v1-SearchEmployeesByOrganizationResponse) |  |
 | ListVacationsByEmployee | [ListVacationsByEmployeeRequest](#query-membership-v1-ListVacationsByEmployeeRequest) | [ListVacationsByEmployeeResponse](#query-membership-v1-ListVacationsByEmployeeResponse) |  |
 | CountVacationsByEmployee | [CountVacationsByEmployeeRequest](#query-membership-v1-CountVacationsByEmployeeRequest) | [CountVacationsByEmployeeResponse](#query-membership-v1-CountVacationsByEmployeeResponse) |  |
 | GetClinicHead | [GetClinicHeadRequest](#query-membership-v1-GetClinicHeadRequest) | [GetClinicHeadResponse](#query-membership-v1-GetClinicHeadResponse) |  |

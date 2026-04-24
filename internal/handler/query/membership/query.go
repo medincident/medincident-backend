@@ -143,6 +143,41 @@ func (h *MembershipQueryHandler) ListEmployeesByOrganization(
 	}, nil
 }
 
+// SearchEmployeesByOrganization returns cards under an organization
+// whose name/email fields match the given fuzzy query. Access control
+// is identical to ListEmployeesByOrganization.
+func (h *MembershipQueryHandler) SearchEmployeesByOrganization(
+	ctx context.Context,
+	req *membershipqueryv1.SearchEmployeesByOrganizationRequest,
+) (*membershipqueryv1.SearchEmployeesByOrganizationResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	id, err := parseOrganizationID(req.GetOrganizationId())
+	if err != nil {
+		return nil, err
+	}
+	items, err := h.empReader.SearchByOrganization(ctx, caller, id,
+		strings.TrimSpace(req.GetQuery()),
+		memberread.ListQuery{
+			Limit:  int(req.GetLimit()),
+			Offset: int(req.GetOffset()),
+		},
+		memberread.EmployeeFilter{
+			IncludeTerminated: req.GetIncludeTerminated(),
+			OnVacation:        req.GetOnVacation(),
+			Position:          strings.TrimSpace(req.GetPosition()),
+		})
+	if err != nil {
+		return nil, err
+	}
+	return &membershipqueryv1.SearchEmployeesByOrganizationResponse{
+		Items: employeeCardsToProto(items),
+	}, nil
+}
+
 // CountEmployeesByDepartment returns the employee count under a department.
 func (h *MembershipQueryHandler) CountEmployeesByDepartment(
 	ctx context.Context,

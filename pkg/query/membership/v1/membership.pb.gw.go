@@ -392,6 +392,59 @@ func local_request_MembershipQueryService_CountEmployeesByOrganization_0(ctx con
 	return msg, metadata, err
 }
 
+var filter_MembershipQueryService_SearchEmployeesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_MembershipQueryService_SearchEmployeesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SearchEmployeesByOrganizationRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_SearchEmployeesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.SearchEmployeesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipQueryService_SearchEmployeesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq SearchEmployeesByOrganizationRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_SearchEmployeesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.SearchEmployeesByOrganization(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 var filter_MembershipQueryService_ListVacationsByEmployee_0 = &utilities.DoubleArray{Encoding: map[string]int{"employee_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_MembershipQueryService_ListVacationsByEmployee_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -916,6 +969,26 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		}
 		forward_MembershipQueryService_CountEmployeesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_SearchEmployeesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/employees:search"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipQueryService_SearchEmployeesByOrganization_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_SearchEmployeesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListVacationsByEmployee_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1235,6 +1308,23 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		}
 		forward_MembershipQueryService_CountEmployeesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_SearchEmployeesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/employees:search"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipQueryService_SearchEmployeesByOrganization_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_SearchEmployeesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListVacationsByEmployee_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -1375,37 +1465,39 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 }
 
 var (
-	pattern_MembershipQueryService_GetEmployee_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "employees", "id"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByDepartment_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "employees"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByClinic_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "employees"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "employees"}, ""))
-	pattern_MembershipQueryService_CountEmployeesByDepartment_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "employees"}, "count"))
-	pattern_MembershipQueryService_CountEmployeesByClinic_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "employees"}, "count"))
-	pattern_MembershipQueryService_CountEmployeesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "employees"}, "count"))
-	pattern_MembershipQueryService_ListVacationsByEmployee_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "employees", "employee_id", "vacations"}, ""))
-	pattern_MembershipQueryService_CountVacationsByEmployee_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "employees", "employee_id", "vacations"}, "count"))
-	pattern_MembershipQueryService_GetClinicHead_0                = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "head"}, ""))
-	pattern_MembershipQueryService_GetDepartmentResponsible_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "responsible"}, ""))
-	pattern_MembershipQueryService_ListOrgAdmins_0                = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "admins"}, ""))
-	pattern_MembershipQueryService_ListOrgDispatchers_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "dispatchers"}, ""))
-	pattern_MembershipQueryService_ListOrgHeads_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "heads"}, ""))
-	pattern_MembershipQueryService_ListSystemAdmins_0             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "system-admins"}, ""))
+	pattern_MembershipQueryService_GetEmployee_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "employees", "id"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByDepartment_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "employees"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByClinic_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "employees"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByOrganization_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "employees"}, ""))
+	pattern_MembershipQueryService_CountEmployeesByDepartment_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "employees"}, "count"))
+	pattern_MembershipQueryService_CountEmployeesByClinic_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "employees"}, "count"))
+	pattern_MembershipQueryService_CountEmployeesByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "employees"}, "count"))
+	pattern_MembershipQueryService_SearchEmployeesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "employees"}, "search"))
+	pattern_MembershipQueryService_ListVacationsByEmployee_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "employees", "employee_id", "vacations"}, ""))
+	pattern_MembershipQueryService_CountVacationsByEmployee_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "employees", "employee_id", "vacations"}, "count"))
+	pattern_MembershipQueryService_GetClinicHead_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "head"}, ""))
+	pattern_MembershipQueryService_GetDepartmentResponsible_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "responsible"}, ""))
+	pattern_MembershipQueryService_ListOrgAdmins_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "admins"}, ""))
+	pattern_MembershipQueryService_ListOrgDispatchers_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "dispatchers"}, ""))
+	pattern_MembershipQueryService_ListOrgHeads_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "heads"}, ""))
+	pattern_MembershipQueryService_ListSystemAdmins_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "system-admins"}, ""))
 )
 
 var (
-	forward_MembershipQueryService_GetEmployee_0                  = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListEmployeesByDepartment_0    = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListEmployeesByClinic_0        = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListEmployeesByOrganization_0  = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_CountEmployeesByDepartment_0   = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_CountEmployeesByClinic_0       = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_CountEmployeesByOrganization_0 = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListVacationsByEmployee_0      = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_CountVacationsByEmployee_0     = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_GetClinicHead_0                = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_GetDepartmentResponsible_0     = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListOrgAdmins_0                = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListOrgDispatchers_0           = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListOrgHeads_0                 = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListSystemAdmins_0             = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_GetEmployee_0                   = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListEmployeesByDepartment_0     = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListEmployeesByClinic_0         = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListEmployeesByOrganization_0   = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_CountEmployeesByDepartment_0    = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_CountEmployeesByClinic_0        = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_CountEmployeesByOrganization_0  = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_SearchEmployeesByOrganization_0 = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListVacationsByEmployee_0       = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_CountVacationsByEmployee_0      = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_GetClinicHead_0                 = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_GetDepartmentResponsible_0      = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListOrgAdmins_0                 = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListOrgDispatchers_0            = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListOrgHeads_0                  = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListSystemAdmins_0              = runtime.ForwardResponseMessage
 )
