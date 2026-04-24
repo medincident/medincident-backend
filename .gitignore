@@ -45,3 +45,4 @@ dist/
 drafts/
 .claude/
 .claude/*.lock
+docs/superpowers/
