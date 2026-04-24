@@ -131,13 +131,19 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 }
 
 // TestReader_PatientAllowed_Types_And_VisibleCategories seeds a fixture
-// containing every interesting combination of (category active?, type active?,
-// type allowed-for-patients?) and verifies that the patient-mode reader
-// methods surface only types that are active AND allowed AND under an
-// active category chain. ListPatientVisibleCategoriesByOrganization must
-// also include intermediate ancestor categories (so the patient sees the
-// full path) and exclude categories whose every descendant type is
-// unavailable.
+// containing every interesting combination of (category active?, type
+// active?, type allowed-for-patients?) and verifies that each patient-mode
+// reader method honours its own contract:
+//
+//   - ListPatientAllowedTypesByOrganization filters on the type's own
+//     is_active AND is_allowed_for_patients only; ancestor activity is the
+//     visibility-tree's concern, not this list's.
+//   - ListPatientVisibleCategoriesByOrganization returns categories that
+//     are themselves active AND have at least one active+allowed type
+//     somewhere in their subtree. It includes intermediate ancestors so
+//     the patient sees the full path, and excludes categories whose every
+//     descendant type is unavailable (or whose ancestor chain breaks at an
+//     inactive category).
 func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 	resetProjections(t)
 	ctx := context.Background()

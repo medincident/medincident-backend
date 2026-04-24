@@ -337,6 +337,10 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(ctx context.Context, orgI
 // patients. Empty subtrees (categories whose every leaf type is unavailable
 // to patients) are excluded so the patient never sees a dead-end branch.
 func (r *Reader) ListPatientVisibleCategoriesByOrganization(ctx context.Context, orgID uuid.UUID) ([]CategoryView, error) {
+	// Defense in depth: every CTE step and the final SELECT carry an
+	// explicit organization_id guard. Projections have no FKs, so a
+	// cross-org parent_category_id pointer (data-projection bug) would
+	// otherwise let the recursive walk wander into another org's tree.
 	const query = `
 		WITH RECURSIVE
 		  -- Categories that directly own at least one patient-allowed active type.
@@ -345,6 +349,7 @@ func (r *Reader) ListPatientVisibleCategoriesByOrganization(ctx context.Context,
 		      FROM projections.incident_categories c
 		      JOIN projections.incident_types t ON t.category_id = c.id
 		     WHERE c.organization_id = ?
+		       AND t.organization_id = ?
 		       AND c.is_active = TRUE
 		       AND t.is_active = TRUE
 		       AND t.is_allowed_for_patients = TRUE
@@ -356,14 +361,16 @@ func (r *Reader) ListPatientVisibleCategoriesByOrganization(ctx context.Context,
 		    SELECT c.id, c.parent_category_id
 		      FROM projections.incident_categories c
 		      JOIN visible v ON v.parent_category_id = c.id
-		     WHERE c.is_active = TRUE
+		     WHERE c.organization_id = ?
+		       AND c.is_active = TRUE
 		  )
 		SELECT id, organization_id, parent_category_id, name, description,
 		       is_active, created_at, updated_at
 		  FROM projections.incident_categories
 		 WHERE id IN (SELECT id FROM visible)
+		   AND organization_id = ?
 		 ORDER BY name ASC, id ASC`
-	rows, err := r.db.WithContext(ctx).Raw(query, orgID).Rows()
+	rows, err := r.db.WithContext(ctx).Raw(query, orgID, orgID, orgID, orgID).Rows()
 	if err != nil {
 		return nil, oops.In("reader.incident.classifier.category").
 			Code(ErrCodeCategoryLoadFailed).
