@@ -65,13 +65,13 @@ func TestGrantSystemAdmin_AlreadyGranted(t *testing.T) {
 	assert.Equal(t, membership.ErrCodeSystemAdminAlreadyGranted, oopsCode(t, err))
 }
 
-func TestGrantSystemAdmin_EmptyInput(t *testing.T) {
+func TestGrantSystemAdmin_WhitespaceOnlyInputRejected(t *testing.T) {
 	err := empSvc.GrantSystemAdmin(ctxT(t), membership.GrantSystemAdminCommand{
 		Caller:  sysadminCaller,
 		Payload: membership.GrantSystemAdminPayload{ZitadelUserID: "   "},
 	})
 	require.Error(t, err)
-	assertHasViolation(t, validationViolations(t, err), "zitadel_user_id", "required")
+	assertHasViolation(t, validationViolations(t, err), "zitadel_user_id", "no_extra_ws")
 }
 
 func TestRevokeSystemAdmin_Success(t *testing.T) {

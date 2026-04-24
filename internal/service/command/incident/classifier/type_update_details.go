@@ -21,8 +21,8 @@ import (
 // description for an existing incident type.
 type UpdateIncidentTypeDetailsPayload struct {
 	TypeID      string  `validate:"required,uuid"`
-	Name        string  `validate:"required,min=2,max=256"`
-	Description *string `validate:"omitnil,min=8,max=2048"`
+	Name        string  `validate:"required,no_extra_ws,min=2,max=256"`
+	Description *string `validate:"omitnil,no_extra_ws,min=8,max=2048"`
 }
 
 // UpdateIncidentTypeDetailsCommand = caller + payload.

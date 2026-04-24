@@ -81,7 +81,7 @@ func TestHireEmployee_WhitespaceOnlyPositionRejected(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	assertHasViolation(t, validationViolations(t, err), "position", "min")
+	assertHasViolation(t, validationViolations(t, err), "position", "no_extra_ws")
 }
 
 func TestHireEmployee_ZitadelUserNotFound(t *testing.T) {

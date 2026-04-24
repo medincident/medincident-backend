@@ -47,6 +47,13 @@ const CodeValidatorInvocationFailed = "validator_invocation_failed"
 // exact slice element type at the call site.
 const ContextKeyViolations = "violations"
 
+// TagNoExtraWhitespace is the struct-tag name for the custom string
+// cleanliness rule. It rejects strings with leading or trailing
+// whitespace and strings containing two or more consecutive whitespace
+// runes anywhere inside. An empty string passes — combine it with
+// `required` when emptiness must also be rejected.
+const TagNoExtraWhitespace = "no_extra_ws"
+
 // Violation describes one struct-tag rule failure on a specific field.
 // Field is a dotted snake_case path (e.g. "legal_address.point.longitude"),
 // Rule is the raw validator tag ("required", "min", "max", "uuid", …),
@@ -79,55 +86,47 @@ func newValidator() *validator.Validate {
 	inst.RegisterTagNameFunc(func(fld reflect.StructField) string {
 		return toSnakeCase(fld.Name)
 	})
+	if err := inst.RegisterValidation(TagNoExtraWhitespace, validateNoExtraWhitespace); err != nil {
+		panic(fmt.Errorf("register %q validator: %w", TagNoExtraWhitespace, err))
+	}
 	return inst
 }
 
-// Struct validates cmd against its struct tags. Every string field
-// (including pointer-to-string and nested structs) is trimmed in a
-// local copy first so that whitespace-only input is treated as empty
-// and caught by required / min rules. A failure is returned as a
-// single oops error with CodeValidationFailed whose context carries
-// ContextKeyViolations → []Violation.
+// Struct validates cmd against its struct tags. A failure is returned
+// as a single oops error with CodeValidationFailed whose context
+// carries ContextKeyViolations → []Violation.
 func Struct(cmd any) error {
-	rv := reflect.ValueOf(cmd)
-	if rv.Kind() == reflect.Pointer {
-		trimStrings(rv.Elem())
-	} else {
-		cp := reflect.New(rv.Type())
-		cp.Elem().Set(rv)
-		trimStrings(cp.Elem())
-		cmd = cp.Elem().Interface()
-	}
 	if err := v.Struct(cmd); err != nil {
 		return translate(err)
 	}
 	return nil
 }
 
-// trimStrings walks v and strings.TrimSpace every settable string,
-// including pointer-to-string and fields of nested structs and
-// struct pointers. Non-addressable values are silently skipped.
-func trimStrings(v reflect.Value) {
-	if !v.IsValid() {
-		return
+// validateNoExtraWhitespace returns false if s has leading or trailing
+// whitespace, or contains two or more consecutive whitespace runes
+// (per unicode.IsSpace). Empty strings pass — compose with `required`
+// to reject emptiness.
+func validateNoExtraWhitespace(fl validator.FieldLevel) bool {
+	s := fl.Field().String()
+	if s == "" {
+		return true
 	}
-	if v.Kind() == reflect.Pointer {
-		if v.IsNil() {
-			return
+	var prevSpace bool
+	first := true
+	for _, r := range s {
+		space := unicode.IsSpace(r)
+		if first {
+			if space {
+				return false
+			}
+			first = false
 		}
-		v = v.Elem()
+		if space && prevSpace {
+			return false
+		}
+		prevSpace = space
 	}
-	//nolint:exhaustive // only struct and string need handling; other kinds are intentionally no-op.
-	switch v.Kind() {
-	case reflect.Struct:
-		for _, f := range v.Fields() {
-			trimStrings(f)
-		}
-	case reflect.String:
-		if v.CanSet() {
-			v.SetString(strings.TrimSpace(v.String()))
-		}
-	}
+	return !prevSpace
 }
 
 // translate converts a validator error into a single oops error with
@@ -182,6 +181,8 @@ func message(fe validator.FieldError) string {
 		return "required"
 	case "uuid":
 		return "must be a valid uuid"
+	case TagNoExtraWhitespace:
+		return "must not contain leading, trailing, or duplicate whitespace"
 	case "min":
 		//nolint:exhaustive // only the kinds that carry a "min" rule matter; others fall through to the generic fallback below.
 		switch fe.Kind() {

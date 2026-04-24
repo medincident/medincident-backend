@@ -31,8 +31,8 @@ const (
 // CreateClinic.
 type CreateClinicPayload struct {
 	OrganizationID  string  `validate:"required,uuid"`
-	Name            string  `validate:"required,min=4,max=256"`
-	Description     *string `validate:"omitnil,min=8,max=2048"`
+	Name            string  `validate:"required,no_extra_ws,min=4,max=256"`
+	Description     *string `validate:"omitnil,no_extra_ws,min=8,max=2048"`
 	PhysicalAddress AddressInput
 }
 
