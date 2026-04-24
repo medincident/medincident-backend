@@ -150,6 +150,10 @@
     - [ListCategoriesByOrganizationResponse](#query-incident-classifier-v1-ListCategoriesByOrganizationResponse)
     - [ListCategorySubtreeRequest](#query-incident-classifier-v1-ListCategorySubtreeRequest)
     - [ListCategorySubtreeResponse](#query-incident-classifier-v1-ListCategorySubtreeResponse)
+    - [ListPatientAllowedTypesByOrganizationRequest](#query-incident-classifier-v1-ListPatientAllowedTypesByOrganizationRequest)
+    - [ListPatientAllowedTypesByOrganizationResponse](#query-incident-classifier-v1-ListPatientAllowedTypesByOrganizationResponse)
+    - [ListPatientVisibleCategoriesByOrganizationRequest](#query-incident-classifier-v1-ListPatientVisibleCategoriesByOrganizationRequest)
+    - [ListPatientVisibleCategoriesByOrganizationResponse](#query-incident-classifier-v1-ListPatientVisibleCategoriesByOrganizationResponse)
     - [ListTypesByCategoryRequest](#query-incident-classifier-v1-ListTypesByCategoryRequest)
     - [ListTypesByCategoryResponse](#query-incident-classifier-v1-ListTypesByCategoryResponse)
     - [Type](#query-incident-classifier-v1-Type)
@@ -2231,6 +2235,66 @@ Category mirrors projections.incident_categories row.
 
 
 
+<a name="query-incident-classifier-v1-ListPatientAllowedTypesByOrganizationRequest"></a>
+
+### ListPatientAllowedTypesByOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-incident-classifier-v1-ListPatientAllowedTypesByOrganizationResponse"></a>
+
+### ListPatientAllowedTypesByOrganizationResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [Type](#query-incident-classifier-v1-Type) | repeated |  |
+
+
+
+
+
+
+<a name="query-incident-classifier-v1-ListPatientVisibleCategoriesByOrganizationRequest"></a>
+
+### ListPatientVisibleCategoriesByOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-incident-classifier-v1-ListPatientVisibleCategoriesByOrganizationResponse"></a>
+
+### ListPatientVisibleCategoriesByOrganizationResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [Category](#query-incident-classifier-v1-Category) | repeated |  |
+
+
+
+
+
+
 <a name="query-incident-classifier-v1-ListTypesByCategoryRequest"></a>
 
 ### ListTypesByCategoryRequest
@@ -2275,6 +2339,7 @@ Type mirrors projections.incident_types row.
 | name | [string](#string) |  |  |
 | description | [string](#string) | optional |  |
 | is_active | [bool](#bool) |  |  |
+| is_allowed_for_patients | [bool](#bool) |  |  |
 | created_at | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
 
@@ -2306,6 +2371,8 @@ CTEs in the reader; the RPC surface stays flat.
 | GetType | [GetTypeRequest](#query-incident-classifier-v1-GetTypeRequest) | [GetTypeResponse](#query-incident-classifier-v1-GetTypeResponse) |  |
 | ListTypesByCategory | [ListTypesByCategoryRequest](#query-incident-classifier-v1-ListTypesByCategoryRequest) | [ListTypesByCategoryResponse](#query-incident-classifier-v1-ListTypesByCategoryResponse) |  |
 | ListActiveTypesByOrganization | [ListActiveTypesByOrganizationRequest](#query-incident-classifier-v1-ListActiveTypesByOrganizationRequest) | [ListActiveTypesByOrganizationResponse](#query-incident-classifier-v1-ListActiveTypesByOrganizationResponse) |  |
+| ListPatientAllowedTypesByOrganization | [ListPatientAllowedTypesByOrganizationRequest](#query-incident-classifier-v1-ListPatientAllowedTypesByOrganizationRequest) | [ListPatientAllowedTypesByOrganizationResponse](#query-incident-classifier-v1-ListPatientAllowedTypesByOrganizationResponse) | Patient-facing reads. These are scoped to one organisation and return only the slice of the classifier that a patient may see when filing an incident. |
+| ListPatientVisibleCategoriesByOrganization | [ListPatientVisibleCategoriesByOrganizationRequest](#query-incident-classifier-v1-ListPatientVisibleCategoriesByOrganizationRequest) | [ListPatientVisibleCategoriesByOrganizationResponse](#query-incident-classifier-v1-ListPatientVisibleCategoriesByOrganizationResponse) |  |
 
 
 
