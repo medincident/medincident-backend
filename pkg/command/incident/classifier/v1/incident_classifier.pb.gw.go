@@ -539,6 +539,84 @@ func local_request_IncidentClassifierCommandService_DeleteIncidentType_0(ctx con
 	return msg, metadata, err
 }
 
+func request_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierCommandServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq AllowIncidentTypeForPatientsRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["type_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "type_id")
+	}
+	protoReq.TypeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "type_id", err)
+	}
+	msg, err := client.AllowIncidentTypeForPatients(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0(ctx context.Context, marshaler runtime.Marshaler, server IncidentClassifierCommandServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq AllowIncidentTypeForPatientsRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["type_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "type_id")
+	}
+	protoReq.TypeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "type_id", err)
+	}
+	msg, err := server.AllowIncidentTypeForPatients(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierCommandServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq DisallowIncidentTypeForPatientsRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["type_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "type_id")
+	}
+	protoReq.TypeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "type_id", err)
+	}
+	msg, err := client.DisallowIncidentTypeForPatients(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0(ctx context.Context, marshaler runtime.Marshaler, server IncidentClassifierCommandServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq DisallowIncidentTypeForPatientsRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["type_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "type_id")
+	}
+	protoReq.TypeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "type_id", err)
+	}
+	msg, err := server.DisallowIncidentTypeForPatients(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterIncidentClassifierCommandServiceHandlerServer registers the http handlers for service IncidentClassifierCommandService to "mux".
 // UnaryRPC     :call IncidentClassifierCommandServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -785,6 +863,46 @@ func RegisterIncidentClassifierCommandServiceHandlerServer(ctx context.Context, 
 		}
 		forward_IncidentClassifierCommandService_DeleteIncidentType_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/command.incident.classifier.v1.IncidentClassifierCommandService/AllowIncidentTypeForPatients", runtime.WithHTTPPathPattern("/v1/incident-types/{type_id}/patient-permission/allowances"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/command.incident.classifier.v1.IncidentClassifierCommandService/DisallowIncidentTypeForPatients", runtime.WithHTTPPathPattern("/v1/incident-types/{type_id}/patient-permission/disallowances"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 
 	return nil
 }
@@ -1029,35 +1147,73 @@ func RegisterIncidentClassifierCommandServiceHandlerClient(ctx context.Context, 
 		}
 		forward_IncidentClassifierCommandService_DeleteIncidentType_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/command.incident.classifier.v1.IncidentClassifierCommandService/AllowIncidentTypeForPatients", runtime.WithHTTPPathPattern("/v1/incident-types/{type_id}/patient-permission/allowances"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/command.incident.classifier.v1.IncidentClassifierCommandService/DisallowIncidentTypeForPatients", runtime.WithHTTPPathPattern("/v1/incident-types/{type_id}/patient-permission/disallowances"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
-	pattern_IncidentClassifierCommandService_CreateIncidentCategory_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, ""))
-	pattern_IncidentClassifierCommandService_UpdateIncidentCategoryDetails_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "details"}, ""))
-	pattern_IncidentClassifierCommandService_MoveIncidentCategory_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "parent"}, ""))
-	pattern_IncidentClassifierCommandService_DeactivateIncidentCategory_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "deactivations"}, ""))
-	pattern_IncidentClassifierCommandService_ReactivateIncidentCategory_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "reactivations"}, ""))
-	pattern_IncidentClassifierCommandService_DeleteIncidentCategory_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "category_id"}, ""))
-	pattern_IncidentClassifierCommandService_CreateIncidentType_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "types"}, ""))
-	pattern_IncidentClassifierCommandService_UpdateIncidentTypeDetails_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-types", "type_id", "details"}, ""))
-	pattern_IncidentClassifierCommandService_MoveIncidentType_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-types", "type_id", "category"}, ""))
-	pattern_IncidentClassifierCommandService_DeactivateIncidentType_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-types", "type_id", "deactivations"}, ""))
-	pattern_IncidentClassifierCommandService_ReactivateIncidentType_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-types", "type_id", "reactivations"}, ""))
-	pattern_IncidentClassifierCommandService_DeleteIncidentType_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-types", "type_id"}, ""))
+	pattern_IncidentClassifierCommandService_CreateIncidentCategory_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, ""))
+	pattern_IncidentClassifierCommandService_UpdateIncidentCategoryDetails_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "details"}, ""))
+	pattern_IncidentClassifierCommandService_MoveIncidentCategory_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "parent"}, ""))
+	pattern_IncidentClassifierCommandService_DeactivateIncidentCategory_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "deactivations"}, ""))
+	pattern_IncidentClassifierCommandService_ReactivateIncidentCategory_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "reactivations"}, ""))
+	pattern_IncidentClassifierCommandService_DeleteIncidentCategory_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "category_id"}, ""))
+	pattern_IncidentClassifierCommandService_CreateIncidentType_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "types"}, ""))
+	pattern_IncidentClassifierCommandService_UpdateIncidentTypeDetails_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-types", "type_id", "details"}, ""))
+	pattern_IncidentClassifierCommandService_MoveIncidentType_0                = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-types", "type_id", "category"}, ""))
+	pattern_IncidentClassifierCommandService_DeactivateIncidentType_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-types", "type_id", "deactivations"}, ""))
+	pattern_IncidentClassifierCommandService_ReactivateIncidentType_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-types", "type_id", "reactivations"}, ""))
+	pattern_IncidentClassifierCommandService_DeleteIncidentType_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-types", "type_id"}, ""))
+	pattern_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1", "incident-types", "type_id", "patient-permission", "allowances"}, ""))
+	pattern_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3, 2, 4}, []string{"v1", "incident-types", "type_id", "patient-permission", "disallowances"}, ""))
 )
 
 var (
-	forward_IncidentClassifierCommandService_CreateIncidentCategory_0        = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_UpdateIncidentCategoryDetails_0 = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_MoveIncidentCategory_0          = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_DeactivateIncidentCategory_0    = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_ReactivateIncidentCategory_0    = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_DeleteIncidentCategory_0        = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_CreateIncidentType_0            = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_UpdateIncidentTypeDetails_0     = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_MoveIncidentType_0              = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_DeactivateIncidentType_0        = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_ReactivateIncidentType_0        = runtime.ForwardResponseMessage
-	forward_IncidentClassifierCommandService_DeleteIncidentType_0            = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_CreateIncidentCategory_0          = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_UpdateIncidentCategoryDetails_0   = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_MoveIncidentCategory_0            = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_DeactivateIncidentCategory_0      = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_ReactivateIncidentCategory_0      = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_DeleteIncidentCategory_0          = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_CreateIncidentType_0              = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_UpdateIncidentTypeDetails_0       = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_MoveIncidentType_0                = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_DeactivateIncidentType_0          = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_ReactivateIncidentType_0          = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_DeleteIncidentType_0              = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_AllowIncidentTypeForPatients_0    = runtime.ForwardResponseMessage
+	forward_IncidentClassifierCommandService_DisallowIncidentTypeForPatients_0 = runtime.ForwardResponseMessage
 )

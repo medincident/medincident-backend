@@ -31,6 +31,16 @@ service IncidentClassifierQueryService {
   rpc ListActiveTypesByOrganization(ListActiveTypesByOrganizationRequest) returns (ListActiveTypesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-types:active"};
   }
+
+  // Patient-facing reads. These are scoped to one organisation and return
+  // only the slice of the classifier that a patient may see when filing
+  // an incident.
+  rpc ListPatientAllowedTypesByOrganization(ListPatientAllowedTypesByOrganizationRequest) returns (ListPatientAllowedTypesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-types:patient-allowed"};
+  }
+  rpc ListPatientVisibleCategoriesByOrganization(ListPatientVisibleCategoriesByOrganizationRequest) returns (ListPatientVisibleCategoriesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-categories:patient-visible"};
+  }
 }
 
 // Category mirrors projections.incident_categories row.
@@ -55,6 +65,7 @@ message Type {
   bool is_active = 6;
   string created_at = 7;
   string updated_at = 8;
+  bool is_allowed_for_patients = 9;
 }
 
 message GetCategoryRequest {
@@ -106,4 +117,18 @@ message ListActiveTypesByOrganizationRequest {
 }
 message ListActiveTypesByOrganizationResponse {
   repeated Type items = 1;
+}
+
+message ListPatientAllowedTypesByOrganizationRequest {
+  string organization_id = 1;
+}
+message ListPatientAllowedTypesByOrganizationResponse {
+  repeated Type items = 1;
+}
+
+message ListPatientVisibleCategoriesByOrganizationRequest {
+  string organization_id = 1;
+}
+message ListPatientVisibleCategoriesByOrganizationResponse {
+  repeated Category items = 1;
 }

@@ -1086,6 +1086,166 @@ func (*DeleteIncidentTypeResponse) Descriptor() ([]byte, []int) {
 	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{23}
 }
 
+type AllowIncidentTypeForPatientsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TypeId        string                 `protobuf:"bytes,1,opt,name=type_id,json=typeId,proto3" json:"type_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AllowIncidentTypeForPatientsRequest) Reset() {
+	*x = AllowIncidentTypeForPatientsRequest{}
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AllowIncidentTypeForPatientsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AllowIncidentTypeForPatientsRequest) ProtoMessage() {}
+
+func (x *AllowIncidentTypeForPatientsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AllowIncidentTypeForPatientsRequest.ProtoReflect.Descriptor instead.
+func (*AllowIncidentTypeForPatientsRequest) Descriptor() ([]byte, []int) {
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *AllowIncidentTypeForPatientsRequest) GetTypeId() string {
+	if x != nil {
+		return x.TypeId
+	}
+	return ""
+}
+
+type AllowIncidentTypeForPatientsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AllowIncidentTypeForPatientsResponse) Reset() {
+	*x = AllowIncidentTypeForPatientsResponse{}
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AllowIncidentTypeForPatientsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AllowIncidentTypeForPatientsResponse) ProtoMessage() {}
+
+func (x *AllowIncidentTypeForPatientsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AllowIncidentTypeForPatientsResponse.ProtoReflect.Descriptor instead.
+func (*AllowIncidentTypeForPatientsResponse) Descriptor() ([]byte, []int) {
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{25}
+}
+
+type DisallowIncidentTypeForPatientsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TypeId        string                 `protobuf:"bytes,1,opt,name=type_id,json=typeId,proto3" json:"type_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DisallowIncidentTypeForPatientsRequest) Reset() {
+	*x = DisallowIncidentTypeForPatientsRequest{}
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DisallowIncidentTypeForPatientsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DisallowIncidentTypeForPatientsRequest) ProtoMessage() {}
+
+func (x *DisallowIncidentTypeForPatientsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DisallowIncidentTypeForPatientsRequest.ProtoReflect.Descriptor instead.
+func (*DisallowIncidentTypeForPatientsRequest) Descriptor() ([]byte, []int) {
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *DisallowIncidentTypeForPatientsRequest) GetTypeId() string {
+	if x != nil {
+		return x.TypeId
+	}
+	return ""
+}
+
+type DisallowIncidentTypeForPatientsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DisallowIncidentTypeForPatientsResponse) Reset() {
+	*x = DisallowIncidentTypeForPatientsResponse{}
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DisallowIncidentTypeForPatientsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DisallowIncidentTypeForPatientsResponse) ProtoMessage() {}
+
+func (x *DisallowIncidentTypeForPatientsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_incident_classifier_v1_incident_classifier_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DisallowIncidentTypeForPatientsResponse.ProtoReflect.Descriptor instead.
+func (*DisallowIncidentTypeForPatientsResponse) Descriptor() ([]byte, []int) {
+	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP(), []int{27}
+}
+
 var File_command_incident_classifier_v1_incident_classifier_proto protoreflect.FileDescriptor
 
 const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = "" +
@@ -1152,7 +1312,13 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"\x1eReactivateIncidentTypeResponse\"9\n" +
 	"\x19DeleteIncidentTypeRequest\x12\x1c\n" +
 	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\"\x1c\n" +
-	"\x1aDeleteIncidentTypeResponse2\xe9\x13\n" +
+	"\x1aDeleteIncidentTypeResponse\"C\n" +
+	"#AllowIncidentTypeForPatientsRequest\x12\x1c\n" +
+	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\"&\n" +
+	"$AllowIncidentTypeForPatientsResponse\"F\n" +
+	"&DisallowIncidentTypeForPatientsRequest\x12\x1c\n" +
+	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\")\n" +
+	"'DisallowIncidentTypeForPatientsResponse2\xd5\x17\n" +
 	" IncidentClassifierCommandService\x12\xdb\x01\n" +
 	"\x16CreateIncidentCategory\x12=.command.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.command.incident.classifier.v1.CreateIncidentCategoryResponse\"B\x82\xd3\xe4\x93\x02<:\x01*\"7/v1/organizations/{organization_id}/incident-categories\x12\xe6\x01\n" +
 	"\x1dUpdateIncidentCategoryDetails\x12D.command.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest\x1aE.command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse\"8\x82\xd3\xe4\x93\x022:\x01*\x1a-/v1/incident-categories/{category_id}/details\x12\xca\x01\n" +
@@ -1165,7 +1331,9 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"\x10MoveIncidentType\x127.command.incident.classifier.v1.MoveIncidentTypeRequest\x1a8.command.incident.classifier.v1.MoveIncidentTypeResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\x1a%/v1/incident-types/{type_id}/category\x12\xcb\x01\n" +
 	"\x16DeactivateIncidentType\x12=.command.incident.classifier.v1.DeactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.DeactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/deactivations\x12\xcb\x01\n" +
 	"\x16ReactivateIncidentType\x12=.command.incident.classifier.v1.ReactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.ReactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/reactivations\x12\xb1\x01\n" +
-	"\x12DeleteIncidentType\x129.command.incident.classifier.v1.DeleteIncidentTypeRequest\x1a:.command.incident.classifier.v1.DeleteIncidentTypeResponse\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/incident-types/{type_id}B\xb4\x02\n" +
+	"\x12DeleteIncidentType\x129.command.incident.classifier.v1.DeleteIncidentTypeRequest\x1a:.command.incident.classifier.v1.DeleteIncidentTypeResponse\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/incident-types/{type_id}\x12\xed\x01\n" +
+	"\x1cAllowIncidentTypeForPatients\x12C.command.incident.classifier.v1.AllowIncidentTypeForPatientsRequest\x1aD.command.incident.classifier.v1.AllowIncidentTypeForPatientsResponse\"B\x82\xd3\xe4\x93\x02<\":/v1/incident-types/{type_id}/patient-permission/allowances\x12\xf9\x01\n" +
+	"\x1fDisallowIncidentTypeForPatients\x12F.command.incident.classifier.v1.DisallowIncidentTypeForPatientsRequest\x1aG.command.incident.classifier.v1.DisallowIncidentTypeForPatientsResponse\"E\x82\xd3\xe4\x93\x02?\"=/v1/incident-types/{type_id}/patient-permission/disallowancesB\xb4\x02\n" +
 	"\"com.command.incident.classifier.v1B\x17IncidentClassifierProtoP\x01ZZgithub.com/medincident/medincident-backend/pkg/command/incident/classifier/v1;classifierv1\xa2\x02\x03CIC\xaa\x02\x1eCommand.Incident.Classifier.V1\xca\x02\x1eCommand\\Incident\\Classifier\\V1\xe2\x02*Command\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02!Command::Incident::Classifier::V1b\x06proto3"
 
 var (
@@ -1180,32 +1348,36 @@ func file_command_incident_classifier_v1_incident_classifier_proto_rawDescGZIP()
 	return file_command_incident_classifier_v1_incident_classifier_proto_rawDescData
 }
 
-var file_command_incident_classifier_v1_incident_classifier_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_command_incident_classifier_v1_incident_classifier_proto_msgTypes = make([]protoimpl.MessageInfo, 28)
 var file_command_incident_classifier_v1_incident_classifier_proto_goTypes = []any{
-	(*CreateIncidentCategoryRequest)(nil),         // 0: command.incident.classifier.v1.CreateIncidentCategoryRequest
-	(*CreateIncidentCategoryResponse)(nil),        // 1: command.incident.classifier.v1.CreateIncidentCategoryResponse
-	(*UpdateIncidentCategoryDetailsRequest)(nil),  // 2: command.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest
-	(*UpdateIncidentCategoryDetailsResponse)(nil), // 3: command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse
-	(*MoveIncidentCategoryRequest)(nil),           // 4: command.incident.classifier.v1.MoveIncidentCategoryRequest
-	(*MoveIncidentCategoryResponse)(nil),          // 5: command.incident.classifier.v1.MoveIncidentCategoryResponse
-	(*DeactivateIncidentCategoryRequest)(nil),     // 6: command.incident.classifier.v1.DeactivateIncidentCategoryRequest
-	(*DeactivateIncidentCategoryResponse)(nil),    // 7: command.incident.classifier.v1.DeactivateIncidentCategoryResponse
-	(*ReactivateIncidentCategoryRequest)(nil),     // 8: command.incident.classifier.v1.ReactivateIncidentCategoryRequest
-	(*ReactivateIncidentCategoryResponse)(nil),    // 9: command.incident.classifier.v1.ReactivateIncidentCategoryResponse
-	(*DeleteIncidentCategoryRequest)(nil),         // 10: command.incident.classifier.v1.DeleteIncidentCategoryRequest
-	(*DeleteIncidentCategoryResponse)(nil),        // 11: command.incident.classifier.v1.DeleteIncidentCategoryResponse
-	(*CreateIncidentTypeRequest)(nil),             // 12: command.incident.classifier.v1.CreateIncidentTypeRequest
-	(*CreateIncidentTypeResponse)(nil),            // 13: command.incident.classifier.v1.CreateIncidentTypeResponse
-	(*UpdateIncidentTypeDetailsRequest)(nil),      // 14: command.incident.classifier.v1.UpdateIncidentTypeDetailsRequest
-	(*UpdateIncidentTypeDetailsResponse)(nil),     // 15: command.incident.classifier.v1.UpdateIncidentTypeDetailsResponse
-	(*MoveIncidentTypeRequest)(nil),               // 16: command.incident.classifier.v1.MoveIncidentTypeRequest
-	(*MoveIncidentTypeResponse)(nil),              // 17: command.incident.classifier.v1.MoveIncidentTypeResponse
-	(*DeactivateIncidentTypeRequest)(nil),         // 18: command.incident.classifier.v1.DeactivateIncidentTypeRequest
-	(*DeactivateIncidentTypeResponse)(nil),        // 19: command.incident.classifier.v1.DeactivateIncidentTypeResponse
-	(*ReactivateIncidentTypeRequest)(nil),         // 20: command.incident.classifier.v1.ReactivateIncidentTypeRequest
-	(*ReactivateIncidentTypeResponse)(nil),        // 21: command.incident.classifier.v1.ReactivateIncidentTypeResponse
-	(*DeleteIncidentTypeRequest)(nil),             // 22: command.incident.classifier.v1.DeleteIncidentTypeRequest
-	(*DeleteIncidentTypeResponse)(nil),            // 23: command.incident.classifier.v1.DeleteIncidentTypeResponse
+	(*CreateIncidentCategoryRequest)(nil),           // 0: command.incident.classifier.v1.CreateIncidentCategoryRequest
+	(*CreateIncidentCategoryResponse)(nil),          // 1: command.incident.classifier.v1.CreateIncidentCategoryResponse
+	(*UpdateIncidentCategoryDetailsRequest)(nil),    // 2: command.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest
+	(*UpdateIncidentCategoryDetailsResponse)(nil),   // 3: command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse
+	(*MoveIncidentCategoryRequest)(nil),             // 4: command.incident.classifier.v1.MoveIncidentCategoryRequest
+	(*MoveIncidentCategoryResponse)(nil),            // 5: command.incident.classifier.v1.MoveIncidentCategoryResponse
+	(*DeactivateIncidentCategoryRequest)(nil),       // 6: command.incident.classifier.v1.DeactivateIncidentCategoryRequest
+	(*DeactivateIncidentCategoryResponse)(nil),      // 7: command.incident.classifier.v1.DeactivateIncidentCategoryResponse
+	(*ReactivateIncidentCategoryRequest)(nil),       // 8: command.incident.classifier.v1.ReactivateIncidentCategoryRequest
+	(*ReactivateIncidentCategoryResponse)(nil),      // 9: command.incident.classifier.v1.ReactivateIncidentCategoryResponse
+	(*DeleteIncidentCategoryRequest)(nil),           // 10: command.incident.classifier.v1.DeleteIncidentCategoryRequest
+	(*DeleteIncidentCategoryResponse)(nil),          // 11: command.incident.classifier.v1.DeleteIncidentCategoryResponse
+	(*CreateIncidentTypeRequest)(nil),               // 12: command.incident.classifier.v1.CreateIncidentTypeRequest
+	(*CreateIncidentTypeResponse)(nil),              // 13: command.incident.classifier.v1.CreateIncidentTypeResponse
+	(*UpdateIncidentTypeDetailsRequest)(nil),        // 14: command.incident.classifier.v1.UpdateIncidentTypeDetailsRequest
+	(*UpdateIncidentTypeDetailsResponse)(nil),       // 15: command.incident.classifier.v1.UpdateIncidentTypeDetailsResponse
+	(*MoveIncidentTypeRequest)(nil),                 // 16: command.incident.classifier.v1.MoveIncidentTypeRequest
+	(*MoveIncidentTypeResponse)(nil),                // 17: command.incident.classifier.v1.MoveIncidentTypeResponse
+	(*DeactivateIncidentTypeRequest)(nil),           // 18: command.incident.classifier.v1.DeactivateIncidentTypeRequest
+	(*DeactivateIncidentTypeResponse)(nil),          // 19: command.incident.classifier.v1.DeactivateIncidentTypeResponse
+	(*ReactivateIncidentTypeRequest)(nil),           // 20: command.incident.classifier.v1.ReactivateIncidentTypeRequest
+	(*ReactivateIncidentTypeResponse)(nil),          // 21: command.incident.classifier.v1.ReactivateIncidentTypeResponse
+	(*DeleteIncidentTypeRequest)(nil),               // 22: command.incident.classifier.v1.DeleteIncidentTypeRequest
+	(*DeleteIncidentTypeResponse)(nil),              // 23: command.incident.classifier.v1.DeleteIncidentTypeResponse
+	(*AllowIncidentTypeForPatientsRequest)(nil),     // 24: command.incident.classifier.v1.AllowIncidentTypeForPatientsRequest
+	(*AllowIncidentTypeForPatientsResponse)(nil),    // 25: command.incident.classifier.v1.AllowIncidentTypeForPatientsResponse
+	(*DisallowIncidentTypeForPatientsRequest)(nil),  // 26: command.incident.classifier.v1.DisallowIncidentTypeForPatientsRequest
+	(*DisallowIncidentTypeForPatientsResponse)(nil), // 27: command.incident.classifier.v1.DisallowIncidentTypeForPatientsResponse
 }
 var file_command_incident_classifier_v1_incident_classifier_proto_depIdxs = []int32{
 	0,  // 0: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentCategory:input_type -> command.incident.classifier.v1.CreateIncidentCategoryRequest
@@ -1220,20 +1392,24 @@ var file_command_incident_classifier_v1_incident_classifier_proto_depIdxs = []in
 	18, // 9: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentType:input_type -> command.incident.classifier.v1.DeactivateIncidentTypeRequest
 	20, // 10: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentType:input_type -> command.incident.classifier.v1.ReactivateIncidentTypeRequest
 	22, // 11: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentType:input_type -> command.incident.classifier.v1.DeleteIncidentTypeRequest
-	1,  // 12: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentCategory:output_type -> command.incident.classifier.v1.CreateIncidentCategoryResponse
-	3,  // 13: command.incident.classifier.v1.IncidentClassifierCommandService.UpdateIncidentCategoryDetails:output_type -> command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse
-	5,  // 14: command.incident.classifier.v1.IncidentClassifierCommandService.MoveIncidentCategory:output_type -> command.incident.classifier.v1.MoveIncidentCategoryResponse
-	7,  // 15: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentCategory:output_type -> command.incident.classifier.v1.DeactivateIncidentCategoryResponse
-	9,  // 16: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentCategory:output_type -> command.incident.classifier.v1.ReactivateIncidentCategoryResponse
-	11, // 17: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentCategory:output_type -> command.incident.classifier.v1.DeleteIncidentCategoryResponse
-	13, // 18: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentType:output_type -> command.incident.classifier.v1.CreateIncidentTypeResponse
-	15, // 19: command.incident.classifier.v1.IncidentClassifierCommandService.UpdateIncidentTypeDetails:output_type -> command.incident.classifier.v1.UpdateIncidentTypeDetailsResponse
-	17, // 20: command.incident.classifier.v1.IncidentClassifierCommandService.MoveIncidentType:output_type -> command.incident.classifier.v1.MoveIncidentTypeResponse
-	19, // 21: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentType:output_type -> command.incident.classifier.v1.DeactivateIncidentTypeResponse
-	21, // 22: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentType:output_type -> command.incident.classifier.v1.ReactivateIncidentTypeResponse
-	23, // 23: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentType:output_type -> command.incident.classifier.v1.DeleteIncidentTypeResponse
-	12, // [12:24] is the sub-list for method output_type
-	0,  // [0:12] is the sub-list for method input_type
+	24, // 12: command.incident.classifier.v1.IncidentClassifierCommandService.AllowIncidentTypeForPatients:input_type -> command.incident.classifier.v1.AllowIncidentTypeForPatientsRequest
+	26, // 13: command.incident.classifier.v1.IncidentClassifierCommandService.DisallowIncidentTypeForPatients:input_type -> command.incident.classifier.v1.DisallowIncidentTypeForPatientsRequest
+	1,  // 14: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentCategory:output_type -> command.incident.classifier.v1.CreateIncidentCategoryResponse
+	3,  // 15: command.incident.classifier.v1.IncidentClassifierCommandService.UpdateIncidentCategoryDetails:output_type -> command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse
+	5,  // 16: command.incident.classifier.v1.IncidentClassifierCommandService.MoveIncidentCategory:output_type -> command.incident.classifier.v1.MoveIncidentCategoryResponse
+	7,  // 17: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentCategory:output_type -> command.incident.classifier.v1.DeactivateIncidentCategoryResponse
+	9,  // 18: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentCategory:output_type -> command.incident.classifier.v1.ReactivateIncidentCategoryResponse
+	11, // 19: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentCategory:output_type -> command.incident.classifier.v1.DeleteIncidentCategoryResponse
+	13, // 20: command.incident.classifier.v1.IncidentClassifierCommandService.CreateIncidentType:output_type -> command.incident.classifier.v1.CreateIncidentTypeResponse
+	15, // 21: command.incident.classifier.v1.IncidentClassifierCommandService.UpdateIncidentTypeDetails:output_type -> command.incident.classifier.v1.UpdateIncidentTypeDetailsResponse
+	17, // 22: command.incident.classifier.v1.IncidentClassifierCommandService.MoveIncidentType:output_type -> command.incident.classifier.v1.MoveIncidentTypeResponse
+	19, // 23: command.incident.classifier.v1.IncidentClassifierCommandService.DeactivateIncidentType:output_type -> command.incident.classifier.v1.DeactivateIncidentTypeResponse
+	21, // 24: command.incident.classifier.v1.IncidentClassifierCommandService.ReactivateIncidentType:output_type -> command.incident.classifier.v1.ReactivateIncidentTypeResponse
+	23, // 25: command.incident.classifier.v1.IncidentClassifierCommandService.DeleteIncidentType:output_type -> command.incident.classifier.v1.DeleteIncidentTypeResponse
+	25, // 26: command.incident.classifier.v1.IncidentClassifierCommandService.AllowIncidentTypeForPatients:output_type -> command.incident.classifier.v1.AllowIncidentTypeForPatientsResponse
+	27, // 27: command.incident.classifier.v1.IncidentClassifierCommandService.DisallowIncidentTypeForPatients:output_type -> command.incident.classifier.v1.DisallowIncidentTypeForPatientsResponse
+	14, // [14:28] is the sub-list for method output_type
+	0,  // [0:14] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -1255,7 +1431,7 @@ func file_command_incident_classifier_v1_incident_classifier_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_command_incident_classifier_v1_incident_classifier_proto_rawDesc), len(file_command_incident_classifier_v1_incident_classifier_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   24,
+			NumMessages:   28,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

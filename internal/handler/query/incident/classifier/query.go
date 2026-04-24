@@ -158,6 +158,41 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 	return &classifierqueryv1.ListActiveTypesByOrganizationResponse{Items: typesToProto(items)}, nil
 }
 
+// ListPatientAllowedTypesByOrganization returns the active types that
+// patients of the given org are permitted to use when filing an incident.
+func (h *IncidentClassifierQueryHandler) ListPatientAllowedTypesByOrganization(
+	ctx context.Context,
+	req *classifierqueryv1.ListPatientAllowedTypesByOrganizationRequest,
+) (*classifierqueryv1.ListPatientAllowedTypesByOrganizationResponse, error) {
+	id, err := parseOrganizationID(req.GetOrganizationId())
+	if err != nil {
+		return nil, err
+	}
+	items, err := h.reader.ListPatientAllowedTypesByOrganization(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return &classifierqueryv1.ListPatientAllowedTypesByOrganizationResponse{Items: typesToProto(items)}, nil
+}
+
+// ListPatientVisibleCategoriesByOrganization returns the active categories
+// of the given org whose subtree contains at least one patient-allowed
+// active type — i.e. the navigation tree a patient may see.
+func (h *IncidentClassifierQueryHandler) ListPatientVisibleCategoriesByOrganization(
+	ctx context.Context,
+	req *classifierqueryv1.ListPatientVisibleCategoriesByOrganizationRequest,
+) (*classifierqueryv1.ListPatientVisibleCategoriesByOrganizationResponse, error) {
+	id, err := parseOrganizationID(req.GetOrganizationId())
+	if err != nil {
+		return nil, err
+	}
+	items, err := h.reader.ListPatientVisibleCategoriesByOrganization(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	return &classifierqueryv1.ListPatientVisibleCategoriesByOrganizationResponse{Items: categoriesToProto(items)}, nil
+}
+
 // parseCategoryID parses a category UUID.
 func parseCategoryID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
@@ -212,14 +247,15 @@ func categoriesToProto(views []classifierread.CategoryView) []*classifierqueryv1
 // typeToProto adapts one TypeView.
 func typeToProto(v *classifierread.TypeView) *classifierqueryv1.Type {
 	return &classifierqueryv1.Type{
-		Id:             v.ID.String(),
-		OrganizationId: v.OrganizationID.String(),
-		CategoryId:     v.CategoryID.String(),
-		Name:           v.Name,
-		Description:    v.Description,
-		IsActive:       v.IsActive,
-		CreatedAt:      v.CreatedAt.UTC().Format(time.RFC3339Nano),
-		UpdatedAt:      v.UpdatedAt.UTC().Format(time.RFC3339Nano),
+		Id:                   v.ID.String(),
+		OrganizationId:       v.OrganizationID.String(),
+		CategoryId:           v.CategoryID.String(),
+		Name:                 v.Name,
+		Description:          v.Description,
+		IsActive:             v.IsActive,
+		IsAllowedForPatients: v.IsAllowedForPatients,
+		CreatedAt:            v.CreatedAt.UTC().Format(time.RFC3339Nano),
+		UpdatedAt:            v.UpdatedAt.UTC().Format(time.RFC3339Nano),
 	}
 }
 

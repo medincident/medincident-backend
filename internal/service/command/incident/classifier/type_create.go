@@ -98,11 +98,12 @@ func (s *IncidentTypeService) Create(
 		}
 
 		row := model.IncidentType{
-			ID:             id,
-			OrganizationID: cat.OrganizationID,
-			CategoryID:     cat.ID,
-			Name:           strings.TrimSpace(cmd.Payload.Name),
-			IsActive:       true,
+			ID:                   id,
+			OrganizationID:       cat.OrganizationID,
+			CategoryID:           cat.ID,
+			Name:                 strings.TrimSpace(cmd.Payload.Name),
+			IsActive:             true,
+			IsAllowedForPatients: false,
 		}
 		if cmd.Payload.Description != nil {
 			row.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))

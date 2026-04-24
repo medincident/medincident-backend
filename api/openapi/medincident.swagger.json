@@ -1052,6 +1052,66 @@
         ]
       }
     },
+    "/v1/incident-types/{typeId}/patient-permission/allowances": {
+      "post": {
+        "operationId": "IncidentClassifierCommandService_AllowIncidentTypeForPatients",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AllowIncidentTypeForPatientsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/incident-types/{typeId}/patient-permission/disallowances": {
+      "post": {
+        "operationId": "IncidentClassifierCommandService_DisallowIncidentTypeForPatients",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DisallowIncidentTypeForPatientsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierCommandService"
+        ]
+      }
+    },
     "/v1/incident-types/{typeId}/reactivations": {
       "post": {
         "operationId": "IncidentClassifierCommandService_ReactivateIncidentType",
@@ -2515,6 +2575,36 @@
         ]
       }
     },
+    "/v1/query/organizations/{organizationId}/incident-categories:patient-visible": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListPatientVisibleCategoriesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
     "/v1/query/organizations/{organizationId}/incident-categories:roots": {
       "get": {
         "operationId": "IncidentClassifierQueryService_ListActiveRootCategories",
@@ -2553,6 +2643,37 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListActiveTypesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
+    "/v1/query/organizations/{organizationId}/incident-types:patient-allowed": {
+      "get": {
+        "summary": "Patient-facing reads. These are scoped to one organisation and return\nonly the slice of the classifier that a patient may see when filing\nan incident.",
+        "operationId": "IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListPatientAllowedTypesByOrganizationResponse"
             }
           },
           "default": {
@@ -3238,6 +3359,9 @@
         },
         "updatedAt": {
           "type": "string"
+        },
+        "isAllowedForPatients": {
+          "type": "boolean"
         }
       },
       "description": "Type mirrors projections.incident_types row."
@@ -3295,6 +3419,9 @@
       "required": [
         "text"
       ]
+    },
+    "v1AllowIncidentTypeForPatientsResponse": {
+      "type": "object"
     },
     "v1AssignClinicHeadDeputyResponse": {
       "type": "object"
@@ -3563,6 +3690,9 @@
           "format": "int64"
         }
       }
+    },
+    "v1DisallowIncidentTypeForPatientsResponse": {
+      "type": "object"
     },
     "v1EmployeeCardView": {
       "type": "object",
@@ -3917,6 +4047,30 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1OrganizationListItem"
+          }
+        }
+      }
+    },
+    "v1ListPatientAllowedTypesByOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/classifierV1Type"
+          }
+        }
+      }
+    },
+    "v1ListPatientVisibleCategoriesByOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Category"
           }
         }
       }

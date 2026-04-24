@@ -69,6 +69,12 @@ service IncidentClassifierCommandService {
   rpc DeleteIncidentType(DeleteIncidentTypeRequest) returns (DeleteIncidentTypeResponse) {
     option (google.api.http) = {delete: "/v1/incident-types/{type_id}"};
   }
+  rpc AllowIncidentTypeForPatients(AllowIncidentTypeForPatientsRequest) returns (AllowIncidentTypeForPatientsResponse) {
+    option (google.api.http) = {post: "/v1/incident-types/{type_id}/patient-permission/allowances"};
+  }
+  rpc DisallowIncidentTypeForPatients(DisallowIncidentTypeForPatientsRequest) returns (DisallowIncidentTypeForPatientsResponse) {
+    option (google.api.http) = {post: "/v1/incident-types/{type_id}/patient-permission/disallowances"};
+  }
 }
 
 // ---- Category messages ----
@@ -149,3 +155,13 @@ message DeleteIncidentTypeRequest {
   string type_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 message DeleteIncidentTypeResponse {}
+
+message AllowIncidentTypeForPatientsRequest {
+  string type_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message AllowIncidentTypeForPatientsResponse {}
+
+message DisallowIncidentTypeForPatientsRequest {
+  string type_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DisallowIncidentTypeForPatientsResponse {}
