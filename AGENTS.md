@@ -14,13 +14,13 @@ main.go wires constructors explicitly and drives teardown via `defer`.
 3. **Never use string literals in `oops.Code(...)` calls.** Every
    aggregate-specific Code is a package-level constant (e.g.
    `ErrCodeEmployeeAlreadyHired`, not `CodeAlreadyExists`) declared
-   in the same file as the code that emits it. The sole exceptions
-   are the generic validation codes emitted by
-   `internal/service/validation` — `string_required`,
-   `string_too_short`, `string_too_long`, `uuid_required`,
-   `time_required`, `int_out_of_range`, `float_out_of_range` —
-   exported as `validation.CodeXxx` package constants and produced
-   by the translator, never hand-written.
+   in the same file as the code that emits it. The sole exception
+   is the single struct-tag validation code emitted by
+   `internal/service/validation` — `validation_failed`, exported as
+   `validation.CodeValidationFailed` and produced by the translator,
+   never hand-written. Per-field rule names (`required`, `min`,
+   `max`, `uuid`, …) are violation metadata on that single error,
+   not oops codes of their own.
 4. **Never install Go tools globally.** Every Go tool (buf, dbmate,
    golangci-lint, govulncheck, protoc-gen-go, protoc-gen-go-grpc,
    protoc-gen-grpc-gateway, protoc-gen-openapiv2, protoc-gen-doc) is
@@ -62,11 +62,16 @@ main.go wires constructors explicitly and drives teardown via `defer`.
    and pass proto strings straight through to the Payload.
 9. **Each service method runs validate → parse → authorize → execute.**
    The first line of every write is `validation.Struct(cmd.Payload)`;
-   the translator walks every `validator.FieldError` and returns an
-   `errors.Join` of oops leaves (each with its own `Code`, `"field"`
-   path, rule, and public message) — never
-   `oops.Wrap(errors.Join(...))`. Immediately after validation the
-   service parses Payload UUIDs into local variables, then calls
+   the translator collapses every `validator.FieldError` into a
+   single oops error with code `validation.CodeValidationFailed`
+   whose context carries `validation.ContextKeyViolations` →
+   `[]validation.Violation` (Field, Rule, Param, Message). The gRPC
+   error interceptor unpacks that slice into one
+   `BadRequest.FieldViolation` per entry, using the raw validator
+   tag (`required`, `min`, `max`, `uuid`, …) as the Reason — the
+   field path already implies the type, so no type-prefixed codes
+   exist. Immediately after validation the service parses Payload
+   UUIDs into local variables, then calls
    `s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.X(scopeID))`
    (or `authz.SystemAdmin` for scope-less operations). Only then does
    business logic run. Payload fields carry their own rules inline as

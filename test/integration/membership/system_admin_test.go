@@ -9,7 +9,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-backend/internal/service/command/membership"
-	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 func TestGrantSystemAdmin_Success(t *testing.T) {
@@ -72,7 +71,7 @@ func TestGrantSystemAdmin_EmptyInput(t *testing.T) {
 		Payload: membership.GrantSystemAdminPayload{ZitadelUserID: "   "},
 	})
 	require.Error(t, err)
-	assert.Equal(t, validation.CodeStringRequired, oopsCode(t, err))
+	assertHasViolation(t, validationViolations(t, err), "zitadel_user_id", "required")
 }
 
 func TestRevokeSystemAdmin_Success(t *testing.T) {

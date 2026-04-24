@@ -10,7 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-backend/internal/service/command/membership"
-	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 func hireBob(t *testing.T, f fixture) (employeeID string) {
@@ -82,7 +81,7 @@ func TestHireEmployee_WhitespaceOnlyPositionRejected(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	assert.Equal(t, validation.CodeStringTooShort, oopsCode(t, err))
+	assertHasViolation(t, validationViolations(t, err), "position", "min")
 }
 
 func TestHireEmployee_ZitadelUserNotFound(t *testing.T) {
@@ -144,7 +143,7 @@ func TestHireEmployee_PositionTooShort(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	assert.Equal(t, validation.CodeStringTooShort, oopsCode(t, err))
+	assertHasViolation(t, validationViolations(t, err), "position", "min")
 }
 
 func TestHireEmployee_PositionTooLong(t *testing.T) {
@@ -159,7 +158,7 @@ func TestHireEmployee_PositionTooLong(t *testing.T) {
 		},
 	})
 	require.Error(t, err)
-	assert.Equal(t, validation.CodeStringTooLong, oopsCode(t, err))
+	assertHasViolation(t, validationViolations(t, err), "position", "max")
 }
 
 func TestHireEmployee_MultiErrorReturnsAllViolations(t *testing.T) {
@@ -171,11 +170,12 @@ func TestHireEmployee_MultiErrorReturnsAllViolations(t *testing.T) {
 			Position:      &tooShort,
 		},
 	})
-	// Both ZitadelUserID and DepartmentID are empty strings with a
-	// `required` rule, so each emits string_required (distinct fields).
-	// Position="A" trips string_too_short. The translator returns an
-	// errors.Join of oops leaves — three in total.
-	codes := oopsCodes(t, err)
-	assert.Contains(t, codes, validation.CodeStringRequired)
-	assert.Contains(t, codes, validation.CodeStringTooShort)
+	// ZitadelUserID and DepartmentID are empty strings with a `required`
+	// rule; Position="A" trips `min`. The translator collapses all
+	// violations into a single validation_failed error carrying the
+	// full list in context.
+	violations := validationViolations(t, err)
+	assertHasViolation(t, violations, "zitadel_user_id", "required")
+	assertHasViolation(t, violations, "department_id", "required")
+	assertHasViolation(t, violations, "position", "min")
 }

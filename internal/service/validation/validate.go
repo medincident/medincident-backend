@@ -1,13 +1,18 @@
 // Package validation runs struct-tag based validation over command
 // structs using go-playground/validator, and translates the library's
-// ValidationErrors into oops multi-errors that the gRPC error
-// interceptor already knows how to flatten into BadRequest /
-// FieldViolation details.
+// ValidationErrors into a single oops error with code
+// CodeValidationFailed whose context carries a typed []Violation slice.
 //
-// Services call Struct(cmd) as the first thing in every write
-// method. The validator instance is a package-level singleton seeded
-// at init with a snake_case field-name alias so the "field" key on
-// every violation matches the proto field name.
+// The gRPC error interceptor recognises that code and unpacks the
+// violations into a codes.InvalidArgument status with one
+// BadRequest.FieldViolation per violation. The violation Rule is the
+// raw validator tag ("required", "min", "max", "uuid", …) — the field
+// path already implies the type, so no type-prefixed codes are needed.
+//
+// Services call Struct(cmd) as the first thing in every write method.
+// The validator instance is a package-level singleton seeded at init
+// with a snake_case field-name alias so the Field on every violation
+// matches the proto field name.
 package validation
 
 import (
@@ -23,19 +28,30 @@ import (
 	"github.com/samber/oops"
 )
 
-// Oops codes emitted by translate. These are the suffixes the gRPC
-// error interceptor already recognises (string_*, uuid_*, time_*,
-// int_out_of_range, float_out_of_range) so the mapping to
-// codes.InvalidArgument / BadRequest.FieldViolation stays intact.
-const (
-	CodeStringRequired  = "string_required"
-	CodeStringTooShort  = "string_too_short"
-	CodeStringTooLong   = "string_too_long"
-	CodeUUIDRequired    = "uuid_required"
-	CodeTimeRequired    = "time_required"
-	CodeIntOutOfRange   = "int_out_of_range"
-	CodeFloatOutOfRange = "float_out_of_range"
-)
+// CodeValidationFailed is the single oops code emitted for every
+// struct-tag validation failure. The gRPC error interceptor maps it to
+// codes.InvalidArgument and reads ContextKeyViolations to build
+// BadRequest.FieldViolation details.
+const CodeValidationFailed = "validation_failed"
+
+// ContextKeyViolations is the oops-context key under which translate
+// stashes the []Violation produced from a validator.ValidationErrors.
+// The interceptor looks this up by name to stay decoupled from the
+// exact slice element type at the call site.
+const ContextKeyViolations = "violations"
+
+// Violation describes one struct-tag rule failure on a specific field.
+// Field is a dotted snake_case path (e.g. "legal_address.point.longitude"),
+// Rule is the raw validator tag ("required", "min", "max", "uuid", …),
+// Param is the tag parameter when present (e.g. "4" for min=4), and
+// Message is a short client-facing description derived from the rule
+// and field kind.
+type Violation struct {
+	Field   string
+	Rule    string
+	Param   string
+	Message string
+}
 
 // v is shared across every caller. validator.Validate is documented
 // as safe for concurrent Struct calls.
@@ -62,12 +78,9 @@ func newValidator() *validator.Validate {
 // Struct validates cmd against its struct tags. Every string field
 // (including pointer-to-string and nested structs) is trimmed in a
 // local copy first so that whitespace-only input is treated as empty
-// and caught by required / min rules. Every violation is returned as
-// errors.Join of oops leaves, each carrying a generic oops Code
-// (string_required, string_too_short, float_out_of_range, …) plus a
-// dotted "field" context so the existing error interceptor maps them
-// to codes.InvalidArgument / BadRequest.FieldViolation without
-// changes.
+// and caught by required / min rules. A failure is returned as a
+// single oops error with CodeValidationFailed whose context carries
+// ContextKeyViolations → []Violation.
 func Struct(cmd any) error {
 	rv := reflect.ValueOf(cmd)
 	if rv.Kind() == reflect.Pointer {
@@ -100,8 +113,8 @@ func trimStrings(v reflect.Value) {
 	//nolint:exhaustive // only struct and string need handling; other kinds are intentionally no-op.
 	switch v.Kind() {
 	case reflect.Struct:
-		for i := 0; i < v.NumField(); i++ {
-			trimStrings(v.Field(i))
+		for _, f := range v.Fields() {
+			trimStrings(f)
 		}
 	case reflect.String:
 		if v.CanSet() {
@@ -110,35 +123,35 @@ func trimStrings(v reflect.Value) {
 	}
 }
 
-// translate converts a validator error into the oops multi-error
-// contract. Non-ValidationErrors (e.g. InvalidValidationError) are
-// wrapped as internal faults so they surface as codes.Internal.
+// translate converts a validator error into a single oops error with
+// code CodeValidationFailed. Non-ValidationErrors (e.g.
+// InvalidValidationError) are wrapped unchanged so they surface as
+// codes.Internal via the default interceptor mapping.
 func translate(err error) error {
 	var ves validator.ValidationErrors
 	if !errors.As(err, &ves) {
 		return oops.In("validation").
-			Code("validate_failed").
+			Code(CodeValidationFailed).
 			Wrap(err)
 	}
-	leaves := make([]error, 0, len(ves))
+	violations := make([]Violation, 0, len(ves))
 	for _, fe := range ves {
-		leaves = append(leaves, fieldErrorToOops(fe))
+		violations = append(violations, toViolation(fe))
 	}
-	return errors.Join(leaves...)
+	return oops.In("validation").
+		Code(CodeValidationFailed).
+		With(ContextKeyViolations, violations).
+		Public("request is invalid").
+		Errorf("validation failed: %d violation(s)", len(violations))
 }
 
-func fieldErrorToOops(fe validator.FieldError) error {
-	field := fieldPath(fe)
-	code, public := classify(fe)
-	b := oops.In("validation").
-		Code(code).
-		With("field", field).
-		With("rule", fe.Tag()).
-		Public(public)
-	if param := fe.Param(); param != "" {
-		b = b.With("param", param)
+func toViolation(fe validator.FieldError) Violation {
+	return Violation{
+		Field:   fieldPath(fe),
+		Rule:    fe.Tag(),
+		Param:   fe.Param(),
+		Message: message(fe),
 	}
-	return b.Errorf("field %q failed rule %q", field, fe.Tag())
 }
 
 // fieldPath trims the root struct name ("CreateClinicCommand.") and
@@ -151,45 +164,44 @@ func fieldPath(fe validator.FieldError) string {
 	return ns
 }
 
-// classify maps (tag, type/kind) → (oops code, public message). The
-// codes match the suffixes already configured in the error
-// interceptor so the wire format stays intact.
-func classify(fe validator.FieldError) (code, public string) {
+// message returns a short client-facing description for fe. The
+// caller-visible rule name is already carried separately; this string
+// only adds bounds or format hints a human needs.
+func message(fe validator.FieldError) string {
 	switch fe.Tag() {
 	case "required":
-		switch fe.Type() {
-		case uuidType:
-			return CodeUUIDRequired, "required"
-		case timeType:
-			return CodeTimeRequired, "required"
-		}
-		return CodeStringRequired, "required"
+		return "required"
+	case "uuid":
+		return "must be a valid uuid"
 	case "min":
 		//nolint:exhaustive // only the kinds that carry a "min" rule matter; others fall through to the generic fallback below.
 		switch fe.Kind() {
 		case reflect.String:
-			return CodeStringTooShort, fmt.Sprintf("length must be at least %s characters", fe.Param())
+			return fmt.Sprintf("length must be at least %s characters", fe.Param())
 		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
-			reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-			return CodeIntOutOfRange, fmt.Sprintf("must be at least %s", fe.Param())
-		case reflect.Float32, reflect.Float64:
-			return CodeFloatOutOfRange, fmt.Sprintf("must be at least %s", fe.Param())
+			reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
+			reflect.Float32, reflect.Float64:
+			return fmt.Sprintf("must be at least %s", fe.Param())
 		}
 	case "max":
 		//nolint:exhaustive // only the kinds that carry a "max" rule matter; others fall through to the generic fallback below.
 		switch fe.Kind() {
 		case reflect.String:
-			return CodeStringTooLong, fmt.Sprintf("length must be at most %s characters", fe.Param())
+			return fmt.Sprintf("length must be at most %s characters", fe.Param())
 		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
-			reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
-			return CodeIntOutOfRange, fmt.Sprintf("must be at most %s", fe.Param())
-		case reflect.Float32, reflect.Float64:
-			return CodeFloatOutOfRange, fmt.Sprintf("must be at most %s", fe.Param())
+			reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
+			reflect.Float32, reflect.Float64:
+			return fmt.Sprintf("must be at most %s", fe.Param())
 		}
 	}
-	// Unknown tag. Fall back to a descriptive code so the interceptor
-	// still classifies it as InvalidArgument via the _invalid suffix.
-	return "rule_" + fe.Tag() + "_invalid", "invalid"
+	// Unknown tag or tag on an unsupported kind: typed presence rules
+	// on uuid.UUID / time.Time surface here as "required" because
+	// validator.WithRequiredStructEnabled reports them with a non-"required"
+	// tag. Falling back to the tag itself keeps the message honest.
+	if fe.Type() == uuidType || fe.Type() == timeType {
+		return "required"
+	}
+	return fe.Tag()
 }
 
 // toSnakeCase converts a Go UpperCamel identifier to snake_case while
