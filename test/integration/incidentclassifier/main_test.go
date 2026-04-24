@@ -22,13 +22,23 @@ import (
 	gormlogger "gorm.io/gorm/logger"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
 )
+
+// sysadminZitadelID is the Zitadel user ID of the seeded system-admin
+// used by every test as the command caller.
+const sysadminZitadelID = "sysadmin"
+
+// sysadminCaller is the authz.Caller every test passes into service
+// commands so authz.SystemAdmin always succeeds.
+var sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
 
 var (
 	testDB     *gorm.DB
 	testLogger = zerolog.Nop()
 
+	authzSvc    *authz.Authz
 	categorySvc *classifiersvc.IncidentCategoryService
 	typeSvc     *classifiersvc.IncidentTypeService
 )
@@ -74,8 +84,9 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	categorySvc = classifiersvc.NewIncidentCategoryService(testDB, &testLogger)
-	typeSvc = classifiersvc.NewIncidentTypeService(testDB, &testLogger)
+	authzSvc = authz.New(testDB)
+	categorySvc = classifiersvc.NewIncidentCategoryService(testDB, authzSvc, &testLogger)
+	typeSvc = classifiersvc.NewIncidentTypeService(testDB, authzSvc, &testLogger)
 
 	os.Exit(m.Run())
 }
@@ -100,6 +111,7 @@ func resetDB(t *testing.T) {
 		t.Fatalf("get raw db: %v", err)
 	}
 	truncate := []string{
+		`TRUNCATE TABLE domain.system_admins CASCADE`,
 		`TRUNCATE TABLE domain.incident_types CASCADE`,
 		`TRUNCATE TABLE domain.incident_categories CASCADE`,
 		`TRUNCATE TABLE domain.departments CASCADE`,
@@ -131,6 +143,13 @@ func resetDB(t *testing.T) {
 		if _, err := raw.Exec(q); err != nil {
 			t.Fatalf("truncate %q: %v", q, err)
 		}
+	}
+	// Re-seed the system-admin used by every test as the command caller.
+	if _, err := raw.Exec(
+		`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1)`,
+		sysadminZitadelID,
+	); err != nil {
+		t.Fatalf("seed sysadmin: %v", err)
 	}
 }
 

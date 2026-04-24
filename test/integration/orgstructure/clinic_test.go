@@ -17,8 +17,11 @@ import (
 func seedOrganization(t *testing.T) uuid.UUID {
 	t.Helper()
 	res, err := orgSvc.Create(context.Background(), orgsvc.CreateOrganizationCommand{
-		Name:         "Родительская организация",
-		LegalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateOrganizationPayload{
+			Name:         "Родительская организация",
+			LegalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
+		},
 	})
 	require.NoError(t, err)
 	return res.ID
@@ -29,10 +32,13 @@ func TestClinic_Create_HappyPath(t *testing.T) {
 	orgID := seedOrganization(t)
 
 	res, err := clinSvc.Create(context.Background(), orgsvc.CreateClinicCommand{
-		OrganizationID: orgID,
-		Name:           "Клиника №1",
-		PhysicalAddress: orgsvc.AddressInput{
-			Text: "г. Москва, ул. Тверская, д. 10",
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateClinicPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Клиника №1",
+			PhysicalAddress: orgsvc.AddressInput{
+				Text: "г. Москва, ул. Тверская, д. 10",
+			},
 		},
 	})
 	require.NoError(t, err)
@@ -47,9 +53,12 @@ func TestClinic_Create_OrganizationNotFound(t *testing.T) {
 	resetDB(t)
 
 	_, err := clinSvc.Create(context.Background(), orgsvc.CreateClinicCommand{
-		OrganizationID:  uuid.New(),
-		Name:            "Сирота клиника",
-		PhysicalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Тверская, д. 10"},
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateClinicPayload{
+			OrganizationID:  uuid.New().String(),
+			Name:            "Сирота клиника",
+			PhysicalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Тверская, д. 10"},
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, orgsvc.ErrCodeClinicOrganizationNotFound, codeOf(t, err))

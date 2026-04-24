@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog"
 	"gorm.io/gorm"
 
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/zitadel"
 )
 
@@ -17,12 +18,13 @@ import (
 // that same transaction.
 type EmployeeService struct {
 	db       *gorm.DB
+	authz    *authz.Authz
 	verifier *zitadel.Service
 	logger   *zerolog.Logger
 }
 
 // NewEmployeeService wires an EmployeeService. The verifier is called
 // exactly once inside HireEmployee, before the DB transaction.
-func NewEmployeeService(db *gorm.DB, verifier *zitadel.Service, logger *zerolog.Logger) *EmployeeService {
-	return &EmployeeService{db: db, verifier: verifier, logger: logger}
+func NewEmployeeService(db *gorm.DB, az *authz.Authz, verifier *zitadel.Service, logger *zerolog.Logger) *EmployeeService {
+	return &EmployeeService{db: db, authz: az, verifier: verifier, logger: logger}
 }

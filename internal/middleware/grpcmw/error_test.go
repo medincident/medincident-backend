@@ -41,18 +41,18 @@ func TestGRPCCodeForError_SuffixRules(t *testing.T) {
 		"vacation_id_generation_failed":  codes.Internal,
 		"department_lookup_failed":       codes.Internal,
 		"postgres_open_failed":           codes.Internal,
-		// InvalidArgument
-		"employee_id_empty":              codes.InvalidArgument,
-		"department_id_invalid":          codes.InvalidArgument,
-		"clinic_name_empty":              codes.InvalidArgument,
-		"employee_position_too_long":     codes.InvalidArgument,
-		"employee_position_too_short":    codes.InvalidArgument,
-		"address_latitude_out_of_range":  codes.InvalidArgument,
-		"vacation_start_required":        codes.InvalidArgument,
-		"vacation_end_before_start":      codes.InvalidArgument,
-		"vacation_end_in_past":           codes.InvalidArgument,
-		"vacation_start_in_past":         codes.InvalidArgument,
-		"employee_zitadel_user_id_empty": codes.InvalidArgument,
+		// InvalidArgument — generic validation codes (emitted by
+		// internal/validation) and aggregate-specific time codes.
+		"string_required":           codes.InvalidArgument,
+		"string_too_short":          codes.InvalidArgument,
+		"string_too_long":           codes.InvalidArgument,
+		"int_out_of_range":          codes.InvalidArgument,
+		"float_out_of_range":        codes.InvalidArgument,
+		"uuid_required":             codes.InvalidArgument,
+		"vacation_start_required":   codes.InvalidArgument,
+		"vacation_end_before_start": codes.InvalidArgument,
+		"vacation_end_in_past":      codes.InvalidArgument,
+		"vacation_start_in_past":    codes.InvalidArgument,
 		// NotFound
 		"employee_not_found":          codes.NotFound,
 		"department_not_found":        codes.NotFound,
@@ -145,14 +145,14 @@ func TestTranslateError_SingleLeaf_MapsCode(t *testing.T) {
 }
 
 func TestTranslateError_MultiError_EmitsBadRequest(t *testing.T) {
-	f1 := oops.In("service.employee").
-		Code("employee_zitadel_user_id_empty").
-		Public("Zitadel user ID is required.").
+	f1 := oops.In("validation").
+		Code("string_required").
+		Public("required").
 		With("field", "zitadel_user_id").
 		Errorf("empty")
-	f2 := oops.In("service.employee").
-		Code("employee_position_too_long").
-		Public("Position is too long.").
+	f2 := oops.In("validation").
+		Code("string_too_long").
+		Public("length must be at most 256 characters").
 		With("field", "position").
 		Errorf("too long")
 
@@ -184,10 +184,10 @@ func TestTranslateError_MultiError_EmitsBadRequest(t *testing.T) {
 	for _, v := range bad.GetFieldViolations() {
 		fields[v.GetField()] = v.GetReason()
 	}
-	if fields["zitadel_user_id"] != "employee_zitadel_user_id_empty" {
+	if fields["zitadel_user_id"] != "string_required" {
 		t.Errorf("missing zitadel_user_id violation: %v", fields)
 	}
-	if fields["position"] != "employee_position_too_long" {
+	if fields["position"] != "string_too_long" {
 		t.Errorf("missing position violation: %v", fields)
 	}
 }

@@ -42,6 +42,10 @@ func takeFixture(t *testing.T) fixture {
 		DeptB1a:  uuid.Must(uuid.NewV7()),
 	}
 	must := func(err error) { require.NoError(t, err) }
+	// System-admin caller used by every test. Seeded before every
+	// fixture so authz.SystemAdmin short-circuits AdminOf.* policies
+	// regardless of which scope the test is exercising.
+	must(testDB.Exec(`INSERT INTO domain.system_admins (zitadel_user_id) VALUES (?) ON CONFLICT DO NOTHING`, sysadminZitadelID).Error)
 	must(testDB.Exec(`INSERT INTO domain.organizations (id, name, legal_address) VALUES (?, ?, ROW(?, NULL)::domain.address)`, f.OrgA, "Org A", "addr-a").Error)
 	must(testDB.Exec(`INSERT INTO domain.clinics (id, organization_id, name, physical_address) VALUES (?, ?, ?, ROW(?, NULL)::domain.address)`, f.ClinicA1, f.OrgA, "Clinic A1", "caddr-a1").Error)
 	must(testDB.Exec(`INSERT INTO domain.departments (id, clinic_id, name) VALUES (?, ?, ?)`, f.DeptA1a, f.ClinicA1, "Dept A1a").Error)

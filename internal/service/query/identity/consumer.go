@@ -51,7 +51,7 @@ const nakRetryDelay = 5 * time.Second
 // messages.
 type Consumer struct {
 	js        jetstream.JetStream
-	cfg       *config.QueryServerConfig
+	cfg       *config.NATSConfig
 	projector *Projector
 	logger    *zerolog.Logger
 
@@ -68,7 +68,7 @@ type Consumer struct {
 // client and projector.
 func NewConsumer(
 	js jetstream.JetStream,
-	cfg *config.QueryServerConfig,
+	cfg *config.NATSConfig,
 	projector *Projector,
 	logger *zerolog.Logger,
 ) *Consumer {
@@ -85,35 +85,35 @@ func (c *Consumer) Start(ctx context.Context) error {
 		return nil
 	}
 
-	stream, err := c.js.Stream(ctx, c.cfg.NATS.Stream)
+	stream, err := c.js.Stream(ctx, c.cfg.Stream)
 	if err != nil {
 		return oops.In("consumer.identity").
 			Code(ErrCodeStreamLookupFailed).
-			With("stream", c.cfg.NATS.Stream).
+			With("stream", c.cfg.Stream).
 			Wrap(err)
 	}
 
 	filter := ""
-	if len(c.cfg.NATS.Subjects) == 1 {
-		filter = c.cfg.NATS.Subjects[0]
+	if len(c.cfg.Subjects) == 1 {
+		filter = c.cfg.Subjects[0]
 	}
 	cons, err := stream.CreateOrUpdateConsumer(ctx, jetstream.ConsumerConfig{
-		Durable:           c.cfg.NATS.DurableName,
-		Name:              c.cfg.NATS.DurableName,
+		Durable:           c.cfg.DurableName,
+		Name:              c.cfg.DurableName,
 		AckPolicy:         jetstream.AckExplicitPolicy,
 		AckWait:           consumerAckWait(nakRetryDelay),
 		DeliverPolicy:     jetstream.DeliverAllPolicy,
 		MaxDeliver:        -1,
 		FilterSubject:     filter,
-		FilterSubjects:    subjectsFilter(c.cfg.NATS.Subjects),
+		FilterSubjects:    subjectsFilter(c.cfg.Subjects),
 		MaxAckPending:     1024,
 		InactiveThreshold: 24 * time.Hour,
 	})
 	if err != nil {
 		return oops.In("consumer.identity").
 			Code(ErrCodeConsumerCreateFailed).
-			With("stream", c.cfg.NATS.Stream).
-			With("durable", c.cfg.NATS.DurableName).
+			With("stream", c.cfg.Stream).
+			With("durable", c.cfg.DurableName).
 			Wrap(err)
 	}
 
@@ -123,15 +123,15 @@ func (c *Consumer) Start(ctx context.Context) error {
 		c.cancel()
 		return oops.In("consumer.identity").
 			Code(ErrCodeConsumeStartFailed).
-			With("stream", c.cfg.NATS.Stream).
-			With("durable", c.cfg.NATS.DurableName).
+			With("stream", c.cfg.Stream).
+			With("durable", c.cfg.DurableName).
 			Wrap(err)
 	}
 	c.consume = cc
 	c.started = true
 	c.logger.Info().
-		Str("stream", c.cfg.NATS.Stream).
-		Str("durable", c.cfg.NATS.DurableName).
+		Str("stream", c.cfg.Stream).
+		Str("durable", c.cfg.DurableName).
 		Msg("identity consumer started")
 	return nil
 }

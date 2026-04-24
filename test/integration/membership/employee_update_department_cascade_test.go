@@ -15,12 +15,18 @@ func TestUpdateEmployeeDepartment_CascadeRevokesDR_SameClinic(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	require.NoError(t, empSvc.AssignDepartmentResponsible(ctxT(t), membership.AssignDepartmentResponsibleCommand{
-		DepartmentID: f.DeptA1a, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignDepartmentResponsiblePayload{
+			DepartmentID: f.DeptA1a.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID:           aliceID,
-		DepartmentID: f.DeptA1b,
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID:           aliceID.String(),
+			DepartmentID: f.DeptA1b.String(),
+		},
 	}))
 
 	var count int64
@@ -35,11 +41,17 @@ func TestUpdateEmployeeDepartment_CascadeRevokesCH_CrossClinic(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
-		ClinicID: f.ClinicA1, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignClinicHeadPayload{
+			ClinicID: f.ClinicA1.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID: aliceID, DepartmentID: f.DeptA2a,
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID: aliceID.String(), DepartmentID: f.DeptA2a.String(),
+		},
 	}))
 
 	var count int64
@@ -53,11 +65,17 @@ func TestUpdateEmployeeDepartment_CHUnaffected_SameClinic(t *testing.T) {
 	f := takeFixture(t)
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
-		ClinicID: f.ClinicA1, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignClinicHeadPayload{
+			ClinicID: f.ClinicA1.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID: aliceID, DepartmentID: f.DeptA1b,
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID: aliceID.String(), DepartmentID: f.DeptA1b.String(),
+		},
 	}))
 
 	var count int64
@@ -76,14 +94,23 @@ func TestUpdateEmployeeDepartment_ClearsDRDeputySlotInOldDepartment(t *testing.T
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	bobID := mustParseUUID(t, hireBob(t, f)) // also in DeptA1a
 	require.NoError(t, empSvc.AssignDepartmentResponsible(ctxT(t), membership.AssignDepartmentResponsibleCommand{
-		DepartmentID: f.DeptA1a, EmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignDepartmentResponsiblePayload{
+			DepartmentID: f.DeptA1a.String(), EmployeeID: bobID.String(),
+		},
 	}))
 	require.NoError(t, empSvc.AssignDepartmentResponsibleDeputy(ctxT(t), membership.AssignDepartmentResponsibleDeputyCommand{
-		DepartmentID: f.DeptA1a, EmployeeID: bobID, DeputyEmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignDepartmentResponsibleDeputyPayload{
+			DepartmentID: f.DeptA1a.String(), EmployeeID: bobID.String(), DeputyEmployeeID: aliceID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID: aliceID, DepartmentID: f.DeptA1b,
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID: aliceID.String(), DepartmentID: f.DeptA1b.String(),
+		},
 	}))
 
 	var deputyCount int64
@@ -109,14 +136,23 @@ func TestUpdateEmployeeDepartment_ClearsCHDeputySlotInOldClinic_CrossClinic(t *t
 	aliceID := mustParseUUID(t, hireAlice(t, f)) // DeptA1a / ClinicA1
 	bobID := mustParseUUID(t, hireBob(t, f))     // DeptA1a / ClinicA1
 	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
-		ClinicID: f.ClinicA1, EmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignClinicHeadPayload{
+			ClinicID: f.ClinicA1.String(), EmployeeID: bobID.String(),
+		},
 	}))
 	require.NoError(t, empSvc.AssignClinicHeadDeputy(ctxT(t), membership.AssignClinicHeadDeputyCommand{
-		ClinicID: f.ClinicA1, EmployeeID: bobID, DeputyEmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignClinicHeadDeputyPayload{
+			ClinicID: f.ClinicA1.String(), EmployeeID: bobID.String(), DeputyEmployeeID: aliceID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID: aliceID, DepartmentID: f.DeptA2a,
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID: aliceID.String(), DepartmentID: f.DeptA2a.String(),
+		},
 	}))
 
 	var deputyCount int64
@@ -141,14 +177,23 @@ func TestUpdateEmployeeDepartment_CHDeputyUnaffected_SameClinic(t *testing.T) {
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	bobID := mustParseUUID(t, hireBob(t, f))
 	require.NoError(t, empSvc.AssignClinicHead(ctxT(t), membership.AssignClinicHeadCommand{
-		ClinicID: f.ClinicA1, EmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignClinicHeadPayload{
+			ClinicID: f.ClinicA1.String(), EmployeeID: bobID.String(),
+		},
 	}))
 	require.NoError(t, empSvc.AssignClinicHeadDeputy(ctxT(t), membership.AssignClinicHeadDeputyCommand{
-		ClinicID: f.ClinicA1, EmployeeID: bobID, DeputyEmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignClinicHeadDeputyPayload{
+			ClinicID: f.ClinicA1.String(), EmployeeID: bobID.String(), DeputyEmployeeID: aliceID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID: aliceID, DepartmentID: f.DeptA1b,
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID: aliceID.String(), DepartmentID: f.DeptA1b.String(),
+		},
 	}))
 
 	var deputyCount int64
@@ -164,14 +209,23 @@ func TestUpdateEmployeeDepartment_CascadeRevokesDRWithDeputy_EmitsDeputyRemovedF
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 	bobID := mustParseUUID(t, hireBob(t, f))
 	require.NoError(t, empSvc.AssignDepartmentResponsible(ctxT(t), membership.AssignDepartmentResponsibleCommand{
-		DepartmentID: f.DeptA1a, EmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignDepartmentResponsiblePayload{
+			DepartmentID: f.DeptA1a.String(), EmployeeID: aliceID.String(),
+		},
 	}))
 	require.NoError(t, empSvc.AssignDepartmentResponsibleDeputy(ctxT(t), membership.AssignDepartmentResponsibleDeputyCommand{
-		DepartmentID: f.DeptA1a, EmployeeID: aliceID, DeputyEmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignDepartmentResponsibleDeputyPayload{
+			DepartmentID: f.DeptA1a.String(), EmployeeID: aliceID.String(), DeputyEmployeeID: bobID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID:           aliceID,
-		DepartmentID: f.DeptA1b,
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID:           aliceID.String(),
+			DepartmentID: f.DeptA1b.String(),
+		},
 	}))
 }

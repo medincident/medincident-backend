@@ -19,9 +19,12 @@ func seedClinic(t *testing.T) uuid.UUID {
 	t.Helper()
 	orgID := seedOrganization(t)
 	res, err := clinSvc.Create(context.Background(), orgsvc.CreateClinicCommand{
-		OrganizationID:  orgID,
-		Name:            "Родительская клиника",
-		PhysicalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Тверская, д. 10"},
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateClinicPayload{
+			OrganizationID:  orgID.String(),
+			Name:            "Родительская клиника",
+			PhysicalAddress: orgsvc.AddressInput{Text: "г. Москва, ул. Тверская, д. 10"},
+		},
 	})
 	require.NoError(t, err)
 	return res.ID
@@ -32,8 +35,11 @@ func TestDepartment_Create_HappyPath(t *testing.T) {
 	clinicID := seedClinic(t)
 
 	res, err := deptSvc.Create(context.Background(), orgsvc.CreateDepartmentCommand{
-		ClinicID: clinicID,
-		Name:     "Терапия",
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateDepartmentPayload{
+			ClinicID: clinicID.String(),
+			Name:     "Терапия",
+		},
 	})
 	require.NoError(t, err)
 	require.NotEqual(t, uuid.Nil, res.ID)
@@ -47,8 +53,11 @@ func TestDepartment_Create_ClinicNotFound(t *testing.T) {
 	resetDB(t)
 
 	_, err := deptSvc.Create(context.Background(), orgsvc.CreateDepartmentCommand{
-		ClinicID: uuid.New(),
-		Name:     "Сирота отделение",
+		Caller: sysadminCaller,
+		Payload: orgsvc.CreateDepartmentPayload{
+			ClinicID: uuid.New().String(),
+			Name:     "Сирота отделение",
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, orgsvc.ErrCodeDepartmentClinicNotFound, codeOf(t, err))

@@ -10,36 +10,50 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-type DeleteIncidentTypeCommand struct {
-	TypeID uuid.UUID
+// DeleteIncidentTypePayload identifies the incident type to delete.
+type DeleteIncidentTypePayload struct {
+	TypeID string `validate:"required,uuid"`
 }
 
+// DeleteIncidentTypeCommand = caller + payload.
+type DeleteIncidentTypeCommand struct {
+	Caller  authz.Caller
+	Payload DeleteIncidentTypePayload
+}
+
+// DeleteIncidentTypeResult is empty.
 type DeleteIncidentTypeResult struct{}
 
 func (s *IncidentTypeService) Delete(
 	ctx context.Context,
 	cmd DeleteIncidentTypeCommand,
 ) (DeleteIncidentTypeResult, error) {
-	if err := requireTypeID(cmd.TypeID); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return DeleteIncidentTypeResult{}, err
+	}
+	typeID := uuid.MustParse(cmd.Payload.TypeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.IncidentType(typeID)); err != nil {
 		return DeleteIncidentTypeResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var row model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
+			First(&row, "id = ?", typeID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeNotFound).
 					Public("Incident type not found.").
-					With("incident_type_id", cmd.TypeID).
+					With("incident_type_id", typeID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.type").
 				Code(ErrCodeIncidentTypeLoadFailed).
-				With("incident_type_id", cmd.TypeID).
+				With("incident_type_id", typeID).
 				Wrap(err)
 		}
 

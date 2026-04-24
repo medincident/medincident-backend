@@ -11,31 +11,35 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-// RevokeClinicHeadCommand carries the identifiers needed to remove an
+// RevokeClinicHeadPayload carries the identifiers needed to remove an
 // employee's clinic head role.
+type RevokeClinicHeadPayload struct {
+	ClinicID   string `validate:"required,uuid"`
+	EmployeeID string `validate:"required,uuid"`
+}
+
+// RevokeClinicHeadCommand = caller + payload.
 type RevokeClinicHeadCommand struct {
-	ClinicID   uuid.UUID
-	EmployeeID uuid.UUID
+	Caller  authz.Caller
+	Payload RevokeClinicHeadPayload
 }
 
 // RevokeClinicHead removes the role row and publishes the Revoked
 // event. If a deputy was assigned, a DeputyRemoved event is published
 // FIRST (Rule 2 — cleanup before terminate). See spec §8.6.
 func (s *EmployeeService) RevokeClinicHead(ctx context.Context, cmd RevokeClinicHeadCommand) error {
-	var errs []error
-	if cmd.ClinicID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).Code(ErrCodeClinicIDEmpty).
-			Public("Clinic ID is required.").Errorf("clinic id empty"))
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
 	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeClinicHead).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	clinicID := uuid.MustParse(cmd.Payload.ClinicID)
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Clinic(clinicID)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -43,15 +47,15 @@ func (s *EmployeeService) RevokeClinicHead(ctx context.Context, cmd RevokeClinic
 
 		var row model.ClinicHead
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("clinic_id = ? AND employee_id = ?", cmd.ClinicID, cmd.EmployeeID).
+			Where("clinic_id = ? AND employee_id = ?", clinicID, employeeID).
 			First(&row).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeClinicHead).
 					Code(ErrCodeClinicHeadNotFound).
 					Public("Clinic head not found.").
-					With("clinic_id", cmd.ClinicID).
-					With("employee_id", cmd.EmployeeID).
+					With("clinic_id", clinicID).
+					With("employee_id", employeeID).
 					Errorf("not found")
 			}
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadLoadFailed).Wrap(err)
@@ -59,17 +63,17 @@ func (s *EmployeeService) RevokeClinicHead(ctx context.Context, cmd RevokeClinic
 
 		// Rule 2 — cleanup before terminate.
 		if row.DeputyEmployeeID.Valid {
-			if err := publishClinicHeadDeputyRemoved(tx, cmd.ClinicID, cmd.EmployeeID, now); err != nil {
+			if err := publishClinicHeadDeputyRemoved(tx, clinicID, employeeID, now); err != nil {
 				return err
 			}
 		}
 
 		if err := tx.Delete(&model.ClinicHead{}, "clinic_id = ? AND employee_id = ?",
-			cmd.ClinicID, cmd.EmployeeID).Error; err != nil {
+			clinicID, employeeID).Error; err != nil {
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadDeleteFailed).Wrap(err)
 		}
 
-		return publishClinicHeadRevoked(tx, cmd.ClinicID, cmd.EmployeeID, now)
+		return publishClinicHeadRevoked(tx, clinicID, employeeID, now)
 	})
 }
 

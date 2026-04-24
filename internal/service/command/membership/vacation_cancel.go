@@ -11,23 +11,32 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-// CancelScheduledVacationCommand identifies the future vacation to remove.
+// CancelScheduledVacationPayload identifies the future vacation to remove.
+type CancelScheduledVacationPayload struct {
+	VacationID string `validate:"required,uuid"`
+}
+
+// CancelScheduledVacationCommand = caller + payload.
 type CancelScheduledVacationCommand struct {
-	VacationID uuid.UUID
+	Caller  authz.Caller
+	Payload CancelScheduledVacationPayload
 }
 
 // CancelScheduledVacation removes a not-yet-started vacation. For a
 // vacation whose starts_at has already passed, use ForceEndVacation
 // instead.
 func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd CancelScheduledVacationCommand) error {
-	if cmd.VacationID == uuid.Nil {
-		return oops.In(scopeVacation).
-			Code(ErrCodeVacationIDEmpty).
-			Public("Vacation ID is required.").
-			Errorf("vacation id is empty")
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	vacationID := uuid.MustParse(cmd.Payload.VacationID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Vacation(vacationID)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -35,14 +44,14 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 
 		var vac model.EmployeeVacation
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.VacationID).
+			Where("id = ?", vacationID).
 			First(&vac).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeVacation).
 					Code(ErrCodeVacationNotFound).
 					Public("Vacation not found.").
-					With("vacation_id", cmd.VacationID).
+					With("vacation_id", vacationID).
 					Errorf("vacation not found")
 			}
 			return oops.In(scopeVacation).Code(ErrCodeVacationLoadFailed).Wrap(err)
@@ -56,7 +65,7 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 				Errorf("vacation has already started")
 		}
 
-		if err := tx.Delete(&model.EmployeeVacation{}, "id = ?", cmd.VacationID).Error; err != nil {
+		if err := tx.Delete(&model.EmployeeVacation{}, "id = ?", vacationID).Error; err != nil {
 			return oops.In(scopeVacation).Code(ErrCodeVacationDeleteFailed).Wrap(err)
 		}
 

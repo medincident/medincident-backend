@@ -9,47 +9,60 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-// AssignOrganizationHeadCommand carries the identifiers needed to link
+// AssignOrganizationHeadPayload carries the identifiers needed to link
 // an employee to an organization as its head.
+type AssignOrganizationHeadPayload struct {
+	OrganizationID string `validate:"required,uuid"`
+	EmployeeID     string `validate:"required,uuid"`
+}
+
+// AssignOrganizationHeadCommand = caller + payload.
 type AssignOrganizationHeadCommand struct {
-	OrganizationID uuid.UUID
-	EmployeeID     uuid.UUID
+	Caller  authz.Caller
+	Payload AssignOrganizationHeadPayload
 }
 
 // AssignOrganizationHead links the employee to the organization as its
 // head. The employee must currently belong to that organization
 // (organization_id is denormalized on employees). See spec §8.2 (OrgHead variant).
 func (s *EmployeeService) AssignOrganizationHead(ctx context.Context, cmd AssignOrganizationHeadCommand) error {
-	if err := validateOrgRoleKeys(scopeOrgHead, cmd.OrganizationID, cmd.EmployeeID); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	organizationID := uuid.MustParse(cmd.Payload.OrganizationID)
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Organization(organizationID)); err != nil {
 		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := requireOrganizationExists(tx, scopeOrgHead, cmd.OrganizationID); err != nil {
+		if err := requireOrganizationExists(tx, scopeOrgHead, organizationID); err != nil {
 			return err
 		}
-		emp, err := loadEmployeeForRoleAssignment(tx, scopeOrgHead, cmd.EmployeeID)
+		emp, err := loadEmployeeForRoleAssignment(tx, scopeOrgHead, employeeID)
 		if err != nil {
 			return err
 		}
-		if err := requireEmployeeInOrganization(scopeOrgHead, emp, cmd.OrganizationID); err != nil {
+		if err := requireEmployeeInOrganization(scopeOrgHead, emp, organizationID); err != nil {
 			return err
 		}
 
 		row := model.OrgHead{
-			OrganizationID: cmd.OrganizationID,
-			EmployeeID:     cmd.EmployeeID,
+			OrganizationID: organizationID,
+			EmployeeID:     employeeID,
 		}
 		if err := tx.Create(&row).Error; err != nil {
 			if errors.Is(err, gorm.ErrDuplicatedKey) {
 				return oops.In(scopeOrgHead).
 					Code(ErrCodeOrganizationHeadAlreadyAssigned).
 					Public("This employee is already an organization head.").
-					With("organization_id", cmd.OrganizationID).
-					With("employee_id", cmd.EmployeeID).
+					With("organization_id", organizationID).
+					With("employee_id", employeeID).
 					Wrap(err)
 			}
 			return oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadSaveFailed).Wrap(err)

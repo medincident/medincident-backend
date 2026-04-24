@@ -17,8 +17,11 @@ func TestUpdateEmployeeDepartment_Success_SameClinic(t *testing.T) {
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID:           id,
-		DepartmentID: f.DeptA1b,
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID:           id.String(),
+			DepartmentID: f.DeptA1b.String(),
+		},
 	}))
 }
 
@@ -27,8 +30,11 @@ func TestUpdateEmployeeDepartment_Success_DifferentClinic_SameOrg(t *testing.T) 
 	empID := hireAlice(t, f) // Alice in DeptA1a (Clinic A1)
 	id := mustParseUUID(t, empID)
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID:           id,
-		DepartmentID: f.DeptA2a, // in Clinic A2 — same org A
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID:           id.String(),
+			DepartmentID: f.DeptA2a.String(), // in Clinic A2 — same org A
+		},
 	}))
 
 	var projDeptID uuid.UUID
@@ -41,8 +47,11 @@ func TestUpdateEmployeeDepartment_DifferentOrganization(t *testing.T) {
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
 	err := empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID:           id,
-		DepartmentID: f.DeptB1a, // different org
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID:           id.String(),
+			DepartmentID: f.DeptB1a.String(), // different org
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeDepartmentNotInSameOrganization, oopsCode(t, err))
@@ -53,8 +62,11 @@ func TestUpdateEmployeeDepartment_NoOp(t *testing.T) {
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
 	require.NoError(t, empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID:           id,
-		DepartmentID: f.DeptA1a, // same as current
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID:           id.String(),
+			DepartmentID: f.DeptA1a.String(), // same as current
+		},
 	}))
 	// No-op means projection still shows the original department.
 	var projDeptID uuid.UUID
@@ -67,8 +79,11 @@ func TestUpdateEmployeeDepartment_DepartmentNotFound(t *testing.T) {
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
 	err := empSvc.UpdateDepartment(ctxT(t), membership.UpdateEmployeeDepartmentCommand{
-		ID:           id,
-		DepartmentID: uuidMustV7(),
+		Caller: sysadminCaller,
+		Payload: membership.UpdateEmployeeDepartmentPayload{
+			ID:           id.String(),
+			DepartmentID: uuidMustV7().String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeDepartmentNotFound, oopsCode(t, err))

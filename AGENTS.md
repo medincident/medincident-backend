@@ -1,8 +1,9 @@
 # Agent Instructions — medincident-backend
 
 gRPC command side of a CQRS split. Go 1.26 · gorm v2 · guregu/null/v6 ·
-samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
-`docs/superpowers/specs/2026-04-13-command-service-simplification-design.md`.
+samber/oops · zerolog · dbmate · buf. No DI framework — each binary's
+main.go wires constructors explicitly and drives teardown via `defer`.
+Design lives in `docs/superpowers/specs/2026-04-13-command-service-simplification-design.md`.
 
 ## Hard rules — NOT NEGOTIABLE
 
@@ -11,38 +12,69 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
 2. **Never hand-create migration files.** Always run
    `task migrate:new -- <name>` (which calls `go tool dbmate new`).
    Never use `Write`/`Edit` to create a file under `db/migrations/`.
-3. **Never use string literals in `oops.Code(...)` calls, and never
-   use generic codes.** Every Code is a specific package-level
-   constant (e.g. `ErrCodeAddressTextEmpty`, not `CodeInvalidArgument`)
-   declared in the same file as the code that emits it.
+3. **Never use string literals in `oops.Code(...)` calls.** Every
+   aggregate-specific Code is a package-level constant (e.g.
+   `ErrCodeEmployeeAlreadyHired`, not `CodeAlreadyExists`) declared
+   in the same file as the code that emits it. The sole exceptions
+   are the generic validation codes emitted by
+   `internal/service/validation` — `string_required`,
+   `string_too_short`, `string_too_long`, `uuid_required`,
+   `time_required`, `int_out_of_range`, `float_out_of_range` —
+   exported as `validation.CodeXxx` package constants and produced
+   by the translator, never hand-written.
 4. **Never install Go tools globally.** Every Go tool (buf, dbmate,
    golangci-lint, govulncheck, protoc-gen-go, protoc-gen-go-grpc,
    protoc-gen-grpc-gateway, protoc-gen-openapiv2, protoc-gen-doc) is
    pinned in `go.mod`'s `tool` directive and invoked via `go tool
    <name>`. Adding a new tool: `go get -tool <module>@latest`.
-5. **Never inline invariant limits.** Every max/min/threshold is a
-   named package-level constant (`organizationMaxNameLen`,
-   `minLongitude`, …). `With()` clauses also reference the constant,
-   never the literal.
+5. **Never inline invariant limits in executable code.** Every
+   max/min/threshold used in runtime logic (`With()` clauses,
+   comparisons, `categoryDepth(...)` bounds, etc.) is a named
+   package-level constant (`incidentClassifierMaxDepth`, …), never
+   the literal. The one documented exception is **struct-tag
+   validators** (`validate:"min=4,max=256"`) on command structs: the
+   numeric bounds live inline because struct tags are compile-time
+   strings and the tag is the contract a reviewer reads next to the
+   field it constrains. `With()`, `if`, and any other executable
+   reference to the same bound still uses a constant.
 6. **Never use `fmt.Errorf("%w", ...)` for domain errors.** Use
    `samber/oops`:
    `oops.In("pkg").Code(...).Public("…").With("field", x).Wrap(err)`.
    `errors.New` is OK in tests for sentinel comparisons.
 7. **No interfaces for services and no repository layer.** Services
-   are concrete struct types that take `*gorm.DB` and `*zerolog.Logger`
-   in the constructor. Call gorm directly, open transactions inline
-   via `s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error
-   {...})`.
-8. **Commands and results use plain Go types only.** No `null.X`
-   anywhere outside `internal/model`. Optional fields in commands are
-   `*string` / `*float64` / `*PointInput`. Conversion to `null.X` at
-   the service boundary is inline via `null.StringFromPtr`,
-   `null.FloatFrom`, etc. — no local wrapper helpers.
-9. **Validation at the service boundary, multi-error.** Every command
-   method collects field errors via `errors.Join(errs...)` raw (never
-   `oops.Wrap(errors.Join(...))`). Validators are pure functions in
-   the same package; each failure leaf carries its own oops `Code`.
-   No DB `CHECK` constraints — the DB has only NOT NULL, PK, FK.
+   are concrete struct types that take `*gorm.DB`, `*authz.Authz`,
+   and `*zerolog.Logger` in the constructor. Call gorm directly,
+   open transactions inline via
+   `s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {...})`.
+8. **Commands are `Caller + Payload` DTOs carrying primitives only.**
+   Every write command is a struct with two fields: `Caller authz.Caller`
+   (the trusted identity set by the authn interceptor) and `Payload
+   XxxPayload` (the validated client-facing request). The Payload holds
+   **primitives only** — `string` for every UUID (validated with
+   `validate:"required,uuid"`), `string` for names, `*string` for
+   optional strings, `time.Time` / `*time.Time` for timestamps. Rich
+   types (`uuid.UUID`, `time.Time`) are parsed inside the service via
+   `uuid.MustParse(...)` after validation, then handed to the domain
+   model. No `null.X` anywhere outside `internal/model`; conversion at
+   the service boundary is inline via `null.StringFrom(strings.TrimSpace(...))`,
+   `null.ValueFrom(...)`, etc. — no local wrapper helpers. Handlers
+   become pure translators: they extract `callerID` via
+   `grpcmw.CallerID(ctx)`, wrap it in `authz.Caller{ZitadelUserID: ...}`,
+   and pass proto strings straight through to the Payload.
+9. **Each service method runs validate → parse → authorize → execute.**
+   The first line of every write is `validation.Struct(cmd.Payload)`;
+   the translator walks every `validator.FieldError` and returns an
+   `errors.Join` of oops leaves (each with its own `Code`, `"field"`
+   path, rule, and public message) — never
+   `oops.Wrap(errors.Join(...))`. Immediately after validation the
+   service parses Payload UUIDs into local variables, then calls
+   `s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.X(scopeID))`
+   (or `authz.SystemAdmin` for scope-less operations). Only then does
+   business logic run. Payload fields carry their own rules inline as
+   `validate:"required,min=4,max=256"` / `validate:"omitnil,..."` tags.
+   Every string field is trimmed before validation so whitespace-only
+   input fails `required` / `min`. No DB `CHECK` constraints — the DB
+   has only NOT NULL, PK, FK.
 10. **Events are built inline with named `buildXxxEvent` functions.**
     No generic mappers. Each event has one builder that knows its
     exact proto type and assembles it inline. Each proto event file
@@ -59,8 +91,15 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
 12. **Events carry NEW state only.**
     `OrganizationDetailsChanged.Name` is the new name; consumers
     compute diffs from their own prior projection.
-13. **DI factories no healthcheck.** Providers only wire; no Ping,
-    warm-up, or probe inside the provide function.
+13. **No DI framework.** Each binary's `main.go` wires dependencies
+    explicitly via direct constructor calls and tears them down with
+    `defer`. Shared startup helpers (Postgres open, zerolog build,
+    Zitadel authorizer) live in `internal/bootstrap/`. No samber/do,
+    no wire, no injector — compile-time wiring only. Bootstrap
+    helpers must not call Ping, warm-up, or readiness probes —
+    construction must return immediately so an unreachable external
+    during a rolling deploy cannot hang the boot sequence past the
+    k8s pod-termination grace period.
 14. **Every gorm model field carries an explicit field-level
     permission tag** (`<-:create`, `<-`, `-`). Primary keys, creation
     timestamps, and parent FKs (`Clinic.OrganizationID`,
@@ -81,24 +120,26 @@ samber/do/v2 · samber/oops · zerolog · dbmate · buf. Design lives in
 ## Directory layout
 
 ```
-cmd/command-server/main.go               — entry point (command side), graceful shutdown
-cmd/query-server/main.go                 — entry point (query side, placeholder until Plan 3)
-cmd/gateway-server/main.go               — entry point (HTTP gateway), http.Server + grpc-gateway mux
+cmd/command-server/
+  main.go                                — explicit constructor wiring + graceful shutdown
+  config.go                              — Config struct + readConfig (package main)
+cmd/query-server/
+  main.go                                — readers + NATS identity consumer + gRPC server
+  config.go                              — Config struct + readConfig (package main)
+cmd/gateway-server/
+  main.go                                — two ClientConns + grpc-gateway mux + http.Server
+  config.go                              — Config struct + readConfig (package main)
 internal/
-  config/                                — YAML + go-playground/validator
-    config.go                            — shared types (GRPC/Postgres/Zitadel) + readAndValidate
-    command_server.go                    — CommandServerConfig + ReadCommandServerConfig
-    query_server.go                      — QueryServerConfig + ReadQueryServerConfig
-    gateway_server.go                    — GatewayServerConfig + ReadGatewayServerConfig
-    zerolog.go                           — zerolog config subtree (shared)
-  di/                                    — samber/do/v2 providers (all factories)
-    container.go                         — NewContainer + do.Provide wiring
-    zerolog.go                           — logger construction
-    postgres.go                          — *gorm.DB provider + Shutdown hook
-    grpc.go                              — *grpc.Server wrapper + GracefulStop hook
-    services.go                          — service providers
-    gateway_container.go                 — NewGatewayContainer + do.Provide wiring
-    handler.go                           — handler providers
+  bootstrap/                             — shared startup helpers (no DI framework)
+    zerolog.go                           — BuildZerolog(cfg) → *zerolog.Logger + cleanup
+    postgres.go                          — OpenPostgres(ctx, cfg, logger) → *gorm.DB + cleanup
+    zitadel.go                           — NewZitadelAuthorizer + NewZitadelService
+  config/                                — shared config subtypes only (binary-specific
+                                            top-level configs live in cmd/<name>/config.go)
+    config.go                            — GRPCServerConfig / PostgresConfig / ZitadelConfig
+                                            + ReadAndValidate (YAML + env-expand + validator)
+    zerolog.go                           — ZerologConfig subtree
+    nats.go                              — NATSConfig (query-server uses it)
   model/                                 — gorm models. ONLY place `null.X` lives.
   middleware/
     grpcmw/                              — gRPC interceptors
@@ -120,15 +161,19 @@ internal/
     command/membership/                  — write-side roles/employees/vacations
     command/incident/classifier/         — write-side incident category/type
     command/outbox/                      — outbox.Publish (transactional outbox)
-  handler/orgstructure/                  — gRPC handler (command side), one file per RPC
-    command.go                           — OrgStructureCommandService impl + proto helpers
-    organization_{create,update_details,update_legal_address}.go
-    clinic_{create,update_details,update_physical_address}.go
-    department_{create,update_details}.go
-  handler/membership/command.go + per-RPC files
-  handler/incident/classifier/command.go + per-RPC files
-  handler/gateway/                       — HTTP handlers served by gateway-server
-    health.go                            — /healthz + /readyz
+  handler/
+    command/                             — gRPC command-side handlers (used by command-server)
+      orgstructure/                      — one file per RPC: command.go + organization_*, clinic_*, department_* method files
+      membership/                        — command.go + errors.go + ~25 method files
+      incident/classifier/               — command.go + per-RPC files for categories and types
+    query/                               — gRPC query-side handlers (used by query-server)
+      orgstructure/                      — query.go + ids.go
+      membership/                        — query.go + ids.go
+      incident/classifier/               — query.go (self-contained parsers for Category/Type + Organization)
+      identity/                          — query.go
+      stats/                             — query.go
+    gateway/                             — HTTP handlers served by gateway-server
+      health.go                          — /healthz + /readyz
 api/proto/                               — proto contracts (source of truth)
   buf.yaml                               — module config (lint, breaking, deps)
   event/v1/envelope.proto                — Envelope (transport wrapper)

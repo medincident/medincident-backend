@@ -12,37 +12,46 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-// StartVacationNowCommand carries everything the service needs to
+// StartVacationNowPayload carries everything the service needs to
 // start a vacation at the current time.
+type StartVacationNowPayload struct {
+	EmployeeID string     `validate:"required,uuid"`
+	EndsAt     *time.Time `validate:"omitnil"`
+}
+
+// StartVacationNowCommand = caller + payload.
 type StartVacationNowCommand struct {
-	EmployeeID uuid.UUID
-	EndsAt     *time.Time
+	Caller  authz.Caller
+	Payload StartVacationNowPayload
 }
 
 // StartVacationNowResult holds the ID of the newly created vacation.
 type StartVacationNowResult struct {
-	ID uuid.UUID
+	ID uuid.UUID `validate:"required"`
 }
 
 // StartVacationNow starts a vacation at the current time. EndsAt may
 // be nil (unlimited). Overlap with existing vacations of the same
 // employee is rejected by the exclusion constraint on the table.
 func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacationNowCommand) (StartVacationNowResult, error) {
-	if cmd.EmployeeID == uuid.Nil {
-		return StartVacationNowResult{}, oops.In(scopeVacation).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id is empty")
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return StartVacationNowResult{}, err
+	}
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Employee(employeeID)); err != nil {
+		return StartVacationNowResult{}, err
 	}
 
 	var result StartVacationNowResult
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		now := time.Now().UTC()
 
-		if cmd.EndsAt != nil && !cmd.EndsAt.After(now) {
+		if cmd.Payload.EndsAt != nil && !cmd.Payload.EndsAt.After(now) {
 			return oops.In(scopeVacation).
 				Code(ErrCodeVacationEndBeforeStart).
 				Public("Vacation end must be after its start.").
@@ -55,12 +64,12 @@ func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacatio
 		}
 		vac := model.EmployeeVacation{
 			ID:         id,
-			EmployeeID: cmd.EmployeeID,
+			EmployeeID: employeeID,
 			StartsAt:   now,
-			EndsAt:     null.TimeFromPtr(cmd.EndsAt),
+			EndsAt:     null.TimeFromPtr(cmd.Payload.EndsAt),
 		}
 		if err := tx.Create(&vac).Error; err != nil {
-			return mapVacationInsertError(err, cmd.EmployeeID)
+			return mapVacationInsertError(err, employeeID)
 		}
 
 		if err := projector.VacationStarted(tx, &vac); err != nil {

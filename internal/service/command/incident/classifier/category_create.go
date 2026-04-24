@@ -11,14 +11,16 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
 // Error codes emitted by CreateIncidentCategory and shared with other
-// category service methods.
+// category service methods. Validation-level codes (required, length
+// bounds) are generic and live in internal/validation.
 const (
 	ErrCodeIncidentCategoryIDGenerationFailed         = "incident_category_id_generation_failed"
-	ErrCodeIncidentCategoryIDEmpty                    = "incident_category_id_empty"
 	ErrCodeIncidentCategorySaveFailed                 = "incident_category_save_failed"
 	ErrCodeIncidentCategoryLoadFailed                 = "incident_category_load_failed"
 	ErrCodeIncidentCategoryNotFound                   = "incident_category_not_found"
@@ -29,12 +31,18 @@ const (
 	ErrCodeIncidentCategoryMaxDepthExceeded           = "incident_category_max_depth_exceeded"
 )
 
-// CreateIncidentCategoryCommand is the input of IncidentCategoryService.Create.
+// CreateIncidentCategoryPayload is the validated client-facing payload.
+type CreateIncidentCategoryPayload struct {
+	OrganizationID   string  `validate:"required,uuid"`
+	ParentCategoryID *string `validate:"omitnil,uuid"`
+	Name             string  `validate:"required,min=2,max=256"`
+	Description      *string `validate:"omitnil,min=8,max=2048"`
+}
+
+// CreateIncidentCategoryCommand = caller + payload.
 type CreateIncidentCategoryCommand struct {
-	OrganizationID   uuid.UUID
-	ParentCategoryID *uuid.UUID
-	Name             string
-	Description      *string
+	Caller  authz.Caller
+	Payload CreateIncidentCategoryPayload
 }
 
 // CreateIncidentCategoryResult is the output of IncidentCategoryService.Create.
@@ -70,15 +78,17 @@ func (s *IncidentCategoryService) Create(
 	ctx context.Context,
 	cmd CreateIncidentCategoryCommand,
 ) (CreateIncidentCategoryResult, error) {
-	var errs []error
-	if err := validateIncidentCategoryName(cmd.Name); err != nil {
-		errs = append(errs, err)
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return CreateIncidentCategoryResult{}, err
 	}
-	if err := validateIncidentCategoryDescription(cmd.Description); err != nil {
-		errs = append(errs, err)
+	orgID := uuid.MustParse(cmd.Payload.OrganizationID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Organization(orgID)); err != nil {
+		return CreateIncidentCategoryResult{}, err
 	}
-	if len(errs) > 0 {
-		return CreateIncidentCategoryResult{}, errors.Join(errs...)
+	var parentID *uuid.UUID
+	if cmd.Payload.ParentCategoryID != nil {
+		p := uuid.MustParse(*cmd.Payload.ParentCategoryID)
+		parentID = &p
 	}
 
 	id, err := uuid.NewV7()
@@ -91,13 +101,15 @@ func (s *IncidentCategoryService) Create(
 
 	cat := model.IncidentCategory{
 		ID:             id,
-		OrganizationID: cmd.OrganizationID,
-		Name:           strings.TrimSpace(cmd.Name),
-		Description:    null.StringFromPtr(trimmedStringPtr(cmd.Description)),
+		OrganizationID: orgID,
+		Name:           strings.TrimSpace(cmd.Payload.Name),
 		IsActive:       true,
 	}
-	if cmd.ParentCategoryID != nil {
-		cat.ParentCategoryID = uuid.NullUUID{UUID: *cmd.ParentCategoryID, Valid: true}
+	if cmd.Payload.Description != nil {
+		cat.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
+	}
+	if parentID != nil {
+		cat.ParentCategoryID = uuid.NullUUID{UUID: *parentID, Valid: true}
 	}
 
 	var result CreateIncidentCategoryResult
@@ -105,32 +117,32 @@ func (s *IncidentCategoryService) Create(
 		// Serialise all classifier tree mutations for this organisation so
 		// concurrent Create/Move/Delete in the same org can't race the
 		// depth / cycle / uniqueness checks.
-		if err := lockClassifierOrg(tx, cmd.OrganizationID); err != nil {
+		if err := lockClassifierOrg(tx, orgID); err != nil {
 			return err
 		}
 
-		if cmd.ParentCategoryID != nil {
+		if parentID != nil {
 			var parent model.IncidentCategory
-			if err := tx.First(&parent, "id = ?", *cmd.ParentCategoryID).Error; err != nil {
+			if err := tx.First(&parent, "id = ?", *parentID).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					return oops.In("services.incident.classifier.category").
 						Code(ErrCodeIncidentCategoryParentNotFound).
 						Public("Parent incident category not found.").
-						With("parent_category_id", *cmd.ParentCategoryID).
+						With("parent_category_id", *parentID).
 						Wrap(err)
 				}
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryLoadFailed).
-					With("parent_category_id", *cmd.ParentCategoryID).
+					With("parent_category_id", *parentID).
 					Wrap(err)
 			}
-			if parent.OrganizationID != cmd.OrganizationID {
+			if parent.OrganizationID != orgID {
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryParentOrganizationMismatch).
 					Public("Parent incident category belongs to a different organization.").
 					With("parent_category_id", parent.ID).
 					With("parent_organization_id", parent.OrganizationID).
-					With("organization_id", cmd.OrganizationID).
+					With("organization_id", orgID).
 					Errorf("organization mismatch")
 			}
 			// Creating under an inactive parent is forbidden: the child
@@ -167,7 +179,7 @@ func (s *IncidentCategoryService) Create(
 				return oops.In("services.incident.classifier.category").
 					Code(ErrCodeIncidentCategoryNameConflict).
 					Public("An active incident category with this name already exists.").
-					With("organization_id", cmd.OrganizationID).
+					With("organization_id", orgID).
 					With("name", cat.Name).
 					Wrap(err)
 			} else if errors.Is(err, gorm.ErrForeignKeyViolated) {

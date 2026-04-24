@@ -17,7 +17,10 @@ func TestTerminateEmployee_Success_NoVacations(t *testing.T) {
 	f := takeFixture(t)
 	empID := hireAlice(t, f)
 	id := mustParseUUID(t, empID)
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: id}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: id.String()},
+	}))
 
 	var count int64
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.employees WHERE id = ?`, id).Scan(&count).Error)
@@ -44,7 +47,10 @@ func TestTerminateEmployee_Success_WithVacations_CascadeDeletesAll(t *testing.T)
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.employee_vacations WHERE employee_id = ?`, id).Scan(&vCount).Error)
 	require.Equal(t, int64(1), vCount)
 
-	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: id}))
+	require.NoError(t, empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: id.String()},
+	}))
 
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.employee_vacations WHERE employee_id = ?`, id).Scan(&vCount).Error)
 	assert.Equal(t, int64(0), vCount, "cascade delete should have removed the vacation")
@@ -52,7 +58,10 @@ func TestTerminateEmployee_Success_WithVacations_CascadeDeletesAll(t *testing.T)
 
 func TestTerminateEmployee_NotFound(t *testing.T) {
 	_ = takeFixture(t)
-	err := empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{ID: uuidMustV7()})
+	err := empSvc.Terminate(ctxT(t), membership.TerminateEmployeeCommand{
+		Caller:  sysadminCaller,
+		Payload: membership.TerminateEmployeePayload{ID: uuidMustV7().String()},
+	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeEmployeeNotFound, oopsCode(t, err))
 }

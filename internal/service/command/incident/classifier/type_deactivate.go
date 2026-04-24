@@ -11,35 +11,50 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-type DeactivateIncidentTypeCommand struct {
-	TypeID uuid.UUID
+// DeactivateIncidentTypePayload identifies the incident type to
+// deactivate.
+type DeactivateIncidentTypePayload struct {
+	TypeID string `validate:"required,uuid"`
 }
 
+// DeactivateIncidentTypeCommand = caller + payload.
+type DeactivateIncidentTypeCommand struct {
+	Caller  authz.Caller
+	Payload DeactivateIncidentTypePayload
+}
+
+// DeactivateIncidentTypeResult is empty.
 type DeactivateIncidentTypeResult struct{}
 
 func (s *IncidentTypeService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateIncidentTypeCommand,
 ) (DeactivateIncidentTypeResult, error) {
-	if err := requireTypeID(cmd.TypeID); err != nil {
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return DeactivateIncidentTypeResult{}, err
+	}
+	typeID := uuid.MustParse(cmd.Payload.TypeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.IncidentType(typeID)); err != nil {
 		return DeactivateIncidentTypeResult{}, err
 	}
 	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var row model.IncidentType
 		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			First(&row, "id = ?", cmd.TypeID).Error; err != nil {
+			First(&row, "id = ?", typeID).Error; err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In("services.incident.classifier.type").
 					Code(ErrCodeIncidentTypeNotFound).
 					Public("Incident type not found.").
-					With("incident_type_id", cmd.TypeID).
+					With("incident_type_id", typeID).
 					Wrap(err)
 			}
 			return oops.In("services.incident.classifier.type").
 				Code(ErrCodeIncidentTypeLoadFailed).
-				With("incident_type_id", cmd.TypeID).
+				With("incident_type_id", typeID).
 				Wrap(err)
 		}
 

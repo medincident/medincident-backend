@@ -37,13 +37,11 @@ func TestConsumer_UserHumanAdded_EndToEnd(t *testing.T) {
 	require.NoError(t, err)
 
 	projector := identityread.NewProjector(testDB, &logger)
-	cfg := &config.QueryServerConfig{
-		NATS: config.QueryServerNATSConfig{
-			URL:         natsURL,
-			Stream:      "zitadel",
-			Subjects:    []string{"zitadel.>"},
-			DurableName: "test-query-server-identity",
-		},
+	cfg := &config.NATSConfig{
+		URL:         natsURL,
+		Stream:      "zitadel",
+		Subjects:    []string{"zitadel.>"},
+		DurableName: "test-query-server-identity",
 	}
 	consumer := identityread.NewConsumer(js, cfg, projector, &logger)
 	require.NoError(t, consumer.Start(ctx))

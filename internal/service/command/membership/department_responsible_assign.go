@@ -9,60 +9,60 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-// AssignDepartmentResponsibleCommand carries the identifiers needed to
+// AssignDepartmentResponsiblePayload carries the identifiers needed to
 // link an employee to a department as its responsible.
+type AssignDepartmentResponsiblePayload struct {
+	DepartmentID string `validate:"required,uuid"`
+	EmployeeID   string `validate:"required,uuid"`
+}
+
+// AssignDepartmentResponsibleCommand = caller + payload.
 type AssignDepartmentResponsibleCommand struct {
-	DepartmentID uuid.UUID
-	EmployeeID   uuid.UUID
+	Caller  authz.Caller
+	Payload AssignDepartmentResponsiblePayload
 }
 
 // AssignDepartmentResponsible links the employee to the department as
 // a responsible. The employee must currently work in the department.
 // See spec §8.2.
 func (s *EmployeeService) AssignDepartmentResponsible(ctx context.Context, cmd AssignDepartmentResponsibleCommand) error {
-	var errs []error
-	if cmd.DepartmentID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).
-			Code(ErrCodeDepartmentIDEmpty).
-			Public("Department ID is required.").
-			Errorf("department id empty"))
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
 	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	departmentID := uuid.MustParse(cmd.Payload.DepartmentID)
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Department(departmentID)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := requireDepartmentExists(tx, scopeDepartmentResponsible, cmd.DepartmentID); err != nil {
+		if err := requireDepartmentExists(tx, scopeDepartmentResponsible, departmentID); err != nil {
 			return err
 		}
-		emp, err := loadEmployeeForRoleAssignment(tx, scopeDepartmentResponsible, cmd.EmployeeID)
+		emp, err := loadEmployeeForRoleAssignment(tx, scopeDepartmentResponsible, employeeID)
 		if err != nil {
 			return err
 		}
-		if err := requireEmployeeInDepartment(scopeDepartmentResponsible, emp, cmd.DepartmentID); err != nil {
+		if err := requireEmployeeInDepartment(scopeDepartmentResponsible, emp, departmentID); err != nil {
 			return err
 		}
 
 		row := model.DepartmentResponsible{
-			DepartmentID: cmd.DepartmentID,
-			EmployeeID:   cmd.EmployeeID,
+			DepartmentID: departmentID,
+			EmployeeID:   employeeID,
 		}
 		if err := tx.Create(&row).Error; err != nil {
 			if errors.Is(err, gorm.ErrDuplicatedKey) {
 				return oops.In(scopeDepartmentResponsible).
 					Code(ErrCodeDepartmentResponsibleAlreadyAssigned).
 					Public("This employee is already a department responsible.").
-					With("department_id", cmd.DepartmentID).
-					With("employee_id", cmd.EmployeeID).
+					With("department_id", departmentID).
+					With("employee_id", employeeID).
 					Wrap(err)
 			}
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleSaveFailed).Wrap(err)

@@ -11,12 +11,20 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-// TerminateEmployeeCommand carries the ID of the employee to remove.
+// TerminateEmployeePayload carries the ID of the employee to remove.
+type TerminateEmployeePayload struct {
+	ID string `validate:"required,uuid"`
+}
+
+// TerminateEmployeeCommand = caller + payload.
 type TerminateEmployeeCommand struct {
-	ID uuid.UUID
+	Caller  authz.Caller
+	Payload TerminateEmployeePayload
 }
 
 // Terminate deletes the employee row. ON DELETE CASCADE on
@@ -24,11 +32,12 @@ type TerminateEmployeeCommand struct {
 // same statement. Publishes EmployeeTerminated with an empty payload
 // (aggregate_id in the envelope is sufficient for consumers).
 func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCommand) error {
-	if cmd.ID == uuid.Nil {
-		return oops.In(scopeEmployee).
-			Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").
-			Errorf("employee id is empty")
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
+	}
+	employeeID := uuid.MustParse(cmd.Payload.ID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Employee(employeeID)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -36,14 +45,14 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 
 		var emp model.Employee
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("id = ?", cmd.ID).
+			Where("id = ?", employeeID).
 			First(&emp).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeEmployee).
 					Code(ErrCodeEmployeeNotFound).
 					Public("Employee not found.").
-					With("employee_id", cmd.ID).
+					With("employee_id", employeeID).
 					Errorf("employee not found")
 			}
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
@@ -84,7 +93,7 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			return err
 		}
 
-		if err := tx.Delete(&model.Employee{}, "id = ?", cmd.ID).Error; err != nil {
+		if err := tx.Delete(&model.Employee{}, "id = ?", employeeID).Error; err != nil {
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
 		}
 

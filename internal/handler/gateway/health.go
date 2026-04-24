@@ -1,7 +1,7 @@
 // Package gateway holds the HTTP handlers served directly by
 // gateway-server (liveness + readiness probes). The grpc-gateway mux,
 // the middleware chain, and the http.Server factory all live in
-// internal/di — construction belongs there.
+// cmd/gateway-server/main.go — construction belongs there.
 package gateway
 
 import (

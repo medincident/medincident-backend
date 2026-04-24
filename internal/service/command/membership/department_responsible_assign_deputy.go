@@ -11,77 +11,78 @@ import (
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-// AssignDepartmentResponsibleDeputyCommand carries the identifiers
+// AssignDepartmentResponsibleDeputyPayload carries the identifiers
 // needed to set the deputy slot on an existing DR role.
+type AssignDepartmentResponsibleDeputyPayload struct {
+	DepartmentID     string `validate:"required,uuid"`
+	EmployeeID       string `validate:"required,uuid"`
+	DeputyEmployeeID string `validate:"required,uuid"`
+}
+
+// AssignDepartmentResponsibleDeputyCommand = caller + payload.
 type AssignDepartmentResponsibleDeputyCommand struct {
-	DepartmentID     uuid.UUID
-	EmployeeID       uuid.UUID
-	DeputyEmployeeID uuid.UUID
+	Caller  authz.Caller
+	Payload AssignDepartmentResponsibleDeputyPayload
 }
 
 // AssignDepartmentResponsibleDeputy sets the deputy slot on an
 // existing DR role. See spec §8.5.
 func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context, cmd AssignDepartmentResponsibleDeputyCommand) error {
-	var errs []error
-	if cmd.DepartmentID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentIDEmpty).
-			Public("Department ID is required.").Errorf("department id empty"))
+	if err := validation.Struct(cmd.Payload); err != nil {
+		return err
 	}
-	if cmd.EmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).Code(ErrCodeEmployeeIDEmpty).
-			Public("Employee ID is required.").Errorf("employee id empty"))
-	}
-	if cmd.DeputyEmployeeID == uuid.Nil {
-		errs = append(errs, oops.In(scopeDepartmentResponsible).Code(ErrCodeDeputyEmployeeIDEmpty).
-			Public("Deputy employee ID is required.").Errorf("deputy id empty"))
-	}
-	if len(errs) > 0 {
-		return errors.Join(errs...)
+	departmentID := uuid.MustParse(cmd.Payload.DepartmentID)
+	employeeID := uuid.MustParse(cmd.Payload.EmployeeID)
+	deputyEmployeeID := uuid.MustParse(cmd.Payload.DeputyEmployeeID)
+	if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.Department(departmentID)); err != nil {
+		return err
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var row model.DepartmentResponsible
 		err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
-			Where("department_id = ? AND employee_id = ?", cmd.DepartmentID, cmd.EmployeeID).
+			Where("department_id = ? AND employee_id = ?", departmentID, employeeID).
 			First(&row).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeDepartmentResponsible).
 					Code(ErrCodeDepartmentResponsibleNotFound).
 					Public("Department responsible not found.").
-					With("department_id", cmd.DepartmentID).
-					With("employee_id", cmd.EmployeeID).
+					With("department_id", departmentID).
+					With("employee_id", employeeID).
 					Errorf("not found")
 			}
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleLoadFailed).Wrap(err)
 		}
 
 		var deputy model.Employee
-		err = tx.Where("id = ?", cmd.DeputyEmployeeID).First(&deputy).Error
+		err = tx.Where("id = ?", deputyEmployeeID).First(&deputy).Error
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return oops.In(scopeDepartmentResponsible).
 					Code(ErrCodeDeputyNotFound).
 					Public("Deputy employee not found.").
-					With("deputy_employee_id", cmd.DeputyEmployeeID).
+					With("deputy_employee_id", deputyEmployeeID).
 					Errorf("deputy not found")
 			}
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeEmployeeLoadFailed).Wrap(err)
 		}
 
-		if deputy.DepartmentID != cmd.DepartmentID {
+		if deputy.DepartmentID != departmentID {
 			return oops.In(scopeDepartmentResponsible).
 				Code(ErrCodeDeputyNotInDepartment).
 				Public("Deputy employee does not belong to this department.").
 				With("deputy_department_id", deputy.DepartmentID).
-				With("target_department_id", cmd.DepartmentID).
+				With("target_department_id", departmentID).
 				Errorf("deputy not in department")
 		}
 
-		if cmd.DeputyEmployeeID == cmd.EmployeeID {
+		if deputyEmployeeID == employeeID {
 			return oops.In(scopeDepartmentResponsible).
 				Code(ErrCodeDeputyIsHolder).
 				Public("Deputy cannot be the same employee as the role holder.").
@@ -96,7 +97,7 @@ func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context,
 				Errorf("deputy already assigned")
 		}
 
-		row.DeputyEmployeeID = null.ValueFrom(cmd.DeputyEmployeeID)
+		row.DeputyEmployeeID = null.ValueFrom(deputyEmployeeID)
 		if err := tx.Save(&row).Error; err != nil {
 			return oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleSaveFailed).Wrap(err)
 		}

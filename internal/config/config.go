@@ -1,12 +1,17 @@
-// Package config defines the YAML-backed runtime configuration for the
-// command-server, query-server, and gateway-server binaries.
+// Package config holds configuration subtypes shared across the three
+// binaries (command-server, query-server, gateway-server) and the
+// YAML-load + env-expand + validator pipeline that ReadAndValidate
+// implements.
+//
+// Binary-specific top-level configs (e.g. the command-server Config
+// struct that wires Server/Postgres/Zerolog/Zitadel together) live
+// inside each binary's cmd/<name>/config.go as package main — they
+// are not reused across binaries and do not belong here.
 //
 // File layout:
-//   - config.go          — types and helpers shared by all binaries
-//   - command_server.go  — CommandServerConfig and its loader
-//   - query_server.go    — QueryServerConfig and its loader
-//   - gateway_server.go  — GatewayServerConfig and its loader
-//   - zerolog.go         — zerolog config subtree (shared)
+//   - config.go   — shared subtypes (GRPC, Postgres, Zitadel) + ReadAndValidate
+//   - zerolog.go  — ZerologConfig subtree
+//   - nats.go     — NATSConfig (currently only query-server uses it)
 package config
 
 import (
@@ -17,7 +22,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Error codes emitted by the shared readAndValidate pipeline.
+// Error codes emitted by the shared ReadAndValidate pipeline.
 const (
 	ErrCodeConfigReadFailed      = "read_failed"
 	ErrCodeConfigUnmarshalFailed = "unmarshal_failed"
@@ -52,11 +57,11 @@ type ZitadelConfig struct {
 	KeyPath string `yaml:"key_path" validate:"required,file"`
 }
 
-// readAndValidate is the shared YAML-load + env-expand + validator
+// ReadAndValidate is the shared YAML-load + env-expand + validator
 // pipeline used by both server-config loaders. It writes into the
 // pointed-to struct and returns oops-wrapped errors with the path
 // attached as context.
-func readAndValidate(path string, dst any) error {
+func ReadAndValidate(path string, dst any) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return oops.

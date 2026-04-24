@@ -17,8 +17,11 @@ func TestAssignOrganizationAdmin_Success(t *testing.T) {
 	id := mustParseUUID(t, empID)
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     id,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     id.String(),
+		},
 	}))
 
 	var count int64
@@ -35,8 +38,11 @@ func TestAssignOrganizationAdmin_OrganizationNotFound(t *testing.T) {
 	id := mustParseUUID(t, empID)
 
 	err := empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: uuidMustV7(),
-		EmployeeID:     id,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: uuidMustV7().String(),
+			EmployeeID:     id.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeOrganizationNotFound, oopsCode(t, err))
@@ -46,8 +52,11 @@ func TestAssignOrganizationAdmin_EmployeeNotFound(t *testing.T) {
 	f := takeFixture(t)
 
 	err := empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     uuidMustV7(),
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     uuidMustV7().String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeEmployeeNotFound, oopsCode(t, err))
@@ -59,8 +68,11 @@ func TestAssignOrganizationAdmin_EmployeeNotInOrganization(t *testing.T) {
 
 	// Target OrgB — Alice is not in that organization.
 	err := empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgB,
-		EmployeeID:     mustParseUUID(t, empID),
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgB.String(),
+			EmployeeID:     mustParseUUID(t, empID).String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeEmployeeNotInOrganization, oopsCode(t, err))
@@ -72,13 +84,19 @@ func TestAssignOrganizationAdmin_AlreadyAssigned(t *testing.T) {
 	id := mustParseUUID(t, empID)
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     id,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     id.String(),
+		},
 	}))
 
 	err := empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     id,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     id.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeOrganizationAdminAlreadyAssigned, oopsCode(t, err))
@@ -90,13 +108,19 @@ func TestRevokeOrganizationAdmin_Success_NoDeputy(t *testing.T) {
 	id := mustParseUUID(t, empID)
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     id,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     id.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.RevokeOrganizationAdmin(ctxT(t), membership.RevokeOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     id,
+		Caller: sysadminCaller,
+		Payload: membership.RevokeOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     id.String(),
+		},
 	}))
 
 	var count int64
@@ -113,18 +137,27 @@ func TestRevokeOrganizationAdmin_Success_WithDeputy_EmitsDeputyRemovedFirst(t *t
 	bobID := mustParseUUID(t, hireBob(t, f))
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 	require.NoError(t, empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: bobID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.RevokeOrganizationAdmin(ctxT(t), membership.RevokeOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.RevokeOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 }
 
@@ -133,8 +166,11 @@ func TestRevokeOrganizationAdmin_NotFound(t *testing.T) {
 	empID := hireAlice(t, f)
 
 	err := empSvc.RevokeOrganizationAdmin(ctxT(t), membership.RevokeOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     mustParseUUID(t, empID),
+		Caller: sysadminCaller,
+		Payload: membership.RevokeOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     mustParseUUID(t, empID).String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeOrganizationAdminNotFound, oopsCode(t, err))
@@ -146,14 +182,20 @@ func TestAssignOrganizationAdminDeputy_Success(t *testing.T) {
 	bobID := mustParseUUID(t, hireBob(t, f))
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: bobID.String(),
+		},
 	}))
 }
 
@@ -163,9 +205,12 @@ func TestAssignOrganizationAdminDeputy_RoleNotFound(t *testing.T) {
 	bobID := mustParseUUID(t, hireBob(t, f))
 
 	err := empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: bobID.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeOrganizationAdminNotFound, oopsCode(t, err))
@@ -176,14 +221,20 @@ func TestAssignOrganizationAdminDeputy_DeputyNotFound(t *testing.T) {
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 
 	err := empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: uuidMustV7(),
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: uuidMustV7().String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeDeputyNotFound, oopsCode(t, err))
@@ -194,14 +245,20 @@ func TestAssignOrganizationAdminDeputy_DeputyIsHolder(t *testing.T) {
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 
 	err := empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: aliceID.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeDeputyIsHolder, oopsCode(t, err))
@@ -213,22 +270,31 @@ func TestAssignOrganizationAdminDeputy_DeputyNotInOrganization(t *testing.T) {
 
 	// Carol is hired into DeptB1a (OrgB — different organization).
 	carolRes, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		ZitadelUserID: testUserCarolID,
-		DepartmentID:  f.DeptB1a,
+		Caller: sysadminCaller,
+		Payload: membership.HireEmployeePayload{
+			ZitadelUserID: testUserCarolID,
+			DepartmentID:  f.DeptB1a.String(),
+		},
 	})
 	require.NoError(t, err)
 	carolID := carolRes.ID
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 
 	// Carol is in OrgB but Alice's OrgAdmin role is in OrgA — expect error.
 	err = empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: carolID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: carolID.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeDeputyNotInOrganization, oopsCode(t, err))
@@ -240,19 +306,28 @@ func TestAssignOrganizationAdminDeputy_DeputyAlreadyAssigned(t *testing.T) {
 	bobID := mustParseUUID(t, hireBob(t, f))
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 	require.NoError(t, empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: bobID.String(),
+		},
 	}))
 
 	err := empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: bobID.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeDeputyAlreadyAssigned, oopsCode(t, err))
@@ -264,18 +339,27 @@ func TestRemoveOrganizationAdminDeputy_Success(t *testing.T) {
 	bobID := mustParseUUID(t, hireBob(t, f))
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 	require.NoError(t, empSvc.AssignOrganizationAdminDeputy(ctxT(t), membership.AssignOrganizationAdminDeputyCommand{
-		OrganizationID:   f.OrgA,
-		EmployeeID:       aliceID,
-		DeputyEmployeeID: bobID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminDeputyPayload{
+			OrganizationID:   f.OrgA.String(),
+			EmployeeID:       aliceID.String(),
+			DeputyEmployeeID: bobID.String(),
+		},
 	}))
 
 	require.NoError(t, empSvc.RemoveOrganizationAdminDeputy(ctxT(t), membership.RemoveOrganizationAdminDeputyCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.RemoveOrganizationAdminDeputyPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 }
 
@@ -284,13 +368,19 @@ func TestRemoveOrganizationAdminDeputy_DeputyNotAssigned(t *testing.T) {
 	aliceID := mustParseUUID(t, hireAlice(t, f))
 
 	require.NoError(t, empSvc.AssignOrganizationAdmin(ctxT(t), membership.AssignOrganizationAdminCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.AssignOrganizationAdminPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	}))
 
 	err := empSvc.RemoveOrganizationAdminDeputy(ctxT(t), membership.RemoveOrganizationAdminDeputyCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     aliceID,
+		Caller: sysadminCaller,
+		Payload: membership.RemoveOrganizationAdminDeputyPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     aliceID.String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeDeputyNotAssigned, oopsCode(t, err))
@@ -301,8 +391,11 @@ func TestRemoveOrganizationAdminDeputy_RoleNotFound(t *testing.T) {
 	empID := hireAlice(t, f)
 
 	err := empSvc.RemoveOrganizationAdminDeputy(ctxT(t), membership.RemoveOrganizationAdminDeputyCommand{
-		OrganizationID: f.OrgA,
-		EmployeeID:     mustParseUUID(t, empID),
+		Caller: sysadminCaller,
+		Payload: membership.RemoveOrganizationAdminDeputyPayload{
+			OrganizationID: f.OrgA.String(),
+			EmployeeID:     mustParseUUID(t, empID).String(),
+		},
 	})
 	require.Error(t, err)
 	assert.Equal(t, membership.ErrCodeOrganizationAdminNotFound, oopsCode(t, err))

@@ -154,7 +154,7 @@ func EmployeeTerminated(tx *gorm.DB, e *model.Employee, terminatedAt time.Time) 
 func EmployeeDepartmentChanged(tx *gorm.DB, e *model.Employee) error {
 	type prior struct {
 		ClinicID     *uuid.UUID
-		DepartmentID uuid.UUID
+		DepartmentID uuid.UUID `validate:"required"`
 	}
 	var pre prior
 	if err := tx.Raw(
