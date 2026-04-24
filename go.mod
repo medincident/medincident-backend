@@ -7,7 +7,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.29.0
 	github.com/guregu/null/v6 v6.0.0
-	github.com/jackc/pgx/v5 v5.6.0
+	github.com/jackc/pgx/v5 v5.9.2
 	github.com/medincident/medincident-zitadel-actions v0.0.3
 	github.com/nats-io/nats.go v1.51.0
 	github.com/rs/cors v1.11.1
@@ -18,8 +18,8 @@ require (
 	github.com/testcontainers/testcontainers-go v0.42.0
 	github.com/testcontainers/testcontainers-go/modules/nats v0.42.0
 	github.com/testcontainers/testcontainers-go/modules/postgres v0.42.0
-	github.com/zitadel/oidc/v3 v3.47.2
-	github.com/zitadel/zitadel-go/v3 v3.28.0
+	github.com/zitadel/oidc/v3 v3.47.5
+	github.com/zitadel/zitadel-go/v3 v3.29.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20260414002931-afd174a4e478
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260414002931-afd174a4e478
 	google.golang.org/grpc v1.80.0
