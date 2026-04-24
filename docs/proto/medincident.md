@@ -2339,9 +2339,9 @@ Type mirrors projections.incident_types row.
 | name | [string](#string) |  |  |
 | description | [string](#string) | optional |  |
 | is_active | [bool](#bool) |  |  |
-| is_allowed_for_patients | [bool](#bool) |  |  |
 | created_at | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
+| is_allowed_for_patients | [bool](#bool) |  |  |
 
 
 

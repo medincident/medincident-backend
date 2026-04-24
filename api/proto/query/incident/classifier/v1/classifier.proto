@@ -63,9 +63,9 @@ message Type {
   string name = 4;
   optional string description = 5;
   bool is_active = 6;
-  bool is_allowed_for_patients = 7;
-  string created_at = 8;
-  string updated_at = 9;
+  string created_at = 7;
+  string updated_at = 8;
+  bool is_allowed_for_patients = 9;
 }
 
 message GetCategoryRequest {

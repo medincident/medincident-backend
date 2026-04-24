@@ -3354,14 +3354,14 @@
         "isActive": {
           "type": "boolean"
         },
-        "isAllowedForPatients": {
-          "type": "boolean"
-        },
         "createdAt": {
           "type": "string"
         },
         "updatedAt": {
           "type": "string"
+        },
+        "isAllowedForPatients": {
+          "type": "boolean"
         }
       },
       "description": "Type mirrors projections.incident_types row."

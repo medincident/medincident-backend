@@ -132,9 +132,9 @@ type Type struct {
 	Name                 string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	Description          *string                `protobuf:"bytes,5,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	IsActive             bool                   `protobuf:"varint,6,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
-	IsAllowedForPatients bool                   `protobuf:"varint,7,opt,name=is_allowed_for_patients,json=isAllowedForPatients,proto3" json:"is_allowed_for_patients,omitempty"`
-	CreatedAt            string                 `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt            string                 `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	CreatedAt            string                 `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt            string                 `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	IsAllowedForPatients bool                   `protobuf:"varint,9,opt,name=is_allowed_for_patients,json=isAllowedForPatients,proto3" json:"is_allowed_for_patients,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -211,13 +211,6 @@ func (x *Type) GetIsActive() bool {
 	return false
 }
 
-func (x *Type) GetIsAllowedForPatients() bool {
-	if x != nil {
-		return x.IsAllowedForPatients
-	}
-	return false
-}
-
 func (x *Type) GetCreatedAt() string {
 	if x != nil {
 		return x.CreatedAt
@@ -230,6 +223,13 @@ func (x *Type) GetUpdatedAt() string {
 		return x.UpdatedAt
 	}
 	return ""
+}
+
+func (x *Type) GetIsAllowedForPatients() bool {
+	if x != nil {
+		return x.IsAllowedForPatients
+	}
+	return false
 }
 
 type GetCategoryRequest struct {
@@ -1065,12 +1065,12 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"categoryId\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x05 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
-	"\tis_active\x18\x06 \x01(\bR\bisActive\x125\n" +
-	"\x17is_allowed_for_patients\x18\a \x01(\bR\x14isAllowedForPatients\x12\x1d\n" +
+	"\tis_active\x18\x06 \x01(\bR\bisActive\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\b \x01(\tR\tcreatedAt\x12\x1d\n" +
+	"created_at\x18\a \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\tR\tupdatedAtB\x0e\n" +
+	"updated_at\x18\b \x01(\tR\tupdatedAt\x125\n" +
+	"\x17is_allowed_for_patients\x18\t \x01(\bR\x14isAllowedForPatientsB\x0e\n" +
 	"\f_description\"$\n" +
 	"\x12GetCategoryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"Y\n" +
