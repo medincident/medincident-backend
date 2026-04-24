@@ -461,6 +461,94 @@ func (x *GetUserResponse) GetUser() *User {
 	return nil
 }
 
+type GetUserByEmailRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserByEmailRequest) Reset() {
+	*x = GetUserByEmailRequest{}
+	mi := &file_query_identity_v1_identity_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserByEmailRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserByEmailRequest) ProtoMessage() {}
+
+func (x *GetUserByEmailRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_query_identity_v1_identity_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserByEmailRequest.ProtoReflect.Descriptor instead.
+func (*GetUserByEmailRequest) Descriptor() ([]byte, []int) {
+	return file_query_identity_v1_identity_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetUserByEmailRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+type GetUserByEmailResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserByEmailResponse) Reset() {
+	*x = GetUserByEmailResponse{}
+	mi := &file_query_identity_v1_identity_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserByEmailResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserByEmailResponse) ProtoMessage() {}
+
+func (x *GetUserByEmailResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_query_identity_v1_identity_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserByEmailResponse.ProtoReflect.Descriptor instead.
+func (*GetUserByEmailResponse) Descriptor() ([]byte, []int) {
+	return file_query_identity_v1_identity_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetUserByEmailResponse) GetUser() *User {
+	if x != nil {
+		return x.User
+	}
+	return nil
+}
+
 type GetSessionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -470,7 +558,7 @@ type GetSessionRequest struct {
 
 func (x *GetSessionRequest) Reset() {
 	*x = GetSessionRequest{}
-	mi := &file_query_identity_v1_identity_proto_msgTypes[6]
+	mi := &file_query_identity_v1_identity_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -482,7 +570,7 @@ func (x *GetSessionRequest) String() string {
 func (*GetSessionRequest) ProtoMessage() {}
 
 func (x *GetSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_identity_v1_identity_proto_msgTypes[6]
+	mi := &file_query_identity_v1_identity_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -495,7 +583,7 @@ func (x *GetSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSessionRequest.ProtoReflect.Descriptor instead.
 func (*GetSessionRequest) Descriptor() ([]byte, []int) {
-	return file_query_identity_v1_identity_proto_rawDescGZIP(), []int{6}
+	return file_query_identity_v1_identity_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetSessionRequest) GetId() string {
@@ -514,7 +602,7 @@ type GetSessionResponse struct {
 
 func (x *GetSessionResponse) Reset() {
 	*x = GetSessionResponse{}
-	mi := &file_query_identity_v1_identity_proto_msgTypes[7]
+	mi := &file_query_identity_v1_identity_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -526,7 +614,7 @@ func (x *GetSessionResponse) String() string {
 func (*GetSessionResponse) ProtoMessage() {}
 
 func (x *GetSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_identity_v1_identity_proto_msgTypes[7]
+	mi := &file_query_identity_v1_identity_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -539,7 +627,7 @@ func (x *GetSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSessionResponse.ProtoReflect.Descriptor instead.
 func (*GetSessionResponse) Descriptor() ([]byte, []int) {
-	return file_query_identity_v1_identity_proto_rawDescGZIP(), []int{7}
+	return file_query_identity_v1_identity_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetSessionResponse) GetSession() *Session {
@@ -606,13 +694,18 @@ const file_query_identity_v1_identity_proto_rawDesc = "" +
 	"\x0eGetUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\">\n" +
 	"\x0fGetUserResponse\x12+\n" +
+	"\x04user\x18\x01 \x01(\v2\x17.query.identity.v1.UserR\x04user\"-\n" +
+	"\x15GetUserByEmailRequest\x12\x14\n" +
+	"\x05email\x18\x01 \x01(\tR\x05email\"E\n" +
+	"\x16GetUserByEmailResponse\x12+\n" +
 	"\x04user\x18\x01 \x01(\v2\x17.query.identity.v1.UserR\x04user\"#\n" +
 	"\x11GetSessionRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"J\n" +
 	"\x12GetSessionResponse\x124\n" +
-	"\asession\x18\x01 \x01(\v2\x1a.query.identity.v1.SessionR\asession2\x82\x02\n" +
+	"\asession\x18\x01 \x01(\v2\x1a.query.identity.v1.SessionR\asession2\x8c\x03\n" +
 	"\x14IdentityQueryService\x12n\n" +
-	"\aGetUser\x12!.query.identity.v1.GetUserRequest\x1a\".query.identity.v1.GetUserResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/query/users/{id}\x12z\n" +
+	"\aGetUser\x12!.query.identity.v1.GetUserRequest\x1a\".query.identity.v1.GetUserResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/query/users/{id}\x12\x87\x01\n" +
+	"\x0eGetUserByEmail\x12(.query.identity.v1.GetUserByEmailRequest\x1a).query.identity.v1.GetUserByEmailResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/users:by-email\x12z\n" +
 	"\n" +
 	"GetSession\x12$.query.identity.v1.GetSessionRequest\x1a%.query.identity.v1.GetSessionResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/query/sessions/{id}B\xd9\x01\n" +
 	"\x15com.query.identity.v1B\rIdentityProtoP\x01ZKgithub.com/medincident/medincident-backend/pkg/query/identity/v1;identityv1\xa2\x02\x03QIX\xaa\x02\x11Query.Identity.V1\xca\x02\x11Query\\Identity\\V1\xe2\x02\x1dQuery\\Identity\\V1\\GPBMetadata\xea\x02\x13Query::Identity::V1b\x06proto3"
@@ -629,33 +722,38 @@ func file_query_identity_v1_identity_proto_rawDescGZIP() []byte {
 	return file_query_identity_v1_identity_proto_rawDescData
 }
 
-var file_query_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_query_identity_v1_identity_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_query_identity_v1_identity_proto_goTypes = []any{
-	(*User)(nil),                  // 0: query.identity.v1.User
-	(*UserAgent)(nil),             // 1: query.identity.v1.UserAgent
-	(*UserAgentHeaderValues)(nil), // 2: query.identity.v1.UserAgentHeaderValues
-	(*Session)(nil),               // 3: query.identity.v1.Session
-	(*GetUserRequest)(nil),        // 4: query.identity.v1.GetUserRequest
-	(*GetUserResponse)(nil),       // 5: query.identity.v1.GetUserResponse
-	(*GetSessionRequest)(nil),     // 6: query.identity.v1.GetSessionRequest
-	(*GetSessionResponse)(nil),    // 7: query.identity.v1.GetSessionResponse
-	nil,                           // 8: query.identity.v1.UserAgent.HeadersEntry
+	(*User)(nil),                   // 0: query.identity.v1.User
+	(*UserAgent)(nil),              // 1: query.identity.v1.UserAgent
+	(*UserAgentHeaderValues)(nil),  // 2: query.identity.v1.UserAgentHeaderValues
+	(*Session)(nil),                // 3: query.identity.v1.Session
+	(*GetUserRequest)(nil),         // 4: query.identity.v1.GetUserRequest
+	(*GetUserResponse)(nil),        // 5: query.identity.v1.GetUserResponse
+	(*GetUserByEmailRequest)(nil),  // 6: query.identity.v1.GetUserByEmailRequest
+	(*GetUserByEmailResponse)(nil), // 7: query.identity.v1.GetUserByEmailResponse
+	(*GetSessionRequest)(nil),      // 8: query.identity.v1.GetSessionRequest
+	(*GetSessionResponse)(nil),     // 9: query.identity.v1.GetSessionResponse
+	nil,                            // 10: query.identity.v1.UserAgent.HeadersEntry
 }
 var file_query_identity_v1_identity_proto_depIdxs = []int32{
-	8, // 0: query.identity.v1.UserAgent.headers:type_name -> query.identity.v1.UserAgent.HeadersEntry
-	1, // 1: query.identity.v1.Session.user_agent:type_name -> query.identity.v1.UserAgent
-	0, // 2: query.identity.v1.GetUserResponse.user:type_name -> query.identity.v1.User
-	3, // 3: query.identity.v1.GetSessionResponse.session:type_name -> query.identity.v1.Session
-	2, // 4: query.identity.v1.UserAgent.HeadersEntry.value:type_name -> query.identity.v1.UserAgentHeaderValues
-	4, // 5: query.identity.v1.IdentityQueryService.GetUser:input_type -> query.identity.v1.GetUserRequest
-	6, // 6: query.identity.v1.IdentityQueryService.GetSession:input_type -> query.identity.v1.GetSessionRequest
-	5, // 7: query.identity.v1.IdentityQueryService.GetUser:output_type -> query.identity.v1.GetUserResponse
-	7, // 8: query.identity.v1.IdentityQueryService.GetSession:output_type -> query.identity.v1.GetSessionResponse
-	7, // [7:9] is the sub-list for method output_type
-	5, // [5:7] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	10, // 0: query.identity.v1.UserAgent.headers:type_name -> query.identity.v1.UserAgent.HeadersEntry
+	1,  // 1: query.identity.v1.Session.user_agent:type_name -> query.identity.v1.UserAgent
+	0,  // 2: query.identity.v1.GetUserResponse.user:type_name -> query.identity.v1.User
+	0,  // 3: query.identity.v1.GetUserByEmailResponse.user:type_name -> query.identity.v1.User
+	3,  // 4: query.identity.v1.GetSessionResponse.session:type_name -> query.identity.v1.Session
+	2,  // 5: query.identity.v1.UserAgent.HeadersEntry.value:type_name -> query.identity.v1.UserAgentHeaderValues
+	4,  // 6: query.identity.v1.IdentityQueryService.GetUser:input_type -> query.identity.v1.GetUserRequest
+	6,  // 7: query.identity.v1.IdentityQueryService.GetUserByEmail:input_type -> query.identity.v1.GetUserByEmailRequest
+	8,  // 8: query.identity.v1.IdentityQueryService.GetSession:input_type -> query.identity.v1.GetSessionRequest
+	5,  // 9: query.identity.v1.IdentityQueryService.GetUser:output_type -> query.identity.v1.GetUserResponse
+	7,  // 10: query.identity.v1.IdentityQueryService.GetUserByEmail:output_type -> query.identity.v1.GetUserByEmailResponse
+	9,  // 11: query.identity.v1.IdentityQueryService.GetSession:output_type -> query.identity.v1.GetSessionResponse
+	9,  // [9:12] is the sub-list for method output_type
+	6,  // [6:9] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_query_identity_v1_identity_proto_init() }
@@ -672,7 +770,7 @@ func file_query_identity_v1_identity_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_identity_v1_identity_proto_rawDesc), len(file_query_identity_v1_identity_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

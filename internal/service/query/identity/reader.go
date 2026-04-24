@@ -49,6 +49,22 @@ type SessionView struct {
 	UpdatedAt         time.Time
 }
 
+// userSelectColumns lists every projections.users column read by
+// GetUser and GetUserByEmail in the exact order scanUser expects.
+const userSelectColumns = `id, user_name, first_name, last_name, display_name, nick_name,
+		       email, email_verified, preferred_language, gender,
+		       created_at, updated_at`
+
+// scanUser populates v from row. Callers share the same SELECT list
+// (see userSelectColumns) so both lookup variants scan in lockstep.
+func scanUser(row interface{ Scan(...any) error }, v *UserView) error {
+	return row.Scan(
+		&v.ID, &v.UserName, &v.FirstName, &v.LastName, &v.DisplayName, &v.NickName,
+		&v.Email, &v.EmailVerified, &v.PreferredLanguage, &v.Gender,
+		&v.CreatedAt, &v.UpdatedAt,
+	)
+}
+
 // GetUser returns the User projection row for the given Zitadel id.
 // Authorization: the caller must be the target user themselves, or a
 // system admin. The comparison runs in Go because both identifiers
@@ -65,17 +81,11 @@ func (r *Reader) GetUser(
 		}
 	}
 	var v UserView
-	err := r.db.WithContext(ctx).Raw(`
-		SELECT id, user_name, first_name, last_name, display_name, nick_name,
-		       email, email_verified, preferred_language, gender,
-		       created_at, updated_at
+	err := scanUser(r.db.WithContext(ctx).Raw(`
+		SELECT `+userSelectColumns+`
 		  FROM projections.users
 		 WHERE id = ?`, userID,
-	).Row().Scan(
-		&v.ID, &v.UserName, &v.FirstName, &v.LastName, &v.DisplayName, &v.NickName,
-		&v.Email, &v.EmailVerified, &v.PreferredLanguage, &v.Gender,
-		&v.CreatedAt, &v.UpdatedAt,
-	)
+	).Row(), &v)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, oops.In("reader.identity.user").
@@ -87,6 +97,46 @@ func (r *Reader) GetUser(
 		return nil, oops.In("reader.identity.user").
 			Code(ErrCodeUserLoadFailed).
 			With("user_id", userID).
+			Wrap(err)
+	}
+	return &v, nil
+}
+
+// GetUserByEmail returns the User projection row whose email matches
+// the given address case-insensitively. Authorization: SystemAdmin
+// only — a "find user by email" probe from a non-admin would leak
+// membership of the identity projection, so no self fast-path exists.
+//
+// Zitadel enforces email uniqueness at the source, so only one row is
+// expected. If multiple somehow come back, the query returns the
+// first by insertion order; any duplicate implies a projection drift
+// worth investigating rather than silently deduping.
+func (r *Reader) GetUserByEmail(
+	ctx context.Context,
+	caller authz.Caller,
+	email string,
+) (*UserView, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.SystemAdmin); err != nil {
+		return nil, err
+	}
+	var v UserView
+	err := scanUser(r.db.WithContext(ctx).Raw(`
+		SELECT `+userSelectColumns+`
+		  FROM projections.users
+		 WHERE LOWER(email) = LOWER(?)
+		 LIMIT 1`, email,
+	).Row(), &v)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, oops.In("reader.identity.user").
+				Code(ErrCodeUserNotFound).
+				Public("User not found.").
+				With("email", email).
+				Errorf("not found")
+		}
+		return nil, oops.In("reader.identity.user").
+			Code(ErrCodeUserLoadFailed).
+			With("email", email).
 			Wrap(err)
 	}
 	return &v, nil

@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IdentityQueryService_GetUser_FullMethodName    = "/query.identity.v1.IdentityQueryService/GetUser"
-	IdentityQueryService_GetSession_FullMethodName = "/query.identity.v1.IdentityQueryService/GetSession"
+	IdentityQueryService_GetUser_FullMethodName        = "/query.identity.v1.IdentityQueryService/GetUser"
+	IdentityQueryService_GetUserByEmail_FullMethodName = "/query.identity.v1.IdentityQueryService/GetUserByEmail"
+	IdentityQueryService_GetSession_FullMethodName     = "/query.identity.v1.IdentityQueryService/GetSession"
 )
 
 // IdentityQueryServiceClient is the client API for IdentityQueryService service.
@@ -32,6 +33,7 @@ const (
 // Zitadel NATS consumer in query-server.
 type IdentityQueryServiceClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	GetUserByEmail(ctx context.Context, in *GetUserByEmailRequest, opts ...grpc.CallOption) (*GetUserByEmailResponse, error)
 	GetSession(ctx context.Context, in *GetSessionRequest, opts ...grpc.CallOption) (*GetSessionResponse, error)
 }
 
@@ -47,6 +49,16 @@ func (c *identityQueryServiceClient) GetUser(ctx context.Context, in *GetUserReq
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUserResponse)
 	err := c.cc.Invoke(ctx, IdentityQueryService_GetUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *identityQueryServiceClient) GetUserByEmail(ctx context.Context, in *GetUserByEmailRequest, opts ...grpc.CallOption) (*GetUserByEmailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserByEmailResponse)
+	err := c.cc.Invoke(ctx, IdentityQueryService_GetUserByEmail_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,6 +84,7 @@ func (c *identityQueryServiceClient) GetSession(ctx context.Context, in *GetSess
 // Zitadel NATS consumer in query-server.
 type IdentityQueryServiceServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	GetUserByEmail(context.Context, *GetUserByEmailRequest) (*GetUserByEmailResponse, error)
 	GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error)
 	mustEmbedUnimplementedIdentityQueryServiceServer()
 }
@@ -85,6 +98,9 @@ type UnimplementedIdentityQueryServiceServer struct{}
 
 func (UnimplementedIdentityQueryServiceServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedIdentityQueryServiceServer) GetUserByEmail(context.Context, *GetUserByEmailRequest) (*GetUserByEmailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUserByEmail not implemented")
 }
 func (UnimplementedIdentityQueryServiceServer) GetSession(context.Context, *GetSessionRequest) (*GetSessionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetSession not implemented")
@@ -128,6 +144,24 @@ func _IdentityQueryService_GetUser_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IdentityQueryService_GetUserByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserByEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IdentityQueryServiceServer).GetUserByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IdentityQueryService_GetUserByEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IdentityQueryServiceServer).GetUserByEmail(ctx, req.(*GetUserByEmailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _IdentityQueryService_GetSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSessionRequest)
 	if err := dec(in); err != nil {
@@ -156,6 +190,10 @@ var IdentityQueryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _IdentityQueryService_GetUser_Handler,
+		},
+		{
+			MethodName: "GetUserByEmail",
+			Handler:    _IdentityQueryService_GetUserByEmail_Handler,
 		},
 		{
 			MethodName: "GetSession",

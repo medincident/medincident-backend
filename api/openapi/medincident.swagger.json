@@ -3401,6 +3401,36 @@
         ]
       }
     },
+    "/v1/query/users:by-email": {
+      "get": {
+        "operationId": "IdentityQueryService_GetUserByEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetUserByEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IdentityQueryService"
+        ]
+      }
+    },
     "/v1/system-admins": {
       "post": {
         "summary": "------ SystemAdmin ------",
@@ -4469,6 +4499,14 @@
       "properties": {
         "type": {
           "$ref": "#/definitions/classifierV1Type"
+        }
+      }
+    },
+    "v1GetUserByEmailResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/v1User"
         }
       }
     },

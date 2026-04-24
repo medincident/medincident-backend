@@ -126,6 +126,8 @@
 - [query/identity/v1/identity.proto](#query_identity_v1_identity-proto)
     - [GetSessionRequest](#query-identity-v1-GetSessionRequest)
     - [GetSessionResponse](#query-identity-v1-GetSessionResponse)
+    - [GetUserByEmailRequest](#query-identity-v1-GetUserByEmailRequest)
+    - [GetUserByEmailResponse](#query-identity-v1-GetUserByEmailResponse)
     - [GetUserRequest](#query-identity-v1-GetUserRequest)
     - [GetUserResponse](#query-identity-v1-GetUserResponse)
     - [Session](#query-identity-v1-Session)
@@ -1888,6 +1890,36 @@ generated under pkg/.
 
 
 
+<a name="query-identity-v1-GetUserByEmailRequest"></a>
+
+### GetUserByEmailRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| email | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-identity-v1-GetUserByEmailResponse"></a>
+
+### GetUserByEmailResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| user | [User](#query-identity-v1-User) |  |  |
+
+
+
+
+
+
 <a name="query-identity-v1-GetUserRequest"></a>
 
 ### GetUserRequest
@@ -2034,6 +2066,7 @@ Zitadel NATS consumer in query-server.
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | GetUser | [GetUserRequest](#query-identity-v1-GetUserRequest) | [GetUserResponse](#query-identity-v1-GetUserResponse) |  |
+| GetUserByEmail | [GetUserByEmailRequest](#query-identity-v1-GetUserByEmailRequest) | [GetUserByEmailResponse](#query-identity-v1-GetUserByEmailResponse) |  |
 | GetSession | [GetSessionRequest](#query-identity-v1-GetSessionRequest) | [GetSessionResponse](#query-identity-v1-GetSessionResponse) |  |
 
 
