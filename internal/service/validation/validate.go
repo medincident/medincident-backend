@@ -28,31 +28,33 @@ import (
 	"github.com/samber/oops"
 )
 
-// CodeValidationFailed is the single oops code emitted for every
-// struct-tag validation failure. The gRPC error interceptor maps it to
-// codes.InvalidArgument and reads ContextKeyViolations to build
-// BadRequest.FieldViolation details.
-const CodeValidationFailed = "validation_failed"
+const (
+	// CodeValidationFailed is the single oops code emitted for every
+	// struct-tag validation failure. The gRPC error interceptor maps it to
+	// codes.InvalidArgument and reads ContextKeyViolations to build
+	// BadRequest.FieldViolation details.
+	CodeValidationFailed = "validation_failed"
 
-// CodeValidatorInvocationFailed is emitted when go-playground/validator
-// itself refuses the input (e.g. validator.InvalidValidationError when
-// a non-struct is passed to Struct). This is a developer bug, never a
-// client input error, so the interceptor leaves it to fall through to
-// the default codes.Internal mapping — no explicit override is needed.
-const CodeValidatorInvocationFailed = "validator_invocation_failed"
+	// CodeValidatorInvocationFailed is emitted when go-playground/validator
+	// itself refuses the input (e.g. validator.InvalidValidationError when
+	// a non-struct is passed to Struct). This is a developer bug, never a
+	// client input error, so the interceptor leaves it to fall through to
+	// the default codes.Internal mapping — no explicit override is needed.
+	CodeValidatorInvocationFailed = "validator_invocation_failed"
 
-// ContextKeyViolations is the oops-context key under which translate
-// stashes the []Violation produced from a validator.ValidationErrors.
-// The interceptor looks this up by name to stay decoupled from the
-// exact slice element type at the call site.
-const ContextKeyViolations = "violations"
+	// ContextKeyViolations is the oops-context key under which translate
+	// stashes the []Violation produced from a validator.ValidationErrors.
+	// The interceptor looks this up by name to stay decoupled from the
+	// exact slice element type at the call site.
+	ContextKeyViolations = "violations"
 
-// TagNoExtraWhitespace is the struct-tag name for the custom string
-// cleanliness rule. It rejects strings with leading or trailing
-// whitespace and strings containing two or more consecutive whitespace
-// runes anywhere inside. An empty string passes — combine it with
-// `required` when emptiness must also be rejected.
-const TagNoExtraWhitespace = "no_extra_ws"
+	// TagNoExtraWhitespace is the struct-tag name for the custom string
+	// cleanliness rule. It rejects strings with leading or trailing
+	// whitespace and strings containing two or more consecutive whitespace
+	// runes anywhere inside. An empty string passes — combine it with
+	// `required` when emptiness must also be rejected.
+	TagNoExtraWhitespace = "no_extra_ws"
+)
 
 // Violation describes one struct-tag rule failure on a specific field.
 // Field is a dotted snake_case path (e.g. "legal_address.point.longitude"),
@@ -150,7 +152,30 @@ func translate(err error) error {
 		Code(CodeValidationFailed).
 		With(ContextKeyViolations, violations).
 		Public("request is invalid").
-		Errorf("validation failed: %d violation(s)", len(violations))
+		Errorf("validation failed (%d): %s", len(violations), formatViolations(violations))
+}
+
+// formatViolations renders the violation slice as a compact,
+// comma-separated list of `field (rule)` or `field (rule=param)` pairs
+// so the error message logged on the server spells out exactly which
+// fields failed which rule without forcing a reader to unpack the oops
+// context by hand.
+func formatViolations(violations []Violation) string {
+	var b strings.Builder
+	for i, v := range violations {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+		b.WriteString(v.Field)
+		b.WriteString(" (")
+		b.WriteString(v.Rule)
+		if v.Param != "" {
+			b.WriteByte('=')
+			b.WriteString(v.Param)
+		}
+		b.WriteByte(')')
+	}
+	return b.String()
 }
 
 func toViolation(fe validator.FieldError) Violation {
