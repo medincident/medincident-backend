@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
 	statsqueryv1 "github.com/medincident/medincident-backend/pkg/query/stats/v1"
@@ -37,10 +38,11 @@ func (h *StatsQueryHandler) GetOrganizationStats(
 	ctx context.Context,
 	req *statsqueryv1.GetOrganizationStatsRequest,
 ) (*statsqueryv1.GetOrganizationStatsResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
@@ -66,10 +68,11 @@ func (h *StatsQueryHandler) GetClinicStats(
 	ctx context.Context,
 	req *statsqueryv1.GetClinicStatsRequest,
 ) (*statsqueryv1.GetClinicStatsResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseClinicID(req.GetClinicId())
 	if err != nil {
 		return nil, err
@@ -94,10 +97,11 @@ func (h *StatsQueryHandler) GetDepartmentStats(
 	ctx context.Context,
 	req *statsqueryv1.GetDepartmentStatsRequest,
 ) (*statsqueryv1.GetDepartmentStatsResponse, error) {
-	caller, err := authz.CallerFromCtx(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseDepartmentID(req.GetDepartmentId())
 	if err != nil {
 		return nil, err
