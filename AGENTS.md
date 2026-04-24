@@ -3,7 +3,6 @@
 gRPC command side of a CQRS split. Go 1.26 · gorm v2 · guregu/null/v6 ·
 samber/oops · zerolog · dbmate · buf. No DI framework — each binary's
 main.go wires constructors explicitly and drives teardown via `defer`.
-Design lives in `docs/superpowers/specs/2026-04-13-command-service-simplification-design.md`.
 
 ## Hard rules — NOT NEGOTIABLE
 
