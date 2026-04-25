@@ -46,3 +46,4 @@ drafts/
 .claude/
 .claude/*.lock
 docs/superpowers/
+.worktrees/
