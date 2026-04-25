@@ -160,7 +160,7 @@ func RegisterIdentityQueryServiceHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetUser", runtime.WithHTTPPathPattern("/v1/query/users/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetUser", runtime.WithHTTPPathPattern("/v1/users/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -180,7 +180,7 @@ func RegisterIdentityQueryServiceHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetUserByEmail", runtime.WithHTTPPathPattern("/v1/query/users:by-email"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetUserByEmail", runtime.WithHTTPPathPattern("/v1/users:by-email"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -200,7 +200,7 @@ func RegisterIdentityQueryServiceHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetSession", runtime.WithHTTPPathPattern("/v1/query/sessions/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetSession", runtime.WithHTTPPathPattern("/v1/sessions/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -258,7 +258,7 @@ func RegisterIdentityQueryServiceHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetUser", runtime.WithHTTPPathPattern("/v1/query/users/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetUser", runtime.WithHTTPPathPattern("/v1/users/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -275,7 +275,7 @@ func RegisterIdentityQueryServiceHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetUserByEmail", runtime.WithHTTPPathPattern("/v1/query/users:by-email"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetUserByEmail", runtime.WithHTTPPathPattern("/v1/users:by-email"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -292,7 +292,7 @@ func RegisterIdentityQueryServiceHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetSession", runtime.WithHTTPPathPattern("/v1/query/sessions/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.identity.v1.IdentityQueryService/GetSession", runtime.WithHTTPPathPattern("/v1/sessions/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -309,9 +309,9 @@ func RegisterIdentityQueryServiceHandlerClient(ctx context.Context, mux *runtime
 }
 
 var (
-	pattern_IdentityQueryService_GetUser_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "users", "id"}, ""))
-	pattern_IdentityQueryService_GetUserByEmail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "users"}, "by-email"))
-	pattern_IdentityQueryService_GetSession_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "sessions", "id"}, ""))
+	pattern_IdentityQueryService_GetUser_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "users", "id"}, ""))
+	pattern_IdentityQueryService_GetUserByEmail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "users"}, "by-email"))
+	pattern_IdentityQueryService_GetSession_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "sessions", "id"}, ""))
 )
 
 var (

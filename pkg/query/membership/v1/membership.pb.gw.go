@@ -835,7 +835,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetEmployee", runtime.WithHTTPPathPattern("/v1/query/employees/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetEmployee", runtime.WithHTTPPathPattern("/v1/employees/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -855,7 +855,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment", runtime.WithHTTPPathPattern("/v1/query/departments/{department_id}/employees"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/employees"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -875,7 +875,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/employees"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/employees"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -895,7 +895,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/employees"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/employees"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -915,7 +915,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByDepartment", runtime.WithHTTPPathPattern("/v1/query/departments/{department_id}/employees:count"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByDepartment", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/employees:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -935,7 +935,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/employees:count"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByClinic", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/employees:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -955,7 +955,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/employees:count"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/employees:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -975,7 +975,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/employees:search"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/employees:search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -995,7 +995,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListVacationsByEmployee", runtime.WithHTTPPathPattern("/v1/query/employees/{employee_id}/vacations"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListVacationsByEmployee", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/vacations"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1015,7 +1015,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountVacationsByEmployee", runtime.WithHTTPPathPattern("/v1/query/employees/{employee_id}/vacations:count"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountVacationsByEmployee", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/vacations:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1035,7 +1035,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetClinicHead", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/head"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetClinicHead", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/head"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1055,7 +1055,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetDepartmentResponsible", runtime.WithHTTPPathPattern("/v1/query/departments/{department_id}/responsible"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetDepartmentResponsible", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/responsible"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1075,7 +1075,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgAdmins", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/admins"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgAdmins", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/admins"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1095,7 +1095,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgDispatchers", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/dispatchers"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgDispatchers", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/dispatchers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1115,7 +1115,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgHeads", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/heads"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgHeads", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/heads"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1135,7 +1135,7 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListSystemAdmins", runtime.WithHTTPPathPattern("/v1/query/system-admins"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListSystemAdmins", runtime.WithHTTPPathPattern("/v1/system-admins"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1193,7 +1193,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetEmployee", runtime.WithHTTPPathPattern("/v1/query/employees/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetEmployee", runtime.WithHTTPPathPattern("/v1/employees/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1210,7 +1210,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment", runtime.WithHTTPPathPattern("/v1/query/departments/{department_id}/employees"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/employees"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1227,7 +1227,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/employees"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/employees"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1244,7 +1244,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/employees"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/employees"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1261,7 +1261,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByDepartment", runtime.WithHTTPPathPattern("/v1/query/departments/{department_id}/employees:count"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByDepartment", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/employees:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1278,7 +1278,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/employees:count"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByClinic", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/employees:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1295,7 +1295,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/employees:count"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/employees:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1312,7 +1312,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/employees:search"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/employees:search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1329,7 +1329,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListVacationsByEmployee", runtime.WithHTTPPathPattern("/v1/query/employees/{employee_id}/vacations"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListVacationsByEmployee", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/vacations"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1346,7 +1346,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountVacationsByEmployee", runtime.WithHTTPPathPattern("/v1/query/employees/{employee_id}/vacations:count"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/CountVacationsByEmployee", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/vacations:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1363,7 +1363,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetClinicHead", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/head"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetClinicHead", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/head"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1380,7 +1380,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetDepartmentResponsible", runtime.WithHTTPPathPattern("/v1/query/departments/{department_id}/responsible"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/GetDepartmentResponsible", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/responsible"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1397,7 +1397,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgAdmins", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/admins"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgAdmins", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/admins"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1414,7 +1414,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgDispatchers", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/dispatchers"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgDispatchers", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/dispatchers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1431,7 +1431,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgHeads", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/heads"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListOrgHeads", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/heads"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1448,7 +1448,7 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListSystemAdmins", runtime.WithHTTPPathPattern("/v1/query/system-admins"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListSystemAdmins", runtime.WithHTTPPathPattern("/v1/system-admins"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1465,22 +1465,22 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 }
 
 var (
-	pattern_MembershipQueryService_GetEmployee_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "employees", "id"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByDepartment_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "employees"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByClinic_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "employees"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByOrganization_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "employees"}, ""))
-	pattern_MembershipQueryService_CountEmployeesByDepartment_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "employees"}, "count"))
-	pattern_MembershipQueryService_CountEmployeesByClinic_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "employees"}, "count"))
-	pattern_MembershipQueryService_CountEmployeesByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "employees"}, "count"))
-	pattern_MembershipQueryService_SearchEmployeesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "employees"}, "search"))
-	pattern_MembershipQueryService_ListVacationsByEmployee_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "employees", "employee_id", "vacations"}, ""))
-	pattern_MembershipQueryService_CountVacationsByEmployee_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "employees", "employee_id", "vacations"}, "count"))
-	pattern_MembershipQueryService_GetClinicHead_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "head"}, ""))
-	pattern_MembershipQueryService_GetDepartmentResponsible_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "responsible"}, ""))
-	pattern_MembershipQueryService_ListOrgAdmins_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "admins"}, ""))
-	pattern_MembershipQueryService_ListOrgDispatchers_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "dispatchers"}, ""))
-	pattern_MembershipQueryService_ListOrgHeads_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "heads"}, ""))
-	pattern_MembershipQueryService_ListSystemAdmins_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "system-admins"}, ""))
+	pattern_MembershipQueryService_GetEmployee_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "employees", "id"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByDepartment_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "employees"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByClinic_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "employees"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByOrganization_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, ""))
+	pattern_MembershipQueryService_CountEmployeesByDepartment_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "employees"}, "count"))
+	pattern_MembershipQueryService_CountEmployeesByClinic_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "employees"}, "count"))
+	pattern_MembershipQueryService_CountEmployeesByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, "count"))
+	pattern_MembershipQueryService_SearchEmployeesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, "search"))
+	pattern_MembershipQueryService_ListVacationsByEmployee_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, ""))
+	pattern_MembershipQueryService_CountVacationsByEmployee_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, "count"))
+	pattern_MembershipQueryService_GetClinicHead_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "head"}, ""))
+	pattern_MembershipQueryService_GetDepartmentResponsible_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "responsible"}, ""))
+	pattern_MembershipQueryService_ListOrgAdmins_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "admins"}, ""))
+	pattern_MembershipQueryService_ListOrgDispatchers_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "dispatchers"}, ""))
+	pattern_MembershipQueryService_ListOrgHeads_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "heads"}, ""))
+	pattern_MembershipQueryService_ListSystemAdmins_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "system-admins"}, ""))
 )
 
 var (

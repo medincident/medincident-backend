@@ -1200,17 +1200,17 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x03 \x01(\x05R\x06offset\"r\n" +
 	"2ListPatientVisibleCategoriesByOrganizationResponse\x12<\n" +
-	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items2\xf2\x0f\n" +
-	"\x1eIncidentClassifierQueryService\x12\x9e\x01\n" +
-	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/v1/query/incident-categories/{id}\x12\xec\x01\n" +
-	"\x1cListCategoriesByOrganization\x12A.query.incident.classifier.v1.ListCategoriesByOrganizationRequest\x1aB.query.incident.classifier.v1.ListCategoriesByOrganizationResponse\"E\x82\xd3\xe4\x93\x02?\x12=/v1/query/organizations/{organization_id}/incident-categories\x12\xe6\x01\n" +
-	"\x18ListActiveRootCategories\x12=.query.incident.classifier.v1.ListActiveRootCategoriesRequest\x1a>.query.incident.classifier.v1.ListActiveRootCategoriesResponse\"K\x82\xd3\xe4\x93\x02E\x12C/v1/query/organizations/{organization_id}/incident-categories:roots\x12\xcc\x01\n" +
-	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/query/incident-categories/{root_category_id}:subtree\x12\x8d\x01\n" +
-	"\aGetType\x12,.query.incident.classifier.v1.GetTypeRequest\x1a-.query.incident.classifier.v1.GetTypeResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/query/incident-types/{id}\x12\xc5\x01\n" +
-	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/query/incident-categories/{category_id}/types\x12\xf1\x01\n" +
-	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"G\x82\xd3\xe4\x93\x02A\x12?/v1/query/organizations/{organization_id}/incident-types:active\x12\x92\x02\n" +
-	"%ListPatientAllowedTypesByOrganization\x12J.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest\x1aK.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse\"P\x82\xd3\xe4\x93\x02J\x12H/v1/query/organizations/{organization_id}/incident-types:patient-allowed\x12\xa6\x02\n" +
-	"*ListPatientVisibleCategoriesByOrganization\x12O.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest\x1aP.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse\"U\x82\xd3\xe4\x93\x02O\x12M/v1/query/organizations/{organization_id}/incident-categories:patient-visibleB\xa0\x02\n" +
+	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items2\xbc\x0f\n" +
+	"\x1eIncidentClassifierQueryService\x12\x98\x01\n" +
+	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/incident-categories/{id}\x12\xe6\x01\n" +
+	"\x1cListCategoriesByOrganization\x12A.query.incident.classifier.v1.ListCategoriesByOrganizationRequest\x1aB.query.incident.classifier.v1.ListCategoriesByOrganizationResponse\"?\x82\xd3\xe4\x93\x029\x127/v1/organizations/{organization_id}/incident-categories\x12\xe0\x01\n" +
+	"\x18ListActiveRootCategories\x12=.query.incident.classifier.v1.ListActiveRootCategoriesRequest\x1a>.query.incident.classifier.v1.ListActiveRootCategoriesResponse\"E\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/incident-categories:roots\x12\xc6\x01\n" +
+	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\":\x82\xd3\xe4\x93\x024\x122/v1/incident-categories/{root_category_id}:subtree\x12\x87\x01\n" +
+	"\aGetType\x12,.query.incident.classifier.v1.GetTypeRequest\x1a-.query.incident.classifier.v1.GetTypeResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/incident-types/{id}\x12\xbf\x01\n" +
+	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/incident-categories/{category_id}/types\x12\xeb\x01\n" +
+	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"A\x82\xd3\xe4\x93\x02;\x129/v1/organizations/{organization_id}/incident-types:active\x12\x8c\x02\n" +
+	"%ListPatientAllowedTypesByOrganization\x12J.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest\x1aK.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse\"J\x82\xd3\xe4\x93\x02D\x12B/v1/organizations/{organization_id}/incident-types:patient-allowed\x12\xa0\x02\n" +
+	"*ListPatientVisibleCategoriesByOrganization\x12O.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest\x1aP.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse\"O\x82\xd3\xe4\x93\x02I\x12G/v1/organizations/{organization_id}/incident-categories:patient-visibleB\xa0\x02\n" +
 	" com.query.incident.classifier.v1B\x0fClassifierProtoP\x01ZXgithub.com/medincident/medincident-backend/pkg/query/incident/classifier/v1;classifierv1\xa2\x02\x03QIC\xaa\x02\x1cQuery.Incident.Classifier.V1\xca\x02\x1cQuery\\Incident\\Classifier\\V1\xe2\x02(Query\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02\x1fQuery::Incident::Classifier::V1b\x06proto3"
 
 var (

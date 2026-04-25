@@ -2370,24 +2370,24 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x02 \x01(\x05R\x06offset\"V\n" +
 	"\x18ListSystemAdminsResponse\x12:\n" +
-	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items2\x8c\x17\n" +
-	"\x16MembershipQueryService\x12\x82\x01\n" +
-	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/employees/{id}\x12\xc3\x01\n" +
-	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/query/departments/{department_id}/employees\x12\xaf\x01\n" +
-	"\x15ListEmployeesByClinic\x121.query.membership.v1.ListEmployeesByClinicRequest\x1a2.query.membership.v1.ListEmployeesByClinicResponse\"/\x82\xd3\xe4\x93\x02)\x12'/v1/query/clinics/{clinic_id}/employees\x12\xcd\x01\n" +
-	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/organizations/{organization_id}/employees\x12\xcc\x01\n" +
-	"\x1aCountEmployeesByDepartment\x126.query.membership.v1.CountEmployeesByDepartmentRequest\x1a7.query.membership.v1.CountEmployeesByDepartmentResponse\"=\x82\xd3\xe4\x93\x027\x125/v1/query/departments/{department_id}/employees:count\x12\xb8\x01\n" +
-	"\x16CountEmployeesByClinic\x122.query.membership.v1.CountEmployeesByClinicRequest\x1a3.query.membership.v1.CountEmployeesByClinicResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/query/clinics/{clinic_id}/employees:count\x12\xd6\x01\n" +
-	"\x1cCountEmployeesByOrganization\x128.query.membership.v1.CountEmployeesByOrganizationRequest\x1a9.query.membership.v1.CountEmployeesByOrganizationResponse\"A\x82\xd3\xe4\x93\x02;\x129/v1/query/organizations/{organization_id}/employees:count\x12\xda\x01\n" +
-	"\x1dSearchEmployeesByOrganization\x129.query.membership.v1.SearchEmployeesByOrganizationRequest\x1a:.query.membership.v1.SearchEmployeesByOrganizationResponse\"B\x82\xd3\xe4\x93\x02<\x12:/v1/query/organizations/{organization_id}/employees:search\x12\xb9\x01\n" +
-	"\x17ListVacationsByEmployee\x123.query.membership.v1.ListVacationsByEmployeeRequest\x1a4.query.membership.v1.ListVacationsByEmployeeResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/query/employees/{employee_id}/vacations\x12\xc2\x01\n" +
-	"\x18CountVacationsByEmployee\x124.query.membership.v1.CountVacationsByEmployeeRequest\x1a5.query.membership.v1.CountVacationsByEmployeeResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/query/employees/{employee_id}/vacations:count\x12\x92\x01\n" +
-	"\rGetClinicHead\x12).query.membership.v1.GetClinicHeadRequest\x1a*.query.membership.v1.GetClinicHeadResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/v1/query/clinics/{clinic_id}/head\x12\xc2\x01\n" +
-	"\x18GetDepartmentResponsible\x124.query.membership.v1.GetDepartmentResponsibleRequest\x1a5.query.membership.v1.GetDepartmentResponsibleResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/query/departments/{department_id}/responsible\x12\xa0\x01\n" +
-	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"8\x82\xd3\xe4\x93\x022\x120/v1/query/organizations/{organization_id}/admins\x12\xb4\x01\n" +
-	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"=\x82\xd3\xe4\x93\x027\x125/v1/query/organizations/{organization_id}/dispatchers\x12\x9c\x01\n" +
-	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/query/organizations/{organization_id}/heads\x12\x90\x01\n" +
-	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/query/system-adminsB\xe9\x01\n" +
+	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items2\xab\x16\n" +
+	"\x16MembershipQueryService\x12|\n" +
+	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xbd\x01\n" +
+	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/departments/{department_id}/employees\x12\xa9\x01\n" +
+	"\x15ListEmployeesByClinic\x121.query.membership.v1.ListEmployeesByClinicRequest\x1a2.query.membership.v1.ListEmployeesByClinicResponse\")\x82\xd3\xe4\x93\x02#\x12!/v1/clinics/{clinic_id}/employees\x12\xc7\x01\n" +
+	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xc6\x01\n" +
+	"\x1aCountEmployeesByDepartment\x126.query.membership.v1.CountEmployeesByDepartmentRequest\x1a7.query.membership.v1.CountEmployeesByDepartmentResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/departments/{department_id}/employees:count\x12\xb2\x01\n" +
+	"\x16CountEmployeesByClinic\x122.query.membership.v1.CountEmployeesByClinicRequest\x1a3.query.membership.v1.CountEmployeesByClinicResponse\"/\x82\xd3\xe4\x93\x02)\x12'/v1/clinics/{clinic_id}/employees:count\x12\xd0\x01\n" +
+	"\x1cCountEmployeesByOrganization\x128.query.membership.v1.CountEmployeesByOrganizationRequest\x1a9.query.membership.v1.CountEmployeesByOrganizationResponse\";\x82\xd3\xe4\x93\x025\x123/v1/organizations/{organization_id}/employees:count\x12\xd4\x01\n" +
+	"\x1dSearchEmployeesByOrganization\x129.query.membership.v1.SearchEmployeesByOrganizationRequest\x1a:.query.membership.v1.SearchEmployeesByOrganizationResponse\"<\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/employees:search\x12\xb3\x01\n" +
+	"\x17ListVacationsByEmployee\x123.query.membership.v1.ListVacationsByEmployeeRequest\x1a4.query.membership.v1.ListVacationsByEmployeeResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/employees/{employee_id}/vacations\x12\xbc\x01\n" +
+	"\x18CountVacationsByEmployee\x124.query.membership.v1.CountVacationsByEmployeeRequest\x1a5.query.membership.v1.CountVacationsByEmployeeResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/employees/{employee_id}/vacations:count\x12\x8c\x01\n" +
+	"\rGetClinicHead\x12).query.membership.v1.GetClinicHeadRequest\x1a*.query.membership.v1.GetClinicHeadResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/clinics/{clinic_id}/head\x12\xbc\x01\n" +
+	"\x18GetDepartmentResponsible\x124.query.membership.v1.GetDepartmentResponsibleRequest\x1a5.query.membership.v1.GetDepartmentResponsibleResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/departments/{department_id}/responsible\x12\x9a\x01\n" +
+	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v1/organizations/{organization_id}/admins\x12\xae\x01\n" +
+	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/organizations/{organization_id}/dispatchers\x12\x96\x01\n" +
+	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/heads\x12\x8a\x01\n" +
+	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xe9\x01\n" +
 	"\x17com.query.membership.v1B\x0fMembershipProtoP\x01ZOgithub.com/medincident/medincident-backend/pkg/query/membership/v1;membershipv1\xa2\x02\x03QMX\xaa\x02\x13Query.Membership.V1\xca\x02\x13Query\\Membership\\V1\xe2\x02\x1fQuery\\Membership\\V1\\GPBMetadata\xea\x02\x15Query::Membership::V1b\x06proto3"
 
 var (

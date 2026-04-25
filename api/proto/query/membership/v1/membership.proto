@@ -9,54 +9,54 @@ import "google/api/annotations.proto";
 // department responsibles, org admins/heads/dispatchers, system admins).
 service MembershipQueryService {
   rpc GetEmployee(GetEmployeeRequest) returns (GetEmployeeResponse) {
-    option (google.api.http) = {get: "/v1/query/employees/{id}"};
+    option (google.api.http) = {get: "/v1/employees/{id}"};
   }
   rpc ListEmployeesByDepartment(ListEmployeesByDepartmentRequest) returns (ListEmployeesByDepartmentResponse) {
-    option (google.api.http) = {get: "/v1/query/departments/{department_id}/employees"};
+    option (google.api.http) = {get: "/v1/departments/{department_id}/employees"};
   }
   rpc ListEmployeesByClinic(ListEmployeesByClinicRequest) returns (ListEmployeesByClinicResponse) {
-    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/employees"};
+    option (google.api.http) = {get: "/v1/clinics/{clinic_id}/employees"};
   }
   rpc ListEmployeesByOrganization(ListEmployeesByOrganizationRequest) returns (ListEmployeesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/employees"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees"};
   }
   rpc CountEmployeesByDepartment(CountEmployeesByDepartmentRequest) returns (CountEmployeesByDepartmentResponse) {
-    option (google.api.http) = {get: "/v1/query/departments/{department_id}/employees:count"};
+    option (google.api.http) = {get: "/v1/departments/{department_id}/employees:count"};
   }
   rpc CountEmployeesByClinic(CountEmployeesByClinicRequest) returns (CountEmployeesByClinicResponse) {
-    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/employees:count"};
+    option (google.api.http) = {get: "/v1/clinics/{clinic_id}/employees:count"};
   }
   rpc CountEmployeesByOrganization(CountEmployeesByOrganizationRequest) returns (CountEmployeesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/employees:count"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees:count"};
   }
   rpc SearchEmployeesByOrganization(SearchEmployeesByOrganizationRequest) returns (SearchEmployeesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/employees:search"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees:search"};
   }
 
   rpc ListVacationsByEmployee(ListVacationsByEmployeeRequest) returns (ListVacationsByEmployeeResponse) {
-    option (google.api.http) = {get: "/v1/query/employees/{employee_id}/vacations"};
+    option (google.api.http) = {get: "/v1/employees/{employee_id}/vacations"};
   }
   rpc CountVacationsByEmployee(CountVacationsByEmployeeRequest) returns (CountVacationsByEmployeeResponse) {
-    option (google.api.http) = {get: "/v1/query/employees/{employee_id}/vacations:count"};
+    option (google.api.http) = {get: "/v1/employees/{employee_id}/vacations:count"};
   }
 
   rpc GetClinicHead(GetClinicHeadRequest) returns (GetClinicHeadResponse) {
-    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/head"};
+    option (google.api.http) = {get: "/v1/clinics/{clinic_id}/head"};
   }
   rpc GetDepartmentResponsible(GetDepartmentResponsibleRequest) returns (GetDepartmentResponsibleResponse) {
-    option (google.api.http) = {get: "/v1/query/departments/{department_id}/responsible"};
+    option (google.api.http) = {get: "/v1/departments/{department_id}/responsible"};
   }
   rpc ListOrgAdmins(ListOrgAdminsRequest) returns (ListOrgAdminsResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/admins"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/admins"};
   }
   rpc ListOrgDispatchers(ListOrgDispatchersRequest) returns (ListOrgDispatchersResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/dispatchers"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/dispatchers"};
   }
   rpc ListOrgHeads(ListOrgHeadsRequest) returns (ListOrgHeadsResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/heads"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/heads"};
   }
   rpc ListSystemAdmins(ListSystemAdminsRequest) returns (ListSystemAdminsResponse) {
-    option (google.api.http) = {get: "/v1/query/system-admins"};
+    option (google.api.http) = {get: "/v1/system-admins"};
   }
 }
 

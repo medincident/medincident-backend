@@ -439,7 +439,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -459,7 +459,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListOrganizations", runtime.WithHTTPPathPattern("/v1/query/organizations"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListOrganizations", runtime.WithHTTPPathPattern("/v1/organizations"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -479,7 +479,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountOrganizations", runtime.WithHTTPPathPattern("/v1/query/organizations:count"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountOrganizations", runtime.WithHTTPPathPattern("/v1/organizations:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -499,7 +499,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/SearchOrganizations", runtime.WithHTTPPathPattern("/v1/query/organizations:search"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/SearchOrganizations", runtime.WithHTTPPathPattern("/v1/organizations:search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -519,7 +519,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetClinic", runtime.WithHTTPPathPattern("/v1/clinics/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -539,7 +539,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/clinics"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/clinics"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -559,7 +559,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/clinics:count"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/clinics:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -579,7 +579,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetDepartment", runtime.WithHTTPPathPattern("/v1/query/departments/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetDepartment", runtime.WithHTTPPathPattern("/v1/departments/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -599,7 +599,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/departments"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/departments"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -619,7 +619,7 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/departments:count"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/departments:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -677,7 +677,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -694,7 +694,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListOrganizations", runtime.WithHTTPPathPattern("/v1/query/organizations"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListOrganizations", runtime.WithHTTPPathPattern("/v1/organizations"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -711,7 +711,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountOrganizations", runtime.WithHTTPPathPattern("/v1/query/organizations:count"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountOrganizations", runtime.WithHTTPPathPattern("/v1/organizations:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -728,7 +728,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/SearchOrganizations", runtime.WithHTTPPathPattern("/v1/query/organizations:search"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/SearchOrganizations", runtime.WithHTTPPathPattern("/v1/organizations:search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -745,7 +745,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetClinic", runtime.WithHTTPPathPattern("/v1/clinics/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -762,7 +762,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/clinics"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/clinics"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -779,7 +779,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/clinics:count"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/clinics:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -796,7 +796,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetDepartment", runtime.WithHTTPPathPattern("/v1/query/departments/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/GetDepartment", runtime.WithHTTPPathPattern("/v1/departments/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -813,7 +813,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/departments"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/ListDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/departments"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -830,7 +830,7 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/departments:count"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/departments:count"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -847,16 +847,16 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 }
 
 var (
-	pattern_OrgStructureQueryService_GetOrganization_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "organizations", "id"}, ""))
-	pattern_OrgStructureQueryService_ListOrganizations_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "organizations"}, ""))
-	pattern_OrgStructureQueryService_CountOrganizations_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "organizations"}, "count"))
-	pattern_OrgStructureQueryService_SearchOrganizations_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "organizations"}, "search"))
-	pattern_OrgStructureQueryService_GetClinic_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "clinics", "id"}, ""))
-	pattern_OrgStructureQueryService_ListClinicsByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "clinics"}, ""))
-	pattern_OrgStructureQueryService_CountClinicsByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "clinics"}, "count"))
-	pattern_OrgStructureQueryService_GetDepartment_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "departments", "id"}, ""))
-	pattern_OrgStructureQueryService_ListDepartmentsByClinic_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "departments"}, ""))
-	pattern_OrgStructureQueryService_CountDepartmentsByClinic_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "departments"}, "count"))
+	pattern_OrgStructureQueryService_GetOrganization_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "organizations", "id"}, ""))
+	pattern_OrgStructureQueryService_ListOrganizations_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "organizations"}, ""))
+	pattern_OrgStructureQueryService_CountOrganizations_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "organizations"}, "count"))
+	pattern_OrgStructureQueryService_SearchOrganizations_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "organizations"}, "search"))
+	pattern_OrgStructureQueryService_GetClinic_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "clinics", "id"}, ""))
+	pattern_OrgStructureQueryService_ListClinicsByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "clinics"}, ""))
+	pattern_OrgStructureQueryService_CountClinicsByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "clinics"}, "count"))
+	pattern_OrgStructureQueryService_GetDepartment_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "departments", "id"}, ""))
+	pattern_OrgStructureQueryService_ListDepartmentsByClinic_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "departments"}, ""))
+	pattern_OrgStructureQueryService_CountDepartmentsByClinic_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "departments"}, "count"))
 )
 
 var (
