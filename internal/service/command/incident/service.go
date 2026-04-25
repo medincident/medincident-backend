@@ -47,10 +47,6 @@ const (
 // may file an incident.
 const incidentMaxOccurredAtAge = 48 * time.Hour
 
-// incidentDescriptionMaxLen mirrors the validate tag on payload
-// descriptions; shared so update/edit code uses the same number.
-const incidentDescriptionMaxLen = 10_000 //nolint:unused // shared with future UpdateDescription command
-
 // scope is the oops scope tag for every error emitted by this package.
 const scope = "services.command.incident"
 
@@ -69,8 +65,6 @@ func NewIncidentService(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *I
 // privilegedActorPolicy is the standard "any privileged role for the
 // incident's scope" battery, used by every action that mutates an
 // incident other than registrar-only cancellation.
-//
-//nolint:unused // shared with future UpdateStatus, UpdatePriority, Reopen commands
 func privilegedActorPolicy(orgID, clinicID, deptID uuid.UUID) authz.Policy {
 	return authz.AnyOf(
 		authz.SystemAdmin,
