@@ -118,16 +118,16 @@ func TestEmployeeReader_ListVacationsByEmployee(t *testing.T) {
 	}))
 
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
-	all, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "")
+	all, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "", memberread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, all, 1)
 	require.Equal(t, "scheduled", all[0].State)
 
-	scheduled, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "scheduled")
+	scheduled, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "scheduled", memberread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, scheduled, 1)
 
-	none, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "active")
+	none, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "active", memberread.ListQuery{})
 	require.NoError(t, err)
 	require.Empty(t, none)
 }

@@ -534,6 +534,8 @@ func local_request_MembershipQueryService_GetDepartmentResponsible_0(ctx context
 	return msg, metadata, err
 }
 
+var filter_MembershipQueryService_ListOrgAdmins_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
 func request_MembershipQueryService_ListOrgAdmins_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListOrgAdminsRequest
@@ -550,6 +552,12 @@ func request_MembershipQueryService_ListOrgAdmins_0(ctx context.Context, marshal
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListOrgAdmins_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListOrgAdmins(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -569,9 +577,17 @@ func local_request_MembershipQueryService_ListOrgAdmins_0(ctx context.Context, m
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListOrgAdmins_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.ListOrgAdmins(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_MembershipQueryService_ListOrgDispatchers_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_MembershipQueryService_ListOrgDispatchers_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -589,6 +605,12 @@ func request_MembershipQueryService_ListOrgDispatchers_0(ctx context.Context, ma
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListOrgDispatchers_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListOrgDispatchers(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -608,9 +630,17 @@ func local_request_MembershipQueryService_ListOrgDispatchers_0(ctx context.Conte
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListOrgDispatchers_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.ListOrgDispatchers(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_MembershipQueryService_ListOrgHeads_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_MembershipQueryService_ListOrgHeads_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -628,6 +658,12 @@ func request_MembershipQueryService_ListOrgHeads_0(ctx context.Context, marshale
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListOrgHeads_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListOrgHeads(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -647,9 +683,17 @@ func local_request_MembershipQueryService_ListOrgHeads_0(ctx context.Context, ma
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListOrgHeads_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.ListOrgHeads(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_MembershipQueryService_ListSystemAdmins_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_MembershipQueryService_ListSystemAdmins_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -658,6 +702,12 @@ func request_MembershipQueryService_ListSystemAdmins_0(ctx context.Context, mars
 	)
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListSystemAdmins_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListSystemAdmins(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -668,6 +718,12 @@ func local_request_MembershipQueryService_ListSystemAdmins_0(ctx context.Context
 		protoReq ListSystemAdminsRequest
 		metadata runtime.ServerMetadata
 	)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListSystemAdmins_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.ListSystemAdmins(ctx, &protoReq)
 	return msg, metadata, err
 }

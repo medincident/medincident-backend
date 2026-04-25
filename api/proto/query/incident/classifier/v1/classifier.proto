@@ -86,6 +86,8 @@ message ListCategoriesByOrganizationResponse {
 
 message ListActiveRootCategoriesRequest {
   string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
 }
 message ListActiveRootCategoriesResponse {
   repeated Category items = 1;
@@ -107,6 +109,8 @@ message GetTypeResponse {
 
 message ListTypesByCategoryRequest {
   string category_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
 }
 message ListTypesByCategoryResponse {
   repeated Type items = 1;
@@ -114,6 +118,8 @@ message ListTypesByCategoryResponse {
 
 message ListActiveTypesByOrganizationRequest {
   string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
 }
 message ListActiveTypesByOrganizationResponse {
   repeated Type items = 1;
@@ -121,6 +127,8 @@ message ListActiveTypesByOrganizationResponse {
 
 message ListPatientAllowedTypesByOrganizationRequest {
   string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
 }
 message ListPatientAllowedTypesByOrganizationResponse {
   repeated Type items = 1;
@@ -128,6 +136,8 @@ message ListPatientAllowedTypesByOrganizationResponse {
 
 message ListPatientVisibleCategoriesByOrganizationRequest {
   string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
 }
 message ListPatientVisibleCategoriesByOrganizationResponse {
   repeated Category items = 1;

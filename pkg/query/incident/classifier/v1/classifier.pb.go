@@ -427,6 +427,8 @@ func (x *ListCategoriesByOrganizationResponse) GetItems() []*Category {
 type ListActiveRootCategoriesRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -466,6 +468,20 @@ func (x *ListActiveRootCategoriesRequest) GetOrganizationId() string {
 		return x.OrganizationId
 	}
 	return ""
+}
+
+func (x *ListActiveRootCategoriesRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListActiveRootCategoriesRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListActiveRootCategoriesResponse struct {
@@ -691,6 +707,8 @@ func (x *GetTypeResponse) GetType() *Type {
 type ListTypesByCategoryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CategoryId    string                 `protobuf:"bytes,1,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset        int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -730,6 +748,20 @@ func (x *ListTypesByCategoryRequest) GetCategoryId() string {
 		return x.CategoryId
 	}
 	return ""
+}
+
+func (x *ListTypesByCategoryRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListTypesByCategoryRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListTypesByCategoryResponse struct {
@@ -779,6 +811,8 @@ func (x *ListTypesByCategoryResponse) GetItems() []*Type {
 type ListActiveTypesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -818,6 +852,20 @@ func (x *ListActiveTypesByOrganizationRequest) GetOrganizationId() string {
 		return x.OrganizationId
 	}
 	return ""
+}
+
+func (x *ListActiveTypesByOrganizationRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListActiveTypesByOrganizationRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListActiveTypesByOrganizationResponse struct {
@@ -867,6 +915,8 @@ func (x *ListActiveTypesByOrganizationResponse) GetItems() []*Type {
 type ListPatientAllowedTypesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -906,6 +956,20 @@ func (x *ListPatientAllowedTypesByOrganizationRequest) GetOrganizationId() strin
 		return x.OrganizationId
 	}
 	return ""
+}
+
+func (x *ListPatientAllowedTypesByOrganizationRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListPatientAllowedTypesByOrganizationRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListPatientAllowedTypesByOrganizationResponse struct {
@@ -955,6 +1019,8 @@ func (x *ListPatientAllowedTypesByOrganizationResponse) GetItems() []*Type {
 type ListPatientVisibleCategoriesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -994,6 +1060,20 @@ func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetOrganizationId() 
 		return x.OrganizationId
 	}
 	return ""
+}
+
+func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetOffset() int32 {
+	if x != nil {
+		return x.Offset
+	}
+	return 0
 }
 
 type ListPatientVisibleCategoriesByOrganizationResponse struct {
@@ -1081,9 +1161,11 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x03 \x01(\x05R\x06offset\"d\n" +
 	"$ListCategoriesByOrganizationResponse\x12<\n" +
-	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\"J\n" +
+	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\"x\n" +
 	"\x1fListActiveRootCategoriesRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"`\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"`\n" +
 	" ListActiveRootCategoriesResponse\x12<\n" +
 	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\"F\n" +
 	"\x1aListCategorySubtreeRequest\x12(\n" +
@@ -1093,22 +1175,30 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x0eGetTypeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"I\n" +
 	"\x0fGetTypeResponse\x126\n" +
-	"\x04type\x18\x01 \x01(\v2\".query.incident.classifier.v1.TypeR\x04type\"=\n" +
+	"\x04type\x18\x01 \x01(\v2\".query.incident.classifier.v1.TypeR\x04type\"k\n" +
 	"\x1aListTypesByCategoryRequest\x12\x1f\n" +
 	"\vcategory_id\x18\x01 \x01(\tR\n" +
-	"categoryId\"W\n" +
+	"categoryId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"W\n" +
 	"\x1bListTypesByCategoryResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"O\n" +
+	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"}\n" +
 	"$ListActiveTypesByOrganizationRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"a\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"a\n" +
 	"%ListActiveTypesByOrganizationResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"W\n" +
+	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"\x85\x01\n" +
 	",ListPatientAllowedTypesByOrganizationRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"i\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"i\n" +
 	"-ListPatientAllowedTypesByOrganizationResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"\\\n" +
+	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"\x8a\x01\n" +
 	"1ListPatientVisibleCategoriesByOrganizationRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"r\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\"r\n" +
 	"2ListPatientVisibleCategoriesByOrganizationResponse\x12<\n" +
 	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items2\xf2\x0f\n" +
 	"\x1eIncidentClassifierQueryService\x12\x9e\x01\n" +

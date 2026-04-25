@@ -64,11 +64,15 @@ func (r *RoleReader) ListOrgAdmins(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	q ListQuery,
 ) ([]RoleHolderView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return nil, err
 	}
-	return r.listRolesByParent(ctx, "projections.org_admins", "organization_id", orgID)
+	return r.listRolesByParent(ctx, "projections.org_admins", "organization_id", orgID, q)
 }
 
 // ListOrgDispatchers returns all org-dispatcher holders for the
@@ -77,11 +81,15 @@ func (r *RoleReader) ListOrgDispatchers(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	q ListQuery,
 ) ([]RoleHolderView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return nil, err
 	}
-	return r.listRolesByParent(ctx, "projections.org_dispatchers", "organization_id", orgID)
+	return r.listRolesByParent(ctx, "projections.org_dispatchers", "organization_id", orgID, q)
 }
 
 // ListOrgHeads returns all org-head holders for the organization.
@@ -90,11 +98,15 @@ func (r *RoleReader) ListOrgHeads(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	q ListQuery,
 ) ([]RoleHolderView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return nil, err
 	}
-	return r.listRolesByParent(ctx, "projections.org_heads", "organization_id", orgID)
+	return r.listRolesByParent(ctx, "projections.org_heads", "organization_id", orgID, q)
 }
 
 // SystemAdminView mirrors projections.system_admins.
@@ -108,14 +120,19 @@ type SystemAdminView struct {
 func (r *RoleReader) ListSystemAdmins(
 	ctx context.Context,
 	caller authz.Caller,
+	q ListQuery,
 ) ([]SystemAdminView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.SystemAdmin); err != nil {
 		return nil, err
 	}
 	rows, err := r.db.WithContext(ctx).Raw(`
 		SELECT zitadel_user_id, created_at
 		  FROM projections.system_admins
-		 ORDER BY created_at DESC, zitadel_user_id DESC`).Rows()
+		 ORDER BY created_at DESC, zitadel_user_id DESC
+		 LIMIT ? OFFSET ?`, q.Limit, q.Offset).Rows()
 	if err != nil {
 		return nil, oops.In("reader.membership.role").
 			Code(ErrCodeRoleLoadFailed).
@@ -123,7 +140,7 @@ func (r *RoleReader) ListSystemAdmins(
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]SystemAdminView, 0)
+	out := make([]SystemAdminView, 0, q.Limit)
 	for rows.Next() {
 		var v SystemAdminView
 		if err := rows.Scan(&v.ZitadelUserID, &v.CreatedAt); err != nil {
@@ -170,14 +187,16 @@ func (r *RoleReader) oneRoleByParent(ctx context.Context, table, parentField str
 	return &v, nil
 }
 
-// listRolesByParent returns every role row for a given parent aggregate
-// (used by org-level roles which legitimately can have multiple holders).
-func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField string, parentID uuid.UUID) ([]RoleHolderView, error) {
+// listRolesByParent returns a paginated slice of role rows for a given
+// parent aggregate (used by org-level roles which legitimately can have
+// multiple holders). Callers must have already called q.normalize().
+func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField string, parentID uuid.UUID, q ListQuery) ([]RoleHolderView, error) {
 	rows, err := r.db.WithContext(ctx).Raw(
 		`SELECT employee_id, deputy_employee_id
 		   FROM `+table+`
 		  WHERE `+parentField+` = ?
-		  ORDER BY employee_id ASC`, parentID,
+		  ORDER BY employee_id ASC
+		  LIMIT ? OFFSET ?`, parentID, q.Limit, q.Offset,
 	).Rows()
 	if err != nil {
 		return nil, oops.In("reader.membership.role").
@@ -187,7 +206,7 @@ func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField s
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]RoleHolderView, 0)
+	out := make([]RoleHolderView, 0, q.Limit)
 	for rows.Next() {
 		var v RoleHolderView
 		if err := rows.Scan(&v.EmployeeID, &v.DeputyEmployeeID); err != nil {

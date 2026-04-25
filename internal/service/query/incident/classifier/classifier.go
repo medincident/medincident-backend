@@ -156,7 +156,11 @@ func (r *Reader) ListActiveRootCategories(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	q ListQuery,
 ) ([]CategoryView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return nil, err
 	}
@@ -164,7 +168,8 @@ func (r *Reader) ListActiveRootCategories(
 		 WHERE organization_id = ?
 		   AND parent_category_id IS NULL
 		   AND is_active = TRUE
-		 ORDER BY name ASC, id ASC`, orgID,
+		 ORDER BY name ASC, id ASC
+		 LIMIT ? OFFSET ?`, orgID, q.Limit, q.Offset,
 	).Rows()
 	if err != nil {
 		return nil, oops.In("reader.incident.classifier.category").
@@ -173,7 +178,7 @@ func (r *Reader) ListActiveRootCategories(
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]CategoryView, 0)
+	out := make([]CategoryView, 0, q.Limit)
 	for rows.Next() {
 		var v CategoryView
 		if err := scanCategory(rows, &v); err != nil {
@@ -279,13 +284,18 @@ func (r *Reader) ListTypesByCategory(
 	ctx context.Context,
 	caller authz.Caller,
 	categoryID uuid.UUID,
+	q ListQuery,
 ) ([]TypeView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(categoryID)); err != nil {
 		return nil, err
 	}
 	rows, err := r.db.WithContext(ctx).Raw(selectType+`
 		 WHERE category_id = ?
-		 ORDER BY name ASC, id ASC`, categoryID,
+		 ORDER BY name ASC, id ASC
+		 LIMIT ? OFFSET ?`, categoryID, q.Limit, q.Offset,
 	).Rows()
 	if err != nil {
 		return nil, oops.In("reader.incident.classifier.type").
@@ -294,7 +304,7 @@ func (r *Reader) ListTypesByCategory(
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]TypeView, 0)
+	out := make([]TypeView, 0, q.Limit)
 	for rows.Next() {
 		var v TypeView
 		if err := scanType(rows, &v); err != nil {
@@ -318,13 +328,18 @@ func (r *Reader) ListActiveTypesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	q ListQuery,
 ) ([]TypeView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return nil, err
 	}
 	rows, err := r.db.WithContext(ctx).Raw(selectType+`
 		 WHERE organization_id = ? AND is_active = TRUE
-		 ORDER BY name ASC, id ASC`, orgID,
+		 ORDER BY name ASC, id ASC
+		 LIMIT ? OFFSET ?`, orgID, q.Limit, q.Offset,
 	).Rows()
 	if err != nil {
 		return nil, oops.In("reader.incident.classifier.type").
@@ -333,7 +348,7 @@ func (r *Reader) ListActiveTypesByOrganization(
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]TypeView, 0)
+	out := make([]TypeView, 0, q.Limit)
 	for rows.Next() {
 		var v TypeView
 		if err := scanType(rows, &v); err != nil {
@@ -360,7 +375,11 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	q ListQuery,
 ) ([]TypeView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
 		return nil, err
 	}
@@ -368,7 +387,8 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(
 		 WHERE organization_id = ?
 		   AND is_active = TRUE
 		   AND is_allowed_for_patients = TRUE
-		 ORDER BY name ASC, id ASC`, orgID,
+		 ORDER BY name ASC, id ASC
+		 LIMIT ? OFFSET ?`, orgID, q.Limit, q.Offset,
 	).Rows()
 	if err != nil {
 		return nil, oops.In("reader.incident.classifier.type").
@@ -377,7 +397,7 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]TypeView, 0)
+	out := make([]TypeView, 0, q.Limit)
 	for rows.Next() {
 		var v TypeView
 		if err := scanType(rows, &v); err != nil {
@@ -407,7 +427,11 @@ func (r *Reader) ListPatientVisibleCategoriesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	q ListQuery,
 ) ([]CategoryView, error) {
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
 		return nil, err
 	}
@@ -443,8 +467,9 @@ func (r *Reader) ListPatientVisibleCategoriesByOrganization(
 		  FROM projections.incident_categories
 		 WHERE id IN (SELECT id FROM visible)
 		   AND organization_id = ?
-		 ORDER BY name ASC, id ASC`
-	rows, err := r.db.WithContext(ctx).Raw(query, orgID, orgID, orgID, orgID).Rows()
+		 ORDER BY name ASC, id ASC
+		 LIMIT ? OFFSET ?`
+	rows, err := r.db.WithContext(ctx).Raw(query, orgID, orgID, orgID, orgID, q.Limit, q.Offset).Rows()
 	if err != nil {
 		return nil, oops.In("reader.incident.classifier.category").
 			Code(ErrCodeCategoryLoadFailed).
@@ -452,7 +477,7 @@ func (r *Reader) ListPatientVisibleCategoriesByOrganization(
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]CategoryView, 0)
+	out := make([]CategoryView, 0, q.Limit)
 	for rows.Next() {
 		var v CategoryView
 		if err := scanCategory(rows, &v); err != nil {
