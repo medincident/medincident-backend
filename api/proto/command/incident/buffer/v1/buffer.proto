@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package command.incident.buffer.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/medincident/medincident-backend/pkg/command/incident/buffer/v1;bufferv1";
+
+// IncidentBufferCommandService handles the patient submission flow:
+// patients SubmitPatientIncident, may UpdatePatientIncident or
+// CancelPatientIncident while pending; dispatchers PublishPatientIncident
+// (creates a real incident) or RejectPatientIncident.
+service IncidentBufferCommandService {
+  rpc SubmitPatientIncident(SubmitPatientIncidentRequest) returns (SubmitPatientIncidentResponse) {
+    option (google.api.http) = {
+      post: "/v1/patient-incidents"
+      body: "*"
+    };
+  }
+  rpc UpdatePatientIncident(UpdatePatientIncidentRequest) returns (UpdatePatientIncidentResponse) {
+    option (google.api.http) = {
+      put: "/v1/patient-incidents/{buffer_id}"
+      body: "*"
+    };
+  }
+  rpc CancelPatientIncident(CancelPatientIncidentRequest) returns (CancelPatientIncidentResponse) {
+    option (google.api.http) = {post: "/v1/patient-incidents/{buffer_id}:cancel"};
+  }
+  rpc PublishPatientIncident(PublishPatientIncidentRequest) returns (PublishPatientIncidentResponse) {
+    option (google.api.http) = {
+      post: "/v1/patient-incidents/{buffer_id}:publish"
+      body: "*"
+    };
+  }
+  rpc RejectPatientIncident(RejectPatientIncidentRequest) returns (RejectPatientIncidentResponse) {
+    option (google.api.http) = {post: "/v1/patient-incidents/{buffer_id}:reject"};
+  }
+}
+
+message SubmitPatientIncidentRequest {
+  string organization_id = 1;
+  optional string category_id = 2;
+  optional string type_id = 3;
+  optional string description = 4;
+  optional string occurred_at = 5; // RFC3339Nano
+}
+message SubmitPatientIncidentResponse {
+  string buffer_id = 1;
+}
+
+message UpdatePatientIncidentRequest {
+  string buffer_id = 1;
+  optional string category_id = 2;
+  optional string type_id = 3;
+  optional string description = 4;
+  optional string occurred_at = 5;
+}
+message UpdatePatientIncidentResponse {}
+
+message CancelPatientIncidentRequest {
+  string buffer_id = 1;
+}
+message CancelPatientIncidentResponse {}
+
+message PublishPatientIncidentRequest {
+  string buffer_id = 1;
+  string department_id = 2;
+  string category_id = 3;
+  string type_id = 4;
+  optional string description = 5; // dispatcher's edited description
+}
+message PublishPatientIncidentResponse {
+  string incident_id = 1;
+}
+
+message RejectPatientIncidentRequest {
+  string buffer_id = 1;
+}
+message RejectPatientIncidentResponse {}

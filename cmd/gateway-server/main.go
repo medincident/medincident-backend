@@ -26,10 +26,13 @@ import (
 	"github.com/medincident/medincident-backend/internal/bootstrap"
 	gwhandler "github.com/medincident/medincident-backend/internal/handler/gateway"
 	"github.com/medincident/medincident-backend/internal/middleware/httpmw"
+	cmdbufferv1 "github.com/medincident/medincident-backend/pkg/command/incident/buffer/v1"
 	cmdclassifierv1 "github.com/medincident/medincident-backend/pkg/command/incident/classifier/v1"
+	cmdincidentv1 "github.com/medincident/medincident-backend/pkg/command/incident/v1"
 	cmdmembershipv1 "github.com/medincident/medincident-backend/pkg/command/membership/v1"
 	cmdorgv1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
 	qclassifierv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
+	qincidentv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
 	qmembershipv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
 	qorgv1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
 	qstatsv1 "github.com/medincident/medincident-backend/pkg/query/stats/v1"
@@ -165,11 +168,14 @@ func buildGatewayMux(ctx context.Context, commandConn, queryConn *grpc.ClientCon
 		cmdorgv1.RegisterOrgStructureCommandServiceHandler(ctx, mux, commandConn),
 		cmdmembershipv1.RegisterMembershipCommandServiceHandler(ctx, mux, commandConn),
 		cmdclassifierv1.RegisterIncidentClassifierCommandServiceHandler(ctx, mux, commandConn),
+		cmdincidentv1.RegisterIncidentCommandServiceHandler(ctx, mux, commandConn),
+		cmdbufferv1.RegisterIncidentBufferCommandServiceHandler(ctx, mux, commandConn),
 		// Query side.
 		qorgv1.RegisterOrgStructureQueryServiceHandler(ctx, mux, queryConn),
 		qmembershipv1.RegisterMembershipQueryServiceHandler(ctx, mux, queryConn),
 		qclassifierv1.RegisterIncidentClassifierQueryServiceHandler(ctx, mux, queryConn),
 		qstatsv1.RegisterStatsQueryServiceHandler(ctx, mux, queryConn),
+		qincidentv1.RegisterIncidentQueryServiceHandler(ctx, mux, queryConn),
 	}
 	if err := errors.Join(errs...); err != nil {
 		return nil, oops.In("gateway").Code(ErrCodeGatewayRegisterFailed).Wrap(err)

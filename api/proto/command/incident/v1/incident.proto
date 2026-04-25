@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package command.incident.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/medincident/medincident-backend/pkg/command/incident/v1;incidentv1";
+
+// IncidentCommandService is the write-side contract for incidents
+// created directly by employees (not the patient buffer).
+service IncidentCommandService {
+  rpc CreateIncident(CreateIncidentRequest) returns (CreateIncidentResponse) {
+    option (google.api.http) = {
+      post: "/v1/incidents"
+      body: "*"
+    };
+  }
+  rpc CancelIncident(CancelIncidentRequest) returns (CancelIncidentResponse) {
+    option (google.api.http) = {post: "/v1/incidents/{incident_id}:cancel"};
+  }
+  rpc UpdateIncidentStatus(UpdateIncidentStatusRequest) returns (UpdateIncidentStatusResponse) {
+    option (google.api.http) = {
+      put: "/v1/incidents/{incident_id}/status"
+      body: "*"
+    };
+  }
+  rpc UpdateIncidentPriority(UpdateIncidentPriorityRequest) returns (UpdateIncidentPriorityResponse) {
+    option (google.api.http) = {
+      put: "/v1/incidents/{incident_id}/priority"
+      body: "*"
+    };
+  }
+  rpc UpdateIncidentDescription(UpdateIncidentDescriptionRequest) returns (UpdateIncidentDescriptionResponse) {
+    option (google.api.http) = {
+      put: "/v1/incidents/{incident_id}/description"
+      body: "*"
+    };
+  }
+  rpc ReopenIncident(ReopenIncidentRequest) returns (ReopenIncidentResponse) {
+    option (google.api.http) = {post: "/v1/incidents/{incident_id}:reopen"};
+  }
+}
+
+enum IncidentStatus {
+  INCIDENT_STATUS_UNSPECIFIED = 0;
+  INCIDENT_STATUS_PENDING = 1;
+  INCIDENT_STATUS_IN_PROGRESS = 2;
+  INCIDENT_STATUS_DONE = 3;
+  INCIDENT_STATUS_REJECTED = 4;
+  INCIDENT_STATUS_CANCELLED = 5;
+}
+
+enum IncidentPriority {
+  INCIDENT_PRIORITY_UNSPECIFIED = 0;
+  INCIDENT_PRIORITY_LOW = 1;
+  INCIDENT_PRIORITY_NORMAL = 2;
+  INCIDENT_PRIORITY_HIGH = 3;
+  INCIDENT_PRIORITY_CRITICAL = 4;
+}
+
+message CreateIncidentRequest {
+  string department_id = 1;
+  string category_id = 2;
+  string type_id = 3;
+  optional string description = 4;
+  string occurred_at = 5; // RFC3339Nano
+}
+message CreateIncidentResponse {
+  string incident_id = 1;
+}
+
+message CancelIncidentRequest {
+  string incident_id = 1;
+}
+message CancelIncidentResponse {}
+
+// UpdateIncidentStatus only handles forward transitions:
+// pending -> in_progress, in_progress -> done, in_progress -> rejected.
+// Cancellation by registrar uses CancelIncident.
+message UpdateIncidentStatusRequest {
+  string incident_id = 1;
+  IncidentStatus new_status = 2;
+}
+message UpdateIncidentStatusResponse {}
+
+message UpdateIncidentPriorityRequest {
+  string incident_id = 1;
+  IncidentPriority priority = 2;
+}
+message UpdateIncidentPriorityResponse {}
+
+message UpdateIncidentDescriptionRequest {
+  string incident_id = 1;
+  optional string description = 2;
+}
+message UpdateIncidentDescriptionResponse {}
+
+message ReopenIncidentRequest {
+  string incident_id = 1;
+}
+message ReopenIncidentResponse {
+  string reopened_incident_id = 1;
+}

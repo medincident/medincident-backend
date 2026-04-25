@@ -1,0 +1,205 @@
+syntax = "proto3";
+
+package query.incident.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/medincident/medincident-backend/pkg/query/incident/v1;incidentqueryv1";
+
+// IncidentQueryService is the unified read-side. The same RPCs serve
+// both employees and patients — visibility filtering and field
+// redaction happen inside the reader based on the caller's role.
+service IncidentQueryService {
+  rpc GetIncident(GetIncidentRequest) returns (GetIncidentResponse) {
+    option (google.api.http) = {get: "/v1/query/incidents/{id}"};
+  }
+  rpc ListIncidents(ListIncidentsRequest) returns (ListIncidentsResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incidents"};
+  }
+  rpc ListMyIncidents(ListMyIncidentsRequest) returns (ListMyIncidentsResponse) {
+    option (google.api.http) = {get: "/v1/query/incidents:mine"};
+  }
+  rpc GetIncidentHistory(GetIncidentHistoryRequest) returns (GetIncidentHistoryResponse) {
+    option (google.api.http) = {get: "/v1/query/incidents/{incident_id}/history"};
+  }
+
+  // Buffer reads.
+  rpc GetBufferEntry(GetBufferEntryRequest) returns (GetBufferEntryResponse) {
+    option (google.api.http) = {get: "/v1/query/patient-incidents/{id}"};
+  }
+  rpc ListBufferEntries(ListBufferEntriesRequest) returns (ListBufferEntriesResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/patient-incidents"};
+  }
+  rpc ListMyBufferEntries(ListMyBufferEntriesRequest) returns (ListMyBufferEntriesResponse) {
+    option (google.api.http) = {get: "/v1/query/patient-incidents:mine"};
+  }
+}
+
+enum IncidentStatus {
+  INCIDENT_STATUS_UNSPECIFIED = 0;
+  INCIDENT_STATUS_PENDING = 1;
+  INCIDENT_STATUS_IN_PROGRESS = 2;
+  INCIDENT_STATUS_DONE = 3;
+  INCIDENT_STATUS_REJECTED = 4;
+  INCIDENT_STATUS_CANCELLED = 5;
+}
+
+enum IncidentPriority {
+  INCIDENT_PRIORITY_UNSPECIFIED = 0;
+  INCIDENT_PRIORITY_LOW = 1;
+  INCIDENT_PRIORITY_NORMAL = 2;
+  INCIDENT_PRIORITY_HIGH = 3;
+  INCIDENT_PRIORITY_CRITICAL = 4;
+}
+
+enum BufferStatus {
+  BUFFER_STATUS_UNSPECIFIED = 0;
+  BUFFER_STATUS_PENDING = 1;
+  BUFFER_STATUS_PUBLISHED = 2;
+  BUFFER_STATUS_REJECTED = 3;
+  BUFFER_STATUS_CANCELLED = 4;
+}
+
+// PatientStatus is the simplified four-value status surfaced to patients.
+enum PatientStatus {
+  PATIENT_STATUS_UNSPECIFIED = 0;
+  PATIENT_STATUS_PENDING = 1; // buffer pending
+  PATIENT_STATUS_ACCEPTED = 2; // dispatcher accepted; incident pending/in_progress
+  PATIENT_STATUS_CLOSED = 3; // done / rejected / buffer rejected
+  PATIENT_STATUS_CANCELLED = 4; // patient cancelled
+}
+
+message RegistrarView {
+  string employee_id = 1;
+  string display_name = 2;
+  optional string position = 3;
+  string organization_id = 4;
+  string clinic_id = 5;
+  string department_id = 6;
+}
+
+// IncidentView is the unified payload. For patients only id, status,
+// patient_status, description and timestamps are populated.
+message IncidentView {
+  string id = 1;
+  optional string organization_id = 2;
+  optional string clinic_id = 3;
+  optional string department_id = 4;
+  optional string category_id = 5;
+  optional string type_id = 6;
+  IncidentStatus status = 7;
+  IncidentPriority priority = 8;
+  optional string description = 9;
+  optional string patient_original_description = 10;
+  string occurred_at = 11;
+  string created_at = 12;
+  string updated_at = 13;
+  optional RegistrarView registrar = 14;
+  optional string source_patient_zitadel_user_id = 15;
+  optional string source_buffer_id = 16;
+  optional string reopened_from_incident_id = 17;
+  // Populated only for patient callers.
+  optional PatientStatus patient_status = 18;
+}
+
+message BufferEntryView {
+  string id = 1;
+  string organization_id = 2;
+  string patient_zitadel_user_id = 3;
+  optional string category_id = 4;
+  optional string type_id = 5;
+  optional string description = 6;
+  optional string occurred_at = 7;
+  BufferStatus status = 8;
+  optional string published_incident_id = 9;
+  string created_at = 10;
+  string updated_at = 11;
+  // Populated only for patient callers.
+  optional PatientStatus patient_status = 12;
+}
+
+message ActorView {
+  optional string employee_id = 1;
+  optional string display_name = 2;
+}
+
+message StatusHistoryEntry {
+  string id = 1;
+  IncidentStatus old_status = 2; // UNSPECIFIED for the initial entry
+  IncidentStatus new_status = 3;
+  ActorView actor = 4;
+  string changed_at = 5;
+}
+
+message PriorityHistoryEntry {
+  string id = 1;
+  IncidentPriority old_priority = 2;
+  IncidentPriority new_priority = 3;
+  ActorView actor = 4;
+  string changed_at = 5;
+}
+
+message GetIncidentRequest {
+  string id = 1;
+}
+message GetIncidentResponse {
+  IncidentView incident = 1;
+}
+
+message ListIncidentsRequest {
+  string organization_id = 1;
+  repeated IncidentStatus statuses = 2;
+  repeated IncidentPriority priorities = 3;
+  optional string clinic_id = 4;
+  optional string department_id = 5;
+  optional string category_id = 6;
+  optional string type_id = 7;
+  optional string occurred_from = 8; // RFC3339Nano
+  optional string occurred_to = 9;
+  int32 limit = 10;
+  int32 offset = 11;
+}
+message ListIncidentsResponse {
+  repeated IncidentView items = 1;
+}
+
+message ListMyIncidentsRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+message ListMyIncidentsResponse {
+  repeated IncidentView items = 1;
+}
+
+message GetIncidentHistoryRequest {
+  string incident_id = 1;
+}
+message GetIncidentHistoryResponse {
+  repeated StatusHistoryEntry status_history = 1;
+  repeated PriorityHistoryEntry priority_history = 2;
+}
+
+message GetBufferEntryRequest {
+  string id = 1;
+}
+message GetBufferEntryResponse {
+  BufferEntryView entry = 1;
+}
+
+message ListBufferEntriesRequest {
+  string organization_id = 1;
+  repeated BufferStatus statuses = 2;
+  int32 limit = 3;
+  int32 offset = 4;
+}
+message ListBufferEntriesResponse {
+  repeated BufferEntryView items = 1;
+}
+
+message ListMyBufferEntriesRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+message ListMyBufferEntriesResponse {
+  repeated BufferEntryView items = 1;
+}
