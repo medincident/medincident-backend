@@ -102,6 +102,39 @@ func TestOrganizationReader_List_And_Count(t *testing.T) {
 	require.Equal(t, int64(3), total)
 }
 
+// TestOrganizationReader_Search_FiltersByNameSubstring seeds three
+// organizations and asserts ILIKE %acme% returns both Acme rows.
+func TestOrganizationReader_Search_FiltersByNameSubstring(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+
+	now := time.Now().UTC().Truncate(time.Second)
+	names := []string{"Acme Clinics", "Brightside Health", "Acme Medical"}
+	ids := make([]uuid.UUID, len(names))
+	for i, name := range names {
+		ids[i] = uuid.Must(uuid.NewV7())
+		org := &model.Organization{
+			ID:           ids[i],
+			Name:         name,
+			LegalAddress: model.Address{Text: "Street"},
+			CreatedAt:    now.Add(time.Duration(i) * time.Minute),
+			UpdatedAt:    now.Add(time.Duration(i) * time.Minute),
+		}
+		require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+			return projector.OrganizationCreated(tx, org)
+		}))
+	}
+
+	reader := orgread.NewOrganizationReader(testDB, &logger)
+	items, err := reader.Search(ctx, "acme", orgread.ListQuery{})
+	require.NoError(t, err)
+	require.Len(t, items, 2)
+	got := map[uuid.UUID]string{items[0].ID: items[0].Name, items[1].ID: items[1].Name}
+	require.Contains(t, got, ids[0])
+	require.Contains(t, got, ids[2])
+}
+
 // TestClinicReader_Get_And_ListByOrganization covers the clinic reader.
 func TestClinicReader_Get_And_ListByOrganization(t *testing.T) {
 	resetProjections(t)

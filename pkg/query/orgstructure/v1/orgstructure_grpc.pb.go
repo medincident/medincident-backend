@@ -22,6 +22,7 @@ const (
 	OrgStructureQueryService_GetOrganization_FullMethodName            = "/query.orgstructure.v1.OrgStructureQueryService/GetOrganization"
 	OrgStructureQueryService_ListOrganizations_FullMethodName          = "/query.orgstructure.v1.OrgStructureQueryService/ListOrganizations"
 	OrgStructureQueryService_CountOrganizations_FullMethodName         = "/query.orgstructure.v1.OrgStructureQueryService/CountOrganizations"
+	OrgStructureQueryService_SearchOrganizations_FullMethodName        = "/query.orgstructure.v1.OrgStructureQueryService/SearchOrganizations"
 	OrgStructureQueryService_GetClinic_FullMethodName                  = "/query.orgstructure.v1.OrgStructureQueryService/GetClinic"
 	OrgStructureQueryService_ListClinicsByOrganization_FullMethodName  = "/query.orgstructure.v1.OrgStructureQueryService/ListClinicsByOrganization"
 	OrgStructureQueryService_CountClinicsByOrganization_FullMethodName = "/query.orgstructure.v1.OrgStructureQueryService/CountClinicsByOrganization"
@@ -42,6 +43,7 @@ type OrgStructureQueryServiceClient interface {
 	GetOrganization(ctx context.Context, in *GetOrganizationRequest, opts ...grpc.CallOption) (*GetOrganizationResponse, error)
 	ListOrganizations(ctx context.Context, in *ListOrganizationsRequest, opts ...grpc.CallOption) (*ListOrganizationsResponse, error)
 	CountOrganizations(ctx context.Context, in *CountOrganizationsRequest, opts ...grpc.CallOption) (*CountOrganizationsResponse, error)
+	SearchOrganizations(ctx context.Context, in *SearchOrganizationsRequest, opts ...grpc.CallOption) (*SearchOrganizationsResponse, error)
 	GetClinic(ctx context.Context, in *GetClinicRequest, opts ...grpc.CallOption) (*GetClinicResponse, error)
 	ListClinicsByOrganization(ctx context.Context, in *ListClinicsByOrganizationRequest, opts ...grpc.CallOption) (*ListClinicsByOrganizationResponse, error)
 	CountClinicsByOrganization(ctx context.Context, in *CountClinicsByOrganizationRequest, opts ...grpc.CallOption) (*CountClinicsByOrganizationResponse, error)
@@ -82,6 +84,16 @@ func (c *orgStructureQueryServiceClient) CountOrganizations(ctx context.Context,
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CountOrganizationsResponse)
 	err := c.cc.Invoke(ctx, OrgStructureQueryService_CountOrganizations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgStructureQueryServiceClient) SearchOrganizations(ctx context.Context, in *SearchOrganizationsRequest, opts ...grpc.CallOption) (*SearchOrganizationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchOrganizationsResponse)
+	err := c.cc.Invoke(ctx, OrgStructureQueryService_SearchOrganizations_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -160,6 +172,7 @@ type OrgStructureQueryServiceServer interface {
 	GetOrganization(context.Context, *GetOrganizationRequest) (*GetOrganizationResponse, error)
 	ListOrganizations(context.Context, *ListOrganizationsRequest) (*ListOrganizationsResponse, error)
 	CountOrganizations(context.Context, *CountOrganizationsRequest) (*CountOrganizationsResponse, error)
+	SearchOrganizations(context.Context, *SearchOrganizationsRequest) (*SearchOrganizationsResponse, error)
 	GetClinic(context.Context, *GetClinicRequest) (*GetClinicResponse, error)
 	ListClinicsByOrganization(context.Context, *ListClinicsByOrganizationRequest) (*ListClinicsByOrganizationResponse, error)
 	CountClinicsByOrganization(context.Context, *CountClinicsByOrganizationRequest) (*CountClinicsByOrganizationResponse, error)
@@ -184,6 +197,9 @@ func (UnimplementedOrgStructureQueryServiceServer) ListOrganizations(context.Con
 }
 func (UnimplementedOrgStructureQueryServiceServer) CountOrganizations(context.Context, *CountOrganizationsRequest) (*CountOrganizationsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CountOrganizations not implemented")
+}
+func (UnimplementedOrgStructureQueryServiceServer) SearchOrganizations(context.Context, *SearchOrganizationsRequest) (*SearchOrganizationsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchOrganizations not implemented")
 }
 func (UnimplementedOrgStructureQueryServiceServer) GetClinic(context.Context, *GetClinicRequest) (*GetClinicResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetClinic not implemented")
@@ -275,6 +291,24 @@ func _OrgStructureQueryService_CountOrganizations_Handler(srv interface{}, ctx c
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrgStructureQueryServiceServer).CountOrganizations(ctx, req.(*CountOrganizationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgStructureQueryService_SearchOrganizations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchOrganizationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureQueryServiceServer).SearchOrganizations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureQueryService_SearchOrganizations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureQueryServiceServer).SearchOrganizations(ctx, req.(*SearchOrganizationsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -405,6 +439,10 @@ var OrgStructureQueryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CountOrganizations",
 			Handler:    _OrgStructureQueryService_CountOrganizations_Handler,
+		},
+		{
+			MethodName: "SearchOrganizations",
+			Handler:    _OrgStructureQueryService_SearchOrganizations_Handler,
 		},
 		{
 			MethodName: "GetClinic",

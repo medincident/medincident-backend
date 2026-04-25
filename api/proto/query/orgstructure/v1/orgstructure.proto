@@ -18,6 +18,9 @@ service OrgStructureQueryService {
   rpc CountOrganizations(CountOrganizationsRequest) returns (CountOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/query/organizations:count"};
   }
+  rpc SearchOrganizations(SearchOrganizationsRequest) returns (SearchOrganizationsResponse) {
+    option (google.api.http) = {get: "/v1/query/organizations:search"};
+  }
 
   rpc GetClinic(GetClinicRequest) returns (GetClinicResponse) {
     option (google.api.http) = {get: "/v1/query/clinics/{id}"};
@@ -125,6 +128,15 @@ message ListOrganizationsResponse {
 message CountOrganizationsRequest {}
 message CountOrganizationsResponse {
   int64 total = 1;
+}
+
+message SearchOrganizationsRequest {
+  string query = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message SearchOrganizationsResponse {
+  repeated OrganizationListItem items = 1;
 }
 
 message GetClinicRequest {
