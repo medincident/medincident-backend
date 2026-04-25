@@ -10,36 +10,36 @@ import "google/api/annotations.proto";
 // CTEs in the reader; the RPC surface stays flat.
 service IncidentClassifierQueryService {
   rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse) {
-    option (google.api.http) = {get: "/v1/query/incident-categories/{id}"};
+    option (google.api.http) = {get: "/v1/incident-categories/{id}"};
   }
   rpc ListCategoriesByOrganization(ListCategoriesByOrganizationRequest) returns (ListCategoriesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-categories"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories"};
   }
   rpc ListActiveRootCategories(ListActiveRootCategoriesRequest) returns (ListActiveRootCategoriesResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-categories:roots"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories:roots"};
   }
   rpc ListCategorySubtree(ListCategorySubtreeRequest) returns (ListCategorySubtreeResponse) {
-    option (google.api.http) = {get: "/v1/query/incident-categories/{root_category_id}:subtree"};
+    option (google.api.http) = {get: "/v1/incident-categories/{root_category_id}:subtree"};
   }
 
   rpc GetType(GetTypeRequest) returns (GetTypeResponse) {
-    option (google.api.http) = {get: "/v1/query/incident-types/{id}"};
+    option (google.api.http) = {get: "/v1/incident-types/{id}"};
   }
   rpc ListTypesByCategory(ListTypesByCategoryRequest) returns (ListTypesByCategoryResponse) {
-    option (google.api.http) = {get: "/v1/query/incident-categories/{category_id}/types"};
+    option (google.api.http) = {get: "/v1/incident-categories/{category_id}/types"};
   }
   rpc ListActiveTypesByOrganization(ListActiveTypesByOrganizationRequest) returns (ListActiveTypesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-types:active"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-types:active"};
   }
 
   // Patient-facing reads. These are scoped to one organisation and return
   // only the slice of the classifier that a patient may see when filing
   // an incident.
   rpc ListPatientAllowedTypesByOrganization(ListPatientAllowedTypesByOrganizationRequest) returns (ListPatientAllowedTypesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-types:patient-allowed"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-types:patient-allowed"};
   }
   rpc ListPatientVisibleCategoriesByOrganization(ListPatientVisibleCategoriesByOrganizationRequest) returns (ListPatientVisibleCategoriesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incident-categories:patient-visible"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories:patient-visible"};
   }
 }
 

@@ -482,7 +482,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/GetCategory", runtime.WithHTTPPathPattern("/v1/query/incident-categories/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/GetCategory", runtime.WithHTTPPathPattern("/v1/incident-categories/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -502,7 +502,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-categories"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -522,7 +522,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-categories:roots"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:roots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -542,7 +542,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategorySubtree", runtime.WithHTTPPathPattern("/v1/query/incident-categories/{root_category_id}:subtree"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategorySubtree", runtime.WithHTTPPathPattern("/v1/incident-categories/{root_category_id}:subtree"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -562,7 +562,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/GetType", runtime.WithHTTPPathPattern("/v1/query/incident-types/{id}"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/GetType", runtime.WithHTTPPathPattern("/v1/incident-types/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -582,7 +582,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByCategory", runtime.WithHTTPPathPattern("/v1/query/incident-categories/{category_id}/types"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByCategory", runtime.WithHTTPPathPattern("/v1/incident-categories/{category_id}/types"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -602,7 +602,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-types:active"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types:active"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -622,7 +622,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientAllowedTypesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-types:patient-allowed"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientAllowedTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types:patient-allowed"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -642,7 +642,7 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientVisibleCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-categories:patient-visible"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientVisibleCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:patient-visible"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -700,7 +700,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/GetCategory", runtime.WithHTTPPathPattern("/v1/query/incident-categories/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/GetCategory", runtime.WithHTTPPathPattern("/v1/incident-categories/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -717,7 +717,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-categories"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -734,7 +734,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-categories:roots"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:roots"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -751,7 +751,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategorySubtree", runtime.WithHTTPPathPattern("/v1/query/incident-categories/{root_category_id}:subtree"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategorySubtree", runtime.WithHTTPPathPattern("/v1/incident-categories/{root_category_id}:subtree"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -768,7 +768,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/GetType", runtime.WithHTTPPathPattern("/v1/query/incident-types/{id}"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/GetType", runtime.WithHTTPPathPattern("/v1/incident-types/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -785,7 +785,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByCategory", runtime.WithHTTPPathPattern("/v1/query/incident-categories/{category_id}/types"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByCategory", runtime.WithHTTPPathPattern("/v1/incident-categories/{category_id}/types"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -802,7 +802,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-types:active"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types:active"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -819,7 +819,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientAllowedTypesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-types:patient-allowed"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientAllowedTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types:patient-allowed"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -836,7 +836,7 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientVisibleCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/incident-categories:patient-visible"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientVisibleCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:patient-visible"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -853,15 +853,15 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 }
 
 var (
-	pattern_IncidentClassifierQueryService_GetCategory_0                                = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "incident-categories", "id"}, ""))
-	pattern_IncidentClassifierQueryService_ListCategoriesByOrganization_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "incident-categories"}, ""))
-	pattern_IncidentClassifierQueryService_ListActiveRootCategories_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "incident-categories"}, "roots"))
-	pattern_IncidentClassifierQueryService_ListCategorySubtree_0                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "incident-categories", "root_category_id"}, "subtree"))
-	pattern_IncidentClassifierQueryService_GetType_0                                    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "incident-types", "id"}, ""))
-	pattern_IncidentClassifierQueryService_ListTypesByCategory_0                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "incident-categories", "category_id", "types"}, ""))
-	pattern_IncidentClassifierQueryService_ListActiveTypesByOrganization_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "incident-types"}, "active"))
-	pattern_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "incident-types"}, "patient-allowed"))
-	pattern_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "incident-categories"}, "patient-visible"))
+	pattern_IncidentClassifierQueryService_GetCategory_0                                = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "id"}, ""))
+	pattern_IncidentClassifierQueryService_ListCategoriesByOrganization_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, ""))
+	pattern_IncidentClassifierQueryService_ListActiveRootCategories_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, "roots"))
+	pattern_IncidentClassifierQueryService_ListCategorySubtree_0                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "root_category_id"}, "subtree"))
+	pattern_IncidentClassifierQueryService_GetType_0                                    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-types", "id"}, ""))
+	pattern_IncidentClassifierQueryService_ListTypesByCategory_0                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "types"}, ""))
+	pattern_IncidentClassifierQueryService_ListActiveTypesByOrganization_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-types"}, "active"))
+	pattern_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-types"}, "patient-allowed"))
+	pattern_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, "patient-visible"))
 )
 
 var (

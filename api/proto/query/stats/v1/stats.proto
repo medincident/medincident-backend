@@ -10,13 +10,13 @@ import "google/api/annotations.proto";
 // projections.employee_vacations so they never drift.
 service StatsQueryService {
   rpc GetOrganizationStats(GetOrganizationStatsRequest) returns (GetOrganizationStatsResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/stats"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/stats"};
   }
   rpc GetClinicStats(GetClinicStatsRequest) returns (GetClinicStatsResponse) {
-    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/stats"};
+    option (google.api.http) = {get: "/v1/clinics/{clinic_id}/stats"};
   }
   rpc GetDepartmentStats(GetDepartmentStatsRequest) returns (GetDepartmentStatsResponse) {
-    option (google.api.http) = {get: "/v1/query/departments/{department_id}/stats"};
+    option (google.api.http) = {get: "/v1/departments/{department_id}/stats"};
   }
 }
 

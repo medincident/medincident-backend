@@ -112,7 +112,6 @@ func resetProjections(t *testing.T) {
 		projections.departments,
 		projections.clinics,
 		projections.organizations,
-		projections.sessions,
 		projections.users,
 		projections.clinic_heads,
 		projections.department_responsibles,

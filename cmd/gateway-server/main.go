@@ -31,7 +31,6 @@ import (
 	cmdincidentv1 "github.com/medincident/medincident-backend/pkg/command/incident/v1"
 	cmdmembershipv1 "github.com/medincident/medincident-backend/pkg/command/membership/v1"
 	cmdorgv1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
-	qidentityv1 "github.com/medincident/medincident-backend/pkg/query/identity/v1"
 	qclassifierv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	qincidentv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
 	qmembershipv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
@@ -176,7 +175,6 @@ func buildGatewayMux(ctx context.Context, commandConn, queryConn *grpc.ClientCon
 		qmembershipv1.RegisterMembershipQueryServiceHandler(ctx, mux, queryConn),
 		qclassifierv1.RegisterIncidentClassifierQueryServiceHandler(ctx, mux, queryConn),
 		qstatsv1.RegisterStatsQueryServiceHandler(ctx, mux, queryConn),
-		qidentityv1.RegisterIdentityQueryServiceHandler(ctx, mux, queryConn),
 		qincidentv1.RegisterIncidentQueryServiceHandler(ctx, mux, queryConn),
 	}
 	if err := errors.Join(errs...); err != nil {

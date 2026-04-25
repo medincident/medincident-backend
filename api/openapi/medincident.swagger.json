@@ -21,9 +21,6 @@
       "name": "OrgStructureCommandService"
     },
     {
-      "name": "IdentityQueryService"
-    },
-    {
       "name": "IncidentClassifierQueryService"
     },
     {
@@ -47,6 +44,48 @@
   ],
   "paths": {
     "/v1/clinics/{clinicId}/departments": {
+      "get": {
+        "operationId": "OrgStructureQueryService_ListDepartmentsByClinic",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListDepartmentsByClinicResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "clinicId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
+        ]
+      },
       "post": {
         "operationId": "OrgStructureCommandService_CreateDepartment",
         "responses": {
@@ -81,6 +120,36 @@
         ],
         "tags": [
           "OrgStructureCommandService"
+        ]
+      }
+    },
+    "/v1/clinics/{clinicId}/departments:count": {
+      "get": {
+        "operationId": "OrgStructureQueryService_CountDepartmentsByClinic",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CountDepartmentsByClinicResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "clinicId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
         ]
       }
     },
@@ -119,6 +188,152 @@
         ],
         "tags": [
           "OrgStructureCommandService"
+        ]
+      }
+    },
+    "/v1/clinics/{clinicId}/employees": {
+      "get": {
+        "operationId": "MembershipQueryService_ListEmployeesByClinic",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListEmployeesByClinicResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "clinicId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/clinics/{clinicId}/employees:count": {
+      "get": {
+        "operationId": "MembershipQueryService_CountEmployeesByClinic",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CountEmployeesByClinicResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "clinicId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/clinics/{clinicId}/head": {
+      "get": {
+        "operationId": "MembershipQueryService_GetClinicHead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetClinicHeadResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "clinicId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
         ]
       }
     },
@@ -313,6 +528,66 @@
         ]
       }
     },
+    "/v1/clinics/{clinicId}/stats": {
+      "get": {
+        "operationId": "StatsQueryService_GetClinicStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetClinicStatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "clinicId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "StatsQueryService"
+        ]
+      }
+    },
+    "/v1/clinics/{id}": {
+      "get": {
+        "operationId": "OrgStructureQueryService_GetClinic",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetClinicResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
+        ]
+      }
+    },
     "/v1/departments/{departmentId}/details": {
       "put": {
         "operationId": "OrgStructureCommandService_UpdateDepartmentDetails",
@@ -348,6 +623,152 @@
         ],
         "tags": [
           "OrgStructureCommandService"
+        ]
+      }
+    },
+    "/v1/departments/{departmentId}/employees": {
+      "get": {
+        "operationId": "MembershipQueryService_ListEmployeesByDepartment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListEmployeesByDepartmentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/departments/{departmentId}/employees:count": {
+      "get": {
+        "operationId": "MembershipQueryService_CountEmployeesByDepartment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CountEmployeesByDepartmentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/departments/{departmentId}/responsible": {
+      "get": {
+        "operationId": "MembershipQueryService_GetDepartmentResponsible",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetDepartmentResponsibleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
         ]
       }
     },
@@ -504,6 +925,66 @@
         ]
       }
     },
+    "/v1/departments/{departmentId}/stats": {
+      "get": {
+        "operationId": "StatsQueryService_GetDepartmentStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetDepartmentStatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "StatsQueryService"
+        ]
+      }
+    },
+    "/v1/departments/{id}": {
+      "get": {
+        "operationId": "OrgStructureQueryService_GetDepartment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetDepartmentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
+        ]
+      }
+    },
     "/v1/employees": {
       "post": {
         "summary": "Employee lifecycle",
@@ -560,45 +1041,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipCommandService"
-        ]
-      }
-    },
-    "/v1/employees/{employeeId}/current-vacation": {
-      "post": {
-        "summary": "Vacation lifecycle",
-        "operationId": "MembershipCommandService_StartVacationNow",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1StartVacationNowResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "employeeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/MembershipCommandServiceStartVacationNowBody"
-            }
           }
         ],
         "tags": [
@@ -683,6 +1125,55 @@
       }
     },
     "/v1/employees/{employeeId}/vacations": {
+      "get": {
+        "operationId": "MembershipQueryService_ListVacationsByEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListVacationsByEmployeeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "description": "Optional state filter. When empty, all states are returned.\nValid values: scheduled, active, ended, cancelled.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      },
       "post": {
         "operationId": "MembershipCommandService_ScheduleVacation",
         "responses": {
@@ -717,6 +1208,112 @@
         ],
         "tags": [
           "MembershipCommandService"
+        ]
+      }
+    },
+    "/v1/employees/{employeeId}/vacations:count": {
+      "get": {
+        "operationId": "MembershipQueryService_CountVacationsByEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CountVacationsByEmployeeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "description": "Optional state filter. When empty, counts all states.\nValid values: scheduled, active, ended, cancelled.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/employees/{employeeId}/vacations:start-now": {
+      "post": {
+        "summary": "Vacation lifecycle",
+        "operationId": "MembershipCommandService_StartVacationNow",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1StartVacationNowResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MembershipCommandServiceStartVacationNowBody"
+            }
+          }
+        ],
+        "tags": [
+          "MembershipCommandService"
+        ]
+      }
+    },
+    "/v1/employees/{id}": {
+      "get": {
+        "operationId": "MembershipQueryService_GetEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetEmployeeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
         ]
       }
     },
@@ -818,44 +1415,6 @@
         ]
       }
     },
-    "/v1/incident-categories/{categoryId}/parent": {
-      "put": {
-        "operationId": "IncidentClassifierCommandService_MoveIncidentCategory",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1MoveIncidentCategoryResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentCategoryBody"
-            }
-          }
-        ],
-        "tags": [
-          "IncidentClassifierCommandService"
-        ]
-      }
-    },
     "/v1/incident-categories/{categoryId}/reactivations": {
       "post": {
         "operationId": "IncidentClassifierCommandService_ReactivateIncidentCategory",
@@ -887,6 +1446,48 @@
       }
     },
     "/v1/incident-categories/{categoryId}/types": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_ListTypesByCategory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListTypesByCategoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      },
       "post": {
         "summary": "--- Types ---",
         "operationId": "IncidentClassifierCommandService_CreateIncidentType",
@@ -925,6 +1526,134 @@
         ]
       }
     },
+    "/v1/incident-categories/{categoryId}:move": {
+      "post": {
+        "operationId": "IncidentClassifierCommandService_MoveIncidentCategory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1MoveIncidentCategoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentCategoryBody"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/incident-categories/{id}": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_GetCategory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetCategoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
+    "/v1/incident-categories/{rootCategoryId}:subtree": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_ListCategorySubtree",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCategorySubtreeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "rootCategoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
+    "/v1/incident-types/{id}": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_GetType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
     "/v1/incident-types/{typeId}": {
       "delete": {
         "operationId": "IncidentClassifierCommandService_DeleteIncidentType",
@@ -948,44 +1677,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierCommandService"
-        ]
-      }
-    },
-    "/v1/incident-types/{typeId}/category": {
-      "put": {
-        "operationId": "IncidentClassifierCommandService_MoveIncidentType",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1MoveIncidentTypeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "typeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentTypeBody"
-            }
           }
         ],
         "tags": [
@@ -1061,14 +1752,14 @@
         ]
       }
     },
-    "/v1/incident-types/{typeId}/patient-permission/allowances": {
-      "post": {
-        "operationId": "IncidentClassifierCommandService_AllowIncidentTypeForPatients",
+    "/v1/incident-types/{typeId}/patient-allowances": {
+      "delete": {
+        "operationId": "IncidentClassifierCommandService_DisallowIncidentTypeForPatients",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1AllowIncidentTypeForPatientsResponse"
+              "$ref": "#/definitions/v1DisallowIncidentTypeForPatientsResponse"
             }
           },
           "default": {
@@ -1089,16 +1780,14 @@
         "tags": [
           "IncidentClassifierCommandService"
         ]
-      }
-    },
-    "/v1/incident-types/{typeId}/patient-permission/disallowances": {
+      },
       "post": {
-        "operationId": "IncidentClassifierCommandService_DisallowIncidentTypeForPatients",
+        "operationId": "IncidentClassifierCommandService_AllowIncidentTypeForPatients",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1DisallowIncidentTypeForPatientsResponse"
+              "$ref": "#/definitions/v1AllowIncidentTypeForPatientsResponse"
             }
           },
           "default": {
@@ -1144,6 +1833,44 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/incident-types/{typeId}:move": {
+      "post": {
+        "operationId": "IncidentClassifierCommandService_MoveIncidentType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1MoveIncidentTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentTypeBody"
+            }
           }
         ],
         "tags": [
@@ -1358,6 +2085,42 @@
       }
     },
     "/v1/organizations": {
+      "get": {
+        "operationId": "OrgStructureQueryService_ListOrganizations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListOrganizationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
+        ]
+      },
       "post": {
         "operationId": "OrgStructureCommandService_CreateOrganization",
         "responses": {
@@ -1389,7 +2152,79 @@
         ]
       }
     },
+    "/v1/organizations/{id}": {
+      "get": {
+        "operationId": "OrgStructureQueryService_GetOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
+        ]
+      }
+    },
     "/v1/organizations/{organizationId}/admins": {
+      "get": {
+        "operationId": "MembershipQueryService_ListOrgAdmins",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListOrgAdminsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      },
       "post": {
         "summary": "------ OrganizationAdmin ------",
         "operationId": "MembershipCommandService_AssignOrganizationAdmin",
@@ -1543,6 +2378,48 @@
       }
     },
     "/v1/organizations/{organizationId}/clinics": {
+      "get": {
+        "operationId": "OrgStructureQueryService_ListClinicsByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListClinicsByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
+        ]
+      },
       "post": {
         "operationId": "OrgStructureCommandService_CreateClinic",
         "responses": {
@@ -1577,6 +2454,36 @@
         ],
         "tags": [
           "OrgStructureCommandService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/clinics:count": {
+      "get": {
+        "operationId": "OrgStructureQueryService_CountClinicsByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CountClinicsByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
         ]
       }
     },
@@ -1619,6 +2526,48 @@
       }
     },
     "/v1/organizations/{organizationId}/dispatchers": {
+      "get": {
+        "operationId": "MembershipQueryService_ListOrgDispatchers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListOrgDispatchersResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      },
       "post": {
         "summary": "------ OrganizationDispatcher ------",
         "operationId": "MembershipCommandService_AssignOrganizationDispatcher",
@@ -1771,7 +2720,237 @@
         ]
       }
     },
+    "/v1/organizations/{organizationId}/employees": {
+      "get": {
+        "operationId": "MembershipQueryService_ListEmployeesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListEmployeesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/employees:count": {
+      "get": {
+        "operationId": "MembershipQueryService_CountEmployeesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CountEmployeesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/employees:search": {
+      "get": {
+        "operationId": "MembershipQueryService_SearchEmployeesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SearchEmployeesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "Fuzzy substring matched case-insensitively (ILIKE %query%) against\nfirst_name, last_name, display_name, and email. Trimmed at the\nhandler boundary; an empty query degenerates to the same behaviour\nas ListEmployeesByOrganization with the same filters. Maximum\nlength 256 characters; over-long inputs are rejected before the\nauthz round-trip.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
     "/v1/organizations/{organizationId}/heads": {
+      "get": {
+        "operationId": "MembershipQueryService_ListOrgHeads",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListOrgHeadsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      },
       "post": {
         "summary": "------ OrganizationHead ------",
         "operationId": "MembershipCommandService_AssignOrganizationHead",
@@ -1925,6 +3104,48 @@
       }
     },
     "/v1/organizations/{organizationId}/incident-categories": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_ListCategoriesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCategoriesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      },
       "post": {
         "summary": "--- Categories ---",
         "operationId": "IncidentClassifierCommandService_CreateIncidentCategory",
@@ -1963,6 +3184,183 @@
         ]
       }
     },
+    "/v1/organizations/{organizationId}/incident-categories:patient-visible": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListPatientVisibleCategoriesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/incident-categories:roots": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_ListActiveRootCategories",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListActiveRootCategoriesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/incident-types:active": {
+      "get": {
+        "operationId": "IncidentClassifierQueryService_ListActiveTypesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListActiveTypesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/incident-types:patient-allowed": {
+      "get": {
+        "summary": "Patient-facing reads. These are scoped to one organisation and return\nonly the slice of the classifier that a patient may see when filing\nan incident.",
+        "operationId": "IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListPatientAllowedTypesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierQueryService"
+        ]
+      }
+    },
     "/v1/organizations/{organizationId}/legal-address": {
       "put": {
         "operationId": "OrgStructureCommandService_UpdateOrganizationLegalAddress",
@@ -1998,6 +3396,102 @@
         ],
         "tags": [
           "OrgStructureCommandService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/stats": {
+      "get": {
+        "operationId": "StatsQueryService_GetOrganizationStats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetOrganizationStatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "StatsQueryService"
+        ]
+      }
+    },
+    "/v1/organizations:count": {
+      "get": {
+        "operationId": "OrgStructureQueryService_CountOrganizations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CountOrganizationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "OrgStructureQueryService"
+        ]
+      }
+    },
+    "/v1/organizations:search": {
+      "get": {
+        "operationId": "OrgStructureQueryService_SearchOrganizations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SearchOrganizationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "OrgStructureQueryService"
         ]
       }
     },
@@ -2169,744 +3663,6 @@
         ]
       }
     },
-    "/v1/query/clinics/{clinicId}/departments": {
-      "get": {
-        "operationId": "OrgStructureQueryService_ListDepartmentsByClinic",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListDepartmentsByClinicResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "clinicId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/clinics/{clinicId}/departments:count": {
-      "get": {
-        "operationId": "OrgStructureQueryService_CountDepartmentsByClinic",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CountDepartmentsByClinicResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "clinicId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/clinics/{clinicId}/employees": {
-      "get": {
-        "operationId": "MembershipQueryService_ListEmployeesByClinic",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListEmployeesByClinicResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "clinicId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "includeTerminated",
-            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "position",
-            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/clinics/{clinicId}/employees:count": {
-      "get": {
-        "operationId": "MembershipQueryService_CountEmployeesByClinic",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CountEmployeesByClinicResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "clinicId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "includeTerminated",
-            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "position",
-            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/clinics/{clinicId}/head": {
-      "get": {
-        "operationId": "MembershipQueryService_GetClinicHead",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetClinicHeadResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "clinicId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/clinics/{clinicId}/stats": {
-      "get": {
-        "operationId": "StatsQueryService_GetClinicStats",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetClinicStatsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "clinicId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "StatsQueryService"
-        ]
-      }
-    },
-    "/v1/query/clinics/{id}": {
-      "get": {
-        "operationId": "OrgStructureQueryService_GetClinic",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetClinicResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/departments/{departmentId}/employees": {
-      "get": {
-        "operationId": "MembershipQueryService_ListEmployeesByDepartment",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListEmployeesByDepartmentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "departmentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "includeTerminated",
-            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "position",
-            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/departments/{departmentId}/employees:count": {
-      "get": {
-        "operationId": "MembershipQueryService_CountEmployeesByDepartment",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CountEmployeesByDepartmentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "departmentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "includeTerminated",
-            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "position",
-            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/departments/{departmentId}/responsible": {
-      "get": {
-        "operationId": "MembershipQueryService_GetDepartmentResponsible",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetDepartmentResponsibleResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "departmentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/departments/{departmentId}/stats": {
-      "get": {
-        "operationId": "StatsQueryService_GetDepartmentStats",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetDepartmentStatsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "departmentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "StatsQueryService"
-        ]
-      }
-    },
-    "/v1/query/departments/{id}": {
-      "get": {
-        "operationId": "OrgStructureQueryService_GetDepartment",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetDepartmentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/employees/{employeeId}/vacations": {
-      "get": {
-        "operationId": "MembershipQueryService_ListVacationsByEmployee",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListVacationsByEmployeeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "employeeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "state",
-            "description": "Optional state filter. When empty, all states are returned.\nValid values: scheduled, active, ended, cancelled.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/employees/{employeeId}/vacations:count": {
-      "get": {
-        "operationId": "MembershipQueryService_CountVacationsByEmployee",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CountVacationsByEmployeeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "employeeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "state",
-            "description": "Optional state filter. When empty, counts all states.\nValid values: scheduled, active, ended, cancelled.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/employees/{id}": {
-      "get": {
-        "operationId": "MembershipQueryService_GetEmployee",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetEmployeeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/incident-categories/{categoryId}/types": {
-      "get": {
-        "operationId": "IncidentClassifierQueryService_ListTypesByCategory",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListTypesByCategoryResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
-        ]
-      }
-    },
-    "/v1/query/incident-categories/{id}": {
-      "get": {
-        "operationId": "IncidentClassifierQueryService_GetCategory",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetCategoryResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
-        ]
-      }
-    },
-    "/v1/query/incident-categories/{rootCategoryId}:subtree": {
-      "get": {
-        "operationId": "IncidentClassifierQueryService_ListCategorySubtree",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListCategorySubtreeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "rootCategoryId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
-        ]
-      }
-    },
-    "/v1/query/incident-types/{id}": {
-      "get": {
-        "operationId": "IncidentClassifierQueryService_GetType",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetTypeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
-        ]
-      }
-    },
     "/v1/query/incidents/{id}": {
       "get": {
         "operationId": "IncidentQueryService_GetIncident",
@@ -3002,689 +3758,6 @@
         ],
         "tags": [
           "IncidentQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations": {
-      "get": {
-        "operationId": "OrgStructureQueryService_ListOrganizations",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListOrganizationsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{id}": {
-      "get": {
-        "operationId": "OrgStructureQueryService_GetOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/admins": {
-      "get": {
-        "operationId": "MembershipQueryService_ListOrgAdmins",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListOrgAdminsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/clinics": {
-      "get": {
-        "operationId": "OrgStructureQueryService_ListClinicsByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListClinicsByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/clinics:count": {
-      "get": {
-        "operationId": "OrgStructureQueryService_CountClinicsByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CountClinicsByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/dispatchers": {
-      "get": {
-        "operationId": "MembershipQueryService_ListOrgDispatchers",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListOrgDispatchersResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/employees": {
-      "get": {
-        "operationId": "MembershipQueryService_ListEmployeesByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListEmployeesByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "includeTerminated",
-            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "position",
-            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/employees:count": {
-      "get": {
-        "operationId": "MembershipQueryService_CountEmployeesByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CountEmployeesByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "includeTerminated",
-            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "position",
-            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/employees:search": {
-      "get": {
-        "operationId": "MembershipQueryService_SearchEmployeesByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1SearchEmployeesByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "query",
-            "description": "Fuzzy substring matched case-insensitively (ILIKE %query%) against\nfirst_name, last_name, display_name, and email. Trimmed at the\nhandler boundary; an empty query degenerates to the same behaviour\nas ListEmployeesByOrganization with the same filters. Maximum\nlength 256 characters; over-long inputs are rejected before the\nauthz round-trip.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "includeTerminated",
-            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "position",
-            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/heads": {
-      "get": {
-        "operationId": "MembershipQueryService_ListOrgHeads",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListOrgHeadsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "MembershipQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/incident-categories": {
-      "get": {
-        "operationId": "IncidentClassifierQueryService_ListCategoriesByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListCategoriesByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/incident-categories:patient-visible": {
-      "get": {
-        "operationId": "IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListPatientVisibleCategoriesByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/incident-categories:roots": {
-      "get": {
-        "operationId": "IncidentClassifierQueryService_ListActiveRootCategories",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListActiveRootCategoriesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/incident-types:active": {
-      "get": {
-        "operationId": "IncidentClassifierQueryService_ListActiveTypesByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListActiveTypesByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations/{organizationId}/incident-types:patient-allowed": {
-      "get": {
-        "summary": "Patient-facing reads. These are scoped to one organisation and return\nonly the slice of the classifier that a patient may see when filing\nan incident.",
-        "operationId": "IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListPatientAllowedTypesByOrganizationResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "IncidentClassifierQueryService"
         ]
       }
     },
@@ -3865,102 +3938,6 @@
         ]
       }
     },
-    "/v1/query/organizations/{organizationId}/stats": {
-      "get": {
-        "operationId": "StatsQueryService_GetOrganizationStats",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetOrganizationStatsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "StatsQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations:count": {
-      "get": {
-        "operationId": "OrgStructureQueryService_CountOrganizations",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CountOrganizationsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
-    "/v1/query/organizations:search": {
-      "get": {
-        "operationId": "OrgStructureQueryService_SearchOrganizations",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1SearchOrganizationsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "query",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "tags": [
-          "OrgStructureQueryService"
-        ]
-      }
-    },
     "/v1/query/patient-incidents/{id}": {
       "get": {
         "summary": "Buffer reads.",
@@ -4030,37 +4007,7 @@
         ]
       }
     },
-    "/v1/query/sessions/{id}": {
-      "get": {
-        "operationId": "IdentityQueryService_GetSession",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetSessionResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IdentityQueryService"
-        ]
-      }
-    },
-    "/v1/query/system-admins": {
+    "/v1/system-admins": {
       "get": {
         "operationId": "MembershipQueryService_ListSystemAdmins",
         "responses": {
@@ -4096,69 +4043,7 @@
         "tags": [
           "MembershipQueryService"
         ]
-      }
-    },
-    "/v1/query/users/{id}": {
-      "get": {
-        "operationId": "IdentityQueryService_GetUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IdentityQueryService"
-        ]
-      }
-    },
-    "/v1/query/users:by-email": {
-      "get": {
-        "operationId": "IdentityQueryService_GetUserByEmail",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetUserByEmailResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IdentityQueryService"
-        ]
-      }
-    },
-    "/v1/system-admins": {
+      },
       "post": {
         "summary": "------ SystemAdmin ------",
         "operationId": "MembershipCommandService_GrantSystemAdmin",
@@ -5453,35 +5338,11 @@
         }
       }
     },
-    "v1GetSessionResponse": {
-      "type": "object",
-      "properties": {
-        "session": {
-          "$ref": "#/definitions/v1Session"
-        }
-      }
-    },
     "v1GetTypeResponse": {
       "type": "object",
       "properties": {
         "type": {
           "$ref": "#/definitions/classifierV1Type"
-        }
-      }
-    },
-    "v1GetUserByEmailResponse": {
-      "type": "object",
-      "properties": {
-        "user": {
-          "$ref": "#/definitions/v1User"
-        }
-      }
-    },
-    "v1GetUserResponse": {
-      "type": "object",
-      "properties": {
-        "user": {
-          "$ref": "#/definitions/v1User"
         }
       }
     },
@@ -6104,36 +5965,6 @@
         }
       }
     },
-    "v1Session": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "userId": {
-          "type": "string"
-        },
-        "userResourceOwner": {
-          "type": "string"
-        },
-        "preferredLanguage": {
-          "type": "string"
-        },
-        "checkedAt": {
-          "type": "string"
-        },
-        "userAgent": {
-          "$ref": "#/definitions/v1UserAgent"
-        },
-        "createdAt": {
-          "type": "string"
-        },
-        "updatedAt": {
-          "type": "string"
-        }
-      },
-      "description": "Session mirrors projections.sessions. user_id/user_resource_owner are\npopulated once a SessionUserChecked event is consumed."
-    },
     "v1StartVacationNowResponse": {
       "type": "object",
       "properties": {
@@ -6248,82 +6079,6 @@
     },
     "v1UpdateVacationEndDateResponse": {
       "type": "object"
-    },
-    "v1User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "userName": {
-          "type": "string"
-        },
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "displayName": {
-          "type": "string"
-        },
-        "nickName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "emailVerified": {
-          "type": "boolean"
-        },
-        "preferredLanguage": {
-          "type": "string"
-        },
-        "gender": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "createdAt": {
-          "type": "string"
-        },
-        "updatedAt": {
-          "type": "string"
-        }
-      },
-      "description": "User mirrors projections.users. gender uses the zitadel proto enum\ninteger: 0 unspecified, 1 female, 2 male, 3 diverse."
-    },
-    "v1UserAgent": {
-      "type": "object",
-      "properties": {
-        "ip": {
-          "type": "string"
-        },
-        "headers": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/v1UserAgentHeaderValues"
-          }
-        },
-        "fingerprintId": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        }
-      },
-      "description": "UserAgent is the JSONB user_agent column unpacked to proto."
-    },
-    "v1UserAgentHeaderValues": {
-      "type": "object",
-      "properties": {
-        "values": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "description": "UserAgentHeaderValues holds the repeated-string values for a single\nheader entry."
     },
     "v1VacationView": {
       "type": "object",

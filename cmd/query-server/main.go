@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
-	identityhandler "github.com/medincident/medincident-backend/internal/handler/query/identity"
 	incidentqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident"
 	bufferqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/buffer"
 	classifierhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/classifier"
@@ -37,7 +36,6 @@ import (
 	membershipread "github.com/medincident/medincident-backend/internal/service/query/membership"
 	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
-	identityqueryv1 "github.com/medincident/medincident-backend/pkg/query/identity/v1"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	incidentqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
 	membershipqueryv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
@@ -130,7 +128,6 @@ func main() {
 	roleReader := membershipread.NewRoleReader(db, az, logger)
 	classReader := classifierread.NewReader(db, az, logger)
 	statsReader := statsread.NewReader(db, az, logger)
-	identReader := identityread.NewReader(db, az, logger)
 	incidentReader := incidentread.NewReader(db, logger)
 	bufferReader := bufferread.NewReader(db, logger, incidentReader)
 
@@ -141,7 +138,6 @@ func main() {
 	memH := membershiphandler.NewMembershipQueryHandler(empReader, roleReader)
 	clsH := classifierhandler.NewIncidentClassifierQueryHandler(classReader)
 	statsH := statshandler.NewStatsQueryHandler(statsReader)
-	identH := identityhandler.NewIdentityQueryHandler(identReader)
 	incidentQH := incidentqueryhandler.NewIncidentQueryHandler(incidentReader)
 	bufferQH := bufferqueryhandler.NewBufferQueryHandler(bufferReader)
 	combinedIncidentH := incidentqueryhandler.NewCombinedIncidentQueryHandler(incidentQH, bufferQH)
@@ -157,7 +153,6 @@ func main() {
 	membershipqueryv1.RegisterMembershipQueryServiceServer(grpcServer, memH)
 	classifierqueryv1.RegisterIncidentClassifierQueryServiceServer(grpcServer, clsH)
 	statsqueryv1.RegisterStatsQueryServiceServer(grpcServer, statsH)
-	identityqueryv1.RegisterIdentityQueryServiceServer(grpcServer, identH)
 	incidentqueryv1.RegisterIncidentQueryServiceServer(grpcServer, combinedIncidentH)
 
 	lc := &net.ListenConfig{}

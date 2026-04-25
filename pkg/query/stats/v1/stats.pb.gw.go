@@ -164,7 +164,7 @@ func RegisterStatsQueryServiceHandlerServer(ctx context.Context, mux *runtime.Se
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetOrganizationStats", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/stats"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetOrganizationStats", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/stats"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -184,7 +184,7 @@ func RegisterStatsQueryServiceHandlerServer(ctx context.Context, mux *runtime.Se
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetClinicStats", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/stats"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetClinicStats", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/stats"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -204,7 +204,7 @@ func RegisterStatsQueryServiceHandlerServer(ctx context.Context, mux *runtime.Se
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetDepartmentStats", runtime.WithHTTPPathPattern("/v1/query/departments/{department_id}/stats"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetDepartmentStats", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/stats"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -262,7 +262,7 @@ func RegisterStatsQueryServiceHandlerClient(ctx context.Context, mux *runtime.Se
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetOrganizationStats", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/stats"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetOrganizationStats", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/stats"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -279,7 +279,7 @@ func RegisterStatsQueryServiceHandlerClient(ctx context.Context, mux *runtime.Se
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetClinicStats", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/stats"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetClinicStats", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/stats"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -296,7 +296,7 @@ func RegisterStatsQueryServiceHandlerClient(ctx context.Context, mux *runtime.Se
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetDepartmentStats", runtime.WithHTTPPathPattern("/v1/query/departments/{department_id}/stats"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.stats.v1.StatsQueryService/GetDepartmentStats", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/stats"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -313,9 +313,9 @@ func RegisterStatsQueryServiceHandlerClient(ctx context.Context, mux *runtime.Se
 }
 
 var (
-	pattern_StatsQueryService_GetOrganizationStats_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "stats"}, ""))
-	pattern_StatsQueryService_GetClinicStats_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "stats"}, ""))
-	pattern_StatsQueryService_GetDepartmentStats_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "departments", "department_id", "stats"}, ""))
+	pattern_StatsQueryService_GetOrganizationStats_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "stats"}, ""))
+	pattern_StatsQueryService_GetClinicStats_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "stats"}, ""))
+	pattern_StatsQueryService_GetDepartmentStats_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "stats"}, ""))
 )
 
 var (

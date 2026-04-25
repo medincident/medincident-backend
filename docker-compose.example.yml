@@ -1,0 +1,46 @@
+# docker-compose.example.yml — illustrates the migrate-first pattern.
+# Copy and adjust for your environment; do not use as-is in production.
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: medincident
+      POSTGRES_USER: medincident
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medincident"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    image: medincident/migrate:dev
+    environment:
+      DATABASE_URL: postgres://medincident:secret@postgres:5432/medincident?sslmode=disable
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  command-server:
+    image: medincident/command-server:dev
+    environment:
+      DATABASE_URL: postgres://medincident:secret@postgres:5432/medincident?sslmode=disable
+    ports:
+      - "8080:8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  query-server:
+    image: medincident/query-server:dev
+    environment:
+      DATABASE_URL: postgres://medincident:secret@postgres:5432/medincident?sslmode=disable
+    ports:
+      - "8081:8080"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully

@@ -40,7 +40,7 @@ service MembershipCommandService {
   // Vacation lifecycle
   rpc StartVacationNow(StartVacationNowRequest) returns (StartVacationNowResponse) {
     option (google.api.http) = {
-      post: "/v1/employees/{employee_id}/current-vacation"
+      post: "/v1/employees/{employee_id}/vacations:start-now"
       body: "*"
     };
   }

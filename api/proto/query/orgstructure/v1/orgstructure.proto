@@ -10,36 +10,36 @@ import "google/api/annotations.proto";
 // both values.
 service OrgStructureQueryService {
   rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{id}"};
+    option (google.api.http) = {get: "/v1/organizations/{id}"};
   }
   rpc ListOrganizations(ListOrganizationsRequest) returns (ListOrganizationsResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations"};
+    option (google.api.http) = {get: "/v1/organizations"};
   }
   rpc CountOrganizations(CountOrganizationsRequest) returns (CountOrganizationsResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations:count"};
+    option (google.api.http) = {get: "/v1/organizations:count"};
   }
   rpc SearchOrganizations(SearchOrganizationsRequest) returns (SearchOrganizationsResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations:search"};
+    option (google.api.http) = {get: "/v1/organizations:search"};
   }
 
   rpc GetClinic(GetClinicRequest) returns (GetClinicResponse) {
-    option (google.api.http) = {get: "/v1/query/clinics/{id}"};
+    option (google.api.http) = {get: "/v1/clinics/{id}"};
   }
   rpc ListClinicsByOrganization(ListClinicsByOrganizationRequest) returns (ListClinicsByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/clinics"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics"};
   }
   rpc CountClinicsByOrganization(CountClinicsByOrganizationRequest) returns (CountClinicsByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/clinics:count"};
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics:count"};
   }
 
   rpc GetDepartment(GetDepartmentRequest) returns (GetDepartmentResponse) {
-    option (google.api.http) = {get: "/v1/query/departments/{id}"};
+    option (google.api.http) = {get: "/v1/departments/{id}"};
   }
   rpc ListDepartmentsByClinic(ListDepartmentsByClinicRequest) returns (ListDepartmentsByClinicResponse) {
-    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/departments"};
+    option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments"};
   }
   rpc CountDepartmentsByClinic(CountDepartmentsByClinicRequest) returns (CountDepartmentsByClinicResponse) {
-    option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/departments:count"};
+    option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments:count"};
   }
 }
 
