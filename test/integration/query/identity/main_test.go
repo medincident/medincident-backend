@@ -132,8 +132,7 @@ func resetProjections(t *testing.T) {
 	}
 	if _, err := raw.Exec(`TRUNCATE TABLE
 		domain.system_admins,
-		projections.users,
-		projections.sessions CASCADE`); err != nil {
+		projections.users`); err != nil {
 		t.Fatalf("truncate projections: %v", err)
 	}
 	if _, err := raw.Exec(

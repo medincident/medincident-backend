@@ -2,6 +2,7 @@ package identity
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	"github.com/samber/oops"
@@ -125,17 +126,20 @@ func (p *Projector) ApplyUserHumanProfileChanged(
 		return nil
 	}
 
-	query := "UPDATE projections.users SET "
+	var sb strings.Builder
+	sb.WriteString("UPDATE projections.users SET ")
 	args := make([]any, 0, len(sets)+1)
 	for i, s := range sets {
 		if i > 0 {
-			query += ", "
+			sb.WriteString(", ")
 		}
-		query += s.col + " = ?"
+		sb.WriteString(s.col)
+		sb.WriteString(" = ?")
 		args = append(args, s.val)
 	}
-	query += " WHERE id = ?"
+	sb.WriteString(" WHERE id = ?")
 	args = append(args, userID)
+	query := sb.String()
 
 	return p.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		res := tx.Exec(query, args...)
