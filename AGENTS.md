@@ -206,10 +206,10 @@ Query-side readers are split by visibility:
 
 - **`OrganizationReader`** — intentionally takes **no `*authz.Authz`
   parameter**. Organizations form a shared, public catalog: any
-  authenticated caller (JWT present, signature valid) may list and
-  fetch them. Authentication is still required — it is enforced by the
-  gRPC interceptor chain upstream — but no further role check is
-  performed inside the reader.
+  authenticated caller (valid Bearer token; Zitadel introspection
+  succeeds) may list and fetch them. Authentication is still required
+  — it is enforced by the gRPC interceptor chain upstream — but no
+  further role check is performed inside the reader.
 
 - **`ClinicReader`** and **`DepartmentReader`** — both require an
   `*authz.Authz` instance. Every method calls
@@ -226,10 +226,11 @@ Query-side readers are split by visibility:
 > **Breaking-change warning:** if private or draft organizations are
 > ever introduced, `OrganizationReader` **must** be retrofitted with
 > an `*authz.Authz` dependency. This is a cross-cutting change: the
-> constructor signature, every call site in `cmd/query-server/main.go`,
-> and every method body that currently skips the authz check all need
-> updating. Treat it as a planned breaking architectural change, not
-> an incremental patch.
+> constructor signature, every `NewOrganizationReader` call site
+> (including production wiring such as `cmd/query-server/main.go` and
+> integration tests), and every method body that currently skips the
+> authz check all need updating. Treat it as a planned breaking
+> architectural change, not an incremental patch.
 
 ## Ports
 

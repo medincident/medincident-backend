@@ -45,7 +45,9 @@ type OrganizationReader struct {
 // NewOrganizationReader returns an OrganizationReader bound to the
 // given gorm DB.
 //
-// Organizations are a public catalog — no authz required (see AGENTS.md § Authorization model).
+// Organizations are a public catalog for authenticated callers.
+// OrganizationReader performs no authorization/scope check; authentication
+// is enforced upstream by the gRPC interceptor chain (see AGENTS.md § Authorization model).
 func NewOrganizationReader(db *gorm.DB, logger *zerolog.Logger) *OrganizationReader {
 	return &OrganizationReader{db: db, logger: logger}
 }
