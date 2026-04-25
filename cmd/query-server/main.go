@@ -124,8 +124,8 @@ func main() {
 	empReader := membershipread.NewEmployeeReader(db, az, logger)
 	roleReader := membershipread.NewRoleReader(db, az, logger)
 	classReader := classifierread.NewReader(db, az, logger)
-	statsReader := statsread.NewReader(db, logger)
-	identReader := identityread.NewReader(db, logger)
+	statsReader := statsread.NewReader(db, az, logger)
+	identReader := identityread.NewReader(db, az, logger)
 
 	projector := identityread.NewProjector(db, logger)
 	consumer := identityread.NewConsumer(js, &cfg.NATS, projector, logger)

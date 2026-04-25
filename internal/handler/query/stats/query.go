@@ -8,6 +8,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
 	statsqueryv1 "github.com/medincident/medincident-backend/pkg/query/stats/v1"
 )
@@ -36,11 +38,16 @@ func (h *StatsQueryHandler) GetOrganizationStats(
 	ctx context.Context,
 	req *statsqueryv1.GetOrganizationStatsRequest,
 ) (*statsqueryv1.GetOrganizationStatsResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	s, err := h.reader.GetOrganizationStats(ctx, id)
+	s, err := h.reader.GetOrganizationStats(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -61,11 +68,16 @@ func (h *StatsQueryHandler) GetClinicStats(
 	ctx context.Context,
 	req *statsqueryv1.GetClinicStatsRequest,
 ) (*statsqueryv1.GetClinicStatsResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseClinicID(req.GetClinicId())
 	if err != nil {
 		return nil, err
 	}
-	s, err := h.reader.GetClinicStats(ctx, id)
+	s, err := h.reader.GetClinicStats(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -85,11 +97,16 @@ func (h *StatsQueryHandler) GetDepartmentStats(
 	ctx context.Context,
 	req *statsqueryv1.GetDepartmentStatsRequest,
 ) (*statsqueryv1.GetDepartmentStatsResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseDepartmentID(req.GetDepartmentId())
 	if err != nil {
 		return nil, err
 	}
-	s, err := h.reader.GetDepartmentStats(ctx, id)
+	s, err := h.reader.GetDepartmentStats(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}

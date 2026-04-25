@@ -3,6 +3,11 @@
 // projections.*_counters row; vacation counts are computed at read
 // time from projections.employee_vacations so an "employees on
 // vacation now" number never drifts relative to the source of truth.
+//
+// Authorization model: every Get*Stats method is gated by
+// authz.ReaderOf.{Organization,Clinic,Department}. Cross-org reads
+// fail permission_denied with no distinction from "scope missing",
+// matching the rest of the query surface.
 package stats
 
 import (
@@ -12,6 +17,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
 // ErrCodeStatsLoadFailed is returned when the underlying DB read for
@@ -51,21 +58,28 @@ type DepartmentStats struct {
 // Reader exposes the stats aggregate query surface.
 type Reader struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
-// NewReader returns a Reader bound to the given gorm DB.
-func NewReader(db *gorm.DB, logger *zerolog.Logger) *Reader {
-	return &Reader{db: db, logger: logger}
+// NewReader returns a Reader bound to the given gorm DB and
+// authorization service.
+func NewReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *Reader {
+	return &Reader{db: db, authz: az, logger: logger}
 }
 
 // GetOrganizationStats returns the aggregate snapshot for an
 // organization. A missing counter row is soft-missed and returns a
-// zero-filled struct rather than an error.
+// zero-filled struct rather than an error. Authorization:
+// authz.ReaderOf.Organization(orgID).
 func (r *Reader) GetOrganizationStats(
 	ctx context.Context,
+	caller authz.Caller,
 	orgID uuid.UUID,
 ) (*OrganizationStats, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
 	const query = `
 		SELECT COALESCE(oc.employees_total, 0)   AS employees_total,
 		       COALESCE(oc.clinics_total, 0)     AS clinics_total,
@@ -104,11 +118,16 @@ func (r *Reader) GetOrganizationStats(
 }
 
 // GetClinicStats returns the aggregate snapshot for a clinic. A
-// missing counter row yields zero-filled counts.
+// missing counter row yields zero-filled counts. Authorization:
+// authz.ReaderOf.Clinic(clinicID).
 func (r *Reader) GetClinicStats(
 	ctx context.Context,
+	caller authz.Caller,
 	clinicID uuid.UUID,
 ) (*ClinicStats, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
+		return nil, err
+	}
 	const query = `
 		SELECT COALESCE(cc.organization_id, '00000000-0000-0000-0000-000000000000'::uuid)
 		                                          AS organization_id,
@@ -143,10 +162,15 @@ func (r *Reader) GetClinicStats(
 // GetDepartmentStats returns the aggregate snapshot for a department.
 // A missing counter row yields zero-filled counts; clinic_id stays
 // nil and organization_id stays zero in that soft-miss case.
+// Authorization: authz.ReaderOf.Department(deptID).
 func (r *Reader) GetDepartmentStats(
 	ctx context.Context,
+	caller authz.Caller,
 	deptID uuid.UUID,
 ) (*DepartmentStats, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(deptID)); err != nil {
+		return nil, err
+	}
 	const query = `
 		SELECT dc.clinic_id                                                AS clinic_id,
 		       COALESCE(dc.organization_id, '00000000-0000-0000-0000-000000000000'::uuid)

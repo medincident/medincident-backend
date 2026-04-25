@@ -43,8 +43,8 @@ func TestReader_GetOrganizationStats(t *testing.T) {
 		return projector.DepartmentCreated(tx, dept)
 	}))
 
-	reader := statsread.NewReader(testDB, &logger)
-	s, err := reader.GetOrganizationStats(ctx, orgID)
+	reader := statsread.NewReader(testDB, authzSvc, &logger)
+	s, err := reader.GetOrganizationStats(ctx, sysadminCaller, orgID)
 	require.NoError(t, err)
 	require.Equal(t, int64(1), s.ClinicsTotal)
 	require.Equal(t, int64(1), s.DepartmentsTotal)
@@ -55,8 +55,8 @@ func TestReader_GetOrganizationStats(t *testing.T) {
 func TestReader_GetClinicStats_SoftMiss(t *testing.T) {
 	resetProjections(t)
 	logger := zerolog.Nop()
-	reader := statsread.NewReader(testDB, &logger)
-	s, err := reader.GetClinicStats(context.Background(), uuid.Must(uuid.NewV7()))
+	reader := statsread.NewReader(testDB, authzSvc, &logger)
+	s, err := reader.GetClinicStats(context.Background(), sysadminCaller, uuid.Must(uuid.NewV7()))
 	require.NoError(t, err)
 	require.Equal(t, int64(0), s.EmployeesTotal)
 	require.Equal(t, int64(0), s.DepartmentsTotal)
@@ -87,8 +87,8 @@ func TestReader_GetDepartmentStats(t *testing.T) {
 		return projector.DepartmentCreated(tx, dept)
 	}))
 
-	reader := statsread.NewReader(testDB, &logger)
-	s, err := reader.GetDepartmentStats(ctx, deptID)
+	reader := statsread.NewReader(testDB, authzSvc, &logger)
+	s, err := reader.GetDepartmentStats(ctx, sysadminCaller, deptID)
 	require.NoError(t, err)
 	require.Equal(t, orgID, s.OrganizationID)
 	require.NotNil(t, s.ClinicID)
