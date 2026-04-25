@@ -21,13 +21,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/service/authz"
-)
-
-// Bounds applied to List pagination.
-const (
-	listMinLimit     = 1
-	listMaxLimit     = 500
-	listDefaultLimit = 50
+	"github.com/medincident/medincident-backend/internal/service/query"
 )
 
 // Error codes emitted by pagination validators.
@@ -53,17 +47,17 @@ func (q *ListQuery) normalize() error {
 			Errorf("offset out of range")
 	}
 	if q.Limit == 0 {
-		q.Limit = listDefaultLimit
+		q.Limit = query.DefaultLimit
 		return nil
 	}
-	if q.Limit < listMinLimit || q.Limit > listMaxLimit {
+	if q.Limit < query.MinLimit || q.Limit > query.MaxLimit {
 		return oops.In("reader.membership").
 			Code(ErrCodeListLimitOutOfRange).
 			Public("List limit is out of range.").
 			With("field", "limit").
 			With("actual_value", q.Limit).
-			With("min_value", listMinLimit).
-			With("max_value", listMaxLimit).
+			With("min_value", query.MinLimit).
+			With("max_value", query.MaxLimit).
 			Errorf("limit out of range")
 	}
 	return nil
