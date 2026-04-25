@@ -15,9 +15,15 @@ import (
 	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
+// UpdateIncidentDescriptionPayload requires a non-nil Description.
+//
+// Nil-as-clear was rejected by review: a buggy client that forgets the
+// field would silently wipe the existing description. If the client
+// genuinely wants to clear the description that is a separate
+// operation; this RPC only sets a new (non-empty) value.
 type UpdateIncidentDescriptionPayload struct {
 	IncidentID  string  `validate:"required,uuid"`
-	Description *string `validate:"omitnil,no_extra_ws,min=1,max=10000"`
+	Description *string `validate:"required,no_extra_ws,min=1,max=10000"`
 }
 
 type UpdateIncidentDescriptionCommand struct {
@@ -47,7 +53,7 @@ func (s *IncidentService) UpdateDescription(
 				With("status", inc.Status).Errorf("frozen")
 		}
 
-		isReg, err := s.callerIsActiveRegistrar(ctx, cmd.Caller.ZitadelUserID,
+		isReg, err := s.callerIsActiveRegistrar(tx, cmd.Caller.ZitadelUserID,
 			inc.RegistrarEmployeeID)
 		if err != nil {
 			return err
@@ -59,10 +65,7 @@ func (s *IncidentService) UpdateDescription(
 			}
 		}
 
-		desc := null.String{}
-		if cmd.Payload.Description != nil {
-			desc = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
-		}
+		desc := null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 		inc.Description = desc
 		inc.UpdatedAt = now
 		if err := tx.Save(inc).Error; err != nil {

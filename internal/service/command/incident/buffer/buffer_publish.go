@@ -58,8 +58,20 @@ func (s *BufferService) Publish(
 
 	var result PublishResult
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		// Load buffer to read organization_id, then authorize BEFORE any
+		// state / cross-row checks so an unauthorized caller cannot
+		// distinguish pending vs non-pending vs not-found vs org-mismatch.
 		b, err := s.loadBuffer(tx, bufID)
 		if err != nil {
+			return err
+		}
+		if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID,
+			authz.AnyOf(
+				authz.SystemAdmin,
+				authz.OrgAdminOf.Organization(b.OrganizationID),
+				authz.OrgDispatcherOf.Organization(b.OrganizationID),
+			),
+		); err != nil {
 			return err
 		}
 		if b.Status != model.BufferStatusPending {
@@ -86,17 +98,6 @@ func (s *BufferService) Publish(
 			return oops.In(scope).Code(ErrCodeBufferDeptNotFound).
 				Public("Department does not belong to this organization.").
 				With("department_id", deptID).Errorf("org mismatch")
-		}
-
-		// Authorization: caller is OrgDispatcher of buffer's org (or system admin / admin).
-		if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID,
-			authz.AnyOf(
-				authz.SystemAdmin,
-				authz.OrgAdminOf.Organization(b.OrganizationID),
-				authz.OrgDispatcherOf.Organization(b.OrganizationID),
-			),
-		); err != nil {
-			return err
 		}
 
 		// Validate dispatcher's chosen category/type (NOT restricted to patient-allowed).
@@ -172,14 +173,6 @@ func (s *BufferService) Publish(
 		return nil
 	})
 	return result, err
-}
-
-// occurredAtOrNow returns the buffer's occurred_at if set, else `now`.
-func occurredAtOrNow(t null.Time, now time.Time) time.Time {
-	if t.Valid {
-		return t.Time
-	}
-	return now
 }
 
 // loadDispatcherSnapshot mirrors loadRegistrarSnapshot from the

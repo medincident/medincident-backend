@@ -34,14 +34,13 @@ func (s *BufferService) Reject(ctx context.Context, cmd *RejectCommand) error {
 	now := time.Now()
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		// Load buffer to read organization_id, then authorize BEFORE the
+		// state check so unauthorized callers cannot distinguish
+		// pending vs non-pending vs not-found from the error response —
+		// they all uniformly return permission_denied.
 		b, err := s.loadBuffer(tx, id)
 		if err != nil {
 			return err
-		}
-		if b.Status != model.BufferStatusPending {
-			return oops.In(scope).Code(ErrCodeBufferNotPending).
-				Public("Buffer entry is not pending.").
-				With("status", b.Status).Errorf("not pending")
 		}
 		if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID,
 			authz.AnyOf(
@@ -51,6 +50,11 @@ func (s *BufferService) Reject(ctx context.Context, cmd *RejectCommand) error {
 			),
 		); err != nil {
 			return err
+		}
+		if b.Status != model.BufferStatusPending {
+			return oops.In(scope).Code(ErrCodeBufferNotPending).
+				Public("Buffer entry is not pending.").
+				With("status", b.Status).Errorf("not pending")
 		}
 		b.Status = model.BufferStatusRejected
 		b.UpdatedAt = now

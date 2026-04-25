@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -77,6 +78,16 @@ func validateOccurredAt(t, now time.Time) error {
 			With("occurred_at", t).Errorf("too old")
 	}
 	return nil
+}
+
+// occurredAtOrNow returns the buffer's occurred_at if set, else `now`.
+// Used by Publish to materialise an incident from a buffer entry that
+// the patient may have submitted without a specific timestamp.
+func occurredAtOrNow(t null.Time, now time.Time) time.Time {
+	if t.Valid {
+		return t.Time
+	}
+	return now
 }
 
 // validatePatientCategoryType ensures (when supplied) the category +

@@ -6,7 +6,6 @@
 package incident
 
 import (
-	"context"
 	"errors"
 	"time"
 
@@ -97,14 +96,16 @@ func (s *IncidentService) loadIncident(tx *gorm.DB, id uuid.UUID) (*model.Incide
 }
 
 // callerIsActiveRegistrar returns true iff the caller's zitadel id
-// matches the registrar's employee row. The check is intentionally
-// scoped to the employees table so a terminated employee (row
-// deleted) loses access.
+// matches the registrar's employee row. Runs against the supplied
+// gorm transaction (NOT the bare s.db) so the check participates in
+// the surrounding transaction's isolation — a registrar deleted in a
+// concurrent tx is correctly invisible, and uncommitted test
+// fixtures within the same tx are visible.
 func (s *IncidentService) callerIsActiveRegistrar(
-	ctx context.Context, callerID string, registrarEmployeeID uuid.UUID,
+	tx *gorm.DB, callerID string, registrarEmployeeID uuid.UUID,
 ) (bool, error) {
 	var count int64
-	if err := s.db.WithContext(ctx).
+	if err := tx.
 		Model(&model.Employee{}).
 		Where("id = ? AND zitadel_user_id = ?", registrarEmployeeID, callerID).
 		Count(&count).Error; err != nil {

@@ -39,7 +39,7 @@ func (s *IncidentService) Cancel(
 		if err != nil {
 			return err
 		}
-		isReg, err := s.callerIsActiveRegistrar(ctx, cmd.Caller.ZitadelUserID,
+		isReg, err := s.callerIsActiveRegistrar(tx, cmd.Caller.ZitadelUserID,
 			inc.RegistrarEmployeeID)
 		if err != nil {
 			return err

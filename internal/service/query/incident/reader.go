@@ -18,6 +18,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/service/query"
 )
 
 const (
@@ -119,55 +121,121 @@ func (r *Reader) resolveCaller(ctx context.Context, callerID string) (*callerCon
 		cc.employeeID = uuid.NullUUID{UUID: emp.ID, Valid: true}
 	}
 
-	// Per-role queries.
-	if err := r.collectScopes(tx, callerID, "domain.org_admins", "organization_id", cc.orgAdmin); err != nil {
+	// Per-role queries. Each branch hard-codes the role's table + scope
+	// column so the SQL is never built from interpolated identifiers.
+	if err := r.collectScopes(tx, callerID, roleSrcOrgAdmin, cc.orgAdmin); err != nil {
 		return nil, err
 	}
-	if err := r.collectScopes(tx, callerID, "domain.org_heads", "organization_id", cc.orgHead); err != nil {
+	if err := r.collectScopes(tx, callerID, roleSrcOrgHead, cc.orgHead); err != nil {
 		return nil, err
 	}
-	if err := r.collectScopes(tx, callerID, "domain.org_dispatchers", "organization_id", cc.orgDispatcher); err != nil {
+	if err := r.collectScopes(tx, callerID, roleSrcOrgDispatcher, cc.orgDispatcher); err != nil {
 		return nil, err
 	}
-	if err := r.collectScopes(tx, callerID, "domain.clinic_heads", "clinic_id", cc.clinicHead); err != nil {
+	if err := r.collectScopes(tx, callerID, roleSrcClinicHead, cc.clinicHead); err != nil {
 		return nil, err
 	}
-	if err := r.collectScopes(tx, callerID, "domain.department_responsibles", "department_id", cc.deptResp); err != nil {
+	if err := r.collectScopes(tx, callerID, roleSrcDeptResp, cc.deptResp); err != nil {
 		return nil, err
 	}
 	return cc, nil
 }
 
-// collectScopes finds every scope id from `table.scopeCol` where the
-// caller is the holder, plus deputy entries currently activated by an
-// active vacation on the holder.
+// roleScopeSource identifies a (table, scope-column) pair for
+// collectScopes. Using a typed enum instead of raw strings means the
+// SQL is hard-coded per branch — there is no path by which a caller
+// can inject identifiers, even by accident.
+type roleScopeSource int
+
+const (
+	roleSrcOrgAdmin roleScopeSource = iota
+	roleSrcOrgHead
+	roleSrcOrgDispatcher
+	roleSrcClinicHead
+	roleSrcDeptResp
+)
+
+// roleScopeQuery returns the fully-baked UNION SQL and a label for
+// error wrapping for the given role source. All identifiers are
+// compile-time literals; only the caller id is bound as a parameter.
+func roleScopeQuery(src roleScopeSource) (rawSQL, label string) {
+	switch src {
+	case roleSrcOrgAdmin:
+		return `SELECT t.organization_id FROM domain.org_admins t
+			JOIN domain.employees e ON e.id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			UNION
+			SELECT t.organization_id FROM domain.org_admins t
+			JOIN domain.employees e ON e.id = t.deputy_employee_id
+			JOIN domain.employee_vacations v ON v.employee_id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			  AND v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`, "domain.org_admins"
+	case roleSrcOrgHead:
+		return `SELECT t.organization_id FROM domain.org_heads t
+			JOIN domain.employees e ON e.id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			UNION
+			SELECT t.organization_id FROM domain.org_heads t
+			JOIN domain.employees e ON e.id = t.deputy_employee_id
+			JOIN domain.employee_vacations v ON v.employee_id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			  AND v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`, "domain.org_heads"
+	case roleSrcOrgDispatcher:
+		return `SELECT t.organization_id FROM domain.org_dispatchers t
+			JOIN domain.employees e ON e.id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			UNION
+			SELECT t.organization_id FROM domain.org_dispatchers t
+			JOIN domain.employees e ON e.id = t.deputy_employee_id
+			JOIN domain.employee_vacations v ON v.employee_id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			  AND v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`, "domain.org_dispatchers"
+	case roleSrcClinicHead:
+		return `SELECT t.clinic_id FROM domain.clinic_heads t
+			JOIN domain.employees e ON e.id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			UNION
+			SELECT t.clinic_id FROM domain.clinic_heads t
+			JOIN domain.employees e ON e.id = t.deputy_employee_id
+			JOIN domain.employee_vacations v ON v.employee_id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			  AND v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`, "domain.clinic_heads"
+	case roleSrcDeptResp:
+		return `SELECT t.department_id FROM domain.department_responsibles t
+			JOIN domain.employees e ON e.id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			UNION
+			SELECT t.department_id FROM domain.department_responsibles t
+			JOIN domain.employees e ON e.id = t.deputy_employee_id
+			JOIN domain.employee_vacations v ON v.employee_id = t.employee_id
+			WHERE e.zitadel_user_id = ?
+			  AND v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`, "domain.department_responsibles"
+	}
+	// Unreachable: the enum is closed at compile time.
+	return "", ""
+}
+
+// collectScopes runs the pre-baked SQL for the given role source and
+// fills `out` with every scope id the caller holds (directly or as
+// a deputy with an active vacation on the principal).
 func (r *Reader) collectScopes(
-	tx *gorm.DB, callerID, table, scopeCol string, out map[uuid.UUID]bool,
+	tx *gorm.DB, callerID string, src roleScopeSource, out map[uuid.UUID]bool,
 ) error {
-	q := `
-		SELECT t.` + scopeCol + ` FROM ` + table + ` t
-		JOIN domain.employees e ON e.id = t.employee_id
-		WHERE e.zitadel_user_id = ?
-		UNION
-		SELECT t.` + scopeCol + ` FROM ` + table + ` t
-		JOIN domain.employees e ON e.id = t.deputy_employee_id
-		JOIN domain.employee_vacations v ON v.employee_id = t.employee_id
-		WHERE e.zitadel_user_id = ?
-		  AND v.starts_at <= now() AND (v.ends_at IS NULL OR v.ends_at > now())`
+	q, label := roleScopeQuery(src)
 	rows, err := tx.Raw(q, callerID, callerID).Rows()
 	if err != nil {
-		return wrapRead(err, "scope lookup "+table)
+		return wrapRead(err, "scope lookup "+label)
 	}
 	defer func() { _ = rows.Close() }()
 	for rows.Next() {
 		var id uuid.UUID
 		if err := rows.Scan(&id); err != nil {
-			return wrapRead(err, "scope scan "+table)
+			return wrapRead(err, "scope scan "+label)
 		}
 		out[id] = true
 	}
 	if err := rows.Err(); err != nil {
-		return wrapRead(err, "iterate scope rows "+table)
+		return wrapRead(err, "iterate scope rows "+label)
 	}
 	return nil
 }
@@ -231,6 +299,16 @@ func (r *Reader) GetIncident(ctx context.Context, callerID string, id uuid.UUID)
 	if err != nil {
 		return nil, err
 	}
+	return r.getIncidentForCaller(ctx, cc, id)
+}
+
+// getIncidentForCaller is the visibility-filtered single-incident
+// fetch shared by GetIncident and GetIncidentHistory. Internal callers
+// pass a pre-resolved callerContext so the role-resolution queries
+// (six SQL round-trips) are not repeated.
+func (r *Reader) getIncidentForCaller(
+	ctx context.Context, cc *callerContext, id uuid.UUID,
+) (*IncidentView, error) {
 	where, args := r.visibilityClause(cc, "")
 	args = append([]any{id}, args...)
 	q := `SELECT ` + selectColumns + ` FROM projections.incidents
@@ -281,19 +359,20 @@ func (r *Reader) visibilityClause(cc *callerContext, prefix string) (clause stri
 		if len(ids) > 0 {
 			placeholders := strings.TrimSuffix(strings.Repeat("?,", len(ids)), ",")
 			parts = append(parts,
-				"("+col("organization_id")+" IN ("+placeholders+") AND "+col("status")+" != 'cancelled')")
+				"("+col("organization_id")+" IN ("+placeholders+") AND "+col("status")+" != ?)")
 			for _, id := range ids {
 				args = append(args, id)
 			}
+			args = append(args, model.IncidentStatusCancelled)
 		}
 	}
 	for clinicID := range cc.clinicHead {
-		parts = append(parts, "("+col("clinic_id")+" = ? AND "+col("status")+" != 'cancelled')")
-		args = append(args, clinicID)
+		parts = append(parts, "("+col("clinic_id")+" = ? AND "+col("status")+" != ?)")
+		args = append(args, clinicID, model.IncidentStatusCancelled)
 	}
 	for deptID := range cc.deptResp {
-		parts = append(parts, "("+col("department_id")+" = ? AND "+col("status")+" != 'cancelled')")
-		args = append(args, deptID)
+		parts = append(parts, "("+col("department_id")+" = ? AND "+col("status")+" != ?)")
+		args = append(args, deptID, model.IncidentStatusCancelled)
 	}
 	if cc.employeeID.Valid {
 		parts = append(parts, col("registrar_employee_id")+" = ?")
@@ -326,6 +405,9 @@ type ListFilters struct {
 func (r *Reader) ListIncidents(
 	ctx context.Context, callerID string, orgID uuid.UUID, f *ListFilters,
 ) ([]IncidentView, error) {
+	if f == nil {
+		f = &ListFilters{}
+	}
 	cc, err := r.resolveCaller(ctx, callerID)
 	if err != nil {
 		return nil, err
@@ -441,14 +523,24 @@ func (r *Reader) ListMyIncidents(
 	return out, nil
 }
 
-func paginationDefaults(limit, offset int) (outLimit, outOffset int) {
-	if limit <= 0 || limit > 200 {
-		limit = 50
+// PaginationDefaults clamps a (limit, offset) pair to safe bounds.
+// Out-of-range limits fall back to query.DefaultLimit; negative
+// offsets become 0. Exported so the buffer reader (and any future
+// reader that needs the same lenient clamping) can share the impl.
+func PaginationDefaults(limit, offset int) (outLimit, outOffset int) {
+	if limit <= 0 || limit > query.MaxLimit {
+		limit = query.DefaultLimit
 	}
 	if offset < 0 {
 		offset = 0
 	}
 	return limit, offset
+}
+
+// paginationDefaults is the unexported alias kept for backwards
+// compatibility with existing call sites in this package.
+func paginationDefaults(limit, offset int) (outLimit, outOffset int) {
+	return PaginationDefaults(limit, offset)
 }
 
 // StatusHistoryEntry mirrors a row of projections.incident_status_history.
@@ -489,12 +581,13 @@ func (r *Reader) GetIncidentHistory(
 	}
 	if cc.IsPatient() {
 		return nil, oops.In(scope).
-			Code("permission_denied").
+			Code(authz.ErrCodePermissionDenied).
 			Public("History is not available for patients.").
 			Errorf("patient denied")
 	}
-	// Reuse visibility clause to confirm the caller may see the incident.
-	if _, err := r.GetIncident(ctx, callerID, incidentID); err != nil {
+	// Reuse the already-resolved callerContext to avoid a second
+	// round of role-lookup queries inside GetIncident.
+	if _, err := r.getIncidentForCaller(ctx, cc, incidentID); err != nil {
 		return nil, err
 	}
 

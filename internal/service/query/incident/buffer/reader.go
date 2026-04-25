@@ -15,6 +15,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	queryincident "github.com/medincident/medincident-backend/internal/service/query/incident"
 )
 
@@ -110,7 +111,7 @@ func (r *Reader) ListBufferEntries(
 		return nil, err
 	}
 	if !cc.CanSeeBufferForOrg(orgID) {
-		return nil, oops.In(scope).Code("permission_denied").
+		return nil, oops.In(scope).Code(authz.ErrCodePermissionDenied).
 			Public("Not authorized to view this organization's patient buffer.").
 			With("organization_id", orgID).Errorf("denied")
 	}
@@ -195,14 +196,10 @@ func canSeeBuffer(cc *queryincident.CallerContext, b *BufferEntryView) bool {
 	return b.PatientZitadelUserID == cc.ZitadelID()
 }
 
+// paginationDefaults delegates to the incident reader's exported helper
+// so the two readers don't drift.
 func paginationDefaults(limit, offset int) (outLimit, outOffset int) {
-	if limit <= 0 || limit > 200 {
-		limit = 50
-	}
-	if offset < 0 {
-		offset = 0
-	}
-	return limit, offset
+	return queryincident.PaginationDefaults(limit, offset)
 }
 
 func wrapRead(err error, action string) error {
