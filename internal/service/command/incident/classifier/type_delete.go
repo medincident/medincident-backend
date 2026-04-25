@@ -62,7 +62,10 @@ func (s *IncidentTypeService) Delete(
 		}
 
 		if err := projector.TypeDeleted(tx, row.ID); err != nil {
-			return err
+			return oops.In("services.incident.classifier.type").
+				Code(ErrCodeIncidentTypeDeleteProjectionFailed).
+				With("incident_type_id", row.ID).
+				Wrap(err)
 		}
 		if err := tx.Delete(&model.IncidentType{}, "id = ?", row.ID).Error; err != nil {
 			return oops.In("services.incident.classifier.type").

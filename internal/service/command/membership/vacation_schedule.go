@@ -84,7 +84,10 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 		}
 
 		if err := projector.VacationScheduled(tx, &vac); err != nil {
-			return err
+			return oops.In(scopeVacation).
+				Code(ErrCodeVacationProjectionFailed).
+				With("vacation_id", id).
+				Wrap(err)
 		}
 		result.ID = id
 		return nil

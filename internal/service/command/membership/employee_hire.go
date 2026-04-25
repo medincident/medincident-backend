@@ -123,7 +123,10 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 		}
 
 		if err := projector.EmployeeHired(tx, &emp); err != nil {
-			return err
+			return oops.In(scopeEmployee).
+				Code(ErrCodeEmployeeProjectionFailed).
+				With("employee_id", id).
+				Wrap(err)
 		}
 		result.ID = id
 		return nil

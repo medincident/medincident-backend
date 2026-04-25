@@ -24,6 +24,7 @@ const (
 	ErrCodeDepartmentLoadFailed         = "department_load_failed"
 	ErrCodeDepartmentNotFound           = "department_not_found"
 	ErrCodeDepartmentClinicNotFound     = "department_clinic_not_found"
+	ErrCodeDepartmentProjectionFailed   = "department_projection_failed"
 )
 
 // CreateDepartmentPayload is the validated client-facing payload of
@@ -92,7 +93,10 @@ func (s *DepartmentService) Create(
 		}
 
 		if err := projector.DepartmentCreated(tx, &dept); err != nil {
-			return err
+			return oops.In("services.orgstructure.department").
+				Code(ErrCodeDepartmentProjectionFailed).
+				With("department_id", id).
+				Wrap(err)
 		}
 		result.ID = id
 		return nil
