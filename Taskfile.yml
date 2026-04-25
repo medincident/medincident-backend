@@ -115,3 +115,8 @@ tasks:
     desc: Build the gateway-server Docker image (requires docker)
     cmds:
       - docker build -f build/gateway-server.Dockerfile -t medincident/gateway-server:dev .
+
+  docker:migrate:
+    desc: Build the migrate Docker image (requires docker)
+    cmds:
+      - docker build -f build/migrate.Dockerfile -t medincident/migrate:dev .
