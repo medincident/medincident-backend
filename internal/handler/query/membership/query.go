@@ -5,6 +5,8 @@ import (
 	"errors"
 	"time"
 
+	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	memberread "github.com/medincident/medincident-backend/internal/service/query/membership"
 	membershipqueryv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
 )
@@ -34,11 +36,16 @@ func (h *MembershipQueryHandler) GetEmployee(
 	ctx context.Context,
 	req *membershipqueryv1.GetEmployeeRequest,
 ) (*membershipqueryv1.GetEmployeeResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseEmployeeID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
-	view, err := h.empReader.Get(ctx, id)
+	view, err := h.empReader.Get(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -50,11 +57,16 @@ func (h *MembershipQueryHandler) ListEmployeesByDepartment(
 	ctx context.Context,
 	req *membershipqueryv1.ListEmployeesByDepartmentRequest,
 ) (*membershipqueryv1.ListEmployeesByDepartmentResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseDepartmentID(req.GetDepartmentId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.empReader.ListByDepartment(ctx, id, memberread.ListQuery{
+	items, err := h.empReader.ListByDepartment(ctx, caller, id, memberread.ListQuery{
 		Limit:  int(req.GetLimit()),
 		Offset: int(req.GetOffset()),
 	})
@@ -71,11 +83,16 @@ func (h *MembershipQueryHandler) ListEmployeesByClinic(
 	ctx context.Context,
 	req *membershipqueryv1.ListEmployeesByClinicRequest,
 ) (*membershipqueryv1.ListEmployeesByClinicResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseClinicID(req.GetClinicId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.empReader.ListByClinic(ctx, id, memberread.ListQuery{
+	items, err := h.empReader.ListByClinic(ctx, caller, id, memberread.ListQuery{
 		Limit:  int(req.GetLimit()),
 		Offset: int(req.GetOffset()),
 	})
@@ -92,11 +109,16 @@ func (h *MembershipQueryHandler) ListEmployeesByOrganization(
 	ctx context.Context,
 	req *membershipqueryv1.ListEmployeesByOrganizationRequest,
 ) (*membershipqueryv1.ListEmployeesByOrganizationResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.empReader.ListByOrganization(ctx, id, memberread.ListQuery{
+	items, err := h.empReader.ListByOrganization(ctx, caller, id, memberread.ListQuery{
 		Limit:  int(req.GetLimit()),
 		Offset: int(req.GetOffset()),
 	})
@@ -113,11 +135,16 @@ func (h *MembershipQueryHandler) ListVacationsByEmployee(
 	ctx context.Context,
 	req *membershipqueryv1.ListVacationsByEmployeeRequest,
 ) (*membershipqueryv1.ListVacationsByEmployeeResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseEmployeeID(req.GetEmployeeId())
 	if err != nil {
 		return nil, err
 	}
-	vacs, err := h.empReader.ListVacationsByEmployee(ctx, id, req.GetState())
+	vacs, err := h.empReader.ListVacationsByEmployee(ctx, caller, id, req.GetState())
 	if err != nil {
 		return nil, err
 	}
@@ -146,11 +173,16 @@ func (h *MembershipQueryHandler) GetClinicHead(
 	ctx context.Context,
 	req *membershipqueryv1.GetClinicHeadRequest,
 ) (*membershipqueryv1.GetClinicHeadResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseClinicID(req.GetClinicId())
 	if err != nil {
 		return nil, err
 	}
-	h1, err := h.roleReader.GetClinicHead(ctx, id)
+	h1, err := h.roleReader.GetClinicHead(ctx, caller, id)
 	if err != nil {
 		if errors.Is(err, memberread.ErrRoleVacant) {
 			return &membershipqueryv1.GetClinicHeadResponse{}, nil
@@ -165,11 +197,16 @@ func (h *MembershipQueryHandler) GetDepartmentResponsible(
 	ctx context.Context,
 	req *membershipqueryv1.GetDepartmentResponsibleRequest,
 ) (*membershipqueryv1.GetDepartmentResponsibleResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseDepartmentID(req.GetDepartmentId())
 	if err != nil {
 		return nil, err
 	}
-	h1, err := h.roleReader.GetDepartmentResponsible(ctx, id)
+	h1, err := h.roleReader.GetDepartmentResponsible(ctx, caller, id)
 	if err != nil {
 		if errors.Is(err, memberread.ErrRoleVacant) {
 			return &membershipqueryv1.GetDepartmentResponsibleResponse{}, nil
@@ -184,11 +221,16 @@ func (h *MembershipQueryHandler) ListOrgAdmins(
 	ctx context.Context,
 	req *membershipqueryv1.ListOrgAdminsRequest,
 ) (*membershipqueryv1.ListOrgAdminsResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgAdmins(ctx, id)
+	items, err := h.roleReader.ListOrgAdmins(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -200,11 +242,16 @@ func (h *MembershipQueryHandler) ListOrgDispatchers(
 	ctx context.Context,
 	req *membershipqueryv1.ListOrgDispatchersRequest,
 ) (*membershipqueryv1.ListOrgDispatchersResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgDispatchers(ctx, id)
+	items, err := h.roleReader.ListOrgDispatchers(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -216,11 +263,16 @@ func (h *MembershipQueryHandler) ListOrgHeads(
 	ctx context.Context,
 	req *membershipqueryv1.ListOrgHeadsRequest,
 ) (*membershipqueryv1.ListOrgHeadsResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetOrganizationId())
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgHeads(ctx, id)
+	items, err := h.roleReader.ListOrgHeads(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -232,7 +284,12 @@ func (h *MembershipQueryHandler) ListSystemAdmins(
 	ctx context.Context,
 	_ *membershipqueryv1.ListSystemAdminsRequest,
 ) (*membershipqueryv1.ListSystemAdminsResponse, error) {
-	items, err := h.roleReader.ListSystemAdmins(ctx)
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	items, err := h.roleReader.ListSystemAdmins(ctx, caller)
 	if err != nil {
 		return nil, err
 	}

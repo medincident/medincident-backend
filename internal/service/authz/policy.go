@@ -382,6 +382,41 @@ func (memberOfRole) Department(id uuid.UUID) Policy {
 	}
 }
 
+func (memberOfRole) Employee(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field:     "employee_id",
+		id:        id,
+		clauseFmt: "JOIN domain.employees tgt ON tgt.organization_id = e.organization_id WHERE tgt.id = @%s",
+	}
+}
+
+// ---------------------------------------------------------------------
+// SelfEmployee — caller IS the target employee
+// ---------------------------------------------------------------------
+
+type selfEmployeePolicy struct{ id uuid.UUID }
+
+// SelfEmployee authorizes the caller when they are the employee row
+// identified by id. Used for self-service reads where "only admins or
+// the subject themselves" is the right gate — e.g. an employee's own
+// vacation history.
+func SelfEmployee(id uuid.UUID) Policy { return selfEmployeePolicy{id: id} }
+
+func (p selfEmployeePolicy) branches(bc *branchCtx) []string {
+	scope := bc.addScope(p.id)
+	caller := bc.addCaller()
+	return []string{fmt.Sprintf(
+		`SELECT 1 FROM domain.employees e
+WHERE e.id = @%s AND e.zitadel_user_id = @%s`, scope, caller)}
+}
+
+func (selfEmployeePolicy) describe() string { return "the employee themselves" }
+
+//nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
+func (p selfEmployeePolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder {
+	return b.With("employee_id", p.id)
+}
+
 // ---------------------------------------------------------------------
 // ReaderOf — read-side battery: SystemAdmin OR OrgAdminOf.X OR MemberOf.X
 // ---------------------------------------------------------------------
@@ -408,6 +443,10 @@ func (readerOfBattery) Clinic(id uuid.UUID) Policy {
 
 func (readerOfBattery) Department(id uuid.UUID) Policy {
 	return AnyOf(SystemAdmin, OrgAdminOf.Department(id), MemberOf.Department(id))
+}
+
+func (readerOfBattery) Employee(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Employee(id), MemberOf.Employee(id))
 }
 
 // ---------------------------------------------------------------------

@@ -169,6 +169,38 @@ func TestMemberOf_Describe(t *testing.T) {
 	assert.Equal(t, "organization member", MemberOf.Department(id).describe())
 }
 
+func TestMemberOf_Employee_WidensToOrganization(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := MemberOf.Employee(uuid.MustParse("99999999-9999-9999-9999-999999999999")).branches(bc)
+	require.Len(t, bs, 1)
+	assert.Contains(t, bs[0], "JOIN domain.employees tgt ON tgt.organization_id = e.organization_id")
+	assert.Contains(t, bs[0], "WHERE tgt.id = @scope0")
+}
+
+func TestSelfEmployee_MatchesCallerOnEmployeeRow(t *testing.T) {
+	id := uuid.MustParse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+	bc := &branchCtx{callerID: "bob"}
+	bs := SelfEmployee(id).branches(bc)
+	require.Len(t, bs, 1)
+	assert.Contains(t, bs[0], "FROM domain.employees e")
+	assert.Contains(t, bs[0], "WHERE e.id = @scope0 AND e.zitadel_user_id = @caller0")
+}
+
+func TestSelfEmployee_Describe(t *testing.T) {
+	assert.Equal(t, "the employee themselves", SelfEmployee(uuid.New()).describe())
+}
+
+func TestReaderOf_Employee_IsAnyOf_SystemAdmin_OrgAdmin_Member(t *testing.T) {
+	id := uuid.MustParse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb")
+	bc1 := &branchCtx{callerID: "x"}
+	bc2 := &branchCtx{callerID: "x"}
+
+	got := ReaderOf.Employee(id).branches(bc1)
+	want := AnyOf(SystemAdmin, OrgAdminOf.Employee(id), MemberOf.Employee(id)).branches(bc2)
+
+	assert.Equal(t, want, got)
+}
+
 func TestReaderOf_Clinic_IsAnyOf_SystemAdmin_OrgAdmin_Member(t *testing.T) {
 	id := uuid.MustParse("88888888-8888-8888-8888-888888888888")
 	bc1 := &branchCtx{callerID: "x"}

@@ -65,8 +65,8 @@ func TestEmployeeReader_Get_AndListByDepartment(t *testing.T) {
 		return projector.EmployeeHired(tx, emp)
 	}))
 
-	reader := memberread.NewEmployeeReader(testDB, &logger)
-	got, err := reader.Get(ctx, empID)
+	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
+	got, err := reader.Get(ctx, sysadminCaller, empID)
 	require.NoError(t, err)
 	require.Equal(t, empID, got.EmployeeID)
 	require.Equal(t, "zit-1", got.ZitadelUserID)
@@ -74,7 +74,7 @@ func TestEmployeeReader_Get_AndListByDepartment(t *testing.T) {
 	require.NotNil(t, got.Position)
 	require.Equal(t, "Nurse", *got.Position)
 
-	list, err := reader.ListByDepartment(ctx, deptID, memberread.ListQuery{})
+	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, list, 1)
 	require.Equal(t, empID, list[0].EmployeeID)
@@ -84,8 +84,8 @@ func TestEmployeeReader_Get_AndListByDepartment(t *testing.T) {
 func TestEmployeeReader_Get_NotFound(t *testing.T) {
 	resetProjections(t)
 	logger := zerolog.Nop()
-	reader := memberread.NewEmployeeReader(testDB, &logger)
-	_, err := reader.Get(context.Background(), uuid.Must(uuid.NewV7()))
+	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
+	_, err := reader.Get(context.Background(), sysadminCaller, uuid.Must(uuid.NewV7()))
 	require.Error(t, err)
 }
 
@@ -117,17 +117,17 @@ func TestEmployeeReader_ListVacationsByEmployee(t *testing.T) {
 		return projector.VacationScheduled(tx, vac)
 	}))
 
-	reader := memberread.NewEmployeeReader(testDB, &logger)
-	all, err := reader.ListVacationsByEmployee(ctx, empID, "")
+	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
+	all, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "")
 	require.NoError(t, err)
 	require.Len(t, all, 1)
 	require.Equal(t, "scheduled", all[0].State)
 
-	scheduled, err := reader.ListVacationsByEmployee(ctx, empID, "scheduled")
+	scheduled, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "scheduled")
 	require.NoError(t, err)
 	require.Len(t, scheduled, 1)
 
-	none, err := reader.ListVacationsByEmployee(ctx, empID, "active")
+	none, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "active")
 	require.NoError(t, err)
 	require.Empty(t, none)
 }

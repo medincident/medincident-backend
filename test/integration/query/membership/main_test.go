@@ -16,9 +16,22 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
-var testDB *gorm.DB
+// sysadminZitadelID is the Zitadel user ID of the system-admin seeded
+// by resetProjections. Membership scoped reads run through authz, so
+// the integration suite needs a real domain.system_admins row — not
+// only the projection — to exercise SystemAdmin branches.
+const sysadminZitadelID = "sysadmin"
+
+var sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
+
+var (
+	testDB   *gorm.DB
+	authzSvc *authz.Authz
+)
 
 func TestMain(m *testing.M) {
 	ctx := context.Background()
@@ -60,6 +73,8 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
+	authzSvc = authz.New(testDB)
+
 	os.Exit(m.Run())
 }
 
@@ -81,7 +96,14 @@ func resetProjections(t *testing.T) {
 	if err != nil {
 		t.Fatalf("get raw db: %v", err)
 	}
-	if _, err := raw.Exec(`TRUNCATE TABLE projections.organization_counters,
+	if _, err := raw.Exec(`TRUNCATE TABLE
+		domain.employee_vacations,
+		domain.employees,
+		domain.system_admins,
+		domain.departments,
+		domain.clinics,
+		domain.organizations,
+		projections.organization_counters,
 		projections.clinic_counters,
 		projections.department_counters,
 		projections.employee_cards,
@@ -101,5 +123,11 @@ func resetProjections(t *testing.T) {
 		projections.incident_categories,
 		projections.incident_types CASCADE`); err != nil {
 		t.Fatalf("truncate projections: %v", err)
+	}
+	if _, err := raw.Exec(
+		`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1)`,
+		sysadminZitadelID,
+	); err != nil {
+		t.Fatalf("seed sysadmin: %v", err)
 	}
 }
