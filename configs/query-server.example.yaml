@@ -49,7 +49,7 @@ zerolog:
 nats:
   url: "${NATS_URL}"                # e.g. nats://localhost:4222
   stream: "zitadel"
-  subjects: ["zitadel.>"]
+  subjects: ["zitadel.users.>"]
   durable_name: "medincident-query-server-zitadel"
 
 # Zitadel — used by the authn interceptor for JWT introspection on

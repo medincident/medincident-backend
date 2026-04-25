@@ -24,12 +24,6 @@ const (
 	ZitadelEventUserHumanProfileChanged = "user.human.profile.changed"
 	ZitadelEventUserHumanEmailChanged   = "user.human.email.changed"
 	ZitadelEventUserHumanEmailVerified  = "user.human.email.verified"
-
-	// Session events arrive on the broad zitadel.> subscription but are
-	// no longer projected. Handled explicitly so they ACK silently
-	// instead of reaching the default WARN branch.
-	ZitadelEventSessionAdded       = "session.added"
-	ZitadelEventSessionUserChecked = "session.user.checked"
 )
 
 // Error codes emitted by consumer runtime paths. Malformed payloads
@@ -270,8 +264,6 @@ func (c *Consumer) dispatchZitadel(ctx context.Context, env *zitadelv1.Envelope)
 			return typeMismatch(eventType, msg)
 		}
 		return c.projector.ApplyUserHumanEmailChanged(ctx, aggregateID, occurredAt, ev)
-	case ZitadelEventSessionAdded, ZitadelEventSessionUserChecked:
-		return nil
 	default:
 		c.logger.Warn().
 			Str("event_type", eventType).
