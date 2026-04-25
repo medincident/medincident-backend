@@ -14,9 +14,11 @@ import (
 
 // Error codes emitted by EmployeeReader.
 const (
-	ErrCodeEmployeeNotFound   = "employee_card_not_found"
-	ErrCodeEmployeeLoadFailed = "employee_card_load_failed"
-	ErrCodeVacationLoadFailed = "vacation_load_failed"
+	ErrCodeEmployeeNotFound    = "employee_card_not_found"
+	ErrCodeEmployeeLoadFailed  = "employee_card_load_failed"
+	ErrCodeEmployeeCountFailed = "employee_card_count_failed"
+	ErrCodeVacationLoadFailed  = "vacation_load_failed"
+	ErrCodeVacationCountFailed = "vacation_count_failed"
 )
 
 // EmployeeCardView mirrors projections.employee_cards. Optional columns
@@ -185,6 +187,64 @@ func (r *EmployeeReader) ListByOrganization(
 	return r.listByField(ctx, "organization_id", orgID, q)
 }
 
+// countByField is shared by the three CountEmployeesByX methods.
+func (r *EmployeeReader) countByField(
+	ctx context.Context,
+	field string,
+	value uuid.UUID,
+) (int64, error) {
+	var total int64
+	if err := r.db.WithContext(ctx).Raw(
+		`SELECT count(*) FROM projections.employee_cards WHERE `+field+` = ?`,
+		value,
+	).Row().Scan(&total); err != nil {
+		return 0, oops.In("reader.membership.employee").
+			Code(ErrCodeEmployeeCountFailed).
+			With(field, value).
+			Wrap(err)
+	}
+	return total, nil
+}
+
+// CountByDepartment returns the total employees under a department.
+// Authorization: authz.ReaderOf.Department(deptID).
+func (r *EmployeeReader) CountByDepartment(
+	ctx context.Context,
+	caller authz.Caller,
+	deptID uuid.UUID,
+) (int64, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(deptID)); err != nil {
+		return 0, err
+	}
+	return r.countByField(ctx, "department_id", deptID)
+}
+
+// CountByClinic returns the total employees under a clinic.
+// Authorization: authz.ReaderOf.Clinic(clinicID).
+func (r *EmployeeReader) CountByClinic(
+	ctx context.Context,
+	caller authz.Caller,
+	clinicID uuid.UUID,
+) (int64, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
+		return 0, err
+	}
+	return r.countByField(ctx, "clinic_id", clinicID)
+}
+
+// CountByOrganization returns the total employees under an organization.
+// Authorization: authz.ReaderOf.Organization(orgID).
+func (r *EmployeeReader) CountByOrganization(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+) (int64, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return 0, err
+	}
+	return r.countByField(ctx, "organization_id", orgID)
+}
+
 // VacationView mirrors projections.employee_vacations.
 type VacationView struct {
 	ID         uuid.UUID
@@ -194,6 +254,57 @@ type VacationView struct {
 	EndsAt     *time.Time
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
+}
+
+// vacationAuthzPolicy composes the "system admin OR org admin of the
+// employee OR the employee themselves" gate shared by read and count
+// over employee vacations.
+func vacationAuthzPolicy(employeeID uuid.UUID) authz.Policy {
+	return authz.AnyOf(
+		authz.SystemAdmin,
+		authz.OrgAdminOf.Employee(employeeID),
+		authz.SelfEmployee(employeeID),
+	)
+}
+
+// CountVacationsByEmployee returns the total vacation rows for an
+// employee. If state is non-empty, it is used as an exact-match
+// filter. Authorization matches ListVacationsByEmployee — only system
+// admins, admins of the owning organization, and the employee
+// themselves may count.
+func (r *EmployeeReader) CountVacationsByEmployee(
+	ctx context.Context,
+	caller authz.Caller,
+	employeeID uuid.UUID,
+	state string,
+) (int64, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, vacationAuthzPolicy(employeeID)); err != nil {
+		return 0, err
+	}
+	var (
+		total int64
+		row   *sql.Row
+	)
+	if state == "" {
+		row = r.db.WithContext(ctx).Raw(
+			`SELECT count(*) FROM projections.employee_vacations WHERE employee_id = ?`,
+			employeeID,
+		).Row()
+	} else {
+		row = r.db.WithContext(ctx).Raw(
+			`SELECT count(*) FROM projections.employee_vacations
+			  WHERE employee_id = ? AND state = ?`,
+			employeeID, state,
+		).Row()
+	}
+	if err := row.Scan(&total); err != nil {
+		return 0, oops.In("reader.membership.vacation").
+			Code(ErrCodeVacationCountFailed).
+			With("employee_id", employeeID).
+			With("state", state).
+			Wrap(err)
+	}
+	return total, nil
 }
 
 // ListVacationsByEmployee returns vacation rows for an employee. If
@@ -209,12 +320,7 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 	employeeID uuid.UUID,
 	state string,
 ) ([]VacationView, error) {
-	policy := authz.AnyOf(
-		authz.SystemAdmin,
-		authz.OrgAdminOf.Employee(employeeID),
-		authz.SelfEmployee(employeeID),
-	)
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, policy); err != nil {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, vacationAuthzPolicy(employeeID)); err != nil {
 		return nil, err
 	}
 	var (

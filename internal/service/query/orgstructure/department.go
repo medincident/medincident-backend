@@ -72,6 +72,29 @@ func (r *DepartmentReader) Get(
 	return &out, nil
 }
 
+// CountByClinic returns the total number of departments belonging to
+// the given clinic. Authorization: authz.ReaderOf.Clinic(clinicID).
+func (r *DepartmentReader) CountByClinic(
+	ctx context.Context,
+	caller authz.Caller,
+	clinicID uuid.UUID,
+) (int64, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
+		return 0, err
+	}
+	var total int64
+	if err := r.db.WithContext(ctx).Raw(
+		`SELECT count(*) FROM projections.departments WHERE clinic_id = ?`,
+		clinicID,
+	).Row().Scan(&total); err != nil {
+		return 0, oops.In("reader.orgstructure.department").
+			Code(ErrCodeDepartmentCountFailed).
+			With("clinic_id", clinicID).
+			Wrap(err)
+	}
+	return total, nil
+}
+
 // ListByClinic returns up to q.Limit departments belonging to the
 // given clinic, ordered most-recently-created first. Authorization:
 // authz.ReaderOf.Clinic(clinicID). Pagination bounds are normalized

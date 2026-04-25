@@ -130,6 +130,90 @@ func (h *MembershipQueryHandler) ListEmployeesByOrganization(
 	}, nil
 }
 
+// CountEmployeesByDepartment returns the employee count under a department.
+func (h *MembershipQueryHandler) CountEmployeesByDepartment(
+	ctx context.Context,
+	req *membershipqueryv1.CountEmployeesByDepartmentRequest,
+) (*membershipqueryv1.CountEmployeesByDepartmentResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	id, err := parseDepartmentID(req.GetDepartmentId())
+	if err != nil {
+		return nil, err
+	}
+	total, err := h.empReader.CountByDepartment(ctx, caller, id)
+	if err != nil {
+		return nil, err
+	}
+	return &membershipqueryv1.CountEmployeesByDepartmentResponse{Total: total}, nil
+}
+
+// CountEmployeesByClinic returns the employee count under a clinic.
+func (h *MembershipQueryHandler) CountEmployeesByClinic(
+	ctx context.Context,
+	req *membershipqueryv1.CountEmployeesByClinicRequest,
+) (*membershipqueryv1.CountEmployeesByClinicResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	id, err := parseClinicID(req.GetClinicId())
+	if err != nil {
+		return nil, err
+	}
+	total, err := h.empReader.CountByClinic(ctx, caller, id)
+	if err != nil {
+		return nil, err
+	}
+	return &membershipqueryv1.CountEmployeesByClinicResponse{Total: total}, nil
+}
+
+// CountEmployeesByOrganization returns the employee count under an org.
+func (h *MembershipQueryHandler) CountEmployeesByOrganization(
+	ctx context.Context,
+	req *membershipqueryv1.CountEmployeesByOrganizationRequest,
+) (*membershipqueryv1.CountEmployeesByOrganizationResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	id, err := parseOrganizationID(req.GetOrganizationId())
+	if err != nil {
+		return nil, err
+	}
+	total, err := h.empReader.CountByOrganization(ctx, caller, id)
+	if err != nil {
+		return nil, err
+	}
+	return &membershipqueryv1.CountEmployeesByOrganizationResponse{Total: total}, nil
+}
+
+// CountVacationsByEmployee returns the vacation count for an employee.
+func (h *MembershipQueryHandler) CountVacationsByEmployee(
+	ctx context.Context,
+	req *membershipqueryv1.CountVacationsByEmployeeRequest,
+) (*membershipqueryv1.CountVacationsByEmployeeResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	id, err := parseEmployeeID(req.GetEmployeeId())
+	if err != nil {
+		return nil, err
+	}
+	total, err := h.empReader.CountVacationsByEmployee(ctx, caller, id, req.GetState())
+	if err != nil {
+		return nil, err
+	}
+	return &membershipqueryv1.CountVacationsByEmployeeResponse{Total: total}, nil
+}
+
 // ListVacationsByEmployee returns the vacation rows for an employee.
 func (h *MembershipQueryHandler) ListVacationsByEmployee(
 	ctx context.Context,

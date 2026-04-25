@@ -222,6 +222,45 @@ func local_request_OrgStructureQueryService_ListClinicsByOrganization_0(ctx cont
 	return msg, metadata, err
 }
 
+func request_OrgStructureQueryService_CountClinicsByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client OrgStructureQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CountClinicsByOrganizationRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	msg, err := client.CountClinicsByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_OrgStructureQueryService_CountClinicsByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, server OrgStructureQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CountClinicsByOrganizationRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	msg, err := server.CountClinicsByOrganization(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_OrgStructureQueryService_GetDepartment_0(ctx context.Context, marshaler runtime.Marshaler, client OrgStructureQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq GetDepartmentRequest
@@ -311,6 +350,45 @@ func local_request_OrgStructureQueryService_ListDepartmentsByClinic_0(ctx contex
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.ListDepartmentsByClinic(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_OrgStructureQueryService_CountDepartmentsByClinic_0(ctx context.Context, marshaler runtime.Marshaler, client OrgStructureQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CountDepartmentsByClinicRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["clinic_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "clinic_id")
+	}
+	protoReq.ClinicId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "clinic_id", err)
+	}
+	msg, err := client.CountDepartmentsByClinic(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_OrgStructureQueryService_CountDepartmentsByClinic_0(ctx context.Context, marshaler runtime.Marshaler, server OrgStructureQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CountDepartmentsByClinicRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["clinic_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "clinic_id")
+	}
+	protoReq.ClinicId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "clinic_id", err)
+	}
+	msg, err := server.CountDepartmentsByClinic(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -420,6 +498,26 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 		}
 		forward_OrgStructureQueryService_ListClinicsByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_OrgStructureQueryService_CountClinicsByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/clinics:count"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrgStructureQueryService_CountClinicsByOrganization_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_OrgStructureQueryService_CountClinicsByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodGet, pattern_OrgStructureQueryService_GetDepartment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -459,6 +557,26 @@ func RegisterOrgStructureQueryServiceHandlerServer(ctx context.Context, mux *run
 			return
 		}
 		forward_OrgStructureQueryService_ListDepartmentsByClinic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_OrgStructureQueryService_CountDepartmentsByClinic_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/departments:count"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_OrgStructureQueryService_CountDepartmentsByClinic_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_OrgStructureQueryService_CountDepartmentsByClinic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -585,6 +703,23 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		}
 		forward_OrgStructureQueryService_ListClinicsByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_OrgStructureQueryService_CountClinicsByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountClinicsByOrganization", runtime.WithHTTPPathPattern("/v1/query/organizations/{organization_id}/clinics:count"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrgStructureQueryService_CountClinicsByOrganization_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_OrgStructureQueryService_CountClinicsByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodGet, pattern_OrgStructureQueryService_GetDepartment_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -619,25 +754,46 @@ func RegisterOrgStructureQueryServiceHandlerClient(ctx context.Context, mux *run
 		}
 		forward_OrgStructureQueryService_ListDepartmentsByClinic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_OrgStructureQueryService_CountDepartmentsByClinic_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.orgstructure.v1.OrgStructureQueryService/CountDepartmentsByClinic", runtime.WithHTTPPathPattern("/v1/query/clinics/{clinic_id}/departments:count"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_OrgStructureQueryService_CountDepartmentsByClinic_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_OrgStructureQueryService_CountDepartmentsByClinic_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
-	pattern_OrgStructureQueryService_GetOrganization_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "organizations", "id"}, ""))
-	pattern_OrgStructureQueryService_ListOrganizations_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "organizations"}, ""))
-	pattern_OrgStructureQueryService_CountOrganizations_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "organizations"}, "count"))
-	pattern_OrgStructureQueryService_GetClinic_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "clinics", "id"}, ""))
-	pattern_OrgStructureQueryService_ListClinicsByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "clinics"}, ""))
-	pattern_OrgStructureQueryService_GetDepartment_0             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "departments", "id"}, ""))
-	pattern_OrgStructureQueryService_ListDepartmentsByClinic_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "departments"}, ""))
+	pattern_OrgStructureQueryService_GetOrganization_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "organizations", "id"}, ""))
+	pattern_OrgStructureQueryService_ListOrganizations_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "organizations"}, ""))
+	pattern_OrgStructureQueryService_CountOrganizations_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "query", "organizations"}, "count"))
+	pattern_OrgStructureQueryService_GetClinic_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "clinics", "id"}, ""))
+	pattern_OrgStructureQueryService_ListClinicsByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "clinics"}, ""))
+	pattern_OrgStructureQueryService_CountClinicsByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "organizations", "organization_id", "clinics"}, "count"))
+	pattern_OrgStructureQueryService_GetDepartment_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "query", "departments", "id"}, ""))
+	pattern_OrgStructureQueryService_ListDepartmentsByClinic_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "departments"}, ""))
+	pattern_OrgStructureQueryService_CountDepartmentsByClinic_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"v1", "query", "clinics", "clinic_id", "departments"}, "count"))
 )
 
 var (
-	forward_OrgStructureQueryService_GetOrganization_0           = runtime.ForwardResponseMessage
-	forward_OrgStructureQueryService_ListOrganizations_0         = runtime.ForwardResponseMessage
-	forward_OrgStructureQueryService_CountOrganizations_0        = runtime.ForwardResponseMessage
-	forward_OrgStructureQueryService_GetClinic_0                 = runtime.ForwardResponseMessage
-	forward_OrgStructureQueryService_ListClinicsByOrganization_0 = runtime.ForwardResponseMessage
-	forward_OrgStructureQueryService_GetDepartment_0             = runtime.ForwardResponseMessage
-	forward_OrgStructureQueryService_ListDepartmentsByClinic_0   = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_GetOrganization_0            = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_ListOrganizations_0          = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_CountOrganizations_0         = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_GetClinic_0                  = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_ListClinicsByOrganization_0  = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_CountClinicsByOrganization_0 = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_GetDepartment_0              = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_ListDepartmentsByClinic_0    = runtime.ForwardResponseMessage
+	forward_OrgStructureQueryService_CountDepartmentsByClinic_0   = runtime.ForwardResponseMessage
 )

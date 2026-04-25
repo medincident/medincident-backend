@@ -1026,6 +1026,94 @@ func (x *ListClinicsByOrganizationResponse) GetItems() []*ClinicListItem {
 	return nil
 }
 
+type CountClinicsByOrganizationRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *CountClinicsByOrganizationRequest) Reset() {
+	*x = CountClinicsByOrganizationRequest{}
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CountClinicsByOrganizationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CountClinicsByOrganizationRequest) ProtoMessage() {}
+
+func (x *CountClinicsByOrganizationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CountClinicsByOrganizationRequest.ProtoReflect.Descriptor instead.
+func (*CountClinicsByOrganizationRequest) Descriptor() ([]byte, []int) {
+	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *CountClinicsByOrganizationRequest) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+type CountClinicsByOrganizationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Total         int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CountClinicsByOrganizationResponse) Reset() {
+	*x = CountClinicsByOrganizationResponse{}
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CountClinicsByOrganizationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CountClinicsByOrganizationResponse) ProtoMessage() {}
+
+func (x *CountClinicsByOrganizationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CountClinicsByOrganizationResponse.ProtoReflect.Descriptor instead.
+func (*CountClinicsByOrganizationResponse) Descriptor() ([]byte, []int) {
+	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *CountClinicsByOrganizationResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
 type GetDepartmentRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1035,7 +1123,7 @@ type GetDepartmentRequest struct {
 
 func (x *GetDepartmentRequest) Reset() {
 	*x = GetDepartmentRequest{}
-	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[18]
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1047,7 +1135,7 @@ func (x *GetDepartmentRequest) String() string {
 func (*GetDepartmentRequest) ProtoMessage() {}
 
 func (x *GetDepartmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[18]
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1060,7 +1148,7 @@ func (x *GetDepartmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDepartmentRequest.ProtoReflect.Descriptor instead.
 func (*GetDepartmentRequest) Descriptor() ([]byte, []int) {
-	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{18}
+	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetDepartmentRequest) GetId() string {
@@ -1079,7 +1167,7 @@ type GetDepartmentResponse struct {
 
 func (x *GetDepartmentResponse) Reset() {
 	*x = GetDepartmentResponse{}
-	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[19]
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1091,7 +1179,7 @@ func (x *GetDepartmentResponse) String() string {
 func (*GetDepartmentResponse) ProtoMessage() {}
 
 func (x *GetDepartmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[19]
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1104,7 +1192,7 @@ func (x *GetDepartmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDepartmentResponse.ProtoReflect.Descriptor instead.
 func (*GetDepartmentResponse) Descriptor() ([]byte, []int) {
-	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{19}
+	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *GetDepartmentResponse) GetDepartment() *Department {
@@ -1125,7 +1213,7 @@ type ListDepartmentsByClinicRequest struct {
 
 func (x *ListDepartmentsByClinicRequest) Reset() {
 	*x = ListDepartmentsByClinicRequest{}
-	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[20]
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1137,7 +1225,7 @@ func (x *ListDepartmentsByClinicRequest) String() string {
 func (*ListDepartmentsByClinicRequest) ProtoMessage() {}
 
 func (x *ListDepartmentsByClinicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[20]
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1150,7 +1238,7 @@ func (x *ListDepartmentsByClinicRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListDepartmentsByClinicRequest.ProtoReflect.Descriptor instead.
 func (*ListDepartmentsByClinicRequest) Descriptor() ([]byte, []int) {
-	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{20}
+	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListDepartmentsByClinicRequest) GetClinicId() string {
@@ -1183,7 +1271,7 @@ type ListDepartmentsByClinicResponse struct {
 
 func (x *ListDepartmentsByClinicResponse) Reset() {
 	*x = ListDepartmentsByClinicResponse{}
-	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[21]
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1195,7 +1283,7 @@ func (x *ListDepartmentsByClinicResponse) String() string {
 func (*ListDepartmentsByClinicResponse) ProtoMessage() {}
 
 func (x *ListDepartmentsByClinicResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[21]
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1208,7 +1296,7 @@ func (x *ListDepartmentsByClinicResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListDepartmentsByClinicResponse.ProtoReflect.Descriptor instead.
 func (*ListDepartmentsByClinicResponse) Descriptor() ([]byte, []int) {
-	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{21}
+	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ListDepartmentsByClinicResponse) GetItems() []*DepartmentListItem {
@@ -1216,6 +1304,94 @@ func (x *ListDepartmentsByClinicResponse) GetItems() []*DepartmentListItem {
 		return x.Items
 	}
 	return nil
+}
+
+type CountDepartmentsByClinicRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CountDepartmentsByClinicRequest) Reset() {
+	*x = CountDepartmentsByClinicRequest{}
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CountDepartmentsByClinicRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CountDepartmentsByClinicRequest) ProtoMessage() {}
+
+func (x *CountDepartmentsByClinicRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CountDepartmentsByClinicRequest.ProtoReflect.Descriptor instead.
+func (*CountDepartmentsByClinicRequest) Descriptor() ([]byte, []int) {
+	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *CountDepartmentsByClinicRequest) GetClinicId() string {
+	if x != nil {
+		return x.ClinicId
+	}
+	return ""
+}
+
+type CountDepartmentsByClinicResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Total         int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CountDepartmentsByClinicResponse) Reset() {
+	*x = CountDepartmentsByClinicResponse{}
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CountDepartmentsByClinicResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CountDepartmentsByClinicResponse) ProtoMessage() {}
+
+func (x *CountDepartmentsByClinicResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_query_orgstructure_v1_orgstructure_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CountDepartmentsByClinicResponse.ProtoReflect.Descriptor instead.
+func (*CountDepartmentsByClinicResponse) Descriptor() ([]byte, []int) {
+	return file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *CountDepartmentsByClinicResponse) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
 }
 
 var File_query_orgstructure_v1_orgstructure_proto protoreflect.FileDescriptor
@@ -1294,7 +1470,11 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x03 \x01(\x05R\x06offset\"`\n" +
 	"!ListClinicsByOrganizationResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.orgstructure.v1.ClinicListItemR\x05items\"&\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.orgstructure.v1.ClinicListItemR\x05items\"L\n" +
+	"!CountClinicsByOrganizationRequest\x12'\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\":\n" +
+	"\"CountClinicsByOrganizationResponse\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\"&\n" +
 	"\x14GetDepartmentRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"Z\n" +
 	"\x15GetDepartmentResponse\x12A\n" +
@@ -1306,15 +1486,21 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x03 \x01(\x05R\x06offset\"b\n" +
 	"\x1fListDepartmentsByClinicResponse\x12?\n" +
-	"\x05items\x18\x01 \x03(\v2).query.orgstructure.v1.DepartmentListItemR\x05items2\x8b\t\n" +
+	"\x05items\x18\x01 \x03(\v2).query.orgstructure.v1.DepartmentListItemR\x05items\">\n" +
+	"\x1fCountDepartmentsByClinicRequest\x12\x1b\n" +
+	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\"8\n" +
+	" CountDepartmentsByClinicResponse\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total2\xa7\f\n" +
 	"\x18OrgStructureQueryService\x12\x96\x01\n" +
 	"\x0fGetOrganization\x12-.query.orgstructure.v1.GetOrganizationRequest\x1a..query.orgstructure.v1.GetOrganizationResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/query/organizations/{id}\x12\x97\x01\n" +
 	"\x11ListOrganizations\x12/.query.orgstructure.v1.ListOrganizationsRequest\x1a0.query.orgstructure.v1.ListOrganizationsResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/query/organizations\x12\xa0\x01\n" +
 	"\x12CountOrganizations\x120.query.orgstructure.v1.CountOrganizationsRequest\x1a1.query.orgstructure.v1.CountOrganizationsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/query/organizations:count\x12~\n" +
 	"\tGetClinic\x12'.query.orgstructure.v1.GetClinicRequest\x1a(.query.orgstructure.v1.GetClinicResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/query/clinics/{id}\x12\xc9\x01\n" +
-	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/query/organizations/{organization_id}/clinics\x12\x8e\x01\n" +
+	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/query/organizations/{organization_id}/clinics\x12\xd2\x01\n" +
+	"\x1aCountClinicsByOrganization\x128.query.orgstructure.v1.CountClinicsByOrganizationRequest\x1a9.query.orgstructure.v1.CountClinicsByOrganizationResponse\"?\x82\xd3\xe4\x93\x029\x127/v1/query/organizations/{organization_id}/clinics:count\x12\x8e\x01\n" +
 	"\rGetDepartment\x12+.query.orgstructure.v1.GetDepartmentRequest\x1a,.query.orgstructure.v1.GetDepartmentResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/v1/query/departments/{id}\x12\xbb\x01\n" +
-	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/query/clinics/{clinic_id}/departmentsB\xf9\x01\n" +
+	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/query/clinics/{clinic_id}/departments\x12\xc4\x01\n" +
+	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/query/clinics/{clinic_id}/departments:countB\xf9\x01\n" +
 	"\x19com.query.orgstructure.v1B\x11OrgstructureProtoP\x01ZSgithub.com/medincident/medincident-backend/pkg/query/orgstructure/v1;orgstructurev1\xa2\x02\x03QOX\xaa\x02\x15Query.Orgstructure.V1\xca\x02\x15Query\\Orgstructure\\V1\xe2\x02!Query\\Orgstructure\\V1\\GPBMetadata\xea\x02\x17Query::Orgstructure::V1b\x06proto3"
 
 var (
@@ -1329,30 +1515,34 @@ func file_query_orgstructure_v1_orgstructure_proto_rawDescGZIP() []byte {
 	return file_query_orgstructure_v1_orgstructure_proto_rawDescData
 }
 
-var file_query_orgstructure_v1_orgstructure_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_query_orgstructure_v1_orgstructure_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_query_orgstructure_v1_orgstructure_proto_goTypes = []any{
-	(*Point)(nil),                             // 0: query.orgstructure.v1.Point
-	(*Address)(nil),                           // 1: query.orgstructure.v1.Address
-	(*Organization)(nil),                      // 2: query.orgstructure.v1.Organization
-	(*OrganizationListItem)(nil),              // 3: query.orgstructure.v1.OrganizationListItem
-	(*Clinic)(nil),                            // 4: query.orgstructure.v1.Clinic
-	(*ClinicListItem)(nil),                    // 5: query.orgstructure.v1.ClinicListItem
-	(*Department)(nil),                        // 6: query.orgstructure.v1.Department
-	(*DepartmentListItem)(nil),                // 7: query.orgstructure.v1.DepartmentListItem
-	(*GetOrganizationRequest)(nil),            // 8: query.orgstructure.v1.GetOrganizationRequest
-	(*GetOrganizationResponse)(nil),           // 9: query.orgstructure.v1.GetOrganizationResponse
-	(*ListOrganizationsRequest)(nil),          // 10: query.orgstructure.v1.ListOrganizationsRequest
-	(*ListOrganizationsResponse)(nil),         // 11: query.orgstructure.v1.ListOrganizationsResponse
-	(*CountOrganizationsRequest)(nil),         // 12: query.orgstructure.v1.CountOrganizationsRequest
-	(*CountOrganizationsResponse)(nil),        // 13: query.orgstructure.v1.CountOrganizationsResponse
-	(*GetClinicRequest)(nil),                  // 14: query.orgstructure.v1.GetClinicRequest
-	(*GetClinicResponse)(nil),                 // 15: query.orgstructure.v1.GetClinicResponse
-	(*ListClinicsByOrganizationRequest)(nil),  // 16: query.orgstructure.v1.ListClinicsByOrganizationRequest
-	(*ListClinicsByOrganizationResponse)(nil), // 17: query.orgstructure.v1.ListClinicsByOrganizationResponse
-	(*GetDepartmentRequest)(nil),              // 18: query.orgstructure.v1.GetDepartmentRequest
-	(*GetDepartmentResponse)(nil),             // 19: query.orgstructure.v1.GetDepartmentResponse
-	(*ListDepartmentsByClinicRequest)(nil),    // 20: query.orgstructure.v1.ListDepartmentsByClinicRequest
-	(*ListDepartmentsByClinicResponse)(nil),   // 21: query.orgstructure.v1.ListDepartmentsByClinicResponse
+	(*Point)(nil),                              // 0: query.orgstructure.v1.Point
+	(*Address)(nil),                            // 1: query.orgstructure.v1.Address
+	(*Organization)(nil),                       // 2: query.orgstructure.v1.Organization
+	(*OrganizationListItem)(nil),               // 3: query.orgstructure.v1.OrganizationListItem
+	(*Clinic)(nil),                             // 4: query.orgstructure.v1.Clinic
+	(*ClinicListItem)(nil),                     // 5: query.orgstructure.v1.ClinicListItem
+	(*Department)(nil),                         // 6: query.orgstructure.v1.Department
+	(*DepartmentListItem)(nil),                 // 7: query.orgstructure.v1.DepartmentListItem
+	(*GetOrganizationRequest)(nil),             // 8: query.orgstructure.v1.GetOrganizationRequest
+	(*GetOrganizationResponse)(nil),            // 9: query.orgstructure.v1.GetOrganizationResponse
+	(*ListOrganizationsRequest)(nil),           // 10: query.orgstructure.v1.ListOrganizationsRequest
+	(*ListOrganizationsResponse)(nil),          // 11: query.orgstructure.v1.ListOrganizationsResponse
+	(*CountOrganizationsRequest)(nil),          // 12: query.orgstructure.v1.CountOrganizationsRequest
+	(*CountOrganizationsResponse)(nil),         // 13: query.orgstructure.v1.CountOrganizationsResponse
+	(*GetClinicRequest)(nil),                   // 14: query.orgstructure.v1.GetClinicRequest
+	(*GetClinicResponse)(nil),                  // 15: query.orgstructure.v1.GetClinicResponse
+	(*ListClinicsByOrganizationRequest)(nil),   // 16: query.orgstructure.v1.ListClinicsByOrganizationRequest
+	(*ListClinicsByOrganizationResponse)(nil),  // 17: query.orgstructure.v1.ListClinicsByOrganizationResponse
+	(*CountClinicsByOrganizationRequest)(nil),  // 18: query.orgstructure.v1.CountClinicsByOrganizationRequest
+	(*CountClinicsByOrganizationResponse)(nil), // 19: query.orgstructure.v1.CountClinicsByOrganizationResponse
+	(*GetDepartmentRequest)(nil),               // 20: query.orgstructure.v1.GetDepartmentRequest
+	(*GetDepartmentResponse)(nil),              // 21: query.orgstructure.v1.GetDepartmentResponse
+	(*ListDepartmentsByClinicRequest)(nil),     // 22: query.orgstructure.v1.ListDepartmentsByClinicRequest
+	(*ListDepartmentsByClinicResponse)(nil),    // 23: query.orgstructure.v1.ListDepartmentsByClinicResponse
+	(*CountDepartmentsByClinicRequest)(nil),    // 24: query.orgstructure.v1.CountDepartmentsByClinicRequest
+	(*CountDepartmentsByClinicResponse)(nil),   // 25: query.orgstructure.v1.CountDepartmentsByClinicResponse
 }
 var file_query_orgstructure_v1_orgstructure_proto_depIdxs = []int32{
 	0,  // 0: query.orgstructure.v1.Address.point:type_name -> query.orgstructure.v1.Point
@@ -1369,17 +1559,21 @@ var file_query_orgstructure_v1_orgstructure_proto_depIdxs = []int32{
 	12, // 11: query.orgstructure.v1.OrgStructureQueryService.CountOrganizations:input_type -> query.orgstructure.v1.CountOrganizationsRequest
 	14, // 12: query.orgstructure.v1.OrgStructureQueryService.GetClinic:input_type -> query.orgstructure.v1.GetClinicRequest
 	16, // 13: query.orgstructure.v1.OrgStructureQueryService.ListClinicsByOrganization:input_type -> query.orgstructure.v1.ListClinicsByOrganizationRequest
-	18, // 14: query.orgstructure.v1.OrgStructureQueryService.GetDepartment:input_type -> query.orgstructure.v1.GetDepartmentRequest
-	20, // 15: query.orgstructure.v1.OrgStructureQueryService.ListDepartmentsByClinic:input_type -> query.orgstructure.v1.ListDepartmentsByClinicRequest
-	9,  // 16: query.orgstructure.v1.OrgStructureQueryService.GetOrganization:output_type -> query.orgstructure.v1.GetOrganizationResponse
-	11, // 17: query.orgstructure.v1.OrgStructureQueryService.ListOrganizations:output_type -> query.orgstructure.v1.ListOrganizationsResponse
-	13, // 18: query.orgstructure.v1.OrgStructureQueryService.CountOrganizations:output_type -> query.orgstructure.v1.CountOrganizationsResponse
-	15, // 19: query.orgstructure.v1.OrgStructureQueryService.GetClinic:output_type -> query.orgstructure.v1.GetClinicResponse
-	17, // 20: query.orgstructure.v1.OrgStructureQueryService.ListClinicsByOrganization:output_type -> query.orgstructure.v1.ListClinicsByOrganizationResponse
-	19, // 21: query.orgstructure.v1.OrgStructureQueryService.GetDepartment:output_type -> query.orgstructure.v1.GetDepartmentResponse
-	21, // 22: query.orgstructure.v1.OrgStructureQueryService.ListDepartmentsByClinic:output_type -> query.orgstructure.v1.ListDepartmentsByClinicResponse
-	16, // [16:23] is the sub-list for method output_type
-	9,  // [9:16] is the sub-list for method input_type
+	18, // 14: query.orgstructure.v1.OrgStructureQueryService.CountClinicsByOrganization:input_type -> query.orgstructure.v1.CountClinicsByOrganizationRequest
+	20, // 15: query.orgstructure.v1.OrgStructureQueryService.GetDepartment:input_type -> query.orgstructure.v1.GetDepartmentRequest
+	22, // 16: query.orgstructure.v1.OrgStructureQueryService.ListDepartmentsByClinic:input_type -> query.orgstructure.v1.ListDepartmentsByClinicRequest
+	24, // 17: query.orgstructure.v1.OrgStructureQueryService.CountDepartmentsByClinic:input_type -> query.orgstructure.v1.CountDepartmentsByClinicRequest
+	9,  // 18: query.orgstructure.v1.OrgStructureQueryService.GetOrganization:output_type -> query.orgstructure.v1.GetOrganizationResponse
+	11, // 19: query.orgstructure.v1.OrgStructureQueryService.ListOrganizations:output_type -> query.orgstructure.v1.ListOrganizationsResponse
+	13, // 20: query.orgstructure.v1.OrgStructureQueryService.CountOrganizations:output_type -> query.orgstructure.v1.CountOrganizationsResponse
+	15, // 21: query.orgstructure.v1.OrgStructureQueryService.GetClinic:output_type -> query.orgstructure.v1.GetClinicResponse
+	17, // 22: query.orgstructure.v1.OrgStructureQueryService.ListClinicsByOrganization:output_type -> query.orgstructure.v1.ListClinicsByOrganizationResponse
+	19, // 23: query.orgstructure.v1.OrgStructureQueryService.CountClinicsByOrganization:output_type -> query.orgstructure.v1.CountClinicsByOrganizationResponse
+	21, // 24: query.orgstructure.v1.OrgStructureQueryService.GetDepartment:output_type -> query.orgstructure.v1.GetDepartmentResponse
+	23, // 25: query.orgstructure.v1.OrgStructureQueryService.ListDepartmentsByClinic:output_type -> query.orgstructure.v1.ListDepartmentsByClinicResponse
+	25, // 26: query.orgstructure.v1.OrgStructureQueryService.CountDepartmentsByClinic:output_type -> query.orgstructure.v1.CountDepartmentsByClinicResponse
+	18, // [18:27] is the sub-list for method output_type
+	9,  // [9:18] is the sub-list for method input_type
 	9,  // [9:9] is the sub-list for extension type_name
 	9,  // [9:9] is the sub-list for extension extendee
 	0,  // [0:9] is the sub-list for field type_name
@@ -1400,7 +1594,7 @@ func file_query_orgstructure_v1_orgstructure_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_orgstructure_v1_orgstructure_proto_rawDesc), len(file_query_orgstructure_v1_orgstructure_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   26,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
