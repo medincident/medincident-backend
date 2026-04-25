@@ -1642,7 +1642,7 @@ func RegisterMembershipCommandServiceHandlerServer(ctx context.Context, mux *run
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/command.membership.v1.MembershipCommandService/StartVacationNow", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/current-vacation"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/command.membership.v1.MembershipCommandService/StartVacationNow", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/vacations:start-now"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2288,7 +2288,7 @@ func RegisterMembershipCommandServiceHandlerClient(ctx context.Context, mux *run
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/command.membership.v1.MembershipCommandService/StartVacationNow", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/current-vacation"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/command.membership.v1.MembershipCommandService/StartVacationNow", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/vacations:start-now"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -2751,7 +2751,7 @@ var (
 	pattern_MembershipCommandService_UpdateEmployeePosition_0             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "position"}, ""))
 	pattern_MembershipCommandService_UpdateEmployeeDepartment_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "department"}, ""))
 	pattern_MembershipCommandService_TerminateEmployee_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "employees", "employee_id"}, ""))
-	pattern_MembershipCommandService_StartVacationNow_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "current-vacation"}, ""))
+	pattern_MembershipCommandService_StartVacationNow_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, "start-now"))
 	pattern_MembershipCommandService_ScheduleVacation_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, ""))
 	pattern_MembershipCommandService_UpdateVacationEndDate_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "vacations", "vacation_id", "end-date"}, ""))
 	pattern_MembershipCommandService_ForceEndVacation_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "vacations", "vacation_id", "terminations"}, ""))

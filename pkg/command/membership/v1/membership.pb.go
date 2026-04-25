@@ -2961,13 +2961,13 @@ const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\x18GrantSystemAdminResponse\"G\n" +
 	"\x18RevokeSystemAdminRequest\x12+\n" +
 	"\x0fzitadel_user_id\x18\x01 \x01(\tB\x03\xe0A\x02R\rzitadelUserId\"\x1b\n" +
-	"\x19RevokeSystemAdminResponse2\xa90\n" +
+	"\x19RevokeSystemAdminResponse2\xac0\n" +
 	"\x18MembershipCommandService\x12\x81\x01\n" +
 	"\fHireEmployee\x12*.command.membership.v1.HireEmployeeRequest\x1a+.command.membership.v1.HireEmployeeResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/employees\x12\xb6\x01\n" +
 	"\x16UpdateEmployeePosition\x124.command.membership.v1.UpdateEmployeePositionRequest\x1a5.command.membership.v1.UpdateEmployeePositionResponse\"/\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/employees/{employee_id}/position\x12\xbe\x01\n" +
 	"\x18UpdateEmployeeDepartment\x126.command.membership.v1.UpdateEmployeeDepartmentRequest\x1a7.command.membership.v1.UpdateEmployeeDepartmentResponse\"1\x82\xd3\xe4\x93\x02+:\x01*\x1a&/v1/employees/{employee_id}/department\x12\x9b\x01\n" +
-	"\x11TerminateEmployee\x12/.command.membership.v1.TerminateEmployeeRequest\x1a0.command.membership.v1.TerminateEmployeeResponse\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/employees/{employee_id}\x12\xac\x01\n" +
-	"\x10StartVacationNow\x12..command.membership.v1.StartVacationNowRequest\x1a/.command.membership.v1.StartVacationNowResponse\"7\x82\xd3\xe4\x93\x021:\x01*\",/v1/employees/{employee_id}/current-vacation\x12\xa5\x01\n" +
+	"\x11TerminateEmployee\x12/.command.membership.v1.TerminateEmployeeRequest\x1a0.command.membership.v1.TerminateEmployeeResponse\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/employees/{employee_id}\x12\xaf\x01\n" +
+	"\x10StartVacationNow\x12..command.membership.v1.StartVacationNowRequest\x1a/.command.membership.v1.StartVacationNowResponse\":\x82\xd3\xe4\x93\x024:\x01*\"//v1/employees/{employee_id}/vacations:start-now\x12\xa5\x01\n" +
 	"\x10ScheduleVacation\x12..command.membership.v1.ScheduleVacationRequest\x1a/.command.membership.v1.ScheduleVacationResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\"%/v1/employees/{employee_id}/vacations\x12\xb3\x01\n" +
 	"\x15UpdateVacationEndDate\x123.command.membership.v1.UpdateVacationEndDateRequest\x1a4.command.membership.v1.UpdateVacationEndDateResponse\"/\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/vacations/{vacation_id}/end-date\x12\xa5\x01\n" +
 	"\x10ForceEndVacation\x12..command.membership.v1.ForceEndVacationRequest\x1a/.command.membership.v1.ForceEndVacationResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/vacations/{vacation_id}/terminations\x12\xbb\x01\n" +
