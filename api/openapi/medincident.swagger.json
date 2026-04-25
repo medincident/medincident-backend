@@ -1042,45 +1042,6 @@
         ]
       }
     },
-    "/v1/employees/{employeeId}/current-vacation": {
-      "post": {
-        "summary": "Vacation lifecycle",
-        "operationId": "MembershipCommandService_StartVacationNow",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1StartVacationNowResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "employeeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/MembershipCommandServiceStartVacationNowBody"
-            }
-          }
-        ],
-        "tags": [
-          "MembershipCommandService"
-        ]
-      }
-    },
     "/v1/employees/{employeeId}/department": {
       "put": {
         "operationId": "MembershipCommandService_UpdateEmployeeDepartment",
@@ -1281,6 +1242,45 @@
         ]
       }
     },
+    "/v1/employees/{employeeId}/vacations:start-now": {
+      "post": {
+        "summary": "Vacation lifecycle",
+        "operationId": "MembershipCommandService_StartVacationNow",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1StartVacationNowResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MembershipCommandServiceStartVacationNowBody"
+            }
+          }
+        ],
+        "tags": [
+          "MembershipCommandService"
+        ]
+      }
+    },
     "/v1/employees/{id}": {
       "get": {
         "operationId": "MembershipQueryService_GetEmployee",
@@ -1409,44 +1409,6 @@
         ]
       }
     },
-    "/v1/incident-categories/{categoryId}/parent": {
-      "put": {
-        "operationId": "IncidentClassifierCommandService_MoveIncidentCategory",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1MoveIncidentCategoryResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "categoryId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentCategoryBody"
-            }
-          }
-        ],
-        "tags": [
-          "IncidentClassifierCommandService"
-        ]
-      }
-    },
     "/v1/incident-categories/{categoryId}/reactivations": {
       "post": {
         "operationId": "IncidentClassifierCommandService_ReactivateIncidentCategory",
@@ -1550,6 +1512,44 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/IncidentClassifierCommandServiceCreateIncidentTypeBody"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/incident-categories/{categoryId}:move": {
+      "post": {
+        "operationId": "IncidentClassifierCommandService_MoveIncidentCategory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1MoveIncidentCategoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentCategoryBody"
             }
           }
         ],
@@ -1678,44 +1678,6 @@
         ]
       }
     },
-    "/v1/incident-types/{typeId}/category": {
-      "put": {
-        "operationId": "IncidentClassifierCommandService_MoveIncidentType",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1MoveIncidentTypeResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "typeId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentTypeBody"
-            }
-          }
-        ],
-        "tags": [
-          "IncidentClassifierCommandService"
-        ]
-      }
-    },
     "/v1/incident-types/{typeId}/deactivations": {
       "post": {
         "operationId": "IncidentClassifierCommandService_DeactivateIncidentType",
@@ -1784,14 +1746,14 @@
         ]
       }
     },
-    "/v1/incident-types/{typeId}/patient-permission/allowances": {
-      "post": {
-        "operationId": "IncidentClassifierCommandService_AllowIncidentTypeForPatients",
+    "/v1/incident-types/{typeId}/patient-allowances": {
+      "delete": {
+        "operationId": "IncidentClassifierCommandService_DisallowIncidentTypeForPatients",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1AllowIncidentTypeForPatientsResponse"
+              "$ref": "#/definitions/v1DisallowIncidentTypeForPatientsResponse"
             }
           },
           "default": {
@@ -1812,16 +1774,14 @@
         "tags": [
           "IncidentClassifierCommandService"
         ]
-      }
-    },
-    "/v1/incident-types/{typeId}/patient-permission/disallowances": {
+      },
       "post": {
-        "operationId": "IncidentClassifierCommandService_DisallowIncidentTypeForPatients",
+        "operationId": "IncidentClassifierCommandService_AllowIncidentTypeForPatients",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1DisallowIncidentTypeForPatientsResponse"
+              "$ref": "#/definitions/v1AllowIncidentTypeForPatientsResponse"
             }
           },
           "default": {
@@ -1867,6 +1827,44 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/incident-types/{typeId}:move": {
+      "post": {
+        "operationId": "IncidentClassifierCommandService_MoveIncidentType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1MoveIncidentTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentClassifierCommandServiceMoveIncidentTypeBody"
+            }
           }
         ],
         "tags": [
