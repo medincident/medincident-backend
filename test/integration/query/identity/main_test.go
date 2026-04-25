@@ -19,21 +19,13 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
-
-	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
-// sysadminZitadelID is the Zitadel user ID of the system-admin seeded
-// by resetProjections. Identity reads that branch on SystemAdmin need
-// a real domain.system_admins row, not just a projection entry.
 const sysadminZitadelID = "sysadmin"
 
-var sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
-
 var (
-	testDB   *gorm.DB
-	authzSvc *authz.Authz
-	natsURL  string
+	testDB  *gorm.DB
+	natsURL string
 )
 
 func TestMain(m *testing.M) {
@@ -83,8 +75,6 @@ func TestMain(m *testing.M) {
 		fmt.Fprintf(os.Stderr, "failed to open gorm: %v\n", err)
 		os.Exit(1)
 	}
-
-	authzSvc = authz.New(testDB)
 
 	// The nats testcontainers module enables JetStream by default (-js
 	// flag is baked into the command line).
