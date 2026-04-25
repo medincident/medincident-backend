@@ -17,15 +17,21 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
+	incidenthandler "github.com/medincident/medincident-backend/internal/handler/command/incident"
+	bufferhandler "github.com/medincident/medincident-backend/internal/handler/command/incident/buffer"
 	classifierhandler "github.com/medincident/medincident-backend/internal/handler/command/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-backend/internal/handler/command/membership"
 	orghandler "github.com/medincident/medincident-backend/internal/handler/command/orgstructure"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
+	incidentsvc "github.com/medincident/medincident-backend/internal/service/command/incident"
+	buffersvc "github.com/medincident/medincident-backend/internal/service/command/incident/buffer"
 	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
 	membershipsvc "github.com/medincident/medincident-backend/internal/service/command/membership"
 	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
+	bufferv1 "github.com/medincident/medincident-backend/pkg/command/incident/buffer/v1"
 	incidentclassifierv1 "github.com/medincident/medincident-backend/pkg/command/incident/classifier/v1"
+	incidentv1 "github.com/medincident/medincident-backend/pkg/command/incident/v1"
 	membershipv1 "github.com/medincident/medincident-backend/pkg/command/membership/v1"
 	orgstructurev1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
 )
@@ -90,10 +96,14 @@ func main() {
 	empSvc := membershipsvc.NewEmployeeService(db, az, zitadelService, logger)
 	catSvc := classifiersvc.NewIncidentCategoryService(db, az, logger)
 	typSvc := classifiersvc.NewIncidentTypeService(db, az, logger)
+	incidentSvc := incidentsvc.NewIncidentService(db, az, logger)
+	bufferSvc := buffersvc.NewBufferService(db, az, logger)
 
 	orgStructureHandler := orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc)
 	membershipH := membershiphandler.NewMembershipHandler(empSvc)
 	classifierH := classifierhandler.NewIncidentClassifierHandler(catSvc, typSvc)
+	incidentH := incidenthandler.NewIncidentHandler(incidentSvc)
+	bufferH := bufferhandler.NewBufferHandler(bufferSvc)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
@@ -105,6 +115,8 @@ func main() {
 	orgstructurev1.RegisterOrgStructureCommandServiceServer(grpcServer, orgStructureHandler)
 	membershipv1.RegisterMembershipCommandServiceServer(grpcServer, membershipH)
 	incidentclassifierv1.RegisterIncidentClassifierCommandServiceServer(grpcServer, classifierH)
+	incidentv1.RegisterIncidentCommandServiceServer(grpcServer, incidentH)
+	bufferv1.RegisterIncidentBufferCommandServiceServer(grpcServer, bufferH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)
