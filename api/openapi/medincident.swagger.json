@@ -2870,6 +2870,78 @@
         ]
       }
     },
+    "/v1/query/organizations/{organizationId}/employees:search": {
+      "get": {
+        "operationId": "MembershipQueryService_SearchEmployeesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SearchEmployeesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "Fuzzy substring matched case-insensitively (ILIKE %query%) against\nfirst_name, last_name, display_name, and email. Trimmed at the\nhandler boundary; an empty query degenerates to the same behaviour\nas ListEmployeesByOrganization with the same filters. Maximum\nlength 256 characters; over-long inputs are rejected before the\nauthz round-trip.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
     "/v1/query/organizations/{organizationId}/heads": {
       "get": {
         "operationId": "MembershipQueryService_ListOrgHeads",
@@ -4773,6 +4845,18 @@
       "properties": {
         "vacationId": {
           "type": "string"
+        }
+      }
+    },
+    "v1SearchEmployeesByOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmployeeCardView"
+          }
         }
       }
     },

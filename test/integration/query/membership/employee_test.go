@@ -152,6 +152,65 @@ func TestEmployeeReader_EmployeeFilters(t *testing.T) {
 	require.Equal(t, int64(0), total)
 }
 
+// TestEmployeeReader_SearchByOrganization seeds three employees in the
+// same org with distinct display/email fields and asserts each of a
+// full-name, partial-substring, and email-fragment query returns the
+// expected row subset.
+func TestEmployeeReader_SearchByOrganization(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+	now := time.Now().UTC().Truncate(time.Second)
+	orgID, _, deptID := seedOrgClinicDept(t, ctx, now)
+
+	seedUser := func(zit, first, last, display, email string) {
+		require.NoError(t, testDB.WithContext(ctx).Exec(
+			`INSERT INTO projections.users (id, user_name, first_name, last_name, display_name, email, created_at, updated_at)
+			 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+			zit, zit, first, last, display, email, now, now,
+		).Error)
+	}
+	seedUser("zit-alice", "Alice", "Anders", "Alice Anders", "alice@example.org")
+	seedUser("zit-bob", "Bob", "Brown", "Bob Brown", "bob@hospital.test")
+	seedUser("zit-carol", "Carol", "Cooper", "Carol Cooper", "carol.cooper@clinic.test")
+
+	mkEmp := func(zit string) uuid.UUID {
+		id := uuid.Must(uuid.NewV7())
+		emp := &model.Employee{ID: id, ZitadelUserID: zit, OrganizationID: orgID, DepartmentID: deptID, CreatedAt: now, UpdatedAt: now}
+		require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+			return projector.EmployeeHired(tx, emp)
+		}))
+		return id
+	}
+	aliceID := mkEmp("zit-alice")
+	bobID := mkEmp("zit-bob")
+	carolID := mkEmp("zit-carol")
+
+	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
+	ids := func(list []memberread.EmployeeCardView) map[uuid.UUID]bool {
+		m := make(map[uuid.UUID]bool, len(list))
+		for _, v := range list {
+			m[v.EmployeeID] = true
+		}
+		return m
+	}
+
+	// Full-name match: "Alice Anders" → one result.
+	r, err := reader.SearchByOrganization(ctx, sysadminCaller, orgID, "Alice Anders", memberread.ListQuery{}, memberread.EmployeeFilter{})
+	require.NoError(t, err)
+	require.Equal(t, map[uuid.UUID]bool{aliceID: true}, ids(r))
+
+	// Partial substring "er" matches Anders and Cooper (last names).
+	r, err = reader.SearchByOrganization(ctx, sysadminCaller, orgID, "er", memberread.ListQuery{}, memberread.EmployeeFilter{})
+	require.NoError(t, err)
+	require.Equal(t, map[uuid.UUID]bool{aliceID: true, carolID: true}, ids(r))
+
+	// Email fragment "hospital" matches only Bob.
+	r, err = reader.SearchByOrganization(ctx, sysadminCaller, orgID, "hospital", memberread.ListQuery{}, memberread.EmployeeFilter{})
+	require.NoError(t, err)
+	require.Equal(t, map[uuid.UUID]bool{bobID: true}, ids(r))
+}
+
 // TestEmployeeReader_ListVacationsByEmployee verifies scheduled
 // vacations are visible + the state filter works.
 func TestEmployeeReader_ListVacationsByEmployee(t *testing.T) {

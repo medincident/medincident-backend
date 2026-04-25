@@ -14,12 +14,18 @@ import (
 
 // Error codes emitted by EmployeeReader.
 const (
-	ErrCodeEmployeeNotFound    = "employee_card_not_found"
-	ErrCodeEmployeeLoadFailed  = "employee_card_load_failed"
-	ErrCodeEmployeeCountFailed = "employee_card_count_failed"
-	ErrCodeVacationLoadFailed  = "vacation_load_failed"
-	ErrCodeVacationCountFailed = "vacation_count_failed"
+	ErrCodeEmployeeNotFound           = "employee_card_not_found"
+	ErrCodeEmployeeLoadFailed         = "employee_card_load_failed"
+	ErrCodeEmployeeCountFailed        = "employee_card_count_failed"
+	ErrCodeEmployeeSearchQueryTooLong = "employee_search_query_too_long"
+	ErrCodeVacationLoadFailed         = "vacation_load_failed"
+	ErrCodeVacationCountFailed        = "vacation_count_failed"
 )
+
+// employeeSearchMaxQueryLength caps the user-supplied query for
+// SearchByOrganization. Over-long inputs are rejected before any
+// authz round-trip.
+const employeeSearchMaxQueryLength = 256
 
 // EmployeeCardView mirrors projections.employee_cards. Optional columns
 // are represented as *T so the downstream proto layer can omit them
@@ -226,6 +232,82 @@ func (r *EmployeeReader) ListByOrganization(
 		return nil, err
 	}
 	return r.listByField(ctx, "organization_id", orgID, q, filter)
+}
+
+// SearchByOrganization returns cards under an organization whose
+// first_name, last_name, display_name, or email contain the given
+// query substring (case-insensitive, ILIKE %query%). An empty query
+// behaves like ListByOrganization. The query is length-capped and
+// validated BEFORE the authz round-trip; authorization matches
+// ListByOrganization so that cross-org callers see the same
+// unauthorized behaviour for List and Search. Query is bound
+// positionally — never concatenated — so users cannot inject SQL.
+func (r *EmployeeReader) SearchByOrganization(
+	ctx context.Context,
+	caller authz.Caller,
+	orgID uuid.UUID,
+	query string,
+	q ListQuery,
+	filter EmployeeFilter,
+) ([]EmployeeCardView, error) {
+	if len(query) > employeeSearchMaxQueryLength {
+		return nil, oops.In("reader.membership.employee").
+			Code(ErrCodeEmployeeSearchQueryTooLong).
+			Public("Search query is too long.").
+			With("max_length", employeeSearchMaxQueryLength).
+			With("actual_length", len(query)).
+			Errorf("search query too long")
+	}
+	if err := q.normalize(); err != nil {
+		return nil, err
+	}
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+		return nil, err
+	}
+	filterClause, filterArgs := filter.buildFilterClause()
+	sqlBuf := selectEmployeeCard + ` WHERE organization_id = ?` + filterClause
+	args := make([]any, 0, 3+len(filterArgs)+4)
+	args = append(args, orgID)
+	args = append(args, filterArgs...)
+	if query != "" {
+		sqlBuf += ` AND (
+			COALESCE(first_name, '')   ILIKE ? OR
+			COALESCE(last_name, '')    ILIKE ? OR
+			COALESCE(display_name, '') ILIKE ? OR
+			COALESCE(email, '')        ILIKE ?
+		)`
+		pattern := "%" + query + "%"
+		args = append(args, pattern, pattern, pattern, pattern)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC
+		LIMIT ? OFFSET ?`
+	args = append(args, q.Limit, q.Offset)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
+	if err != nil {
+		return nil, oops.In("reader.membership.employee").
+			Code(ErrCodeEmployeeLoadFailed).
+			With("organization_id", orgID).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]EmployeeCardView, 0, q.Limit)
+	for rows.Next() {
+		var v EmployeeCardView
+		if err := scanEmployeeCard(rows, &v); err != nil {
+			return nil, oops.In("reader.membership.employee").
+				Code(ErrCodeEmployeeLoadFailed).
+				With("organization_id", orgID).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, oops.In("reader.membership.employee").
+			Code(ErrCodeEmployeeLoadFailed).
+			With("organization_id", orgID).
+			Wrap(err)
+	}
+	return out, nil
 }
 
 // countByField is shared by the three CountEmployeesByX methods.
