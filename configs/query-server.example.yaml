@@ -42,13 +42,14 @@ zerolog:
       time_format: "15:04:05"
       parts_order: ["time", "level", "caller", "message"]
 
-# NATS JetStream — only the Zitadel events stream is consumed by the
-# query-server identity projector. Stream provisioning is owned by ops;
-# query-server only attaches a durable consumer to an existing stream.
+# NATS JetStream — the query-server consumes Zitadel user events to
+# keep projections.users up-to-date and back-fill employee_cards.
+# Stream provisioning is owned by ops; query-server only attaches a
+# durable consumer to an existing stream.
 nats:
   url: "${NATS_URL}"                # e.g. nats://localhost:4222
   stream: "zitadel"
-  subjects: ["zitadel.>"]
+  subjects: ["zitadel.users.>"]
   durable_name: "medincident-query-server-zitadel"
 
 # Zitadel — used by the authn interceptor for JWT introspection on

@@ -2,39 +2,20 @@ package identity
 
 import (
 	"context"
-	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	sessionsv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/sessions/v1"
 	usersv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/users/v1"
 )
 
 // Error codes emitted by Projector methods.
 const (
-	ErrCodeUserAggregateIDEmpty      = "user_aggregate_id_empty"
-	ErrCodeUserProjectionFailed      = "user_projection_failed"
-	ErrCodeSessionAggregateIDEmpty   = "session_aggregate_id_empty"
-	ErrCodeSessionUserAgentEncodeErr = "session_user_agent_encode_failed"
-	ErrCodeSessionProjectionFailed   = "session_projection_failed"
+	ErrCodeUserAggregateIDEmpty = "user_aggregate_id_empty"
+	ErrCodeUserProjectionFailed = "user_projection_failed"
 )
-
-// emptyUserAgentJSON is the canonical empty object stored when a
-// session arrives without a user_agent payload.
-var emptyUserAgentJSON = []byte(`{}`)
-
-// userAgentJSON is the on-disk shape of a zitadel.sessions.v1.UserAgent
-// value. We transcode the proto message into a plain map before writing
-// so the storage format is independent of protojson quirks and
-// survives future proto additions without a DB migration.
-type userAgentJSON struct {
-	IP            string              `json:"ip"`
-	Headers       map[string][]string `json:"headers,omitempty"`
-	FingerprintID *string             `json:"fingerprint_id,omitempty"`
-	Description   *string             `json:"description,omitempty"`
-}
 
 // ApplyUserHumanAdded upserts a user projection and back-fills any
 // employee_cards already created for this Zitadel user id.
@@ -145,17 +126,20 @@ func (p *Projector) ApplyUserHumanProfileChanged(
 		return nil
 	}
 
-	query := "UPDATE projections.users SET "
+	var sb strings.Builder
+	sb.WriteString("UPDATE projections.users SET ")
 	args := make([]any, 0, len(sets)+1)
 	for i, s := range sets {
 		if i > 0 {
-			query += ", "
+			sb.WriteString(", ")
 		}
-		query += s.col + " = ?"
+		sb.WriteString(s.col)
+		sb.WriteString(" = ?")
 		args = append(args, s.val)
 	}
-	query += " WHERE id = ?"
+	sb.WriteString(" WHERE id = ?")
 	args = append(args, userID)
+	query := sb.String()
 
 	return p.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		res := tx.Exec(query, args...)
@@ -268,115 +252,4 @@ func (p *Projector) ApplyUserHumanEmailVerified(
 		p.logger.Debug().Str("user_id", userID).Msg("user email_verified before added; skipped")
 	}
 	return nil
-}
-
-// ApplySessionAdded upserts a fresh session row.
-func (p *Projector) ApplySessionAdded(
-	ctx context.Context,
-	sessionID string,
-	occurredAt time.Time,
-	event *sessionsv1.SessionAdded,
-) error {
-	if sessionID == "" {
-		return oops.In("projector.identity.session").
-			Code(ErrCodeSessionAggregateIDEmpty).
-			Errorf("session aggregate id empty")
-	}
-	agentBytes, err := encodeUserAgent(event.GetUserAgent())
-	if err != nil {
-		return oops.In("projector.identity.session").
-			Code(ErrCodeSessionUserAgentEncodeErr).
-			With("session_id", sessionID).
-			Wrap(err)
-	}
-	if err := p.db.WithContext(ctx).Exec(`
-		INSERT INTO projections.sessions
-		    (id, user_agent, created_at, updated_at)
-		VALUES (?, ?::jsonb, ?, ?)
-		ON CONFLICT (id) DO NOTHING`,
-		sessionID, string(agentBytes), occurredAt.UTC(), occurredAt.UTC(),
-	).Error; err != nil {
-		return oops.In("projector.identity.session").
-			Code(ErrCodeSessionProjectionFailed).
-			With("session_id", sessionID).
-			Wrap(err)
-	}
-	return nil
-}
-
-// ApplySessionUserChecked updates user_id / user_resource_owner /
-// preferred_language / checked_at on an existing session row. No-op
-// if the row is absent.
-func (p *Projector) ApplySessionUserChecked(
-	ctx context.Context,
-	sessionID string,
-	occurredAt time.Time,
-	event *sessionsv1.SessionUserChecked,
-) error {
-	if sessionID == "" {
-		return oops.In("projector.identity.session").
-			Code(ErrCodeSessionAggregateIDEmpty).
-			Errorf("session aggregate id empty")
-	}
-	var preferred *string
-	if pl := event.GetPreferredLanguage(); pl != "" {
-		v := pl
-		preferred = &v
-	}
-	var checkedAt *time.Time
-	if ts := event.GetCheckedAt(); ts != nil && ts.IsValid() {
-		v := ts.AsTime().UTC()
-		checkedAt = &v
-	}
-	res := p.db.WithContext(ctx).Exec(`
-		UPDATE projections.sessions
-		   SET user_id = ?, user_resource_owner = ?, preferred_language = ?, checked_at = ?,
-		       updated_at = ?
-		 WHERE id = ?`,
-		event.GetUserId(), event.GetUserResourceOwner(), preferred, checkedAt,
-		occurredAt.UTC(), sessionID,
-	)
-	if res.Error != nil {
-		return oops.In("projector.identity.session").
-			Code(ErrCodeSessionProjectionFailed).
-			With("session_id", sessionID).
-			Wrap(res.Error)
-	}
-	if res.RowsAffected == 0 {
-		// SessionAdded hasn't been projected yet. Unlike user_human_added
-		// (which upserts and therefore retro-fills on late arrival),
-		// SessionAdded is a straight UPDATE — if we lose this
-		// SessionUserChecked payload the session row never gets its
-		// user_id/checked_at columns. Log at WARN so this is visible in
-		// prod without forcing a retry loop here.
-		p.logger.Warn().
-			Str("session_id", sessionID).
-			Str("user_id", event.GetUserId()).
-			Msg("session user_checked arrived before session_added; fields will be missing until a follow-up event")
-	}
-	return nil
-}
-
-// encodeUserAgent marshals a proto UserAgent into the on-disk JSON
-// format used by projections.sessions.user_agent.
-func encodeUserAgent(ua *sessionsv1.UserAgent) ([]byte, error) {
-	if ua == nil {
-		return emptyUserAgentJSON, nil
-	}
-	wire := userAgentJSON{IP: ua.GetIp()}
-	if fid := ua.GetFingerprintId(); fid != "" {
-		v := fid
-		wire.FingerprintID = &v
-	}
-	if d := ua.GetDescription(); d != "" {
-		v := d
-		wire.Description = &v
-	}
-	if headers := ua.GetHeaders(); len(headers) > 0 {
-		wire.Headers = make(map[string][]string, len(headers))
-		for name, values := range headers {
-			wire.Headers[name] = append([]string(nil), values.GetValues()...)
-		}
-	}
-	return json.Marshal(wire)
 }

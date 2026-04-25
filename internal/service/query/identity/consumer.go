@@ -12,7 +12,6 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	zitadelv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/events/v1"
-	sessionsv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/sessions/v1"
 	usersv1 "github.com/medincident/medincident-zitadel-actions/gen/zitadel/users/v1"
 
 	"github.com/medincident/medincident-backend/internal/config"
@@ -25,8 +24,6 @@ const (
 	ZitadelEventUserHumanProfileChanged = "user.human.profile.changed"
 	ZitadelEventUserHumanEmailChanged   = "user.human.email.changed"
 	ZitadelEventUserHumanEmailVerified  = "user.human.email.verified"
-	ZitadelEventSessionAdded            = "session.added"
-	ZitadelEventSessionUserChecked      = "session.user.checked"
 )
 
 // Error codes emitted by consumer runtime paths. Malformed payloads
@@ -267,18 +264,6 @@ func (c *Consumer) dispatchZitadel(ctx context.Context, env *zitadelv1.Envelope)
 			return typeMismatch(eventType, msg)
 		}
 		return c.projector.ApplyUserHumanEmailChanged(ctx, aggregateID, occurredAt, ev)
-	case ZitadelEventSessionAdded:
-		ev, ok := msg.(*sessionsv1.SessionAdded)
-		if !ok {
-			return typeMismatch(eventType, msg)
-		}
-		return c.projector.ApplySessionAdded(ctx, aggregateID, occurredAt, ev)
-	case ZitadelEventSessionUserChecked:
-		ev, ok := msg.(*sessionsv1.SessionUserChecked)
-		if !ok {
-			return typeMismatch(eventType, msg)
-		}
-		return c.projector.ApplySessionUserChecked(ctx, aggregateID, occurredAt, ev)
 	default:
 		c.logger.Warn().
 			Str("event_type", eventType).

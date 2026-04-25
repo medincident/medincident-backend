@@ -40,9 +40,9 @@ server:
 #
 #   - command: three CQRS command services (orgstructure, membership,
 #     incident classifier). The gateway registers those three.
-#   - query: five CQRS query services (orgstructure, membership,
-#     incident classifier, stats, identity). The gateway registers those
-#     five.
+#   - query: four CQRS query services (orgstructure, membership,
+#     incident classifier, stats). The gateway registers those
+#     four.
 #
 # Routing between the two is not operator-configurable: it is fixed by
 # the proto package of each generated .pb.gw.go registrar.
