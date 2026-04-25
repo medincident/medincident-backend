@@ -702,12 +702,12 @@ const file_query_identity_v1_identity_proto_rawDesc = "" +
 	"\x11GetSessionRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"J\n" +
 	"\x12GetSessionResponse\x124\n" +
-	"\asession\x18\x01 \x01(\v2\x1a.query.identity.v1.SessionR\asession2\x8c\x03\n" +
-	"\x14IdentityQueryService\x12n\n" +
-	"\aGetUser\x12!.query.identity.v1.GetUserRequest\x1a\".query.identity.v1.GetUserResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/query/users/{id}\x12\x87\x01\n" +
-	"\x0eGetUserByEmail\x12(.query.identity.v1.GetUserByEmailRequest\x1a).query.identity.v1.GetUserByEmailResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/users:by-email\x12z\n" +
+	"\asession\x18\x01 \x01(\v2\x1a.query.identity.v1.SessionR\asession2\xfa\x02\n" +
+	"\x14IdentityQueryService\x12h\n" +
+	"\aGetUser\x12!.query.identity.v1.GetUserRequest\x1a\".query.identity.v1.GetUserResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/users/{id}\x12\x81\x01\n" +
+	"\x0eGetUserByEmail\x12(.query.identity.v1.GetUserByEmailRequest\x1a).query.identity.v1.GetUserByEmailResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/users:by-email\x12t\n" +
 	"\n" +
-	"GetSession\x12$.query.identity.v1.GetSessionRequest\x1a%.query.identity.v1.GetSessionResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/query/sessions/{id}B\xd9\x01\n" +
+	"GetSession\x12$.query.identity.v1.GetSessionRequest\x1a%.query.identity.v1.GetSessionResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/sessions/{id}B\xd9\x01\n" +
 	"\x15com.query.identity.v1B\rIdentityProtoP\x01ZKgithub.com/medincident/medincident-backend/pkg/query/identity/v1;identityv1\xa2\x02\x03QIX\xaa\x02\x11Query.Identity.V1\xca\x02\x11Query\\Identity\\V1\xe2\x02\x1dQuery\\Identity\\V1\\GPBMetadata\xea\x02\x13Query::Identity::V1b\x06proto3"
 
 var (

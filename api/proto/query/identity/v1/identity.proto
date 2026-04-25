@@ -9,13 +9,13 @@ import "google/api/annotations.proto";
 // Zitadel NATS consumer in query-server.
 service IdentityQueryService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {
-    option (google.api.http) = {get: "/v1/query/users/{id}"};
+    option (google.api.http) = {get: "/v1/users/{id}"};
   }
   rpc GetUserByEmail(GetUserByEmailRequest) returns (GetUserByEmailResponse) {
-    option (google.api.http) = {get: "/v1/query/users:by-email"};
+    option (google.api.http) = {get: "/v1/users:by-email"};
   }
   rpc GetSession(GetSessionRequest) returns (GetSessionResponse) {
-    option (google.api.http) = {get: "/v1/query/sessions/{id}"};
+    option (google.api.http) = {get: "/v1/sessions/{id}"};
   }
 }
 
