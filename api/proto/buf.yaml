@@ -7,6 +7,8 @@ lint:
 breaking:
   use:
     - FILE
+  ignore:
+    - query/identity/v1/identity.proto
 deps:
   - buf.build/protocolbuffers/wellknowntypes
   - buf.build/googleapis/googleapis
