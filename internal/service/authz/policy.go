@@ -88,6 +88,33 @@ func (bc *branchCtx) hasZeroScope() bool {
 }
 
 // ---------------------------------------------------------------------
+// Authenticated — scope-less "caller is logged in" policy
+// ---------------------------------------------------------------------
+
+type authenticatedPolicy struct{}
+
+// Authenticated authorizes any caller that reached the policy check —
+// the authn interceptor upstream rejects empty caller IDs, so
+// reaching Require with a non-empty caller ID is itself the proof.
+// The branch is a constant `SELECT 1` that returns a row regardless
+// of database state, so the composed EXISTS always evaluates true.
+//
+// Use for reads that must be gated by authentication but not by
+// membership — e.g. the patient-facing classifier endpoints, where
+// patients pick an organization to file an incident against without
+// being employees of it.
+var Authenticated Policy = authenticatedPolicy{}
+
+func (authenticatedPolicy) branches(_ *branchCtx) []string {
+	return []string{"SELECT 1"}
+}
+
+func (authenticatedPolicy) describe() string { return "an authenticated caller" }
+
+//nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
+func (authenticatedPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder { return b }
+
+// ---------------------------------------------------------------------
 // SystemAdmin — scope-less role
 // ---------------------------------------------------------------------
 
@@ -390,6 +417,22 @@ func (memberOfRole) Employee(id uuid.UUID) Policy {
 	}
 }
 
+func (memberOfRole) Category(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field:     "category_id",
+		id:        id,
+		clauseFmt: "JOIN domain.incident_categories ic ON ic.organization_id = e.organization_id WHERE ic.id = @%s",
+	}
+}
+
+func (memberOfRole) IncidentType(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field:     "type_id",
+		id:        id,
+		clauseFmt: "JOIN domain.incident_types it ON it.organization_id = e.organization_id WHERE it.id = @%s",
+	}
+}
+
 // ---------------------------------------------------------------------
 // SelfEmployee — caller IS the target employee
 // ---------------------------------------------------------------------
@@ -449,6 +492,14 @@ func (readerOfBattery) Employee(id uuid.UUID) Policy {
 	return AnyOf(SystemAdmin, OrgAdminOf.Employee(id), MemberOf.Employee(id))
 }
 
+func (readerOfBattery) Category(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Category(id), MemberOf.Category(id))
+}
+
+func (readerOfBattery) IncidentType(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.IncidentType(id), MemberOf.IncidentType(id))
+}
+
 // ---------------------------------------------------------------------
 // Require — entry point: renders policy to SQL, executes, shapes error
 // ---------------------------------------------------------------------
@@ -468,6 +519,21 @@ func (a *Authz) Require(ctx context.Context, callerID string, p Policy) error {
 			Code(ErrCodeAuthzCheckFailed).
 			With("caller_id", callerID).
 			Errorf("nil policy")
+	}
+	// Authenticated-only gate: the authn interceptor upstream rejects
+	// empty caller IDs, but Require is exported and can be called from
+	// tests or future code paths that skip the interceptor. Guard
+	// explicitly and short-circuit the DB round-trip — Authenticated
+	// never depends on a scope or row, so the EXISTS query would only
+	// add latency.
+	if _, ok := p.(authenticatedPolicy); ok {
+		if callerID == "" {
+			return oops.In("service.authz").
+				Code(ErrCodePermissionDenied).
+				Public("Access denied: requires an authenticated caller.").
+				Errorf("empty caller id for authenticated policy")
+		}
+		return nil
 	}
 	bc := &branchCtx{callerID: callerID}
 	branches := p.branches(bc)

@@ -123,7 +123,7 @@ func main() {
 	deptReader := orgread.NewDepartmentReader(db, az, logger)
 	empReader := membershipread.NewEmployeeReader(db, az, logger)
 	roleReader := membershipread.NewRoleReader(db, az, logger)
-	classReader := classifierread.NewReader(db, logger)
+	classReader := classifierread.NewReader(db, az, logger)
 	statsReader := statsread.NewReader(db, logger)
 	identReader := identityread.NewReader(db, logger)
 

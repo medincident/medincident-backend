@@ -63,19 +63,19 @@ func TestReader_Category_Get_And_Subtree(t *testing.T) {
 		return projector.CategoryCreated(tx, grand)
 	}))
 
-	reader := classifierread.NewReader(testDB, &logger)
-	got, err := reader.GetCategory(ctx, childID)
+	reader := classifierread.NewReader(testDB, authzSvc, &logger)
+	got, err := reader.GetCategory(ctx, sysadminCaller, childID)
 	require.NoError(t, err)
 	require.Equal(t, "Falls", got.Name)
 	require.NotNil(t, got.ParentCategoryID)
 	require.Equal(t, rootID, *got.ParentCategoryID)
 
-	roots, err := reader.ListActiveRootCategories(ctx, orgID)
+	roots, err := reader.ListActiveRootCategories(ctx, sysadminCaller, orgID)
 	require.NoError(t, err)
 	require.Len(t, roots, 1)
 	require.Equal(t, rootID, roots[0].ID)
 
-	subtree, err := reader.ListCategorySubtree(ctx, rootID)
+	subtree, err := reader.ListCategorySubtree(ctx, sysadminCaller, rootID)
 	require.NoError(t, err)
 	require.Len(t, subtree, 3)
 	// Ordered by created_at ASC.
@@ -113,19 +113,19 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 		return projector.TypeCreated(tx, typ)
 	}))
 
-	reader := classifierread.NewReader(testDB, &logger)
-	got, err := reader.GetType(ctx, typeID)
+	reader := classifierread.NewReader(testDB, authzSvc, &logger)
+	got, err := reader.GetType(ctx, sysadminCaller, typeID)
 	require.NoError(t, err)
 	require.Equal(t, "Fall from bed", got.Name)
 	// Newly-created types start with patient submission disabled.
 	require.False(t, got.IsAllowedForPatients)
 
-	active, err := reader.ListActiveTypesByOrganization(ctx, orgID)
+	active, err := reader.ListActiveTypesByOrganization(ctx, sysadminCaller, orgID)
 	require.NoError(t, err)
 	require.Len(t, active, 1)
 	require.Equal(t, typeID, active[0].ID)
 
-	byCat, err := reader.ListTypesByCategory(ctx, catID)
+	byCat, err := reader.ListTypesByCategory(ctx, sysadminCaller, catID)
 	require.NoError(t, err)
 	require.Len(t, byCat, 1)
 }
@@ -199,7 +199,7 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 		return nil
 	}))
 
-	reader := classifierread.NewReader(testDB, &logger)
+	reader := classifierread.NewReader(testDB, authzSvc, &logger)
 
 	// Patient-allowed types: only the active+allowed leaf under an active
 	// category chain. wouldAllowID is allowed but its parent category is
@@ -207,7 +207,7 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 	// on the type's own is_active AND is_allowed_for_patients, NOT on
 	// ancestor activity. The category-level filter (subtree visibility) is
 	// the consumer's choice. We assert this contract explicitly.
-	allowedTypes, err := reader.ListPatientAllowedTypesByOrganization(ctx, orgID)
+	allowedTypes, err := reader.ListPatientAllowedTypesByOrganization(ctx, sysadminCaller, orgID)
 	require.NoError(t, err)
 	allowedIDs := make(map[uuid.UUID]bool, len(allowedTypes))
 	for _, tp := range allowedTypes {
@@ -224,7 +224,7 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 	// wardFalls (direct allowed type). Archived is inactive → excluded.
 	// adminOnly has only non-allowed types → excluded. wouldAllow's parent
 	// (archived) is inactive, so wouldAllow does not contribute visibility.
-	visibleCats, err := reader.ListPatientVisibleCategoriesByOrganization(ctx, orgID)
+	visibleCats, err := reader.ListPatientVisibleCategoriesByOrganization(ctx, sysadminCaller, orgID)
 	require.NoError(t, err)
 	visibleIDs := make(map[uuid.UUID]bool, len(visibleCats))
 	for _, c := range visibleCats {
