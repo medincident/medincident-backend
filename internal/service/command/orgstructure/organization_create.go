@@ -30,7 +30,7 @@ const (
 // CreateOrganization. All fields are primitives so the transport layer
 // can hand raw proto values straight through.
 type CreateOrganizationPayload struct {
-	Name         string  `validate:"required,no_extra_ws,min=4,max=256"`
+	Name         string  `validate:"required,no_extra_ws,min=2,max=256"`
 	Description  *string `validate:"omitnil,no_extra_ws,min=8,max=2048"`
 	LegalAddress AddressInput
 }
