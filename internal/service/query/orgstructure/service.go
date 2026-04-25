@@ -25,14 +25,6 @@ import (
 	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
-// Bounds applied to List pagination. Readers reject inputs outside
-// these ranges with a domain error.
-const (
-	listMinLimit     = 1
-	listMaxLimit     = 500
-	listDefaultLimit = 50
-)
-
 // OrganizationReader exposes read methods for the Organization
 // projection. Organizations are public to any authenticated caller, so
 // this reader takes no *authz.Authz — authentication is enforced by

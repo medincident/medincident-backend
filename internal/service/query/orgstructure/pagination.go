@@ -1,6 +1,10 @@
 package orgstructure
 
-import "github.com/samber/oops"
+import (
+	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/service/query"
+)
 
 // Error codes emitted by pagination validators. Readers reuse the same
 // constants so callers can match on a single code no matter which list
@@ -30,17 +34,17 @@ func (q *ListQuery) normalize() error {
 			Errorf("offset out of range")
 	}
 	if q.Limit == 0 {
-		q.Limit = listDefaultLimit
+		q.Limit = query.DefaultLimit
 		return nil
 	}
-	if q.Limit < listMinLimit || q.Limit > listMaxLimit {
+	if q.Limit < query.MinLimit || q.Limit > query.MaxLimit {
 		return oops.In("reader.orgstructure").
 			Code(ErrCodeListLimitOutOfRange).
 			Public("List limit is out of range.").
 			With("field", "limit").
 			With("actual_value", q.Limit).
-			With("min_value", listMinLimit).
-			With("max_value", listMaxLimit).
+			With("min_value", query.MinLimit).
+			With("max_value", query.MaxLimit).
 			Errorf("limit out of range")
 	}
 	return nil
