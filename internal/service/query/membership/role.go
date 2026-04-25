@@ -22,12 +22,137 @@ const (
 // distinguish this from transport / DB failures.
 var ErrRoleVacant = errors.New("role vacant")
 
-// RoleHolderView represents a single role assignment (employee_id
-// plus optional deputy).
-type RoleHolderView struct {
-	EmployeeID       uuid.UUID
-	DeputyEmployeeID *uuid.UUID
+// RoleAssignmentView is a role row enriched with the denormalised
+// employee_cards row for the holder and, when present, the deputy.
+// The reader joins projections.employee_cards in the same round-trip
+// as the role table so downstream callers can render a role without
+// an N+1 GetEmployee follow-up.
+type RoleAssignmentView struct {
+	Holder EmployeeCardView
+	Deputy *EmployeeCardView
 }
+
+// employeeCardColumns returns the ordered SELECT list for one
+// employee_cards row, with every column qualified by the given table
+// alias. The column order matches scanEmployeeCard / scanEmployeeCardPtrs.
+func employeeCardColumns(alias string) string {
+	return alias + `.employee_id, ` + alias + `.zitadel_user_id, ` +
+		alias + `.first_name, ` + alias + `.last_name, ` +
+		alias + `.display_name, ` + alias + `.email, ` +
+		alias + `.organization_id, ` + alias + `.organization_name, ` +
+		alias + `.clinic_id, ` + alias + `.clinic_name, ` +
+		alias + `.department_id, ` + alias + `.department_name, ` +
+		alias + `.position, ` + alias + `.terminated_at, ` +
+		alias + `.current_vacation_ends_at, ` + alias + `.next_vacation_starts_at`
+}
+
+// deputyCardScan carries every column of the deputy's employee_cards
+// row through pointers so a LEFT JOIN that missed the deputy side
+// scans cleanly into nils rather than tripping a NULL-to-UUID error.
+// Non-nullable columns (employee_id, zitadel_user_id, organization_id,
+// department_id) become nil for a vacant deputy; when all are nil the
+// scanner returns a nil *EmployeeCardView.
+type deputyCardScan struct {
+	EmployeeID            *uuid.UUID
+	ZitadelUserID         *string
+	FirstName             *string
+	LastName              *string
+	DisplayName           *string
+	Email                 *string
+	OrganizationID        *uuid.UUID
+	OrganizationName      *string
+	ClinicID              *uuid.UUID
+	ClinicName            *string
+	DepartmentID          *uuid.UUID
+	DepartmentName        *string
+	Position              *string
+	TerminatedAt          *time.Time
+	CurrentVacationEndsAt *time.Time
+	NextVacationStartsAt  *time.Time
+}
+
+// scanTargets returns the pointer slice to pass into rows.Scan in the
+// same order as employeeCardColumns.
+func (d *deputyCardScan) scanTargets() []any {
+	return []any{
+		&d.EmployeeID, &d.ZitadelUserID,
+		&d.FirstName, &d.LastName, &d.DisplayName, &d.Email,
+		&d.OrganizationID, &d.OrganizationName,
+		&d.ClinicID, &d.ClinicName,
+		&d.DepartmentID, &d.DepartmentName,
+		&d.Position, &d.TerminatedAt,
+		&d.CurrentVacationEndsAt, &d.NextVacationStartsAt,
+	}
+}
+
+// toView materialises a full EmployeeCardView when the deputy was
+// present, or nil when the LEFT JOIN produced NULLs across the board.
+// Presence is keyed off the primary key (employee_id) — if it is set
+// the other NOT-NULL columns are guaranteed to be set too.
+func (d *deputyCardScan) toView() *EmployeeCardView {
+	if d.EmployeeID == nil {
+		return nil
+	}
+	out := &EmployeeCardView{
+		EmployeeID:            *d.EmployeeID,
+		FirstName:             d.FirstName,
+		LastName:              d.LastName,
+		DisplayName:           d.DisplayName,
+		Email:                 d.Email,
+		OrganizationName:      d.OrganizationName,
+		ClinicID:              d.ClinicID,
+		ClinicName:            d.ClinicName,
+		DepartmentName:        d.DepartmentName,
+		Position:              d.Position,
+		TerminatedAt:          d.TerminatedAt,
+		CurrentVacationEndsAt: d.CurrentVacationEndsAt,
+		NextVacationStartsAt:  d.NextVacationStartsAt,
+	}
+	if d.ZitadelUserID != nil {
+		out.ZitadelUserID = *d.ZitadelUserID
+	}
+	if d.OrganizationID != nil {
+		out.OrganizationID = *d.OrganizationID
+	}
+	if d.DepartmentID != nil {
+		out.DepartmentID = *d.DepartmentID
+	}
+	return out
+}
+
+// scanAssignment reads one joined row into Holder + (optional) Deputy.
+// Holder columns scan directly into the non-pointer view (INNER JOIN
+// guarantees presence); deputy columns scan via deputyCardScan so
+// NULL-on-LEFT-JOIN stays nil rather than erroring.
+func scanAssignment(scanner interface {
+	Scan(dest ...any) error
+}, out *RoleAssignmentView,
+) error {
+	var dep deputyCardScan
+	dests := make([]any, 0, 32)
+	dests = append(dests,
+		&out.Holder.EmployeeID, &out.Holder.ZitadelUserID,
+		&out.Holder.FirstName, &out.Holder.LastName, &out.Holder.DisplayName, &out.Holder.Email,
+		&out.Holder.OrganizationID, &out.Holder.OrganizationName,
+		&out.Holder.ClinicID, &out.Holder.ClinicName,
+		&out.Holder.DepartmentID, &out.Holder.DepartmentName,
+		&out.Holder.Position, &out.Holder.TerminatedAt,
+		&out.Holder.CurrentVacationEndsAt, &out.Holder.NextVacationStartsAt,
+	)
+	dests = append(dests, dep.scanTargets()...)
+	if err := scanner.Scan(dests...); err != nil {
+		return err
+	}
+	out.Deputy = dep.toView()
+	return nil
+}
+
+// selectRoleAssignment composes the SELECT list: every holder card
+// column followed by every deputy card column, in the same order
+// scanAssignment expects.
+var selectRoleAssignment = `
+	SELECT ` + employeeCardColumns("holder") + `,
+	       ` + employeeCardColumns("deputy")
 
 // GetClinicHead returns the clinic-head assignment for the clinic, or
 // ErrRoleVacant if none exists. Authorization: authz.ReaderOf.Clinic.
@@ -35,7 +160,7 @@ func (r *RoleReader) GetClinicHead(
 	ctx context.Context,
 	caller authz.Caller,
 	clinicID uuid.UUID,
-) (*RoleHolderView, error) {
+) (*RoleAssignmentView, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
 		return nil, err
 	}
@@ -49,7 +174,7 @@ func (r *RoleReader) GetDepartmentResponsible(
 	ctx context.Context,
 	caller authz.Caller,
 	departmentID uuid.UUID,
-) (*RoleHolderView, error) {
+) (*RoleAssignmentView, error) {
 	if err := r.authz.Require(
 		ctx, caller.ZitadelUserID, authz.ReaderOf.Department(departmentID),
 	); err != nil {
@@ -58,14 +183,14 @@ func (r *RoleReader) GetDepartmentResponsible(
 	return r.oneRoleByParent(ctx, "projections.department_responsibles", "department_id", departmentID)
 }
 
-// ListOrgAdmins returns all org-admin holders for the organization.
+// ListOrgAdmins returns all org-admin assignments for the organization.
 // Authorization: authz.ReaderOf.Organization.
 func (r *RoleReader) ListOrgAdmins(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]RoleHolderView, error) {
+) ([]RoleAssignmentView, error) {
 	if err := q.normalize(); err != nil {
 		return nil, err
 	}
@@ -75,14 +200,14 @@ func (r *RoleReader) ListOrgAdmins(
 	return r.listRolesByParent(ctx, "projections.org_admins", "organization_id", orgID, q)
 }
 
-// ListOrgDispatchers returns all org-dispatcher holders for the
+// ListOrgDispatchers returns all org-dispatcher assignments for the
 // organization. Authorization: authz.ReaderOf.Organization.
 func (r *RoleReader) ListOrgDispatchers(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]RoleHolderView, error) {
+) ([]RoleAssignmentView, error) {
 	if err := q.normalize(); err != nil {
 		return nil, err
 	}
@@ -92,14 +217,14 @@ func (r *RoleReader) ListOrgDispatchers(
 	return r.listRolesByParent(ctx, "projections.org_dispatchers", "organization_id", orgID, q)
 }
 
-// ListOrgHeads returns all org-head holders for the organization.
+// ListOrgHeads returns all org-head assignments for the organization.
 // Authorization: authz.ReaderOf.Organization.
 func (r *RoleReader) ListOrgHeads(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]RoleHolderView, error) {
+) ([]RoleAssignmentView, error) {
 	if err := q.normalize(); err != nil {
 		return nil, err
 	}
@@ -161,19 +286,28 @@ func (r *RoleReader) ListSystemAdmins(
 }
 
 // oneRoleByParent returns the first role row (by employee_id asc) for
-// a given parent aggregate, or nil when the role is vacant. Clinic
-// head and department responsible are schema-level one-employee-per-
-// parent but the PK permits multiple rows; taking the first by
-// employee_id keeps the read idempotent.
-func (r *RoleReader) oneRoleByParent(ctx context.Context, table, parentField string, parentID uuid.UUID) (*RoleHolderView, error) {
-	var v RoleHolderView
-	err := r.db.WithContext(ctx).Raw(
-		`SELECT employee_id, deputy_employee_id
-		   FROM `+table+`
-		  WHERE `+parentField+` = ?
-		  ORDER BY employee_id ASC
-		  LIMIT 1`, parentID,
-	).Row().Scan(&v.EmployeeID, &v.DeputyEmployeeID)
+// a given parent aggregate, or ErrRoleVacant when the role is vacant.
+// Clinic head and department responsible are schema-level
+// one-employee-per-parent but the PK permits multiple rows; taking the
+// first by employee_id keeps the read idempotent. The SELECT joins
+// projections.employee_cards (INNER for holder, LEFT for deputy) so
+// the full card view comes back in one round-trip.
+func (r *RoleReader) oneRoleByParent(ctx context.Context, table, parentField string, parentID uuid.UUID) (*RoleAssignmentView, error) {
+	var v RoleAssignmentView
+	err := scanAssignment(
+		r.db.WithContext(ctx).Raw(
+			selectRoleAssignment+`
+			   FROM `+table+` role
+			   JOIN projections.employee_cards holder
+			     ON holder.employee_id = role.employee_id
+			   LEFT JOIN projections.employee_cards deputy
+			     ON deputy.employee_id = role.deputy_employee_id
+			  WHERE role.`+parentField+` = ?
+			  ORDER BY role.employee_id ASC
+			  LIMIT 1`, parentID,
+		).Row(),
+		&v,
+	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrRoleVacant
@@ -190,12 +324,18 @@ func (r *RoleReader) oneRoleByParent(ctx context.Context, table, parentField str
 // listRolesByParent returns a paginated slice of role rows for a given
 // parent aggregate (used by org-level roles which legitimately can have
 // multiple holders). Callers must have already called q.normalize().
-func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField string, parentID uuid.UUID, q ListQuery) ([]RoleHolderView, error) {
+// The SELECT joins projections.employee_cards for holder (INNER) and
+// deputy (LEFT) so each returned view carries the full card.
+func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField string, parentID uuid.UUID, q ListQuery) ([]RoleAssignmentView, error) {
 	rows, err := r.db.WithContext(ctx).Raw(
-		`SELECT employee_id, deputy_employee_id
-		   FROM `+table+`
-		  WHERE `+parentField+` = ?
-		  ORDER BY employee_id ASC
+		selectRoleAssignment+`
+		   FROM `+table+` role
+		   JOIN projections.employee_cards holder
+		     ON holder.employee_id = role.employee_id
+		   LEFT JOIN projections.employee_cards deputy
+		     ON deputy.employee_id = role.deputy_employee_id
+		  WHERE role.`+parentField+` = ?
+		  ORDER BY role.employee_id ASC
 		  LIMIT ? OFFSET ?`, parentID, q.Limit, q.Offset,
 	).Rows()
 	if err != nil {
@@ -206,10 +346,10 @@ func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField s
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]RoleHolderView, 0, q.Limit)
+	out := make([]RoleAssignmentView, 0, q.Limit)
 	for rows.Next() {
-		var v RoleHolderView
-		if err := rows.Scan(&v.EmployeeID, &v.DeputyEmployeeID); err != nil {
+		var v RoleAssignmentView
+		if err := scanAssignment(rows, &v); err != nil {
 			return nil, oops.In("reader.membership.role").
 				Code(ErrCodeRoleLoadFailed).
 				With("table", table).

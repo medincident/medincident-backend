@@ -95,12 +95,13 @@ message VacationView {
   string updated_at = 7;
 }
 
-// RoleHolder represents a single role assignment. deputy_employee_id
-// stays empty when the holder has no deputy (or the row is itself a
-// deputy-less holder).
-message RoleHolder {
-  string employee_id = 1;
-  optional string deputy_employee_id = 2;
+// RoleAssignment is a role row enriched with the denormalised card for
+// the holder and, when present, the deputy. Read-model callers use
+// this so they do not need to follow role lookups with N+1 GetEmployee
+// calls to render a name or email.
+message RoleAssignment {
+  EmployeeCardView holder = 1;
+  optional EmployeeCardView deputy = 2;
 }
 
 // SystemAdminView is the system-admin role; system admins are rooted in
@@ -270,14 +271,14 @@ message GetClinicHeadRequest {
   string clinic_id = 1;
 }
 message GetClinicHeadResponse {
-  optional RoleHolder holder = 1;
+  optional RoleAssignment assignment = 1;
 }
 
 message GetDepartmentResponsibleRequest {
   string department_id = 1;
 }
 message GetDepartmentResponsibleResponse {
-  optional RoleHolder holder = 1;
+  optional RoleAssignment assignment = 1;
 }
 
 message ListOrgAdminsRequest {
@@ -286,7 +287,7 @@ message ListOrgAdminsRequest {
   int32 offset = 3;
 }
 message ListOrgAdminsResponse {
-  repeated RoleHolder items = 1;
+  repeated RoleAssignment items = 1;
 }
 
 message ListOrgDispatchersRequest {
@@ -295,7 +296,7 @@ message ListOrgDispatchersRequest {
   int32 offset = 3;
 }
 message ListOrgDispatchersResponse {
-  repeated RoleHolder items = 1;
+  repeated RoleAssignment items = 1;
 }
 
 message ListOrgHeadsRequest {
@@ -304,7 +305,7 @@ message ListOrgHeadsRequest {
   int32 offset = 3;
 }
 message ListOrgHeadsResponse {
-  repeated RoleHolder items = 1;
+  repeated RoleAssignment items = 1;
 }
 
 message ListSystemAdminsRequest {
