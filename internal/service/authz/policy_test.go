@@ -134,6 +134,59 @@ func TestRequire_ZeroScope_ReturnsAuthzCheckFailed(t *testing.T) {
 	assert.Equal(t, ErrCodeAuthzCheckFailed, oe.Code())
 }
 
+func TestMemberOf_Organization_SingleBranch(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := MemberOf.Organization(uuid.MustParse("55555555-5555-5555-5555-555555555555")).branches(bc)
+	require.Len(t, bs, 1)
+	assert.Contains(t, bs[0], "FROM domain.employees e")
+	assert.Contains(t, bs[0], "WHERE e.organization_id = @scope0")
+	assert.Contains(t, bs[0], "e.zitadel_user_id = @caller0")
+	// No deputy branch: membership is a static fact, not a delegated role.
+	assert.NotContains(t, bs[0], "employee_vacations")
+}
+
+func TestMemberOf_Clinic_WidensToOrganization(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := MemberOf.Clinic(uuid.MustParse("66666666-6666-6666-6666-666666666666")).branches(bc)
+	require.Len(t, bs, 1)
+	assert.Contains(t, bs[0], "JOIN domain.clinics c ON c.organization_id = e.organization_id")
+	assert.Contains(t, bs[0], "WHERE c.id = @scope0")
+}
+
+func TestMemberOf_Department_WidensToOrganization(t *testing.T) {
+	bc := &branchCtx{callerID: "bob"}
+	bs := MemberOf.Department(uuid.MustParse("77777777-7777-7777-7777-777777777777")).branches(bc)
+	require.Len(t, bs, 1)
+	assert.Contains(t, bs[0], "JOIN domain.clinics c ON c.organization_id = e.organization_id")
+	assert.Contains(t, bs[0], "JOIN domain.departments d ON d.clinic_id = c.id")
+	assert.Contains(t, bs[0], "WHERE d.id = @scope0")
+}
+
+func TestMemberOf_Describe(t *testing.T) {
+	id := uuid.New()
+	assert.Equal(t, "organization member", MemberOf.Organization(id).describe())
+	assert.Equal(t, "organization member", MemberOf.Clinic(id).describe())
+	assert.Equal(t, "organization member", MemberOf.Department(id).describe())
+}
+
+func TestReaderOf_Clinic_IsAnyOf_SystemAdmin_OrgAdmin_Member(t *testing.T) {
+	id := uuid.MustParse("88888888-8888-8888-8888-888888888888")
+	bc1 := &branchCtx{callerID: "x"}
+	bc2 := &branchCtx{callerID: "x"}
+
+	got := ReaderOf.Clinic(id).branches(bc1)
+	want := AnyOf(SystemAdmin, OrgAdminOf.Clinic(id), MemberOf.Clinic(id)).branches(bc2)
+
+	assert.Equal(t, want, got)
+}
+
+func TestReaderOf_Describe(t *testing.T) {
+	id := uuid.New()
+	assert.Equal(t,
+		"system administrator or organization administrator or organization member",
+		ReaderOf.Organization(id).describe())
+}
+
 func TestBranchCtx_HasZeroScope(t *testing.T) {
 	bc := &branchCtx{callerID: "x"}
 	bc.addCaller()

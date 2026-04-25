@@ -27,6 +27,7 @@ import (
 	orghandler "github.com/medincident/medincident-backend/internal/handler/query/orgstructure"
 	statshandler "github.com/medincident/medincident-backend/internal/handler/query/stats"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
 	membershipread "github.com/medincident/medincident-backend/internal/service/query/membership"
@@ -115,9 +116,11 @@ func main() {
 		logger.Fatal().Err(err).Msg("failed to build zitadel authorizer")
 	}
 
+	az := authz.New(db)
+
 	orgReader := orgread.NewOrganizationReader(db, logger)
-	clinReader := orgread.NewClinicReader(db, logger)
-	deptReader := orgread.NewDepartmentReader(db, logger)
+	clinReader := orgread.NewClinicReader(db, az, logger)
+	deptReader := orgread.NewDepartmentReader(db, az, logger)
 	empReader := membershipread.NewEmployeeReader(db, logger)
 	roleReader := membershipread.NewRoleReader(db, logger)
 	classReader := classifierread.NewReader(db, logger)

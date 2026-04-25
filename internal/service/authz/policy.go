@@ -304,6 +304,113 @@ func (adminOfBattery) IncidentType(id uuid.UUID) Policy {
 }
 
 // ---------------------------------------------------------------------
+// MemberOf — organization membership (any employee of the scope)
+// ---------------------------------------------------------------------
+
+type memberOfRole struct{}
+
+// MemberOf is the namespace returning "caller is an employee of the
+// organization that owns the supplied scope" policies. Scopes narrow
+// syntactically (Clinic, Department) but every check widens to the
+// containing organization at the SQL level, mirroring OrgAdminOf: both
+// "admin of clinic X" and "member of clinic X" mean the organization
+// owning clinic X. This matches the read model where any employee of
+// an organization can see the whole organization's catalog.
+//
+// Unlike OrgAdminOf, MemberOf has no deputy-during-vacation branch:
+// "member" is a static fact over domain.employees, not a role with
+// delegation.
+//
+// MemberOf is exported for test isolation; production reads should
+// prefer ReaderOf.X(id), which bundles SystemAdmin, OrgAdminOf.X(id),
+// and MemberOf.X(id) into one battery so the privilege ladder stays
+// visible at the call site.
+var MemberOf memberOfRole
+
+type memberOfPolicy struct {
+	field string
+	id    uuid.UUID
+	// clauseFmt is a SQL fragment that joins domain.employees `e` to
+	// the scope being checked and restricts it by the scope id. The
+	// fragment MUST be an optional JOIN chain followed by a WHERE
+	// clause on the scope placeholder — branches appends
+	// "AND e.zitadel_user_id = @caller..." so the fragment is required
+	// to end on a filter predicate rather than a plain join. Every
+	// constructor below follows that shape; break the convention and
+	// rendered SQL becomes invalid at runtime.
+	clauseFmt string // "(JOIN ...)* WHERE <scope>.id = @%s"
+}
+
+func (p memberOfPolicy) branches(bc *branchCtx) []string {
+	scope := bc.addScope(p.id)
+	caller := bc.addCaller()
+	clause := fmt.Sprintf(p.clauseFmt, scope)
+	return []string{fmt.Sprintf(`SELECT 1 FROM domain.employees e
+%s
+AND e.zitadel_user_id = @%s`, clause, caller)}
+}
+
+func (memberOfPolicy) describe() string { return "organization member" }
+
+//nolint:gocritic // hugeParam: mirrors oops.OopsErrorBuilder's value-chaining API.
+func (p memberOfPolicy) with(b oops.OopsErrorBuilder) oops.OopsErrorBuilder {
+	return b.With(p.field, p.id)
+}
+
+func (memberOfRole) Organization(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field:     "organization_id",
+		id:        id,
+		clauseFmt: "WHERE e.organization_id = @%s",
+	}
+}
+
+func (memberOfRole) Clinic(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field:     "clinic_id",
+		id:        id,
+		clauseFmt: "JOIN domain.clinics c ON c.organization_id = e.organization_id WHERE c.id = @%s",
+	}
+}
+
+func (memberOfRole) Department(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field: "department_id",
+		id:    id,
+		clauseFmt: "JOIN domain.clinics c ON c.organization_id = e.organization_id " +
+			"JOIN domain.departments d ON d.clinic_id = c.id WHERE d.id = @%s",
+	}
+}
+
+// ---------------------------------------------------------------------
+// ReaderOf — read-side battery: SystemAdmin OR OrgAdminOf.X OR MemberOf.X
+// ---------------------------------------------------------------------
+
+type readerOfBattery struct{}
+
+// ReaderOf packs the three-level read privilege — "system admin OR
+// organization admin OR organization member" — as one constructor per
+// scope. It is the standard policy for query-side handlers: any
+// employee of the owning organization may read catalog data, org
+// admins retain their write-path privilege, and system admins bypass
+// both. Scopes below the organization (Clinic, Department) narrow the
+// member check to the containing subtree while the admin/sysadmin
+// branches stay organization-wide via existing OrgAdminOf clauses.
+var ReaderOf readerOfBattery
+
+func (readerOfBattery) Organization(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Organization(id), MemberOf.Organization(id))
+}
+
+func (readerOfBattery) Clinic(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Clinic(id), MemberOf.Clinic(id))
+}
+
+func (readerOfBattery) Department(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.Department(id), MemberOf.Department(id))
+}
+
+// ---------------------------------------------------------------------
 // Require — entry point: renders policy to SQL, executes, shapes error
 // ---------------------------------------------------------------------
 

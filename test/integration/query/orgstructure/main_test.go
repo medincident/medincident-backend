@@ -16,11 +16,26 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
+
+// sysadminZitadelID is the Zitadel user ID of the system-admin seeded
+// by resetProjections. Scoped reads authorize against domain.* rows so
+// the query integration suite needs a real admin — not just projection
+// rows — to exercise ReaderOf batteries.
+const sysadminZitadelID = "sysadmin"
+
+// sysadminCaller is the authz.Caller every query test passes into
+// scoped reader methods so authz.SystemAdmin always succeeds.
+var sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
 
 // testDB is the package-shared *gorm.DB connected to the testcontainers
 // Postgres. Each test resets state via resetProjections.
-var testDB *gorm.DB
+var (
+	testDB   *gorm.DB
+	authzSvc *authz.Authz
+)
 
 func TestMain(m *testing.M) {
 	ctx := context.Background()
@@ -63,6 +78,8 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
+	authzSvc = authz.New(testDB)
+
 	os.Exit(m.Run())
 }
 
@@ -79,14 +96,25 @@ func runMigrations(dsn string) error {
 	return cmd.Run()
 }
 
-// resetProjections truncates every projections.* table between tests.
+// resetProjections truncates every projections.* table between tests
+// and re-seeds a system admin in domain.system_admins so scoped reader
+// tests can exercise the authz.ReaderOf battery via the SystemAdmin
+// branch. Domain tables are truncated too — scoped policies query
+// domain.* and cross-test rows would otherwise leak authorization.
 func resetProjections(t *testing.T) {
 	t.Helper()
 	raw, err := testDB.DB()
 	if err != nil {
 		t.Fatalf("get raw db: %v", err)
 	}
-	if _, err := raw.Exec(`TRUNCATE TABLE projections.organization_counters,
+	if _, err := raw.Exec(`TRUNCATE TABLE
+		domain.employee_vacations,
+		domain.employees,
+		domain.system_admins,
+		domain.departments,
+		domain.clinics,
+		domain.organizations,
+		projections.organization_counters,
 		projections.clinic_counters,
 		projections.department_counters,
 		projections.employee_cards,
@@ -105,6 +133,12 @@ func resetProjections(t *testing.T) {
 		projections.system_admins,
 		projections.incident_categories,
 		projections.incident_types CASCADE`); err != nil {
-		t.Fatalf("truncate projections: %v", err)
+		t.Fatalf("truncate domain and projections tables: %v", err)
+	}
+	if _, err := raw.Exec(
+		`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1)`,
+		sysadminZitadelID,
+	); err != nil {
+		t.Fatalf("seed sysadmin: %v", err)
 	}
 }

@@ -131,14 +131,14 @@ func TestClinicReader_Get_And_ListByOrganization(t *testing.T) {
 		return projector.ClinicCreated(tx, clinic)
 	}))
 
-	reader := orgread.NewClinicReader(testDB, &logger)
-	got, err := reader.Get(ctx, clinicID)
+	reader := orgread.NewClinicReader(testDB, authzSvc, &logger)
+	got, err := reader.Get(ctx, sysadminCaller, clinicID)
 	require.NoError(t, err)
 	require.Equal(t, clinicID, got.ID)
 	require.Equal(t, "Downtown Clinic", got.Name)
 	require.Equal(t, "1 City Plaza", got.PhysicalAddress.Text)
 
-	list, err := reader.ListByOrganization(ctx, orgID, orgread.ListQuery{})
+	list, err := reader.ListByOrganization(ctx, sysadminCaller, orgID, orgread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, list, 1)
 	require.Equal(t, clinicID, list[0].ID)
@@ -169,12 +169,12 @@ func TestDepartmentReader_Get_And_ListByClinic(t *testing.T) {
 		return projector.DepartmentCreated(tx, dept)
 	}))
 
-	reader := orgread.NewDepartmentReader(testDB, &logger)
-	got, err := reader.Get(ctx, deptID)
+	reader := orgread.NewDepartmentReader(testDB, authzSvc, &logger)
+	got, err := reader.Get(ctx, sysadminCaller, deptID)
 	require.NoError(t, err)
 	require.Equal(t, "Radiology", got.Name)
 
-	list, err := reader.ListByClinic(ctx, clinicID, orgread.ListQuery{})
+	list, err := reader.ListByClinic(ctx, sysadminCaller, clinicID, orgread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, list, 1)
 }
