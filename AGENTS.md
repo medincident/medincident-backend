@@ -200,6 +200,37 @@ test/integration/orgstructure/           — testcontainers-backed integration s
 configs/                                 — command-server.example.yaml + query-server.example.yaml + gateway-server.example.yaml
 ```
 
+## Authorization model
+
+Query-side readers are split by visibility:
+
+- **`OrganizationReader`** — intentionally takes **no `*authz.Authz`
+  parameter**. Organizations form a shared, public catalog: any
+  authenticated caller (JWT present, signature valid) may list and
+  fetch them. Authentication is still required — it is enforced by the
+  gRPC interceptor chain upstream — but no further role check is
+  performed inside the reader.
+
+- **`ClinicReader`** and **`DepartmentReader`** — both require an
+  `*authz.Authz` instance. Every method calls
+  `authz.ReaderOf.X(scopeID)` before touching the database. Callers
+  outside the authorized set receive `permission_denied` with no
+  distinction between "scope does not exist" and "you are not
+  authorized" (see `internal/service/authz/` for rationale).
+
+- **`EmployeeReader`** and **`RoleReader`** — scope-checked through
+  `authz.ReaderOf.Employee` / `authz.ReaderOf.X` respectively.
+  Vacation history uses a stricter inline policy (`SystemAdmin +
+  OrgAdminOf.Employee + SelfEmployee`).
+
+> **Breaking-change warning:** if private or draft organizations are
+> ever introduced, `OrganizationReader` **must** be retrofitted with
+> an `*authz.Authz` dependency. This is a cross-cutting change: the
+> constructor signature, every call site in `cmd/query-server/main.go`,
+> and every method body that currently skips the authz check all need
+> updating. Treat it as a planned breaking architectural change, not
+> an incremental patch.
+
 ## Ports
 
 All three binaries default to `:8080` inside their process / container:
