@@ -233,6 +233,8 @@ func local_request_MembershipQueryService_ListEmployeesByOrganization_0(ctx cont
 	return msg, metadata, err
 }
 
+var filter_MembershipQueryService_CountEmployeesByDepartment_0 = &utilities.DoubleArray{Encoding: map[string]int{"department_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
 func request_MembershipQueryService_CountEmployeesByDepartment_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq CountEmployeesByDepartmentRequest
@@ -249,6 +251,12 @@ func request_MembershipQueryService_CountEmployeesByDepartment_0(ctx context.Con
 	protoReq.DepartmentId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "department_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_CountEmployeesByDepartment_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.CountEmployeesByDepartment(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -268,9 +276,17 @@ func local_request_MembershipQueryService_CountEmployeesByDepartment_0(ctx conte
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "department_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_CountEmployeesByDepartment_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.CountEmployeesByDepartment(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_MembershipQueryService_CountEmployeesByClinic_0 = &utilities.DoubleArray{Encoding: map[string]int{"clinic_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_MembershipQueryService_CountEmployeesByClinic_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -288,6 +304,12 @@ func request_MembershipQueryService_CountEmployeesByClinic_0(ctx context.Context
 	protoReq.ClinicId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "clinic_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_CountEmployeesByClinic_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.CountEmployeesByClinic(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -307,9 +329,17 @@ func local_request_MembershipQueryService_CountEmployeesByClinic_0(ctx context.C
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "clinic_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_CountEmployeesByClinic_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := server.CountEmployeesByClinic(ctx, &protoReq)
 	return msg, metadata, err
 }
+
+var filter_MembershipQueryService_CountEmployeesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_MembershipQueryService_CountEmployeesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
@@ -328,6 +358,12 @@ func request_MembershipQueryService_CountEmployeesByOrganization_0(ctx context.C
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
 	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_CountEmployeesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
 	msg, err := client.CountEmployeesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -345,6 +381,12 @@ func local_request_MembershipQueryService_CountEmployeesByOrganization_0(ctx con
 	protoReq.OrganizationId, err = runtime.String(val)
 	if err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_CountEmployeesByOrganization_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.CountEmployeesByOrganization(ctx, &protoReq)
 	return msg, metadata, err

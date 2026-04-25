@@ -118,6 +118,15 @@ message ListEmployeesByDepartmentRequest {
   string department_id = 1;
   int32 limit = 2;
   int32 offset = 3;
+  // When false (default), rows with terminated_at IS NOT NULL are
+  // hidden. Set true to include offboarded employees.
+  bool include_terminated = 4;
+  // When true, restrict to employees currently on an active vacation
+  // (current_vacation_ends_at IS NOT NULL AND > now()).
+  bool on_vacation = 5;
+  // Optional exact-match filter on employee_cards.position. Trimmed
+  // before comparison; all-whitespace is treated as unset.
+  optional string position = 6;
 }
 message ListEmployeesByDepartmentResponse {
   repeated EmployeeCardView items = 1;
@@ -127,6 +136,15 @@ message ListEmployeesByClinicRequest {
   string clinic_id = 1;
   int32 limit = 2;
   int32 offset = 3;
+  // When false (default), rows with terminated_at IS NOT NULL are
+  // hidden. Set true to include offboarded employees.
+  bool include_terminated = 4;
+  // When true, restrict to employees currently on an active vacation
+  // (current_vacation_ends_at IS NOT NULL AND > now()).
+  bool on_vacation = 5;
+  // Optional exact-match filter on employee_cards.position. Trimmed
+  // before comparison; all-whitespace is treated as unset.
+  optional string position = 6;
 }
 message ListEmployeesByClinicResponse {
   repeated EmployeeCardView items = 1;
@@ -136,6 +154,15 @@ message ListEmployeesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
   int32 offset = 3;
+  // When false (default), rows with terminated_at IS NOT NULL are
+  // hidden. Set true to include offboarded employees.
+  bool include_terminated = 4;
+  // When true, restrict to employees currently on an active vacation
+  // (current_vacation_ends_at IS NOT NULL AND > now()).
+  bool on_vacation = 5;
+  // Optional exact-match filter on employee_cards.position. Trimmed
+  // before comparison; all-whitespace is treated as unset.
+  optional string position = 6;
 }
 message ListEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;
@@ -143,6 +170,15 @@ message ListEmployeesByOrganizationResponse {
 
 message CountEmployeesByDepartmentRequest {
   string department_id = 1;
+  // When false (default), rows with terminated_at IS NOT NULL are
+  // hidden. Set true to include offboarded employees.
+  bool include_terminated = 2;
+  // When true, restrict to employees currently on an active vacation
+  // (current_vacation_ends_at IS NOT NULL AND > now()).
+  bool on_vacation = 3;
+  // Optional exact-match filter on employee_cards.position. Trimmed
+  // before comparison; all-whitespace is treated as unset.
+  optional string position = 4;
 }
 message CountEmployeesByDepartmentResponse {
   int64 total = 1;
@@ -150,6 +186,15 @@ message CountEmployeesByDepartmentResponse {
 
 message CountEmployeesByClinicRequest {
   string clinic_id = 1;
+  // When false (default), rows with terminated_at IS NOT NULL are
+  // hidden. Set true to include offboarded employees.
+  bool include_terminated = 2;
+  // When true, restrict to employees currently on an active vacation
+  // (current_vacation_ends_at IS NOT NULL AND > now()).
+  bool on_vacation = 3;
+  // Optional exact-match filter on employee_cards.position. Trimmed
+  // before comparison; all-whitespace is treated as unset.
+  optional string position = 4;
 }
 message CountEmployeesByClinicResponse {
   int64 total = 1;
@@ -157,6 +202,15 @@ message CountEmployeesByClinicResponse {
 
 message CountEmployeesByOrganizationRequest {
   string organization_id = 1;
+  // When false (default), rows with terminated_at IS NOT NULL are
+  // hidden. Set true to include offboarded employees.
+  bool include_terminated = 2;
+  // When true, restrict to employees currently on an active vacation
+  // (current_vacation_ends_at IS NOT NULL AND > now()).
+  bool on_vacation = 3;
+  // Optional exact-match filter on employee_cards.position. Trimmed
+  // before comparison; all-whitespace is treated as unset.
+  optional string position = 4;
 }
 message CountEmployeesByOrganizationResponse {
   int64 total = 1;

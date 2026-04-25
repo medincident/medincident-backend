@@ -1897,6 +1897,27 @@
             "required": false,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1926,6 +1947,27 @@
             "name": "clinicId",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
@@ -2061,6 +2103,27 @@
             "required": false,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -2090,6 +2153,27 @@
             "name": "departmentId",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
@@ -2707,6 +2791,27 @@
             "required": false,
             "type": "integer",
             "format": "int32"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -2736,6 +2841,27 @@
             "name": "organizationId",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "includeTerminated",
+            "description": "When false (default), rows with terminated_at IS NOT NULL are\nhidden. Set true to include offboarded employees.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "onVacation",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "position",
+            "description": "Optional exact-match filter on employee_cards.position. Trimmed\nbefore comparison; all-whitespace is treated as unset.",
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],

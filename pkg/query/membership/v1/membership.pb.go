@@ -482,10 +482,19 @@ func (x *GetEmployeeResponse) GetEmployee() *EmployeeCardView {
 }
 
 type ListEmployeesByDepartmentRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	DepartmentId  string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	DepartmentId string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
+	Limit        int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset       int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	// When false (default), rows with terminated_at IS NOT NULL are
+	// hidden. Set true to include offboarded employees.
+	IncludeTerminated bool `protobuf:"varint,4,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
+	// When true, restrict to employees currently on an active vacation
+	// (current_vacation_ends_at IS NOT NULL AND > now()).
+	OnVacation bool `protobuf:"varint,5,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
+	// Optional exact-match filter on employee_cards.position. Trimmed
+	// before comparison; all-whitespace is treated as unset.
+	Position      *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -541,6 +550,27 @@ func (x *ListEmployeesByDepartmentRequest) GetOffset() int32 {
 	return 0
 }
 
+func (x *ListEmployeesByDepartmentRequest) GetIncludeTerminated() bool {
+	if x != nil {
+		return x.IncludeTerminated
+	}
+	return false
+}
+
+func (x *ListEmployeesByDepartmentRequest) GetOnVacation() bool {
+	if x != nil {
+		return x.OnVacation
+	}
+	return false
+}
+
+func (x *ListEmployeesByDepartmentRequest) GetPosition() string {
+	if x != nil && x.Position != nil {
+		return *x.Position
+	}
+	return ""
+}
+
 type ListEmployeesByDepartmentResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -586,10 +616,19 @@ func (x *ListEmployeesByDepartmentResponse) GetItems() []*EmployeeCardView {
 }
 
 type ListEmployeesByClinicRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	Limit    int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset   int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	// When false (default), rows with terminated_at IS NOT NULL are
+	// hidden. Set true to include offboarded employees.
+	IncludeTerminated bool `protobuf:"varint,4,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
+	// When true, restrict to employees currently on an active vacation
+	// (current_vacation_ends_at IS NOT NULL AND > now()).
+	OnVacation bool `protobuf:"varint,5,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
+	// Optional exact-match filter on employee_cards.position. Trimmed
+	// before comparison; all-whitespace is treated as unset.
+	Position      *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -645,6 +684,27 @@ func (x *ListEmployeesByClinicRequest) GetOffset() int32 {
 	return 0
 }
 
+func (x *ListEmployeesByClinicRequest) GetIncludeTerminated() bool {
+	if x != nil {
+		return x.IncludeTerminated
+	}
+	return false
+}
+
+func (x *ListEmployeesByClinicRequest) GetOnVacation() bool {
+	if x != nil {
+		return x.OnVacation
+	}
+	return false
+}
+
+func (x *ListEmployeesByClinicRequest) GetPosition() string {
+	if x != nil && x.Position != nil {
+		return *x.Position
+	}
+	return ""
+}
+
 type ListEmployeesByClinicResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -694,8 +754,17 @@ type ListEmployeesByOrganizationRequest struct {
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// When false (default), rows with terminated_at IS NOT NULL are
+	// hidden. Set true to include offboarded employees.
+	IncludeTerminated bool `protobuf:"varint,4,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
+	// When true, restrict to employees currently on an active vacation
+	// (current_vacation_ends_at IS NOT NULL AND > now()).
+	OnVacation bool `protobuf:"varint,5,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
+	// Optional exact-match filter on employee_cards.position. Trimmed
+	// before comparison; all-whitespace is treated as unset.
+	Position      *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListEmployeesByOrganizationRequest) Reset() {
@@ -749,6 +818,27 @@ func (x *ListEmployeesByOrganizationRequest) GetOffset() int32 {
 	return 0
 }
 
+func (x *ListEmployeesByOrganizationRequest) GetIncludeTerminated() bool {
+	if x != nil {
+		return x.IncludeTerminated
+	}
+	return false
+}
+
+func (x *ListEmployeesByOrganizationRequest) GetOnVacation() bool {
+	if x != nil {
+		return x.OnVacation
+	}
+	return false
+}
+
+func (x *ListEmployeesByOrganizationRequest) GetPosition() string {
+	if x != nil && x.Position != nil {
+		return *x.Position
+	}
+	return ""
+}
+
 type ListEmployeesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -794,8 +884,17 @@ func (x *ListEmployeesByOrganizationResponse) GetItems() []*EmployeeCardView {
 }
 
 type CountEmployeesByDepartmentRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	DepartmentId  string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	DepartmentId string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
+	// When false (default), rows with terminated_at IS NOT NULL are
+	// hidden. Set true to include offboarded employees.
+	IncludeTerminated bool `protobuf:"varint,2,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
+	// When true, restrict to employees currently on an active vacation
+	// (current_vacation_ends_at IS NOT NULL AND > now()).
+	OnVacation bool `protobuf:"varint,3,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
+	// Optional exact-match filter on employee_cards.position. Trimmed
+	// before comparison; all-whitespace is treated as unset.
+	Position      *string `protobuf:"bytes,4,opt,name=position,proto3,oneof" json:"position,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -833,6 +932,27 @@ func (*CountEmployeesByDepartmentRequest) Descriptor() ([]byte, []int) {
 func (x *CountEmployeesByDepartmentRequest) GetDepartmentId() string {
 	if x != nil {
 		return x.DepartmentId
+	}
+	return ""
+}
+
+func (x *CountEmployeesByDepartmentRequest) GetIncludeTerminated() bool {
+	if x != nil {
+		return x.IncludeTerminated
+	}
+	return false
+}
+
+func (x *CountEmployeesByDepartmentRequest) GetOnVacation() bool {
+	if x != nil {
+		return x.OnVacation
+	}
+	return false
+}
+
+func (x *CountEmployeesByDepartmentRequest) GetPosition() string {
+	if x != nil && x.Position != nil {
+		return *x.Position
 	}
 	return ""
 }
@@ -882,8 +1002,17 @@ func (x *CountEmployeesByDepartmentResponse) GetTotal() int64 {
 }
 
 type CountEmployeesByClinicRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	// When false (default), rows with terminated_at IS NOT NULL are
+	// hidden. Set true to include offboarded employees.
+	IncludeTerminated bool `protobuf:"varint,2,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
+	// When true, restrict to employees currently on an active vacation
+	// (current_vacation_ends_at IS NOT NULL AND > now()).
+	OnVacation bool `protobuf:"varint,3,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
+	// Optional exact-match filter on employee_cards.position. Trimmed
+	// before comparison; all-whitespace is treated as unset.
+	Position      *string `protobuf:"bytes,4,opt,name=position,proto3,oneof" json:"position,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -921,6 +1050,27 @@ func (*CountEmployeesByClinicRequest) Descriptor() ([]byte, []int) {
 func (x *CountEmployeesByClinicRequest) GetClinicId() string {
 	if x != nil {
 		return x.ClinicId
+	}
+	return ""
+}
+
+func (x *CountEmployeesByClinicRequest) GetIncludeTerminated() bool {
+	if x != nil {
+		return x.IncludeTerminated
+	}
+	return false
+}
+
+func (x *CountEmployeesByClinicRequest) GetOnVacation() bool {
+	if x != nil {
+		return x.OnVacation
+	}
+	return false
+}
+
+func (x *CountEmployeesByClinicRequest) GetPosition() string {
+	if x != nil && x.Position != nil {
+		return *x.Position
 	}
 	return ""
 }
@@ -972,8 +1122,17 @@ func (x *CountEmployeesByClinicResponse) GetTotal() int64 {
 type CountEmployeesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// When false (default), rows with terminated_at IS NOT NULL are
+	// hidden. Set true to include offboarded employees.
+	IncludeTerminated bool `protobuf:"varint,2,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
+	// When true, restrict to employees currently on an active vacation
+	// (current_vacation_ends_at IS NOT NULL AND > now()).
+	OnVacation bool `protobuf:"varint,3,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
+	// Optional exact-match filter on employee_cards.position. Trimmed
+	// before comparison; all-whitespace is treated as unset.
+	Position      *string `protobuf:"bytes,4,opt,name=position,proto3,oneof" json:"position,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CountEmployeesByOrganizationRequest) Reset() {
@@ -1009,6 +1168,27 @@ func (*CountEmployeesByOrganizationRequest) Descriptor() ([]byte, []int) {
 func (x *CountEmployeesByOrganizationRequest) GetOrganizationId() string {
 	if x != nil {
 		return x.OrganizationId
+	}
+	return ""
+}
+
+func (x *CountEmployeesByOrganizationRequest) GetIncludeTerminated() bool {
+	if x != nil {
+		return x.IncludeTerminated
+	}
+	return false
+}
+
+func (x *CountEmployeesByOrganizationRequest) GetOnVacation() bool {
+	if x != nil {
+		return x.OnVacation
+	}
+	return false
+}
+
+func (x *CountEmployeesByOrganizationRequest) GetPosition() string {
+	if x != nil && x.Position != nil {
+		return *x.Position
 	}
 	return ""
 }
@@ -1920,35 +2100,65 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x12GetEmployeeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"X\n" +
 	"\x13GetEmployeeResponse\x12A\n" +
-	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"u\n" +
+	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"\xf3\x01\n" +
 	" ListEmployeesByDepartmentRequest\x12#\n" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"`\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\x12-\n" +
+	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
+	"\von_vacation\x18\x05 \x01(\bR\n" +
+	"onVacation\x12\x1f\n" +
+	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\t_position\"`\n" +
 	"!ListEmployeesByDepartmentResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"i\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"\xe7\x01\n" +
 	"\x1cListEmployeesByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"\\\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\x12-\n" +
+	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
+	"\von_vacation\x18\x05 \x01(\bR\n" +
+	"onVacation\x12\x1f\n" +
+	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\t_position\"\\\n" +
 	"\x1dListEmployeesByClinicResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"{\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"\xf9\x01\n" +
 	"\"ListEmployeesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"b\n" +
+	"\x06offset\x18\x03 \x01(\x05R\x06offset\x12-\n" +
+	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
+	"\von_vacation\x18\x05 \x01(\bR\n" +
+	"onVacation\x12\x1f\n" +
+	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\t_position\"b\n" +
 	"#ListEmployeesByOrganizationResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"H\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"\xc6\x01\n" +
 	"!CountEmployeesByDepartmentRequest\x12#\n" +
-	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\":\n" +
+	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\x12-\n" +
+	"\x12include_terminated\x18\x02 \x01(\bR\x11includeTerminated\x12\x1f\n" +
+	"\von_vacation\x18\x03 \x01(\bR\n" +
+	"onVacation\x12\x1f\n" +
+	"\bposition\x18\x04 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\t_position\":\n" +
 	"\"CountEmployeesByDepartmentResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total\"<\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\"\xba\x01\n" +
 	"\x1dCountEmployeesByClinicRequest\x12\x1b\n" +
-	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\"6\n" +
+	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x12-\n" +
+	"\x12include_terminated\x18\x02 \x01(\bR\x11includeTerminated\x12\x1f\n" +
+	"\von_vacation\x18\x03 \x01(\bR\n" +
+	"onVacation\x12\x1f\n" +
+	"\bposition\x18\x04 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\t_position\"6\n" +
 	"\x1eCountEmployeesByClinicResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total\"N\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\"\xcc\x01\n" +
 	"#CountEmployeesByOrganizationRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"<\n" +
+	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12-\n" +
+	"\x12include_terminated\x18\x02 \x01(\bR\x11includeTerminated\x12\x1f\n" +
+	"\von_vacation\x18\x03 \x01(\bR\n" +
+	"onVacation\x12\x1f\n" +
+	"\bposition\x18\x04 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\t_position\"<\n" +
 	"$CountEmployeesByOrganizationResponse\x12\x14\n" +
 	"\x05total\x18\x01 \x01(\x03R\x05total\"\x85\x01\n" +
 	"\x1eListVacationsByEmployeeRequest\x12\x1f\n" +
@@ -2122,6 +2332,12 @@ func file_query_membership_v1_membership_proto_init() {
 	file_query_membership_v1_membership_proto_msgTypes[0].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[1].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[2].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[6].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[8].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[10].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[12].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[14].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[16].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[23].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[25].OneofWrappers = []any{}
 	type x struct{}

@@ -2416,6 +2416,9 @@ CTEs in the reader; the RPC surface stays flat.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | clinic_id | [string](#string) |  |  |
+| include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
+| on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
+| position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
 
 
 
@@ -2446,6 +2449,9 @@ CTEs in the reader; the RPC surface stays flat.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | department_id | [string](#string) |  |  |
+| include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
+| on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
+| position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
 
 
 
@@ -2476,6 +2482,9 @@ CTEs in the reader; the RPC surface stays flat.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+| include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
+| on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
+| position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
 
 
 
@@ -2662,6 +2671,9 @@ when the backing column is NULL.
 | clinic_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | offset | [int32](#int32) |  |  |
+| include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
+| on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
+| position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
 
 
 
@@ -2694,6 +2706,9 @@ when the backing column is NULL.
 | department_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | offset | [int32](#int32) |  |  |
+| include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
+| on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
+| position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
 
 
 
@@ -2726,6 +2741,9 @@ when the backing column is NULL.
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | offset | [int32](#int32) |  |  |
+| include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
+| on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
+| position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
 
 
 

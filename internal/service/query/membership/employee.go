@@ -103,20 +103,58 @@ func (r *EmployeeReader) Get(
 	return &out, nil
 }
 
+// EmployeeFilter is the optional filter shared by every List / Count
+// over employee_cards. Zero value = no restriction beyond the scope.
+// IncludeTerminated=false (default) hides rows whose terminated_at is
+// set; OnVacation=true restricts to employees currently on an active
+// vacation; Position, when non-empty, is an exact match on the
+// employee_cards.position column (the handler layer is responsible for
+// trimming whitespace so the zero value here is "no filter").
+type EmployeeFilter struct {
+	IncludeTerminated bool
+	OnVacation        bool
+	Position          string
+}
+
+// buildFilterClause returns a SQL fragment starting with " AND ..."
+// (or the empty string when no filters apply) together with the
+// positional args to bind. Position is always bound as a parameter —
+// never concatenated — so an attacker cannot inject SQL through it.
+func (f EmployeeFilter) buildFilterClause() (clause string, args []any) {
+	args = make([]any, 0, 3)
+	if !f.IncludeTerminated {
+		clause += ` AND terminated_at IS NULL`
+	}
+	if f.OnVacation {
+		clause += ` AND current_vacation_ends_at IS NOT NULL AND current_vacation_ends_at > now()`
+	}
+	if f.Position != "" {
+		clause += ` AND position = ?`
+		args = append(args, f.Position)
+	}
+	return clause, args
+}
+
 // listByField is shared by the three ListEmployeesByX methods.
 func (r *EmployeeReader) listByField(
 	ctx context.Context,
 	field string,
 	value uuid.UUID,
 	q ListQuery,
+	filter EmployeeFilter,
 ) ([]EmployeeCardView, error) {
 	if err := q.normalize(); err != nil {
 		return nil, err
 	}
+	filterClause, filterArgs := filter.buildFilterClause()
+	args := make([]any, 0, 3+len(filterArgs))
+	args = append(args, value)
+	args = append(args, filterArgs...)
+	args = append(args, q.Limit, q.Offset)
 	rows, err := r.db.WithContext(ctx).Raw(selectEmployeeCard+
-		` WHERE `+field+` = ?
-		 ORDER BY updated_at DESC, employee_id DESC
-		 LIMIT ? OFFSET ?`, value, q.Limit, q.Offset,
+		` WHERE `+field+` = ?`+filterClause+
+		` ORDER BY updated_at DESC, employee_id DESC
+		 LIMIT ? OFFSET ?`, args...,
 	).Rows()
 	if err != nil {
 		return nil, oops.In("reader.membership.employee").
@@ -152,11 +190,12 @@ func (r *EmployeeReader) ListByDepartment(
 	caller authz.Caller,
 	deptID uuid.UUID,
 	q ListQuery,
+	filter EmployeeFilter,
 ) ([]EmployeeCardView, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(deptID)); err != nil {
 		return nil, err
 	}
-	return r.listByField(ctx, "department_id", deptID, q)
+	return r.listByField(ctx, "department_id", deptID, q, filter)
 }
 
 // ListByClinic returns cards under a clinic. Authorization:
@@ -166,11 +205,12 @@ func (r *EmployeeReader) ListByClinic(
 	caller authz.Caller,
 	clinicID uuid.UUID,
 	q ListQuery,
+	filter EmployeeFilter,
 ) ([]EmployeeCardView, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
 		return nil, err
 	}
-	return r.listByField(ctx, "clinic_id", clinicID, q)
+	return r.listByField(ctx, "clinic_id", clinicID, q, filter)
 }
 
 // ListByOrganization returns cards under an organization. Authorization:
@@ -180,11 +220,12 @@ func (r *EmployeeReader) ListByOrganization(
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
+	filter EmployeeFilter,
 ) ([]EmployeeCardView, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return nil, err
 	}
-	return r.listByField(ctx, "organization_id", orgID, q)
+	return r.listByField(ctx, "organization_id", orgID, q, filter)
 }
 
 // countByField is shared by the three CountEmployeesByX methods.
@@ -192,11 +233,16 @@ func (r *EmployeeReader) countByField(
 	ctx context.Context,
 	field string,
 	value uuid.UUID,
+	filter EmployeeFilter,
 ) (int64, error) {
+	filterClause, filterArgs := filter.buildFilterClause()
+	args := make([]any, 0, 1+len(filterArgs))
+	args = append(args, value)
+	args = append(args, filterArgs...)
 	var total int64
 	if err := r.db.WithContext(ctx).Raw(
-		`SELECT count(*) FROM projections.employee_cards WHERE `+field+` = ?`,
-		value,
+		`SELECT count(*) FROM projections.employee_cards WHERE `+field+` = ?`+filterClause,
+		args...,
 	).Row().Scan(&total); err != nil {
 		return 0, oops.In("reader.membership.employee").
 			Code(ErrCodeEmployeeCountFailed).
@@ -212,11 +258,12 @@ func (r *EmployeeReader) CountByDepartment(
 	ctx context.Context,
 	caller authz.Caller,
 	deptID uuid.UUID,
+	filter EmployeeFilter,
 ) (int64, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(deptID)); err != nil {
 		return 0, err
 	}
-	return r.countByField(ctx, "department_id", deptID)
+	return r.countByField(ctx, "department_id", deptID, filter)
 }
 
 // CountByClinic returns the total employees under a clinic.
@@ -225,11 +272,12 @@ func (r *EmployeeReader) CountByClinic(
 	ctx context.Context,
 	caller authz.Caller,
 	clinicID uuid.UUID,
+	filter EmployeeFilter,
 ) (int64, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
 		return 0, err
 	}
-	return r.countByField(ctx, "clinic_id", clinicID)
+	return r.countByField(ctx, "clinic_id", clinicID, filter)
 }
 
 // CountByOrganization returns the total employees under an organization.
@@ -238,11 +286,12 @@ func (r *EmployeeReader) CountByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	filter EmployeeFilter,
 ) (int64, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return 0, err
 	}
-	return r.countByField(ctx, "organization_id", orgID)
+	return r.countByField(ctx, "organization_id", orgID, filter)
 }
 
 // VacationView mirrors projections.employee_vacations.
