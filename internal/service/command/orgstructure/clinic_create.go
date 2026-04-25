@@ -25,7 +25,6 @@ const (
 	ErrCodeClinicLoadFailed           = "clinic_load_failed"
 	ErrCodeClinicNotFound             = "clinic_not_found"
 	ErrCodeClinicOrganizationNotFound = "clinic_organization_not_found"
-	ErrCodeClinicProjectionFailed     = "clinic_projection_failed"
 )
 
 // CreateClinicPayload is the validated client-facing payload of
@@ -106,10 +105,7 @@ func (s *ClinicService) Create(
 		}
 
 		if err := projector.ClinicCreated(tx, &clinic); err != nil {
-			return oops.In("services.orgstructure.clinic").
-				Code(ErrCodeClinicProjectionFailed).
-				With("clinic_id", id).
-				Wrap(err)
+			return err
 		}
 		result.ID = id
 		return nil

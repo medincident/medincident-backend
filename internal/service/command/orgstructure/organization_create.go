@@ -24,7 +24,6 @@ const (
 	ErrCodeOrganizationSaveFailed         = "organization_save_failed"
 	ErrCodeOrganizationLoadFailed         = "organization_load_failed"
 	ErrCodeOrganizationNotFound           = "organization_not_found"
-	ErrCodeOrganizationProjectionFailed   = "organization_projection_failed"
 )
 
 // CreateOrganizationPayload is the validated client-facing payload of
@@ -98,10 +97,7 @@ func (s *OrganizationService) Create(
 		}
 
 		if err := projector.OrganizationCreated(tx, &org); err != nil {
-			return oops.In("services.orgstructure.organization").
-				Code(ErrCodeOrganizationProjectionFailed).
-				With("organization_id", id).
-				Wrap(err)
+			return err
 		}
 		result.ID = id
 		return nil

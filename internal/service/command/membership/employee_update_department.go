@@ -110,10 +110,7 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 		}
 
 		if err := projector.EmployeeDepartmentChanged(tx, &emp); err != nil {
-			return oops.In(scopeEmployee).
-				Code(ErrCodeEmployeeProjectionFailed).
-				With("employee_id", emp.ID).
-				Wrap(err)
+			return err
 		}
 
 		// Rule 1: cause first — the department change is already

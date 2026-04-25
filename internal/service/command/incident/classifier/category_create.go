@@ -29,7 +29,6 @@ const (
 	ErrCodeIncidentCategoryParentInactive             = "incident_category_parent_inactive"
 	ErrCodeIncidentCategoryNameConflict               = "incident_category_name_conflict"
 	ErrCodeIncidentCategoryMaxDepthExceeded           = "incident_category_max_depth_exceeded"
-	ErrCodeIncidentCategoryProjectionFailed           = "incident_category_projection_failed"
 )
 
 // CreateIncidentCategoryPayload is the validated client-facing payload.
@@ -196,10 +195,7 @@ func (s *IncidentCategoryService) Create(
 		}
 
 		if err := projector.CategoryCreated(tx, &cat); err != nil {
-			return oops.In("services.incident.classifier.category").
-				Code(ErrCodeIncidentCategoryProjectionFailed).
-				With("incident_category_id", id).
-				Wrap(err)
+			return err
 		}
 		result.ID = id
 		return nil

@@ -15,11 +15,6 @@ import (
 	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
-const (
-	ErrCodeIncidentCategoryDeleteProjectionFailed = "incident_category_delete_projection_failed"
-	ErrCodeIncidentTypeDeleteProjectionFailed     = "incident_type_delete_projection_failed"
-)
-
 // DeleteIncidentCategoryPayload identifies the incident category to
 // delete along with its entire subtree.
 type DeleteIncidentCategoryPayload struct {
@@ -139,18 +134,12 @@ func (s *IncidentCategoryService) Delete(
 		// its descendants still exist on the read side.
 		for _, id := range typeIDs {
 			if err := projector.TypeDeleted(tx, id); err != nil {
-				return oops.In("services.incident.classifier.type").
-					Code(ErrCodeIncidentTypeDeleteProjectionFailed).
-					With("incident_type_id", id).
-					Wrap(err)
+				return err
 			}
 		}
 		for _, id := range categoryIDs {
 			if err := projector.CategoryDeleted(tx, id); err != nil {
-				return oops.In("services.incident.classifier.category").
-					Code(ErrCodeIncidentCategoryDeleteProjectionFailed).
-					With("incident_category_id", id).
-					Wrap(err)
+				return err
 			}
 		}
 

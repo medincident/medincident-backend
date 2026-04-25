@@ -24,7 +24,6 @@ const (
 	ErrCodeIncidentTypeCategoryNotFound   = "incident_type_category_not_found"
 	ErrCodeIncidentTypeCategoryInactive   = "incident_type_category_inactive"
 	ErrCodeIncidentTypeNameConflict       = "incident_type_name_conflict"
-	ErrCodeIncidentTypeProjectionFailed   = "incident_type_projection_failed"
 )
 
 // CreateIncidentTypePayload is the validated client-facing payload.
@@ -126,10 +125,7 @@ func (s *IncidentTypeService) Create(
 		}
 
 		if err := projector.TypeCreated(tx, &row); err != nil {
-			return oops.In("services.incident.classifier.type").
-				Code(ErrCodeIncidentTypeProjectionFailed).
-				With("incident_type_id", id).
-				Wrap(err)
+			return err
 		}
 		result.ID = id
 		return nil
