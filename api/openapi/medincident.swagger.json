@@ -1,12 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "command/incident/classifier/v1/incident_classifier.proto",
+    "title": "command/incident/buffer/v1/buffer.proto",
     "version": "version not set"
   },
   "tags": [
     {
+      "name": "IncidentBufferCommandService"
+    },
+    {
       "name": "IncidentClassifierCommandService"
+    },
+    {
+      "name": "IncidentCommandService"
     },
     {
       "name": "MembershipCommandService"
@@ -19,6 +25,9 @@
     },
     {
       "name": "IncidentClassifierQueryService"
+    },
+    {
+      "name": "IncidentQueryService"
     },
     {
       "name": "MembershipQueryService"
@@ -1142,6 +1151,212 @@
         ]
       }
     },
+    "/v1/incidents": {
+      "post": {
+        "operationId": "IncidentCommandService_CreateIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateIncidentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentCommandService"
+        ]
+      }
+    },
+    "/v1/incidents/{incidentId}/description": {
+      "put": {
+        "operationId": "IncidentCommandService_UpdateIncidentDescription",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateIncidentDescriptionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentCommandServiceUpdateIncidentDescriptionBody"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentCommandService"
+        ]
+      }
+    },
+    "/v1/incidents/{incidentId}/priority": {
+      "put": {
+        "operationId": "IncidentCommandService_UpdateIncidentPriority",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateIncidentPriorityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentCommandServiceUpdateIncidentPriorityBody"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentCommandService"
+        ]
+      }
+    },
+    "/v1/incidents/{incidentId}/status": {
+      "put": {
+        "operationId": "IncidentCommandService_UpdateIncidentStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateIncidentStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentCommandServiceUpdateIncidentStatusBody"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentCommandService"
+        ]
+      }
+    },
+    "/v1/incidents/{incidentId}:cancel": {
+      "post": {
+        "operationId": "IncidentCommandService_CancelIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CancelIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentCommandService"
+        ]
+      }
+    },
+    "/v1/incidents/{incidentId}:reopen": {
+      "post": {
+        "operationId": "IncidentCommandService_ReopenIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReopenIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentCommandService"
+        ]
+      }
+    },
     "/v1/organizations": {
       "post": {
         "operationId": "OrgStructureCommandService_CreateOrganization",
@@ -1783,6 +1998,174 @@
         ],
         "tags": [
           "OrgStructureCommandService"
+        ]
+      }
+    },
+    "/v1/patient-incidents": {
+      "post": {
+        "operationId": "IncidentBufferCommandService_SubmitPatientIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SubmitPatientIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1SubmitPatientIncidentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentBufferCommandService"
+        ]
+      }
+    },
+    "/v1/patient-incidents/{bufferId}": {
+      "put": {
+        "operationId": "IncidentBufferCommandService_UpdatePatientIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdatePatientIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "bufferId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentBufferCommandServiceUpdatePatientIncidentBody"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentBufferCommandService"
+        ]
+      }
+    },
+    "/v1/patient-incidents/{bufferId}:cancel": {
+      "post": {
+        "operationId": "IncidentBufferCommandService_CancelPatientIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CancelPatientIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "bufferId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentBufferCommandService"
+        ]
+      }
+    },
+    "/v1/patient-incidents/{bufferId}:publish": {
+      "post": {
+        "operationId": "IncidentBufferCommandService_PublishPatientIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PublishPatientIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "bufferId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IncidentBufferCommandServicePublishPatientIncidentBody"
+            }
+          }
+        ],
+        "tags": [
+          "IncidentBufferCommandService"
+        ]
+      }
+    },
+    "/v1/patient-incidents/{bufferId}:reject": {
+      "post": {
+        "operationId": "IncidentBufferCommandService_RejectPatientIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RejectPatientIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "bufferId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentBufferCommandService"
         ]
       }
     },
@@ -2524,6 +2907,104 @@
         ]
       }
     },
+    "/v1/query/incidents/{id}": {
+      "get": {
+        "operationId": "IncidentQueryService_GetIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentQueryService"
+        ]
+      }
+    },
+    "/v1/query/incidents/{incidentId}/history": {
+      "get": {
+        "operationId": "IncidentQueryService_GetIncidentHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetIncidentHistoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentQueryService"
+        ]
+      }
+    },
+    "/v1/query/incidents:mine": {
+      "get": {
+        "operationId": "IncidentQueryService_ListMyIncidents",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyIncidentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentQueryService"
+        ]
+      }
+    },
     "/v1/query/organizations": {
       "get": {
         "operationId": "OrgStructureQueryService_ListOrganizations",
@@ -3207,6 +3688,183 @@
         ]
       }
     },
+    "/v1/query/organizations/{organizationId}/incidents": {
+      "get": {
+        "operationId": "IncidentQueryService_ListIncidents",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListIncidentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "INCIDENT_STATUS_UNSPECIFIED",
+                "INCIDENT_STATUS_PENDING",
+                "INCIDENT_STATUS_IN_PROGRESS",
+                "INCIDENT_STATUS_DONE",
+                "INCIDENT_STATUS_REJECTED",
+                "INCIDENT_STATUS_CANCELLED"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "priorities",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "INCIDENT_PRIORITY_UNSPECIFIED",
+                "INCIDENT_PRIORITY_LOW",
+                "INCIDENT_PRIORITY_NORMAL",
+                "INCIDENT_PRIORITY_HIGH",
+                "INCIDENT_PRIORITY_CRITICAL"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "clinicId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "typeId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "occurredFrom",
+            "description": "RFC3339Nano",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "occurredTo",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentQueryService"
+        ]
+      }
+    },
+    "/v1/query/organizations/{organizationId}/patient-incidents": {
+      "get": {
+        "operationId": "IncidentQueryService_ListBufferEntries",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListBufferEntriesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BUFFER_STATUS_UNSPECIFIED",
+                "BUFFER_STATUS_PENDING",
+                "BUFFER_STATUS_PUBLISHED",
+                "BUFFER_STATUS_REJECTED",
+                "BUFFER_STATUS_CANCELLED"
+              ]
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentQueryService"
+        ]
+      }
+    },
     "/v1/query/organizations/{organizationId}/stats": {
       "get": {
         "operationId": "StatsQueryService_GetOrganizationStats",
@@ -3300,6 +3958,75 @@
         ],
         "tags": [
           "OrgStructureQueryService"
+        ]
+      }
+    },
+    "/v1/query/patient-incidents/{id}": {
+      "get": {
+        "summary": "Buffer reads.",
+        "operationId": "IncidentQueryService_GetBufferEntry",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetBufferEntryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "IncidentQueryService"
+        ]
+      }
+    },
+    "/v1/query/patient-incidents:mine": {
+      "get": {
+        "operationId": "IncidentQueryService_ListMyBufferEntries",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyBufferEntriesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "IncidentQueryService"
         ]
       }
     },
@@ -3594,6 +4321,41 @@
     }
   },
   "definitions": {
+    "IncidentBufferCommandServicePublishPatientIncidentBody": {
+      "type": "object",
+      "properties": {
+        "departmentId": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "title": "dispatcher's edited description"
+        }
+      }
+    },
+    "IncidentBufferCommandServiceUpdatePatientIncidentBody": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "occurredAt": {
+          "type": "string"
+        }
+      }
+    },
     "IncidentClassifierCommandServiceCreateIncidentCategoryBody": {
       "type": "object",
       "properties": {
@@ -3671,6 +4433,31 @@
       "required": [
         "name"
       ]
+    },
+    "IncidentCommandServiceUpdateIncidentDescriptionBody": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "IncidentCommandServiceUpdateIncidentPriorityBody": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "$ref": "#/definitions/commandIncidentV1IncidentPriority"
+        }
+      }
+    },
+    "IncidentCommandServiceUpdateIncidentStatusBody": {
+      "type": "object",
+      "properties": {
+        "newStatus": {
+          "$ref": "#/definitions/commandIncidentV1IncidentStatus"
+        }
+      },
+      "description": "UpdateIncidentStatus only handles forward transitions:\npending -\u003e in_progress, in_progress -\u003e done, in_progress -\u003e rejected.\nCancellation by registrar uses CancelIncident."
     },
     "MembershipCommandServiceAssignClinicHeadBody": {
       "type": "object",
@@ -3967,6 +4754,29 @@
       },
       "description": "Type mirrors projections.incident_types row."
     },
+    "commandIncidentV1IncidentPriority": {
+      "type": "string",
+      "enum": [
+        "INCIDENT_PRIORITY_UNSPECIFIED",
+        "INCIDENT_PRIORITY_LOW",
+        "INCIDENT_PRIORITY_NORMAL",
+        "INCIDENT_PRIORITY_HIGH",
+        "INCIDENT_PRIORITY_CRITICAL"
+      ],
+      "default": "INCIDENT_PRIORITY_UNSPECIFIED"
+    },
+    "commandIncidentV1IncidentStatus": {
+      "type": "string",
+      "enum": [
+        "INCIDENT_STATUS_UNSPECIFIED",
+        "INCIDENT_STATUS_PENDING",
+        "INCIDENT_STATUS_IN_PROGRESS",
+        "INCIDENT_STATUS_DONE",
+        "INCIDENT_STATUS_REJECTED",
+        "INCIDENT_STATUS_CANCELLED"
+      ],
+      "default": "INCIDENT_STATUS_UNSPECIFIED"
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -3975,6 +4785,29 @@
         }
       },
       "additionalProperties": {}
+    },
+    "queryIncidentV1IncidentPriority": {
+      "type": "string",
+      "enum": [
+        "INCIDENT_PRIORITY_UNSPECIFIED",
+        "INCIDENT_PRIORITY_LOW",
+        "INCIDENT_PRIORITY_NORMAL",
+        "INCIDENT_PRIORITY_HIGH",
+        "INCIDENT_PRIORITY_CRITICAL"
+      ],
+      "default": "INCIDENT_PRIORITY_UNSPECIFIED"
+    },
+    "queryIncidentV1IncidentStatus": {
+      "type": "string",
+      "enum": [
+        "INCIDENT_STATUS_UNSPECIFIED",
+        "INCIDENT_STATUS_PENDING",
+        "INCIDENT_STATUS_IN_PROGRESS",
+        "INCIDENT_STATUS_DONE",
+        "INCIDENT_STATUS_REJECTED",
+        "INCIDENT_STATUS_CANCELLED"
+      ],
+      "default": "INCIDENT_STATUS_UNSPECIFIED"
     },
     "rpcStatus": {
       "type": "object",
@@ -3992,6 +4825,17 @@
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "v1ActorView": {
+      "type": "object",
+      "properties": {
+        "employeeId": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
         }
       }
     },
@@ -4052,6 +4896,65 @@
       "type": "object"
     },
     "v1AssignOrganizationHeadResponse": {
+      "type": "object"
+    },
+    "v1BufferEntryView": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "organizationId": {
+          "type": "string"
+        },
+        "patientZitadelUserId": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "occurredAt": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/v1BufferStatus"
+        },
+        "publishedIncidentId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "patientStatus": {
+          "$ref": "#/definitions/v1PatientStatus",
+          "description": "Populated only for patient callers."
+        }
+      }
+    },
+    "v1BufferStatus": {
+      "type": "string",
+      "enum": [
+        "BUFFER_STATUS_UNSPECIFIED",
+        "BUFFER_STATUS_PENDING",
+        "BUFFER_STATUS_PUBLISHED",
+        "BUFFER_STATUS_REJECTED",
+        "BUFFER_STATUS_CANCELLED"
+      ],
+      "default": "BUFFER_STATUS_UNSPECIFIED"
+    },
+    "v1CancelIncidentResponse": {
+      "type": "object"
+    },
+    "v1CancelPatientIncidentResponse": {
       "type": "object"
     },
     "v1CancelScheduledVacationResponse": {
@@ -4239,6 +5142,35 @@
         }
       }
     },
+    "v1CreateIncidentRequest": {
+      "type": "object",
+      "properties": {
+        "departmentId": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "occurredAt": {
+          "type": "string",
+          "title": "RFC3339Nano"
+        }
+      }
+    },
+    "v1CreateIncidentResponse": {
+      "type": "object",
+      "properties": {
+        "incidentId": {
+          "type": "string"
+        }
+      }
+    },
     "v1CreateIncidentTypeResponse": {
       "type": "object",
       "properties": {
@@ -4406,6 +5338,14 @@
     "v1ForceEndVacationResponse": {
       "type": "object"
     },
+    "v1GetBufferEntryResponse": {
+      "type": "object",
+      "properties": {
+        "entry": {
+          "$ref": "#/definitions/v1BufferEntryView"
+        }
+      }
+    },
     "v1GetCategoryResponse": {
       "type": "object",
       "properties": {
@@ -4467,6 +5407,33 @@
       "properties": {
         "employee": {
           "$ref": "#/definitions/v1EmployeeCardView"
+        }
+      }
+    },
+    "v1GetIncidentHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "statusHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1StatusHistoryEntry"
+          }
+        },
+        "priorityHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PriorityHistoryEntry"
+          }
+        }
+      }
+    },
+    "v1GetIncidentResponse": {
+      "type": "object",
+      "properties": {
+        "incident": {
+          "$ref": "#/definitions/v1IncidentView"
         }
       }
     },
@@ -4558,6 +5525,67 @@
         }
       }
     },
+    "v1IncidentView": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "organizationId": {
+          "type": "string"
+        },
+        "clinicId": {
+          "type": "string"
+        },
+        "departmentId": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/definitions/queryIncidentV1IncidentStatus"
+        },
+        "priority": {
+          "$ref": "#/definitions/queryIncidentV1IncidentPriority"
+        },
+        "description": {
+          "type": "string"
+        },
+        "patientOriginalDescription": {
+          "type": "string"
+        },
+        "occurredAt": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        },
+        "registrar": {
+          "$ref": "#/definitions/v1RegistrarView"
+        },
+        "sourcePatientZitadelUserId": {
+          "type": "string"
+        },
+        "sourceBufferId": {
+          "type": "string"
+        },
+        "reopenedFromIncidentId": {
+          "type": "string"
+        },
+        "patientStatus": {
+          "$ref": "#/definitions/v1PatientStatus",
+          "description": "Populated only for patient callers."
+        }
+      },
+      "description": "IncidentView is the unified payload. For patients only id, status,\npatient_status, description and timestamps are populated."
+    },
     "v1ListActiveRootCategoriesResponse": {
       "type": "object",
       "properties": {
@@ -4578,6 +5606,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/classifierV1Type"
+          }
+        }
+      }
+    },
+    "v1ListBufferEntriesResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1BufferEntryView"
           }
         }
       }
@@ -4662,6 +5702,42 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1EmployeeCardView"
+          }
+        }
+      }
+    },
+    "v1ListIncidentsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1IncidentView"
+          }
+        }
+      }
+    },
+    "v1ListMyBufferEntriesResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1BufferEntryView"
+          }
+        }
+      }
+    },
+    "v1ListMyIncidentsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1IncidentView"
           }
         }
       }
@@ -4844,6 +5920,18 @@
         }
       }
     },
+    "v1PatientStatus": {
+      "type": "string",
+      "enum": [
+        "PATIENT_STATUS_UNSPECIFIED",
+        "PATIENT_STATUS_PENDING",
+        "PATIENT_STATUS_ACCEPTED",
+        "PATIENT_STATUS_CLOSED",
+        "PATIENT_STATUS_CANCELLED"
+      ],
+      "default": "PATIENT_STATUS_UNSPECIFIED",
+      "description": "PatientStatus is the simplified four-value status surfaced to patients.\n\n - PATIENT_STATUS_PENDING: buffer pending\n - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress\n - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected\n - PATIENT_STATUS_CANCELLED: patient cancelled"
+    },
     "v1Point": {
       "type": "object",
       "properties": {
@@ -4871,10 +5959,64 @@
         }
       }
     },
+    "v1PriorityHistoryEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "oldPriority": {
+          "$ref": "#/definitions/queryIncidentV1IncidentPriority"
+        },
+        "newPriority": {
+          "$ref": "#/definitions/queryIncidentV1IncidentPriority"
+        },
+        "actor": {
+          "$ref": "#/definitions/v1ActorView"
+        },
+        "changedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "v1PublishPatientIncidentResponse": {
+      "type": "object",
+      "properties": {
+        "incidentId": {
+          "type": "string"
+        }
+      }
+    },
     "v1ReactivateIncidentCategoryResponse": {
       "type": "object"
     },
     "v1ReactivateIncidentTypeResponse": {
+      "type": "object"
+    },
+    "v1RegistrarView": {
+      "type": "object",
+      "properties": {
+        "employeeId": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "organizationId": {
+          "type": "string"
+        },
+        "clinicId": {
+          "type": "string"
+        },
+        "departmentId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1RejectPatientIncidentResponse": {
       "type": "object"
     },
     "v1RemoveClinicHeadDeputyResponse": {
@@ -4891,6 +6033,14 @@
     },
     "v1RemoveOrganizationHeadDeputyResponse": {
       "type": "object"
+    },
+    "v1ReopenIncidentResponse": {
+      "type": "object",
+      "properties": {
+        "reopenedIncidentId": {
+          "type": "string"
+        }
+      }
     },
     "v1RevokeClinicHeadResponse": {
       "type": "object"
@@ -4992,6 +6142,56 @@
         }
       }
     },
+    "v1StatusHistoryEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "oldStatus": {
+          "$ref": "#/definitions/queryIncidentV1IncidentStatus",
+          "title": "UNSPECIFIED for the initial entry"
+        },
+        "newStatus": {
+          "$ref": "#/definitions/queryIncidentV1IncidentStatus"
+        },
+        "actor": {
+          "$ref": "#/definitions/v1ActorView"
+        },
+        "changedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "v1SubmitPatientIncidentRequest": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "occurredAt": {
+          "type": "string",
+          "title": "RFC3339Nano"
+        }
+      }
+    },
+    "v1SubmitPatientIncidentResponse": {
+      "type": "object",
+      "properties": {
+        "bufferId": {
+          "type": "string"
+        }
+      }
+    },
     "v1SystemAdminView": {
       "type": "object",
       "properties": {
@@ -5025,6 +6225,15 @@
     "v1UpdateIncidentCategoryDetailsResponse": {
       "type": "object"
     },
+    "v1UpdateIncidentDescriptionResponse": {
+      "type": "object"
+    },
+    "v1UpdateIncidentPriorityResponse": {
+      "type": "object"
+    },
+    "v1UpdateIncidentStatusResponse": {
+      "type": "object"
+    },
     "v1UpdateIncidentTypeDetailsResponse": {
       "type": "object"
     },
@@ -5032,6 +6241,9 @@
       "type": "object"
     },
     "v1UpdateOrganizationLegalAddressResponse": {
+      "type": "object"
+    },
+    "v1UpdatePatientIncidentResponse": {
       "type": "object"
     },
     "v1UpdateVacationEndDateResponse": {

@@ -3,6 +3,20 @@
 
 ## Table of Contents
 
+- [command/incident/buffer/v1/buffer.proto](#command_incident_buffer_v1_buffer-proto)
+    - [CancelPatientIncidentRequest](#command-incident-buffer-v1-CancelPatientIncidentRequest)
+    - [CancelPatientIncidentResponse](#command-incident-buffer-v1-CancelPatientIncidentResponse)
+    - [PublishPatientIncidentRequest](#command-incident-buffer-v1-PublishPatientIncidentRequest)
+    - [PublishPatientIncidentResponse](#command-incident-buffer-v1-PublishPatientIncidentResponse)
+    - [RejectPatientIncidentRequest](#command-incident-buffer-v1-RejectPatientIncidentRequest)
+    - [RejectPatientIncidentResponse](#command-incident-buffer-v1-RejectPatientIncidentResponse)
+    - [SubmitPatientIncidentRequest](#command-incident-buffer-v1-SubmitPatientIncidentRequest)
+    - [SubmitPatientIncidentResponse](#command-incident-buffer-v1-SubmitPatientIncidentResponse)
+    - [UpdatePatientIncidentRequest](#command-incident-buffer-v1-UpdatePatientIncidentRequest)
+    - [UpdatePatientIncidentResponse](#command-incident-buffer-v1-UpdatePatientIncidentResponse)
+
+    - [IncidentBufferCommandService](#command-incident-buffer-v1-IncidentBufferCommandService)
+
 - [command/incident/classifier/v1/incident_classifier.proto](#command_incident_classifier_v1_incident_classifier-proto)
     - [AllowIncidentTypeForPatientsRequest](#command-incident-classifier-v1-AllowIncidentTypeForPatientsRequest)
     - [AllowIncidentTypeForPatientsResponse](#command-incident-classifier-v1-AllowIncidentTypeForPatientsResponse)
@@ -34,6 +48,25 @@
     - [UpdateIncidentTypeDetailsResponse](#command-incident-classifier-v1-UpdateIncidentTypeDetailsResponse)
 
     - [IncidentClassifierCommandService](#command-incident-classifier-v1-IncidentClassifierCommandService)
+
+- [command/incident/v1/incident.proto](#command_incident_v1_incident-proto)
+    - [CancelIncidentRequest](#command-incident-v1-CancelIncidentRequest)
+    - [CancelIncidentResponse](#command-incident-v1-CancelIncidentResponse)
+    - [CreateIncidentRequest](#command-incident-v1-CreateIncidentRequest)
+    - [CreateIncidentResponse](#command-incident-v1-CreateIncidentResponse)
+    - [ReopenIncidentRequest](#command-incident-v1-ReopenIncidentRequest)
+    - [ReopenIncidentResponse](#command-incident-v1-ReopenIncidentResponse)
+    - [UpdateIncidentDescriptionRequest](#command-incident-v1-UpdateIncidentDescriptionRequest)
+    - [UpdateIncidentDescriptionResponse](#command-incident-v1-UpdateIncidentDescriptionResponse)
+    - [UpdateIncidentPriorityRequest](#command-incident-v1-UpdateIncidentPriorityRequest)
+    - [UpdateIncidentPriorityResponse](#command-incident-v1-UpdateIncidentPriorityResponse)
+    - [UpdateIncidentStatusRequest](#command-incident-v1-UpdateIncidentStatusRequest)
+    - [UpdateIncidentStatusResponse](#command-incident-v1-UpdateIncidentStatusResponse)
+
+    - [IncidentPriority](#command-incident-v1-IncidentPriority)
+    - [IncidentStatus](#command-incident-v1-IncidentStatus)
+
+    - [IncidentCommandService](#command-incident-v1-IncidentCommandService)
 
 - [command/membership/v1/membership.proto](#command_membership_v1_membership-proto)
     - [AssignClinicHeadDeputyRequest](#command-membership-v1-AssignClinicHeadDeputyRequest)
@@ -162,6 +195,35 @@
 
     - [IncidentClassifierQueryService](#query-incident-classifier-v1-IncidentClassifierQueryService)
 
+- [query/incident/v1/incident.proto](#query_incident_v1_incident-proto)
+    - [ActorView](#query-incident-v1-ActorView)
+    - [BufferEntryView](#query-incident-v1-BufferEntryView)
+    - [GetBufferEntryRequest](#query-incident-v1-GetBufferEntryRequest)
+    - [GetBufferEntryResponse](#query-incident-v1-GetBufferEntryResponse)
+    - [GetIncidentHistoryRequest](#query-incident-v1-GetIncidentHistoryRequest)
+    - [GetIncidentHistoryResponse](#query-incident-v1-GetIncidentHistoryResponse)
+    - [GetIncidentRequest](#query-incident-v1-GetIncidentRequest)
+    - [GetIncidentResponse](#query-incident-v1-GetIncidentResponse)
+    - [IncidentView](#query-incident-v1-IncidentView)
+    - [ListBufferEntriesRequest](#query-incident-v1-ListBufferEntriesRequest)
+    - [ListBufferEntriesResponse](#query-incident-v1-ListBufferEntriesResponse)
+    - [ListIncidentsRequest](#query-incident-v1-ListIncidentsRequest)
+    - [ListIncidentsResponse](#query-incident-v1-ListIncidentsResponse)
+    - [ListMyBufferEntriesRequest](#query-incident-v1-ListMyBufferEntriesRequest)
+    - [ListMyBufferEntriesResponse](#query-incident-v1-ListMyBufferEntriesResponse)
+    - [ListMyIncidentsRequest](#query-incident-v1-ListMyIncidentsRequest)
+    - [ListMyIncidentsResponse](#query-incident-v1-ListMyIncidentsResponse)
+    - [PriorityHistoryEntry](#query-incident-v1-PriorityHistoryEntry)
+    - [RegistrarView](#query-incident-v1-RegistrarView)
+    - [StatusHistoryEntry](#query-incident-v1-StatusHistoryEntry)
+
+    - [BufferStatus](#query-incident-v1-BufferStatus)
+    - [IncidentPriority](#query-incident-v1-IncidentPriority)
+    - [IncidentStatus](#query-incident-v1-IncidentStatus)
+    - [PatientStatus](#query-incident-v1-PatientStatus)
+
+    - [IncidentQueryService](#query-incident-v1-IncidentQueryService)
+
 - [query/membership/v1/membership.proto](#query_membership_v1_membership-proto)
     - [CountEmployeesByClinicRequest](#query-membership-v1-CountEmployeesByClinicRequest)
     - [CountEmployeesByClinicResponse](#query-membership-v1-CountEmployeesByClinicResponse)
@@ -248,6 +310,186 @@
     - [StatsQueryService](#query-stats-v1-StatsQueryService)
 
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="command_incident_buffer_v1_buffer-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## command/incident/buffer/v1/buffer.proto
+
+
+
+<a name="command-incident-buffer-v1-CancelPatientIncidentRequest"></a>
+
+### CancelPatientIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buffer_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-CancelPatientIncidentResponse"></a>
+
+### CancelPatientIncidentResponse
+
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-PublishPatientIncidentRequest"></a>
+
+### PublishPatientIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buffer_id | [string](#string) |  |  |
+| department_id | [string](#string) |  |  |
+| category_id | [string](#string) |  |  |
+| type_id | [string](#string) |  |  |
+| description | [string](#string) | optional | dispatcher&#39;s edited description |
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-PublishPatientIncidentResponse"></a>
+
+### PublishPatientIncidentResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-RejectPatientIncidentRequest"></a>
+
+### RejectPatientIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buffer_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-RejectPatientIncidentResponse"></a>
+
+### RejectPatientIncidentResponse
+
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-SubmitPatientIncidentRequest"></a>
+
+### SubmitPatientIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| category_id | [string](#string) | optional |  |
+| type_id | [string](#string) | optional |  |
+| description | [string](#string) | optional |  |
+| occurred_at | [string](#string) | optional | RFC3339Nano |
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-SubmitPatientIncidentResponse"></a>
+
+### SubmitPatientIncidentResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buffer_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-UpdatePatientIncidentRequest"></a>
+
+### UpdatePatientIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buffer_id | [string](#string) |  |  |
+| category_id | [string](#string) | optional |  |
+| type_id | [string](#string) | optional |  |
+| description | [string](#string) | optional |  |
+| occurred_at | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-UpdatePatientIncidentResponse"></a>
+
+### UpdatePatientIncidentResponse
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a name="command-incident-buffer-v1-IncidentBufferCommandService"></a>
+
+### IncidentBufferCommandService
+IncidentBufferCommandService handles the patient submission flow:
+patients SubmitPatientIncident, may UpdatePatientIncident or
+CancelPatientIncident while pending; dispatchers PublishPatientIncident
+(creates a real incident) or RejectPatientIncident.
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| SubmitPatientIncident | [SubmitPatientIncidentRequest](#command-incident-buffer-v1-SubmitPatientIncidentRequest) | [SubmitPatientIncidentResponse](#command-incident-buffer-v1-SubmitPatientIncidentResponse) |  |
+| UpdatePatientIncident | [UpdatePatientIncidentRequest](#command-incident-buffer-v1-UpdatePatientIncidentRequest) | [UpdatePatientIncidentResponse](#command-incident-buffer-v1-UpdatePatientIncidentResponse) |  |
+| CancelPatientIncident | [CancelPatientIncidentRequest](#command-incident-buffer-v1-CancelPatientIncidentRequest) | [CancelPatientIncidentResponse](#command-incident-buffer-v1-CancelPatientIncidentResponse) |  |
+| PublishPatientIncident | [PublishPatientIncidentRequest](#command-incident-buffer-v1-PublishPatientIncidentRequest) | [PublishPatientIncidentResponse](#command-incident-buffer-v1-PublishPatientIncidentResponse) |  |
+| RejectPatientIncident | [RejectPatientIncidentRequest](#command-incident-buffer-v1-RejectPatientIncidentRequest) | [RejectPatientIncidentResponse](#command-incident-buffer-v1-RejectPatientIncidentResponse) |  |
+
+
 
 
 
@@ -661,6 +903,238 @@ touched row.
 | DeleteIncidentType | [DeleteIncidentTypeRequest](#command-incident-classifier-v1-DeleteIncidentTypeRequest) | [DeleteIncidentTypeResponse](#command-incident-classifier-v1-DeleteIncidentTypeResponse) |  |
 | AllowIncidentTypeForPatients | [AllowIncidentTypeForPatientsRequest](#command-incident-classifier-v1-AllowIncidentTypeForPatientsRequest) | [AllowIncidentTypeForPatientsResponse](#command-incident-classifier-v1-AllowIncidentTypeForPatientsResponse) |  |
 | DisallowIncidentTypeForPatients | [DisallowIncidentTypeForPatientsRequest](#command-incident-classifier-v1-DisallowIncidentTypeForPatientsRequest) | [DisallowIncidentTypeForPatientsResponse](#command-incident-classifier-v1-DisallowIncidentTypeForPatientsResponse) |  |
+
+
+
+
+
+<a name="command_incident_v1_incident-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## command/incident/v1/incident.proto
+
+
+
+<a name="command-incident-v1-CancelIncidentRequest"></a>
+
+### CancelIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-v1-CancelIncidentResponse"></a>
+
+### CancelIncidentResponse
+
+
+
+
+
+
+
+<a name="command-incident-v1-CreateIncidentRequest"></a>
+
+### CreateIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+| category_id | [string](#string) |  |  |
+| type_id | [string](#string) |  |  |
+| description | [string](#string) | optional |  |
+| occurred_at | [string](#string) |  | RFC3339Nano |
+
+
+
+
+
+
+<a name="command-incident-v1-CreateIncidentResponse"></a>
+
+### CreateIncidentResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-v1-ReopenIncidentRequest"></a>
+
+### ReopenIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-v1-ReopenIncidentResponse"></a>
+
+### ReopenIncidentResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| reopened_incident_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-incident-v1-UpdateIncidentDescriptionRequest"></a>
+
+### UpdateIncidentDescriptionRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+| description | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="command-incident-v1-UpdateIncidentDescriptionResponse"></a>
+
+### UpdateIncidentDescriptionResponse
+
+
+
+
+
+
+
+<a name="command-incident-v1-UpdateIncidentPriorityRequest"></a>
+
+### UpdateIncidentPriorityRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+| priority | [IncidentPriority](#command-incident-v1-IncidentPriority) |  |  |
+
+
+
+
+
+
+<a name="command-incident-v1-UpdateIncidentPriorityResponse"></a>
+
+### UpdateIncidentPriorityResponse
+
+
+
+
+
+
+
+<a name="command-incident-v1-UpdateIncidentStatusRequest"></a>
+
+### UpdateIncidentStatusRequest
+UpdateIncidentStatus only handles forward transitions:
+pending -&gt; in_progress, in_progress -&gt; done, in_progress -&gt; rejected.
+Cancellation by registrar uses CancelIncident.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+| new_status | [IncidentStatus](#command-incident-v1-IncidentStatus) |  |  |
+
+
+
+
+
+
+<a name="command-incident-v1-UpdateIncidentStatusResponse"></a>
+
+### UpdateIncidentStatusResponse
+
+
+
+
+
+
+
+
+
+<a name="command-incident-v1-IncidentPriority"></a>
+
+### IncidentPriority
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| INCIDENT_PRIORITY_UNSPECIFIED | 0 |  |
+| INCIDENT_PRIORITY_LOW | 1 |  |
+| INCIDENT_PRIORITY_NORMAL | 2 |  |
+| INCIDENT_PRIORITY_HIGH | 3 |  |
+| INCIDENT_PRIORITY_CRITICAL | 4 |  |
+
+
+
+<a name="command-incident-v1-IncidentStatus"></a>
+
+### IncidentStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| INCIDENT_STATUS_UNSPECIFIED | 0 |  |
+| INCIDENT_STATUS_PENDING | 1 |  |
+| INCIDENT_STATUS_IN_PROGRESS | 2 |  |
+| INCIDENT_STATUS_DONE | 3 |  |
+| INCIDENT_STATUS_REJECTED | 4 |  |
+| INCIDENT_STATUS_CANCELLED | 5 |  |
+
+
+
+
+
+
+
+<a name="command-incident-v1-IncidentCommandService"></a>
+
+### IncidentCommandService
+IncidentCommandService is the write-side contract for incidents
+created directly by employees (not the patient buffer).
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| CreateIncident | [CreateIncidentRequest](#command-incident-v1-CreateIncidentRequest) | [CreateIncidentResponse](#command-incident-v1-CreateIncidentResponse) |  |
+| CancelIncident | [CancelIncidentRequest](#command-incident-v1-CancelIncidentRequest) | [CancelIncidentResponse](#command-incident-v1-CancelIncidentResponse) |  |
+| UpdateIncidentStatus | [UpdateIncidentStatusRequest](#command-incident-v1-UpdateIncidentStatusRequest) | [UpdateIncidentStatusResponse](#command-incident-v1-UpdateIncidentStatusResponse) |  |
+| UpdateIncidentPriority | [UpdateIncidentPriorityRequest](#command-incident-v1-UpdateIncidentPriorityRequest) | [UpdateIncidentPriorityResponse](#command-incident-v1-UpdateIncidentPriorityResponse) |  |
+| UpdateIncidentDescription | [UpdateIncidentDescriptionRequest](#command-incident-v1-UpdateIncidentDescriptionRequest) | [UpdateIncidentDescriptionResponse](#command-incident-v1-UpdateIncidentDescriptionResponse) |  |
+| ReopenIncident | [ReopenIncidentRequest](#command-incident-v1-ReopenIncidentRequest) | [ReopenIncidentResponse](#command-incident-v1-ReopenIncidentResponse) |  |
 
 
 
@@ -2432,6 +2906,460 @@ CTEs in the reader; the RPC surface stays flat.
 | ListActiveTypesByOrganization | [ListActiveTypesByOrganizationRequest](#query-incident-classifier-v1-ListActiveTypesByOrganizationRequest) | [ListActiveTypesByOrganizationResponse](#query-incident-classifier-v1-ListActiveTypesByOrganizationResponse) |  |
 | ListPatientAllowedTypesByOrganization | [ListPatientAllowedTypesByOrganizationRequest](#query-incident-classifier-v1-ListPatientAllowedTypesByOrganizationRequest) | [ListPatientAllowedTypesByOrganizationResponse](#query-incident-classifier-v1-ListPatientAllowedTypesByOrganizationResponse) | Patient-facing reads. These are scoped to one organisation and return only the slice of the classifier that a patient may see when filing an incident. |
 | ListPatientVisibleCategoriesByOrganization | [ListPatientVisibleCategoriesByOrganizationRequest](#query-incident-classifier-v1-ListPatientVisibleCategoriesByOrganizationRequest) | [ListPatientVisibleCategoriesByOrganizationResponse](#query-incident-classifier-v1-ListPatientVisibleCategoriesByOrganizationResponse) |  |
+
+
+
+
+
+<a name="query_incident_v1_incident-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## query/incident/v1/incident.proto
+
+
+
+<a name="query-incident-v1-ActorView"></a>
+
+### ActorView
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee_id | [string](#string) | optional |  |
+| display_name | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-incident-v1-BufferEntryView"></a>
+
+### BufferEntryView
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+| organization_id | [string](#string) |  |  |
+| patient_zitadel_user_id | [string](#string) |  |  |
+| category_id | [string](#string) | optional |  |
+| type_id | [string](#string) | optional |  |
+| description | [string](#string) | optional |  |
+| occurred_at | [string](#string) | optional |  |
+| status | [BufferStatus](#query-incident-v1-BufferStatus) |  |  |
+| published_incident_id | [string](#string) | optional |  |
+| created_at | [string](#string) |  |  |
+| updated_at | [string](#string) |  |  |
+| patient_status | [PatientStatus](#query-incident-v1-PatientStatus) | optional | Populated only for patient callers. |
+
+
+
+
+
+
+<a name="query-incident-v1-GetBufferEntryRequest"></a>
+
+### GetBufferEntryRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-GetBufferEntryResponse"></a>
+
+### GetBufferEntryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| entry | [BufferEntryView](#query-incident-v1-BufferEntryView) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-GetIncidentHistoryRequest"></a>
+
+### GetIncidentHistoryRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-GetIncidentHistoryResponse"></a>
+
+### GetIncidentHistoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| status_history | [StatusHistoryEntry](#query-incident-v1-StatusHistoryEntry) | repeated |  |
+| priority_history | [PriorityHistoryEntry](#query-incident-v1-PriorityHistoryEntry) | repeated |  |
+
+
+
+
+
+
+<a name="query-incident-v1-GetIncidentRequest"></a>
+
+### GetIncidentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-GetIncidentResponse"></a>
+
+### GetIncidentResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident | [IncidentView](#query-incident-v1-IncidentView) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-IncidentView"></a>
+
+### IncidentView
+IncidentView is the unified payload. For patients only id, status,
+patient_status, description and timestamps are populated.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+| organization_id | [string](#string) | optional |  |
+| clinic_id | [string](#string) | optional |  |
+| department_id | [string](#string) | optional |  |
+| category_id | [string](#string) | optional |  |
+| type_id | [string](#string) | optional |  |
+| status | [IncidentStatus](#query-incident-v1-IncidentStatus) |  |  |
+| priority | [IncidentPriority](#query-incident-v1-IncidentPriority) |  |  |
+| description | [string](#string) | optional |  |
+| patient_original_description | [string](#string) | optional |  |
+| occurred_at | [string](#string) |  |  |
+| created_at | [string](#string) |  |  |
+| updated_at | [string](#string) |  |  |
+| registrar | [RegistrarView](#query-incident-v1-RegistrarView) | optional |  |
+| source_patient_zitadel_user_id | [string](#string) | optional |  |
+| source_buffer_id | [string](#string) | optional |  |
+| reopened_from_incident_id | [string](#string) | optional |  |
+| patient_status | [PatientStatus](#query-incident-v1-PatientStatus) | optional | Populated only for patient callers. |
+
+
+
+
+
+
+<a name="query-incident-v1-ListBufferEntriesRequest"></a>
+
+### ListBufferEntriesRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| statuses | [BufferStatus](#query-incident-v1-BufferStatus) | repeated |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-ListBufferEntriesResponse"></a>
+
+### ListBufferEntriesResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [BufferEntryView](#query-incident-v1-BufferEntryView) | repeated |  |
+
+
+
+
+
+
+<a name="query-incident-v1-ListIncidentsRequest"></a>
+
+### ListIncidentsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| statuses | [IncidentStatus](#query-incident-v1-IncidentStatus) | repeated |  |
+| priorities | [IncidentPriority](#query-incident-v1-IncidentPriority) | repeated |  |
+| clinic_id | [string](#string) | optional |  |
+| department_id | [string](#string) | optional |  |
+| category_id | [string](#string) | optional |  |
+| type_id | [string](#string) | optional |  |
+| occurred_from | [string](#string) | optional | RFC3339Nano |
+| occurred_to | [string](#string) | optional |  |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-ListIncidentsResponse"></a>
+
+### ListIncidentsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [IncidentView](#query-incident-v1-IncidentView) | repeated |  |
+
+
+
+
+
+
+<a name="query-incident-v1-ListMyBufferEntriesRequest"></a>
+
+### ListMyBufferEntriesRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-ListMyBufferEntriesResponse"></a>
+
+### ListMyBufferEntriesResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [BufferEntryView](#query-incident-v1-BufferEntryView) | repeated |  |
+
+
+
+
+
+
+<a name="query-incident-v1-ListMyIncidentsRequest"></a>
+
+### ListMyIncidentsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| limit | [int32](#int32) |  |  |
+| offset | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-ListMyIncidentsResponse"></a>
+
+### ListMyIncidentsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [IncidentView](#query-incident-v1-IncidentView) | repeated |  |
+
+
+
+
+
+
+<a name="query-incident-v1-PriorityHistoryEntry"></a>
+
+### PriorityHistoryEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+| old_priority | [IncidentPriority](#query-incident-v1-IncidentPriority) |  |  |
+| new_priority | [IncidentPriority](#query-incident-v1-IncidentPriority) |  |  |
+| actor | [ActorView](#query-incident-v1-ActorView) |  |  |
+| changed_at | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-RegistrarView"></a>
+
+### RegistrarView
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee_id | [string](#string) |  |  |
+| display_name | [string](#string) |  |  |
+| position | [string](#string) | optional |  |
+| organization_id | [string](#string) |  |  |
+| clinic_id | [string](#string) |  |  |
+| department_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-incident-v1-StatusHistoryEntry"></a>
+
+### StatusHistoryEntry
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+| old_status | [IncidentStatus](#query-incident-v1-IncidentStatus) |  | UNSPECIFIED for the initial entry |
+| new_status | [IncidentStatus](#query-incident-v1-IncidentStatus) |  |  |
+| actor | [ActorView](#query-incident-v1-ActorView) |  |  |
+| changed_at | [string](#string) |  |  |
+
+
+
+
+
+
+
+
+<a name="query-incident-v1-BufferStatus"></a>
+
+### BufferStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| BUFFER_STATUS_UNSPECIFIED | 0 |  |
+| BUFFER_STATUS_PENDING | 1 |  |
+| BUFFER_STATUS_PUBLISHED | 2 |  |
+| BUFFER_STATUS_REJECTED | 3 |  |
+| BUFFER_STATUS_CANCELLED | 4 |  |
+
+
+
+<a name="query-incident-v1-IncidentPriority"></a>
+
+### IncidentPriority
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| INCIDENT_PRIORITY_UNSPECIFIED | 0 |  |
+| INCIDENT_PRIORITY_LOW | 1 |  |
+| INCIDENT_PRIORITY_NORMAL | 2 |  |
+| INCIDENT_PRIORITY_HIGH | 3 |  |
+| INCIDENT_PRIORITY_CRITICAL | 4 |  |
+
+
+
+<a name="query-incident-v1-IncidentStatus"></a>
+
+### IncidentStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| INCIDENT_STATUS_UNSPECIFIED | 0 |  |
+| INCIDENT_STATUS_PENDING | 1 |  |
+| INCIDENT_STATUS_IN_PROGRESS | 2 |  |
+| INCIDENT_STATUS_DONE | 3 |  |
+| INCIDENT_STATUS_REJECTED | 4 |  |
+| INCIDENT_STATUS_CANCELLED | 5 |  |
+
+
+
+<a name="query-incident-v1-PatientStatus"></a>
+
+### PatientStatus
+PatientStatus is the simplified four-value status surfaced to patients.
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| PATIENT_STATUS_UNSPECIFIED | 0 |  |
+| PATIENT_STATUS_PENDING | 1 | buffer pending |
+| PATIENT_STATUS_ACCEPTED | 2 | dispatcher accepted; incident pending/in_progress |
+| PATIENT_STATUS_CLOSED | 3 | done / rejected / buffer rejected |
+| PATIENT_STATUS_CANCELLED | 4 | patient cancelled |
+
+
+
+
+
+
+
+<a name="query-incident-v1-IncidentQueryService"></a>
+
+### IncidentQueryService
+IncidentQueryService is the unified read-side. The same RPCs serve
+both employees and patients — visibility filtering and field
+redaction happen inside the reader based on the caller&#39;s role.
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| GetIncident | [GetIncidentRequest](#query-incident-v1-GetIncidentRequest) | [GetIncidentResponse](#query-incident-v1-GetIncidentResponse) |  |
+| ListIncidents | [ListIncidentsRequest](#query-incident-v1-ListIncidentsRequest) | [ListIncidentsResponse](#query-incident-v1-ListIncidentsResponse) |  |
+| ListMyIncidents | [ListMyIncidentsRequest](#query-incident-v1-ListMyIncidentsRequest) | [ListMyIncidentsResponse](#query-incident-v1-ListMyIncidentsResponse) |  |
+| GetIncidentHistory | [GetIncidentHistoryRequest](#query-incident-v1-GetIncidentHistoryRequest) | [GetIncidentHistoryResponse](#query-incident-v1-GetIncidentHistoryResponse) |  |
+| GetBufferEntry | [GetBufferEntryRequest](#query-incident-v1-GetBufferEntryRequest) | [GetBufferEntryResponse](#query-incident-v1-GetBufferEntryResponse) | Buffer reads. |
+| ListBufferEntries | [ListBufferEntriesRequest](#query-incident-v1-ListBufferEntriesRequest) | [ListBufferEntriesResponse](#query-incident-v1-ListBufferEntriesResponse) |  |
+| ListMyBufferEntries | [ListMyBufferEntriesRequest](#query-incident-v1-ListMyBufferEntriesRequest) | [ListMyBufferEntriesResponse](#query-incident-v1-ListMyBufferEntriesResponse) |  |
 
 
 
