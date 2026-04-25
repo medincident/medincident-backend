@@ -11,6 +11,9 @@ service IdentityQueryService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {
     option (google.api.http) = {get: "/v1/query/users/{id}"};
   }
+  rpc GetUserByEmail(GetUserByEmailRequest) returns (GetUserByEmailResponse) {
+    option (google.api.http) = {get: "/v1/query/users:by-email"};
+  }
   rpc GetSession(GetSessionRequest) returns (GetSessionResponse) {
     option (google.api.http) = {get: "/v1/query/sessions/{id}"};
   }
@@ -64,6 +67,13 @@ message GetUserRequest {
   string id = 1;
 }
 message GetUserResponse {
+  User user = 1;
+}
+
+message GetUserByEmailRequest {
+  string email = 1;
+}
+message GetUserByEmailResponse {
   User user = 1;
 }
 

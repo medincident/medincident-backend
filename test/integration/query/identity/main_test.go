@@ -19,11 +19,21 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
+
+	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
+// sysadminZitadelID is the Zitadel user ID of the system-admin seeded
+// by resetProjections. Identity reads that branch on SystemAdmin need
+// a real domain.system_admins row, not just a projection entry.
+const sysadminZitadelID = "sysadmin"
+
+var sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
+
 var (
-	testDB  *gorm.DB
-	natsURL string
+	testDB   *gorm.DB
+	authzSvc *authz.Authz
+	natsURL  string
 )
 
 func TestMain(m *testing.M) {
@@ -74,6 +84,8 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
+	authzSvc = authz.New(testDB)
+
 	// The nats testcontainers module enables JetStream by default (-js
 	// flag is baked into the command line).
 	n, err := tcnats.Run(ctx, "nats:2.10-alpine")
@@ -118,7 +130,16 @@ func resetProjections(t *testing.T) {
 	if err != nil {
 		t.Fatalf("get raw db: %v", err)
 	}
-	if _, err := raw.Exec(`TRUNCATE TABLE projections.users, projections.sessions CASCADE`); err != nil {
+	if _, err := raw.Exec(`TRUNCATE TABLE
+		domain.system_admins,
+		projections.users,
+		projections.sessions CASCADE`); err != nil {
 		t.Fatalf("truncate projections: %v", err)
+	}
+	if _, err := raw.Exec(
+		`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1)`,
+		sysadminZitadelID,
+	); err != nil {
+		t.Fatalf("seed sysadmin: %v", err)
 	}
 }

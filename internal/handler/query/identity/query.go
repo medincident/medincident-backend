@@ -4,12 +4,20 @@ package identity
 import (
 	"context"
 	"encoding/json"
+	"strings"
 	"time"
+
+	"github.com/samber/oops"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 	identityqueryv1 "github.com/medincident/medincident-backend/pkg/query/identity/v1"
+)
+
+// Error codes emitted by handler-layer request parsing.
+const (
+	ErrCodeHandlerInvalidEmail = "handler_invalid_email"
 )
 
 // IdentityQueryHandler implements identityqueryv1.IdentityQueryServiceServer.
@@ -39,6 +47,32 @@ func (h *IdentityQueryHandler) GetUser(
 		return nil, err
 	}
 	return &identityqueryv1.GetUserResponse{User: userToProto(v)}, nil
+}
+
+// GetUserByEmail returns the user whose email matches the request
+// value case-insensitively. Authorization is SystemAdmin-only; see
+// the reader method for rationale.
+func (h *IdentityQueryHandler) GetUserByEmail(
+	ctx context.Context,
+	req *identityqueryv1.GetUserByEmailRequest,
+) (*identityqueryv1.GetUserByEmailResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	email := strings.TrimSpace(req.GetEmail())
+	if email == "" {
+		return nil, oops.In("handler.query.identity").
+			Code(ErrCodeHandlerInvalidEmail).
+			Public("Email is required.").
+			Errorf("empty email")
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	v, err := h.reader.GetUserByEmail(ctx, caller, email)
+	if err != nil {
+		return nil, err
+	}
+	return &identityqueryv1.GetUserByEmailResponse{User: userToProto(v)}, nil
 }
 
 // GetSession returns one session row.
