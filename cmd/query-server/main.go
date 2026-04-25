@@ -21,7 +21,6 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
-	identityhandler "github.com/medincident/medincident-backend/internal/handler/query/identity"
 	classifierhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-backend/internal/handler/query/membership"
 	orghandler "github.com/medincident/medincident-backend/internal/handler/query/orgstructure"
@@ -33,7 +32,6 @@ import (
 	membershipread "github.com/medincident/medincident-backend/internal/service/query/membership"
 	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
-	identityqueryv1 "github.com/medincident/medincident-backend/pkg/query/identity/v1"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	membershipqueryv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
 	orgqueryv1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
@@ -125,7 +123,6 @@ func main() {
 	roleReader := membershipread.NewRoleReader(db, az, logger)
 	classReader := classifierread.NewReader(db, az, logger)
 	statsReader := statsread.NewReader(db, az, logger)
-	identReader := identityread.NewReader(db, az, logger)
 
 	projector := identityread.NewProjector(db, logger)
 	consumer := identityread.NewConsumer(js, &cfg.NATS, projector, logger)
@@ -134,7 +131,6 @@ func main() {
 	memH := membershiphandler.NewMembershipQueryHandler(empReader, roleReader)
 	clsH := classifierhandler.NewIncidentClassifierQueryHandler(classReader)
 	statsH := statshandler.NewStatsQueryHandler(statsReader)
-	identH := identityhandler.NewIdentityQueryHandler(identReader)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
@@ -147,7 +143,6 @@ func main() {
 	membershipqueryv1.RegisterMembershipQueryServiceServer(grpcServer, memH)
 	classifierqueryv1.RegisterIncidentClassifierQueryServiceServer(grpcServer, clsH)
 	statsqueryv1.RegisterStatsQueryServiceServer(grpcServer, statsH)
-	identityqueryv1.RegisterIdentityQueryServiceServer(grpcServer, identH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)

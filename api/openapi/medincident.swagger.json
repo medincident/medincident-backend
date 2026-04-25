@@ -15,9 +15,6 @@
       "name": "OrgStructureCommandService"
     },
     {
-      "name": "IdentityQueryService"
-    },
-    {
       "name": "IncidentClassifierQueryService"
     },
     {
@@ -3283,36 +3280,6 @@
         ]
       }
     },
-    "/v1/sessions/{id}": {
-      "get": {
-        "operationId": "IdentityQueryService_GetSession",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetSessionResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IdentityQueryService"
-        ]
-      }
-    },
     "/v1/system-admins": {
       "get": {
         "operationId": "MembershipQueryService_ListSystemAdmins",
@@ -3409,66 +3376,6 @@
         ],
         "tags": [
           "MembershipCommandService"
-        ]
-      }
-    },
-    "/v1/users/{id}": {
-      "get": {
-        "operationId": "IdentityQueryService_GetUser",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetUserResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IdentityQueryService"
-        ]
-      }
-    },
-    "/v1/users:by-email": {
-      "get": {
-        "operationId": "IdentityQueryService_GetUserByEmail",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetUserByEmailResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "IdentityQueryService"
         ]
       }
     },
@@ -4464,35 +4371,11 @@
         }
       }
     },
-    "v1GetSessionResponse": {
-      "type": "object",
-      "properties": {
-        "session": {
-          "$ref": "#/definitions/v1Session"
-        }
-      }
-    },
     "v1GetTypeResponse": {
       "type": "object",
       "properties": {
         "type": {
           "$ref": "#/definitions/classifierV1Type"
-        }
-      }
-    },
-    "v1GetUserByEmailResponse": {
-      "type": "object",
-      "properties": {
-        "user": {
-          "$ref": "#/definitions/v1User"
-        }
-      }
-    },
-    "v1GetUserResponse": {
-      "type": "object",
-      "properties": {
-        "user": {
-          "$ref": "#/definitions/v1User"
         }
       }
     },
@@ -4932,36 +4815,6 @@
         }
       }
     },
-    "v1Session": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "userId": {
-          "type": "string"
-        },
-        "userResourceOwner": {
-          "type": "string"
-        },
-        "preferredLanguage": {
-          "type": "string"
-        },
-        "checkedAt": {
-          "type": "string"
-        },
-        "userAgent": {
-          "$ref": "#/definitions/v1UserAgent"
-        },
-        "createdAt": {
-          "type": "string"
-        },
-        "updatedAt": {
-          "type": "string"
-        }
-      },
-      "description": "Session mirrors projections.sessions. user_id/user_resource_owner are\npopulated once a SessionUserChecked event is consumed."
-    },
     "v1StartVacationNowResponse": {
       "type": "object",
       "properties": {
@@ -5014,82 +4867,6 @@
     },
     "v1UpdateVacationEndDateResponse": {
       "type": "object"
-    },
-    "v1User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string"
-        },
-        "userName": {
-          "type": "string"
-        },
-        "firstName": {
-          "type": "string"
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "displayName": {
-          "type": "string"
-        },
-        "nickName": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "emailVerified": {
-          "type": "boolean"
-        },
-        "preferredLanguage": {
-          "type": "string"
-        },
-        "gender": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "createdAt": {
-          "type": "string"
-        },
-        "updatedAt": {
-          "type": "string"
-        }
-      },
-      "description": "User mirrors projections.users. gender uses the zitadel proto enum\ninteger: 0 unspecified, 1 female, 2 male, 3 diverse."
-    },
-    "v1UserAgent": {
-      "type": "object",
-      "properties": {
-        "ip": {
-          "type": "string"
-        },
-        "headers": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/v1UserAgentHeaderValues"
-          }
-        },
-        "fingerprintId": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        }
-      },
-      "description": "UserAgent is the JSONB user_agent column unpacked to proto."
-    },
-    "v1UserAgentHeaderValues": {
-      "type": "object",
-      "properties": {
-        "values": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "description": "UserAgentHeaderValues holds the repeated-string values for a single\nheader entry."
     },
     "v1VacationView": {
       "type": "object",
