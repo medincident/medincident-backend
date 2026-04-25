@@ -166,7 +166,10 @@ func (r *Reader) collectScopes(
 		}
 		out[id] = true
 	}
-	return rows.Err()
+	if err := rows.Err(); err != nil {
+		return wrapRead(err, "iterate scope rows "+table)
+	}
+	return nil
 }
 
 func wrapRead(err error, action string) error {
@@ -388,7 +391,10 @@ func (r *Reader) ListIncidents(
 		v.PatientPerspective = cc.IsPatient()
 		out = append(out, v)
 	}
-	return out, rows.Err()
+	if err := rows.Err(); err != nil {
+		return nil, wrapRead(err, "iterate incident rows")
+	}
+	return out, nil
 }
 
 // ListMyIncidents returns incidents where the caller is the registrar
@@ -429,7 +435,10 @@ func (r *Reader) ListMyIncidents(
 		v.PatientPerspective = cc.IsPatient()
 		out = append(out, v)
 	}
-	return out, rows.Err()
+	if err := rows.Err(); err != nil {
+		return nil, wrapRead(err, "iterate my incident rows")
+	}
+	return out, nil
 }
 
 func paginationDefaults(limit, offset int) (outLimit, outOffset int) {

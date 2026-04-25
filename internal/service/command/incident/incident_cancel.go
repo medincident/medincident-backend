@@ -58,19 +58,20 @@ func (s *IncidentService) Cancel(
 				Errorf("not pending")
 		}
 
+		// Resolve actor up-front so display_name lookup errors surface as
+		// real failures instead of silent empty strings in the audit row.
+		actorEmpID, displayName, err := s.resolveActor(tx, cmd.Caller.ZitadelUserID)
+		if err != nil {
+			return err
+		}
+
 		old := inc.Status
 		inc.Status = model.IncidentStatusCancelled
 		inc.UpdatedAt = now
 		if err := tx.Save(inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-
-		// Actor display name = registrar's name (we already know they're an employee).
-		var displayName string
-		_ = tx.Raw(
-			`SELECT display_name FROM projections.users WHERE id = ?`,
-			cmd.Caller.ZitadelUserID).Scan(&displayName).Error
 		return projector.IncidentStatusChanged(tx, inc.ID, old, inc.Status,
-			inc.RegistrarEmployeeID, displayName, now)
+			actorEmpID, displayName, now)
 	})
 }

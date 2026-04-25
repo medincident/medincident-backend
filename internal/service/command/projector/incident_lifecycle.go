@@ -72,12 +72,14 @@ func IncidentCreated(
 
 // IncidentStatusChanged updates projections.incidents.status and
 // appends a row to projections.incident_status_history. UpdatedAt is
-// the change timestamp.
+// the change timestamp. actorEmployeeID is a NullUUID so SystemAdmin
+// callers (no employee row) round-trip as SQL NULL rather than the
+// zero UUID.
 func IncidentStatusChanged(
 	tx *gorm.DB,
 	incidentID uuid.UUID,
 	oldStatus, newStatus model.IncidentStatus,
-	actorEmployeeID uuid.UUID,
+	actorEmployeeID uuid.NullUUID,
 	actorDisplayName string,
 	changedAt time.Time,
 ) error {
@@ -108,11 +110,12 @@ func IncidentStatusChanged(
 
 // IncidentPriorityChanged updates projections.incidents.priority and
 // appends a row to projections.incident_priority_history.
+// actorEmployeeID is NullUUID for the same reason as IncidentStatusChanged.
 func IncidentPriorityChanged(
 	tx *gorm.DB,
 	incidentID uuid.UUID,
 	oldPriority, newPriority model.IncidentPriority,
-	actorEmployeeID uuid.UUID,
+	actorEmployeeID uuid.NullUUID,
 	actorDisplayName string,
 	changedAt time.Time,
 ) error {

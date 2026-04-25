@@ -191,13 +191,17 @@ func (s *BufferService) loadDispatcherSnapshot(
 	if err := tx.Where("zitadel_user_id = ? AND organization_id = ?",
 		callerZitadelID, orgID).First(&emp).Error; err != nil {
 		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
-			Code(ErrCodeBufferDeptNotFound).
+			Code(ErrCodeBufferDispatcherNotFound).
 			Public("Dispatcher employee record not found.").Wrap(err)
 	}
+	// Dispatcher's department lookup failure IS a department-level
+	// error (the FK is a real domain.departments row referenced from
+	// the dispatcher's employee record), so keep ErrCodeBufferDeptNotFound here.
 	var dept model.Department
 	if err := tx.First(&dept, "id = ?", emp.DepartmentID).Error; err != nil {
 		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
-			Code(ErrCodeBufferDeptNotFound).Wrap(err)
+			Code(ErrCodeBufferDeptNotFound).
+			With("department_id", emp.DepartmentID).Wrap(err)
 	}
 	var displayName string
 	if err := tx.Raw(
@@ -205,7 +209,7 @@ func (s *BufferService) loadDispatcherSnapshot(
 		callerZitadelID,
 	).Scan(&displayName).Error; err != nil || displayName == "" {
 		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
-			Code(ErrCodeBufferDeptNotFound).
+			Code(ErrCodeBufferDispatcherNotFound).
 			Public("Dispatcher user record missing.").Errorf("display_name lookup failed")
 	}
 	return projector.IncidentRegistrarSnapshot{

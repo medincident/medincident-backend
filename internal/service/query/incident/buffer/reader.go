@@ -145,7 +145,10 @@ func (r *Reader) ListBufferEntries(
 		v.PatientPerspective = false
 		out = append(out, v)
 	}
-	return out, rows.Err()
+	if err := rows.Err(); err != nil {
+		return nil, wrapRead(err, "iterate buffer rows")
+	}
+	return out, nil
 }
 
 // ListMyBufferEntries returns buffer entries the caller submitted as
@@ -175,7 +178,10 @@ func (r *Reader) ListMyBufferEntries(
 		v.PatientPerspective = cc.IsPatient()
 		out = append(out, v)
 	}
-	return out, rows.Err()
+	if err := rows.Err(); err != nil {
+		return nil, wrapRead(err, "iterate my buffer rows")
+	}
+	return out, nil
 }
 
 // canSeeBuffer encapsulates the per-row visibility test for GetBufferEntry.

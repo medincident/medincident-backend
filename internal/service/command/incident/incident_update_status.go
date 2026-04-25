@@ -2,6 +2,7 @@ package incident
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -82,22 +83,34 @@ func validStatusTransition(from, to model.IncidentStatus) bool {
 }
 
 // resolveActor returns the caller's employee_id (in any org) and the
-// display_name from projections.users. Used for history rows.
-func (s *IncidentService) resolveActor(tx *gorm.DB, callerID string) (uuid.UUID, string, error) {
-	// Caller might be SystemAdmin without a domain.employees row;
-	// in that case actor_employee_id is the zero UUID and display_name
-	// comes from projections.users only.
+// display_name from projections.users. Used for history rows. The
+// returned NullUUID is invalid when the caller has no employee row
+// (e.g. SystemAdmin acting outside any org) so history tables get a
+// proper SQL NULL rather than the zero UUID.
+func (s *IncidentService) resolveActor(tx *gorm.DB, callerID string) (uuid.NullUUID, string, error) {
+	// Caller may be a SystemAdmin without a domain.employees row; that
+	// is not an error here — we treat the actor's employee link as
+	// optional. Any error other than "not found" is propagated below.
 	var emp model.Employee
-	_ = tx.Where("zitadel_user_id = ?", callerID).Limit(1).First(&emp).Error
+	empID := uuid.NullUUID{}
+	if err := tx.Where("zitadel_user_id = ?", callerID).Limit(1).First(&emp).Error; err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return uuid.NullUUID{}, "", oops.In(scope).
+				Code(ErrCodeIncidentEmployeeNotFound).
+				With("zitadel_user_id", callerID).Wrap(err)
+		}
+	} else {
+		empID = uuid.NullUUID{UUID: emp.ID, Valid: true}
+	}
 
 	var displayName string
 	if err := tx.Raw(
 		`SELECT display_name FROM projections.users WHERE id = ?`,
 		callerID,
 	).Scan(&displayName).Error; err != nil {
-		return uuid.Nil, "", oops.In(scope).
+		return uuid.NullUUID{}, "", oops.In(scope).
 			Code(ErrCodeIncidentRegistrarUserNotFound).
 			With("zitadel_user_id", callerID).Wrap(err)
 	}
-	return emp.ID, displayName, nil
+	return empID, displayName, nil
 }

@@ -32,6 +32,7 @@ const (
 	ErrCodeBufferNotPending         = "buffer_not_pending"
 	ErrCodeBufferNotPatient         = "buffer_not_patient_owner"
 	ErrCodeBufferDeptNotFound       = "buffer_department_not_found"
+	ErrCodeBufferDispatcherNotFound = "buffer_dispatcher_not_found"
 )
 
 const bufferMaxOccurredAtAge = 7 * 24 * time.Hour

@@ -20,6 +20,8 @@ const (
 	errCodeHandlerInvalidOrgID      = "handler_invalid_organization_id"
 	errCodeHandlerInvalidUUID       = "handler_invalid_uuid"
 	errCodeHandlerInvalidTimestamp  = "handler_invalid_timestamp"
+	errCodeHandlerInvalidStatus     = "handler_invalid_status"
+	errCodeHandlerInvalidPriority   = "handler_invalid_priority"
 )
 
 // IncidentQueryHandler implements the incident read methods.
@@ -201,7 +203,7 @@ func protoStatusToModel(s incidentqueryv1.IncidentStatus) (model.IncidentStatus,
 		return model.IncidentStatusCancelled, nil
 	default:
 		return "", oops.In("handler.query.incident").
-			Code(errCodeHandlerInvalidUUID).Public("Invalid status.").Errorf("unknown")
+			Code(errCodeHandlerInvalidStatus).Public("Invalid status.").Errorf("unknown")
 	}
 }
 
@@ -234,7 +236,7 @@ func protoPriorityToModel(p incidentqueryv1.IncidentPriority) (model.IncidentPri
 		return model.IncidentPriorityCritical, nil
 	default:
 		return "", oops.In("handler.query.incident").
-			Code(errCodeHandlerInvalidUUID).Public("Invalid priority.").Errorf("unknown")
+			Code(errCodeHandlerInvalidPriority).Public("Invalid priority.").Errorf("unknown")
 	}
 }
 
