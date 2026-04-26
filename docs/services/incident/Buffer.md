@@ -1,10 +1,12 @@
+← [Документация](../../README.md)
+
 # Буфер пациента
 
 Промежуточный этап перед созданием инцидента. Пациент подаёт заявку; диспетчер (`OrgDispatcher`) обрабатывает её — публикует (создаёт инцидент), отклоняет или пациент отменяет сам.
 
 **gRPC:** `IncidentBufferCommandService` (command) / `IncidentQueryService` (query, буфер)
 
-Статусная машина: [[Статусные машины|Architecture-Status-Machines]]
+Статусная машина: [Статусные машины](../../architecture/Status-Machines.md)
 
 ---
 
