@@ -19,6 +19,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
 	incidentqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident"
@@ -47,6 +49,7 @@ const (
 	shutdownTimeout         = 15 * time.Second
 	consumerShutdownTimeout = 10 * time.Second
 	natsReconnectWait       = 2 * time.Second
+	handlerTimeout          = 30 * time.Second
 )
 
 const ErrCodeJetStreamInitFailed = "jetstream_init_failed"
@@ -146,9 +149,14 @@ func main() {
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
 		grpc.ChainUnaryInterceptor(
 			grpcmw.ErrorInterceptor(logger),
+			grpcmw.TimeoutInterceptor(handlerTimeout),
 			grpcmw.AuthnInterceptor(authorizer, authnSkip),
 		),
 	)
+	healthSrv := health.NewServer()
+	healthv1.RegisterHealthServer(grpcServer, healthSrv)
+	healthSrv.SetServingStatus("", healthv1.HealthCheckResponse_SERVING)
+
 	orgqueryv1.RegisterOrgStructureQueryServiceServer(grpcServer, orgH)
 	membershipqueryv1.RegisterMembershipQueryServiceServer(grpcServer, memH)
 	classifierqueryv1.RegisterIncidentClassifierQueryServiceServer(grpcServer, clsH)

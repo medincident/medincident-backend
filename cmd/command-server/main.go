@@ -15,6 +15,8 @@ import (
 
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
 	incidenthandler "github.com/medincident/medincident-backend/internal/handler/command/incident"
@@ -36,7 +38,10 @@ import (
 	orgstructurev1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
 )
 
-const shutdownTimeout = 10 * time.Second
+const (
+	shutdownTimeout = 10 * time.Second
+	handlerTimeout  = 30 * time.Second
+)
 
 // authnSkip lists the RPC paths that bypass JWT introspection: health
 // and reflection endpoints need to answer before anyone is authed.
@@ -109,9 +114,14 @@ func main() {
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
 		grpc.ChainUnaryInterceptor(
 			grpcmw.ErrorInterceptor(logger),
+			grpcmw.TimeoutInterceptor(handlerTimeout),
 			grpcmw.AuthnInterceptor(authorizer, authnSkip),
 		),
 	)
+	healthSrv := health.NewServer()
+	healthv1.RegisterHealthServer(grpcServer, healthSrv)
+	healthSrv.SetServingStatus("", healthv1.HealthCheckResponse_SERVING)
+
 	orgstructurev1.RegisterOrgStructureCommandServiceServer(grpcServer, orgStructureHandler)
 	membershipv1.RegisterMembershipCommandServiceServer(grpcServer, membershipH)
 	incidentclassifierv1.RegisterIncidentClassifierCommandServiceServer(grpcServer, classifierH)
