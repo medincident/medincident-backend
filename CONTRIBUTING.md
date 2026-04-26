@@ -3,6 +3,7 @@
 ## Требования
 
 - [Go 1.26+](https://go.dev/dl/) — `buf`, `golangci-lint`, `dbmate`, `govulncheck`, `protoc-gen-go`, `protoc-gen-go-grpc`, `protoc-gen-grpc-gateway`, `protoc-gen-openapiv2` и `protoc-gen-doc` запинены через `go tool`, отдельная установка не нужна.
+- [Node.js 22+](https://nodejs.org/) + `npm` — `widdershins` (генерация `docs/api/HTTP.md` из OpenAPI) запинен в `package.json`. После клонирования запусти `npm install` один раз.
 - [Task](https://taskfile.dev/installation/) — task runner, обёртка над всеми частыми командами.
 - [Docker](https://docs.docker.com/get-docker/) — для `task test:integration` (testcontainers-go поднимает Postgres 16).
 - `make` — для сборки бинарника (`make build`, `make build-all`).
@@ -16,6 +17,12 @@
 ```bash
 git clone https://github.com/medincident/medincident-backend.git
 cd medincident-backend
+```
+
+Установи npm-зависимости (один раз):
+
+```bash
+npm install
 ```
 
 Настрой окружение и проверь тулчейн:
@@ -32,7 +39,7 @@ task test:unit      # быстрые юнит-тесты
 ## Частые команды
 
 ```bash
-task gen              # кодген: pkg/ (go+grpc+gateway) + api/openapi/ + docs/proto/
+task gen              # кодген: pkg/ (go+grpc+gateway) + api/openapi/ + docs/api/ (Proto.md + HTTP.md)
 task proto:fmt        # форматирование .proto
 task proto:lint       # buf lint
 task proto:breaking   # buf breaking vs origin/main
@@ -47,7 +54,7 @@ task migrate          # dbmate up
 task migrate:new -- <name>  # создать новую миграцию через dbmate new
 ```
 
-`task gen` — зонтичная точка входа для всех кодгенов. Сегодня дёргает `buf generate` (default template — `pkg/` + `api/openapi/`) и `buf generate --template buf.gen.docs.yaml` (`docs/proto/`); любой новый генератор добавится сюда.
+`task gen` — зонтичная точка входа для всех кодгенов. Дёргает `buf generate` (default template — `pkg/` + `api/openapi/`), `buf generate --template buf.gen.docs.yaml` (`docs/api/Proto.md`) и `widdershins` (`docs/api/HTTP.md`); любой новый генератор добавится сюда.
 
 ## Сборка бинарника
 

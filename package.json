@@ -1,0 +1,7 @@
+{
+  "name": "medincident-backend",
+  "private": true,
+  "devDependencies": {
+    "widdershins": "4.0.1"
+  }
+}

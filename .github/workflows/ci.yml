@@ -19,6 +19,8 @@ on:
       - "cmd/**"
       - "build/**"
       - "configs/**"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
@@ -38,6 +40,8 @@ on:
       - "cmd/**"
       - "build/**"
       - "configs/**"
+      - "package.json"
+      - "package-lock.json"
       - ".github/workflows/ci.yml"
 
 permissions:
@@ -54,6 +58,11 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
       - uses: arduino/setup-task@v2
         with:
           version: 3.x

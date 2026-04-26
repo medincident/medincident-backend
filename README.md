@@ -13,26 +13,30 @@ Command никогда не читает проекции и не знает о 
 ## Стек
 
 - Go 1.26
+- Node.js 22+ (widdershins — генерация `docs/api/HTTP.md` из OpenAPI)
 - gRPC-сервисы (pure gRPC). HTTP-фасад — отдельный бинарь
   `cmd/gateway-server`, который поднимает grpc-gateway mux и
   проксирует HTTP-запросы в `command-server` / `query-server`.
 - gorm v2 + gorm.io/driver/postgres
 - `github.com/guregu/null/v6` (только в `internal/model`)
-- samber/do/v2 · samber/oops · zerolog
+- samber/oops · zerolog
 - dbmate (`go tool dbmate`) для миграций
 - buf (`go tool buf`) + protoc-gen-go + protoc-gen-go-grpc +
   protoc-gen-grpc-gateway + protoc-gen-openapiv2 + protoc-gen-doc
   для кодогенерации
 
-## Документация по контрактам
+## Документация
+
+Полная техническая документация на русском языке живёт в [`docs/`](docs/)
+и синхронизируется в GitHub Wiki при пуше в `main`.
 
 - **Proto-контракты** — источник правды в [`api/proto/`](api/proto/)
   (`command/*` + `query/*` + `event/*`).
-- **Markdown-документация по всем RPC и сообщениям** — один общий файл:
-  [`docs/proto/medincident.md`](docs/proto/medincident.md). Содержит
-  обе стороны (command + query) и все события.
-- **OpenAPI v2 / Swagger** — один общий файл:
-  [`api/openapi/medincident.swagger.json`](api/openapi/medincident.swagger.json).
+- **gRPC reference** — [`docs/api/Proto.md`](docs/api/Proto.md) —
+  сгенерирован `protoc-gen-doc`, содержит все RPC и сообщения.
+- **HTTP reference** — [`docs/api/HTTP.md`](docs/api/HTTP.md) —
+  сгенерирован `widdershins` из OpenAPI spec.
+- **OpenAPI v2 / Swagger** — [`api/openapi/medincident.swagger.json`](api/openapi/medincident.swagger.json).
   Подходит для генерации клиентов и для Swagger UI.
 - **Go-биндинги** — сгенерированные stubs в [`pkg/`](pkg/) (коммитятся).
 - Всё перечисленное выше генерируется одной командой `task gen` и
@@ -44,7 +48,7 @@ Command никогда не читает проекции и не знает о 
   `MembershipCommandService`, `IncidentClassifierCommandService`;
   query-side: `OrgStructureQueryService`, `MembershipQueryService`,
   `IncidentClassifierQueryService`, `IdentityQueryService`,
-  `StatsQueryService`. Подробности — в `docs/proto/medincident.md`.
+  `StatsQueryService`. Подробности — в `docs/api/Proto.md`.
 - **Плоский layout, без DDD.** Три service-струт типа
   (`OrganizationService`, `ClinicService`, `DepartmentService`) в одном
   пакете `internal/services/orgstructure`. Зависимости —
@@ -76,18 +80,16 @@ Command никогда не читает проекции и не знает о 
 - `api/proto/` — исходные `.proto` контракты (event/* + command/* + query/*)
 - `api/openapi/medincident.swagger.json` — merged OpenAPI v2 для обеих сторон (коммитится)
 - `pkg/` — сгенерированный buf Go-код (коммитится)
-- `docs/proto/medincident.md` — сгенерированная Markdown-документация по всем proto-контрактам (коммитится)
+- `docs/` — техническая документация на русском языке (коммитится, синк в Wiki)
+- `docs/api/Proto.md` — сгенерированная Markdown-документация по всем proto-контрактам
+- `docs/api/HTTP.md` — сгенерированная Markdown-документация по HTTP API
 - `cmd/command-server/` — точка входа command-side gRPC сервера, graceful shutdown
-- `cmd/query-server/` — точка входа query-side сервера (placeholder, заполняется в Plan 3)
+- `cmd/query-server/` — точка входа query-side сервера
 - `cmd/gateway-server/` — точка входа HTTP-gateway, grpc-gateway mux, health endpoints
 - `configs/` — YAML config пример
 - `db/migrations/` — dbmate миграции (через `task migrate:new`)
-- `internal/config/` — YAML loader + go-playground/validator; shared types в `config.go`, специфика бинарника — в `command_server.go` / `query_server.go`, zerolog-блок — в `zerolog.go`
 - `internal/model/` — gorm-модели (единственное место где живёт `null.X`)
-- `internal/services/orgstructure/` — бизнес-логика, файл на метод
-- `internal/handler/orgstructure/` — gRPC handler, файл на RPC
-- `internal/di/` — samber/do/v2 фабрики (postgres, services, handler, grpc)
-- `test/integration/orgstructure/` — testcontainers-backed integration suite
+- `test/integration/` — testcontainers-backed integration suite
 
 ## Порты
 
@@ -138,8 +140,9 @@ task test               # всё вместе
 ## Генерация кода
 
 ```bash
-task gen         # buf generate (pkg/, api/openapi/) + docs template
-task gen:check   # verify pkg/, api/openapi/, docs/proto/ в синке с proto
+npm install             # один раз после клонирования (widdershins)
+task gen         # buf generate (pkg/, api/openapi/) + docs/api/ (Proto.md + HTTP.md)
+task gen:check   # verify pkg/, api/openapi/, docs/api/ в синке с proto
 
 task proto:fmt          # форматирование .proto
 task proto:fmt:check    # dry-run

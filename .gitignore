@@ -41,6 +41,9 @@ dist/
 .idea/
 .vscode/settings.json
 
+# Node
+node_modules/
+
 # Internal scratch
 drafts/
 .claude/
