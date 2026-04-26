@@ -8,7 +8,6 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
@@ -16,7 +15,7 @@ import (
 
 type UpdateIncidentPriorityPayload struct {
 	IncidentID string `validate:"required,uuid"`
-	Priority   string `validate:"required,oneof=low normal high critical"`
+	Priority   string `validate:"required,oneof=INCIDENT_PRIORITY_LOW INCIDENT_PRIORITY_NORMAL INCIDENT_PRIORITY_HIGH INCIDENT_PRIORITY_CRITICAL"`
 }
 
 type UpdateIncidentPriorityCommand struct {
@@ -36,7 +35,10 @@ func (s *IncidentService) UpdatePriority(
 		return err
 	}
 	id := uuid.MustParse(cmd.Payload.IncidentID)
-	priority := model.IncidentPriority(cmd.Payload.Priority)
+	priority, err := parseIncidentPriority(cmd.Payload.Priority)
+	if err != nil {
+		return err
+	}
 	now := time.Now()
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

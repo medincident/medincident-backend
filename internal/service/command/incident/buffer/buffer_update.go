@@ -21,7 +21,7 @@ type UpdatePayload struct {
 	CategoryID  *string `validate:"omitnil,uuid"`
 	TypeID      *string `validate:"omitnil,uuid"`
 	Description *string `validate:"omitnil,no_extra_ws,min=1,max=10000"`
-	OccurredAt  *time.Time
+	OccurredAt  *string
 }
 
 type UpdateCommand struct {
@@ -43,10 +43,16 @@ func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 	}
 	id := uuid.MustParse(cmd.Payload.BufferID)
 	now := time.Now()
+	var occurredAt *time.Time
 	if cmd.Payload.OccurredAt != nil {
-		if err := validateOccurredAt(*cmd.Payload.OccurredAt, now); err != nil {
+		t, err := parseOccurredAt(*cmd.Payload.OccurredAt)
+		if err != nil {
 			return err
 		}
+		if err := validateOccurredAt(t, now); err != nil {
+			return err
+		}
+		occurredAt = &t
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -77,8 +83,8 @@ func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 		if cmd.Payload.Description != nil {
 			b.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 		}
-		if cmd.Payload.OccurredAt != nil {
-			b.OccurredAt = null.TimeFrom(*cmd.Payload.OccurredAt)
+		if occurredAt != nil {
+			b.OccurredAt = null.TimeFrom(*occurredAt)
 		}
 		b.UpdatedAt = now
 

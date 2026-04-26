@@ -16,15 +16,11 @@ func (h *IncidentHandler) UpdateIncidentStatus(
 	if err != nil {
 		return nil, err
 	}
-	st, err := protoStatusToString(req.GetNewStatus())
-	if err != nil {
-		return nil, err
-	}
 	if err := h.svc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: req.GetIncidentId(),
-			NewStatus:  st,
+			NewStatus:  req.GetNewStatus().String(),
 		},
 	}); err != nil {
 		return nil, err

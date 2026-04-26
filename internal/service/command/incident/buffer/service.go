@@ -36,6 +36,7 @@ const (
 	ErrCodeBufferNotPatient         = "buffer_not_patient_owner"
 	ErrCodeBufferDeptNotFound       = "buffer_department_not_found"
 	ErrCodeBufferDispatcherNotFound = "buffer_dispatcher_not_found"
+	ErrCodeBufferInvalidOccurredAt  = "buffer_invalid_occurred_at"
 )
 
 const bufferMaxOccurredAtAge = 7 * 24 * time.Hour
@@ -65,6 +66,18 @@ func (s *BufferService) loadBuffer(tx *gorm.DB, id uuid.UUID) (*model.PatientInc
 		return nil, oops.In(scope).Code(ErrCodeBufferLoadFailed).Wrap(err)
 	}
 	return &b, nil
+}
+
+// parseOccurredAt parses an RFC3339Nano timestamp string.
+func parseOccurredAt(raw string) (time.Time, error) {
+	t, err := time.Parse(time.RFC3339Nano, raw)
+	if err != nil {
+		return time.Time{}, oops.In(scope).
+			Code(ErrCodeBufferInvalidOccurredAt).
+			Public("occurred_at is not a valid RFC3339 timestamp.").
+			With("occurred_at", raw).Wrap(err)
+	}
+	return t, nil
 }
 
 // validateOccurredAt enforces the 7-day window.

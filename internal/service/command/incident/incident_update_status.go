@@ -17,7 +17,7 @@ import (
 
 type UpdateIncidentStatusPayload struct {
 	IncidentID string `validate:"required,uuid"`
-	NewStatus  string `validate:"required,oneof=in_progress done rejected"`
+	NewStatus  string `validate:"required,oneof=INCIDENT_STATUS_IN_PROGRESS INCIDENT_STATUS_DONE INCIDENT_STATUS_REJECTED"`
 }
 
 type UpdateIncidentStatusCommand struct {
@@ -37,7 +37,10 @@ func (s *IncidentService) UpdateStatus(
 		return err
 	}
 	id := uuid.MustParse(cmd.Payload.IncidentID)
-	newStatus := model.IncidentStatus(cmd.Payload.NewStatus)
+	newStatus, err := parseIncidentStatus(cmd.Payload.NewStatus)
+	if err != nil {
+		return err
+	}
 	now := time.Now()
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {

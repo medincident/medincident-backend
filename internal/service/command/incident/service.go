@@ -42,6 +42,9 @@ const (
 	ErrCodeIncidentFrozen                = "incident_frozen"
 	ErrCodeIncidentNotCancellable        = "incident_not_cancellable"
 	ErrCodeIncidentNotReopenable         = "incident_not_reopenable"
+	ErrCodeIncidentInvalidStatus         = "incident_invalid_status"
+	ErrCodeIncidentInvalidPriority       = "incident_invalid_priority"
+	ErrCodeIncidentInvalidOccurredAt     = "incident_invalid_occurred_at"
 )
 
 // incidentMaxOccurredAtAge bounds how far in the past an employee
@@ -117,4 +120,57 @@ func (s *IncidentService) callerIsActiveRegistrar(
 			Wrap(err)
 	}
 	return count > 0, nil
+}
+
+// protoStatusMap maps proto enum string names to model status values.
+var protoStatusMap = map[string]model.IncidentStatus{
+	"INCIDENT_STATUS_IN_PROGRESS": model.IncidentStatusInProgress,
+	"INCIDENT_STATUS_DONE":        model.IncidentStatusDone,
+	"INCIDENT_STATUS_REJECTED":    model.IncidentStatusRejected,
+}
+
+// parseIncidentStatus converts a proto enum string to a model status.
+func parseIncidentStatus(s string) (model.IncidentStatus, error) {
+	v, ok := protoStatusMap[s]
+	if !ok {
+		return "", oops.In(scope).
+			Code(ErrCodeIncidentInvalidStatus).
+			Public("Invalid incident status.").
+			With("status", s).
+			Errorf("unknown status %q", s)
+	}
+	return v, nil
+}
+
+// protoPriorityMap maps proto enum string names to model priority values.
+var protoPriorityMap = map[string]model.IncidentPriority{
+	"INCIDENT_PRIORITY_LOW":      model.IncidentPriorityLow,
+	"INCIDENT_PRIORITY_NORMAL":   model.IncidentPriorityNormal,
+	"INCIDENT_PRIORITY_HIGH":     model.IncidentPriorityHigh,
+	"INCIDENT_PRIORITY_CRITICAL": model.IncidentPriorityCritical,
+}
+
+// parseIncidentPriority converts a proto enum string to a model priority.
+func parseIncidentPriority(s string) (model.IncidentPriority, error) {
+	v, ok := protoPriorityMap[s]
+	if !ok {
+		return "", oops.In(scope).
+			Code(ErrCodeIncidentInvalidPriority).
+			Public("Invalid incident priority.").
+			With("priority", s).
+			Errorf("unknown priority %q", s)
+	}
+	return v, nil
+}
+
+// parseOccurredAt parses an RFC3339Nano timestamp string.
+func parseOccurredAt(raw string) (time.Time, error) {
+	t, err := time.Parse(time.RFC3339Nano, raw)
+	if err != nil {
+		return time.Time{}, oops.In(scope).
+			Code(ErrCodeIncidentInvalidOccurredAt).
+			Public("occurred_at is not a valid RFC3339 timestamp.").
+			With("occurred_at", raw).Wrap(err)
+	}
+	return t, nil
 }
