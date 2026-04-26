@@ -3,6 +3,22 @@
 
 ## Table of Contents
 
+- [command/announcement/v1/announcement.proto](#command_announcement_v1_announcement-proto)
+    - [ArchiveAnnouncementRequest](#command-announcement-v1-ArchiveAnnouncementRequest)
+    - [ArchiveAnnouncementResponse](#command-announcement-v1-ArchiveAnnouncementResponse)
+    - [CreateAnnouncementRequest](#command-announcement-v1-CreateAnnouncementRequest)
+    - [CreateAnnouncementResponse](#command-announcement-v1-CreateAnnouncementResponse)
+    - [UnarchiveAnnouncementRequest](#command-announcement-v1-UnarchiveAnnouncementRequest)
+    - [UnarchiveAnnouncementResponse](#command-announcement-v1-UnarchiveAnnouncementResponse)
+    - [UpdateAnnouncementPriorityRequest](#command-announcement-v1-UpdateAnnouncementPriorityRequest)
+    - [UpdateAnnouncementPriorityResponse](#command-announcement-v1-UpdateAnnouncementPriorityResponse)
+    - [UpdateAnnouncementRequest](#command-announcement-v1-UpdateAnnouncementRequest)
+    - [UpdateAnnouncementResponse](#command-announcement-v1-UpdateAnnouncementResponse)
+
+    - [AnnouncementPriority](#command-announcement-v1-AnnouncementPriority)
+
+    - [AnnouncementCommandService](#command-announcement-v1-AnnouncementCommandService)
+
 - [command/incident/buffer/v1/buffer.proto](#command_incident_buffer_v1_buffer-proto)
     - [CancelPatientIncidentRequest](#command-incident-buffer-v1-CancelPatientIncidentRequest)
     - [CancelPatientIncidentResponse](#command-incident-buffer-v1-CancelPatientIncidentResponse)
@@ -156,6 +172,21 @@
 
     - [OrgStructureCommandService](#command-orgstructure-v1-OrgStructureCommandService)
 
+- [query/announcement/v1/announcement.proto](#query_announcement_v1_announcement-proto)
+    - [AnnouncementView](#query-announcement-v1-AnnouncementView)
+    - [GetAnnouncementRequest](#query-announcement-v1-GetAnnouncementRequest)
+    - [GetAnnouncementResponse](#query-announcement-v1-GetAnnouncementResponse)
+    - [ListAnnouncementsForClinicRequest](#query-announcement-v1-ListAnnouncementsForClinicRequest)
+    - [ListAnnouncementsForClinicResponse](#query-announcement-v1-ListAnnouncementsForClinicResponse)
+    - [ListAnnouncementsForDepartmentRequest](#query-announcement-v1-ListAnnouncementsForDepartmentRequest)
+    - [ListAnnouncementsForDepartmentResponse](#query-announcement-v1-ListAnnouncementsForDepartmentResponse)
+    - [ListAnnouncementsForOrganizationRequest](#query-announcement-v1-ListAnnouncementsForOrganizationRequest)
+    - [ListAnnouncementsForOrganizationResponse](#query-announcement-v1-ListAnnouncementsForOrganizationResponse)
+
+    - [AnnouncementPriority](#query-announcement-v1-AnnouncementPriority)
+
+    - [AnnouncementQueryService](#query-announcement-v1-AnnouncementQueryService)
+
 - [query/incident/classifier/v1/classifier.proto](#query_incident_classifier_v1_classifier-proto)
     - [Category](#query-incident-classifier-v1-Category)
     - [GetCategoryRequest](#query-incident-classifier-v1-GetCategoryRequest)
@@ -295,6 +326,191 @@
     - [StatsQueryService](#query-stats-v1-StatsQueryService)
 
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="command_announcement_v1_announcement-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## command/announcement/v1/announcement.proto
+
+
+
+<a name="command-announcement-v1-ArchiveAnnouncementRequest"></a>
+
+### ArchiveAnnouncementRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-announcement-v1-ArchiveAnnouncementResponse"></a>
+
+### ArchiveAnnouncementResponse
+
+
+
+
+
+
+
+<a name="command-announcement-v1-CreateAnnouncementRequest"></a>
+
+### CreateAnnouncementRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| clinic_id | [string](#string) | optional |  |
+| department_id | [string](#string) | optional |  |
+| title | [string](#string) |  |  |
+| content | [string](#string) |  |  |
+| priority | [AnnouncementPriority](#command-announcement-v1-AnnouncementPriority) |  |  |
+| starts_at | [string](#string) | optional | RFC3339Nano |
+| ends_at | [string](#string) | optional | RFC3339Nano |
+
+
+
+
+
+
+<a name="command-announcement-v1-CreateAnnouncementResponse"></a>
+
+### CreateAnnouncementResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-announcement-v1-UnarchiveAnnouncementRequest"></a>
+
+### UnarchiveAnnouncementRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-announcement-v1-UnarchiveAnnouncementResponse"></a>
+
+### UnarchiveAnnouncementResponse
+
+
+
+
+
+
+
+<a name="command-announcement-v1-UpdateAnnouncementPriorityRequest"></a>
+
+### UpdateAnnouncementPriorityRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+| priority | [AnnouncementPriority](#command-announcement-v1-AnnouncementPriority) |  |  |
+
+
+
+
+
+
+<a name="command-announcement-v1-UpdateAnnouncementPriorityResponse"></a>
+
+### UpdateAnnouncementPriorityResponse
+
+
+
+
+
+
+
+<a name="command-announcement-v1-UpdateAnnouncementRequest"></a>
+
+### UpdateAnnouncementRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+| title | [string](#string) |  |  |
+| content | [string](#string) |  |  |
+| starts_at | [string](#string) | optional | RFC3339Nano; absent = clear |
+| ends_at | [string](#string) | optional | RFC3339Nano; absent = clear |
+
+
+
+
+
+
+<a name="command-announcement-v1-UpdateAnnouncementResponse"></a>
+
+### UpdateAnnouncementResponse
+
+
+
+
+
+
+
+
+
+<a name="command-announcement-v1-AnnouncementPriority"></a>
+
+### AnnouncementPriority
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| ANNOUNCEMENT_PRIORITY_UNSPECIFIED | 0 |  |
+| ANNOUNCEMENT_PRIORITY_NORMAL | 1 |  |
+| ANNOUNCEMENT_PRIORITY_HIGH | 2 |  |
+
+
+
+
+
+
+
+<a name="command-announcement-v1-AnnouncementCommandService"></a>
+
+### AnnouncementCommandService
+AnnouncementCommandService is the write-side contract for announcements.
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| CreateAnnouncement | [CreateAnnouncementRequest](#command-announcement-v1-CreateAnnouncementRequest) | [CreateAnnouncementResponse](#command-announcement-v1-CreateAnnouncementResponse) |  |
+| UpdateAnnouncement | [UpdateAnnouncementRequest](#command-announcement-v1-UpdateAnnouncementRequest) | [UpdateAnnouncementResponse](#command-announcement-v1-UpdateAnnouncementResponse) |  |
+| UpdateAnnouncementPriority | [UpdateAnnouncementPriorityRequest](#command-announcement-v1-UpdateAnnouncementPriorityRequest) | [UpdateAnnouncementPriorityResponse](#command-announcement-v1-UpdateAnnouncementPriorityResponse) |  |
+| ArchiveAnnouncement | [ArchiveAnnouncementRequest](#command-announcement-v1-ArchiveAnnouncementRequest) | [ArchiveAnnouncementResponse](#command-announcement-v1-ArchiveAnnouncementResponse) |  |
+| UnarchiveAnnouncement | [UnarchiveAnnouncementRequest](#command-announcement-v1-UnarchiveAnnouncementRequest) | [UnarchiveAnnouncementResponse](#command-announcement-v1-UnarchiveAnnouncementResponse) |  |
+
+
 
 
 
@@ -2307,6 +2523,212 @@ generated under pkg/.
 | UpdateClinicPhysicalAddress | [UpdateClinicPhysicalAddressRequest](#command-orgstructure-v1-UpdateClinicPhysicalAddressRequest) | [UpdateClinicPhysicalAddressResponse](#command-orgstructure-v1-UpdateClinicPhysicalAddressResponse) |  |
 | CreateDepartment | [CreateDepartmentRequest](#command-orgstructure-v1-CreateDepartmentRequest) | [CreateDepartmentResponse](#command-orgstructure-v1-CreateDepartmentResponse) |  |
 | UpdateDepartmentDetails | [UpdateDepartmentDetailsRequest](#command-orgstructure-v1-UpdateDepartmentDetailsRequest) | [UpdateDepartmentDetailsResponse](#command-orgstructure-v1-UpdateDepartmentDetailsResponse) |  |
+
+
+
+
+
+<a name="query_announcement_v1_announcement-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## query/announcement/v1/announcement.proto
+
+
+
+<a name="query-announcement-v1-AnnouncementView"></a>
+
+### AnnouncementView
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+| organization_id | [string](#string) |  |  |
+| clinic_id | [string](#string) | optional |  |
+| department_id | [string](#string) | optional |  |
+| author_id | [string](#string) |  |  |
+| title | [string](#string) |  |  |
+| content | [string](#string) |  |  |
+| priority | [AnnouncementPriority](#query-announcement-v1-AnnouncementPriority) |  |  |
+| is_archived | [bool](#bool) |  |  |
+| starts_at | [string](#string) | optional | RFC3339Nano |
+| ends_at | [string](#string) | optional | RFC3339Nano |
+| created_at | [string](#string) |  | RFC3339Nano |
+| updated_at | [string](#string) |  | RFC3339Nano |
+| view_count | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-announcement-v1-GetAnnouncementRequest"></a>
+
+### GetAnnouncementRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-announcement-v1-GetAnnouncementResponse"></a>
+
+### GetAnnouncementResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| announcement | [AnnouncementView](#query-announcement-v1-AnnouncementView) |  |  |
+
+
+
+
+
+
+<a name="query-announcement-v1-ListAnnouncementsForClinicRequest"></a>
+
+### ListAnnouncementsForClinicRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+| include_archived | [bool](#bool) |  |  |
+| priority | [AnnouncementPriority](#query-announcement-v1-AnnouncementPriority) |  |  |
+| limit | [int32](#int32) |  |  |
+| cursor | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-announcement-v1-ListAnnouncementsForClinicResponse"></a>
+
+### ListAnnouncementsForClinicResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [AnnouncementView](#query-announcement-v1-AnnouncementView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-announcement-v1-ListAnnouncementsForDepartmentRequest"></a>
+
+### ListAnnouncementsForDepartmentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+| include_archived | [bool](#bool) |  |  |
+| priority | [AnnouncementPriority](#query-announcement-v1-AnnouncementPriority) |  |  |
+| limit | [int32](#int32) |  |  |
+| cursor | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-announcement-v1-ListAnnouncementsForDepartmentResponse"></a>
+
+### ListAnnouncementsForDepartmentResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [AnnouncementView](#query-announcement-v1-AnnouncementView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-announcement-v1-ListAnnouncementsForOrganizationRequest"></a>
+
+### ListAnnouncementsForOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| include_archived | [bool](#bool) |  |  |
+| priority | [AnnouncementPriority](#query-announcement-v1-AnnouncementPriority) |  | UNSPECIFIED = all |
+| limit | [int32](#int32) |  |  |
+| cursor | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-announcement-v1-ListAnnouncementsForOrganizationResponse"></a>
+
+### ListAnnouncementsForOrganizationResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [AnnouncementView](#query-announcement-v1-AnnouncementView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
+
+
+
+
+
+
+
+
+<a name="query-announcement-v1-AnnouncementPriority"></a>
+
+### AnnouncementPriority
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| ANNOUNCEMENT_PRIORITY_UNSPECIFIED | 0 |  |
+| ANNOUNCEMENT_PRIORITY_NORMAL | 1 |  |
+| ANNOUNCEMENT_PRIORITY_HIGH | 2 |  |
+
+
+
+
+
+
+
+<a name="query-announcement-v1-AnnouncementQueryService"></a>
+
+### AnnouncementQueryService
+AnnouncementQueryService is the read-side contract for announcements.
+GetAnnouncement increments the view counter on each call.
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| GetAnnouncement | [GetAnnouncementRequest](#query-announcement-v1-GetAnnouncementRequest) | [GetAnnouncementResponse](#query-announcement-v1-GetAnnouncementResponse) |  |
+| ListAnnouncementsForOrganization | [ListAnnouncementsForOrganizationRequest](#query-announcement-v1-ListAnnouncementsForOrganizationRequest) | [ListAnnouncementsForOrganizationResponse](#query-announcement-v1-ListAnnouncementsForOrganizationResponse) |  |
+| ListAnnouncementsForClinic | [ListAnnouncementsForClinicRequest](#query-announcement-v1-ListAnnouncementsForClinicRequest) | [ListAnnouncementsForClinicResponse](#query-announcement-v1-ListAnnouncementsForClinicResponse) |  |
+| ListAnnouncementsForDepartment | [ListAnnouncementsForDepartmentRequest](#query-announcement-v1-ListAnnouncementsForDepartmentRequest) | [ListAnnouncementsForDepartmentResponse](#query-announcement-v1-ListAnnouncementsForDepartmentResponse) |  |
 
 
 
