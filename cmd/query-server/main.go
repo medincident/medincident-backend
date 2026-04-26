@@ -21,6 +21,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
+	announcementqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/announcement"
 	incidentqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident"
 	bufferqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/buffer"
 	classifierhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/classifier"
@@ -29,6 +30,7 @@ import (
 	statshandler "github.com/medincident/medincident-backend/internal/handler/query/stats"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
+	announcementread "github.com/medincident/medincident-backend/internal/service/query/announcement"
 	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 	incidentread "github.com/medincident/medincident-backend/internal/service/query/incident"
 	bufferread "github.com/medincident/medincident-backend/internal/service/query/incident/buffer"
@@ -36,6 +38,7 @@ import (
 	membershipread "github.com/medincident/medincident-backend/internal/service/query/membership"
 	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
+	announcementqueryv1 "github.com/medincident/medincident-backend/pkg/query/announcement/v1"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	incidentqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
 	membershipqueryv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
@@ -130,6 +133,7 @@ func main() {
 	statsReader := statsread.NewReader(db, az, logger)
 	incidentReader := incidentread.NewReader(db, logger)
 	bufferReader := bufferread.NewReader(db, logger, incidentReader)
+	announcementReader := announcementread.NewReader(db, logger)
 
 	projector := identityread.NewProjector(db, logger)
 	consumer := identityread.NewConsumer(js, &cfg.NATS, projector, logger)
@@ -141,6 +145,7 @@ func main() {
 	incidentQH := incidentqueryhandler.NewIncidentQueryHandler(incidentReader)
 	bufferQH := bufferqueryhandler.NewBufferQueryHandler(bufferReader)
 	combinedIncidentH := incidentqueryhandler.NewCombinedIncidentQueryHandler(incidentQH, bufferQH)
+	announcementQH := announcementqueryhandler.NewAnnouncementQueryHandler(announcementReader)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
@@ -154,6 +159,7 @@ func main() {
 	classifierqueryv1.RegisterIncidentClassifierQueryServiceServer(grpcServer, clsH)
 	statsqueryv1.RegisterStatsQueryServiceServer(grpcServer, statsH)
 	incidentqueryv1.RegisterIncidentQueryServiceServer(grpcServer, combinedIncidentH)
+	announcementqueryv1.RegisterAnnouncementQueryServiceServer(grpcServer, announcementQH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)
