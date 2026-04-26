@@ -44,6 +44,9 @@ type CreateIncidentTypeResult struct {
 	ID uuid.UUID
 }
 
+// Create persists a new IncidentType under the given category.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentTypeService) Create(
 	ctx context.Context,
 	cmd CreateIncidentTypeCommand,

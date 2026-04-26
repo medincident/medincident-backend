@@ -35,7 +35,7 @@ type CreateRequestTypeResult struct {
 }
 
 // Create creates a new request type for an organization.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#createrequesttype
+// See: docs/services/request/Classifier.md
 func (s *RequestTypeService) Create(
 	ctx context.Context,
 	cmd CreateRequestTypeCommand,

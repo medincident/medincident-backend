@@ -31,6 +31,8 @@ type RemoveDepartmentResponsibleDeputyCommand struct {
 
 // RemoveDepartmentResponsibleDeputy clears the deputy slot. Fails if
 // the slot is already empty (no idempotent no-op per spec §4.7).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) RemoveDepartmentResponsibleDeputy(ctx context.Context, cmd RemoveDepartmentResponsibleDeputyCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

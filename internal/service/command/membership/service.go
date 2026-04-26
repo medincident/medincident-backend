@@ -2,6 +2,8 @@
 // membership-style entities (currently: Employee + Vacation). Future
 // entities (department heads, clinic heads) will live alongside
 // EmployeeService in this package.
+//
+// See: docs/services/Membership.md
 package membership
 
 import (

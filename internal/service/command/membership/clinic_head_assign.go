@@ -30,6 +30,8 @@ type AssignClinicHeadCommand struct {
 // AssignClinicHead links the employee to the clinic as its head. The
 // employee must currently work in a department that belongs to the
 // clinic. See spec §8.2 (ClinicHead variant).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinicHeadCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

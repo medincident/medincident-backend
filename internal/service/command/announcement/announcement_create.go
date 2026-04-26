@@ -41,7 +41,7 @@ type CreateAnnouncementResult struct {
 
 // Create persists a new announcement.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#createannouncement
+// See: docs/services/Announcements.md
 func (s *AnnouncementService) Create(
 	ctx context.Context, cmd *CreateAnnouncementCommand,
 ) (CreateAnnouncementResult, error) {

@@ -80,6 +80,9 @@ func lockTypeIDsInCategories(tx *gorm.DB, categoryIDs []uuid.UUID) ([]uuid.UUID,
 	return ids, nil
 }
 
+// Delete permanently removes a category and its entire subtree.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentCategoryService) Delete(
 	ctx context.Context,
 	cmd DeleteIncidentCategoryCommand,

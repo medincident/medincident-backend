@@ -40,6 +40,8 @@ type DepartmentListItem struct {
 // Get returns the DepartmentDetails for the given id. Authorization:
 // authz.ReaderOf.Department(id) — system admin, organization admin
 // of the owning org, or any employee of the owning org.
+//
+// See: docs/services/OrgStructure.md
 func (r *DepartmentReader) Get(
 	ctx context.Context,
 	caller authz.Caller,
@@ -74,6 +76,8 @@ func (r *DepartmentReader) Get(
 
 // CountByClinic returns the total number of departments belonging to
 // the given clinic. Authorization: authz.ReaderOf.Clinic(clinicID).
+//
+// See: docs/services/OrgStructure.md
 func (r *DepartmentReader) CountByClinic(
 	ctx context.Context,
 	caller authz.Caller,
@@ -101,6 +105,8 @@ func (r *DepartmentReader) CountByClinic(
 // first so a malformed Limit/Offset cannot trigger a gratuitous authz
 // DB round-trip — matching the validate→authorize order used on the
 // command side.
+//
+// See: docs/services/OrgStructure.md
 func (r *DepartmentReader) ListByClinic(
 	ctx context.Context,
 	caller authz.Caller,

@@ -35,6 +35,8 @@ type UpdateVacationEndDateCommand struct {
 // Uses SELECT ... FOR UPDATE on the vacation row to serialise against
 // a concurrent ForceEndVacation (which would otherwise allow this
 // command to resurrect a manually-ended vacation from a stale read).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) UpdateVacationEndDate(ctx context.Context, cmd UpdateVacationEndDateCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

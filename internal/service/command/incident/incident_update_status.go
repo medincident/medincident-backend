@@ -28,6 +28,8 @@ type UpdateIncidentStatusCommand struct {
 // UpdateStatus performs forward-only transitions. The set of valid
 // transitions is fixed: pending->in_progress, in_progress->done,
 // in_progress->rejected. Cancellation is a separate RPC.
+//
+// See: docs/services/incident/Incidents.md
 func (s *IncidentService) UpdateStatus(
 	ctx context.Context, cmd *UpdateIncidentStatusCommand,
 ) error {

@@ -34,6 +34,8 @@ type DisallowIncidentTypeForPatientsResult struct{}
 // DisallowForPatients revokes the patient-submission permission for the
 // given type. Idempotent: a no-op if the flag is already FALSE. Requires
 // the type to be is_active = TRUE.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentTypeService) DisallowForPatients(
 	ctx context.Context,
 	cmd DisallowIncidentTypeForPatientsCommand,

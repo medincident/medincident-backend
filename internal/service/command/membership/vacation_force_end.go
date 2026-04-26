@@ -31,6 +31,8 @@ type ForceEndVacationCommand struct {
 // ForceEndVacation closes a running vacation at the current moment.
 // Only applicable to vacations whose starts_at has already passed.
 // For scheduled (future) vacations, use CancelScheduledVacation.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVacationCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

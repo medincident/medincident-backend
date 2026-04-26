@@ -30,6 +30,8 @@ type CancelScheduledVacationCommand struct {
 // CancelScheduledVacation removes a not-yet-started vacation. For a
 // vacation whose starts_at has already passed, use ForceEndVacation
 // instead.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd CancelScheduledVacationCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

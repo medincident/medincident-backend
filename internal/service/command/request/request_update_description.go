@@ -28,7 +28,7 @@ type UpdateServiceRequestDescriptionCommand struct {
 }
 
 // UpdateDescription updates the description of a service request.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#updateservicerequestdescription
+// See: docs/services/request/Requests.md
 func (s *ServiceRequestService) UpdateDescription(
 	ctx context.Context,
 	cmd UpdateServiceRequestDescriptionCommand,

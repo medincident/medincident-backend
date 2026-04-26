@@ -1,5 +1,7 @@
 // Package classifier owns the request type classifier command-side logic.
 // A flat, per-organisation classifier with active-name uniqueness.
+//
+// See: docs/services/request/Classifier.md
 package classifier
 
 import (

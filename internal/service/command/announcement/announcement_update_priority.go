@@ -27,7 +27,7 @@ type UpdateAnnouncementPriorityCommand struct {
 
 // UpdatePriority changes the priority of a non-archived announcement.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#updateannouncementpriority
+// See: docs/services/Announcements.md
 func (s *AnnouncementService) UpdatePriority(
 	ctx context.Context, cmd *UpdateAnnouncementPriorityCommand,
 ) error {

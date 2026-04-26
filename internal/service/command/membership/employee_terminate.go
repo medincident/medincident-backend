@@ -31,6 +31,8 @@ type TerminateEmployeeCommand struct {
 // employee_vacations.employee_id drops any existing vacations in the
 // same statement. Publishes EmployeeTerminated with an empty payload
 // (aggregate_id in the envelope is sufficient for consumers).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

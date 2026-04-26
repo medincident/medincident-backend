@@ -57,6 +57,8 @@ type OrganizationListItem struct {
 
 // Get returns the OrganizationDetails for the given id. Returns an
 // oops error with code organization_not_found when the row is absent.
+//
+// See: docs/services/OrgStructure.md
 func (r *OrganizationReader) Get(ctx context.Context, id uuid.UUID) (*OrganizationDetails, error) {
 	var (
 		out      OrganizationDetails
@@ -95,6 +97,8 @@ func (r *OrganizationReader) Get(ctx context.Context, id uuid.UUID) (*Organizati
 }
 
 // List returns up to q.Limit organizations, ordered most-recently-created first.
+//
+// See: docs/services/OrgStructure.md
 func (r *OrganizationReader) List(ctx context.Context, q ListQuery) ([]OrganizationListItem, error) {
 	if err := q.normalize(); err != nil {
 		return nil, err
@@ -136,6 +140,8 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) ([]Organizat
 // callers can swap endpoints without reshaping their page model. The
 // query is length-capped BEFORE any DB round-trip; the pattern is
 // always bound positionally so users cannot inject SQL.
+//
+// See: docs/services/OrgStructure.md
 func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQuery) ([]OrganizationListItem, error) {
 	if len(query) > organizationSearchMaxQueryLength {
 		return nil, oops.In("reader.orgstructure.organization").
@@ -183,6 +189,8 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 }
 
 // Count returns the total number of organizations in the projection.
+//
+// See: docs/services/OrgStructure.md
 func (r *OrganizationReader) Count(ctx context.Context) (int64, error) {
 	var total int64
 	if err := r.db.WithContext(ctx).Raw(

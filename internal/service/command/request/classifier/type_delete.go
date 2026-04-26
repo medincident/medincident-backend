@@ -30,7 +30,7 @@ type DeleteRequestTypeCommand struct {
 type DeleteRequestTypeResult struct{}
 
 // Delete permanently removes a request type.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#deleterequesttype
+// See: docs/services/request/Classifier.md
 func (s *RequestTypeService) Delete(
 	ctx context.Context,
 	cmd DeleteRequestTypeCommand,

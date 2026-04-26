@@ -37,7 +37,7 @@ type CreateServiceRequestResult struct {
 }
 
 // Create creates a new service request.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#createservicerequest
+// See: docs/services/request/Requests.md
 func (s *ServiceRequestService) Create(
 	ctx context.Context,
 	cmd *CreateServiceRequestCommand,

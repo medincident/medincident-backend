@@ -1,5 +1,7 @@
 // Package request is the write-side service for service requests.
 // The struct exposes all command methods on a single service type.
+//
+// See: docs/services/request/Requests.md
 package request
 
 import (

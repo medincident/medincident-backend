@@ -2,7 +2,7 @@
 // and projections.announcement_views. Visibility is enforced via inline
 // SQL — there are no authz.Require calls on the read path.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements
+// See: docs/services/Announcements.md
 package announcement
 
 import (
@@ -230,7 +230,7 @@ func normalizeLimit(l int) int {
 
 // GetAnnouncement returns an announcement by ID and increments its view counter.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#getannouncement
+// See: docs/services/Announcements.md
 func (r *Reader) GetAnnouncement(ctx context.Context, callerID string, id uuid.UUID) (*AnnouncementRow, error) {
 	cc, err := r.resolveCaller(ctx, callerID)
 	if err != nil {
@@ -312,7 +312,7 @@ type ListResult struct {
 
 // ListForOrganization returns announcements scoped to an organization.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#listannouncementsfororganization
+// See: docs/services/Announcements.md
 func (r *Reader) ListForOrganization(
 	ctx context.Context, callerID string, orgID uuid.UUID, f ListFilter,
 ) (ListResult, error) {
@@ -332,7 +332,7 @@ func (r *Reader) ListForOrganization(
 
 // ListForClinic returns announcements scoped to a clinic (and its org-level announcements).
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#listannouncementsfortclinic
+// See: docs/services/Announcements.md
 func (r *Reader) ListForClinic(
 	ctx context.Context, callerID string, clinicID uuid.UUID, f ListFilter,
 ) (ListResult, error) {
@@ -367,7 +367,7 @@ func (r *Reader) ListForClinic(
 
 // ListForDepartment returns announcements scoped to a department (plus clinic + org).
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#listannouncementsfordepartment
+// See: docs/services/Announcements.md
 func (r *Reader) ListForDepartment(
 	ctx context.Context, callerID string, deptID uuid.UUID, f ListFilter,
 ) (ListResult, error) {

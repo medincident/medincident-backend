@@ -72,6 +72,8 @@ func NewReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *Reader {
 // organization. A missing counter row is soft-missed and returns a
 // zero-filled struct rather than an error. Authorization:
 // authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/Stats.md
 func (r *Reader) GetOrganizationStats(
 	ctx context.Context,
 	caller authz.Caller,
@@ -120,6 +122,8 @@ func (r *Reader) GetOrganizationStats(
 // GetClinicStats returns the aggregate snapshot for a clinic. A
 // missing counter row yields zero-filled counts. Authorization:
 // authz.ReaderOf.Clinic(clinicID).
+//
+// See: docs/services/Stats.md
 func (r *Reader) GetClinicStats(
 	ctx context.Context,
 	caller authz.Caller,
@@ -163,6 +167,8 @@ func (r *Reader) GetClinicStats(
 // A missing counter row yields zero-filled counts; clinic_id stays
 // nil and organization_id stays zero in that soft-miss case.
 // Authorization: authz.ReaderOf.Department(deptID).
+//
+// See: docs/services/Stats.md
 func (r *Reader) GetDepartmentStats(
 	ctx context.Context,
 	caller authz.Caller,

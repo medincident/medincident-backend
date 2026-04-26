@@ -25,6 +25,8 @@ type CancelCommand struct {
 
 // Cancel marks the buffer entry cancelled. Only the patient owner,
 // only while pending.
+//
+// See: docs/services/incident/Buffer.md
 func (s *BufferService) Cancel(ctx context.Context, cmd *CancelCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

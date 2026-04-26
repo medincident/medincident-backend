@@ -74,6 +74,8 @@ func categoryDepth(tx *gorm.DB, categoryID uuid.UUID) (int, error) {
 
 // Create persists a new IncidentCategory and appends an
 // IncidentCategoryCreated event in the same transaction.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentCategoryService) Create(
 	ctx context.Context,
 	cmd CreateIncidentCategoryCommand,

@@ -46,6 +46,8 @@ type CreateDepartmentResult struct {
 }
 
 // Create persists a new Department under the given clinic.
+//
+// See: docs/services/OrgStructure.md
 func (s *DepartmentService) Create(
 	ctx context.Context,
 	cmd CreateDepartmentCommand,

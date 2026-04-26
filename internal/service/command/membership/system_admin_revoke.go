@@ -27,6 +27,8 @@ type RevokeSystemAdminCommand struct {
 // RevokeSystemAdmin removes a SystemAdmin grant. No Zitadel verify —
 // a stale admin entry should be removable even if the user has been
 // deleted from Zitadel. See spec §8.9.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) RevokeSystemAdmin(ctx context.Context, cmd RevokeSystemAdminCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

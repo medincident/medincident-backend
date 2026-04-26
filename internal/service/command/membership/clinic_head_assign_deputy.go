@@ -32,6 +32,8 @@ type AssignClinicHeadDeputyCommand struct {
 
 // AssignClinicHeadDeputy sets the deputy slot on an existing CH role.
 // See spec §8.5 (ClinicHead variant).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignClinicHeadDeputy(ctx context.Context, cmd AssignClinicHeadDeputyCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

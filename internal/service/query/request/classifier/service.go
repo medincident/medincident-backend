@@ -1,5 +1,7 @@
 // Package classifier exposes read methods over the request type
 // projections (projections.request_types).
+//
+// See: docs/services/request/Classifier.md
 package classifier
 
 import (

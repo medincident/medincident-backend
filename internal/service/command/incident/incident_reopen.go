@@ -33,6 +33,8 @@ type ReopenIncidentResult struct {
 // rejected (NOT cancelled). The new incident inherits org/clinic/dept,
 // category, type, source_patient_zitadel_user_id; description is empty;
 // priority resets to normal; occurred_at is now; registrar is the caller.
+//
+// See: docs/services/incident/Incidents.md
 func (s *IncidentService) Reopen(
 	ctx context.Context, cmd *ReopenIncidentCommand,
 ) (ReopenIncidentResult, error) {

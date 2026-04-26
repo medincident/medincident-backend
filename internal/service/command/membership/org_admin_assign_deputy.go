@@ -32,6 +32,8 @@ type AssignOrganizationAdminDeputyCommand struct {
 
 // AssignOrganizationAdminDeputy sets the deputy slot on an existing
 // OrgAdmin role. See spec §8.5 (OrgAdmin variant).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignOrganizationAdminDeputy(ctx context.Context, cmd AssignOrganizationAdminDeputyCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

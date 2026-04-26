@@ -41,6 +41,8 @@ type ClinicListItem struct {
 // Get returns the ClinicDetails for the given id. Authorization:
 // authz.ReaderOf.Clinic(id) — system admin, organization admin of the
 // owning org, or any employee of the owning org.
+//
+// See: docs/services/OrgStructure.md
 func (r *ClinicReader) Get(
 	ctx context.Context,
 	caller authz.Caller,
@@ -88,6 +90,8 @@ func (r *ClinicReader) Get(
 // CountByOrganization returns the total number of clinics belonging
 // to the given organization. Authorization:
 // authz.ReaderOf.Organization(organizationID).
+//
+// See: docs/services/OrgStructure.md
 func (r *ClinicReader) CountByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
@@ -117,6 +121,8 @@ func (r *ClinicReader) CountByOrganization(
 // normalized first so a malformed Limit/Offset cannot trigger a
 // gratuitous authz DB round-trip — matching the validate→authorize
 // order used on the command side.
+//
+// See: docs/services/OrgStructure.md
 func (r *ClinicReader) ListByOrganization(
 	ctx context.Context,
 	caller authz.Caller,

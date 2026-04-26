@@ -80,6 +80,8 @@ func scanEmployeeCard(scanner interface {
 // Get returns the employee_card row for the given id. Authorization:
 // authz.ReaderOf.Employee(id) — system admin, organization admin of
 // the employee's org, or any employee of the same organization.
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) Get(
 	ctx context.Context,
 	caller authz.Caller,
@@ -191,6 +193,8 @@ func (r *EmployeeReader) listByField(
 
 // ListByDepartment returns cards under a department. Authorization:
 // authz.ReaderOf.Department(deptID).
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) ListByDepartment(
 	ctx context.Context,
 	caller authz.Caller,
@@ -206,6 +210,8 @@ func (r *EmployeeReader) ListByDepartment(
 
 // ListByClinic returns cards under a clinic. Authorization:
 // authz.ReaderOf.Clinic(clinicID).
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) ListByClinic(
 	ctx context.Context,
 	caller authz.Caller,
@@ -221,6 +227,8 @@ func (r *EmployeeReader) ListByClinic(
 
 // ListByOrganization returns cards under an organization. Authorization:
 // authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) ListByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
@@ -242,6 +250,8 @@ func (r *EmployeeReader) ListByOrganization(
 // ListByOrganization so that cross-org callers see the same
 // unauthorized behaviour for List and Search. Query is bound
 // positionally — never concatenated — so users cannot inject SQL.
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) SearchByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
@@ -336,6 +346,8 @@ func (r *EmployeeReader) countByField(
 
 // CountByDepartment returns the total employees under a department.
 // Authorization: authz.ReaderOf.Department(deptID).
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) CountByDepartment(
 	ctx context.Context,
 	caller authz.Caller,
@@ -350,6 +362,8 @@ func (r *EmployeeReader) CountByDepartment(
 
 // CountByClinic returns the total employees under a clinic.
 // Authorization: authz.ReaderOf.Clinic(clinicID).
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) CountByClinic(
 	ctx context.Context,
 	caller authz.Caller,
@@ -364,6 +378,8 @@ func (r *EmployeeReader) CountByClinic(
 
 // CountByOrganization returns the total employees under an organization.
 // Authorization: authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) CountByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
@@ -403,6 +419,8 @@ func vacationAuthzPolicy(employeeID uuid.UUID) authz.Policy {
 // filter. Authorization matches ListVacationsByEmployee — only system
 // admins, admins of the owning organization, and the employee
 // themselves may count.
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) CountVacationsByEmployee(
 	ctx context.Context,
 	caller authz.Caller,
@@ -445,6 +463,8 @@ func (r *EmployeeReader) CountVacationsByEmployee(
 // no sibling-employee access. The policy is composed inline because
 // the "self" branch is specific to this read and does not reuse the
 // ReaderOf battery.
+//
+// See: docs/services/Membership.md
 func (r *EmployeeReader) ListVacationsByEmployee(
 	ctx context.Context,
 	caller authz.Caller,

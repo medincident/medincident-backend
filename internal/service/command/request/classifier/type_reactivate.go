@@ -32,7 +32,7 @@ type ReactivateRequestTypeResult struct{}
 
 // Reactivate marks a request type as active. Idempotent. May conflict
 // on name uniqueness if another active type with the same name exists.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#reactivaterequesttype
+// See: docs/services/request/Classifier.md
 func (s *RequestTypeService) Reactivate(
 	ctx context.Context,
 	cmd ReactivateRequestTypeCommand,

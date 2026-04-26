@@ -36,6 +36,8 @@ type DeactivateIncidentCategoryResult struct{}
 // every descendant category, and every type whose category_id is in
 // the resulting subtree. One outbox event is written per row actually
 // toggled, all inside a single transaction.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentCategoryService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateIncidentCategoryCommand,

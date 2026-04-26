@@ -32,6 +32,8 @@ type AssignDepartmentResponsibleDeputyCommand struct {
 
 // AssignDepartmentResponsibleDeputy sets the deputy slot on an
 // existing DR role. See spec §8.5.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignDepartmentResponsibleDeputy(ctx context.Context, cmd AssignDepartmentResponsibleDeputyCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

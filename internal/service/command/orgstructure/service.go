@@ -1,3 +1,6 @@
+// Package orgstructure is the write-side service for organizational structure.
+//
+// See: docs/services/OrgStructure.md
 package orgstructure
 
 import (

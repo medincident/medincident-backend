@@ -10,6 +10,8 @@
 // patients are not employees, but they must pick an organization to
 // file an incident against, so the classifier menu stays open to any
 // logged-in caller. Cross-org reads by employees fail permission_denied.
+//
+// See: docs/services/incident/Classifier.md
 package classifier
 
 import (

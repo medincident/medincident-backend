@@ -59,6 +59,8 @@ type callerContext struct {
 type CallerContext = callerContext
 
 // ResolveCaller is the public wrapper for resolveCaller.
+//
+// See: docs/services/incident/Incidents.md
 func (r *Reader) ResolveCaller(ctx context.Context, callerID string) (*CallerContext, error) {
 	return r.resolveCaller(ctx, callerID)
 }
@@ -294,6 +296,8 @@ func scanIncident(row interface{ Scan(...any) error }, v *IncidentView) error {
 }
 
 // GetIncident loads one incident if the caller is allowed to see it.
+//
+// See: docs/services/incident/Incidents.md
 func (r *Reader) GetIncident(ctx context.Context, callerID string, id uuid.UUID) (*IncidentView, error) {
 	cc, err := r.resolveCaller(ctx, callerID)
 	if err != nil {
@@ -402,6 +406,8 @@ type ListFilters struct {
 }
 
 // ListIncidents returns incidents in an organization the caller may see.
+//
+// See: docs/services/incident/Incidents.md
 func (r *Reader) ListIncidents(
 	ctx context.Context, callerID string, orgID uuid.UUID, f *ListFilters,
 ) ([]IncidentView, error) {
@@ -481,6 +487,8 @@ func (r *Reader) ListIncidents(
 
 // ListMyIncidents returns incidents where the caller is the registrar
 // (employees) OR linked to the caller's buffer submissions (patients).
+//
+// See: docs/services/incident/Incidents.md
 func (r *Reader) ListMyIncidents(
 	ctx context.Context, callerID string, limit, offset int,
 ) ([]IncidentView, error) {
@@ -572,6 +580,8 @@ type IncidentHistory struct {
 // GetIncidentHistory returns both timelines for one incident, only if
 // the caller can see the incident at all. Patients are NOT allowed to
 // view history (returns permission_denied).
+//
+// See: docs/services/incident/Incidents.md
 func (r *Reader) GetIncidentHistory(
 	ctx context.Context, callerID string, incidentID uuid.UUID,
 ) (*IncidentHistory, error) {

@@ -1,3 +1,6 @@
+// Package classifier is the query-side reader for the incident classifier.
+//
+// See: docs/services/incident/Classifier.md
 package classifier
 
 import (
@@ -79,6 +82,8 @@ func scanType(scanner interface {
 
 // GetCategory returns one incident category by id. Authorization:
 // authz.ReaderOf.Category(id).
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) GetCategory(
 	ctx context.Context,
 	caller authz.Caller,
@@ -107,6 +112,8 @@ func (r *Reader) GetCategory(
 
 // ListCategoriesByOrganization paginates categories for one org.
 // Authorization: authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) ListCategoriesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
@@ -152,6 +159,8 @@ func (r *Reader) ListCategoriesByOrganization(
 // ListActiveRootCategories returns top-level active categories for an
 // organization (rows whose parent_category_id IS NULL). Authorization:
 // authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) ListActiveRootCategories(
 	ctx context.Context,
 	caller authz.Caller,
@@ -200,6 +209,8 @@ func (r *Reader) ListActiveRootCategories(
 // (inclusive), flattened, using a recursive CTE. Authorization:
 // authz.ReaderOf.Category(rootID) — the root category's org scopes
 // the whole subtree.
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) ListCategorySubtree(
 	ctx context.Context,
 	caller authz.Caller,
@@ -252,6 +263,8 @@ func (r *Reader) ListCategorySubtree(
 
 // GetType returns one incident type by id. Authorization:
 // authz.ReaderOf.IncidentType(id).
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) GetType(
 	ctx context.Context,
 	caller authz.Caller,
@@ -280,6 +293,8 @@ func (r *Reader) GetType(
 
 // ListTypesByCategory returns every type under one category.
 // Authorization: authz.ReaderOf.Category(categoryID).
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) ListTypesByCategory(
 	ctx context.Context,
 	caller authz.Caller,
@@ -324,6 +339,8 @@ func (r *Reader) ListTypesByCategory(
 
 // ListActiveTypesByOrganization returns every active type for one org.
 // Authorization: authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) ListActiveTypesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
@@ -371,6 +388,8 @@ func (r *Reader) ListActiveTypesByOrganization(
 // of incident types a patient may pick from when filing an incident.
 // Authorization: authz.Authenticated — patients are not organization
 // members, so membership is not required, but the endpoint is not public.
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) ListPatientAllowedTypesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
@@ -423,6 +442,8 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(
 // to patients) are excluded so the patient never sees a dead-end branch.
 // Authorization: authz.Authenticated — same rationale as
 // ListPatientAllowedTypesByOrganization.
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) ListPatientVisibleCategoriesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,

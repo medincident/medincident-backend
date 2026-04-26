@@ -3,6 +3,8 @@
 // publish or reject them. Once published the buffer row stays as a
 // historical anchor; the materialised incident lives in
 // internal/service/command/incident.
+//
+// See: docs/services/incident/Buffer.md
 package buffer
 
 import (

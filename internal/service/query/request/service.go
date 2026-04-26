@@ -1,5 +1,7 @@
 // Package request is the query-side reader for projections.service_requests
 // and the two history projections.
+//
+// See: docs/services/request/Requests.md
 package request
 
 import (

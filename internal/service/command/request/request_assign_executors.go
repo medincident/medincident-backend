@@ -29,7 +29,7 @@ type AssignExecutorsCommand struct {
 
 // AssignExecutors replaces the executor set of a service request using
 // a diff-based approach: remove absent, add new.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#assignexecutors
+// See: docs/services/request/Requests.md
 func (s *ServiceRequestService) AssignExecutors(
 	ctx context.Context,
 	cmd AssignExecutorsCommand,

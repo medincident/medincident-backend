@@ -30,6 +30,8 @@ type AssignDepartmentResponsibleCommand struct {
 // AssignDepartmentResponsible links the employee to the department as
 // a responsible. The employee must currently work in the department.
 // See spec §8.2.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignDepartmentResponsible(ctx context.Context, cmd AssignDepartmentResponsibleCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

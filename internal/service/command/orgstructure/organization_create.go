@@ -51,6 +51,8 @@ type CreateOrganizationResult struct {
 
 // Create persists a new Organization and writes the matching
 // projection row in one transaction via the synchronous projector.
+//
+// See: docs/services/OrgStructure.md
 func (s *OrganizationService) Create(
 	ctx context.Context,
 	cmd CreateOrganizationCommand,

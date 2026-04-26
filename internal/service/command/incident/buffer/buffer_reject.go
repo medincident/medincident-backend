@@ -26,6 +26,8 @@ type RejectCommand struct {
 // Reject closes a buffer entry without creating an incident. Allowed
 // for OrgDispatcher / OrgAdmin / SystemAdmin of the buffer's org while
 // the entry is pending.
+//
+// See: docs/services/incident/Buffer.md
 func (s *BufferService) Reject(ctx context.Context, cmd *RejectCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

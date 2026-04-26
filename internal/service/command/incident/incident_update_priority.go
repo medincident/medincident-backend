@@ -27,6 +27,8 @@ type UpdateIncidentPriorityCommand struct {
 // UpdatePriority sets the incident priority. Allowed only for
 // privileged roles, only while the incident is not terminal.
 // No-op if priority is unchanged (no history row written).
+//
+// See: docs/services/incident/Incidents.md
 func (s *IncidentService) UpdatePriority(
 	ctx context.Context, cmd *UpdateIncidentPriorityCommand,
 ) error {

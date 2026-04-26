@@ -33,6 +33,8 @@ type UpdateOrganizationDetailsCommand struct {
 
 // UpdateDetails changes an organization's name and description. If
 // neither field actually changes, returns nil without writing anything.
+//
+// See: docs/services/OrgStructure.md
 func (s *OrganizationService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateOrganizationDetailsCommand,

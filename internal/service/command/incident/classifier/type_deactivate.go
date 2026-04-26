@@ -30,6 +30,9 @@ type DeactivateIncidentTypeCommand struct {
 // DeactivateIncidentTypeResult is empty.
 type DeactivateIncidentTypeResult struct{}
 
+// Deactivate marks an incident type as inactive.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentTypeService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateIncidentTypeCommand,

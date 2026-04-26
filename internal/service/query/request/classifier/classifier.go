@@ -1,3 +1,6 @@
+// Package classifier is the query-side reader for the request type classifier.
+//
+// See: docs/services/request/Classifier.md
 package classifier
 
 import (
@@ -47,6 +50,8 @@ func scanRequestType(scanner interface {
 
 // GetRequestType returns one request type by id. Authorization:
 // authz.ReaderOf.RequestType(id).
+//
+// See: docs/services/request/Classifier.md
 func (r *Reader) GetRequestType(
 	ctx context.Context,
 	caller authz.Caller,
@@ -75,6 +80,8 @@ func (r *Reader) GetRequestType(
 
 // ListRequestTypesByOrganization paginates request types for one org.
 // Authorization: authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/request/Classifier.md
 func (r *Reader) ListRequestTypesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
@@ -119,6 +126,8 @@ func (r *Reader) ListRequestTypesByOrganization(
 
 // ListActiveRequestTypesByOrganization returns every active request
 // type for one org. Authorization: authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/request/Classifier.md
 func (r *Reader) ListActiveRequestTypesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
