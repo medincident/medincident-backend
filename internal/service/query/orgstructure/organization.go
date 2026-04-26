@@ -8,6 +8,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/util/like"
 )
 
 // Error codes emitted by OrganizationReader methods.
@@ -158,7 +160,7 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 	args := make([]any, 0, 3)
 	if query != "" {
 		sqlBuf += ` WHERE COALESCE(name, '') ILIKE ?`
-		args = append(args, "%"+query+"%")
+		args = append(args, "%"+like.EscapePattern(query)+"%")
 	}
 	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?`
 	args = append(args, q.Limit, q.Offset)

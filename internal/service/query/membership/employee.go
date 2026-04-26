@@ -10,6 +10,7 @@ import (
 	"github.com/samber/oops"
 
 	"github.com/medincident/medincident-backend/internal/service/authz"
+	"github.com/medincident/medincident-backend/internal/util/like"
 )
 
 // Error codes emitted by EmployeeReader.
@@ -286,7 +287,7 @@ func (r *EmployeeReader) SearchByOrganization(
 			COALESCE(display_name, '') ILIKE ? OR
 			COALESCE(email, '')        ILIKE ?
 		)`
-		pattern := "%" + query + "%"
+		pattern := "%" + like.EscapePattern(query) + "%"
 		args = append(args, pattern, pattern, pattern, pattern)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC
