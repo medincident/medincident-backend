@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package command.request.v1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+
+option go_package = "github.com/medincident/medincident-backend/pkg/command/request/v1;requestv1";
+
+service ServiceRequestCommandService {
+  rpc CreateServiceRequest(CreateServiceRequestRequest) returns (CreateServiceRequestResponse) {
+    option (google.api.http) = {
+      post: "/v1/service-requests"
+      body: "*"
+    };
+  }
+  rpc UpdateServiceRequestDescription(UpdateServiceRequestDescriptionRequest) returns (UpdateServiceRequestDescriptionResponse) {
+    option (google.api.http) = {
+      put: "/v1/service-requests/{service_request_id}/description"
+      body: "*"
+    };
+  }
+  rpc UpdateServiceRequestStatus(UpdateServiceRequestStatusRequest) returns (UpdateServiceRequestStatusResponse) {
+    option (google.api.http) = {
+      put: "/v1/service-requests/{service_request_id}/status"
+      body: "*"
+    };
+  }
+  rpc AssignExecutors(AssignExecutorsRequest) returns (AssignExecutorsResponse) {
+    option (google.api.http) = {
+      put: "/v1/service-requests/{service_request_id}/executors"
+      body: "*"
+    };
+  }
+}
+
+message CreateServiceRequestRequest {
+  string department_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string type_id = 2 [(google.api.field_behavior) = REQUIRED];
+  optional string incident_id = 3;
+  string description = 4 [(google.api.field_behavior) = REQUIRED];
+  repeated string executor_employee_ids = 5;
+}
+message CreateServiceRequestResponse {
+  string service_request_id = 1;
+}
+
+message UpdateServiceRequestDescriptionRequest {
+  string service_request_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string description = 2 [(google.api.field_behavior) = REQUIRED];
+}
+message UpdateServiceRequestDescriptionResponse {}
+
+message UpdateServiceRequestStatusRequest {
+  string service_request_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string new_status = 2 [(google.api.field_behavior) = REQUIRED];
+}
+message UpdateServiceRequestStatusResponse {}
+
+message AssignExecutorsRequest {
+  string service_request_id = 1 [(google.api.field_behavior) = REQUIRED];
+  repeated string executor_employee_ids = 2;
+}
+message AssignExecutorsResponse {}

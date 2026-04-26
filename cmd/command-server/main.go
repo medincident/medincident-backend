@@ -22,6 +22,8 @@ import (
 	classifierhandler "github.com/medincident/medincident-backend/internal/handler/command/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-backend/internal/handler/command/membership"
 	orghandler "github.com/medincident/medincident-backend/internal/handler/command/orgstructure"
+	requesthandler "github.com/medincident/medincident-backend/internal/handler/command/request"
+	requestclassifierhandler "github.com/medincident/medincident-backend/internal/handler/command/request/classifier"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	incidentsvc "github.com/medincident/medincident-backend/internal/service/command/incident"
@@ -29,11 +31,15 @@ import (
 	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
 	membershipsvc "github.com/medincident/medincident-backend/internal/service/command/membership"
 	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
+	requestsvc "github.com/medincident/medincident-backend/internal/service/command/request"
+	requestclassifiersvc "github.com/medincident/medincident-backend/internal/service/command/request/classifier"
 	bufferv1 "github.com/medincident/medincident-backend/pkg/command/incident/buffer/v1"
 	incidentclassifierv1 "github.com/medincident/medincident-backend/pkg/command/incident/classifier/v1"
 	incidentv1 "github.com/medincident/medincident-backend/pkg/command/incident/v1"
 	membershipv1 "github.com/medincident/medincident-backend/pkg/command/membership/v1"
 	orgstructurev1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
+	requestclassifierv1 "github.com/medincident/medincident-backend/pkg/command/request/classifier/v1"
+	requestv1 "github.com/medincident/medincident-backend/pkg/command/request/v1"
 )
 
 const shutdownTimeout = 10 * time.Second
@@ -98,12 +104,16 @@ func main() {
 	typSvc := classifiersvc.NewIncidentTypeService(db, az, logger)
 	incidentSvc := incidentsvc.NewIncidentService(db, az, logger)
 	bufferSvc := buffersvc.NewBufferService(db, az, logger)
+	reqTypeSvc := requestclassifiersvc.NewRequestTypeService(db, az, logger)
+	reqSvc := requestsvc.NewServiceRequestService(db, az, logger)
 
 	orgStructureHandler := orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc)
 	membershipH := membershiphandler.NewMembershipHandler(empSvc)
 	classifierH := classifierhandler.NewIncidentClassifierHandler(catSvc, typSvc)
 	incidentH := incidenthandler.NewIncidentHandler(incidentSvc)
 	bufferH := bufferhandler.NewBufferHandler(bufferSvc)
+	reqClassifierH := requestclassifierhandler.NewRequestClassifierHandler(reqTypeSvc)
+	reqH := requesthandler.NewServiceRequestHandler(reqSvc)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
@@ -117,6 +127,8 @@ func main() {
 	incidentclassifierv1.RegisterIncidentClassifierCommandServiceServer(grpcServer, classifierH)
 	incidentv1.RegisterIncidentCommandServiceServer(grpcServer, incidentH)
 	bufferv1.RegisterIncidentBufferCommandServiceServer(grpcServer, bufferH)
+	requestclassifierv1.RegisterRequestClassifierCommandServiceServer(grpcServer, reqClassifierH)
+	requestv1.RegisterServiceRequestCommandServiceServer(grpcServer, reqH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)

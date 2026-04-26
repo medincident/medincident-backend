@@ -26,6 +26,8 @@ import (
 	classifierhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/classifier"
 	membershiphandler "github.com/medincident/medincident-backend/internal/handler/query/membership"
 	orghandler "github.com/medincident/medincident-backend/internal/handler/query/orgstructure"
+	requestqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/request"
+	requestclassifierqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/request/classifier"
 	statshandler "github.com/medincident/medincident-backend/internal/handler/query/stats"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
@@ -35,11 +37,15 @@ import (
 	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
 	membershipread "github.com/medincident/medincident-backend/internal/service/query/membership"
 	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
+	requestread "github.com/medincident/medincident-backend/internal/service/query/request"
+	requestclassifierread "github.com/medincident/medincident-backend/internal/service/query/request/classifier"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	incidentqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
 	membershipqueryv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
 	orgqueryv1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
+	requestclassifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/request/classifier/v1"
+	requestqueryv1 "github.com/medincident/medincident-backend/pkg/query/request/v1"
 	statsqueryv1 "github.com/medincident/medincident-backend/pkg/query/stats/v1"
 )
 
@@ -130,6 +136,8 @@ func main() {
 	statsReader := statsread.NewReader(db, az, logger)
 	incidentReader := incidentread.NewReader(db, logger)
 	bufferReader := bufferread.NewReader(db, logger, incidentReader)
+	reqClassifierReader := requestclassifierread.NewReader(db, az, logger)
+	reqReader := requestread.NewReader(db, az, logger)
 
 	projector := identityread.NewProjector(db, logger)
 	consumer := identityread.NewConsumer(js, &cfg.NATS, projector, logger)
@@ -141,6 +149,8 @@ func main() {
 	incidentQH := incidentqueryhandler.NewIncidentQueryHandler(incidentReader)
 	bufferQH := bufferqueryhandler.NewBufferQueryHandler(bufferReader)
 	combinedIncidentH := incidentqueryhandler.NewCombinedIncidentQueryHandler(incidentQH, bufferQH)
+	reqClassifierQH := requestclassifierqueryhandler.NewRequestClassifierQueryHandler(reqClassifierReader)
+	reqQH := requestqueryhandler.NewServiceRequestQueryHandler(reqReader)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
@@ -154,6 +164,8 @@ func main() {
 	classifierqueryv1.RegisterIncidentClassifierQueryServiceServer(grpcServer, clsH)
 	statsqueryv1.RegisterStatsQueryServiceServer(grpcServer, statsH)
 	incidentqueryv1.RegisterIncidentQueryServiceServer(grpcServer, combinedIncidentH)
+	requestclassifierqueryv1.RegisterRequestClassifierQueryServiceServer(grpcServer, reqClassifierQH)
+	requestqueryv1.RegisterServiceRequestQueryServiceServer(grpcServer, reqQH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)

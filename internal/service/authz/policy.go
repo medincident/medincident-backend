@@ -290,6 +290,14 @@ func (orgAdminOfRole) IncidentType(id uuid.UUID) Policy {
 	}
 }
 
+func (orgAdminOfRole) RequestType(id uuid.UUID) Policy {
+	return orgAdminPolicy{
+		field:     "type_id",
+		id:        id,
+		clauseFmt: "JOIN domain.request_types rt ON rt.organization_id = oa.organization_id WHERE rt.id = @%s",
+	}
+}
+
 // ---------------------------------------------------------------------
 // AdminOf — convenience battery: AnyOf(SystemAdmin, OrgAdminOf.X(id))
 // ---------------------------------------------------------------------
@@ -328,6 +336,10 @@ func (adminOfBattery) Category(id uuid.UUID) Policy {
 
 func (adminOfBattery) IncidentType(id uuid.UUID) Policy {
 	return AnyOf(SystemAdmin, OrgAdminOf.IncidentType(id))
+}
+
+func (adminOfBattery) RequestType(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.RequestType(id))
 }
 
 // ---------------------------------------------------------------------
@@ -468,6 +480,14 @@ func (memberOfRole) IncidentType(id uuid.UUID) Policy {
 	}
 }
 
+func (memberOfRole) RequestType(id uuid.UUID) Policy {
+	return memberOfPolicy{
+		field:     "type_id",
+		id:        id,
+		clauseFmt: "JOIN domain.request_types rt ON rt.organization_id = e.organization_id WHERE rt.id = @%s",
+	}
+}
+
 // ---------------------------------------------------------------------
 // SelfEmployee — caller IS the target employee
 // ---------------------------------------------------------------------
@@ -533,6 +553,10 @@ func (readerOfBattery) Category(id uuid.UUID) Policy {
 
 func (readerOfBattery) IncidentType(id uuid.UUID) Policy {
 	return AnyOf(SystemAdmin, OrgAdminOf.IncidentType(id), MemberOf.IncidentType(id))
+}
+
+func (readerOfBattery) RequestType(id uuid.UUID) Policy {
+	return AnyOf(SystemAdmin, OrgAdminOf.RequestType(id), MemberOf.RequestType(id))
 }
 
 // ---------------------------------------------------------------------

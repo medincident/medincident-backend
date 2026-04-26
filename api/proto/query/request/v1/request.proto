@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package query.request.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/medincident/medincident-backend/pkg/query/request/v1;requestqueryv1";
+
+service ServiceRequestQueryService {
+  rpc GetServiceRequest(GetServiceRequestRequest) returns (GetServiceRequestResponse) {
+    option (google.api.http) = {get: "/v1/service-requests/{id}"};
+  }
+  rpc ListServiceRequests(ListServiceRequestsRequest) returns (ListServiceRequestsResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/service-requests"};
+  }
+  rpc ListServiceRequestsByIncident(ListServiceRequestsByIncidentRequest) returns (ListServiceRequestsByIncidentResponse) {
+    option (google.api.http) = {get: "/v1/incidents/{incident_id}/service-requests"};
+  }
+  rpc GetServiceRequestHistory(GetServiceRequestHistoryRequest) returns (GetServiceRequestHistoryResponse) {
+    option (google.api.http) = {get: "/v1/service-requests/{service_request_id}/history"};
+  }
+}
+
+message Executor {
+  string employee_id = 1;
+  string assigned_at = 2;
+  string assigned_by_id = 3;
+}
+
+message ServiceRequest {
+  string id = 1;
+  string organization_id = 2;
+  string clinic_id = 3;
+  string department_id = 4;
+  string type_id = 5;
+  optional string incident_id = 6;
+  string description = 7;
+  string status = 8;
+  string author_id = 9;
+  string author_display_name = 10;
+  repeated Executor executors = 11;
+  string created_at = 12;
+  string updated_at = 13;
+}
+
+message GetServiceRequestRequest {
+  string id = 1;
+}
+message GetServiceRequestResponse {
+  ServiceRequest service_request = 1;
+}
+
+message ListServiceRequestsRequest {
+  string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListServiceRequestsResponse {
+  repeated ServiceRequest items = 1;
+}
+
+message ListServiceRequestsByIncidentRequest {
+  string incident_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListServiceRequestsByIncidentResponse {
+  repeated ServiceRequest items = 1;
+}
+
+message StatusHistoryEntry {
+  string id = 1;
+  optional string old_status = 2;
+  string new_status = 3;
+  string actor_id = 4;
+  string actor_name = 5;
+  string changed_at = 6;
+}
+
+message ExecutorHistoryEntry {
+  string id = 1;
+  string action = 2;
+  string employee_id = 3;
+  string employee_name = 4;
+  string actor_id = 5;
+  string actor_name = 6;
+  string changed_at = 7;
+}
+
+message GetServiceRequestHistoryRequest {
+  string service_request_id = 1;
+}
+message GetServiceRequestHistoryResponse {
+  repeated StatusHistoryEntry status_history = 1;
+  repeated ExecutorHistoryEntry executor_history = 2;
+}

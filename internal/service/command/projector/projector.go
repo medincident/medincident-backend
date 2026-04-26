@@ -22,11 +22,13 @@ package projector
 // suffix-based mapping in internal/middleware/error.go routes them to
 // codes.Internal by the existing _failed rule without per-code overrides.
 const (
-	ErrCodeOrganizationProjectionFailed = "organization_projection_failed"
-	ErrCodeClinicProjectionFailed       = "clinic_projection_failed"
-	ErrCodeDepartmentProjectionFailed   = "department_projection_failed"
-	ErrCodeEmployeeProjectionFailed     = "employee_projection_failed"
-	ErrCodeVacationProjectionFailed     = "vacation_projection_failed"
-	ErrCodeRoleProjectionFailed         = "role_projection_failed"
-	ErrCodeIncidentProjectionFailed     = "incident_projection_failed"
+	ErrCodeOrganizationProjectionFailed   = "organization_projection_failed"
+	ErrCodeClinicProjectionFailed         = "clinic_projection_failed"
+	ErrCodeDepartmentProjectionFailed     = "department_projection_failed"
+	ErrCodeEmployeeProjectionFailed       = "employee_projection_failed"
+	ErrCodeVacationProjectionFailed       = "vacation_projection_failed"
+	ErrCodeRoleProjectionFailed           = "role_projection_failed"
+	ErrCodeIncidentProjectionFailed       = "incident_projection_failed"
+	ErrCodeRequestTypeProjectionFailed    = "request_type_projection_failed"
+	ErrCodeServiceRequestProjectionFailed = "service_request_projection_failed"
 )
