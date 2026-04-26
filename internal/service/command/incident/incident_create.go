@@ -155,11 +155,6 @@ func (s *IncidentService) Create(
 			return err
 		}
 
-		desc := null.String{}
-		if cmd.Payload.Description != nil {
-			desc = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
-		}
-
 		inc := model.Incident{
 			ID:                  id,
 			OrganizationID:      orgID,
@@ -169,11 +164,13 @@ func (s *IncidentService) Create(
 			TypeID:              typeID,
 			Status:              model.IncidentStatusPending,
 			Priority:            model.IncidentPriorityNormal,
-			Description:         desc,
 			OccurredAt:          occurred,
 			RegistrarEmployeeID: reg.EmployeeID,
 			CreatedAt:           now,
 			UpdatedAt:           now,
+		}
+		if cmd.Payload.Description != nil {
+			inc.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 		}
 		if err := tx.Create(&inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).
@@ -222,7 +219,7 @@ func (s *IncidentService) loadRegistrarSnapshot(
 	return projector.IncidentRegistrarSnapshot{
 		EmployeeID:     emp.ID,
 		DisplayName:    displayName,
-		Position:       emp.Position,
+		Position:       emp.Position.Ptr(),
 		OrganizationID: emp.OrganizationID,
 		ClinicID:       dept.ClinicID,
 		DepartmentID:   emp.DepartmentID,

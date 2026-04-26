@@ -145,15 +145,6 @@ func (s *AnnouncementService) Create(
 		now := time.Now()
 		priority := model.AnnouncementPriority(cmd.Payload.Priority)
 
-		var startsAt null.Time
-		if cmd.Payload.StartsAt != nil {
-			startsAt = null.TimeFrom(*cmd.Payload.StartsAt)
-		}
-		var endsAt null.Time
-		if cmd.Payload.EndsAt != nil {
-			endsAt = null.TimeFrom(*cmd.Payload.EndsAt)
-		}
-
 		a := model.Announcement{
 			ID:             id,
 			OrganizationID: orgID,
@@ -164,10 +155,14 @@ func (s *AnnouncementService) Create(
 			Content:        strings.TrimSpace(cmd.Payload.Content),
 			Priority:       priority,
 			IsArchived:     false,
-			StartsAt:       startsAt,
-			EndsAt:         endsAt,
 			CreatedAt:      now,
 			UpdatedAt:      now,
+		}
+		if cmd.Payload.StartsAt != nil {
+			a.StartsAt = null.TimeFrom(*cmd.Payload.StartsAt)
+		}
+		if cmd.Payload.EndsAt != nil {
+			a.EndsAt = null.TimeFrom(*cmd.Payload.EndsAt)
 		}
 		if err := tx.Create(&a).Error; err != nil {
 			return oops.In(scope).

@@ -53,10 +53,6 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 	}
 
 	zitadelUserID := strings.TrimSpace(cmd.Payload.ZitadelUserID)
-	var position null.String
-	if cmd.Payload.Position != nil {
-		position = null.StringFrom(strings.TrimSpace(*cmd.Payload.Position))
-	}
 
 	// Phase 2: Zitadel verify (outside tx, fail-fast).
 	if err := s.verifier.Verify(ctx, zitadelUserID); err != nil {
@@ -108,7 +104,9 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			ZitadelUserID:  zitadelUserID,
 			OrganizationID: orgID,
 			DepartmentID:   departmentID,
-			Position:       position,
+		}
+		if cmd.Payload.Position != nil {
+			emp.Position = null.StringFrom(strings.TrimSpace(*cmd.Payload.Position))
 		}
 		if err := tx.Create(&emp).Error; err != nil {
 			if errors.Is(err, gorm.ErrDuplicatedKey) {

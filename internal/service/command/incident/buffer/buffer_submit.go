@@ -47,7 +47,8 @@ func (s *BufferService) Submit(ctx context.Context, cmd SubmitCommand) (SubmitRe
 	}
 	orgID := uuid.MustParse(cmd.Payload.OrganizationID)
 	now := time.Now()
-	var occurred null.Time
+	var occurredTime time.Time
+	var hasOccurred bool
 	if cmd.Payload.OccurredAt != nil {
 		t, err := time.Parse(time.RFC3339Nano, *cmd.Payload.OccurredAt)
 		if err != nil {
@@ -59,7 +60,8 @@ func (s *BufferService) Submit(ctx context.Context, cmd SubmitCommand) (SubmitRe
 		if err := validateOccurredAt(t, now); err != nil {
 			return SubmitResult{}, err
 		}
-		occurred = null.TimeFrom(t)
+		occurredTime = t
+		hasOccurred = true
 	}
 
 	var categoryID, typeID uuid.NullUUID
@@ -90,21 +92,21 @@ func (s *BufferService) Submit(ctx context.Context, cmd SubmitCommand) (SubmitRe
 			return err
 		}
 
-		desc := null.String{}
-		if cmd.Payload.Description != nil {
-			desc = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
-		}
 		b := model.PatientIncidentBuffer{
 			ID:                   id,
 			OrganizationID:       orgID,
 			PatientZitadelUserID: cmd.Caller.ZitadelUserID,
 			CategoryID:           categoryID,
 			TypeID:               typeID,
-			Description:          desc,
-			OccurredAt:           occurred,
 			Status:               model.BufferStatusPending,
 			CreatedAt:            now,
 			UpdatedAt:            now,
+		}
+		if cmd.Payload.Description != nil {
+			b.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
+		}
+		if hasOccurred {
+			b.OccurredAt = null.TimeFrom(occurredTime)
 		}
 		if err := tx.Create(&b).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
