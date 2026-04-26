@@ -600,7 +600,8 @@ func (a *Authz) Require(ctx context.Context, callerID string, p Policy) error {
 	b := oops.In("service.authz").
 		Code(ErrCodePermissionDenied).
 		Public(fmt.Sprintf("Access denied: requires %s privileges.", p.describe())).
-		With("caller_id", callerID)
+		With("caller_id", callerID).
+		With("policy", p.describe())
 	b = p.with(b)
 	return b.Errorf("permission denied")
 }
