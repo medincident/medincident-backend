@@ -13,6 +13,7 @@ type Config struct {
 	Postgres config.PostgresConfig `yaml:"postgres" validate:"required"`
 	Zerolog  config.ZerologConfig  `yaml:"zerolog"  validate:"required"`
 	Zitadel  config.ZitadelConfig  `yaml:"zitadel"  validate:"required"`
+	Garage   config.GarageConfig   `yaml:"garage"   validate:"required"`
 }
 
 // serverConfig is the command-server's listener block. Command-server

@@ -92,6 +92,10 @@ func main() {
 	}
 	defer dbCleanup()
 
+	garage, garageCleanup := bootstrap.OpenGarage(&cfg.Garage, logger)
+	defer garageCleanup()
+	_ = garage // wired for future use (file attachments, media uploads)
+
 	zitadelService, err := bootstrap.NewZitadelService(ctx, &cfg.Zitadel, logger)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("failed to build zitadel service")

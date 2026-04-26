@@ -46,3 +46,13 @@ zerolog:
 zitadel:
   domain: "${ZITADEL_DOMAIN}"           # e.g. https://auth.example.com
   key_path: "${ZITADEL_KEY_PATH}"       # filesystem path to the service user's key.json
+
+# Garage — S3-compatible object storage. Used for file attachments,
+# media uploads, and other binary objects. Garage requires path-style
+# addressing; the SDK client is configured accordingly.
+garage:
+  endpoint: "${GARAGE_ENDPOINT}"                 # e.g. http://localhost:3900
+  access_key_id: "${GARAGE_ACCESS_KEY_ID}"
+  secret_access_key: "${GARAGE_SECRET_ACCESS_KEY}"
+  region: "garage"                               # Garage ignores region but the SDK requires one
+  bucket: "medincident"
