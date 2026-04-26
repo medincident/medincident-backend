@@ -33,7 +33,7 @@ import (
 // cascade loops. R is the GORM model type for the role table; K is
 // the type of the role's scope column (always uuid.UUID today).
 type cascadeSpec[R any, K comparable] struct {
-	// Precomputed WHERE clause used when deleting a role row (scopeCol = ? AND employee_id = ?).
+	// Precomputed WHERE clause used when deleting a role row (e.g. "department_id = ? AND employee_id = ?").
 	deleteWhere string
 	// Precomputed UPDATE statement used when NULLing the deputy slot.
 	clearDeputySQL string
