@@ -22,7 +22,7 @@ type SubmitPayload struct {
 	CategoryID     *string `validate:"omitnil,uuid"`
 	TypeID         *string `validate:"omitnil,uuid"`
 	Description    *string `validate:"omitnil,no_extra_ws,min=1,max=10000"`
-	OccurredAt     *time.Time
+	OccurredAt     *string
 }
 
 type SubmitCommand struct {
@@ -47,10 +47,19 @@ func (s *BufferService) Submit(ctx context.Context, cmd SubmitCommand) (SubmitRe
 	}
 	orgID := uuid.MustParse(cmd.Payload.OrganizationID)
 	now := time.Now()
+	var occurred null.Time
 	if cmd.Payload.OccurredAt != nil {
-		if err := validateOccurredAt(*cmd.Payload.OccurredAt, now); err != nil {
+		t, err := time.Parse(time.RFC3339Nano, *cmd.Payload.OccurredAt)
+		if err != nil {
+			return SubmitResult{}, oops.In(scope).
+				Code(ErrCodeBufferOccurredAtInvalid).
+				Public("occurred_at is not a valid RFC3339 timestamp.").
+				With("occurred_at", *cmd.Payload.OccurredAt).Wrap(err)
+		}
+		if err := validateOccurredAt(t, now); err != nil {
 			return SubmitResult{}, err
 		}
+		occurred = null.TimeFrom(t)
 	}
 
 	var categoryID, typeID uuid.NullUUID
@@ -84,10 +93,6 @@ func (s *BufferService) Submit(ctx context.Context, cmd SubmitCommand) (SubmitRe
 		desc := null.String{}
 		if cmd.Payload.Description != nil {
 			desc = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
-		}
-		var occurred null.Time
-		if cmd.Payload.OccurredAt != nil {
-			occurred = null.TimeFrom(*cmd.Payload.OccurredAt)
 		}
 		b := model.PatientIncidentBuffer{
 			ID:                   id,
