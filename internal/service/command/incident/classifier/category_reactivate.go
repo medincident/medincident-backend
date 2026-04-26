@@ -68,6 +68,9 @@ func firstInactiveAncestor(tx *gorm.DB, categoryID uuid.UUID) (uuid.UUID, error)
 	return id, nil
 }
 
+// Reactivate marks a deactivated category as active. Fails if any strict ancestor is inactive.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentCategoryService) Reactivate(
 	ctx context.Context,
 	cmd ReactivateIncidentCategoryCommand,

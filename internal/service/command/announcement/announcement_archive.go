@@ -25,7 +25,7 @@ type ArchiveAnnouncementCommand struct {
 
 // Archive sets is_archived=true. Idempotent.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#archiveannouncement
+// See: docs/services/Announcements.md
 func (s *AnnouncementService) Archive(
 	ctx context.Context, cmd *ArchiveAnnouncementCommand,
 ) error {

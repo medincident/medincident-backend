@@ -2,7 +2,7 @@
 // Announcements are one-way informational broadcasts from administration
 // to employees, scoped to an organization, clinic, or department.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements
+// See: docs/services/Announcements.md
 package announcement
 
 import (

@@ -38,6 +38,8 @@ type CreateIncidentResult struct {
 // Create persists a new incident and the initial status history row.
 // Authorization: caller must be an employee of the department's
 // organization (MemberOf).
+//
+// See: docs/services/incident/Incidents.md
 func (s *IncidentService) Create(
 	ctx context.Context, cmd *CreateIncidentCommand,
 ) (CreateIncidentResult, error) {

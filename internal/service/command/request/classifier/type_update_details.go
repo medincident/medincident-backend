@@ -36,7 +36,7 @@ type UpdateRequestTypeDetailsCommand struct {
 type UpdateRequestTypeDetailsResult struct{}
 
 // UpdateDetails updates the name and description of a request type.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#updaterequesttypedetails
+// See: docs/services/request/Classifier.md
 func (s *RequestTypeService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateRequestTypeDetailsCommand,

@@ -82,6 +82,9 @@ func categoryIsAncestorOf(tx *gorm.DB, ancestor, descendant uuid.UUID) (bool, er
 	return found, nil
 }
 
+// Move reparents a category to a new parent within the same organization.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentCategoryService) Move(
 	ctx context.Context,
 	cmd MoveIncidentCategoryCommand,

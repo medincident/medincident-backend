@@ -156,6 +156,8 @@ var selectRoleAssignment = `
 
 // GetClinicHead returns the clinic-head assignment for the clinic, or
 // ErrRoleVacant if none exists. Authorization: authz.ReaderOf.Clinic.
+//
+// See: docs/services/Membership.md
 func (r *RoleReader) GetClinicHead(
 	ctx context.Context,
 	caller authz.Caller,
@@ -170,6 +172,8 @@ func (r *RoleReader) GetClinicHead(
 // GetDepartmentResponsible returns the responsible assignment for the
 // department, or ErrRoleVacant if none exists. Authorization:
 // authz.ReaderOf.Department.
+//
+// See: docs/services/Membership.md
 func (r *RoleReader) GetDepartmentResponsible(
 	ctx context.Context,
 	caller authz.Caller,
@@ -185,6 +189,8 @@ func (r *RoleReader) GetDepartmentResponsible(
 
 // ListOrgAdmins returns all org-admin assignments for the organization.
 // Authorization: authz.ReaderOf.Organization.
+//
+// See: docs/services/Membership.md
 func (r *RoleReader) ListOrgAdmins(
 	ctx context.Context,
 	caller authz.Caller,
@@ -202,6 +208,8 @@ func (r *RoleReader) ListOrgAdmins(
 
 // ListOrgDispatchers returns all org-dispatcher assignments for the
 // organization. Authorization: authz.ReaderOf.Organization.
+//
+// See: docs/services/Membership.md
 func (r *RoleReader) ListOrgDispatchers(
 	ctx context.Context,
 	caller authz.Caller,
@@ -219,6 +227,8 @@ func (r *RoleReader) ListOrgDispatchers(
 
 // ListOrgHeads returns all org-head assignments for the organization.
 // Authorization: authz.ReaderOf.Organization.
+//
+// See: docs/services/Membership.md
 func (r *RoleReader) ListOrgHeads(
 	ctx context.Context,
 	caller authz.Caller,
@@ -242,6 +252,8 @@ type SystemAdminView struct {
 
 // ListSystemAdmins returns every system-admin row. Authorization:
 // authz.SystemAdmin — only system admins can enumerate their peers.
+//
+// See: docs/services/Membership.md
 func (r *RoleReader) ListSystemAdmins(
 	ctx context.Context,
 	caller authz.Caller,

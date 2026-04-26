@@ -25,6 +25,8 @@ type CancelIncidentCommand struct {
 
 // Cancel marks the incident cancelled. Allowed only if the caller is
 // the active registrar AND the incident is still pending.
+//
+// See: docs/services/incident/Incidents.md
 func (s *IncidentService) Cancel(
 	ctx context.Context, cmd CancelIncidentCommand,
 ) error {

@@ -106,6 +106,8 @@ func (r *Reader) loadExecutors(ctx context.Context, requestID uuid.UUID) ([]Exec
 // GetServiceRequest loads one service request with executors.
 // Authorization: authz.ReaderOf.Organization(orgID) — the org is
 // resolved from the projection row.
+//
+// See: docs/services/request/Requests.md
 func (r *Reader) GetServiceRequest(
 	ctx context.Context,
 	caller authz.Caller,
@@ -135,6 +137,8 @@ func (r *Reader) GetServiceRequest(
 
 // ListServiceRequests returns service requests for an organization.
 // Authorization: authz.ReaderOf.Organization(orgID).
+//
+// See: docs/services/request/Requests.md
 func (r *Reader) ListServiceRequests(
 	ctx context.Context,
 	caller authz.Caller,
@@ -172,6 +176,8 @@ func (r *Reader) ListServiceRequests(
 
 // ListServiceRequestsByIncident returns service requests linked to an incident.
 // Authorization: resolves the incident's org, then authz.ReaderOf.Organization.
+//
+// See: docs/services/request/Requests.md
 func (r *Reader) ListServiceRequestsByIncident(
 	ctx context.Context,
 	caller authz.Caller,
@@ -224,6 +230,8 @@ func (r *Reader) ListServiceRequestsByIncident(
 }
 
 // GetServiceRequestHistory returns both timelines for one service request.
+//
+// See: docs/services/request/Requests.md
 func (r *Reader) GetServiceRequestHistory(
 	ctx context.Context,
 	caller authz.Caller,

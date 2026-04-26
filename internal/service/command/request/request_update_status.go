@@ -28,7 +28,7 @@ type UpdateServiceRequestStatusCommand struct {
 }
 
 // UpdateStatus transitions a service request to a new status.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#updateservicerequeststatus
+// See: docs/services/request/Requests.md
 func (s *ServiceRequestService) UpdateStatus(
 	ctx context.Context,
 	cmd UpdateServiceRequestStatusCommand,

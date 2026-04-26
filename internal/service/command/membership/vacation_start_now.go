@@ -38,6 +38,8 @@ type StartVacationNowResult struct {
 // StartVacationNow starts a vacation at the current time. EndsAt may
 // be nil (unlimited). Overlap with existing vacations of the same
 // employee is rejected by the exclusion constraint on the table.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) StartVacationNow(ctx context.Context, cmd StartVacationNowCommand) (StartVacationNowResult, error) {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return StartVacationNowResult{}, err

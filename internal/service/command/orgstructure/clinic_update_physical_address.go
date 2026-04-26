@@ -31,6 +31,8 @@ type UpdateClinicPhysicalAddressCommand struct {
 }
 
 // UpdatePhysicalAddress replaces the clinic's physical address.
+//
+// See: docs/services/OrgStructure.md
 func (s *ClinicService) UpdatePhysicalAddress(
 	ctx context.Context,
 	cmd UpdateClinicPhysicalAddressCommand,

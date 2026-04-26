@@ -36,6 +36,9 @@ type MoveIncidentTypeCommand struct {
 // MoveIncidentTypeResult is empty.
 type MoveIncidentTypeResult struct{}
 
+// Move reassigns an incident type to a different category within the same organization.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentTypeService) Move(
 	ctx context.Context,
 	cmd MoveIncidentTypeCommand,

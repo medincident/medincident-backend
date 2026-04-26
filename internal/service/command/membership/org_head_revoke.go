@@ -32,6 +32,8 @@ type RevokeOrganizationHeadCommand struct {
 // RevokeOrganizationHead removes the role row and publishes the
 // Revoked event. If a deputy was assigned, a DeputyRemoved event is
 // published FIRST (Rule 2 — cleanup before terminate). See spec §8.6.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) RevokeOrganizationHead(ctx context.Context, cmd RevokeOrganizationHeadCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

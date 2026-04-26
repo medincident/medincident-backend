@@ -25,7 +25,7 @@ type UnarchiveAnnouncementCommand struct {
 
 // Unarchive sets is_archived=false. Idempotent.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#unarchiveannouncement
+// See: docs/services/Announcements.md
 func (s *AnnouncementService) Unarchive(
 	ctx context.Context, cmd *UnarchiveAnnouncementCommand,
 ) error {

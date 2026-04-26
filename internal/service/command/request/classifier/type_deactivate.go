@@ -31,7 +31,7 @@ type DeactivateRequestTypeCommand struct {
 type DeactivateRequestTypeResult struct{}
 
 // Deactivate marks a request type as inactive. Idempotent.
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Requests#deactivaterequesttype
+// See: docs/services/request/Classifier.md
 func (s *RequestTypeService) Deactivate(
 	ctx context.Context,
 	cmd DeactivateRequestTypeCommand,

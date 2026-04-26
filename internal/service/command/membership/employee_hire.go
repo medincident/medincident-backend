@@ -41,6 +41,8 @@ type HireEmployeeResult struct {
 // Hire creates a new Employee row in the given department, deriving
 // the organisation via a JOIN on domain.departments → domain.clinics.
 // Invariants and error codes are spelled out in the spec.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (HireEmployeeResult, error) {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return HireEmployeeResult{}, err

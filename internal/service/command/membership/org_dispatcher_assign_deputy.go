@@ -32,6 +32,8 @@ type AssignOrganizationDispatcherDeputyCommand struct {
 
 // AssignOrganizationDispatcherDeputy sets the deputy slot on an existing
 // OrgDispatcher role. See spec §8.5 (OrgDispatcher variant).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignOrganizationDispatcherDeputy(ctx context.Context, cmd AssignOrganizationDispatcherDeputyCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

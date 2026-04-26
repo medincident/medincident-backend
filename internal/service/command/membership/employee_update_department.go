@@ -32,6 +32,8 @@ type UpdateEmployeeDepartmentCommand struct {
 // UpdateDepartment moves an employee to a different department. The
 // target department must belong to the same organisation as the
 // current employee row; moving across organisations is forbidden.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmployeeDepartmentCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

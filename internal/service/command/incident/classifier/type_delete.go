@@ -29,6 +29,9 @@ type DeleteIncidentTypeCommand struct {
 // DeleteIncidentTypeResult is empty.
 type DeleteIncidentTypeResult struct{}
 
+// Delete permanently removes an incident type.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentTypeService) Delete(
 	ctx context.Context,
 	cmd DeleteIncidentTypeCommand,

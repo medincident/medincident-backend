@@ -35,6 +35,9 @@ type UpdateIncidentCategoryDetailsCommand struct {
 // meaningful result.
 type UpdateIncidentCategoryDetailsResult struct{}
 
+// UpdateDetails changes the name and description of an incident category.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentCategoryService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateIncidentCategoryDetailsCommand,

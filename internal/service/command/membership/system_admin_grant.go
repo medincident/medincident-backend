@@ -30,6 +30,8 @@ type GrantSystemAdminCommand struct {
 // GrantSystemAdmin creates a SystemAdmin grant for a Zitadel user.
 // Verifies the user exists in Zitadel before writing. Not coupled to
 // the employees table in any way. See spec §8.8.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemAdminCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

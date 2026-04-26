@@ -31,6 +31,8 @@ type UpdateOrganizationLegalAddressCommand struct {
 
 // UpdateLegalAddress replaces the organization's legal address. Returns
 // nil without writing when the new address is equal to the stored one.
+//
+// See: docs/services/OrgStructure.md
 func (s *OrganizationService) UpdateLegalAddress(
 	ctx context.Context,
 	cmd UpdateOrganizationLegalAddressCommand,

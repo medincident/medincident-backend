@@ -1,4 +1,6 @@
 // Package buffer is the query-side reader for projections.patient_incident_buffer.
+//
+// See: docs/services/incident/Buffer.md
 package buffer
 
 import (
@@ -67,6 +69,8 @@ func scanBuffer(row interface{ Scan(...any) error }, v *BufferEntryView) error {
 }
 
 // GetBufferEntry returns one buffer row if the caller may see it.
+//
+// See: docs/services/incident/Buffer.md
 func (r *Reader) GetBufferEntry(
 	ctx context.Context, callerID string, id uuid.UUID,
 ) (*BufferEntryView, error) {
@@ -103,6 +107,8 @@ type ListBufferFilters struct {
 // ListBufferEntries returns buffer entries in an org. Visible only to
 // roles that may see the buffer for that org (SystemAdmin, OrgAdmin,
 // OrgDispatcher).
+//
+// See: docs/services/incident/Buffer.md
 func (r *Reader) ListBufferEntries(
 	ctx context.Context, callerID string, orgID uuid.UUID, f *ListBufferFilters,
 ) ([]BufferEntryView, error) {
@@ -155,6 +161,8 @@ func (r *Reader) ListBufferEntries(
 // ListMyBufferEntries returns buffer entries the caller submitted as
 // a patient. For staff callers it can also surface their own
 // (the filter is by patient_zitadel_user_id, regardless of role).
+//
+// See: docs/services/incident/Buffer.md
 func (r *Reader) ListMyBufferEntries(
 	ctx context.Context, callerID string, limit, offset int,
 ) ([]BufferEntryView, error) {

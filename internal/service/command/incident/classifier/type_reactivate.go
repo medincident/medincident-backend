@@ -69,6 +69,9 @@ func typeHasInactiveAncestor(tx *gorm.DB, categoryID uuid.UUID) (uuid.UUID, erro
 	return id, nil
 }
 
+// Reactivate marks a deactivated incident type as active. Fails if the owning category is inactive.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentTypeService) Reactivate(
 	ctx context.Context,
 	cmd ReactivateIncidentTypeCommand,

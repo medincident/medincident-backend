@@ -4,6 +4,8 @@
 // active-name uniqueness scoped per organisation. Two service structs
 // share the package: category mutations and type mutations. They hold
 // nothing beyond a *gorm.DB and a *zerolog.Logger.
+//
+// See: docs/services/incident/Classifier.md
 package classifier
 
 import (

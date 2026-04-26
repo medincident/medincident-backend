@@ -38,6 +38,8 @@ type PublishResult struct {
 // dispatcher selects the department, finalises category + type,
 // optionally rewrites the description, and the original patient
 // description is preserved on the incident as patient_original_description.
+//
+// See: docs/services/incident/Buffer.md
 func (s *BufferService) Publish(
 	ctx context.Context, cmd *PublishCommand,
 ) (PublishResult, error) {

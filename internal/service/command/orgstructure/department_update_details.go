@@ -32,6 +32,8 @@ type UpdateDepartmentDetailsCommand struct {
 }
 
 // UpdateDetails changes a department's name and description.
+//
+// See: docs/services/OrgStructure.md
 func (s *DepartmentService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateDepartmentDetailsCommand,

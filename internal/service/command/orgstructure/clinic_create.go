@@ -49,6 +49,8 @@ type CreateClinicResult struct {
 
 // Create persists a new Clinic under the given organization.
 //
+// See: docs/services/OrgStructure.md
+//
 //nolint:gocritic // hugeParam: Command is passed by value across the whole service layer for consistency; CreateClinicCommand is borderline at 80 bytes but not worth breaking the convention for.
 func (s *ClinicService) Create(
 	ctx context.Context,

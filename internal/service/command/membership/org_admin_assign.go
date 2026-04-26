@@ -30,6 +30,8 @@ type AssignOrganizationAdminCommand struct {
 // AssignOrganizationAdmin links the employee to the organization as its
 // admin. The employee must currently belong to that organization
 // (organization_id is denormalized on employees). See spec §8.2 (OrgAdmin variant).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignOrganizationAdmin(ctx context.Context, cmd AssignOrganizationAdminCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

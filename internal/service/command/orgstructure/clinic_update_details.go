@@ -32,6 +32,8 @@ type UpdateClinicDetailsCommand struct {
 }
 
 // UpdateDetails changes a clinic's name and description.
+//
+// See: docs/services/OrgStructure.md
 func (s *ClinicService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateClinicDetailsCommand,

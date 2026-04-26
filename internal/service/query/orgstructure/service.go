@@ -16,6 +16,8 @@
 // permission_denied with no distinction between "scope does not
 // exist" and "you are not authorized" — see the package authz
 // preamble for the rationale.
+//
+// See: docs/services/OrgStructure.md
 package orgstructure
 
 import (

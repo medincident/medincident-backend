@@ -39,6 +39,8 @@ type ScheduleVacationResult struct {
 // strictly in the future; EndsAt may be nil (unlimited) or must be
 // strictly after StartsAt. Overlap with existing vacations of the same
 // employee is rejected by the exclusion constraint on the table.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVacationCommand) (ScheduleVacationResult, error) {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return ScheduleVacationResult{}, err

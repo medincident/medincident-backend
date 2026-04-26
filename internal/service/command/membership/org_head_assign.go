@@ -30,6 +30,8 @@ type AssignOrganizationHeadCommand struct {
 // AssignOrganizationHead links the employee to the organization as its
 // head. The employee must currently belong to that organization
 // (organization_id is denormalized on employees). See spec §8.2 (OrgHead variant).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignOrganizationHead(ctx context.Context, cmd AssignOrganizationHeadCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

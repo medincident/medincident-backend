@@ -31,7 +31,7 @@ type UpdateAnnouncementCommand struct {
 
 // Update mutates title, content, starts_at, ends_at.
 //
-// See: https://github.com/medincident/medincident-backend/wiki/Service-Announcements#updateannouncement
+// See: docs/services/Announcements.md
 func (s *AnnouncementService) Update(
 	ctx context.Context, cmd *UpdateAnnouncementCommand,
 ) error {

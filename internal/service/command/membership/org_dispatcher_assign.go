@@ -30,6 +30,8 @@ type AssignOrganizationDispatcherCommand struct {
 // AssignOrganizationDispatcher links the employee to the organization as its
 // dispatcher. The employee must currently belong to that organization
 // (organization_id is denormalized on employees). See spec §8.2 (OrgDispatcher variant).
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) AssignOrganizationDispatcher(ctx context.Context, cmd AssignOrganizationDispatcherCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

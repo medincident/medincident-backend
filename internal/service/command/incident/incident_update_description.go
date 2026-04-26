@@ -33,6 +33,8 @@ type UpdateIncidentDescriptionCommand struct {
 
 // UpdateDescription edits the body. Allowed for the registrar OR a
 // privileged role, only while the incident is not terminal.
+//
+// See: docs/services/incident/Incidents.md
 func (s *IncidentService) UpdateDescription(
 	ctx context.Context, cmd *UpdateIncidentDescriptionCommand,
 ) error {

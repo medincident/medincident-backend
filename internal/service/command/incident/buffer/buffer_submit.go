@@ -36,6 +36,8 @@ type SubmitResult struct {
 
 // Submit creates a new buffer entry for the authenticated patient.
 // Authorization: any authenticated caller (Authenticated policy).
+//
+// See: docs/services/incident/Buffer.md
 func (s *BufferService) Submit(ctx context.Context, cmd *SubmitCommand) (SubmitResult, error) {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return SubmitResult{}, err

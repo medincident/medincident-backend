@@ -35,6 +35,8 @@ type UpdateEmployeePositionCommand struct {
 // Takes a FOR UPDATE row lock on the employee to serialise concurrent
 // updates; last-writer-wins is NOT acceptable because it would emit
 // events describing overwritten intermediate states.
+//
+// See: docs/services/Membership.md
 func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployeePositionCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

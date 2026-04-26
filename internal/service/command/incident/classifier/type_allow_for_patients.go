@@ -39,6 +39,8 @@ type AllowIncidentTypeForPatientsResult struct{}
 // AllowForPatients marks a type as allowed for patients to use when
 // submitting incidents. Idempotent: a no-op if the flag is already TRUE.
 // Requires the type to be is_active = TRUE.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentTypeService) AllowForPatients(
 	ctx context.Context,
 	cmd AllowIncidentTypeForPatientsCommand,

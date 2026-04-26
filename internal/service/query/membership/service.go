@@ -13,6 +13,8 @@
 // themselves may read it, so the policy is composed inline from
 // SystemAdmin + OrgAdminOf.Employee + SelfEmployee. ListSystemAdmins
 // is scope-less and requires authz.SystemAdmin.
+//
+// See: docs/services/Membership.md
 package membership
 
 import (

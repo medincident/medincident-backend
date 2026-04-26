@@ -3,6 +3,8 @@
 // buffer. The struct exposes all command methods on a single service
 // type — Create, Cancel, UpdateStatus, UpdatePriority,
 // UpdateDescription, Reopen.
+//
+// See: docs/services/incident/Incidents.md
 package incident
 
 import (

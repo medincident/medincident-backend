@@ -34,6 +34,9 @@ type UpdateIncidentTypeDetailsCommand struct {
 // UpdateIncidentTypeDetailsResult is empty.
 type UpdateIncidentTypeDetailsResult struct{}
 
+// UpdateDetails changes the name and description of an incident type.
+//
+// See: docs/services/incident/Classifier.md
 func (s *IncidentTypeService) UpdateDetails(
 	ctx context.Context,
 	cmd UpdateIncidentTypeDetailsCommand,
