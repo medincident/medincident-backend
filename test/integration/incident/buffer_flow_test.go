@@ -153,7 +153,7 @@ func TestBufferFlow_PublishCreatesIncident(t *testing.T) {
 	seedUser(t, patientID, "Публикуемый Пациент")
 	patient := authz.Caller{ZitadelUserID: patientID}
 
-	occAt := time.Now().Add(-2 * time.Hour)
+	occAt := time.Now().Add(-2 * time.Hour).Format(time.RFC3339Nano)
 	desc := "Жалоба пациента на боли в груди"
 	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller: patient,
@@ -230,14 +230,14 @@ func TestBufferFlow_PublishThenCloseIsVisibleToPatient(t *testing.T) {
 		Caller: bw.dispatcher,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: publishRes.IncidentID.String(),
-			NewStatus:  string(model.IncidentStatusInProgress),
+			NewStatus:  "INCIDENT_STATUS_IN_PROGRESS",
 		},
 	}))
 	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: bw.dispatcher,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: publishRes.IncidentID.String(),
-			NewStatus:  string(model.IncidentStatusDone),
+			NewStatus:  "INCIDENT_STATUS_DONE",
 		},
 	}))
 

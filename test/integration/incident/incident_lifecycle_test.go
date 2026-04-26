@@ -12,7 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	incidentsvc "github.com/medincident/medincident-backend/internal/service/command/incident"
 )
@@ -108,7 +107,7 @@ func TestIncidentLifecycle_ToInProgress(t *testing.T) {
 		Caller: authz.Caller{ZitadelUserID: deptRespID},
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  string(model.IncidentStatusInProgress),
+			NewStatus:  "INCIDENT_STATUS_IN_PROGRESS",
 		},
 	}))
 
@@ -139,7 +138,7 @@ func TestIncidentLifecycle_PriorityChange(t *testing.T) {
 		Caller: authz.Caller{ZitadelUserID: clinicHeadID},
 		Payload: incidentsvc.UpdateIncidentPriorityPayload{
 			IncidentID: incID.String(),
-			Priority:   string(model.IncidentPriorityHigh),
+			Priority:   "INCIDENT_PRIORITY_HIGH",
 		},
 	}))
 
@@ -167,7 +166,7 @@ func TestIncidentLifecycle_DescriptionEdit(t *testing.T) {
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  string(model.IncidentStatusInProgress),
+			NewStatus:  "INCIDENT_STATUS_IN_PROGRESS",
 		},
 	}))
 
@@ -204,14 +203,14 @@ func TestIncidentLifecycle_DoneIsTerminal(t *testing.T) {
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  string(model.IncidentStatusInProgress),
+			NewStatus:  "INCIDENT_STATUS_IN_PROGRESS",
 		},
 	}))
 	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  string(model.IncidentStatusDone),
+			NewStatus:  "INCIDENT_STATUS_DONE",
 		},
 	}))
 
@@ -219,7 +218,7 @@ func TestIncidentLifecycle_DoneIsTerminal(t *testing.T) {
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentPriorityPayload{
 			IncidentID: incID.String(),
-			Priority:   string(model.IncidentPriorityCritical),
+			Priority:   "INCIDENT_PRIORITY_CRITICAL",
 		},
 	})
 	require.Error(t, err)
@@ -246,14 +245,14 @@ func TestIncidentLifecycle_Reopen(t *testing.T) {
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  string(model.IncidentStatusInProgress),
+			NewStatus:  "INCIDENT_STATUS_IN_PROGRESS",
 		},
 	}))
 	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  string(model.IncidentStatusDone),
+			NewStatus:  "INCIDENT_STATUS_DONE",
 		},
 	}))
 
