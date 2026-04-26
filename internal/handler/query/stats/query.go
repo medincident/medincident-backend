@@ -123,35 +123,26 @@ func (h *StatsQueryHandler) GetDepartmentStats(
 	return &statsqueryv1.GetDepartmentStatsResponse{Stats: out}, nil
 }
 
-func parseOrganizationID(raw string) (uuid.UUID, error) {
+func parseUUID(raw, field, code string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
 		return uuid.Nil, oops.In("handler.query.stats").
-			Code(ErrCodeHandlerInvalidOrganizationID).
-			Public("organization_id is not a valid UUID.").
+			Code(code).
+			Public(field+" is not a valid UUID.").
+			With(field, raw).
 			Wrap(err)
 	}
 	return id, nil
+}
+
+func parseOrganizationID(raw string) (uuid.UUID, error) {
+	return parseUUID(raw, "organization_id", ErrCodeHandlerInvalidOrganizationID)
 }
 
 func parseClinicID(raw string) (uuid.UUID, error) {
-	id, err := uuid.Parse(raw)
-	if err != nil {
-		return uuid.Nil, oops.In("handler.query.stats").
-			Code(ErrCodeHandlerInvalidClinicID).
-			Public("clinic_id is not a valid UUID.").
-			Wrap(err)
-	}
-	return id, nil
+	return parseUUID(raw, "clinic_id", ErrCodeHandlerInvalidClinicID)
 }
 
 func parseDepartmentID(raw string) (uuid.UUID, error) {
-	id, err := uuid.Parse(raw)
-	if err != nil {
-		return uuid.Nil, oops.In("handler.query.stats").
-			Code(ErrCodeHandlerInvalidDepartmentID).
-			Public("department_id is not a valid UUID.").
-			Wrap(err)
-	}
-	return id, nil
+	return parseUUID(raw, "department_id", ErrCodeHandlerInvalidDepartmentID)
 }

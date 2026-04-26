@@ -7,52 +7,36 @@ import (
 
 // Error codes emitted by handler-layer request parsing.
 const (
-	ErrCodeHandlerInvalidEmployeeID     = "employee_id_invalid"
-	ErrCodeHandlerInvalidDepartmentID   = "department_id_invalid"
-	ErrCodeHandlerInvalidClinicID       = "clinic_id_invalid"
-	ErrCodeHandlerInvalidOrganizationID = "organization_id_invalid"
+	ErrCodeHandlerInvalidEmployeeID     = "handler_invalid_employee_id"
+	ErrCodeHandlerInvalidDepartmentID   = "handler_invalid_department_id"
+	ErrCodeHandlerInvalidClinicID       = "handler_invalid_clinic_id"
+	ErrCodeHandlerInvalidOrganizationID = "handler_invalid_organization_id"
 )
 
-func parseEmployeeID(raw string) (uuid.UUID, error) {
+func parseUUID(raw, field, code string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
 		return uuid.Nil, oops.In("handler.query.membership").
-			Code(ErrCodeHandlerInvalidEmployeeID).
-			Public("employee_id is not a valid UUID.").
+			Code(code).
+			Public(field+" is not a valid UUID.").
+			With(field, raw).
 			Wrap(err)
 	}
 	return id, nil
+}
+
+func parseEmployeeID(raw string) (uuid.UUID, error) {
+	return parseUUID(raw, "employee_id", ErrCodeHandlerInvalidEmployeeID)
 }
 
 func parseDepartmentID(raw string) (uuid.UUID, error) {
-	id, err := uuid.Parse(raw)
-	if err != nil {
-		return uuid.Nil, oops.In("handler.query.membership").
-			Code(ErrCodeHandlerInvalidDepartmentID).
-			Public("department_id is not a valid UUID.").
-			Wrap(err)
-	}
-	return id, nil
+	return parseUUID(raw, "department_id", ErrCodeHandlerInvalidDepartmentID)
 }
 
 func parseClinicID(raw string) (uuid.UUID, error) {
-	id, err := uuid.Parse(raw)
-	if err != nil {
-		return uuid.Nil, oops.In("handler.query.membership").
-			Code(ErrCodeHandlerInvalidClinicID).
-			Public("clinic_id is not a valid UUID.").
-			Wrap(err)
-	}
-	return id, nil
+	return parseUUID(raw, "clinic_id", ErrCodeHandlerInvalidClinicID)
 }
 
 func parseOrganizationID(raw string) (uuid.UUID, error) {
-	id, err := uuid.Parse(raw)
-	if err != nil {
-		return uuid.Nil, oops.In("handler.query.membership").
-			Code(ErrCodeHandlerInvalidOrganizationID).
-			Public("organization_id is not a valid UUID.").
-			Wrap(err)
-	}
-	return id, nil
+	return parseUUID(raw, "organization_id", ErrCodeHandlerInvalidOrganizationID)
 }
