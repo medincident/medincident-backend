@@ -15,8 +15,8 @@ import (
 )
 
 type UpdateIncidentPriorityPayload struct {
-	IncidentID string                 `validate:"required,uuid"`
-	Priority   model.IncidentPriority `validate:"required,oneof=low normal high critical"`
+	IncidentID string `validate:"required,uuid"`
+	Priority   string `validate:"required,oneof=low normal high critical"`
 }
 
 type UpdateIncidentPriorityCommand struct {
@@ -30,12 +30,13 @@ type UpdateIncidentPriorityCommand struct {
 //
 // See: docs/services/incident/Incidents.md
 func (s *IncidentService) UpdatePriority(
-	ctx context.Context, cmd *UpdateIncidentPriorityCommand,
+	ctx context.Context, cmd UpdateIncidentPriorityCommand,
 ) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err
 	}
 	id := uuid.MustParse(cmd.Payload.IncidentID)
+	priority := model.IncidentPriority(cmd.Payload.Priority)
 	now := time.Now()
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -52,7 +53,7 @@ func (s *IncidentService) UpdatePriority(
 			privilegedActorPolicy(inc.OrganizationID, inc.ClinicID, inc.DepartmentID)); err != nil {
 			return err
 		}
-		if inc.Priority == cmd.Payload.Priority {
+		if inc.Priority == priority {
 			return nil
 		}
 		actorEmpID, displayName, err := s.resolveActor(tx, cmd.Caller.ZitadelUserID)
@@ -60,7 +61,7 @@ func (s *IncidentService) UpdatePriority(
 			return err
 		}
 		old := inc.Priority
-		inc.Priority = cmd.Payload.Priority
+		inc.Priority = priority
 		inc.UpdatedAt = now
 		if err := tx.Save(inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)

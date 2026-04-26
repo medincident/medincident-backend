@@ -16,7 +16,7 @@ func (h *BufferHandler) RejectPatientIncident(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.svc.Reject(ctx, &buffersvc.RejectCommand{
+	if err := h.svc.Reject(ctx, buffersvc.RejectCommand{
 		Caller:  authz.Caller{ZitadelUserID: callerID},
 		Payload: buffersvc.RejectPayload{BufferID: req.GetBufferId()},
 	}); err != nil {

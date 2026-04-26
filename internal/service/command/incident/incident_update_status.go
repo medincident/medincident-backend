@@ -16,8 +16,8 @@ import (
 )
 
 type UpdateIncidentStatusPayload struct {
-	IncidentID string               `validate:"required,uuid"`
-	NewStatus  model.IncidentStatus `validate:"required,oneof=in_progress done rejected"`
+	IncidentID string `validate:"required,uuid"`
+	NewStatus  string `validate:"required,oneof=in_progress done rejected"`
 }
 
 type UpdateIncidentStatusCommand struct {
@@ -31,12 +31,13 @@ type UpdateIncidentStatusCommand struct {
 //
 // See: docs/services/incident/Incidents.md
 func (s *IncidentService) UpdateStatus(
-	ctx context.Context, cmd *UpdateIncidentStatusCommand,
+	ctx context.Context, cmd UpdateIncidentStatusCommand,
 ) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err
 	}
 	id := uuid.MustParse(cmd.Payload.IncidentID)
+	newStatus := model.IncidentStatus(cmd.Payload.NewStatus)
 	now := time.Now()
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -44,12 +45,12 @@ func (s *IncidentService) UpdateStatus(
 		if err != nil {
 			return err
 		}
-		if !validStatusTransition(inc.Status, cmd.Payload.NewStatus) {
+		if !validStatusTransition(inc.Status, newStatus) {
 			return oops.In(scope).
 				Code(ErrCodeIncidentInvalidStatusFlow).
 				Public("This status transition is not allowed.").
 				With("from", inc.Status).
-				With("to", cmd.Payload.NewStatus).
+				With("to", newStatus).
 				Errorf("invalid transition")
 		}
 		if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID,
@@ -62,7 +63,7 @@ func (s *IncidentService) UpdateStatus(
 		}
 
 		old := inc.Status
-		inc.Status = cmd.Payload.NewStatus
+		inc.Status = newStatus
 		inc.UpdatedAt = now
 		if err := tx.Save(inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)

@@ -27,7 +27,7 @@ type CancelCommand struct {
 // only while pending.
 //
 // See: docs/services/incident/Buffer.md
-func (s *BufferService) Cancel(ctx context.Context, cmd *CancelCommand) error {
+func (s *BufferService) Cancel(ctx context.Context, cmd CancelCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err
 	}

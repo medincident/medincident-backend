@@ -36,7 +36,7 @@ type ReopenIncidentResult struct {
 //
 // See: docs/services/incident/Incidents.md
 func (s *IncidentService) Reopen(
-	ctx context.Context, cmd *ReopenIncidentCommand,
+	ctx context.Context, cmd ReopenIncidentCommand,
 ) (ReopenIncidentResult, error) {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return ReopenIncidentResult{}, err

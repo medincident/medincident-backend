@@ -16,7 +16,7 @@ func (h *BufferHandler) CancelPatientIncident(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.svc.Cancel(ctx, &buffersvc.CancelCommand{
+	if err := h.svc.Cancel(ctx, buffersvc.CancelCommand{
 		Caller:  authz.Caller{ZitadelUserID: callerID},
 		Payload: buffersvc.CancelPayload{BufferID: req.GetBufferId()},
 	}); err != nil {

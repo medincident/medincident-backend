@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
-	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	requestsvc "github.com/medincident/medincident-backend/internal/service/command/request"
 	requestv1 "github.com/medincident/medincident-backend/pkg/command/request/v1"
@@ -22,7 +21,7 @@ func (h *ServiceRequestHandler) UpdateServiceRequestStatus(
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: requestsvc.UpdateServiceRequestStatusPayload{
 			ServiceRequestID: req.GetServiceRequestId(),
-			NewStatus:        model.ServiceRequestStatus(req.GetNewStatus()),
+			NewStatus:        req.GetNewStatus(),
 		},
 	}); err != nil {
 		return nil, err
