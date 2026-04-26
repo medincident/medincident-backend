@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package command.request.classifier.v1;
+
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+
+option go_package = "github.com/medincident/medincident-backend/pkg/command/request/classifier/v1;requestclassifierv1";
+
+service RequestClassifierCommandService {
+  rpc CreateRequestType(CreateRequestTypeRequest) returns (CreateRequestTypeResponse) {
+    option (google.api.http) = {
+      post: "/v1/organizations/{organization_id}/request-types"
+      body: "*"
+    };
+  }
+  rpc UpdateRequestTypeDetails(UpdateRequestTypeDetailsRequest) returns (UpdateRequestTypeDetailsResponse) {
+    option (google.api.http) = {
+      put: "/v1/request-types/{type_id}/details"
+      body: "*"
+    };
+  }
+  rpc DeactivateRequestType(DeactivateRequestTypeRequest) returns (DeactivateRequestTypeResponse) {
+    option (google.api.http) = {post: "/v1/request-types/{type_id}/deactivations"};
+  }
+  rpc ReactivateRequestType(ReactivateRequestTypeRequest) returns (ReactivateRequestTypeResponse) {
+    option (google.api.http) = {post: "/v1/request-types/{type_id}/reactivations"};
+  }
+  rpc DeleteRequestType(DeleteRequestTypeRequest) returns (DeleteRequestTypeResponse) {
+    option (google.api.http) = {delete: "/v1/request-types/{type_id}"};
+  }
+}
+
+message CreateRequestTypeRequest {
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 3;
+}
+message CreateRequestTypeResponse {
+  string type_id = 1;
+}
+
+message UpdateRequestTypeDetailsRequest {
+  string type_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string name = 2 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 3;
+}
+message UpdateRequestTypeDetailsResponse {}
+
+message DeactivateRequestTypeRequest {
+  string type_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeactivateRequestTypeResponse {}
+
+message ReactivateRequestTypeRequest {
+  string type_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message ReactivateRequestTypeResponse {}
+
+message DeleteRequestTypeRequest {
+  string type_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeleteRequestTypeResponse {}

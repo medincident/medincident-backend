@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package query.request.classifier.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/medincident/medincident-backend/pkg/query/request/classifier/v1;requestclassifierqueryv1";
+
+service RequestClassifierQueryService {
+  rpc GetRequestType(GetRequestTypeRequest) returns (GetRequestTypeResponse) {
+    option (google.api.http) = {get: "/v1/request-types/{id}"};
+  }
+  rpc ListRequestTypesByOrganization(ListRequestTypesByOrganizationRequest) returns (ListRequestTypesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/request-types"};
+  }
+  rpc ListActiveRequestTypesByOrganization(ListActiveRequestTypesByOrganizationRequest) returns (ListActiveRequestTypesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/request-types:active"};
+  }
+}
+
+message RequestType {
+  string id = 1;
+  string organization_id = 2;
+  string name = 3;
+  optional string description = 4;
+  bool is_active = 5;
+  string created_at = 6;
+  string updated_at = 7;
+}
+
+message GetRequestTypeRequest {
+  string id = 1;
+}
+message GetRequestTypeResponse {
+  RequestType request_type = 1;
+}
+
+message ListRequestTypesByOrganizationRequest {
+  string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListRequestTypesByOrganizationResponse {
+  repeated RequestType items = 1;
+}
+
+message ListActiveRequestTypesByOrganizationRequest {
+  string organization_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+message ListActiveRequestTypesByOrganizationResponse {
+  repeated RequestType items = 1;
+}

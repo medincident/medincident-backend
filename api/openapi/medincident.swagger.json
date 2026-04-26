@@ -24,6 +24,12 @@
       "name": "OrgStructureCommandService"
     },
     {
+      "name": "RequestClassifierCommandService"
+    },
+    {
+      "name": "ServiceRequestCommandService"
+    },
+    {
       "name": "AnnouncementQueryService"
     },
     {
@@ -37,6 +43,12 @@
     },
     {
       "name": "OrgStructureQueryService"
+    },
+    {
+      "name": "RequestClassifierQueryService"
+    },
+    {
+      "name": "ServiceRequestQueryService"
     },
     {
       "name": "StatsQueryService"
@@ -2160,6 +2172,50 @@
         ]
       }
     },
+    "/v1/incidents/{incidentId}/service-requests": {
+      "get": {
+        "operationId": "ServiceRequestQueryService_ListServiceRequestsByIncident",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListServiceRequestsByIncidentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "incidentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "ServiceRequestQueryService"
+        ]
+      }
+    },
     "/v1/incidents/{incidentId}/status": {
       "put": {
         "operationId": "IncidentCommandService_UpdateIncidentStatus",
@@ -3573,6 +3629,174 @@
         ]
       }
     },
+    "/v1/organizations/{organizationId}/request-types": {
+      "get": {
+        "operationId": "RequestClassifierQueryService_ListRequestTypesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListRequestTypesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "RequestClassifierQueryService"
+        ]
+      },
+      "post": {
+        "operationId": "RequestClassifierCommandService_CreateRequestType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateRequestTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RequestClassifierCommandServiceCreateRequestTypeBody"
+            }
+          }
+        ],
+        "tags": [
+          "RequestClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/request-types:active": {
+      "get": {
+        "operationId": "RequestClassifierQueryService_ListActiveRequestTypesByOrganization",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListActiveRequestTypesByOrganizationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "RequestClassifierQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/service-requests": {
+      "get": {
+        "operationId": "ServiceRequestQueryService_ListServiceRequests",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListServiceRequestsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "ServiceRequestQueryService"
+        ]
+      }
+    },
     "/v1/organizations/{organizationId}/stats": {
       "get": {
         "operationId": "StatsQueryService_GetOrganizationStats",
@@ -4395,6 +4619,370 @@
         ]
       }
     },
+    "/v1/request-types/{id}": {
+      "get": {
+        "operationId": "RequestClassifierQueryService_GetRequestType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetRequestTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RequestClassifierQueryService"
+        ]
+      }
+    },
+    "/v1/request-types/{typeId}": {
+      "delete": {
+        "operationId": "RequestClassifierCommandService_DeleteRequestType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteRequestTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RequestClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/request-types/{typeId}/deactivations": {
+      "post": {
+        "operationId": "RequestClassifierCommandService_DeactivateRequestType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeactivateRequestTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RequestClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/request-types/{typeId}/details": {
+      "put": {
+        "operationId": "RequestClassifierCommandService_UpdateRequestTypeDetails",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateRequestTypeDetailsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RequestClassifierCommandServiceUpdateRequestTypeDetailsBody"
+            }
+          }
+        ],
+        "tags": [
+          "RequestClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/request-types/{typeId}/reactivations": {
+      "post": {
+        "operationId": "RequestClassifierCommandService_ReactivateRequestType",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReactivateRequestTypeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "typeId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "RequestClassifierCommandService"
+        ]
+      }
+    },
+    "/v1/service-requests": {
+      "post": {
+        "operationId": "ServiceRequestCommandService_CreateServiceRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateServiceRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateServiceRequestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ServiceRequestCommandService"
+        ]
+      }
+    },
+    "/v1/service-requests/{id}": {
+      "get": {
+        "operationId": "ServiceRequestQueryService_GetServiceRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetServiceRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ServiceRequestQueryService"
+        ]
+      }
+    },
+    "/v1/service-requests/{serviceRequestId}/description": {
+      "put": {
+        "operationId": "ServiceRequestCommandService_UpdateServiceRequestDescription",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateServiceRequestDescriptionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceRequestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ServiceRequestCommandServiceUpdateServiceRequestDescriptionBody"
+            }
+          }
+        ],
+        "tags": [
+          "ServiceRequestCommandService"
+        ]
+      }
+    },
+    "/v1/service-requests/{serviceRequestId}/executors": {
+      "put": {
+        "operationId": "ServiceRequestCommandService_AssignExecutors",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AssignExecutorsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceRequestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ServiceRequestCommandServiceAssignExecutorsBody"
+            }
+          }
+        ],
+        "tags": [
+          "ServiceRequestCommandService"
+        ]
+      }
+    },
+    "/v1/service-requests/{serviceRequestId}/history": {
+      "get": {
+        "operationId": "ServiceRequestQueryService_GetServiceRequestHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetServiceRequestHistoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceRequestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "ServiceRequestQueryService"
+        ]
+      }
+    },
+    "/v1/service-requests/{serviceRequestId}/status": {
+      "put": {
+        "operationId": "ServiceRequestCommandService_UpdateServiceRequestStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateServiceRequestStatusResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "serviceRequestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ServiceRequestCommandServiceUpdateServiceRequestStatusBody"
+            }
+          }
+        ],
+        "tags": [
+          "ServiceRequestCommandService"
+        ]
+      }
+    },
     "/v1/system-admins": {
       "get": {
         "operationId": "MembershipQueryService_ListSystemAdmins",
@@ -5021,6 +5609,70 @@
         "legalAddress"
       ]
     },
+    "RequestClassifierCommandServiceCreateRequestTypeBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "RequestClassifierCommandServiceUpdateRequestTypeDetailsBody": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "ServiceRequestCommandServiceAssignExecutorsBody": {
+      "type": "object",
+      "properties": {
+        "executorEmployeeIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "executorEmployeeIds"
+      ]
+    },
+    "ServiceRequestCommandServiceUpdateServiceRequestDescriptionBody": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "description"
+      ]
+    },
+    "ServiceRequestCommandServiceUpdateServiceRequestStatusBody": {
+      "type": "object",
+      "properties": {
+        "newStatus": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "newStatus"
+      ]
+    },
     "classifierV1Type": {
       "type": "object",
       "properties": {
@@ -5126,6 +5778,50 @@
         "INCIDENT_STATUS_CANCELLED"
       ],
       "default": "INCIDENT_STATUS_UNSPECIFIED"
+    },
+    "queryIncidentV1StatusHistoryEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "oldStatus": {
+          "$ref": "#/definitions/queryIncidentV1IncidentStatus",
+          "title": "UNSPECIFIED for the initial entry"
+        },
+        "newStatus": {
+          "$ref": "#/definitions/queryIncidentV1IncidentStatus"
+        },
+        "actor": {
+          "$ref": "#/definitions/v1ActorView"
+        },
+        "changedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "queryRequestV1StatusHistoryEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "oldStatus": {
+          "type": "string"
+        },
+        "newStatus": {
+          "type": "string"
+        },
+        "actorId": {
+          "type": "string"
+        },
+        "actorName": {
+          "type": "string"
+        },
+        "changedAt": {
+          "type": "string"
+        }
+      }
     },
     "rpcStatus": {
       "type": "object",
@@ -5251,6 +5947,9 @@
       "type": "object"
     },
     "v1AssignDepartmentResponsibleResponse": {
+      "type": "object"
+    },
+    "v1AssignExecutorsResponse": {
       "type": "object"
     },
     "v1AssignOrganizationAdminDeputyResponse": {
@@ -5617,16 +6316,67 @@
         }
       }
     },
+    "v1CreateRequestTypeResponse": {
+      "type": "object",
+      "properties": {
+        "typeId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateServiceRequestRequest": {
+      "type": "object",
+      "properties": {
+        "departmentId": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "incidentId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "executorEmployeeIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "departmentId",
+        "typeId",
+        "description",
+        "executorEmployeeIds"
+      ]
+    },
+    "v1CreateServiceRequestResponse": {
+      "type": "object",
+      "properties": {
+        "serviceRequestId": {
+          "type": "string"
+        }
+      }
+    },
     "v1DeactivateIncidentCategoryResponse": {
       "type": "object"
     },
     "v1DeactivateIncidentTypeResponse": {
       "type": "object"
     },
+    "v1DeactivateRequestTypeResponse": {
+      "type": "object"
+    },
     "v1DeleteIncidentCategoryResponse": {
       "type": "object"
     },
     "v1DeleteIncidentTypeResponse": {
+      "type": "object"
+    },
+    "v1DeleteRequestTypeResponse": {
       "type": "object"
     },
     "v1Department": {
@@ -5747,6 +6497,46 @@
       },
       "description": "EmployeeCardView is the denormalised card projection returned by\nboth Get and List endpoints. Fields mirror projections.employee_cards\ncolumns; timestamps are RFC3339 strings. Optional fields stay unset\nwhen the backing column is NULL."
     },
+    "v1Executor": {
+      "type": "object",
+      "properties": {
+        "employeeId": {
+          "type": "string"
+        },
+        "assignedAt": {
+          "type": "string"
+        },
+        "assignedById": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ExecutorHistoryEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string"
+        },
+        "employeeId": {
+          "type": "string"
+        },
+        "employeeName": {
+          "type": "string"
+        },
+        "actorId": {
+          "type": "string"
+        },
+        "actorName": {
+          "type": "string"
+        },
+        "changedAt": {
+          "type": "string"
+        }
+      }
+    },
     "v1ForceEndVacationResponse": {
       "type": "object"
     },
@@ -5837,7 +6627,7 @@
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/v1StatusHistoryEntry"
+            "$ref": "#/definitions/queryIncidentV1StatusHistoryEntry"
           }
         },
         "priorityHistory": {
@@ -5870,6 +6660,41 @@
       "properties": {
         "stats": {
           "$ref": "#/definitions/v1OrganizationStats"
+        }
+      }
+    },
+    "v1GetRequestTypeResponse": {
+      "type": "object",
+      "properties": {
+        "requestType": {
+          "$ref": "#/definitions/v1RequestType"
+        }
+      }
+    },
+    "v1GetServiceRequestHistoryResponse": {
+      "type": "object",
+      "properties": {
+        "statusHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/queryRequestV1StatusHistoryEntry"
+          }
+        },
+        "executorHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ExecutorHistoryEntry"
+          }
+        }
+      }
+    },
+    "v1GetServiceRequestResponse": {
+      "type": "object",
+      "properties": {
+        "serviceRequest": {
+          "$ref": "#/definitions/v1ServiceRequest"
         }
       }
     },
@@ -5981,6 +6806,18 @@
         }
       },
       "description": "IncidentView is the unified payload. For patients only id, status,\npatient_status, description and timestamps are populated."
+    },
+    "v1ListActiveRequestTypesByOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1RequestType"
+          }
+        }
+      }
     },
     "v1ListActiveRootCategoriesResponse": {
       "type": "object",
@@ -6255,6 +7092,42 @@
         }
       }
     },
+    "v1ListRequestTypesByOrganizationResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1RequestType"
+          }
+        }
+      }
+    },
+    "v1ListServiceRequestsByIncidentResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ServiceRequest"
+          }
+        }
+      }
+    },
+    "v1ListServiceRequestsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ServiceRequest"
+          }
+        }
+      }
+    },
     "v1ListSystemAdminsResponse": {
       "type": "object",
       "properties": {
@@ -6434,6 +7307,9 @@
     "v1ReactivateIncidentTypeResponse": {
       "type": "object"
     },
+    "v1ReactivateRequestTypeResponse": {
+      "type": "object"
+    },
     "v1RegistrarView": {
       "type": "object",
       "properties": {
@@ -6479,6 +7355,32 @@
       "type": "object",
       "properties": {
         "reopenedIncidentId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1RequestType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "organizationId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isActive": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
           "type": "string"
         }
       }
@@ -6545,31 +7447,58 @@
         }
       }
     },
-    "v1StartVacationNowResponse": {
-      "type": "object",
-      "properties": {
-        "vacationId": {
-          "type": "string"
-        }
-      }
-    },
-    "v1StatusHistoryEntry": {
+    "v1ServiceRequest": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string"
         },
-        "oldStatus": {
-          "$ref": "#/definitions/queryIncidentV1IncidentStatus",
-          "title": "UNSPECIFIED for the initial entry"
+        "organizationId": {
+          "type": "string"
         },
-        "newStatus": {
-          "$ref": "#/definitions/queryIncidentV1IncidentStatus"
+        "clinicId": {
+          "type": "string"
         },
-        "actor": {
-          "$ref": "#/definitions/v1ActorView"
+        "departmentId": {
+          "type": "string"
         },
-        "changedAt": {
+        "typeId": {
+          "type": "string"
+        },
+        "incidentId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "authorId": {
+          "type": "string"
+        },
+        "authorDisplayName": {
+          "type": "string"
+        },
+        "executors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Executor"
+          }
+        },
+        "createdAt": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "v1StartVacationNowResponse": {
+      "type": "object",
+      "properties": {
+        "vacationId": {
           "type": "string"
         }
       }
@@ -6664,6 +7593,15 @@
       "type": "object"
     },
     "v1UpdatePatientIncidentResponse": {
+      "type": "object"
+    },
+    "v1UpdateRequestTypeDetailsResponse": {
+      "type": "object"
+    },
+    "v1UpdateServiceRequestDescriptionResponse": {
+      "type": "object"
+    },
+    "v1UpdateServiceRequestStatusResponse": {
       "type": "object"
     },
     "v1UpdateVacationEndDateResponse": {
