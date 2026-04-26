@@ -2,6 +2,7 @@ package request
 
 import (
 	"context"
+	"strings"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
@@ -21,7 +22,7 @@ func (h *ServiceRequestHandler) UpdateServiceRequestDescription(
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: requestsvc.UpdateServiceRequestDescriptionPayload{
 			ServiceRequestID: req.GetServiceRequestId(),
-			Description:      req.GetDescription(),
+			Description:      strings.TrimSpace(req.GetDescription()),
 		},
 	}); err != nil {
 		return nil, err

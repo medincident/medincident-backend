@@ -5646,7 +5646,10 @@
             "type": "string"
           }
         }
-      }
+      },
+      "required": [
+        "executorEmployeeIds"
+      ]
     },
     "ServiceRequestCommandServiceUpdateServiceRequestDescriptionBody": {
       "type": "object",
@@ -6346,7 +6349,8 @@
       "required": [
         "departmentId",
         "typeId",
-        "description"
+        "description",
+        "executorEmployeeIds"
       ]
     },
     "v1CreateServiceRequestResponse": {

@@ -2,6 +2,7 @@ package request
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"time"
 
@@ -47,7 +48,7 @@ func (s *ServiceRequestService) UpdateDescription(
 			return oops.In(scope).Code(ErrCodeServiceRequestFrozen).
 				Public("Cannot modify a completed or cancelled request.").
 				With("service_request_id", id).With("status", sr.Status).
-				Errorf("frozen")
+				Wrap(errors.New("frozen"))
 		}
 		if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID,
 			privilegedActorPolicy(sr.OrganizationID, sr.ClinicID, sr.DepartmentID)); err != nil {

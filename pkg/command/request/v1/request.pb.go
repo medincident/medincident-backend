@@ -410,14 +410,14 @@ var File_command_request_v1_request_proto protoreflect.FileDescriptor
 
 const file_command_request_v1_request_proto_rawDesc = "" +
 	"\n" +
-	" command/request/v1/request.proto\x12\x12command.request.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xf6\x01\n" +
+	" command/request/v1/request.proto\x12\x12command.request.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xfb\x01\n" +
 	"\x1bCreateServiceRequestRequest\x12(\n" +
 	"\rdepartment_id\x18\x01 \x01(\tB\x03\xe0A\x02R\fdepartmentId\x12\x1c\n" +
 	"\atype_id\x18\x02 \x01(\tB\x03\xe0A\x02R\x06typeId\x12$\n" +
 	"\vincident_id\x18\x03 \x01(\tH\x00R\n" +
 	"incidentId\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tB\x03\xe0A\x02R\vdescription\x122\n" +
-	"\x15executor_employee_ids\x18\x05 \x03(\tR\x13executorEmployeeIdsB\x0e\n" +
+	"\vdescription\x18\x04 \x01(\tB\x03\xe0A\x02R\vdescription\x127\n" +
+	"\x15executor_employee_ids\x18\x05 \x03(\tB\x03\xe0A\x02R\x13executorEmployeeIdsB\x0e\n" +
 	"\f_incident_id\"L\n" +
 	"\x1cCreateServiceRequestResponse\x12,\n" +
 	"\x12service_request_id\x18\x01 \x01(\tR\x10serviceRequestId\"\x82\x01\n" +
@@ -429,10 +429,10 @@ const file_command_request_v1_request_proto_rawDesc = "" +
 	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x12\"\n" +
 	"\n" +
 	"new_status\x18\x02 \x01(\tB\x03\xe0A\x02R\tnewStatus\"$\n" +
-	"\"UpdateServiceRequestStatusResponse\"\x7f\n" +
+	"\"UpdateServiceRequestStatusResponse\"\x84\x01\n" +
 	"\x16AssignExecutorsRequest\x121\n" +
-	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x122\n" +
-	"\x15executor_employee_ids\x18\x02 \x03(\tR\x13executorEmployeeIds\"\x19\n" +
+	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x127\n" +
+	"\x15executor_employee_ids\x18\x02 \x03(\tB\x03\xe0A\x02R\x13executorEmployeeIds\"\x19\n" +
 	"\x17AssignExecutorsResponse2\x92\x06\n" +
 	"\x1cServiceRequestCommandService\x12\x9a\x01\n" +
 	"\x14CreateServiceRequest\x12/.command.request.v1.CreateServiceRequestRequest\x1a0.command.request.v1.CreateServiceRequestResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/service-requests\x12\xdc\x01\n" +

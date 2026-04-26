@@ -2,6 +2,7 @@ package classifier
 
 import (
 	"context"
+	"strings"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
@@ -21,8 +22,8 @@ func (h *RequestClassifierHandler) CreateRequestType(
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: classifiersvc.CreateRequestTypePayload{
 			OrganizationID: req.GetOrganizationId(),
-			Name:           req.GetName(),
-			Description:    req.Description,
+			Name:           strings.TrimSpace(req.GetName()),
+			Description:    trimOptionalString(req.Description),
 		},
 	})
 	if err != nil {

@@ -2,6 +2,7 @@ package request
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
@@ -47,7 +48,7 @@ func (s *ServiceRequestService) UpdateStatus(
 			return oops.In(scope).Code(ErrCodeServiceRequestFrozen).
 				Public("Cannot modify a completed or cancelled request.").
 				With("service_request_id", id).With("status", sr.Status).
-				Errorf("frozen")
+				Wrap(errors.New("frozen"))
 		}
 
 		isExecutor, err := s.isCallerExecutor(tx, cmd.Caller.ZitadelUserID, sr.ID)
@@ -115,5 +116,5 @@ func (s *ServiceRequestService) validateStatusTransition(
 		Code(ErrCodeServiceRequestInvalidStatusFlow).
 		Public("This status transition is not allowed.").
 		With("from", from).With("to", to).
-		Errorf("invalid transition")
+		Wrap(errors.New("invalid transition"))
 }

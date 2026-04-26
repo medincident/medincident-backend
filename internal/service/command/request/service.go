@@ -119,7 +119,7 @@ func (s *ServiceRequestService) resolveActorDisplayName(tx *gorm.DB, callerID st
 			Code(ErrCodeServiceRequestActorNotFound).
 			Public("Actor user record is missing.").
 			With("zitadel_user_id", callerID).
-			Errorf("display_name is empty")
+			Wrap(errors.New("display_name is empty"))
 	}
 	return displayName, nil
 }

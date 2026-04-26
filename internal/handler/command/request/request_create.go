@@ -2,6 +2,7 @@ package request
 
 import (
 	"context"
+	"strings"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
@@ -23,7 +24,7 @@ func (h *ServiceRequestHandler) CreateServiceRequest(
 			DepartmentID:        req.GetDepartmentId(),
 			TypeID:              req.GetTypeId(),
 			IncidentID:          req.IncidentId,
-			Description:         req.GetDescription(),
+			Description:         strings.TrimSpace(req.GetDescription()),
 			ExecutorEmployeeIDs: req.GetExecutorEmployeeIds(),
 		},
 	})

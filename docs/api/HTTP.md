@@ -7961,7 +7961,7 @@ Cancellation by registrar uses CancelIncident.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|executorEmployeeIds|[string]|false|none|none|
+|executorEmployeeIds|[string]|true|none|none|
 
 <h2 id="tocS_ServiceRequestCommandServiceUpdateServiceRequestDescriptionBody">ServiceRequestCommandServiceUpdateServiceRequestDescriptionBody</h2>
 <!-- backwards compatibility -->
@@ -9318,7 +9318,7 @@ ClinicListItem is the minimal shape returned by list endpoints.
 |typeId|string|true|none|none|
 |incidentId|string|false|none|none|
 |description|string|true|none|none|
-|executorEmployeeIds|[string]|false|none|none|
+|executorEmployeeIds|[string]|true|none|none|
 
 <h2 id="tocS_v1CreateServiceRequestResponse">v1CreateServiceRequestResponse</h2>
 <!-- backwards compatibility -->
