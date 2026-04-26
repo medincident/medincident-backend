@@ -101,7 +101,7 @@ func (s *AnnouncementService) Create(
 		if clinicID.Valid {
 			var clinicOrgID uuid.UUID
 			if err := tx.Raw(`SELECT organization_id FROM domain.clinics WHERE id = ? LIMIT 1`, clinicID.UUID).
-				Scan(&clinicOrgID).Error; err != nil || clinicOrgID == uuid.Nil {
+				Row().Scan(&clinicOrgID); err != nil || clinicOrgID == uuid.Nil {
 				return oops.In(scope).
 					Code(ErrCodeAnnouncementClinicNotFound).
 					Public("Clinic not found.").
@@ -121,7 +121,7 @@ func (s *AnnouncementService) Create(
 		if deptID.Valid {
 			var deptClinicID uuid.UUID
 			if err := tx.Raw(`SELECT clinic_id FROM domain.departments WHERE id = ? LIMIT 1`, deptID.UUID).
-				Scan(&deptClinicID).Error; err != nil || deptClinicID == uuid.Nil {
+				Row().Scan(&deptClinicID); err != nil || deptClinicID == uuid.Nil {
 				return oops.In(scope).
 					Code(ErrCodeAnnouncementDeptNotFound).
 					Public("Department not found.").
