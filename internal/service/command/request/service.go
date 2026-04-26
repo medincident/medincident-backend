@@ -126,16 +126,26 @@ func (s *ServiceRequestService) resolveActorDisplayName(tx *gorm.DB, callerID st
 	return displayName, nil
 }
 
-func (s *ServiceRequestService) resolveEmployeeName(tx *gorm.DB, employeeID uuid.UUID) string {
+func (s *ServiceRequestService) resolveEmployeeName(tx *gorm.DB, employeeID uuid.UUID) (string, error) {
 	var displayName string
-	err := tx.Raw(`
+	if err := tx.Raw(`
 		SELECT pu.display_name
 		FROM domain.employees e
 		JOIN projections.users pu ON pu.id = e.zitadel_user_id
 		WHERE e.id = ?`, employeeID,
-	).Scan(&displayName).Error
-	if err != nil || displayName == "" {
-		return "unknown"
+	).Scan(&displayName).Error; err != nil {
+		return "", oops.In(scope).
+			Code(ErrCodeServiceRequestEmployeeNotFound).
+			Public("Employee user record is missing.").
+			With("employee_id", employeeID).
+			Wrap(err)
 	}
-	return displayName
+	if displayName == "" {
+		return "", oops.In(scope).
+			Code(ErrCodeServiceRequestEmployeeNotFound).
+			Public("Employee user record is missing.").
+			With("employee_id", employeeID).
+			Errorf("display_name is empty")
+	}
+	return displayName, nil
 }

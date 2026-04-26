@@ -110,10 +110,12 @@ func (s *IncidentService) resolveActor(tx *gorm.DB, callerID string) (uuid.NullU
 	if err := tx.Raw(
 		`SELECT display_name FROM projections.users WHERE id = ?`,
 		callerID,
-	).Scan(&displayName).Error; err != nil {
+	).Scan(&displayName).Error; err != nil || displayName == "" {
 		return uuid.NullUUID{}, "", oops.In(scope).
 			Code(ErrCodeIncidentRegistrarUserNotFound).
-			With("zitadel_user_id", callerID).Wrap(err)
+			Public("Actor user record is missing.").
+			With("zitadel_user_id", callerID).
+			Errorf("display_name lookup failed")
 	}
 	return empID, displayName, nil
 }
