@@ -118,8 +118,8 @@ main.go wires constructors explicitly and drives teardown via `defer`.
     permission, or status machine — update the relevant file in
     `docs/services/` or `docs/architecture/` in the same commit.
     Each Go service method must carry a doc comment with a `See:` link
-    to the corresponding Wiki page (e.g.
-    `// See: https://github.com/medincident/medincident-backend/wiki/Service-Incidents#createincident`).
+    to the corresponding docs page (e.g.
+    `// See: docs/services/incident/Incidents.md`).
     Auto-generated files (`docs/api/Proto.md`, `docs/api/HTTP.md`) are
     updated by `task gen` — do not edit them by hand.
 16. **Build tooling split — Makefile vs Taskfile.**

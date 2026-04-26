@@ -1,10 +1,12 @@
+← [Документация](../../README.md)
+
 # Инциденты
 
 Управление инцидентами — основная рабочая сущность системы.
 
 **gRPC:** `IncidentCommandService` (command) / `IncidentQueryService` (query)
 
-Статусная машина: [[Статусные машины|Architecture-Status-Machines]]
+Статусная машина: [Статусные машины](../../architecture/Status-Machines.md)
 
 ---
 
@@ -84,7 +86,7 @@
 
 ### Инварианты
 
-- Допустимые переходы статусов: [[Статусные машины|Architecture-Status-Machines]].
+- Допустимые переходы статусов: [Статусные машины](../../architecture/Status-Machines.md).
 - `cancelled` — терминальный статус, переход из него запрещён.
 
 ### Ошибки
