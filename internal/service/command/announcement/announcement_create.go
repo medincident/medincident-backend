@@ -182,6 +182,7 @@ func (s *AnnouncementService) Create(
 			return oops.In(scope).
 				Code(ErrCodeAnnouncementSaveFailed).
 				With("announcement_id", id).
+				With("op", "seed_view_counter").
 				Wrap(err)
 		}
 
