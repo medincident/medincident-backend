@@ -135,8 +135,8 @@ func (s *ServiceRequestService) resolveEmployeeName(tx *gorm.DB, employeeID uuid
 		WHERE e.id = ?`, employeeID,
 	).Scan(&displayName).Error; err != nil {
 		return "", oops.In(scope).
-			Code(ErrCodeServiceRequestEmployeeNotFound).
-			Public("Employee user record is missing.").
+			Code(ErrCodeServiceRequestLoadFailed).
+			With("op", "resolve_employee_name").
 			With("employee_id", employeeID).
 			Wrap(err)
 	}
@@ -144,6 +144,7 @@ func (s *ServiceRequestService) resolveEmployeeName(tx *gorm.DB, employeeID uuid
 		return "", oops.In(scope).
 			Code(ErrCodeServiceRequestEmployeeNotFound).
 			Public("Employee user record is missing.").
+			With("op", "resolve_employee_name").
 			With("employee_id", employeeID).
 			Errorf("display_name is empty")
 	}
