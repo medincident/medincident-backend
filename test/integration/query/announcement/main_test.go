@@ -48,8 +48,6 @@ func TestMain(m *testing.M) {
 		fmt.Fprintf(os.Stderr, "start postgres: %v\n", err)
 		os.Exit(1)
 	}
-	defer func() { _ = container.Terminate(ctx) }()
-
 	dsn, err := container.ConnectionString(ctx, "sslmode=disable")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "get dsn: %v\n", err)
@@ -78,7 +76,11 @@ func TestMain(m *testing.M) {
 	}
 
 	reader = announcementread.NewReader(testDB, &testLogger)
-	os.Exit(m.Run())
+	code := m.Run()
+	if err := container.Terminate(ctx); err != nil {
+		fmt.Fprintf(os.Stderr, "terminate postgres: %v\n", err)
+	}
+	os.Exit(code)
 }
 
 func resetProjections(t *testing.T) {

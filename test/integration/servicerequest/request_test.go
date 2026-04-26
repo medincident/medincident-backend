@@ -65,9 +65,9 @@ func TestServiceRequest_Create_HappyPath(t *testing.T) {
 	assert.Equal(t, "created", projStatus)
 
 	var execCount int64
-	testDB.Raw(
+	require.NoError(t, testDB.Raw(
 		`SELECT COUNT(*) FROM projections.service_request_executor_history WHERE request_id = ?`, res.ID,
-	).Scan(&execCount)
+	).Scan(&execCount).Error)
 	assert.Equal(t, int64(1), execCount)
 }
 
@@ -191,9 +191,9 @@ func TestServiceRequest_UpdateStatus_ExecutorTransition(t *testing.T) {
 	assert.Equal(t, model.ServiceRequestStatusInWork, loadRequest(t, reqID).Status)
 
 	var histCount int64
-	testDB.Raw(
+	require.NoError(t, testDB.Raw(
 		`SELECT COUNT(*) FROM projections.service_request_status_history WHERE request_id = ?`, reqID,
-	).Scan(&histCount)
+	).Scan(&histCount).Error)
 	// Create seeds one NULL→created row; UpdateStatus adds a second created→in_work row.
 	assert.Equal(t, int64(2), histCount)
 }
@@ -269,15 +269,15 @@ func TestServiceRequest_AssignExecutors_HappyPath(t *testing.T) {
 	}))
 
 	var count int64
-	testDB.Raw(
+	require.NoError(t, testDB.Raw(
 		`SELECT COUNT(*) FROM domain.service_request_executors WHERE request_id = ? AND employee_id = ?`,
 		reqID, empID2,
-	).Scan(&count)
+	).Scan(&count).Error)
 	assert.Equal(t, int64(1), count)
 
-	testDB.Raw(
+	require.NoError(t, testDB.Raw(
 		`SELECT COUNT(*) FROM domain.service_request_executors WHERE request_id = ? AND employee_id = ?`,
 		reqID, empID1,
-	).Scan(&count)
+	).Scan(&count).Error)
 	assert.Equal(t, int64(0), count)
 }

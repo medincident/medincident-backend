@@ -164,10 +164,11 @@ func TestRequestType_Reactivate_HappyPath(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	_, _ = typeSvc.Deactivate(ctx, classifiersvc.DeactivateRequestTypeCommand{
+	_, err = typeSvc.Deactivate(ctx, classifiersvc.DeactivateRequestTypeCommand{
 		Caller:  sysadminCaller,
 		Payload: classifiersvc.DeactivateRequestTypePayload{TypeID: res.ID.String()},
 	})
+	require.NoError(t, err)
 
 	_, err = typeSvc.Reactivate(ctx, classifiersvc.ReactivateRequestTypeCommand{
 		Caller:  sysadminCaller,
@@ -194,10 +195,11 @@ func TestRequestType_Reactivate_NameConflict(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	_, _ = typeSvc.Deactivate(ctx, classifiersvc.DeactivateRequestTypeCommand{
+	_, err = typeSvc.Deactivate(ctx, classifiersvc.DeactivateRequestTypeCommand{
 		Caller:  sysadminCaller,
 		Payload: classifiersvc.DeactivateRequestTypePayload{TypeID: r1.ID.String()},
 	})
+	require.NoError(t, err)
 
 	// Another active type with the same name.
 	_, err = typeSvc.Create(ctx, classifiersvc.CreateRequestTypeCommand{
@@ -232,9 +234,9 @@ func TestRequestType_Delete_HappyPath(t *testing.T) {
 	require.NoError(t, err)
 
 	var n int64
-	testDB.Raw(`SELECT COUNT(*) FROM domain.request_types WHERE id = ?`, res.ID).Scan(&n)
+	require.NoError(t, testDB.Raw(`SELECT COUNT(*) FROM domain.request_types WHERE id = ?`, res.ID).Scan(&n).Error)
 	assert.Equal(t, int64(0), n)
 
-	testDB.Raw(`SELECT COUNT(*) FROM projections.request_types WHERE id = ?`, res.ID).Scan(&n)
+	require.NoError(t, testDB.Raw(`SELECT COUNT(*) FROM projections.request_types WHERE id = ?`, res.ID).Scan(&n).Error)
 	assert.Equal(t, int64(0), n)
 }

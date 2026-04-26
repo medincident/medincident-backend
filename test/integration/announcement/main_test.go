@@ -51,8 +51,6 @@ func TestMain(m *testing.M) {
 		fmt.Fprintf(os.Stderr, "start postgres: %v\n", err)
 		os.Exit(1)
 	}
-	defer func() { _ = container.Terminate(ctx) }()
-
 	dsn, err := container.ConnectionString(ctx, "sslmode=disable")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "get dsn: %v\n", err)
@@ -82,7 +80,11 @@ func TestMain(m *testing.M) {
 
 	authzSvc = authz.New(testDB)
 	svc = announcementsvc.NewAnnouncementService(testDB, authzSvc, &testLogger)
-	os.Exit(m.Run())
+	code := m.Run()
+	if err := container.Terminate(ctx); err != nil {
+		fmt.Fprintf(os.Stderr, "terminate postgres: %v\n", err)
+	}
+	os.Exit(code)
 }
 
 func resetDB(t *testing.T) {
