@@ -65,7 +65,7 @@ func TestBufferFlow_SubmitAndRead(t *testing.T) {
 	patient := authz.Caller{ZitadelUserID: patientID}
 
 	desc := "Болит голова"
-	res, err := bufferSvc.Submit(ctx, &buffercmd.SubmitCommand{
+	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller: patient,
 		Payload: buffercmd.SubmitPayload{
 			OrganizationID: bw.orgID.String(),
@@ -94,14 +94,14 @@ func TestBufferFlow_UpdateDescription(t *testing.T) {
 	patient := authz.Caller{ZitadelUserID: patientID}
 
 	desc := "Первичная жалоба пациента"
-	res, err := bufferSvc.Submit(ctx, &buffercmd.SubmitCommand{
+	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller:  patient,
 		Payload: buffercmd.SubmitPayload{OrganizationID: bw.orgID.String(), Description: &desc},
 	})
 	require.NoError(t, err)
 
 	updatedDesc := "Уточнённая жалоба пациента после консультации"
-	require.NoError(t, bufferSvc.Update(ctx, &buffercmd.UpdateCommand{
+	require.NoError(t, bufferSvc.Update(ctx, buffercmd.UpdateCommand{
 		Caller: patient,
 		Payload: buffercmd.UpdatePayload{
 			BufferID:    res.ID.String(),
@@ -124,13 +124,13 @@ func TestBufferFlow_PatientCancel(t *testing.T) {
 	seedUser(t, patientID, "Отменяющий Пациент")
 	patient := authz.Caller{ZitadelUserID: patientID}
 
-	res, err := bufferSvc.Submit(ctx, &buffercmd.SubmitCommand{
+	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller:  patient,
 		Payload: buffercmd.SubmitPayload{OrganizationID: bw.orgID.String()},
 	})
 	require.NoError(t, err)
 
-	require.NoError(t, bufferSvc.Cancel(ctx, &buffercmd.CancelCommand{
+	require.NoError(t, bufferSvc.Cancel(ctx, buffercmd.CancelCommand{
 		Caller:  patient,
 		Payload: buffercmd.CancelPayload{BufferID: res.ID.String()},
 	}))
@@ -155,7 +155,7 @@ func TestBufferFlow_PublishCreatesIncident(t *testing.T) {
 
 	occAt := time.Now().Add(-2 * time.Hour)
 	desc := "Жалоба пациента на боли в груди"
-	res, err := bufferSvc.Submit(ctx, &buffercmd.SubmitCommand{
+	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller: patient,
 		Payload: buffercmd.SubmitPayload{
 			OrganizationID: bw.orgID.String(),
@@ -208,7 +208,7 @@ func TestBufferFlow_PublishThenCloseIsVisibleToPatient(t *testing.T) {
 	seedUser(t, patientID, "Наблюдающий Пациент")
 	patient := authz.Caller{ZitadelUserID: patientID}
 
-	res, err := bufferSvc.Submit(ctx, &buffercmd.SubmitCommand{
+	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller:  patient,
 		Payload: buffercmd.SubmitPayload{OrganizationID: bw.orgID.String()},
 	})
@@ -226,18 +226,18 @@ func TestBufferFlow_PublishThenCloseIsVisibleToPatient(t *testing.T) {
 	require.NoError(t, err)
 
 	// Dispatcher moves incident to done.
-	require.NoError(t, incidentSvc.UpdateStatus(ctx, &incidentsvc.UpdateIncidentStatusCommand{
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: bw.dispatcher,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: publishRes.IncidentID.String(),
-			NewStatus:  model.IncidentStatusInProgress,
+			NewStatus:  string(model.IncidentStatusInProgress),
 		},
 	}))
-	require.NoError(t, incidentSvc.UpdateStatus(ctx, &incidentsvc.UpdateIncidentStatusCommand{
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: bw.dispatcher,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: publishRes.IncidentID.String(),
-			NewStatus:  model.IncidentStatusDone,
+			NewStatus:  string(model.IncidentStatusDone),
 		},
 	}))
 
@@ -259,13 +259,13 @@ func TestBufferFlow_RejectSetsStatusRejected(t *testing.T) {
 	seedUser(t, patientID, "Отклонённый Пациент")
 	patient := authz.Caller{ZitadelUserID: patientID}
 
-	res, err := bufferSvc.Submit(ctx, &buffercmd.SubmitCommand{
+	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller:  patient,
 		Payload: buffercmd.SubmitPayload{OrganizationID: bw.orgID.String()},
 	})
 	require.NoError(t, err)
 
-	require.NoError(t, bufferSvc.Reject(ctx, &buffercmd.RejectCommand{
+	require.NoError(t, bufferSvc.Reject(ctx, buffercmd.RejectCommand{
 		Caller:  bw.dispatcher,
 		Payload: buffercmd.RejectPayload{BufferID: res.ID.String()},
 	}))

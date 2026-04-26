@@ -30,19 +30,15 @@ func protoPriorityToString(p incidentv1.IncidentPriority) (string, error) {
 
 func protoStatusToString(s incidentv1.IncidentStatus) (string, error) {
 	switch s {
-	case incidentv1.IncidentStatus_INCIDENT_STATUS_PENDING:
-		return "pending", nil
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_IN_PROGRESS:
 		return "in_progress", nil
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_DONE:
 		return "done", nil
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_REJECTED:
 		return "rejected", nil
-	case incidentv1.IncidentStatus_INCIDENT_STATUS_CANCELLED:
-		return "cancelled", nil
 	default:
 		return "", oops.In("handler.command.incident").
 			Code(errCodeHandlerInvalidStatus).
-			Public("Invalid status.").Errorf("unknown status %v", s)
+			Public("Invalid status.").Errorf("unsupported status %v for UpdateIncidentStatus", s)
 	}
 }

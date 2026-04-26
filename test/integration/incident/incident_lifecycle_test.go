@@ -104,11 +104,11 @@ func TestIncidentLifecycle_ToInProgress(t *testing.T) {
 
 	incID := createIncident(t, ctx, w.caller, w.deptID, w.categoryID, w.typeID)
 
-	require.NoError(t, incidentSvc.UpdateStatus(ctx, &incidentsvc.UpdateIncidentStatusCommand{
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: authz.Caller{ZitadelUserID: deptRespID},
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  model.IncidentStatusInProgress,
+			NewStatus:  string(model.IncidentStatusInProgress),
 		},
 	}))
 
@@ -135,11 +135,11 @@ func TestIncidentLifecycle_PriorityChange(t *testing.T) {
 
 	incID := createIncident(t, ctx, w.caller, w.deptID, w.categoryID, w.typeID)
 
-	require.NoError(t, incidentSvc.UpdatePriority(ctx, &incidentsvc.UpdateIncidentPriorityCommand{
+	require.NoError(t, incidentSvc.UpdatePriority(ctx, incidentsvc.UpdateIncidentPriorityCommand{
 		Caller: authz.Caller{ZitadelUserID: clinicHeadID},
 		Payload: incidentsvc.UpdateIncidentPriorityPayload{
 			IncidentID: incID.String(),
-			Priority:   model.IncidentPriorityHigh,
+			Priority:   string(model.IncidentPriorityHigh),
 		},
 	}))
 
@@ -163,16 +163,16 @@ func TestIncidentLifecycle_DescriptionEdit(t *testing.T) {
 	incID := createIncident(t, ctx, w.caller, w.deptID, w.categoryID, w.typeID)
 
 	// Move to in_progress first.
-	require.NoError(t, incidentSvc.UpdateStatus(ctx, &incidentsvc.UpdateIncidentStatusCommand{
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  model.IncidentStatusInProgress,
+			NewStatus:  string(model.IncidentStatusInProgress),
 		},
 	}))
 
 	newDesc := "Уточнённое описание инцидента после обследования пациента"
-	require.NoError(t, incidentSvc.UpdateDescription(ctx, &incidentsvc.UpdateIncidentDescriptionCommand{
+	require.NoError(t, incidentSvc.UpdateDescription(ctx, incidentsvc.UpdateIncidentDescriptionCommand{
 		Caller: w.caller,
 		Payload: incidentsvc.UpdateIncidentDescriptionPayload{
 			IncidentID:  incID.String(),
@@ -200,26 +200,26 @@ func TestIncidentLifecycle_DoneIsTerminal(t *testing.T) {
 
 	incID := createIncident(t, ctx, w.caller, w.deptID, w.categoryID, w.typeID)
 
-	require.NoError(t, incidentSvc.UpdateStatus(ctx, &incidentsvc.UpdateIncidentStatusCommand{
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  model.IncidentStatusInProgress,
+			NewStatus:  string(model.IncidentStatusInProgress),
 		},
 	}))
-	require.NoError(t, incidentSvc.UpdateStatus(ctx, &incidentsvc.UpdateIncidentStatusCommand{
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  model.IncidentStatusDone,
+			NewStatus:  string(model.IncidentStatusDone),
 		},
 	}))
 
-	err := incidentSvc.UpdatePriority(ctx, &incidentsvc.UpdateIncidentPriorityCommand{
+	err := incidentSvc.UpdatePriority(ctx, incidentsvc.UpdateIncidentPriorityCommand{
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentPriorityPayload{
 			IncidentID: incID.String(),
-			Priority:   model.IncidentPriorityCritical,
+			Priority:   string(model.IncidentPriorityCritical),
 		},
 	})
 	require.Error(t, err)
@@ -242,23 +242,23 @@ func TestIncidentLifecycle_Reopen(t *testing.T) {
 	incID := createIncident(t, ctx, w.caller, w.deptID, w.categoryID, w.typeID)
 
 	// Progress to done.
-	require.NoError(t, incidentSvc.UpdateStatus(ctx, &incidentsvc.UpdateIncidentStatusCommand{
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  model.IncidentStatusInProgress,
+			NewStatus:  string(model.IncidentStatusInProgress),
 		},
 	}))
-	require.NoError(t, incidentSvc.UpdateStatus(ctx, &incidentsvc.UpdateIncidentStatusCommand{
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
 		Caller: sysadminCaller,
 		Payload: incidentsvc.UpdateIncidentStatusPayload{
 			IncidentID: incID.String(),
-			NewStatus:  model.IncidentStatusDone,
+			NewStatus:  string(model.IncidentStatusDone),
 		},
 	}))
 
 	// Reopen by OrgHead.
-	res, err := incidentSvc.Reopen(ctx, &incidentsvc.ReopenIncidentCommand{
+	res, err := incidentSvc.Reopen(ctx, incidentsvc.ReopenIncidentCommand{
 		Caller:  authz.Caller{ZitadelUserID: orgHeadID},
 		Payload: incidentsvc.ReopenIncidentPayload{IncidentID: incID.String()},
 	})
