@@ -15,8 +15,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
+	announcementhandler "github.com/medincident/medincident-backend/internal/handler/command/announcement"
 	incidenthandler "github.com/medincident/medincident-backend/internal/handler/command/incident"
 	bufferhandler "github.com/medincident/medincident-backend/internal/handler/command/incident/buffer"
 	classifierhandler "github.com/medincident/medincident-backend/internal/handler/command/incident/classifier"
@@ -26,6 +29,7 @@ import (
 	requestclassifierhandler "github.com/medincident/medincident-backend/internal/handler/command/request/classifier"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
+	announcementsvc "github.com/medincident/medincident-backend/internal/service/command/announcement"
 	incidentsvc "github.com/medincident/medincident-backend/internal/service/command/incident"
 	buffersvc "github.com/medincident/medincident-backend/internal/service/command/incident/buffer"
 	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
@@ -33,6 +37,7 @@ import (
 	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
 	requestsvc "github.com/medincident/medincident-backend/internal/service/command/request"
 	requestclassifiersvc "github.com/medincident/medincident-backend/internal/service/command/request/classifier"
+	announcementv1 "github.com/medincident/medincident-backend/pkg/command/announcement/v1"
 	bufferv1 "github.com/medincident/medincident-backend/pkg/command/incident/buffer/v1"
 	incidentclassifierv1 "github.com/medincident/medincident-backend/pkg/command/incident/classifier/v1"
 	incidentv1 "github.com/medincident/medincident-backend/pkg/command/incident/v1"
@@ -42,7 +47,10 @@ import (
 	requestv1 "github.com/medincident/medincident-backend/pkg/command/request/v1"
 )
 
-const shutdownTimeout = 10 * time.Second
+const (
+	shutdownTimeout = 10 * time.Second
+	handlerTimeout  = 30 * time.Second
+)
 
 // authnSkip lists the RPC paths that bypass JWT introspection: health
 // and reflection endpoints need to answer before anyone is authed.
@@ -106,6 +114,7 @@ func main() {
 	bufferSvc := buffersvc.NewBufferService(db, az, logger)
 	reqTypeSvc := requestclassifiersvc.NewRequestTypeService(db, az, logger)
 	reqSvc := requestsvc.NewServiceRequestService(db, az, logger)
+	announcementSvc := announcementsvc.NewAnnouncementService(db, az, logger)
 
 	orgStructureHandler := orghandler.NewOrgStructureHandler(orgSvc, clinSvc, deptSvc)
 	membershipH := membershiphandler.NewMembershipHandler(empSvc)
@@ -114,14 +123,20 @@ func main() {
 	bufferH := bufferhandler.NewBufferHandler(bufferSvc)
 	reqClassifierH := requestclassifierhandler.NewRequestClassifierHandler(reqTypeSvc)
 	reqH := requesthandler.NewServiceRequestHandler(reqSvc)
+	announcementH := announcementhandler.NewAnnouncementHandler(announcementSvc)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
 		grpc.ChainUnaryInterceptor(
 			grpcmw.ErrorInterceptor(logger),
+			grpcmw.TimeoutInterceptor(handlerTimeout),
 			grpcmw.AuthnInterceptor(authorizer, authnSkip),
 		),
 	)
+	healthSrv := health.NewServer()
+	healthv1.RegisterHealthServer(grpcServer, healthSrv)
+	healthSrv.SetServingStatus("", healthv1.HealthCheckResponse_SERVING)
+
 	orgstructurev1.RegisterOrgStructureCommandServiceServer(grpcServer, orgStructureHandler)
 	membershipv1.RegisterMembershipCommandServiceServer(grpcServer, membershipH)
 	incidentclassifierv1.RegisterIncidentClassifierCommandServiceServer(grpcServer, classifierH)
@@ -129,6 +144,7 @@ func main() {
 	bufferv1.RegisterIncidentBufferCommandServiceServer(grpcServer, bufferH)
 	requestclassifierv1.RegisterRequestClassifierCommandServiceServer(grpcServer, reqClassifierH)
 	requestv1.RegisterServiceRequestCommandServiceServer(grpcServer, reqH)
+	announcementv1.RegisterAnnouncementCommandServiceServer(grpcServer, announcementH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)

@@ -27,8 +27,7 @@ Command никогда не читает проекции и не знает о 
 
 ## Документация
 
-Полная техническая документация на русском языке живёт в [`docs/`](docs/)
-и синхронизируется в GitHub Wiki при пуше в `main`.
+Полная техническая документация на русском языке живёт в [`docs/`](docs/README.md).
 
 - **Proto-контракты** — источник правды в [`api/proto/`](api/proto/)
   (`command/*` + `query/*` + `event/*`).
@@ -80,7 +79,7 @@ Command никогда не читает проекции и не знает о 
 - `api/proto/` — исходные `.proto` контракты (event/* + command/* + query/*)
 - `api/openapi/medincident.swagger.json` — merged OpenAPI v2 для обеих сторон (коммитится)
 - `pkg/` — сгенерированный buf Go-код (коммитится)
-- `docs/` — техническая документация на русском языке (коммитится, синк в Wiki)
+- `docs/` — техническая документация на русском языке
 - `docs/api/Proto.md` — сгенерированная Markdown-документация по всем proto-контрактам
 - `docs/api/HTTP.md` — сгенерированная Markdown-документация по HTTP API
 - `cmd/command-server/` — точка входа command-side gRPC сервера, graceful shutdown

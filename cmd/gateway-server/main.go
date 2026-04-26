@@ -26,6 +26,7 @@ import (
 	"github.com/medincident/medincident-backend/internal/bootstrap"
 	gwhandler "github.com/medincident/medincident-backend/internal/handler/gateway"
 	"github.com/medincident/medincident-backend/internal/middleware/httpmw"
+	cmdannouncementv1 "github.com/medincident/medincident-backend/pkg/command/announcement/v1"
 	cmdbufferv1 "github.com/medincident/medincident-backend/pkg/command/incident/buffer/v1"
 	cmdclassifierv1 "github.com/medincident/medincident-backend/pkg/command/incident/classifier/v1"
 	cmdincidentv1 "github.com/medincident/medincident-backend/pkg/command/incident/v1"
@@ -33,6 +34,7 @@ import (
 	cmdorgv1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
 	cmdrequestclassifierv1 "github.com/medincident/medincident-backend/pkg/command/request/classifier/v1"
 	cmdrequestv1 "github.com/medincident/medincident-backend/pkg/command/request/v1"
+	qannouncementv1 "github.com/medincident/medincident-backend/pkg/query/announcement/v1"
 	qclassifierv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	qincidentv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
 	qmembershipv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
@@ -176,6 +178,7 @@ func buildGatewayMux(ctx context.Context, commandConn, queryConn *grpc.ClientCon
 		cmdbufferv1.RegisterIncidentBufferCommandServiceHandler(ctx, mux, commandConn),
 		cmdrequestclassifierv1.RegisterRequestClassifierCommandServiceHandler(ctx, mux, commandConn),
 		cmdrequestv1.RegisterServiceRequestCommandServiceHandler(ctx, mux, commandConn),
+		cmdannouncementv1.RegisterAnnouncementCommandServiceHandler(ctx, mux, commandConn),
 		// Query side.
 		qorgv1.RegisterOrgStructureQueryServiceHandler(ctx, mux, queryConn),
 		qmembershipv1.RegisterMembershipQueryServiceHandler(ctx, mux, queryConn),
@@ -184,6 +187,7 @@ func buildGatewayMux(ctx context.Context, commandConn, queryConn *grpc.ClientCon
 		qincidentv1.RegisterIncidentQueryServiceHandler(ctx, mux, queryConn),
 		qrequestclassifierv1.RegisterRequestClassifierQueryServiceHandler(ctx, mux, queryConn),
 		qrequestv1.RegisterServiceRequestQueryServiceHandler(ctx, mux, queryConn),
+		qannouncementv1.RegisterAnnouncementQueryServiceHandler(ctx, mux, queryConn),
 	}
 	if err := errors.Join(errs...); err != nil {
 		return nil, oops.In("gateway").Code(ErrCodeGatewayRegisterFailed).Wrap(err)

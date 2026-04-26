@@ -1,10 +1,253 @@
 <!-- Generator: Widdershins v4.0.1 -->
 
-<h1 id="command-incident-buffer-v1-buffer-proto">command/incident/buffer/v1/buffer.proto version not set</h1>
+<h1 id="command-announcement-v1-announcement-proto">command/announcement/v1/announcement.proto version not set</h1>
 
 > Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
 
-<h1 id="command-incident-buffer-v1-buffer-proto-incidentbuffercommandservice">IncidentBufferCommandService</h1>
+<h1 id="command-announcement-v1-announcement-proto-announcementcommandservice">AnnouncementCommandService</h1>
+
+## AnnouncementCommandService_CreateAnnouncement
+
+<a id="opIdAnnouncementCommandService_CreateAnnouncement"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/announcements \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/announcements`
+
+> Body parameter
+
+```json
+{
+  "organizationId": "string",
+  "clinicId": "string",
+  "departmentId": "string",
+  "title": "string",
+  "content": "string",
+  "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+  "startsAt": "string",
+  "endsAt": "string"
+}
+```
+
+<h3 id="announcementcommandservice_createannouncement-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[v1CreateAnnouncementRequest](#schemav1createannouncementrequest)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "id": "string"
+}
+```
+
+<h3 id="announcementcommandservice_createannouncement-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateAnnouncementResponse](#schemav1createannouncementresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnnouncementCommandService_UpdateAnnouncement
+
+<a id="opIdAnnouncementCommandService_UpdateAnnouncement"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/announcements/{id} \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/announcements/{id}`
+
+> Body parameter
+
+```json
+{
+  "title": "string",
+  "content": "string",
+  "startsAt": "string",
+  "endsAt": "string"
+}
+```
+
+<h3 id="announcementcommandservice_updateannouncement-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+|body|body|[AnnouncementCommandServiceUpdateAnnouncementBody](#schemaannouncementcommandserviceupdateannouncementbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="announcementcommandservice_updateannouncement-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateAnnouncementResponse](#schemav1updateannouncementresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnnouncementCommandService_UpdateAnnouncementPriority
+
+<a id="opIdAnnouncementCommandService_UpdateAnnouncementPriority"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/announcements/{id}/priority \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/announcements/{id}/priority`
+
+> Body parameter
+
+```json
+{
+  "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED"
+}
+```
+
+<h3 id="announcementcommandservice_updateannouncementpriority-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+|body|body|[AnnouncementCommandServiceUpdateAnnouncementPriorityBody](#schemaannouncementcommandserviceupdateannouncementprioritybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="announcementcommandservice_updateannouncementpriority-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateAnnouncementPriorityResponse](#schemav1updateannouncementpriorityresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnnouncementCommandService_ArchiveAnnouncement
+
+<a id="opIdAnnouncementCommandService_ArchiveAnnouncement"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/announcements/{id}:archive \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/announcements/{id}:archive`
+
+<h3 id="announcementcommandservice_archiveannouncement-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="announcementcommandservice_archiveannouncement-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ArchiveAnnouncementResponse](#schemav1archiveannouncementresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnnouncementCommandService_UnarchiveAnnouncement
+
+<a id="opIdAnnouncementCommandService_UnarchiveAnnouncement"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/announcements/{id}:unarchive \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/announcements/{id}:unarchive`
+
+<h3 id="announcementcommandservice_unarchiveannouncement-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="announcementcommandservice_unarchiveannouncement-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UnarchiveAnnouncementResponse](#schemav1unarchiveannouncementresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-announcement-v1-announcement-proto-incidentbuffercommandservice">IncidentBufferCommandService</h1>
 
 ## IncidentBufferCommandService_SubmitPatientIncident
 
@@ -249,7 +492,7 @@ curl -X POST /v1/patient-incidents/{bufferId}:reject \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-incidentclassifiercommandservice">IncidentClassifierCommandService</h1>
+<h1 id="command-announcement-v1-announcement-proto-incidentclassifiercommandservice">IncidentClassifierCommandService</h1>
 
 ## IncidentClassifierCommandService_DeleteIncidentCategory
 
@@ -880,7 +1123,7 @@ curl -X POST /v1/organizations/{organizationId}/incident-categories \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-incidentcommandservice">IncidentCommandService</h1>
+<h1 id="command-announcement-v1-announcement-proto-incidentcommandservice">IncidentCommandService</h1>
 
 ## IncidentCommandService_CreateIncident
 
@@ -1169,7 +1412,7 @@ curl -X POST /v1/incidents/{incidentId}:reopen \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-membershipcommandservice">MembershipCommandService</h1>
+<h1 id="command-announcement-v1-announcement-proto-membershipcommandservice">MembershipCommandService</h1>
 
 ## ------ ClinicHead ------
 
@@ -2603,7 +2846,7 @@ curl -X POST /v1/vacations/{vacationId}/terminations \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-orgstructurecommandservice">OrgStructureCommandService</h1>
+<h1 id="command-announcement-v1-announcement-proto-orgstructurecommandservice">OrgStructureCommandService</h1>
 
 ## OrgStructureCommandService_CreateDepartment
 
@@ -3042,7 +3285,7 @@ curl -X PUT /v1/organizations/{organizationId}/legal-address \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-requestclassifiercommandservice">RequestClassifierCommandService</h1>
+<h1 id="command-announcement-v1-announcement-proto-requestclassifiercommandservice">RequestClassifierCommandService</h1>
 
 ## RequestClassifierCommandService_CreateRequestType
 
@@ -3268,7 +3511,7 @@ curl -X POST /v1/request-types/{typeId}/reactivations \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-servicerequestcommandservice">ServiceRequestCommandService</h1>
+<h1 id="command-announcement-v1-announcement-proto-servicerequestcommandservice">ServiceRequestCommandService</h1>
 
 ## ServiceRequestCommandService_CreateServiceRequest
 
@@ -3479,7 +3722,282 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-incidentclassifierqueryservice">IncidentClassifierQueryService</h1>
+<h1 id="command-announcement-v1-announcement-proto-announcementqueryservice">AnnouncementQueryService</h1>
+
+## AnnouncementQueryService_GetAnnouncement
+
+<a id="opIdAnnouncementQueryService_GetAnnouncement"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/announcements/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/announcements/{id}`
+
+<h3 id="announcementqueryservice_getannouncement-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "announcement": {
+    "id": "string",
+    "organizationId": "string",
+    "clinicId": "string",
+    "departmentId": "string",
+    "authorId": "string",
+    "title": "string",
+    "content": "string",
+    "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+    "isArchived": true,
+    "startsAt": "string",
+    "endsAt": "string",
+    "createdAt": "string",
+    "updatedAt": "string",
+    "viewCount": "string"
+  }
+}
+```
+
+<h3 id="announcementqueryservice_getannouncement-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetAnnouncementResponse](#schemav1getannouncementresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnnouncementQueryService_ListAnnouncementsForClinic
+
+<a id="opIdAnnouncementQueryService_ListAnnouncementsForClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/clinics/{clinicId}/announcements \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/clinics/{clinicId}/announcements`
+
+<h3 id="announcementqueryservice_listannouncementsforclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|includeArchived|query|boolean|false|none|
+|priority|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+|cursor|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|priority|ANNOUNCEMENT_PRIORITY_UNSPECIFIED|
+|priority|ANNOUNCEMENT_PRIORITY_NORMAL|
+|priority|ANNOUNCEMENT_PRIORITY_HIGH|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "authorId": "string",
+      "title": "string",
+      "content": "string",
+      "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+      "isArchived": true,
+      "startsAt": "string",
+      "endsAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "viewCount": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="announcementqueryservice_listannouncementsforclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForClinicResponse](#schemav1listannouncementsforclinicresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnnouncementQueryService_ListAnnouncementsForDepartment
+
+<a id="opIdAnnouncementQueryService_ListAnnouncementsForDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/departments/{departmentId}/announcements \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/departments/{departmentId}/announcements`
+
+<h3 id="announcementqueryservice_listannouncementsfordepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|includeArchived|query|boolean|false|none|
+|priority|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+|cursor|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|priority|ANNOUNCEMENT_PRIORITY_UNSPECIFIED|
+|priority|ANNOUNCEMENT_PRIORITY_NORMAL|
+|priority|ANNOUNCEMENT_PRIORITY_HIGH|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "authorId": "string",
+      "title": "string",
+      "content": "string",
+      "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+      "isArchived": true,
+      "startsAt": "string",
+      "endsAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "viewCount": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="announcementqueryservice_listannouncementsfordepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForDepartmentResponse](#schemav1listannouncementsfordepartmentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnnouncementQueryService_ListAnnouncementsForOrganization
+
+<a id="opIdAnnouncementQueryService_ListAnnouncementsForOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/organizations/{organizationId}/announcements \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/organizations/{organizationId}/announcements`
+
+<h3 id="announcementqueryservice_listannouncementsfororganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|includeArchived|query|boolean|false|none|
+|priority|query|string|false|UNSPECIFIED = all|
+|limit|query|integer(int32)|false|none|
+|cursor|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|priority|ANNOUNCEMENT_PRIORITY_UNSPECIFIED|
+|priority|ANNOUNCEMENT_PRIORITY_NORMAL|
+|priority|ANNOUNCEMENT_PRIORITY_HIGH|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "authorId": "string",
+      "title": "string",
+      "content": "string",
+      "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+      "isArchived": true,
+      "startsAt": "string",
+      "endsAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "viewCount": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="announcementqueryservice_listannouncementsfororganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForOrganizationResponse](#schemav1listannouncementsfororganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-announcement-v1-announcement-proto-incidentclassifierqueryservice">IncidentClassifierQueryService</h1>
 
 ## IncidentClassifierQueryService_ListTypesByCategory
 
@@ -3976,7 +4494,7 @@ an-incident.-responses">Responses</h3>
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-incidentqueryservice">IncidentQueryService</h1>
+<h1 id="command-announcement-v1-announcement-proto-incidentqueryservice">IncidentQueryService</h1>
 
 ## IncidentQueryService_GetIncident
 
@@ -4461,7 +4979,7 @@ curl -X GET /v1/query/patient-incidents:mine \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-membershipqueryservice">MembershipQueryService</h1>
+<h1 id="command-announcement-v1-announcement-proto-membershipqueryservice">MembershipQueryService</h1>
 
 ## MembershipQueryService_ListEmployeesByClinic
 
@@ -5569,7 +6087,7 @@ curl -X GET /v1/system-admins \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-orgstructurequeryservice">OrgStructureQueryService</h1>
+<h1 id="command-announcement-v1-announcement-proto-orgstructurequeryservice">OrgStructureQueryService</h1>
 
 ## OrgStructureQueryService_ListDepartmentsByClinic
 
@@ -6048,7 +6566,7 @@ curl -X GET /v1/organizations:search \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-requestclassifierqueryservice">RequestClassifierQueryService</h1>
+<h1 id="command-announcement-v1-announcement-proto-requestclassifierqueryservice">RequestClassifierQueryService</h1>
 
 ## RequestClassifierQueryService_ListRequestTypesByOrganization
 
@@ -6208,7 +6726,7 @@ curl -X GET /v1/request-types/{id} \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-servicerequestqueryservice">ServiceRequestQueryService</h1>
+<h1 id="command-announcement-v1-announcement-proto-servicerequestqueryservice">ServiceRequestQueryService</h1>
 
 ## ServiceRequestQueryService_ListServiceRequestsByIncident
 
@@ -6466,7 +6984,7 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
 This operation does not require authentication
 </aside>
 
-<h1 id="command-incident-buffer-v1-buffer-proto-statsqueryservice">StatsQueryService</h1>
+<h1 id="command-announcement-v1-announcement-proto-statsqueryservice">StatsQueryService</h1>
 
 ## StatsQueryService_GetClinicStats
 
@@ -6614,6 +7132,52 @@ This operation does not require authentication
 </aside>
 
 # Schemas
+
+<h2 id="tocS_AnnouncementCommandServiceUpdateAnnouncementBody">AnnouncementCommandServiceUpdateAnnouncementBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaannouncementcommandserviceupdateannouncementbody"></a>
+<a id="schema_AnnouncementCommandServiceUpdateAnnouncementBody"></a>
+<a id="tocSannouncementcommandserviceupdateannouncementbody"></a>
+<a id="tocsannouncementcommandserviceupdateannouncementbody"></a>
+
+```json
+{
+  "title": "string",
+  "content": "string",
+  "startsAt": "string",
+  "endsAt": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|title|string|false|none|none|
+|content|string|false|none|none|
+|startsAt|string|false|none|none|
+|endsAt|string|false|none|none|
+
+<h2 id="tocS_AnnouncementCommandServiceUpdateAnnouncementPriorityBody">AnnouncementCommandServiceUpdateAnnouncementPriorityBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaannouncementcommandserviceupdateannouncementprioritybody"></a>
+<a id="schema_AnnouncementCommandServiceUpdateAnnouncementPriorityBody"></a>
+<a id="tocSannouncementcommandserviceupdateannouncementprioritybody"></a>
+<a id="tocsannouncementcommandserviceupdateannouncementprioritybody"></a>
+
+```json
+{
+  "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|false|none|none|
 
 <h2 id="tocS_IncidentBufferCommandServicePublishPatientIncidentBody">IncidentBufferCommandServicePublishPatientIncidentBody</h2>
 <!-- backwards compatibility -->
@@ -7477,6 +8041,32 @@ Type mirrors projections.incident_types row.
 |updatedAt|string|false|none|none|
 |isAllowedForPatients|boolean|false|none|none|
 
+<h2 id="tocS_commandAnnouncementV1AnnouncementPriority">commandAnnouncementV1AnnouncementPriority</h2>
+<!-- backwards compatibility -->
+<a id="schemacommandannouncementv1announcementpriority"></a>
+<a id="schema_commandAnnouncementV1AnnouncementPriority"></a>
+<a id="tocScommandannouncementv1announcementpriority"></a>
+<a id="tocscommandannouncementv1announcementpriority"></a>
+
+```json
+"ANNOUNCEMENT_PRIORITY_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|ANNOUNCEMENT_PRIORITY_UNSPECIFIED|
+|*anonymous*|ANNOUNCEMENT_PRIORITY_NORMAL|
+|*anonymous*|ANNOUNCEMENT_PRIORITY_HIGH|
+
 <h2 id="tocS_commandIncidentV1IncidentPriority">commandIncidentV1IncidentPriority</h2>
 <!-- backwards compatibility -->
 <a id="schemacommandincidentv1incidentpriority"></a>
@@ -7556,6 +8146,32 @@ Type mirrors projections.incident_types row.
 |---|---|---|---|---|
 |**additionalProperties**|any|false|none|none|
 |@type|string|false|none|none|
+
+<h2 id="tocS_queryAnnouncementV1AnnouncementPriority">queryAnnouncementV1AnnouncementPriority</h2>
+<!-- backwards compatibility -->
+<a id="schemaqueryannouncementv1announcementpriority"></a>
+<a id="schema_queryAnnouncementV1AnnouncementPriority"></a>
+<a id="tocSqueryannouncementv1announcementpriority"></a>
+<a id="tocsqueryannouncementv1announcementpriority"></a>
+
+```json
+"ANNOUNCEMENT_PRIORITY_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|ANNOUNCEMENT_PRIORITY_UNSPECIFIED|
+|*anonymous*|ANNOUNCEMENT_PRIORITY_NORMAL|
+|*anonymous*|ANNOUNCEMENT_PRIORITY_HIGH|
 
 <h2 id="tocS_queryIncidentV1IncidentPriority">queryIncidentV1IncidentPriority</h2>
 <!-- backwards compatibility -->
@@ -7786,6 +8402,68 @@ optional because the command-side allows text-only addresses.
 <a id="schema_v1AllowIncidentTypeForPatientsResponse"></a>
 <a id="tocSv1allowincidenttypeforpatientsresponse"></a>
 <a id="tocsv1allowincidenttypeforpatientsresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AnnouncementView">v1AnnouncementView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1announcementview"></a>
+<a id="schema_v1AnnouncementView"></a>
+<a id="tocSv1announcementview"></a>
+<a id="tocsv1announcementview"></a>
+
+```json
+{
+  "id": "string",
+  "organizationId": "string",
+  "clinicId": "string",
+  "departmentId": "string",
+  "authorId": "string",
+  "title": "string",
+  "content": "string",
+  "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+  "isArchived": true,
+  "startsAt": "string",
+  "endsAt": "string",
+  "createdAt": "string",
+  "updatedAt": "string",
+  "viewCount": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|organizationId|string|false|none|none|
+|clinicId|string|false|none|none|
+|departmentId|string|false|none|none|
+|authorId|string|false|none|none|
+|title|string|false|none|none|
+|content|string|false|none|none|
+|priority|[queryAnnouncementV1AnnouncementPriority](#schemaqueryannouncementv1announcementpriority)|false|none|none|
+|isArchived|boolean|false|none|none|
+|startsAt|string|false|none|none|
+|endsAt|string|false|none|none|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|
+|viewCount|string(int64)|false|none|none|
+
+<h2 id="tocS_v1ArchiveAnnouncementResponse">v1ArchiveAnnouncementResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1archiveannouncementresponse"></a>
+<a id="schema_v1ArchiveAnnouncementResponse"></a>
+<a id="tocSv1archiveannouncementresponse"></a>
+<a id="tocsv1archiveannouncementresponse"></a>
 
 ```json
 {}
@@ -8360,6 +9038,60 @@ ClinicListItem is the minimal shape returned by list endpoints.
 |---|---|---|---|---|
 |total|string(int64)|false|none|none|
 
+<h2 id="tocS_v1CreateAnnouncementRequest">v1CreateAnnouncementRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createannouncementrequest"></a>
+<a id="schema_v1CreateAnnouncementRequest"></a>
+<a id="tocSv1createannouncementrequest"></a>
+<a id="tocsv1createannouncementrequest"></a>
+
+```json
+{
+  "organizationId": "string",
+  "clinicId": "string",
+  "departmentId": "string",
+  "title": "string",
+  "content": "string",
+  "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+  "startsAt": "string",
+  "endsAt": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|organizationId|string|false|none|none|
+|clinicId|string|false|none|none|
+|departmentId|string|false|none|none|
+|title|string|false|none|none|
+|content|string|false|none|none|
+|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|false|none|none|
+|startsAt|string|false|none|none|
+|endsAt|string|false|none|none|
+
+<h2 id="tocS_v1CreateAnnouncementResponse">v1CreateAnnouncementResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createannouncementresponse"></a>
+<a id="schema_v1CreateAnnouncementResponse"></a>
+<a id="tocSv1createannouncementresponse"></a>
+<a id="tocsv1createannouncementresponse"></a>
+
+```json
+{
+  "id": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+
 <h2 id="tocS_v1CreateClinicResponse">v1CreateClinicResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1createclinicresponse"></a>
@@ -8933,6 +9665,41 @@ when the backing column is NULL.
 ### Properties
 
 *None*
+
+<h2 id="tocS_v1GetAnnouncementResponse">v1GetAnnouncementResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getannouncementresponse"></a>
+<a id="schema_v1GetAnnouncementResponse"></a>
+<a id="tocSv1getannouncementresponse"></a>
+<a id="tocsv1getannouncementresponse"></a>
+
+```json
+{
+  "announcement": {
+    "id": "string",
+    "organizationId": "string",
+    "clinicId": "string",
+    "departmentId": "string",
+    "authorId": "string",
+    "title": "string",
+    "content": "string",
+    "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+    "isArchived": true,
+    "startsAt": "string",
+    "endsAt": "string",
+    "createdAt": "string",
+    "updatedAt": "string",
+    "viewCount": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|announcement|[v1AnnouncementView](#schemav1announcementview)|false|none|none|
 
 <h2 id="tocS_v1GetBufferEntryResponse">v1GetBufferEntryResponse</h2>
 <!-- backwards compatibility -->
@@ -9785,6 +10552,123 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
+
+<h2 id="tocS_v1ListAnnouncementsForClinicResponse">v1ListAnnouncementsForClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listannouncementsforclinicresponse"></a>
+<a id="schema_v1ListAnnouncementsForClinicResponse"></a>
+<a id="tocSv1listannouncementsforclinicresponse"></a>
+<a id="tocsv1listannouncementsforclinicresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "authorId": "string",
+      "title": "string",
+      "content": "string",
+      "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+      "isArchived": true,
+      "startsAt": "string",
+      "endsAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "viewCount": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1AnnouncementView](#schemav1announcementview)]|false|none|none|
+|nextCursor|string|false|none|none|
+
+<h2 id="tocS_v1ListAnnouncementsForDepartmentResponse">v1ListAnnouncementsForDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listannouncementsfordepartmentresponse"></a>
+<a id="schema_v1ListAnnouncementsForDepartmentResponse"></a>
+<a id="tocSv1listannouncementsfordepartmentresponse"></a>
+<a id="tocsv1listannouncementsfordepartmentresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "authorId": "string",
+      "title": "string",
+      "content": "string",
+      "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+      "isArchived": true,
+      "startsAt": "string",
+      "endsAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "viewCount": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1AnnouncementView](#schemav1announcementview)]|false|none|none|
+|nextCursor|string|false|none|none|
+
+<h2 id="tocS_v1ListAnnouncementsForOrganizationResponse">v1ListAnnouncementsForOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listannouncementsfororganizationresponse"></a>
+<a id="schema_v1ListAnnouncementsForOrganizationResponse"></a>
+<a id="tocSv1listannouncementsfororganizationresponse"></a>
+<a id="tocsv1listannouncementsfororganizationresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "authorId": "string",
+      "title": "string",
+      "content": "string",
+      "priority": "ANNOUNCEMENT_PRIORITY_UNSPECIFIED",
+      "isArchived": true,
+      "startsAt": "string",
+      "endsAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "viewCount": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1AnnouncementView](#schemav1announcementview)]|false|none|none|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListBufferEntriesResponse">v1ListBufferEntriesResponse</h2>
 <!-- backwards compatibility -->
@@ -11523,6 +12407,54 @@ Zitadel user ids, not employee ids.
 <a id="schema_v1TerminateEmployeeResponse"></a>
 <a id="tocSv1terminateemployeeresponse"></a>
 <a id="tocsv1terminateemployeeresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UnarchiveAnnouncementResponse">v1UnarchiveAnnouncementResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1unarchiveannouncementresponse"></a>
+<a id="schema_v1UnarchiveAnnouncementResponse"></a>
+<a id="tocSv1unarchiveannouncementresponse"></a>
+<a id="tocsv1unarchiveannouncementresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateAnnouncementPriorityResponse">v1UpdateAnnouncementPriorityResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateannouncementpriorityresponse"></a>
+<a id="schema_v1UpdateAnnouncementPriorityResponse"></a>
+<a id="tocSv1updateannouncementpriorityresponse"></a>
+<a id="tocsv1updateannouncementpriorityresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateAnnouncementResponse">v1UpdateAnnouncementResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateannouncementresponse"></a>
+<a id="schema_v1UpdateAnnouncementResponse"></a>
+<a id="tocSv1updateannouncementresponse"></a>
+<a id="tocsv1updateannouncementresponse"></a>
 
 ```json
 {}

@@ -119,18 +119,18 @@ created --> in_work <--> on_hold
 | Метод | HTTP | Описание |
 |---|---|---|
 | `CreateRequestType` | `POST /v1/organizations/{organization_id}/request-types` | Создание типа заявки |
-| `UpdateRequestTypeDetails` | `PATCH /v1/request-types/{type_id}` | Обновление имени/описания |
-| `DeactivateRequestType` | `POST /v1/request-types/{type_id}/deactivate` | Деактивация типа |
-| `ReactivateRequestType` | `POST /v1/request-types/{type_id}/reactivate` | Реактивация типа |
+| `UpdateRequestTypeDetails` | `PUT /v1/request-types/{type_id}/details` | Обновление имени/описания |
+| `DeactivateRequestType` | `POST /v1/request-types/{type_id}/deactivations` | Деактивация типа |
+| `ReactivateRequestType` | `POST /v1/request-types/{type_id}/reactivations` | Реактивация типа |
 | `DeleteRequestType` | `DELETE /v1/request-types/{type_id}` | Удаление типа |
 
 ### ServiceRequestCommandService
 
 | Метод | HTTP | Описание |
 |---|---|---|
-| `CreateServiceRequest` | `POST /v1/departments/{department_id}/service-requests` | Создание заявки |
-| `UpdateServiceRequestDescription` | `PATCH /v1/service-requests/{service_request_id}/description` | Обновление описания |
-| `UpdateServiceRequestStatus` | `PATCH /v1/service-requests/{service_request_id}/status` | Смена статуса |
+| `CreateServiceRequest` | `POST /v1/service-requests` | Создание заявки |
+| `UpdateServiceRequestDescription` | `PUT /v1/service-requests/{service_request_id}/description` | Обновление описания |
+| `UpdateServiceRequestStatus` | `PUT /v1/service-requests/{service_request_id}/status` | Смена статуса |
 | `AssignExecutors` | `PUT /v1/service-requests/{service_request_id}/executors` | Назначение исполнителей |
 
 ---

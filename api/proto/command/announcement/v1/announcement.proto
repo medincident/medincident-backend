@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package command.announcement.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/medincident/medincident-backend/pkg/command/announcement/v1;announcementv1";
+
+// AnnouncementCommandService is the write-side contract for announcements.
+service AnnouncementCommandService {
+  rpc CreateAnnouncement(CreateAnnouncementRequest) returns (CreateAnnouncementResponse) {
+    option (google.api.http) = {
+      post: "/v1/announcements"
+      body: "*"
+    };
+  }
+  rpc UpdateAnnouncement(UpdateAnnouncementRequest) returns (UpdateAnnouncementResponse) {
+    option (google.api.http) = {
+      put: "/v1/announcements/{id}"
+      body: "*"
+    };
+  }
+  rpc UpdateAnnouncementPriority(UpdateAnnouncementPriorityRequest) returns (UpdateAnnouncementPriorityResponse) {
+    option (google.api.http) = {
+      put: "/v1/announcements/{id}/priority"
+      body: "*"
+    };
+  }
+  rpc ArchiveAnnouncement(ArchiveAnnouncementRequest) returns (ArchiveAnnouncementResponse) {
+    option (google.api.http) = {post: "/v1/announcements/{id}:archive"};
+  }
+  rpc UnarchiveAnnouncement(UnarchiveAnnouncementRequest) returns (UnarchiveAnnouncementResponse) {
+    option (google.api.http) = {post: "/v1/announcements/{id}:unarchive"};
+  }
+}
+
+enum AnnouncementPriority {
+  ANNOUNCEMENT_PRIORITY_UNSPECIFIED = 0;
+  ANNOUNCEMENT_PRIORITY_NORMAL = 1;
+  ANNOUNCEMENT_PRIORITY_HIGH = 2;
+}
+
+message CreateAnnouncementRequest {
+  string organization_id = 1;
+  optional string clinic_id = 2;
+  optional string department_id = 3;
+  string title = 4;
+  string content = 5;
+  AnnouncementPriority priority = 6;
+  optional string starts_at = 7; // RFC3339Nano
+  optional string ends_at = 8; // RFC3339Nano
+}
+message CreateAnnouncementResponse {
+  string id = 1;
+}
+
+message UpdateAnnouncementRequest {
+  string id = 1;
+  string title = 2;
+  string content = 3;
+  optional string starts_at = 4; // RFC3339Nano; absent = clear
+  optional string ends_at = 5; // RFC3339Nano; absent = clear
+}
+message UpdateAnnouncementResponse {}
+
+message UpdateAnnouncementPriorityRequest {
+  string id = 1;
+  AnnouncementPriority priority = 2;
+}
+message UpdateAnnouncementPriorityResponse {}
+
+message ArchiveAnnouncementRequest {
+  string id = 1;
+}
+message ArchiveAnnouncementResponse {}
+
+message UnarchiveAnnouncementRequest {
+  string id = 1;
+}
+message UnarchiveAnnouncementResponse {}

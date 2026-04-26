@@ -14,6 +14,7 @@ import (
 const (
 	ErrCodeServiceRequestReadFailed = "service_request_query_read_failed"
 	ErrCodeServiceRequestNotFound   = "service_request_query_not_found"
+	ErrCodeIncidentNotFound         = "service_request_query_incident_not_found"
 	ErrCodeListLimitOutOfRange      = "service_request_list_limit_out_of_range"
 	ErrCodeListOffsetOutOfRange     = "service_request_list_offset_out_of_range"
 )

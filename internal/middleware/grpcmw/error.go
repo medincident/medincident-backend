@@ -33,6 +33,7 @@ package grpcmw
 
 import (
 	"context"
+	"errors"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -60,6 +61,16 @@ func ErrorInterceptor(logger *zerolog.Logger) grpc.UnaryServerInterceptor {
 // translateError is the pure function half of ErrorInterceptor; kept
 // unexported and tested directly.
 func translateError(logger *zerolog.Logger, method string, err error) error {
+	// context errors are not wrapped in oops; map them before the oops path.
+	if errors.Is(err, context.DeadlineExceeded) {
+		logger.Warn().Err(err).Str("grpc_method", method).Str("grpc_code", codes.DeadlineExceeded.String()).Msg("handler error")
+		return status.Error(codes.DeadlineExceeded, "deadline exceeded")
+	}
+	if errors.Is(err, context.Canceled) {
+		logger.Debug().Err(err).Str("grpc_method", method).Str("grpc_code", codes.Canceled.String()).Msg("handler error")
+		return status.Error(codes.Canceled, "request canceled")
+	}
+
 	leaves := flattenErrorLeaves(err)
 
 	if len(leaves) == 0 {

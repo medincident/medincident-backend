@@ -188,8 +188,8 @@ func (r *Reader) ListServiceRequestsByIncident(
 	).Row().Scan(&orgID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, oops.In("reader.request").
-				Code(ErrCodeServiceRequestNotFound).
+			return nil, oops.In(scope).
+				Code(ErrCodeIncidentNotFound).
 				Public("Incident not found.").
 				With("incident_id", incidentID).
 				Errorf("incident not found")

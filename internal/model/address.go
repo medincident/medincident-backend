@@ -7,6 +7,8 @@ import (
 
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+
+	"github.com/medincident/medincident-backend/internal/util/equal"
 )
 
 // Address is the persistence form of an address. Text is always
@@ -21,7 +23,7 @@ func (a Address) Equal(other Address) bool {
 	if a.Text != other.Text {
 		return false
 	}
-	return EqualValueBy(a.Point, other.Point)
+	return equal.ValueBy(a.Point, other.Point)
 }
 
 // Value serialises Address into the Postgres composite text format

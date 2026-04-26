@@ -19,8 +19,11 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
+	announcementqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/announcement"
 	incidentqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident"
 	bufferqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/buffer"
 	classifierhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/classifier"
@@ -31,6 +34,7 @@ import (
 	statshandler "github.com/medincident/medincident-backend/internal/handler/query/stats"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
+	announcementread "github.com/medincident/medincident-backend/internal/service/query/announcement"
 	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 	incidentread "github.com/medincident/medincident-backend/internal/service/query/incident"
 	bufferread "github.com/medincident/medincident-backend/internal/service/query/incident/buffer"
@@ -40,6 +44,7 @@ import (
 	requestread "github.com/medincident/medincident-backend/internal/service/query/request"
 	requestclassifierread "github.com/medincident/medincident-backend/internal/service/query/request/classifier"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
+	announcementqueryv1 "github.com/medincident/medincident-backend/pkg/query/announcement/v1"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	incidentqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
 	membershipqueryv1 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
@@ -53,6 +58,7 @@ const (
 	shutdownTimeout         = 15 * time.Second
 	consumerShutdownTimeout = 10 * time.Second
 	natsReconnectWait       = 2 * time.Second
+	handlerTimeout          = 30 * time.Second
 )
 
 const ErrCodeJetStreamInitFailed = "jetstream_init_failed"
@@ -138,6 +144,7 @@ func main() {
 	bufferReader := bufferread.NewReader(db, logger, incidentReader)
 	reqClassifierReader := requestclassifierread.NewReader(db, az, logger)
 	reqReader := requestread.NewReader(db, az, logger)
+	announcementReader := announcementread.NewReader(db, logger)
 
 	projector := identityread.NewProjector(db, logger)
 	consumer := identityread.NewConsumer(js, &cfg.NATS, projector, logger)
@@ -151,14 +158,20 @@ func main() {
 	combinedIncidentH := incidentqueryhandler.NewCombinedIncidentQueryHandler(incidentQH, bufferQH)
 	reqClassifierQH := requestclassifierqueryhandler.NewRequestClassifierQueryHandler(reqClassifierReader)
 	reqQH := requestqueryhandler.NewServiceRequestQueryHandler(reqReader)
+	announcementQH := announcementqueryhandler.NewAnnouncementQueryHandler(announcementReader)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
 		grpc.ChainUnaryInterceptor(
 			grpcmw.ErrorInterceptor(logger),
+			grpcmw.TimeoutInterceptor(handlerTimeout),
 			grpcmw.AuthnInterceptor(authorizer, authnSkip),
 		),
 	)
+	healthSrv := health.NewServer()
+	healthv1.RegisterHealthServer(grpcServer, healthSrv)
+	healthSrv.SetServingStatus("", healthv1.HealthCheckResponse_SERVING)
+
 	orgqueryv1.RegisterOrgStructureQueryServiceServer(grpcServer, orgH)
 	membershipqueryv1.RegisterMembershipQueryServiceServer(grpcServer, memH)
 	classifierqueryv1.RegisterIncidentClassifierQueryServiceServer(grpcServer, clsH)
@@ -166,6 +179,7 @@ func main() {
 	incidentqueryv1.RegisterIncidentQueryServiceServer(grpcServer, combinedIncidentH)
 	requestclassifierqueryv1.RegisterRequestClassifierQueryServiceServer(grpcServer, reqClassifierQH)
 	requestqueryv1.RegisterServiceRequestQueryServiceServer(grpcServer, reqQH)
+	announcementqueryv1.RegisterAnnouncementQueryServiceServer(grpcServer, announcementQH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)
