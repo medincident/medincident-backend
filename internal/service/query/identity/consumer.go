@@ -114,7 +114,7 @@ func (c *Consumer) Start(ctx context.Context) error {
 			Wrap(err)
 	}
 
-	c.ctx, c.cancel = context.WithCancel(context.Background())
+	c.ctx, c.cancel = context.WithCancel(ctx)
 	cc, err := cons.Consume(c.handleMsg)
 	if err != nil {
 		c.cancel()
