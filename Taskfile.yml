@@ -6,12 +6,17 @@ tasks:
     cmds:
       - go tool buf generate
       - go tool buf generate --template buf.gen.docs.yaml
+      - npx widdershins api/openapi/medincident.swagger.json
+          -o docs/api/HTTP.md
+          --language_tabs 'shell:Shell'
+          --summary
+          --omitHeader
       # Normalize whitespace in generated docs so pre-commit hooks
       # (trailing-whitespace, end-of-file-fixer) don't cause drift
       # between `task gen:check` and the committed file.
       - |
         set -e
-        find docs/proto -name '*.md' | while read -r f; do
+        find docs/api -name '*.md' | while read -r f; do
           awk '
             { sub(/[ \t\r]+$/, "") }
             /^$/ { blank++; next }
@@ -26,7 +31,7 @@ tasks:
     desc: Verify generated artifacts are up to date (fails if `task gen` would produce changes)
     cmds:
       - task: gen
-      - git diff --exit-code -- pkg/ api/openapi/ docs/proto/
+      - git diff --exit-code -- pkg/ api/openapi/ docs/api/
 
   proto:fmt:
     desc: Format proto files in api/proto

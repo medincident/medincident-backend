@@ -1,0 +1,10277 @@
+<!-- Generator: Widdershins v4.0.1 -->
+
+<h1 id="command-incident-buffer-v1-buffer-proto">command/incident/buffer/v1/buffer.proto version not set</h1>
+
+> Scroll down for code samples, example requests and responses. Select a language for code samples from the tabs above or the mobile navigation menu.
+
+<h1 id="command-incident-buffer-v1-buffer-proto-incidentbuffercommandservice">IncidentBufferCommandService</h1>
+
+## IncidentBufferCommandService_SubmitPatientIncident
+
+<a id="opIdIncidentBufferCommandService_SubmitPatientIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/patient-incidents \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/patient-incidents`
+
+> Body parameter
+
+```json
+{
+  "organizationId": "string",
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string",
+  "occurredAt": "string"
+}
+```
+
+<h3 id="incidentbuffercommandservice_submitpatientincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[v1SubmitPatientIncidentRequest](#schemav1submitpatientincidentrequest)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "bufferId": "string"
+}
+```
+
+<h3 id="incidentbuffercommandservice_submitpatientincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SubmitPatientIncidentResponse](#schemav1submitpatientincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentBufferCommandService_UpdatePatientIncident
+
+<a id="opIdIncidentBufferCommandService_UpdatePatientIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/patient-incidents/{bufferId} \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/patient-incidents/{bufferId}`
+
+> Body parameter
+
+```json
+{
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string",
+  "occurredAt": "string"
+}
+```
+
+<h3 id="incidentbuffercommandservice_updatepatientincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|bufferId|path|string|true|none|
+|body|body|[IncidentBufferCommandServiceUpdatePatientIncidentBody](#schemaincidentbuffercommandserviceupdatepatientincidentbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentbuffercommandservice_updatepatientincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdatePatientIncidentResponse](#schemav1updatepatientincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentBufferCommandService_CancelPatientIncident
+
+<a id="opIdIncidentBufferCommandService_CancelPatientIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/patient-incidents/{bufferId}:cancel \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/patient-incidents/{bufferId}:cancel`
+
+<h3 id="incidentbuffercommandservice_cancelpatientincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|bufferId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentbuffercommandservice_cancelpatientincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CancelPatientIncidentResponse](#schemav1cancelpatientincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentBufferCommandService_PublishPatientIncident
+
+<a id="opIdIncidentBufferCommandService_PublishPatientIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/patient-incidents/{bufferId}:publish \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/patient-incidents/{bufferId}:publish`
+
+> Body parameter
+
+```json
+{
+  "departmentId": "string",
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string"
+}
+```
+
+<h3 id="incidentbuffercommandservice_publishpatientincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|bufferId|path|string|true|none|
+|body|body|[IncidentBufferCommandServicePublishPatientIncidentBody](#schemaincidentbuffercommandservicepublishpatientincidentbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "incidentId": "string"
+}
+```
+
+<h3 id="incidentbuffercommandservice_publishpatientincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1PublishPatientIncidentResponse](#schemav1publishpatientincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentBufferCommandService_RejectPatientIncident
+
+<a id="opIdIncidentBufferCommandService_RejectPatientIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/patient-incidents/{bufferId}:reject \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/patient-incidents/{bufferId}:reject`
+
+<h3 id="incidentbuffercommandservice_rejectpatientincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|bufferId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentbuffercommandservice_rejectpatientincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RejectPatientIncidentResponse](#schemav1rejectpatientincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-incidentclassifiercommandservice">IncidentClassifierCommandService</h1>
+
+## IncidentClassifierCommandService_DeleteIncidentCategory
+
+<a id="opIdIncidentClassifierCommandService_DeleteIncidentCategory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/incident-categories/{categoryId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/incident-categories/{categoryId}`
+
+<h3 id="incidentclassifiercommandservice_deleteincidentcategory-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|categoryId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_deleteincidentcategory-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeleteIncidentCategoryResponse](#schemav1deleteincidentcategoryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_DeactivateIncidentCategory
+
+<a id="opIdIncidentClassifierCommandService_DeactivateIncidentCategory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incident-categories/{categoryId}/deactivations \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incident-categories/{categoryId}/deactivations`
+
+<h3 id="incidentclassifiercommandservice_deactivateincidentcategory-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|categoryId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_deactivateincidentcategory-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateIncidentCategoryResponse](#schemav1deactivateincidentcategoryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_UpdateIncidentCategoryDetails
+
+<a id="opIdIncidentClassifierCommandService_UpdateIncidentCategoryDetails"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/incident-categories/{categoryId}/details \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/incident-categories/{categoryId}/details`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+```
+
+<h3 id="incidentclassifiercommandservice_updateincidentcategorydetails-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|categoryId|path|string|true|none|
+|body|body|[IncidentClassifierCommandServiceUpdateIncidentCategoryDetailsBody](#schemaincidentclassifiercommandserviceupdateincidentcategorydetailsbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_updateincidentcategorydetails-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentCategoryDetailsResponse](#schemav1updateincidentcategorydetailsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_ReactivateIncidentCategory
+
+<a id="opIdIncidentClassifierCommandService_ReactivateIncidentCategory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incident-categories/{categoryId}/reactivations \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incident-categories/{categoryId}/reactivations`
+
+<h3 id="incidentclassifiercommandservice_reactivateincidentcategory-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|categoryId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_reactivateincidentcategory-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ReactivateIncidentCategoryResponse](#schemav1reactivateincidentcategoryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## --- Types ---
+
+<a id="opIdIncidentClassifierCommandService_CreateIncidentType"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incident-categories/{categoryId}/types \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incident-categories/{categoryId}/types`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+```
+
+<h3 id="----types-----parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|categoryId|path|string|true|none|
+|body|body|[IncidentClassifierCommandServiceCreateIncidentTypeBody](#schemaincidentclassifiercommandservicecreateincidenttypebody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "typeId": "string"
+}
+```
+
+<h3 id="----types-----responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateIncidentTypeResponse](#schemav1createincidenttyperesponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_MoveIncidentCategory
+
+<a id="opIdIncidentClassifierCommandService_MoveIncidentCategory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incident-categories/{categoryId}:move \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incident-categories/{categoryId}:move`
+
+> Body parameter
+
+```json
+{
+  "newParentCategoryId": "string"
+}
+```
+
+<h3 id="incidentclassifiercommandservice_moveincidentcategory-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|categoryId|path|string|true|none|
+|body|body|[IncidentClassifierCommandServiceMoveIncidentCategoryBody](#schemaincidentclassifiercommandservicemoveincidentcategorybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_moveincidentcategory-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1MoveIncidentCategoryResponse](#schemav1moveincidentcategoryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_DeleteIncidentType
+
+<a id="opIdIncidentClassifierCommandService_DeleteIncidentType"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/incident-types/{typeId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/incident-types/{typeId}`
+
+<h3 id="incidentclassifiercommandservice_deleteincidenttype-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|typeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_deleteincidenttype-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeleteIncidentTypeResponse](#schemav1deleteincidenttyperesponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_DeactivateIncidentType
+
+<a id="opIdIncidentClassifierCommandService_DeactivateIncidentType"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incident-types/{typeId}/deactivations \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incident-types/{typeId}/deactivations`
+
+<h3 id="incidentclassifiercommandservice_deactivateincidenttype-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|typeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_deactivateincidenttype-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateIncidentTypeResponse](#schemav1deactivateincidenttyperesponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_UpdateIncidentTypeDetails
+
+<a id="opIdIncidentClassifierCommandService_UpdateIncidentTypeDetails"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/incident-types/{typeId}/details \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/incident-types/{typeId}/details`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+```
+
+<h3 id="incidentclassifiercommandservice_updateincidenttypedetails-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|typeId|path|string|true|none|
+|body|body|[IncidentClassifierCommandServiceUpdateIncidentTypeDetailsBody](#schemaincidentclassifiercommandserviceupdateincidenttypedetailsbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_updateincidenttypedetails-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentTypeDetailsResponse](#schemav1updateincidenttypedetailsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_DisallowIncidentTypeForPatients
+
+<a id="opIdIncidentClassifierCommandService_DisallowIncidentTypeForPatients"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/incident-types/{typeId}/patient-allowances \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/incident-types/{typeId}/patient-allowances`
+
+<h3 id="incidentclassifiercommandservice_disallowincidenttypeforpatients-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|typeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_disallowincidenttypeforpatients-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DisallowIncidentTypeForPatientsResponse](#schemav1disallowincidenttypeforpatientsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_AllowIncidentTypeForPatients
+
+<a id="opIdIncidentClassifierCommandService_AllowIncidentTypeForPatients"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incident-types/{typeId}/patient-allowances \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incident-types/{typeId}/patient-allowances`
+
+<h3 id="incidentclassifiercommandservice_allowincidenttypeforpatients-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|typeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_allowincidenttypeforpatients-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AllowIncidentTypeForPatientsResponse](#schemav1allowincidenttypeforpatientsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_ReactivateIncidentType
+
+<a id="opIdIncidentClassifierCommandService_ReactivateIncidentType"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incident-types/{typeId}/reactivations \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incident-types/{typeId}/reactivations`
+
+<h3 id="incidentclassifiercommandservice_reactivateincidenttype-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|typeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_reactivateincidenttype-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ReactivateIncidentTypeResponse](#schemav1reactivateincidenttyperesponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierCommandService_MoveIncidentType
+
+<a id="opIdIncidentClassifierCommandService_MoveIncidentType"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incident-types/{typeId}:move \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incident-types/{typeId}:move`
+
+> Body parameter
+
+```json
+{
+  "newCategoryId": "string"
+}
+```
+
+<h3 id="incidentclassifiercommandservice_moveincidenttype-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|typeId|path|string|true|none|
+|body|body|[IncidentClassifierCommandServiceMoveIncidentTypeBody](#schemaincidentclassifiercommandservicemoveincidenttypebody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentclassifiercommandservice_moveincidenttype-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1MoveIncidentTypeResponse](#schemav1moveincidenttyperesponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## --- Categories ---
+
+<a id="opIdIncidentClassifierCommandService_CreateIncidentCategory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/incident-categories \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/incident-categories`
+
+> Body parameter
+
+```json
+{
+  "parentCategoryId": "string",
+  "name": "string",
+  "description": "string"
+}
+```
+
+<h3 id="----categories-----parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[IncidentClassifierCommandServiceCreateIncidentCategoryBody](#schemaincidentclassifiercommandservicecreateincidentcategorybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "categoryId": "string"
+}
+```
+
+<h3 id="----categories-----responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateIncidentCategoryResponse](#schemav1createincidentcategoryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-incidentcommandservice">IncidentCommandService</h1>
+
+## IncidentCommandService_CreateIncident
+
+<a id="opIdIncidentCommandService_CreateIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incidents \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incidents`
+
+> Body parameter
+
+```json
+{
+  "departmentId": "string",
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string",
+  "occurredAt": "string"
+}
+```
+
+<h3 id="incidentcommandservice_createincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[v1CreateIncidentRequest](#schemav1createincidentrequest)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "incidentId": "string"
+}
+```
+
+<h3 id="incidentcommandservice_createincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateIncidentResponse](#schemav1createincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentCommandService_UpdateIncidentDescription
+
+<a id="opIdIncidentCommandService_UpdateIncidentDescription"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/incidents/{incidentId}/description \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/incidents/{incidentId}/description`
+
+> Body parameter
+
+```json
+{
+  "description": "string"
+}
+```
+
+<h3 id="incidentcommandservice_updateincidentdescription-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|incidentId|path|string|true|none|
+|body|body|[IncidentCommandServiceUpdateIncidentDescriptionBody](#schemaincidentcommandserviceupdateincidentdescriptionbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentcommandservice_updateincidentdescription-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentDescriptionResponse](#schemav1updateincidentdescriptionresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentCommandService_UpdateIncidentPriority
+
+<a id="opIdIncidentCommandService_UpdateIncidentPriority"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/incidents/{incidentId}/priority \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/incidents/{incidentId}/priority`
+
+> Body parameter
+
+```json
+{
+  "priority": "INCIDENT_PRIORITY_UNSPECIFIED"
+}
+```
+
+<h3 id="incidentcommandservice_updateincidentpriority-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|incidentId|path|string|true|none|
+|body|body|[IncidentCommandServiceUpdateIncidentPriorityBody](#schemaincidentcommandserviceupdateincidentprioritybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentcommandservice_updateincidentpriority-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentPriorityResponse](#schemav1updateincidentpriorityresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentCommandService_UpdateIncidentStatus
+
+<a id="opIdIncidentCommandService_UpdateIncidentStatus"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/incidents/{incidentId}/status \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/incidents/{incidentId}/status`
+
+> Body parameter
+
+```json
+{
+  "newStatus": "INCIDENT_STATUS_UNSPECIFIED"
+}
+```
+
+<h3 id="incidentcommandservice_updateincidentstatus-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|incidentId|path|string|true|none|
+|body|body|[IncidentCommandServiceUpdateIncidentStatusBody](#schemaincidentcommandserviceupdateincidentstatusbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentcommandservice_updateincidentstatus-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentStatusResponse](#schemav1updateincidentstatusresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentCommandService_CancelIncident
+
+<a id="opIdIncidentCommandService_CancelIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incidents/{incidentId}:cancel \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incidents/{incidentId}:cancel`
+
+<h3 id="incidentcommandservice_cancelincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|incidentId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="incidentcommandservice_cancelincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CancelIncidentResponse](#schemav1cancelincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentCommandService_ReopenIncident
+
+<a id="opIdIncidentCommandService_ReopenIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/incidents/{incidentId}:reopen \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/incidents/{incidentId}:reopen`
+
+<h3 id="incidentcommandservice_reopenincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|incidentId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "reopenedIncidentId": "string"
+}
+```
+
+<h3 id="incidentcommandservice_reopenincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ReopenIncidentResponse](#schemav1reopenincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-membershipcommandservice">MembershipCommandService</h1>
+
+## ------ ClinicHead ------
+
+<a id="opIdMembershipCommandService_AssignClinicHead"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/clinics/{clinicId}/heads \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/clinics/{clinicId}/heads`
+
+> Body parameter
+
+```json
+{
+  "employeeId": "string"
+}
+```
+
+<h3 id="-------clinichead--------parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignClinicHeadBody](#schemamembershipcommandserviceassignclinicheadbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="-------clinichead--------responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignClinicHeadResponse](#schemav1assignclinicheadresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RevokeClinicHead
+
+<a id="opIdMembershipCommandService_RevokeClinicHead"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/clinics/{clinicId}/heads/{employeeId}`
+
+<h3 id="membershipcommandservice_revokeclinichead-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_revokeclinichead-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeClinicHeadResponse](#schemav1revokeclinicheadresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RemoveClinicHeadDeputy
+
+<a id="opIdMembershipCommandService_RemoveClinicHeadDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/clinics/{clinicId}/heads/{employeeId}/deputy`
+
+<h3 id="membershipcommandservice_removeclinicheaddeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_removeclinicheaddeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveClinicHeadDeputyResponse](#schemav1removeclinicheaddeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_AssignClinicHeadDeputy
+
+<a id="opIdMembershipCommandService_AssignClinicHeadDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/clinics/{clinicId}/heads/{employeeId}/deputy`
+
+> Body parameter
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+```
+
+<h3 id="membershipcommandservice_assignclinicheaddeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignClinicHeadDeputyBody](#schemamembershipcommandserviceassignclinicheaddeputybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_assignclinicheaddeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignClinicHeadDeputyResponse](#schemav1assignclinicheaddeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## ------ DepartmentResponsible ------
+
+<a id="opIdMembershipCommandService_AssignDepartmentResponsible"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/departments/{departmentId}/responsibles \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/departments/{departmentId}/responsibles`
+
+> Body parameter
+
+```json
+{
+  "employeeId": "string"
+}
+```
+
+<h3 id="-------departmentresponsible--------parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignDepartmentResponsibleBody](#schemamembershipcommandserviceassigndepartmentresponsiblebody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="-------departmentresponsible--------responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignDepartmentResponsibleResponse](#schemav1assigndepartmentresponsibleresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RevokeDepartmentResponsible
+
+<a id="opIdMembershipCommandService_RevokeDepartmentResponsible"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/departments/{departmentId}/responsibles/{employeeId}`
+
+<h3 id="membershipcommandservice_revokedepartmentresponsible-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_revokedepartmentresponsible-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeDepartmentResponsibleResponse](#schemav1revokedepartmentresponsibleresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RemoveDepartmentResponsibleDeputy
+
+<a id="opIdMembershipCommandService_RemoveDepartmentResponsibleDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/departments/{departmentId}/responsibles/{employeeId}/deputy`
+
+<h3 id="membershipcommandservice_removedepartmentresponsibledeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_removedepartmentresponsibledeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveDepartmentResponsibleDeputyResponse](#schemav1removedepartmentresponsibledeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_AssignDepartmentResponsibleDeputy
+
+<a id="opIdMembershipCommandService_AssignDepartmentResponsibleDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/departments/{departmentId}/responsibles/{employeeId}/deputy`
+
+> Body parameter
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+```
+
+<h3 id="membershipcommandservice_assigndepartmentresponsibledeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignDepartmentResponsibleDeputyBody](#schemamembershipcommandserviceassigndepartmentresponsibledeputybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_assigndepartmentresponsibledeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignDepartmentResponsibleDeputyResponse](#schemav1assigndepartmentresponsibledeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## Employee lifecycle
+
+<a id="opIdMembershipCommandService_HireEmployee"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/employees \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/employees`
+
+> Body parameter
+
+```json
+{
+  "zitadelUserId": "string",
+  "departmentId": "string",
+  "position": "string"
+}
+```
+
+<h3 id="employee-lifecycle-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[v1HireEmployeeRequest](#schemav1hireemployeerequest)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "employeeId": "string"
+}
+```
+
+<h3 id="employee-lifecycle-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1HireEmployeeResponse](#schemav1hireemployeeresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_TerminateEmployee
+
+<a id="opIdMembershipCommandService_TerminateEmployee"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/employees/{employeeId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/employees/{employeeId}`
+
+<h3 id="membershipcommandservice_terminateemployee-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_terminateemployee-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1TerminateEmployeeResponse](#schemav1terminateemployeeresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_UpdateEmployeeDepartment
+
+<a id="opIdMembershipCommandService_UpdateEmployeeDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/employees/{employeeId}/department \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/employees/{employeeId}/department`
+
+> Body parameter
+
+```json
+{
+  "departmentId": "string"
+}
+```
+
+<h3 id="membershipcommandservice_updateemployeedepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceUpdateEmployeeDepartmentBody](#schemamembershipcommandserviceupdateemployeedepartmentbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_updateemployeedepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateEmployeeDepartmentResponse](#schemav1updateemployeedepartmentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_UpdateEmployeePosition
+
+<a id="opIdMembershipCommandService_UpdateEmployeePosition"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/employees/{employeeId}/position \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/employees/{employeeId}/position`
+
+> Body parameter
+
+```json
+{
+  "position": "string"
+}
+```
+
+<h3 id="membershipcommandservice_updateemployeeposition-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceUpdateEmployeePositionBody](#schemamembershipcommandserviceupdateemployeepositionbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_updateemployeeposition-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateEmployeePositionResponse](#schemav1updateemployeepositionresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_ScheduleVacation
+
+<a id="opIdMembershipCommandService_ScheduleVacation"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/employees/{employeeId}/vacations \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/employees/{employeeId}/vacations`
+
+> Body parameter
+
+```json
+{
+  "startsAt": "2019-08-24T14:15:22Z",
+  "endsAt": "2019-08-24T14:15:22Z"
+}
+```
+
+<h3 id="membershipcommandservice_schedulevacation-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceScheduleVacationBody](#schemamembershipcommandserviceschedulevacationbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "vacationId": "string"
+}
+```
+
+<h3 id="membershipcommandservice_schedulevacation-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ScheduleVacationResponse](#schemav1schedulevacationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## Vacation lifecycle
+
+<a id="opIdMembershipCommandService_StartVacationNow"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/employees/{employeeId}/vacations:start-now \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/employees/{employeeId}/vacations:start-now`
+
+> Body parameter
+
+```json
+{
+  "endsAt": "2019-08-24T14:15:22Z"
+}
+```
+
+<h3 id="vacation-lifecycle-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceStartVacationNowBody](#schemamembershipcommandservicestartvacationnowbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "vacationId": "string"
+}
+```
+
+<h3 id="vacation-lifecycle-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1StartVacationNowResponse](#schemav1startvacationnowresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## ------ OrganizationAdmin ------
+
+<a id="opIdMembershipCommandService_AssignOrganizationAdmin"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/admins \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/admins`
+
+> Body parameter
+
+```json
+{
+  "employeeId": "string"
+}
+```
+
+<h3 id="-------organizationadmin--------parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignOrganizationAdminBody](#schemamembershipcommandserviceassignorganizationadminbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="-------organizationadmin--------responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationAdminResponse](#schemav1assignorganizationadminresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RevokeOrganizationAdmin
+
+<a id="opIdMembershipCommandService_RevokeOrganizationAdmin"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/organizations/{organizationId}/admins/{employeeId}`
+
+<h3 id="membershipcommandservice_revokeorganizationadmin-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_revokeorganizationadmin-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeOrganizationAdminResponse](#schemav1revokeorganizationadminresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RemoveOrganizationAdminDeputy
+
+<a id="opIdMembershipCommandService_RemoveOrganizationAdminDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/organizations/{organizationId}/admins/{employeeId}/deputy`
+
+<h3 id="membershipcommandservice_removeorganizationadmindeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_removeorganizationadmindeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveOrganizationAdminDeputyResponse](#schemav1removeorganizationadmindeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_AssignOrganizationAdminDeputy
+
+<a id="opIdMembershipCommandService_AssignOrganizationAdminDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/admins/{employeeId}/deputy`
+
+> Body parameter
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+```
+
+<h3 id="membershipcommandservice_assignorganizationadmindeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignOrganizationAdminDeputyBody](#schemamembershipcommandserviceassignorganizationadmindeputybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_assignorganizationadmindeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationAdminDeputyResponse](#schemav1assignorganizationadmindeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## ------ OrganizationDispatcher ------
+
+<a id="opIdMembershipCommandService_AssignOrganizationDispatcher"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/dispatchers \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/dispatchers`
+
+> Body parameter
+
+```json
+{
+  "employeeId": "string"
+}
+```
+
+<h3 id="-------organizationdispatcher--------parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignOrganizationDispatcherBody](#schemamembershipcommandserviceassignorganizationdispatcherbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="-------organizationdispatcher--------responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationDispatcherResponse](#schemav1assignorganizationdispatcherresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RevokeOrganizationDispatcher
+
+<a id="opIdMembershipCommandService_RevokeOrganizationDispatcher"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}`
+
+<h3 id="membershipcommandservice_revokeorganizationdispatcher-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_revokeorganizationdispatcher-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeOrganizationDispatcherResponse](#schemav1revokeorganizationdispatcherresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RemoveOrganizationDispatcherDeputy
+
+<a id="opIdMembershipCommandService_RemoveOrganizationDispatcherDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy`
+
+<h3 id="membershipcommandservice_removeorganizationdispatcherdeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_removeorganizationdispatcherdeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveOrganizationDispatcherDeputyResponse](#schemav1removeorganizationdispatcherdeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_AssignOrganizationDispatcherDeputy
+
+<a id="opIdMembershipCommandService_AssignOrganizationDispatcherDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy`
+
+> Body parameter
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+```
+
+<h3 id="membershipcommandservice_assignorganizationdispatcherdeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignOrganizationDispatcherDeputyBody](#schemamembershipcommandserviceassignorganizationdispatcherdeputybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_assignorganizationdispatcherdeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationDispatcherDeputyResponse](#schemav1assignorganizationdispatcherdeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## ------ OrganizationHead ------
+
+<a id="opIdMembershipCommandService_AssignOrganizationHead"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/heads \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/heads`
+
+> Body parameter
+
+```json
+{
+  "employeeId": "string"
+}
+```
+
+<h3 id="-------organizationhead--------parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignOrganizationHeadBody](#schemamembershipcommandserviceassignorganizationheadbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="-------organizationhead--------responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationHeadResponse](#schemav1assignorganizationheadresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RevokeOrganizationHead
+
+<a id="opIdMembershipCommandService_RevokeOrganizationHead"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/organizations/{organizationId}/heads/{employeeId}`
+
+<h3 id="membershipcommandservice_revokeorganizationhead-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_revokeorganizationhead-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeOrganizationHeadResponse](#schemav1revokeorganizationheadresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RemoveOrganizationHeadDeputy
+
+<a id="opIdMembershipCommandService_RemoveOrganizationHeadDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/organizations/{organizationId}/heads/{employeeId}/deputy`
+
+<h3 id="membershipcommandservice_removeorganizationheaddeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_removeorganizationheaddeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveOrganizationHeadDeputyResponse](#schemav1removeorganizationheaddeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_AssignOrganizationHeadDeputy
+
+<a id="opIdMembershipCommandService_AssignOrganizationHeadDeputy"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/heads/{employeeId}/deputy`
+
+> Body parameter
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+```
+
+<h3 id="membershipcommandservice_assignorganizationheaddeputy-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceAssignOrganizationHeadDeputyBody](#schemamembershipcommandserviceassignorganizationheaddeputybody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_assignorganizationheaddeputy-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationHeadDeputyResponse](#schemav1assignorganizationheaddeputyresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## ------ SystemAdmin ------
+
+<a id="opIdMembershipCommandService_GrantSystemAdmin"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/system-admins \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/system-admins`
+
+> Body parameter
+
+```json
+{
+  "zitadelUserId": "string"
+}
+```
+
+<h3 id="-------systemadmin--------parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[v1GrantSystemAdminRequest](#schemav1grantsystemadminrequest)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="-------systemadmin--------responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GrantSystemAdminResponse](#schemav1grantsystemadminresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_RevokeSystemAdmin
+
+<a id="opIdMembershipCommandService_RevokeSystemAdmin"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/system-admins/{zitadelUserId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/system-admins/{zitadelUserId}`
+
+<h3 id="membershipcommandservice_revokesystemadmin-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|zitadelUserId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_revokesystemadmin-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeSystemAdminResponse](#schemav1revokesystemadminresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_CancelScheduledVacation
+
+<a id="opIdMembershipCommandService_CancelScheduledVacation"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/vacations/{vacationId}/cancellations \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/vacations/{vacationId}/cancellations`
+
+<h3 id="membershipcommandservice_cancelscheduledvacation-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|vacationId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_cancelscheduledvacation-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CancelScheduledVacationResponse](#schemav1cancelscheduledvacationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_UpdateVacationEndDate
+
+<a id="opIdMembershipCommandService_UpdateVacationEndDate"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/vacations/{vacationId}/end-date \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/vacations/{vacationId}/end-date`
+
+> Body parameter
+
+```json
+{
+  "endsAt": "2019-08-24T14:15:22Z"
+}
+```
+
+<h3 id="membershipcommandservice_updatevacationenddate-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|vacationId|path|string|true|none|
+|body|body|[MembershipCommandServiceUpdateVacationEndDateBody](#schemamembershipcommandserviceupdatevacationenddatebody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_updatevacationenddate-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateVacationEndDateResponse](#schemav1updatevacationenddateresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_ForceEndVacation
+
+<a id="opIdMembershipCommandService_ForceEndVacation"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/vacations/{vacationId}/terminations \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/vacations/{vacationId}/terminations`
+
+<h3 id="membershipcommandservice_forceendvacation-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|vacationId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_forceendvacation-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ForceEndVacationResponse](#schemav1forceendvacationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-orgstructurecommandservice">OrgStructureCommandService</h1>
+
+## OrgStructureCommandService_CreateDepartment
+
+<a id="opIdOrgStructureCommandService_CreateDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/clinics/{clinicId}/departments \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/clinics/{clinicId}/departments`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_createdepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceCreateDepartmentBody](#schemaorgstructurecommandservicecreatedepartmentbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "departmentId": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_createdepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateDepartmentResponse](#schemav1createdepartmentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_UpdateClinicDetails
+
+<a id="opIdOrgStructureCommandService_UpdateClinicDetails"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/clinics/{clinicId}/details \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/clinics/{clinicId}/details`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_updateclinicdetails-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceUpdateClinicDetailsBody](#schemaorgstructurecommandserviceupdateclinicdetailsbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_updateclinicdetails-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateClinicDetailsResponse](#schemav1updateclinicdetailsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_UpdateClinicPhysicalAddress
+
+<a id="opIdOrgStructureCommandService_UpdateClinicPhysicalAddress"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/clinics/{clinicId}/physical-address \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/clinics/{clinicId}/physical-address`
+
+> Body parameter
+
+```json
+{
+  "physicalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  }
+}
+```
+
+<h3 id="orgstructurecommandservice_updateclinicphysicaladdress-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceUpdateClinicPhysicalAddressBody](#schemaorgstructurecommandserviceupdateclinicphysicaladdressbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_updateclinicphysicaladdress-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateClinicPhysicalAddressResponse](#schemav1updateclinicphysicaladdressresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_UpdateDepartmentDetails
+
+<a id="opIdOrgStructureCommandService_UpdateDepartmentDetails"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/departments/{departmentId}/details \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/departments/{departmentId}/details`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_updatedepartmentdetails-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceUpdateDepartmentDetailsBody](#schemaorgstructurecommandserviceupdatedepartmentdetailsbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_updatedepartmentdetails-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateDepartmentDetailsResponse](#schemav1updatedepartmentdetailsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_CreateOrganization
+
+<a id="opIdOrgStructureCommandService_CreateOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "legalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  },
+  "description": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_createorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[v1CreateOrganizationRequest](#schemav1createorganizationrequest)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "organizationId": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_createorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateOrganizationResponse](#schemav1createorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_CreateClinic
+
+<a id="opIdOrgStructureCommandService_CreateClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/clinics \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/clinics`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "physicalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  },
+  "description": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_createclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceCreateClinicBody](#schemaorgstructurecommandservicecreateclinicbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "clinicId": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_createclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateClinicResponse](#schemav1createclinicresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_UpdateOrganizationDetails
+
+<a id="opIdOrgStructureCommandService_UpdateOrganizationDetails"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/organizations/{organizationId}/details \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/organizations/{organizationId}/details`
+
+> Body parameter
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+```
+
+<h3 id="orgstructurecommandservice_updateorganizationdetails-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceUpdateOrganizationDetailsBody](#schemaorgstructurecommandserviceupdateorganizationdetailsbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_updateorganizationdetails-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateOrganizationDetailsResponse](#schemav1updateorganizationdetailsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_UpdateOrganizationLegalAddress
+
+<a id="opIdOrgStructureCommandService_UpdateOrganizationLegalAddress"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X PUT /v1/organizations/{organizationId}/legal-address \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`PUT /v1/organizations/{organizationId}/legal-address`
+
+> Body parameter
+
+```json
+{
+  "legalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  }
+}
+```
+
+<h3 id="orgstructurecommandservice_updateorganizationlegaladdress-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceUpdateOrganizationLegalAddressBody](#schemaorgstructurecommandserviceupdateorganizationlegaladdressbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_updateorganizationlegaladdress-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateOrganizationLegalAddressResponse](#schemav1updateorganizationlegaladdressresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-incidentclassifierqueryservice">IncidentClassifierQueryService</h1>
+
+## IncidentClassifierQueryService_ListTypesByCategory
+
+<a id="opIdIncidentClassifierQueryService_ListTypesByCategory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/incident-categories/{categoryId}/types \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/incident-categories/{categoryId}/types`
+
+<h3 id="incidentclassifierqueryservice_listtypesbycategory-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|categoryId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "categoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string",
+      "isAllowedForPatients": true
+    }
+  ]
+}
+```
+
+<h3 id="incidentclassifierqueryservice_listtypesbycategory-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListTypesByCategoryResponse](#schemav1listtypesbycategoryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierQueryService_GetCategory
+
+<a id="opIdIncidentClassifierQueryService_GetCategory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/incident-categories/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/incident-categories/{id}`
+
+<h3 id="incidentclassifierqueryservice_getcategory-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "category": {
+    "id": "string",
+    "organizationId": "string",
+    "parentCategoryId": "string",
+    "name": "string",
+    "description": "string",
+    "isActive": true,
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+```
+
+<h3 id="incidentclassifierqueryservice_getcategory-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetCategoryResponse](#schemav1getcategoryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierQueryService_ListCategorySubtree
+
+<a id="opIdIncidentClassifierQueryService_ListCategorySubtree"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/incident-categories/{rootCategoryId}:subtree \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/incident-categories/{rootCategoryId}:subtree`
+
+<h3 id="incidentclassifierqueryservice_listcategorysubtree-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|rootCategoryId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="incidentclassifierqueryservice_listcategorysubtree-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCategorySubtreeResponse](#schemav1listcategorysubtreeresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierQueryService_GetType
+
+<a id="opIdIncidentClassifierQueryService_GetType"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/incident-types/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/incident-types/{id}`
+
+<h3 id="incidentclassifierqueryservice_gettype-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "type": {
+    "id": "string",
+    "organizationId": "string",
+    "categoryId": "string",
+    "name": "string",
+    "description": "string",
+    "isActive": true,
+    "createdAt": "string",
+    "updatedAt": "string",
+    "isAllowedForPatients": true
+  }
+}
+```
+
+<h3 id="incidentclassifierqueryservice_gettype-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetTypeResponse](#schemav1gettyperesponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierQueryService_ListCategoriesByOrganization
+
+<a id="opIdIncidentClassifierQueryService_ListCategoriesByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/incident-categories \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/incident-categories`
+
+<h3 id="incidentclassifierqueryservice_listcategoriesbyorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="incidentclassifierqueryservice_listcategoriesbyorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCategoriesByOrganizationResponse](#schemav1listcategoriesbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization
+
+<a id="opIdIncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visible \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/incident-categories:patient-visible`
+
+<h3 id="incidentclassifierqueryservice_listpatientvisiblecategoriesbyorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="incidentclassifierqueryservice_listpatientvisiblecategoriesbyorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListPatientVisibleCategoriesByOrganizationResponse](#schemav1listpatientvisiblecategoriesbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierQueryService_ListActiveRootCategories
+
+<a id="opIdIncidentClassifierQueryService_ListActiveRootCategories"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/incident-categories:roots`
+
+<h3 id="incidentclassifierqueryservice_listactiverootcategories-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="incidentclassifierqueryservice_listactiverootcategories-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveRootCategoriesResponse](#schemav1listactiverootcategoriesresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierQueryService_ListActiveTypesByOrganization
+
+<a id="opIdIncidentClassifierQueryService_ListActiveTypesByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/incident-types:active \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/incident-types:active`
+
+<h3 id="incidentclassifierqueryservice_listactivetypesbyorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "categoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string",
+      "isAllowedForPatients": true
+    }
+  ]
+}
+```
+
+<h3 id="incidentclassifierqueryservice_listactivetypesbyorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveTypesByOrganizationResponse](#schemav1listactivetypesbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## Patient-facing reads. These are scoped to one organisation and return
+only the slice of the classifier that a patient may see when filing
+an incident.
+
+<a id="opIdIncidentClassifierQueryService_ListPatientAllowedTypesByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/incident-types:patient-allowed \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/incident-types:patient-allowed`
+
+<h3 id="patient-facing-reads.-these-are-scoped-to-one-organisation-and-return
+only-the-slice-of-the-classifier-that-a-patient-may-see-when-filing
+an-incident.-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "categoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string",
+      "isAllowedForPatients": true
+    }
+  ]
+}
+```
+
+<h3 id="patient-facing-reads.-these-are-scoped-to-one-organisation-and-return
+only-the-slice-of-the-classifier-that-a-patient-may-see-when-filing
+an-incident.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListPatientAllowedTypesByOrganizationResponse](#schemav1listpatientallowedtypesbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-incidentqueryservice">IncidentQueryService</h1>
+
+## IncidentQueryService_GetIncident
+
+<a id="opIdIncidentQueryService_GetIncident"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/incidents/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/incidents/{id}`
+
+<h3 id="incidentqueryservice_getincident-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "incident": {
+    "id": "string",
+    "organizationId": "string",
+    "clinicId": "string",
+    "departmentId": "string",
+    "categoryId": "string",
+    "typeId": "string",
+    "status": "INCIDENT_STATUS_UNSPECIFIED",
+    "priority": "INCIDENT_PRIORITY_UNSPECIFIED",
+    "description": "string",
+    "patientOriginalDescription": "string",
+    "occurredAt": "string",
+    "createdAt": "string",
+    "updatedAt": "string",
+    "registrar": {
+      "employeeId": "string",
+      "displayName": "string",
+      "position": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string"
+    },
+    "sourcePatientZitadelUserId": "string",
+    "sourceBufferId": "string",
+    "reopenedFromIncidentId": "string",
+    "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+  }
+}
+```
+
+<h3 id="incidentqueryservice_getincident-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetIncidentResponse](#schemav1getincidentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentQueryService_GetIncidentHistory
+
+<a id="opIdIncidentQueryService_GetIncidentHistory"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/incidents/{incidentId}/history \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/incidents/{incidentId}/history`
+
+<h3 id="incidentqueryservice_getincidenthistory-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|incidentId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "statusHistory": [
+    {
+      "id": "string",
+      "oldStatus": "INCIDENT_STATUS_UNSPECIFIED",
+      "newStatus": "INCIDENT_STATUS_UNSPECIFIED",
+      "actor": {
+        "employeeId": "string",
+        "displayName": "string"
+      },
+      "changedAt": "string"
+    }
+  ],
+  "priorityHistory": [
+    {
+      "id": "string",
+      "oldPriority": "INCIDENT_PRIORITY_UNSPECIFIED",
+      "newPriority": "INCIDENT_PRIORITY_UNSPECIFIED",
+      "actor": {
+        "employeeId": "string",
+        "displayName": "string"
+      },
+      "changedAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="incidentqueryservice_getincidenthistory-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetIncidentHistoryResponse](#schemav1getincidenthistoryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentQueryService_ListMyIncidents
+
+<a id="opIdIncidentQueryService_ListMyIncidents"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/incidents:mine \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/incidents:mine`
+
+<h3 id="incidentqueryservice_listmyincidents-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "categoryId": "string",
+      "typeId": "string",
+      "status": "INCIDENT_STATUS_UNSPECIFIED",
+      "priority": "INCIDENT_PRIORITY_UNSPECIFIED",
+      "description": "string",
+      "patientOriginalDescription": "string",
+      "occurredAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "registrar": {
+        "employeeId": "string",
+        "displayName": "string",
+        "position": "string",
+        "organizationId": "string",
+        "clinicId": "string",
+        "departmentId": "string"
+      },
+      "sourcePatientZitadelUserId": "string",
+      "sourceBufferId": "string",
+      "reopenedFromIncidentId": "string",
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    }
+  ]
+}
+```
+
+<h3 id="incidentqueryservice_listmyincidents-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListMyIncidentsResponse](#schemav1listmyincidentsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentQueryService_ListIncidents
+
+<a id="opIdIncidentQueryService_ListIncidents"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/organizations/{organizationId}/incidents \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/organizations/{organizationId}/incidents`
+
+<h3 id="incidentqueryservice_listincidents-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|statuses|query|array[string]|false|none|
+|priorities|query|array[string]|false|none|
+|clinicId|query|string|false|none|
+|departmentId|query|string|false|none|
+|categoryId|query|string|false|none|
+|typeId|query|string|false|none|
+|occurredFrom|query|string|false|RFC3339Nano|
+|occurredTo|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|statuses|INCIDENT_STATUS_UNSPECIFIED|
+|statuses|INCIDENT_STATUS_PENDING|
+|statuses|INCIDENT_STATUS_IN_PROGRESS|
+|statuses|INCIDENT_STATUS_DONE|
+|statuses|INCIDENT_STATUS_REJECTED|
+|statuses|INCIDENT_STATUS_CANCELLED|
+|priorities|INCIDENT_PRIORITY_UNSPECIFIED|
+|priorities|INCIDENT_PRIORITY_LOW|
+|priorities|INCIDENT_PRIORITY_NORMAL|
+|priorities|INCIDENT_PRIORITY_HIGH|
+|priorities|INCIDENT_PRIORITY_CRITICAL|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "categoryId": "string",
+      "typeId": "string",
+      "status": "INCIDENT_STATUS_UNSPECIFIED",
+      "priority": "INCIDENT_PRIORITY_UNSPECIFIED",
+      "description": "string",
+      "patientOriginalDescription": "string",
+      "occurredAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "registrar": {
+        "employeeId": "string",
+        "displayName": "string",
+        "position": "string",
+        "organizationId": "string",
+        "clinicId": "string",
+        "departmentId": "string"
+      },
+      "sourcePatientZitadelUserId": "string",
+      "sourceBufferId": "string",
+      "reopenedFromIncidentId": "string",
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    }
+  ]
+}
+```
+
+<h3 id="incidentqueryservice_listincidents-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListIncidentsResponse](#schemav1listincidentsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentQueryService_ListBufferEntries
+
+<a id="opIdIncidentQueryService_ListBufferEntries"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/organizations/{organizationId}/patient-incidents`
+
+<h3 id="incidentqueryservice_listbufferentries-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|statuses|query|array[string]|false|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|statuses|BUFFER_STATUS_UNSPECIFIED|
+|statuses|BUFFER_STATUS_PENDING|
+|statuses|BUFFER_STATUS_PUBLISHED|
+|statuses|BUFFER_STATUS_REJECTED|
+|statuses|BUFFER_STATUS_CANCELLED|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "patientZitadelUserId": "string",
+      "categoryId": "string",
+      "typeId": "string",
+      "description": "string",
+      "occurredAt": "string",
+      "status": "BUFFER_STATUS_UNSPECIFIED",
+      "publishedIncidentId": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    }
+  ]
+}
+```
+
+<h3 id="incidentqueryservice_listbufferentries-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListBufferEntriesResponse](#schemav1listbufferentriesresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## Buffer reads.
+
+<a id="opIdIncidentQueryService_GetBufferEntry"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/patient-incidents/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/patient-incidents/{id}`
+
+<h3 id="buffer-reads.-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "entry": {
+    "id": "string",
+    "organizationId": "string",
+    "patientZitadelUserId": "string",
+    "categoryId": "string",
+    "typeId": "string",
+    "description": "string",
+    "occurredAt": "string",
+    "status": "BUFFER_STATUS_UNSPECIFIED",
+    "publishedIncidentId": "string",
+    "createdAt": "string",
+    "updatedAt": "string",
+    "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+  }
+}
+```
+
+<h3 id="buffer-reads.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetBufferEntryResponse](#schemav1getbufferentryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentQueryService_ListMyBufferEntries
+
+<a id="opIdIncidentQueryService_ListMyBufferEntries"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/query/patient-incidents:mine \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/query/patient-incidents:mine`
+
+<h3 id="incidentqueryservice_listmybufferentries-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "patientZitadelUserId": "string",
+      "categoryId": "string",
+      "typeId": "string",
+      "description": "string",
+      "occurredAt": "string",
+      "status": "BUFFER_STATUS_UNSPECIFIED",
+      "publishedIncidentId": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    }
+  ]
+}
+```
+
+<h3 id="incidentqueryservice_listmybufferentries-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListMyBufferEntriesResponse](#schemav1listmybufferentriesresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-membershipqueryservice">MembershipQueryService</h1>
+
+## MembershipQueryService_ListEmployeesByClinic
+
+<a id="opIdMembershipQueryService_ListEmployeesByClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/clinics/{clinicId}/employees \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/clinics/{clinicId}/employees`
+
+<h3 id="membershipqueryservice_listemployeesbyclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+|includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
+|onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
+|position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+
+#### Detailed descriptions
+
+**includeTerminated**: When false (default), rows with terminated_at IS NOT NULL are
+hidden. Set true to include offboarded employees.
+
+**onVacation**: When true, restrict to employees currently on an active vacation
+(current_vacation_ends_at IS NOT NULL AND > now()).
+
+**position**: Optional exact-match filter on employee_cards.position. Trimmed
+before comparison; all-whitespace is treated as unset.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_listemployeesbyclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByClinicResponse](#schemav1listemployeesbyclinicresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_CountEmployeesByClinic
+
+<a id="opIdMembershipQueryService_CountEmployeesByClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/clinics/{clinicId}/employees:count \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/clinics/{clinicId}/employees:count`
+
+<h3 id="membershipqueryservice_countemployeesbyclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
+|onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
+|position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+
+#### Detailed descriptions
+
+**includeTerminated**: When false (default), rows with terminated_at IS NOT NULL are
+hidden. Set true to include offboarded employees.
+
+**onVacation**: When true, restrict to employees currently on an active vacation
+(current_vacation_ends_at IS NOT NULL AND > now()).
+
+**position**: Optional exact-match filter on employee_cards.position. Trimmed
+before comparison; all-whitespace is treated as unset.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "total": "string"
+}
+```
+
+<h3 id="membershipqueryservice_countemployeesbyclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountEmployeesByClinicResponse](#schemav1countemployeesbyclinicresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_GetClinicHead
+
+<a id="opIdMembershipQueryService_GetClinicHead"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/clinics/{clinicId}/head \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/clinics/{clinicId}/head`
+
+<h3 id="membershipqueryservice_getclinichead-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "assignment": {
+    "holder": {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    },
+    "deputy": {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  }
+}
+```
+
+<h3 id="membershipqueryservice_getclinichead-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetClinicHeadResponse](#schemav1getclinicheadresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListEmployeesByDepartment
+
+<a id="opIdMembershipQueryService_ListEmployeesByDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/departments/{departmentId}/employees \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/departments/{departmentId}/employees`
+
+<h3 id="membershipqueryservice_listemployeesbydepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+|includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
+|onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
+|position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+
+#### Detailed descriptions
+
+**includeTerminated**: When false (default), rows with terminated_at IS NOT NULL are
+hidden. Set true to include offboarded employees.
+
+**onVacation**: When true, restrict to employees currently on an active vacation
+(current_vacation_ends_at IS NOT NULL AND > now()).
+
+**position**: Optional exact-match filter on employee_cards.position. Trimmed
+before comparison; all-whitespace is treated as unset.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_listemployeesbydepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByDepartmentResponse](#schemav1listemployeesbydepartmentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_CountEmployeesByDepartment
+
+<a id="opIdMembershipQueryService_CountEmployeesByDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/departments/{departmentId}/employees:count \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/departments/{departmentId}/employees:count`
+
+<h3 id="membershipqueryservice_countemployeesbydepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
+|onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
+|position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+
+#### Detailed descriptions
+
+**includeTerminated**: When false (default), rows with terminated_at IS NOT NULL are
+hidden. Set true to include offboarded employees.
+
+**onVacation**: When true, restrict to employees currently on an active vacation
+(current_vacation_ends_at IS NOT NULL AND > now()).
+
+**position**: Optional exact-match filter on employee_cards.position. Trimmed
+before comparison; all-whitespace is treated as unset.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "total": "string"
+}
+```
+
+<h3 id="membershipqueryservice_countemployeesbydepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountEmployeesByDepartmentResponse](#schemav1countemployeesbydepartmentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_GetDepartmentResponsible
+
+<a id="opIdMembershipQueryService_GetDepartmentResponsible"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/departments/{departmentId}/responsible \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/departments/{departmentId}/responsible`
+
+<h3 id="membershipqueryservice_getdepartmentresponsible-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "assignment": {
+    "holder": {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    },
+    "deputy": {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  }
+}
+```
+
+<h3 id="membershipqueryservice_getdepartmentresponsible-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetDepartmentResponsibleResponse](#schemav1getdepartmentresponsibleresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListVacationsByEmployee
+
+<a id="opIdMembershipQueryService_ListVacationsByEmployee"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/employees/{employeeId}/vacations \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/employees/{employeeId}/vacations`
+
+<h3 id="membershipqueryservice_listvacationsbyemployee-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+|state|query|string|false|Optional state filter. When empty, all states are returned.|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**state**: Optional state filter. When empty, all states are returned.
+Valid values: scheduled, active, ended, cancelled.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "employeeId": "string",
+      "state": "string",
+      "startsAt": "string",
+      "endsAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_listvacationsbyemployee-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListVacationsByEmployeeResponse](#schemav1listvacationsbyemployeeresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_CountVacationsByEmployee
+
+<a id="opIdMembershipQueryService_CountVacationsByEmployee"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/employees/{employeeId}/vacations:count \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/employees/{employeeId}/vacations:count`
+
+<h3 id="membershipqueryservice_countvacationsbyemployee-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+|state|query|string|false|Optional state filter. When empty, counts all states.|
+
+#### Detailed descriptions
+
+**state**: Optional state filter. When empty, counts all states.
+Valid values: scheduled, active, ended, cancelled.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "total": "string"
+}
+```
+
+<h3 id="membershipqueryservice_countvacationsbyemployee-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountVacationsByEmployeeResponse](#schemav1countvacationsbyemployeeresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_GetEmployee
+
+<a id="opIdMembershipQueryService_GetEmployee"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/employees/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/employees/{id}`
+
+<h3 id="membershipqueryservice_getemployee-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "employee": {
+    "employeeId": "string",
+    "zitadelUserId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "displayName": "string",
+    "email": "string",
+    "organizationId": "string",
+    "organizationName": "string",
+    "clinicId": "string",
+    "clinicName": "string",
+    "departmentId": "string",
+    "departmentName": "string",
+    "position": "string",
+    "terminatedAt": "string",
+    "currentVacationEndsAt": "string",
+    "nextVacationStartsAt": "string"
+  }
+}
+```
+
+<h3 id="membershipqueryservice_getemployee-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetEmployeeResponse](#schemav1getemployeeresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListOrgAdmins
+
+<a id="opIdMembershipQueryService_ListOrgAdmins"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/admins \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/admins`
+
+<h3 id="membershipqueryservice_listorgadmins-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "holder": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      },
+      "deputy": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      }
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_listorgadmins-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgAdminsResponse](#schemav1listorgadminsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListOrgDispatchers
+
+<a id="opIdMembershipQueryService_ListOrgDispatchers"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/dispatchers \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/dispatchers`
+
+<h3 id="membershipqueryservice_listorgdispatchers-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "holder": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      },
+      "deputy": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      }
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_listorgdispatchers-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgDispatchersResponse](#schemav1listorgdispatchersresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListEmployeesByOrganization
+
+<a id="opIdMembershipQueryService_ListEmployeesByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/employees \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/employees`
+
+<h3 id="membershipqueryservice_listemployeesbyorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+|includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
+|onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
+|position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+
+#### Detailed descriptions
+
+**includeTerminated**: When false (default), rows with terminated_at IS NOT NULL are
+hidden. Set true to include offboarded employees.
+
+**onVacation**: When true, restrict to employees currently on an active vacation
+(current_vacation_ends_at IS NOT NULL AND > now()).
+
+**position**: Optional exact-match filter on employee_cards.position. Trimmed
+before comparison; all-whitespace is treated as unset.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_listemployeesbyorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByOrganizationResponse](#schemav1listemployeesbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_CountEmployeesByOrganization
+
+<a id="opIdMembershipQueryService_CountEmployeesByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/employees:count \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/employees:count`
+
+<h3 id="membershipqueryservice_countemployeesbyorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
+|onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
+|position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+
+#### Detailed descriptions
+
+**includeTerminated**: When false (default), rows with terminated_at IS NOT NULL are
+hidden. Set true to include offboarded employees.
+
+**onVacation**: When true, restrict to employees currently on an active vacation
+(current_vacation_ends_at IS NOT NULL AND > now()).
+
+**position**: Optional exact-match filter on employee_cards.position. Trimmed
+before comparison; all-whitespace is treated as unset.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "total": "string"
+}
+```
+
+<h3 id="membershipqueryservice_countemployeesbyorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountEmployeesByOrganizationResponse](#schemav1countemployeesbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_SearchEmployeesByOrganization
+
+<a id="opIdMembershipQueryService_SearchEmployeesByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/employees:search \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/employees:search`
+
+<h3 id="membershipqueryservice_searchemployeesbyorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|query|query|string|false|Fuzzy substring matched case-insensitively (ILIKE %query%) against|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+|includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
+|onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
+|position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+
+#### Detailed descriptions
+
+**query**: Fuzzy substring matched case-insensitively (ILIKE %query%) against
+first_name, last_name, display_name, and email. Trimmed at the
+handler boundary; an empty query degenerates to the same behaviour
+as ListEmployeesByOrganization with the same filters. Maximum
+length 256 characters; over-long inputs are rejected before the
+authz round-trip.
+
+**includeTerminated**: When false (default), rows with terminated_at IS NOT NULL are
+hidden. Set true to include offboarded employees.
+
+**onVacation**: When true, restrict to employees currently on an active vacation
+(current_vacation_ends_at IS NOT NULL AND > now()).
+
+**position**: Optional exact-match filter on employee_cards.position. Trimmed
+before comparison; all-whitespace is treated as unset.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_searchemployeesbyorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SearchEmployeesByOrganizationResponse](#schemav1searchemployeesbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListOrgHeads
+
+<a id="opIdMembershipQueryService_ListOrgHeads"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/heads \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/heads`
+
+<h3 id="membershipqueryservice_listorgheads-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "holder": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      },
+      "deputy": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      }
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_listorgheads-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgHeadsResponse](#schemav1listorgheadsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListSystemAdmins
+
+<a id="opIdMembershipQueryService_ListSystemAdmins"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/system-admins \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/system-admins`
+
+<h3 id="membershipqueryservice_listsystemadmins-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "zitadelUserId": "string",
+      "createdAt": "string"
+    }
+  ]
+}
+```
+
+<h3 id="membershipqueryservice_listsystemadmins-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListSystemAdminsResponse](#schemav1listsystemadminsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-orgstructurequeryservice">OrgStructureQueryService</h1>
+
+## OrgStructureQueryService_ListDepartmentsByClinic
+
+<a id="opIdOrgStructureQueryService_ListDepartmentsByClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/clinics/{clinicId}/departments \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/clinics/{clinicId}/departments`
+
+<h3 id="orgstructurequeryservice_listdepartmentsbyclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "clinicId": "string",
+      "name": "string"
+    }
+  ]
+}
+```
+
+<h3 id="orgstructurequeryservice_listdepartmentsbyclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListDepartmentsByClinicResponse](#schemav1listdepartmentsbyclinicresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_CountDepartmentsByClinic
+
+<a id="opIdOrgStructureQueryService_CountDepartmentsByClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/clinics/{clinicId}/departments:count \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/clinics/{clinicId}/departments:count`
+
+<h3 id="orgstructurequeryservice_countdepartmentsbyclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "total": "string"
+}
+```
+
+<h3 id="orgstructurequeryservice_countdepartmentsbyclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountDepartmentsByClinicResponse](#schemav1countdepartmentsbyclinicresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_GetClinic
+
+<a id="opIdOrgStructureQueryService_GetClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/clinics/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/clinics/{id}`
+
+<h3 id="orgstructurequeryservice_getclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "clinic": {
+    "id": "string",
+    "organizationId": "string",
+    "name": "string",
+    "description": "string",
+    "physicalAddress": {
+      "text": "string",
+      "point": {
+        "longitude": 0.1,
+        "latitude": 0.1
+      }
+    },
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+```
+
+<h3 id="orgstructurequeryservice_getclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetClinicResponse](#schemav1getclinicresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_GetDepartment
+
+<a id="opIdOrgStructureQueryService_GetDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/departments/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/departments/{id}`
+
+<h3 id="orgstructurequeryservice_getdepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "department": {
+    "id": "string",
+    "clinicId": "string",
+    "name": "string",
+    "description": "string",
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+```
+
+<h3 id="orgstructurequeryservice_getdepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetDepartmentResponse](#schemav1getdepartmentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_ListOrganizations
+
+<a id="opIdOrgStructureQueryService_ListOrganizations"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations`
+
+<h3 id="orgstructurequeryservice_listorganizations-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "name": "string"
+    }
+  ]
+}
+```
+
+<h3 id="orgstructurequeryservice_listorganizations-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrganizationsResponse](#schemav1listorganizationsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_GetOrganization
+
+<a id="opIdOrgStructureQueryService_GetOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{id} \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{id}`
+
+<h3 id="orgstructurequeryservice_getorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "organization": {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "legalAddress": {
+      "text": "string",
+      "point": {
+        "longitude": 0.1,
+        "latitude": 0.1
+      }
+    },
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+```
+
+<h3 id="orgstructurequeryservice_getorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetOrganizationResponse](#schemav1getorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_ListClinicsByOrganization
+
+<a id="opIdOrgStructureQueryService_ListClinicsByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/clinics \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/clinics`
+
+<h3 id="orgstructurequeryservice_listclinicsbyorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "name": "string"
+    }
+  ]
+}
+```
+
+<h3 id="orgstructurequeryservice_listclinicsbyorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListClinicsByOrganizationResponse](#schemav1listclinicsbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_CountClinicsByOrganization
+
+<a id="opIdOrgStructureQueryService_CountClinicsByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/clinics:count \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/clinics:count`
+
+<h3 id="orgstructurequeryservice_countclinicsbyorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "total": "string"
+}
+```
+
+<h3 id="orgstructurequeryservice_countclinicsbyorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountClinicsByOrganizationResponse](#schemav1countclinicsbyorganizationresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_CountOrganizations
+
+<a id="opIdOrgStructureQueryService_CountOrganizations"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations:count \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations:count`
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "total": "string"
+}
+```
+
+<h3 id="orgstructurequeryservice_countorganizations-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountOrganizationsResponse](#schemav1countorganizationsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureQueryService_SearchOrganizations
+
+<a id="opIdOrgStructureQueryService_SearchOrganizations"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations:search \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations:search`
+
+<h3 id="orgstructurequeryservice_searchorganizations-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|query|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+|offset|query|integer(int32)|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "name": "string"
+    }
+  ]
+}
+```
+
+<h3 id="orgstructurequeryservice_searchorganizations-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SearchOrganizationsResponse](#schemav1searchorganizationsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+<h1 id="command-incident-buffer-v1-buffer-proto-statsqueryservice">StatsQueryService</h1>
+
+## StatsQueryService_GetClinicStats
+
+<a id="opIdStatsQueryService_GetClinicStats"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/clinics/{clinicId}/stats \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/clinics/{clinicId}/stats`
+
+<h3 id="statsqueryservice_getclinicstats-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "stats": {
+    "clinicId": "string",
+    "organizationId": "string",
+    "employeesTotal": "string",
+    "departmentsTotal": "string",
+    "employeesOnVacation": "string"
+  }
+}
+```
+
+<h3 id="statsqueryservice_getclinicstats-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetClinicStatsResponse](#schemav1getclinicstatsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## StatsQueryService_GetDepartmentStats
+
+<a id="opIdStatsQueryService_GetDepartmentStats"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/departments/{departmentId}/stats \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/departments/{departmentId}/stats`
+
+<h3 id="statsqueryservice_getdepartmentstats-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "stats": {
+    "departmentId": "string",
+    "clinicId": "string",
+    "organizationId": "string",
+    "employeesTotal": "string",
+    "employeesOnVacation": "string"
+  }
+}
+```
+
+<h3 id="statsqueryservice_getdepartmentstats-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetDepartmentStatsResponse](#schemav1getdepartmentstatsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## StatsQueryService_GetOrganizationStats
+
+<a id="opIdStatsQueryService_GetOrganizationStats"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/stats \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/stats`
+
+<h3 id="statsqueryservice_getorganizationstats-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "stats": {
+    "organizationId": "string",
+    "employeesTotal": "string",
+    "clinicsTotal": "string",
+    "departmentsTotal": "string",
+    "employeesOnVacation": "string",
+    "vacationsScheduled": "string"
+  }
+}
+```
+
+<h3 id="statsqueryservice_getorganizationstats-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetOrganizationStatsResponse](#schemav1getorganizationstatsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+# Schemas
+
+<h2 id="tocS_IncidentBufferCommandServicePublishPatientIncidentBody">IncidentBufferCommandServicePublishPatientIncidentBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentbuffercommandservicepublishpatientincidentbody"></a>
+<a id="schema_IncidentBufferCommandServicePublishPatientIncidentBody"></a>
+<a id="tocSincidentbuffercommandservicepublishpatientincidentbody"></a>
+<a id="tocsincidentbuffercommandservicepublishpatientincidentbody"></a>
+
+```json
+{
+  "departmentId": "string",
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|departmentId|string|false|none|none|
+|categoryId|string|false|none|none|
+|typeId|string|false|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_IncidentBufferCommandServiceUpdatePatientIncidentBody">IncidentBufferCommandServiceUpdatePatientIncidentBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentbuffercommandserviceupdatepatientincidentbody"></a>
+<a id="schema_IncidentBufferCommandServiceUpdatePatientIncidentBody"></a>
+<a id="tocSincidentbuffercommandserviceupdatepatientincidentbody"></a>
+<a id="tocsincidentbuffercommandserviceupdatepatientincidentbody"></a>
+
+```json
+{
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string",
+  "occurredAt": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|categoryId|string|false|none|none|
+|typeId|string|false|none|none|
+|description|string|false|none|none|
+|occurredAt|string|false|none|none|
+
+<h2 id="tocS_IncidentClassifierCommandServiceCreateIncidentCategoryBody">IncidentClassifierCommandServiceCreateIncidentCategoryBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentclassifiercommandservicecreateincidentcategorybody"></a>
+<a id="schema_IncidentClassifierCommandServiceCreateIncidentCategoryBody"></a>
+<a id="tocSincidentclassifiercommandservicecreateincidentcategorybody"></a>
+<a id="tocsincidentclassifiercommandservicecreateincidentcategorybody"></a>
+
+```json
+{
+  "parentCategoryId": "string",
+  "name": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|parentCategoryId|string|false|none|none|
+|name|string|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_IncidentClassifierCommandServiceCreateIncidentTypeBody">IncidentClassifierCommandServiceCreateIncidentTypeBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentclassifiercommandservicecreateincidenttypebody"></a>
+<a id="schema_IncidentClassifierCommandServiceCreateIncidentTypeBody"></a>
+<a id="tocSincidentclassifiercommandservicecreateincidenttypebody"></a>
+<a id="tocsincidentclassifiercommandservicecreateincidenttypebody"></a>
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_IncidentClassifierCommandServiceMoveIncidentCategoryBody">IncidentClassifierCommandServiceMoveIncidentCategoryBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentclassifiercommandservicemoveincidentcategorybody"></a>
+<a id="schema_IncidentClassifierCommandServiceMoveIncidentCategoryBody"></a>
+<a id="tocSincidentclassifiercommandservicemoveincidentcategorybody"></a>
+<a id="tocsincidentclassifiercommandservicemoveincidentcategorybody"></a>
+
+```json
+{
+  "newParentCategoryId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|newParentCategoryId|string|false|none|none|
+
+<h2 id="tocS_IncidentClassifierCommandServiceMoveIncidentTypeBody">IncidentClassifierCommandServiceMoveIncidentTypeBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentclassifiercommandservicemoveincidenttypebody"></a>
+<a id="schema_IncidentClassifierCommandServiceMoveIncidentTypeBody"></a>
+<a id="tocSincidentclassifiercommandservicemoveincidenttypebody"></a>
+<a id="tocsincidentclassifiercommandservicemoveincidenttypebody"></a>
+
+```json
+{
+  "newCategoryId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|newCategoryId|string|true|none|none|
+
+<h2 id="tocS_IncidentClassifierCommandServiceUpdateIncidentCategoryDetailsBody">IncidentClassifierCommandServiceUpdateIncidentCategoryDetailsBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentclassifiercommandserviceupdateincidentcategorydetailsbody"></a>
+<a id="schema_IncidentClassifierCommandServiceUpdateIncidentCategoryDetailsBody"></a>
+<a id="tocSincidentclassifiercommandserviceupdateincidentcategorydetailsbody"></a>
+<a id="tocsincidentclassifiercommandserviceupdateincidentcategorydetailsbody"></a>
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_IncidentClassifierCommandServiceUpdateIncidentTypeDetailsBody">IncidentClassifierCommandServiceUpdateIncidentTypeDetailsBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentclassifiercommandserviceupdateincidenttypedetailsbody"></a>
+<a id="schema_IncidentClassifierCommandServiceUpdateIncidentTypeDetailsBody"></a>
+<a id="tocSincidentclassifiercommandserviceupdateincidenttypedetailsbody"></a>
+<a id="tocsincidentclassifiercommandserviceupdateincidenttypedetailsbody"></a>
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_IncidentCommandServiceUpdateIncidentDescriptionBody">IncidentCommandServiceUpdateIncidentDescriptionBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentcommandserviceupdateincidentdescriptionbody"></a>
+<a id="schema_IncidentCommandServiceUpdateIncidentDescriptionBody"></a>
+<a id="tocSincidentcommandserviceupdateincidentdescriptionbody"></a>
+<a id="tocsincidentcommandserviceupdateincidentdescriptionbody"></a>
+
+```json
+{
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|description|string|false|none|none|
+
+<h2 id="tocS_IncidentCommandServiceUpdateIncidentPriorityBody">IncidentCommandServiceUpdateIncidentPriorityBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentcommandserviceupdateincidentprioritybody"></a>
+<a id="schema_IncidentCommandServiceUpdateIncidentPriorityBody"></a>
+<a id="tocSincidentcommandserviceupdateincidentprioritybody"></a>
+<a id="tocsincidentcommandserviceupdateincidentprioritybody"></a>
+
+```json
+{
+  "priority": "INCIDENT_PRIORITY_UNSPECIFIED"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|priority|[commandIncidentV1IncidentPriority](#schemacommandincidentv1incidentpriority)|false|none|none|
+
+<h2 id="tocS_IncidentCommandServiceUpdateIncidentStatusBody">IncidentCommandServiceUpdateIncidentStatusBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaincidentcommandserviceupdateincidentstatusbody"></a>
+<a id="schema_IncidentCommandServiceUpdateIncidentStatusBody"></a>
+<a id="tocSincidentcommandserviceupdateincidentstatusbody"></a>
+<a id="tocsincidentcommandserviceupdateincidentstatusbody"></a>
+
+```json
+{
+  "newStatus": "INCIDENT_STATUS_UNSPECIFIED"
+}
+
+```
+
+UpdateIncidentStatus only handles forward transitions:
+pending -> in_progress, in_progress -> done, in_progress -> rejected.
+Cancellation by registrar uses CancelIncident.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|newStatus|[commandIncidentV1IncidentStatus](#schemacommandincidentv1incidentstatus)|false|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignClinicHeadBody">MembershipCommandServiceAssignClinicHeadBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassignclinicheadbody"></a>
+<a id="schema_MembershipCommandServiceAssignClinicHeadBody"></a>
+<a id="tocSmembershipcommandserviceassignclinicheadbody"></a>
+<a id="tocsmembershipcommandserviceassignclinicheadbody"></a>
+
+```json
+{
+  "employeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignClinicHeadDeputyBody">MembershipCommandServiceAssignClinicHeadDeputyBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassignclinicheaddeputybody"></a>
+<a id="schema_MembershipCommandServiceAssignClinicHeadDeputyBody"></a>
+<a id="tocSmembershipcommandserviceassignclinicheaddeputybody"></a>
+<a id="tocsmembershipcommandserviceassignclinicheaddeputybody"></a>
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|deputyEmployeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignDepartmentResponsibleBody">MembershipCommandServiceAssignDepartmentResponsibleBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassigndepartmentresponsiblebody"></a>
+<a id="schema_MembershipCommandServiceAssignDepartmentResponsibleBody"></a>
+<a id="tocSmembershipcommandserviceassigndepartmentresponsiblebody"></a>
+<a id="tocsmembershipcommandserviceassigndepartmentresponsiblebody"></a>
+
+```json
+{
+  "employeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignDepartmentResponsibleDeputyBody">MembershipCommandServiceAssignDepartmentResponsibleDeputyBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassigndepartmentresponsibledeputybody"></a>
+<a id="schema_MembershipCommandServiceAssignDepartmentResponsibleDeputyBody"></a>
+<a id="tocSmembershipcommandserviceassigndepartmentresponsibledeputybody"></a>
+<a id="tocsmembershipcommandserviceassigndepartmentresponsibledeputybody"></a>
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|deputyEmployeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignOrganizationAdminBody">MembershipCommandServiceAssignOrganizationAdminBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassignorganizationadminbody"></a>
+<a id="schema_MembershipCommandServiceAssignOrganizationAdminBody"></a>
+<a id="tocSmembershipcommandserviceassignorganizationadminbody"></a>
+<a id="tocsmembershipcommandserviceassignorganizationadminbody"></a>
+
+```json
+{
+  "employeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignOrganizationAdminDeputyBody">MembershipCommandServiceAssignOrganizationAdminDeputyBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassignorganizationadmindeputybody"></a>
+<a id="schema_MembershipCommandServiceAssignOrganizationAdminDeputyBody"></a>
+<a id="tocSmembershipcommandserviceassignorganizationadmindeputybody"></a>
+<a id="tocsmembershipcommandserviceassignorganizationadmindeputybody"></a>
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|deputyEmployeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignOrganizationDispatcherBody">MembershipCommandServiceAssignOrganizationDispatcherBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassignorganizationdispatcherbody"></a>
+<a id="schema_MembershipCommandServiceAssignOrganizationDispatcherBody"></a>
+<a id="tocSmembershipcommandserviceassignorganizationdispatcherbody"></a>
+<a id="tocsmembershipcommandserviceassignorganizationdispatcherbody"></a>
+
+```json
+{
+  "employeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignOrganizationDispatcherDeputyBody">MembershipCommandServiceAssignOrganizationDispatcherDeputyBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassignorganizationdispatcherdeputybody"></a>
+<a id="schema_MembershipCommandServiceAssignOrganizationDispatcherDeputyBody"></a>
+<a id="tocSmembershipcommandserviceassignorganizationdispatcherdeputybody"></a>
+<a id="tocsmembershipcommandserviceassignorganizationdispatcherdeputybody"></a>
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|deputyEmployeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignOrganizationHeadBody">MembershipCommandServiceAssignOrganizationHeadBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassignorganizationheadbody"></a>
+<a id="schema_MembershipCommandServiceAssignOrganizationHeadBody"></a>
+<a id="tocSmembershipcommandserviceassignorganizationheadbody"></a>
+<a id="tocsmembershipcommandserviceassignorganizationheadbody"></a>
+
+```json
+{
+  "employeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceAssignOrganizationHeadDeputyBody">MembershipCommandServiceAssignOrganizationHeadDeputyBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceassignorganizationheaddeputybody"></a>
+<a id="schema_MembershipCommandServiceAssignOrganizationHeadDeputyBody"></a>
+<a id="tocSmembershipcommandserviceassignorganizationheaddeputybody"></a>
+<a id="tocsmembershipcommandserviceassignorganizationheaddeputybody"></a>
+
+```json
+{
+  "deputyEmployeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|deputyEmployeeId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceScheduleVacationBody">MembershipCommandServiceScheduleVacationBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceschedulevacationbody"></a>
+<a id="schema_MembershipCommandServiceScheduleVacationBody"></a>
+<a id="tocSmembershipcommandserviceschedulevacationbody"></a>
+<a id="tocsmembershipcommandserviceschedulevacationbody"></a>
+
+```json
+{
+  "startsAt": "2019-08-24T14:15:22Z",
+  "endsAt": "2019-08-24T14:15:22Z"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|startsAt|string(date-time)|true|none|none|
+|endsAt|string(date-time)|false|none|none|
+
+<h2 id="tocS_MembershipCommandServiceStartVacationNowBody">MembershipCommandServiceStartVacationNowBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandservicestartvacationnowbody"></a>
+<a id="schema_MembershipCommandServiceStartVacationNowBody"></a>
+<a id="tocSmembershipcommandservicestartvacationnowbody"></a>
+<a id="tocsmembershipcommandservicestartvacationnowbody"></a>
+
+```json
+{
+  "endsAt": "2019-08-24T14:15:22Z"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|endsAt|string(date-time)|false|none|none|
+
+<h2 id="tocS_MembershipCommandServiceUpdateEmployeeDepartmentBody">MembershipCommandServiceUpdateEmployeeDepartmentBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceupdateemployeedepartmentbody"></a>
+<a id="schema_MembershipCommandServiceUpdateEmployeeDepartmentBody"></a>
+<a id="tocSmembershipcommandserviceupdateemployeedepartmentbody"></a>
+<a id="tocsmembershipcommandserviceupdateemployeedepartmentbody"></a>
+
+```json
+{
+  "departmentId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|departmentId|string|true|none|none|
+
+<h2 id="tocS_MembershipCommandServiceUpdateEmployeePositionBody">MembershipCommandServiceUpdateEmployeePositionBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceupdateemployeepositionbody"></a>
+<a id="schema_MembershipCommandServiceUpdateEmployeePositionBody"></a>
+<a id="tocSmembershipcommandserviceupdateemployeepositionbody"></a>
+<a id="tocsmembershipcommandserviceupdateemployeepositionbody"></a>
+
+```json
+{
+  "position": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|position|string|false|none|none|
+
+<h2 id="tocS_MembershipCommandServiceUpdateVacationEndDateBody">MembershipCommandServiceUpdateVacationEndDateBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceupdatevacationenddatebody"></a>
+<a id="schema_MembershipCommandServiceUpdateVacationEndDateBody"></a>
+<a id="tocSmembershipcommandserviceupdatevacationenddatebody"></a>
+<a id="tocsmembershipcommandserviceupdatevacationenddatebody"></a>
+
+```json
+{
+  "endsAt": "2019-08-24T14:15:22Z"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|endsAt|string(date-time)|true|none|none|
+
+<h2 id="tocS_OrgStructureCommandServiceCreateClinicBody">OrgStructureCommandServiceCreateClinicBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandservicecreateclinicbody"></a>
+<a id="schema_OrgStructureCommandServiceCreateClinicBody"></a>
+<a id="tocSorgstructurecommandservicecreateclinicbody"></a>
+<a id="tocsorgstructurecommandservicecreateclinicbody"></a>
+
+```json
+{
+  "name": "string",
+  "physicalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  },
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|physicalAddress|[v1AddressInput](#schemav1addressinput)|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_OrgStructureCommandServiceCreateDepartmentBody">OrgStructureCommandServiceCreateDepartmentBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandservicecreatedepartmentbody"></a>
+<a id="schema_OrgStructureCommandServiceCreateDepartmentBody"></a>
+<a id="tocSorgstructurecommandservicecreatedepartmentbody"></a>
+<a id="tocsorgstructurecommandservicecreatedepartmentbody"></a>
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_OrgStructureCommandServiceUpdateClinicDetailsBody">OrgStructureCommandServiceUpdateClinicDetailsBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandserviceupdateclinicdetailsbody"></a>
+<a id="schema_OrgStructureCommandServiceUpdateClinicDetailsBody"></a>
+<a id="tocSorgstructurecommandserviceupdateclinicdetailsbody"></a>
+<a id="tocsorgstructurecommandserviceupdateclinicdetailsbody"></a>
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_OrgStructureCommandServiceUpdateClinicPhysicalAddressBody">OrgStructureCommandServiceUpdateClinicPhysicalAddressBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandserviceupdateclinicphysicaladdressbody"></a>
+<a id="schema_OrgStructureCommandServiceUpdateClinicPhysicalAddressBody"></a>
+<a id="tocSorgstructurecommandserviceupdateclinicphysicaladdressbody"></a>
+<a id="tocsorgstructurecommandserviceupdateclinicphysicaladdressbody"></a>
+
+```json
+{
+  "physicalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|physicalAddress|[v1AddressInput](#schemav1addressinput)|true|none|none|
+
+<h2 id="tocS_OrgStructureCommandServiceUpdateDepartmentDetailsBody">OrgStructureCommandServiceUpdateDepartmentDetailsBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandserviceupdatedepartmentdetailsbody"></a>
+<a id="schema_OrgStructureCommandServiceUpdateDepartmentDetailsBody"></a>
+<a id="tocSorgstructurecommandserviceupdatedepartmentdetailsbody"></a>
+<a id="tocsorgstructurecommandserviceupdatedepartmentdetailsbody"></a>
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_OrgStructureCommandServiceUpdateOrganizationDetailsBody">OrgStructureCommandServiceUpdateOrganizationDetailsBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandserviceupdateorganizationdetailsbody"></a>
+<a id="schema_OrgStructureCommandServiceUpdateOrganizationDetailsBody"></a>
+<a id="tocSorgstructurecommandserviceupdateorganizationdetailsbody"></a>
+<a id="tocsorgstructurecommandserviceupdateorganizationdetailsbody"></a>
+
+```json
+{
+  "name": "string",
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_OrgStructureCommandServiceUpdateOrganizationLegalAddressBody">OrgStructureCommandServiceUpdateOrganizationLegalAddressBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandserviceupdateorganizationlegaladdressbody"></a>
+<a id="schema_OrgStructureCommandServiceUpdateOrganizationLegalAddressBody"></a>
+<a id="tocSorgstructurecommandserviceupdateorganizationlegaladdressbody"></a>
+<a id="tocsorgstructurecommandserviceupdateorganizationlegaladdressbody"></a>
+
+```json
+{
+  "legalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|legalAddress|[v1AddressInput](#schemav1addressinput)|true|none|none|
+
+<h2 id="tocS_classifierV1Type">classifierV1Type</h2>
+<!-- backwards compatibility -->
+<a id="schemaclassifierv1type"></a>
+<a id="schema_classifierV1Type"></a>
+<a id="tocSclassifierv1type"></a>
+<a id="tocsclassifierv1type"></a>
+
+```json
+{
+  "id": "string",
+  "organizationId": "string",
+  "categoryId": "string",
+  "name": "string",
+  "description": "string",
+  "isActive": true,
+  "createdAt": "string",
+  "updatedAt": "string",
+  "isAllowedForPatients": true
+}
+
+```
+
+Type mirrors projections.incident_types row.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|organizationId|string|false|none|none|
+|categoryId|string|false|none|none|
+|name|string|false|none|none|
+|description|string|false|none|none|
+|isActive|boolean|false|none|none|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|
+|isAllowedForPatients|boolean|false|none|none|
+
+<h2 id="tocS_commandIncidentV1IncidentPriority">commandIncidentV1IncidentPriority</h2>
+<!-- backwards compatibility -->
+<a id="schemacommandincidentv1incidentpriority"></a>
+<a id="schema_commandIncidentV1IncidentPriority"></a>
+<a id="tocScommandincidentv1incidentpriority"></a>
+<a id="tocscommandincidentv1incidentpriority"></a>
+
+```json
+"INCIDENT_PRIORITY_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|INCIDENT_PRIORITY_UNSPECIFIED|
+|*anonymous*|INCIDENT_PRIORITY_LOW|
+|*anonymous*|INCIDENT_PRIORITY_NORMAL|
+|*anonymous*|INCIDENT_PRIORITY_HIGH|
+|*anonymous*|INCIDENT_PRIORITY_CRITICAL|
+
+<h2 id="tocS_commandIncidentV1IncidentStatus">commandIncidentV1IncidentStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemacommandincidentv1incidentstatus"></a>
+<a id="schema_commandIncidentV1IncidentStatus"></a>
+<a id="tocScommandincidentv1incidentstatus"></a>
+<a id="tocscommandincidentv1incidentstatus"></a>
+
+```json
+"INCIDENT_STATUS_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|INCIDENT_STATUS_UNSPECIFIED|
+|*anonymous*|INCIDENT_STATUS_PENDING|
+|*anonymous*|INCIDENT_STATUS_IN_PROGRESS|
+|*anonymous*|INCIDENT_STATUS_DONE|
+|*anonymous*|INCIDENT_STATUS_REJECTED|
+|*anonymous*|INCIDENT_STATUS_CANCELLED|
+
+<h2 id="tocS_protobufAny">protobufAny</h2>
+<!-- backwards compatibility -->
+<a id="schemaprotobufany"></a>
+<a id="schema_protobufAny"></a>
+<a id="tocSprotobufany"></a>
+<a id="tocsprotobufany"></a>
+
+```json
+{
+  "@type": "string",
+  "property1": null,
+  "property2": null
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|**additionalProperties**|any|false|none|none|
+|@type|string|false|none|none|
+
+<h2 id="tocS_queryIncidentV1IncidentPriority">queryIncidentV1IncidentPriority</h2>
+<!-- backwards compatibility -->
+<a id="schemaqueryincidentv1incidentpriority"></a>
+<a id="schema_queryIncidentV1IncidentPriority"></a>
+<a id="tocSqueryincidentv1incidentpriority"></a>
+<a id="tocsqueryincidentv1incidentpriority"></a>
+
+```json
+"INCIDENT_PRIORITY_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|INCIDENT_PRIORITY_UNSPECIFIED|
+|*anonymous*|INCIDENT_PRIORITY_LOW|
+|*anonymous*|INCIDENT_PRIORITY_NORMAL|
+|*anonymous*|INCIDENT_PRIORITY_HIGH|
+|*anonymous*|INCIDENT_PRIORITY_CRITICAL|
+
+<h2 id="tocS_queryIncidentV1IncidentStatus">queryIncidentV1IncidentStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemaqueryincidentv1incidentstatus"></a>
+<a id="schema_queryIncidentV1IncidentStatus"></a>
+<a id="tocSqueryincidentv1incidentstatus"></a>
+<a id="tocsqueryincidentv1incidentstatus"></a>
+
+```json
+"INCIDENT_STATUS_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|INCIDENT_STATUS_UNSPECIFIED|
+|*anonymous*|INCIDENT_STATUS_PENDING|
+|*anonymous*|INCIDENT_STATUS_IN_PROGRESS|
+|*anonymous*|INCIDENT_STATUS_DONE|
+|*anonymous*|INCIDENT_STATUS_REJECTED|
+|*anonymous*|INCIDENT_STATUS_CANCELLED|
+
+<h2 id="tocS_rpcStatus">rpcStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemarpcstatus"></a>
+<a id="schema_rpcStatus"></a>
+<a id="tocSrpcstatus"></a>
+<a id="tocsrpcstatus"></a>
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "details": [
+    {
+      "@type": "string",
+      "property1": null,
+      "property2": null
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|code|integer(int32)|false|none|none|
+|message|string|false|none|none|
+|details|[[protobufAny](#schemaprotobufany)]|false|none|none|
+
+<h2 id="tocS_v1ActorView">v1ActorView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1actorview"></a>
+<a id="schema_v1ActorView"></a>
+<a id="tocSv1actorview"></a>
+<a id="tocsv1actorview"></a>
+
+```json
+{
+  "employeeId": "string",
+  "displayName": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|false|none|none|
+|displayName|string|false|none|none|
+
+<h2 id="tocS_v1Address">v1Address</h2>
+<!-- backwards compatibility -->
+<a id="schemav1address"></a>
+<a id="schema_v1Address"></a>
+<a id="tocSv1address"></a>
+<a id="tocsv1address"></a>
+
+```json
+{
+  "text": "string",
+  "point": {
+    "longitude": 0.1,
+    "latitude": 0.1
+  }
+}
+
+```
+
+Address is the read-side view of a stored postal address; Point is
+optional because the command-side allows text-only addresses.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|text|string|false|none|none|
+|point|[v1Point](#schemav1point)|false|none|Point is the coordinate pair attached to an Address. Absent when the<br>projection row has neither longitude nor latitude.|
+
+<h2 id="tocS_v1AddressInput">v1AddressInput</h2>
+<!-- backwards compatibility -->
+<a id="schemav1addressinput"></a>
+<a id="schema_v1AddressInput"></a>
+<a id="tocSv1addressinput"></a>
+<a id="tocsv1addressinput"></a>
+
+```json
+{
+  "text": "string",
+  "point": {
+    "longitude": 0.1,
+    "latitude": 0.1
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|text|string|true|none|none|
+|point|[v1PointInput](#schemav1pointinput)|false|none|none|
+
+<h2 id="tocS_v1AllowIncidentTypeForPatientsResponse">v1AllowIncidentTypeForPatientsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1allowincidenttypeforpatientsresponse"></a>
+<a id="schema_v1AllowIncidentTypeForPatientsResponse"></a>
+<a id="tocSv1allowincidenttypeforpatientsresponse"></a>
+<a id="tocsv1allowincidenttypeforpatientsresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignClinicHeadDeputyResponse">v1AssignClinicHeadDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assignclinicheaddeputyresponse"></a>
+<a id="schema_v1AssignClinicHeadDeputyResponse"></a>
+<a id="tocSv1assignclinicheaddeputyresponse"></a>
+<a id="tocsv1assignclinicheaddeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignClinicHeadResponse">v1AssignClinicHeadResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assignclinicheadresponse"></a>
+<a id="schema_v1AssignClinicHeadResponse"></a>
+<a id="tocSv1assignclinicheadresponse"></a>
+<a id="tocsv1assignclinicheadresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignDepartmentResponsibleDeputyResponse">v1AssignDepartmentResponsibleDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assigndepartmentresponsibledeputyresponse"></a>
+<a id="schema_v1AssignDepartmentResponsibleDeputyResponse"></a>
+<a id="tocSv1assigndepartmentresponsibledeputyresponse"></a>
+<a id="tocsv1assigndepartmentresponsibledeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignDepartmentResponsibleResponse">v1AssignDepartmentResponsibleResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assigndepartmentresponsibleresponse"></a>
+<a id="schema_v1AssignDepartmentResponsibleResponse"></a>
+<a id="tocSv1assigndepartmentresponsibleresponse"></a>
+<a id="tocsv1assigndepartmentresponsibleresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignOrganizationAdminDeputyResponse">v1AssignOrganizationAdminDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assignorganizationadmindeputyresponse"></a>
+<a id="schema_v1AssignOrganizationAdminDeputyResponse"></a>
+<a id="tocSv1assignorganizationadmindeputyresponse"></a>
+<a id="tocsv1assignorganizationadmindeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignOrganizationAdminResponse">v1AssignOrganizationAdminResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assignorganizationadminresponse"></a>
+<a id="schema_v1AssignOrganizationAdminResponse"></a>
+<a id="tocSv1assignorganizationadminresponse"></a>
+<a id="tocsv1assignorganizationadminresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignOrganizationDispatcherDeputyResponse">v1AssignOrganizationDispatcherDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assignorganizationdispatcherdeputyresponse"></a>
+<a id="schema_v1AssignOrganizationDispatcherDeputyResponse"></a>
+<a id="tocSv1assignorganizationdispatcherdeputyresponse"></a>
+<a id="tocsv1assignorganizationdispatcherdeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignOrganizationDispatcherResponse">v1AssignOrganizationDispatcherResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assignorganizationdispatcherresponse"></a>
+<a id="schema_v1AssignOrganizationDispatcherResponse"></a>
+<a id="tocSv1assignorganizationdispatcherresponse"></a>
+<a id="tocsv1assignorganizationdispatcherresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignOrganizationHeadDeputyResponse">v1AssignOrganizationHeadDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assignorganizationheaddeputyresponse"></a>
+<a id="schema_v1AssignOrganizationHeadDeputyResponse"></a>
+<a id="tocSv1assignorganizationheaddeputyresponse"></a>
+<a id="tocsv1assignorganizationheaddeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1AssignOrganizationHeadResponse">v1AssignOrganizationHeadResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1assignorganizationheadresponse"></a>
+<a id="schema_v1AssignOrganizationHeadResponse"></a>
+<a id="tocSv1assignorganizationheadresponse"></a>
+<a id="tocsv1assignorganizationheadresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1BufferEntryView">v1BufferEntryView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1bufferentryview"></a>
+<a id="schema_v1BufferEntryView"></a>
+<a id="tocSv1bufferentryview"></a>
+<a id="tocsv1bufferentryview"></a>
+
+```json
+{
+  "id": "string",
+  "organizationId": "string",
+  "patientZitadelUserId": "string",
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string",
+  "occurredAt": "string",
+  "status": "BUFFER_STATUS_UNSPECIFIED",
+  "publishedIncidentId": "string",
+  "createdAt": "string",
+  "updatedAt": "string",
+  "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|organizationId|string|false|none|none|
+|patientZitadelUserId|string|false|none|none|
+|categoryId|string|false|none|none|
+|typeId|string|false|none|none|
+|description|string|false|none|none|
+|occurredAt|string|false|none|none|
+|status|[v1BufferStatus](#schemav1bufferstatus)|false|none|none|
+|publishedIncidentId|string|false|none|none|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|
+|patientStatus|[v1PatientStatus](#schemav1patientstatus)|false|none|PatientStatus is the simplified four-value status surfaced to patients.<br><br> - PATIENT_STATUS_PENDING: buffer pending<br> - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress<br> - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected<br> - PATIENT_STATUS_CANCELLED: patient cancelled|
+
+<h2 id="tocS_v1BufferStatus">v1BufferStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemav1bufferstatus"></a>
+<a id="schema_v1BufferStatus"></a>
+<a id="tocSv1bufferstatus"></a>
+<a id="tocsv1bufferstatus"></a>
+
+```json
+"BUFFER_STATUS_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|BUFFER_STATUS_UNSPECIFIED|
+|*anonymous*|BUFFER_STATUS_PENDING|
+|*anonymous*|BUFFER_STATUS_PUBLISHED|
+|*anonymous*|BUFFER_STATUS_REJECTED|
+|*anonymous*|BUFFER_STATUS_CANCELLED|
+
+<h2 id="tocS_v1CancelIncidentResponse">v1CancelIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1cancelincidentresponse"></a>
+<a id="schema_v1CancelIncidentResponse"></a>
+<a id="tocSv1cancelincidentresponse"></a>
+<a id="tocsv1cancelincidentresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1CancelPatientIncidentResponse">v1CancelPatientIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1cancelpatientincidentresponse"></a>
+<a id="schema_v1CancelPatientIncidentResponse"></a>
+<a id="tocSv1cancelpatientincidentresponse"></a>
+<a id="tocsv1cancelpatientincidentresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1CancelScheduledVacationResponse">v1CancelScheduledVacationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1cancelscheduledvacationresponse"></a>
+<a id="schema_v1CancelScheduledVacationResponse"></a>
+<a id="tocSv1cancelscheduledvacationresponse"></a>
+<a id="tocsv1cancelscheduledvacationresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1Category">v1Category</h2>
+<!-- backwards compatibility -->
+<a id="schemav1category"></a>
+<a id="schema_v1Category"></a>
+<a id="tocSv1category"></a>
+<a id="tocsv1category"></a>
+
+```json
+{
+  "id": "string",
+  "organizationId": "string",
+  "parentCategoryId": "string",
+  "name": "string",
+  "description": "string",
+  "isActive": true,
+  "createdAt": "string",
+  "updatedAt": "string"
+}
+
+```
+
+Category mirrors projections.incident_categories row.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|organizationId|string|false|none|none|
+|parentCategoryId|string|false|none|none|
+|name|string|false|none|none|
+|description|string|false|none|none|
+|isActive|boolean|false|none|none|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|
+
+<h2 id="tocS_v1Clinic">v1Clinic</h2>
+<!-- backwards compatibility -->
+<a id="schemav1clinic"></a>
+<a id="schema_v1Clinic"></a>
+<a id="tocSv1clinic"></a>
+<a id="tocsv1clinic"></a>
+
+```json
+{
+  "id": "string",
+  "organizationId": "string",
+  "name": "string",
+  "description": "string",
+  "physicalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  },
+  "createdAt": "string",
+  "updatedAt": "string"
+}
+
+```
+
+Clinic mirrors the projections.clinics row returned by GetClinic.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|organizationId|string|false|none|none|
+|name|string|false|none|none|
+|description|string|false|none|none|
+|physicalAddress|[v1Address](#schemav1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|
+
+<h2 id="tocS_v1ClinicListItem">v1ClinicListItem</h2>
+<!-- backwards compatibility -->
+<a id="schemav1cliniclistitem"></a>
+<a id="schema_v1ClinicListItem"></a>
+<a id="tocSv1cliniclistitem"></a>
+<a id="tocsv1cliniclistitem"></a>
+
+```json
+{
+  "id": "string",
+  "organizationId": "string",
+  "name": "string"
+}
+
+```
+
+ClinicListItem is the minimal shape returned by list endpoints.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|organizationId|string|false|none|none|
+|name|string|false|none|none|
+
+<h2 id="tocS_v1ClinicStats">v1ClinicStats</h2>
+<!-- backwards compatibility -->
+<a id="schemav1clinicstats"></a>
+<a id="schema_v1ClinicStats"></a>
+<a id="tocSv1clinicstats"></a>
+<a id="tocsv1clinicstats"></a>
+
+```json
+{
+  "clinicId": "string",
+  "organizationId": "string",
+  "employeesTotal": "string",
+  "departmentsTotal": "string",
+  "employeesOnVacation": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|clinicId|string|false|none|none|
+|organizationId|string|false|none|none|
+|employeesTotal|string(int64)|false|none|none|
+|departmentsTotal|string(int64)|false|none|none|
+|employeesOnVacation|string(int64)|false|none|none|
+
+<h2 id="tocS_v1CountClinicsByOrganizationResponse">v1CountClinicsByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1countclinicsbyorganizationresponse"></a>
+<a id="schema_v1CountClinicsByOrganizationResponse"></a>
+<a id="tocSv1countclinicsbyorganizationresponse"></a>
+<a id="tocsv1countclinicsbyorganizationresponse"></a>
+
+```json
+{
+  "total": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+
+<h2 id="tocS_v1CountDepartmentsByClinicResponse">v1CountDepartmentsByClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1countdepartmentsbyclinicresponse"></a>
+<a id="schema_v1CountDepartmentsByClinicResponse"></a>
+<a id="tocSv1countdepartmentsbyclinicresponse"></a>
+<a id="tocsv1countdepartmentsbyclinicresponse"></a>
+
+```json
+{
+  "total": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+
+<h2 id="tocS_v1CountEmployeesByClinicResponse">v1CountEmployeesByClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1countemployeesbyclinicresponse"></a>
+<a id="schema_v1CountEmployeesByClinicResponse"></a>
+<a id="tocSv1countemployeesbyclinicresponse"></a>
+<a id="tocsv1countemployeesbyclinicresponse"></a>
+
+```json
+{
+  "total": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+
+<h2 id="tocS_v1CountEmployeesByDepartmentResponse">v1CountEmployeesByDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1countemployeesbydepartmentresponse"></a>
+<a id="schema_v1CountEmployeesByDepartmentResponse"></a>
+<a id="tocSv1countemployeesbydepartmentresponse"></a>
+<a id="tocsv1countemployeesbydepartmentresponse"></a>
+
+```json
+{
+  "total": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+
+<h2 id="tocS_v1CountEmployeesByOrganizationResponse">v1CountEmployeesByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1countemployeesbyorganizationresponse"></a>
+<a id="schema_v1CountEmployeesByOrganizationResponse"></a>
+<a id="tocSv1countemployeesbyorganizationresponse"></a>
+<a id="tocsv1countemployeesbyorganizationresponse"></a>
+
+```json
+{
+  "total": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+
+<h2 id="tocS_v1CountOrganizationsResponse">v1CountOrganizationsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1countorganizationsresponse"></a>
+<a id="schema_v1CountOrganizationsResponse"></a>
+<a id="tocSv1countorganizationsresponse"></a>
+<a id="tocsv1countorganizationsresponse"></a>
+
+```json
+{
+  "total": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+
+<h2 id="tocS_v1CountVacationsByEmployeeResponse">v1CountVacationsByEmployeeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1countvacationsbyemployeeresponse"></a>
+<a id="schema_v1CountVacationsByEmployeeResponse"></a>
+<a id="tocSv1countvacationsbyemployeeresponse"></a>
+<a id="tocsv1countvacationsbyemployeeresponse"></a>
+
+```json
+{
+  "total": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+
+<h2 id="tocS_v1CreateClinicResponse">v1CreateClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createclinicresponse"></a>
+<a id="schema_v1CreateClinicResponse"></a>
+<a id="tocSv1createclinicresponse"></a>
+<a id="tocsv1createclinicresponse"></a>
+
+```json
+{
+  "clinicId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|clinicId|string|false|none|none|
+
+<h2 id="tocS_v1CreateDepartmentResponse">v1CreateDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createdepartmentresponse"></a>
+<a id="schema_v1CreateDepartmentResponse"></a>
+<a id="tocSv1createdepartmentresponse"></a>
+<a id="tocsv1createdepartmentresponse"></a>
+
+```json
+{
+  "departmentId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|departmentId|string|false|none|none|
+
+<h2 id="tocS_v1CreateIncidentCategoryResponse">v1CreateIncidentCategoryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createincidentcategoryresponse"></a>
+<a id="schema_v1CreateIncidentCategoryResponse"></a>
+<a id="tocSv1createincidentcategoryresponse"></a>
+<a id="tocsv1createincidentcategoryresponse"></a>
+
+```json
+{
+  "categoryId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|categoryId|string|false|none|none|
+
+<h2 id="tocS_v1CreateIncidentRequest">v1CreateIncidentRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createincidentrequest"></a>
+<a id="schema_v1CreateIncidentRequest"></a>
+<a id="tocSv1createincidentrequest"></a>
+<a id="tocsv1createincidentrequest"></a>
+
+```json
+{
+  "departmentId": "string",
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string",
+  "occurredAt": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|departmentId|string|false|none|none|
+|categoryId|string|false|none|none|
+|typeId|string|false|none|none|
+|description|string|false|none|none|
+|occurredAt|string|false|none|none|
+
+<h2 id="tocS_v1CreateIncidentResponse">v1CreateIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createincidentresponse"></a>
+<a id="schema_v1CreateIncidentResponse"></a>
+<a id="tocSv1createincidentresponse"></a>
+<a id="tocsv1createincidentresponse"></a>
+
+```json
+{
+  "incidentId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|incidentId|string|false|none|none|
+
+<h2 id="tocS_v1CreateIncidentTypeResponse">v1CreateIncidentTypeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createincidenttyperesponse"></a>
+<a id="schema_v1CreateIncidentTypeResponse"></a>
+<a id="tocSv1createincidenttyperesponse"></a>
+<a id="tocsv1createincidenttyperesponse"></a>
+
+```json
+{
+  "typeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|typeId|string|false|none|none|
+
+<h2 id="tocS_v1CreateOrganizationRequest">v1CreateOrganizationRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createorganizationrequest"></a>
+<a id="schema_v1CreateOrganizationRequest"></a>
+<a id="tocSv1createorganizationrequest"></a>
+<a id="tocsv1createorganizationrequest"></a>
+
+```json
+{
+  "name": "string",
+  "legalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  },
+  "description": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|name|string|true|none|none|
+|legalAddress|[v1AddressInput](#schemav1addressinput)|true|none|none|
+|description|string|false|none|none|
+
+<h2 id="tocS_v1CreateOrganizationResponse">v1CreateOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1createorganizationresponse"></a>
+<a id="schema_v1CreateOrganizationResponse"></a>
+<a id="tocSv1createorganizationresponse"></a>
+<a id="tocsv1createorganizationresponse"></a>
+
+```json
+{
+  "organizationId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|organizationId|string|false|none|none|
+
+<h2 id="tocS_v1DeactivateIncidentCategoryResponse">v1DeactivateIncidentCategoryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deactivateincidentcategoryresponse"></a>
+<a id="schema_v1DeactivateIncidentCategoryResponse"></a>
+<a id="tocSv1deactivateincidentcategoryresponse"></a>
+<a id="tocsv1deactivateincidentcategoryresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1DeactivateIncidentTypeResponse">v1DeactivateIncidentTypeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deactivateincidenttyperesponse"></a>
+<a id="schema_v1DeactivateIncidentTypeResponse"></a>
+<a id="tocSv1deactivateincidenttyperesponse"></a>
+<a id="tocsv1deactivateincidenttyperesponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1DeleteIncidentCategoryResponse">v1DeleteIncidentCategoryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deleteincidentcategoryresponse"></a>
+<a id="schema_v1DeleteIncidentCategoryResponse"></a>
+<a id="tocSv1deleteincidentcategoryresponse"></a>
+<a id="tocsv1deleteincidentcategoryresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1DeleteIncidentTypeResponse">v1DeleteIncidentTypeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deleteincidenttyperesponse"></a>
+<a id="schema_v1DeleteIncidentTypeResponse"></a>
+<a id="tocSv1deleteincidenttyperesponse"></a>
+<a id="tocsv1deleteincidenttyperesponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1Department">v1Department</h2>
+<!-- backwards compatibility -->
+<a id="schemav1department"></a>
+<a id="schema_v1Department"></a>
+<a id="tocSv1department"></a>
+<a id="tocsv1department"></a>
+
+```json
+{
+  "id": "string",
+  "clinicId": "string",
+  "name": "string",
+  "description": "string",
+  "createdAt": "string",
+  "updatedAt": "string"
+}
+
+```
+
+Department mirrors the projections.departments row returned by
+GetDepartment.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|clinicId|string|false|none|none|
+|name|string|false|none|none|
+|description|string|false|none|none|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|
+
+<h2 id="tocS_v1DepartmentListItem">v1DepartmentListItem</h2>
+<!-- backwards compatibility -->
+<a id="schemav1departmentlistitem"></a>
+<a id="schema_v1DepartmentListItem"></a>
+<a id="tocSv1departmentlistitem"></a>
+<a id="tocsv1departmentlistitem"></a>
+
+```json
+{
+  "id": "string",
+  "clinicId": "string",
+  "name": "string"
+}
+
+```
+
+DepartmentListItem is the minimal shape returned by list endpoints.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|clinicId|string|false|none|none|
+|name|string|false|none|none|
+
+<h2 id="tocS_v1DepartmentStats">v1DepartmentStats</h2>
+<!-- backwards compatibility -->
+<a id="schemav1departmentstats"></a>
+<a id="schema_v1DepartmentStats"></a>
+<a id="tocSv1departmentstats"></a>
+<a id="tocsv1departmentstats"></a>
+
+```json
+{
+  "departmentId": "string",
+  "clinicId": "string",
+  "organizationId": "string",
+  "employeesTotal": "string",
+  "employeesOnVacation": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|departmentId|string|false|none|none|
+|clinicId|string|false|none|none|
+|organizationId|string|false|none|none|
+|employeesTotal|string(int64)|false|none|none|
+|employeesOnVacation|string(int64)|false|none|none|
+
+<h2 id="tocS_v1DisallowIncidentTypeForPatientsResponse">v1DisallowIncidentTypeForPatientsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1disallowincidenttypeforpatientsresponse"></a>
+<a id="schema_v1DisallowIncidentTypeForPatientsResponse"></a>
+<a id="tocSv1disallowincidenttypeforpatientsresponse"></a>
+<a id="tocsv1disallowincidenttypeforpatientsresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1EmployeeCardView">v1EmployeeCardView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1employeecardview"></a>
+<a id="schema_v1EmployeeCardView"></a>
+<a id="tocSv1employeecardview"></a>
+<a id="tocsv1employeecardview"></a>
+
+```json
+{
+  "employeeId": "string",
+  "zitadelUserId": "string",
+  "firstName": "string",
+  "lastName": "string",
+  "displayName": "string",
+  "email": "string",
+  "organizationId": "string",
+  "organizationName": "string",
+  "clinicId": "string",
+  "clinicName": "string",
+  "departmentId": "string",
+  "departmentName": "string",
+  "position": "string",
+  "terminatedAt": "string",
+  "currentVacationEndsAt": "string",
+  "nextVacationStartsAt": "string"
+}
+
+```
+
+EmployeeCardView is the denormalised card projection returned by
+both Get and List endpoints. Fields mirror projections.employee_cards
+columns; timestamps are RFC3339 strings. Optional fields stay unset
+when the backing column is NULL.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|false|none|none|
+|zitadelUserId|string|false|none|none|
+|firstName|string|false|none|none|
+|lastName|string|false|none|none|
+|displayName|string|false|none|none|
+|email|string|false|none|none|
+|organizationId|string|false|none|none|
+|organizationName|string|false|none|none|
+|clinicId|string|false|none|none|
+|clinicName|string|false|none|none|
+|departmentId|string|false|none|none|
+|departmentName|string|false|none|none|
+|position|string|false|none|none|
+|terminatedAt|string|false|none|none|
+|currentVacationEndsAt|string|false|none|none|
+|nextVacationStartsAt|string|false|none|none|
+
+<h2 id="tocS_v1ForceEndVacationResponse">v1ForceEndVacationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1forceendvacationresponse"></a>
+<a id="schema_v1ForceEndVacationResponse"></a>
+<a id="tocSv1forceendvacationresponse"></a>
+<a id="tocsv1forceendvacationresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1GetBufferEntryResponse">v1GetBufferEntryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getbufferentryresponse"></a>
+<a id="schema_v1GetBufferEntryResponse"></a>
+<a id="tocSv1getbufferentryresponse"></a>
+<a id="tocsv1getbufferentryresponse"></a>
+
+```json
+{
+  "entry": {
+    "id": "string",
+    "organizationId": "string",
+    "patientZitadelUserId": "string",
+    "categoryId": "string",
+    "typeId": "string",
+    "description": "string",
+    "occurredAt": "string",
+    "status": "BUFFER_STATUS_UNSPECIFIED",
+    "publishedIncidentId": "string",
+    "createdAt": "string",
+    "updatedAt": "string",
+    "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|entry|[v1BufferEntryView](#schemav1bufferentryview)|false|none|none|
+
+<h2 id="tocS_v1GetCategoryResponse">v1GetCategoryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getcategoryresponse"></a>
+<a id="schema_v1GetCategoryResponse"></a>
+<a id="tocSv1getcategoryresponse"></a>
+<a id="tocsv1getcategoryresponse"></a>
+
+```json
+{
+  "category": {
+    "id": "string",
+    "organizationId": "string",
+    "parentCategoryId": "string",
+    "name": "string",
+    "description": "string",
+    "isActive": true,
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|category|[v1Category](#schemav1category)|false|none|Category mirrors projections.incident_categories row.|
+
+<h2 id="tocS_v1GetClinicHeadResponse">v1GetClinicHeadResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getclinicheadresponse"></a>
+<a id="schema_v1GetClinicHeadResponse"></a>
+<a id="tocSv1getclinicheadresponse"></a>
+<a id="tocsv1getclinicheadresponse"></a>
+
+```json
+{
+  "assignment": {
+    "holder": {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    },
+    "deputy": {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|assignment|[v1RoleAssignment](#schemav1roleassignment)|false|none|RoleAssignment is a role row enriched with the denormalised card for<br>the holder and, when present, the deputy. Read-model callers use<br>this so they do not need to follow role lookups with N+1 GetEmployee<br>calls to render a name or email.|
+
+<h2 id="tocS_v1GetClinicResponse">v1GetClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getclinicresponse"></a>
+<a id="schema_v1GetClinicResponse"></a>
+<a id="tocSv1getclinicresponse"></a>
+<a id="tocsv1getclinicresponse"></a>
+
+```json
+{
+  "clinic": {
+    "id": "string",
+    "organizationId": "string",
+    "name": "string",
+    "description": "string",
+    "physicalAddress": {
+      "text": "string",
+      "point": {
+        "longitude": 0.1,
+        "latitude": 0.1
+      }
+    },
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|clinic|[v1Clinic](#schemav1clinic)|false|none|Clinic mirrors the projections.clinics row returned by GetClinic.|
+
+<h2 id="tocS_v1GetClinicStatsResponse">v1GetClinicStatsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getclinicstatsresponse"></a>
+<a id="schema_v1GetClinicStatsResponse"></a>
+<a id="tocSv1getclinicstatsresponse"></a>
+<a id="tocsv1getclinicstatsresponse"></a>
+
+```json
+{
+  "stats": {
+    "clinicId": "string",
+    "organizationId": "string",
+    "employeesTotal": "string",
+    "departmentsTotal": "string",
+    "employeesOnVacation": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|stats|[v1ClinicStats](#schemav1clinicstats)|false|none|none|
+
+<h2 id="tocS_v1GetDepartmentResponse">v1GetDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getdepartmentresponse"></a>
+<a id="schema_v1GetDepartmentResponse"></a>
+<a id="tocSv1getdepartmentresponse"></a>
+<a id="tocsv1getdepartmentresponse"></a>
+
+```json
+{
+  "department": {
+    "id": "string",
+    "clinicId": "string",
+    "name": "string",
+    "description": "string",
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|department|[v1Department](#schemav1department)|false|none|Department mirrors the projections.departments row returned by<br>GetDepartment.|
+
+<h2 id="tocS_v1GetDepartmentResponsibleResponse">v1GetDepartmentResponsibleResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getdepartmentresponsibleresponse"></a>
+<a id="schema_v1GetDepartmentResponsibleResponse"></a>
+<a id="tocSv1getdepartmentresponsibleresponse"></a>
+<a id="tocsv1getdepartmentresponsibleresponse"></a>
+
+```json
+{
+  "assignment": {
+    "holder": {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    },
+    "deputy": {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|assignment|[v1RoleAssignment](#schemav1roleassignment)|false|none|RoleAssignment is a role row enriched with the denormalised card for<br>the holder and, when present, the deputy. Read-model callers use<br>this so they do not need to follow role lookups with N+1 GetEmployee<br>calls to render a name or email.|
+
+<h2 id="tocS_v1GetDepartmentStatsResponse">v1GetDepartmentStatsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getdepartmentstatsresponse"></a>
+<a id="schema_v1GetDepartmentStatsResponse"></a>
+<a id="tocSv1getdepartmentstatsresponse"></a>
+<a id="tocsv1getdepartmentstatsresponse"></a>
+
+```json
+{
+  "stats": {
+    "departmentId": "string",
+    "clinicId": "string",
+    "organizationId": "string",
+    "employeesTotal": "string",
+    "employeesOnVacation": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|stats|[v1DepartmentStats](#schemav1departmentstats)|false|none|none|
+
+<h2 id="tocS_v1GetEmployeeResponse">v1GetEmployeeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getemployeeresponse"></a>
+<a id="schema_v1GetEmployeeResponse"></a>
+<a id="tocSv1getemployeeresponse"></a>
+<a id="tocsv1getemployeeresponse"></a>
+
+```json
+{
+  "employee": {
+    "employeeId": "string",
+    "zitadelUserId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "displayName": "string",
+    "email": "string",
+    "organizationId": "string",
+    "organizationName": "string",
+    "clinicId": "string",
+    "clinicName": "string",
+    "departmentId": "string",
+    "departmentName": "string",
+    "position": "string",
+    "terminatedAt": "string",
+    "currentVacationEndsAt": "string",
+    "nextVacationStartsAt": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employee|[v1EmployeeCardView](#schemav1employeecardview)|false|none|EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.|
+
+<h2 id="tocS_v1GetIncidentHistoryResponse">v1GetIncidentHistoryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getincidenthistoryresponse"></a>
+<a id="schema_v1GetIncidentHistoryResponse"></a>
+<a id="tocSv1getincidenthistoryresponse"></a>
+<a id="tocsv1getincidenthistoryresponse"></a>
+
+```json
+{
+  "statusHistory": [
+    {
+      "id": "string",
+      "oldStatus": "INCIDENT_STATUS_UNSPECIFIED",
+      "newStatus": "INCIDENT_STATUS_UNSPECIFIED",
+      "actor": {
+        "employeeId": "string",
+        "displayName": "string"
+      },
+      "changedAt": "string"
+    }
+  ],
+  "priorityHistory": [
+    {
+      "id": "string",
+      "oldPriority": "INCIDENT_PRIORITY_UNSPECIFIED",
+      "newPriority": "INCIDENT_PRIORITY_UNSPECIFIED",
+      "actor": {
+        "employeeId": "string",
+        "displayName": "string"
+      },
+      "changedAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|statusHistory|[[v1StatusHistoryEntry](#schemav1statushistoryentry)]|false|none|none|
+|priorityHistory|[[v1PriorityHistoryEntry](#schemav1priorityhistoryentry)]|false|none|none|
+
+<h2 id="tocS_v1GetIncidentResponse">v1GetIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getincidentresponse"></a>
+<a id="schema_v1GetIncidentResponse"></a>
+<a id="tocSv1getincidentresponse"></a>
+<a id="tocsv1getincidentresponse"></a>
+
+```json
+{
+  "incident": {
+    "id": "string",
+    "organizationId": "string",
+    "clinicId": "string",
+    "departmentId": "string",
+    "categoryId": "string",
+    "typeId": "string",
+    "status": "INCIDENT_STATUS_UNSPECIFIED",
+    "priority": "INCIDENT_PRIORITY_UNSPECIFIED",
+    "description": "string",
+    "patientOriginalDescription": "string",
+    "occurredAt": "string",
+    "createdAt": "string",
+    "updatedAt": "string",
+    "registrar": {
+      "employeeId": "string",
+      "displayName": "string",
+      "position": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string"
+    },
+    "sourcePatientZitadelUserId": "string",
+    "sourceBufferId": "string",
+    "reopenedFromIncidentId": "string",
+    "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|incident|[v1IncidentView](#schemav1incidentview)|false|none|IncidentView is the unified payload. For patients only id, status,<br>patient_status, description and timestamps are populated.|
+
+<h2 id="tocS_v1GetOrganizationResponse">v1GetOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getorganizationresponse"></a>
+<a id="schema_v1GetOrganizationResponse"></a>
+<a id="tocSv1getorganizationresponse"></a>
+<a id="tocsv1getorganizationresponse"></a>
+
+```json
+{
+  "organization": {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "legalAddress": {
+      "text": "string",
+      "point": {
+        "longitude": 0.1,
+        "latitude": 0.1
+      }
+    },
+    "createdAt": "string",
+    "updatedAt": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|organization|[v1Organization](#schemav1organization)|false|none|Organization mirrors the projections.organizations row returned by<br>GetOrganization. Timestamps are RFC3339 strings.|
+
+<h2 id="tocS_v1GetOrganizationStatsResponse">v1GetOrganizationStatsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getorganizationstatsresponse"></a>
+<a id="schema_v1GetOrganizationStatsResponse"></a>
+<a id="tocSv1getorganizationstatsresponse"></a>
+<a id="tocsv1getorganizationstatsresponse"></a>
+
+```json
+{
+  "stats": {
+    "organizationId": "string",
+    "employeesTotal": "string",
+    "clinicsTotal": "string",
+    "departmentsTotal": "string",
+    "employeesOnVacation": "string",
+    "vacationsScheduled": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|stats|[v1OrganizationStats](#schemav1organizationstats)|false|none|none|
+
+<h2 id="tocS_v1GetTypeResponse">v1GetTypeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1gettyperesponse"></a>
+<a id="schema_v1GetTypeResponse"></a>
+<a id="tocSv1gettyperesponse"></a>
+<a id="tocsv1gettyperesponse"></a>
+
+```json
+{
+  "type": {
+    "id": "string",
+    "organizationId": "string",
+    "categoryId": "string",
+    "name": "string",
+    "description": "string",
+    "isActive": true,
+    "createdAt": "string",
+    "updatedAt": "string",
+    "isAllowedForPatients": true
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|type|[classifierV1Type](#schemaclassifierv1type)|false|none|Type mirrors projections.incident_types row.|
+
+<h2 id="tocS_v1GrantSystemAdminRequest">v1GrantSystemAdminRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemav1grantsystemadminrequest"></a>
+<a id="schema_v1GrantSystemAdminRequest"></a>
+<a id="tocSv1grantsystemadminrequest"></a>
+<a id="tocsv1grantsystemadminrequest"></a>
+
+```json
+{
+  "zitadelUserId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|zitadelUserId|string|true|none|none|
+
+<h2 id="tocS_v1GrantSystemAdminResponse">v1GrantSystemAdminResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1grantsystemadminresponse"></a>
+<a id="schema_v1GrantSystemAdminResponse"></a>
+<a id="tocSv1grantsystemadminresponse"></a>
+<a id="tocsv1grantsystemadminresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1HireEmployeeRequest">v1HireEmployeeRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemav1hireemployeerequest"></a>
+<a id="schema_v1HireEmployeeRequest"></a>
+<a id="tocSv1hireemployeerequest"></a>
+<a id="tocsv1hireemployeerequest"></a>
+
+```json
+{
+  "zitadelUserId": "string",
+  "departmentId": "string",
+  "position": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|zitadelUserId|string|true|none|none|
+|departmentId|string|true|none|none|
+|position|string|false|none|none|
+
+<h2 id="tocS_v1HireEmployeeResponse">v1HireEmployeeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1hireemployeeresponse"></a>
+<a id="schema_v1HireEmployeeResponse"></a>
+<a id="tocSv1hireemployeeresponse"></a>
+<a id="tocsv1hireemployeeresponse"></a>
+
+```json
+{
+  "employeeId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|false|none|none|
+
+<h2 id="tocS_v1IncidentView">v1IncidentView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1incidentview"></a>
+<a id="schema_v1IncidentView"></a>
+<a id="tocSv1incidentview"></a>
+<a id="tocsv1incidentview"></a>
+
+```json
+{
+  "id": "string",
+  "organizationId": "string",
+  "clinicId": "string",
+  "departmentId": "string",
+  "categoryId": "string",
+  "typeId": "string",
+  "status": "INCIDENT_STATUS_UNSPECIFIED",
+  "priority": "INCIDENT_PRIORITY_UNSPECIFIED",
+  "description": "string",
+  "patientOriginalDescription": "string",
+  "occurredAt": "string",
+  "createdAt": "string",
+  "updatedAt": "string",
+  "registrar": {
+    "employeeId": "string",
+    "displayName": "string",
+    "position": "string",
+    "organizationId": "string",
+    "clinicId": "string",
+    "departmentId": "string"
+  },
+  "sourcePatientZitadelUserId": "string",
+  "sourceBufferId": "string",
+  "reopenedFromIncidentId": "string",
+  "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+}
+
+```
+
+IncidentView is the unified payload. For patients only id, status,
+patient_status, description and timestamps are populated.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|organizationId|string|false|none|none|
+|clinicId|string|false|none|none|
+|departmentId|string|false|none|none|
+|categoryId|string|false|none|none|
+|typeId|string|false|none|none|
+|status|[queryIncidentV1IncidentStatus](#schemaqueryincidentv1incidentstatus)|false|none|none|
+|priority|[queryIncidentV1IncidentPriority](#schemaqueryincidentv1incidentpriority)|false|none|none|
+|description|string|false|none|none|
+|patientOriginalDescription|string|false|none|none|
+|occurredAt|string|false|none|none|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|
+|registrar|[v1RegistrarView](#schemav1registrarview)|false|none|none|
+|sourcePatientZitadelUserId|string|false|none|none|
+|sourceBufferId|string|false|none|none|
+|reopenedFromIncidentId|string|false|none|none|
+|patientStatus|[v1PatientStatus](#schemav1patientstatus)|false|none|PatientStatus is the simplified four-value status surfaced to patients.<br><br> - PATIENT_STATUS_PENDING: buffer pending<br> - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress<br> - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected<br> - PATIENT_STATUS_CANCELLED: patient cancelled|
+
+<h2 id="tocS_v1ListActiveRootCategoriesResponse">v1ListActiveRootCategoriesResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listactiverootcategoriesresponse"></a>
+<a id="schema_v1ListActiveRootCategoriesResponse"></a>
+<a id="tocSv1listactiverootcategoriesresponse"></a>
+<a id="tocsv1listactiverootcategoriesresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
+
+<h2 id="tocS_v1ListActiveTypesByOrganizationResponse">v1ListActiveTypesByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listactivetypesbyorganizationresponse"></a>
+<a id="schema_v1ListActiveTypesByOrganizationResponse"></a>
+<a id="tocSv1listactivetypesbyorganizationresponse"></a>
+<a id="tocsv1listactivetypesbyorganizationresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "categoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string",
+      "isAllowedForPatients": true
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
+
+<h2 id="tocS_v1ListBufferEntriesResponse">v1ListBufferEntriesResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listbufferentriesresponse"></a>
+<a id="schema_v1ListBufferEntriesResponse"></a>
+<a id="tocSv1listbufferentriesresponse"></a>
+<a id="tocsv1listbufferentriesresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "patientZitadelUserId": "string",
+      "categoryId": "string",
+      "typeId": "string",
+      "description": "string",
+      "occurredAt": "string",
+      "status": "BUFFER_STATUS_UNSPECIFIED",
+      "publishedIncidentId": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1BufferEntryView](#schemav1bufferentryview)]|false|none|none|
+
+<h2 id="tocS_v1ListCategoriesByOrganizationResponse">v1ListCategoriesByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcategoriesbyorganizationresponse"></a>
+<a id="schema_v1ListCategoriesByOrganizationResponse"></a>
+<a id="tocSv1listcategoriesbyorganizationresponse"></a>
+<a id="tocsv1listcategoriesbyorganizationresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
+
+<h2 id="tocS_v1ListCategorySubtreeResponse">v1ListCategorySubtreeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcategorysubtreeresponse"></a>
+<a id="schema_v1ListCategorySubtreeResponse"></a>
+<a id="tocSv1listcategorysubtreeresponse"></a>
+<a id="tocsv1listcategorysubtreeresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
+
+<h2 id="tocS_v1ListClinicsByOrganizationResponse">v1ListClinicsByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listclinicsbyorganizationresponse"></a>
+<a id="schema_v1ListClinicsByOrganizationResponse"></a>
+<a id="tocSv1listclinicsbyorganizationresponse"></a>
+<a id="tocsv1listclinicsbyorganizationresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "name": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1ClinicListItem](#schemav1cliniclistitem)]|false|none|[ClinicListItem is the minimal shape returned by list endpoints.]|
+
+<h2 id="tocS_v1ListDepartmentsByClinicResponse">v1ListDepartmentsByClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listdepartmentsbyclinicresponse"></a>
+<a id="schema_v1ListDepartmentsByClinicResponse"></a>
+<a id="tocSv1listdepartmentsbyclinicresponse"></a>
+<a id="tocsv1listdepartmentsbyclinicresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "clinicId": "string",
+      "name": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1DepartmentListItem](#schemav1departmentlistitem)]|false|none|[DepartmentListItem is the minimal shape returned by list endpoints.]|
+
+<h2 id="tocS_v1ListEmployeesByClinicResponse">v1ListEmployeesByClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listemployeesbyclinicresponse"></a>
+<a id="schema_v1ListEmployeesByClinicResponse"></a>
+<a id="tocSv1listemployeesbyclinicresponse"></a>
+<a id="tocsv1listemployeesbyclinicresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+
+<h2 id="tocS_v1ListEmployeesByDepartmentResponse">v1ListEmployeesByDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listemployeesbydepartmentresponse"></a>
+<a id="schema_v1ListEmployeesByDepartmentResponse"></a>
+<a id="tocSv1listemployeesbydepartmentresponse"></a>
+<a id="tocsv1listemployeesbydepartmentresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+
+<h2 id="tocS_v1ListEmployeesByOrganizationResponse">v1ListEmployeesByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listemployeesbyorganizationresponse"></a>
+<a id="schema_v1ListEmployeesByOrganizationResponse"></a>
+<a id="tocSv1listemployeesbyorganizationresponse"></a>
+<a id="tocsv1listemployeesbyorganizationresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+
+<h2 id="tocS_v1ListIncidentsResponse">v1ListIncidentsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listincidentsresponse"></a>
+<a id="schema_v1ListIncidentsResponse"></a>
+<a id="tocSv1listincidentsresponse"></a>
+<a id="tocsv1listincidentsresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "categoryId": "string",
+      "typeId": "string",
+      "status": "INCIDENT_STATUS_UNSPECIFIED",
+      "priority": "INCIDENT_PRIORITY_UNSPECIFIED",
+      "description": "string",
+      "patientOriginalDescription": "string",
+      "occurredAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "registrar": {
+        "employeeId": "string",
+        "displayName": "string",
+        "position": "string",
+        "organizationId": "string",
+        "clinicId": "string",
+        "departmentId": "string"
+      },
+      "sourcePatientZitadelUserId": "string",
+      "sourceBufferId": "string",
+      "reopenedFromIncidentId": "string",
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1IncidentView](#schemav1incidentview)]|false|none|[IncidentView is the unified payload. For patients only id, status,<br>patient_status, description and timestamps are populated.]|
+
+<h2 id="tocS_v1ListMyBufferEntriesResponse">v1ListMyBufferEntriesResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listmybufferentriesresponse"></a>
+<a id="schema_v1ListMyBufferEntriesResponse"></a>
+<a id="tocSv1listmybufferentriesresponse"></a>
+<a id="tocsv1listmybufferentriesresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "patientZitadelUserId": "string",
+      "categoryId": "string",
+      "typeId": "string",
+      "description": "string",
+      "occurredAt": "string",
+      "status": "BUFFER_STATUS_UNSPECIFIED",
+      "publishedIncidentId": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1BufferEntryView](#schemav1bufferentryview)]|false|none|none|
+
+<h2 id="tocS_v1ListMyIncidentsResponse">v1ListMyIncidentsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listmyincidentsresponse"></a>
+<a id="schema_v1ListMyIncidentsResponse"></a>
+<a id="tocSv1listmyincidentsresponse"></a>
+<a id="tocsv1listmyincidentsresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "categoryId": "string",
+      "typeId": "string",
+      "status": "INCIDENT_STATUS_UNSPECIFIED",
+      "priority": "INCIDENT_PRIORITY_UNSPECIFIED",
+      "description": "string",
+      "patientOriginalDescription": "string",
+      "occurredAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string",
+      "registrar": {
+        "employeeId": "string",
+        "displayName": "string",
+        "position": "string",
+        "organizationId": "string",
+        "clinicId": "string",
+        "departmentId": "string"
+      },
+      "sourcePatientZitadelUserId": "string",
+      "sourceBufferId": "string",
+      "reopenedFromIncidentId": "string",
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1IncidentView](#schemav1incidentview)]|false|none|[IncidentView is the unified payload. For patients only id, status,<br>patient_status, description and timestamps are populated.]|
+
+<h2 id="tocS_v1ListOrgAdminsResponse">v1ListOrgAdminsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listorgadminsresponse"></a>
+<a id="schema_v1ListOrgAdminsResponse"></a>
+<a id="tocSv1listorgadminsresponse"></a>
+<a id="tocsv1listorgadminsresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "holder": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      },
+      "deputy": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      }
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1RoleAssignment](#schemav1roleassignment)]|false|none|[RoleAssignment is a role row enriched with the denormalised card for<br>the holder and, when present, the deputy. Read-model callers use<br>this so they do not need to follow role lookups with N+1 GetEmployee<br>calls to render a name or email.]|
+
+<h2 id="tocS_v1ListOrgDispatchersResponse">v1ListOrgDispatchersResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listorgdispatchersresponse"></a>
+<a id="schema_v1ListOrgDispatchersResponse"></a>
+<a id="tocSv1listorgdispatchersresponse"></a>
+<a id="tocsv1listorgdispatchersresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "holder": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      },
+      "deputy": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      }
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1RoleAssignment](#schemav1roleassignment)]|false|none|[RoleAssignment is a role row enriched with the denormalised card for<br>the holder and, when present, the deputy. Read-model callers use<br>this so they do not need to follow role lookups with N+1 GetEmployee<br>calls to render a name or email.]|
+
+<h2 id="tocS_v1ListOrgHeadsResponse">v1ListOrgHeadsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listorgheadsresponse"></a>
+<a id="schema_v1ListOrgHeadsResponse"></a>
+<a id="tocSv1listorgheadsresponse"></a>
+<a id="tocsv1listorgheadsresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "holder": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      },
+      "deputy": {
+        "employeeId": "string",
+        "zitadelUserId": "string",
+        "firstName": "string",
+        "lastName": "string",
+        "displayName": "string",
+        "email": "string",
+        "organizationId": "string",
+        "organizationName": "string",
+        "clinicId": "string",
+        "clinicName": "string",
+        "departmentId": "string",
+        "departmentName": "string",
+        "position": "string",
+        "terminatedAt": "string",
+        "currentVacationEndsAt": "string",
+        "nextVacationStartsAt": "string"
+      }
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1RoleAssignment](#schemav1roleassignment)]|false|none|[RoleAssignment is a role row enriched with the denormalised card for<br>the holder and, when present, the deputy. Read-model callers use<br>this so they do not need to follow role lookups with N+1 GetEmployee<br>calls to render a name or email.]|
+
+<h2 id="tocS_v1ListOrganizationsResponse">v1ListOrganizationsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listorganizationsresponse"></a>
+<a id="schema_v1ListOrganizationsResponse"></a>
+<a id="tocSv1listorganizationsresponse"></a>
+<a id="tocsv1listorganizationsresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "name": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1OrganizationListItem](#schemav1organizationlistitem)]|false|none|[OrganizationListItem is the minimal shape returned by list endpoints.]|
+
+<h2 id="tocS_v1ListPatientAllowedTypesByOrganizationResponse">v1ListPatientAllowedTypesByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listpatientallowedtypesbyorganizationresponse"></a>
+<a id="schema_v1ListPatientAllowedTypesByOrganizationResponse"></a>
+<a id="tocSv1listpatientallowedtypesbyorganizationresponse"></a>
+<a id="tocsv1listpatientallowedtypesbyorganizationresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "categoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string",
+      "isAllowedForPatients": true
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
+
+<h2 id="tocS_v1ListPatientVisibleCategoriesByOrganizationResponse">v1ListPatientVisibleCategoriesByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listpatientvisiblecategoriesbyorganizationresponse"></a>
+<a id="schema_v1ListPatientVisibleCategoriesByOrganizationResponse"></a>
+<a id="tocSv1listpatientvisiblecategoriesbyorganizationresponse"></a>
+<a id="tocsv1listpatientvisiblecategoriesbyorganizationresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
+
+<h2 id="tocS_v1ListSystemAdminsResponse">v1ListSystemAdminsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listsystemadminsresponse"></a>
+<a id="schema_v1ListSystemAdminsResponse"></a>
+<a id="tocSv1listsystemadminsresponse"></a>
+<a id="tocsv1listsystemadminsresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "zitadelUserId": "string",
+      "createdAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1SystemAdminView](#schemav1systemadminview)]|false|none|[SystemAdminView is the system-admin role; system admins are rooted in<br>Zitadel user ids, not employee ids.]|
+
+<h2 id="tocS_v1ListTypesByCategoryResponse">v1ListTypesByCategoryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listtypesbycategoryresponse"></a>
+<a id="schema_v1ListTypesByCategoryResponse"></a>
+<a id="tocSv1listtypesbycategoryresponse"></a>
+<a id="tocsv1listtypesbycategoryresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "categoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string",
+      "isAllowedForPatients": true
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
+
+<h2 id="tocS_v1ListVacationsByEmployeeResponse">v1ListVacationsByEmployeeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listvacationsbyemployeeresponse"></a>
+<a id="schema_v1ListVacationsByEmployeeResponse"></a>
+<a id="tocSv1listvacationsbyemployeeresponse"></a>
+<a id="tocsv1listvacationsbyemployeeresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "employeeId": "string",
+      "state": "string",
+      "startsAt": "string",
+      "endsAt": "string",
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1VacationView](#schemav1vacationview)]|false|none|[VacationView mirrors projections.employee_vacations. state is one of<br>{scheduled, active, ended, cancelled}.]|
+
+<h2 id="tocS_v1MoveIncidentCategoryResponse">v1MoveIncidentCategoryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1moveincidentcategoryresponse"></a>
+<a id="schema_v1MoveIncidentCategoryResponse"></a>
+<a id="tocSv1moveincidentcategoryresponse"></a>
+<a id="tocsv1moveincidentcategoryresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1MoveIncidentTypeResponse">v1MoveIncidentTypeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1moveincidenttyperesponse"></a>
+<a id="schema_v1MoveIncidentTypeResponse"></a>
+<a id="tocSv1moveincidenttyperesponse"></a>
+<a id="tocsv1moveincidenttyperesponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1Organization">v1Organization</h2>
+<!-- backwards compatibility -->
+<a id="schemav1organization"></a>
+<a id="schema_v1Organization"></a>
+<a id="tocSv1organization"></a>
+<a id="tocsv1organization"></a>
+
+```json
+{
+  "id": "string",
+  "name": "string",
+  "description": "string",
+  "legalAddress": {
+    "text": "string",
+    "point": {
+      "longitude": 0.1,
+      "latitude": 0.1
+    }
+  },
+  "createdAt": "string",
+  "updatedAt": "string"
+}
+
+```
+
+Organization mirrors the projections.organizations row returned by
+GetOrganization. Timestamps are RFC3339 strings.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|name|string|false|none|none|
+|description|string|false|none|none|
+|legalAddress|[v1Address](#schemav1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|
+
+<h2 id="tocS_v1OrganizationListItem">v1OrganizationListItem</h2>
+<!-- backwards compatibility -->
+<a id="schemav1organizationlistitem"></a>
+<a id="schema_v1OrganizationListItem"></a>
+<a id="tocSv1organizationlistitem"></a>
+<a id="tocsv1organizationlistitem"></a>
+
+```json
+{
+  "id": "string",
+  "name": "string"
+}
+
+```
+
+OrganizationListItem is the minimal shape returned by list endpoints.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|name|string|false|none|none|
+
+<h2 id="tocS_v1OrganizationStats">v1OrganizationStats</h2>
+<!-- backwards compatibility -->
+<a id="schemav1organizationstats"></a>
+<a id="schema_v1OrganizationStats"></a>
+<a id="tocSv1organizationstats"></a>
+<a id="tocsv1organizationstats"></a>
+
+```json
+{
+  "organizationId": "string",
+  "employeesTotal": "string",
+  "clinicsTotal": "string",
+  "departmentsTotal": "string",
+  "employeesOnVacation": "string",
+  "vacationsScheduled": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|organizationId|string|false|none|none|
+|employeesTotal|string(int64)|false|none|none|
+|clinicsTotal|string(int64)|false|none|none|
+|departmentsTotal|string(int64)|false|none|none|
+|employeesOnVacation|string(int64)|false|none|none|
+|vacationsScheduled|string(int64)|false|none|none|
+
+<h2 id="tocS_v1PatientStatus">v1PatientStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemav1patientstatus"></a>
+<a id="schema_v1PatientStatus"></a>
+<a id="tocSv1patientstatus"></a>
+<a id="tocsv1patientstatus"></a>
+
+```json
+"PATIENT_STATUS_UNSPECIFIED"
+
+```
+
+PatientStatus is the simplified four-value status surfaced to patients.
+
+ - PATIENT_STATUS_PENDING: buffer pending
+ - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress
+ - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected
+ - PATIENT_STATUS_CANCELLED: patient cancelled
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|PatientStatus is the simplified four-value status surfaced to patients.<br><br> - PATIENT_STATUS_PENDING: buffer pending<br> - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress<br> - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected<br> - PATIENT_STATUS_CANCELLED: patient cancelled|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|PATIENT_STATUS_UNSPECIFIED|
+|*anonymous*|PATIENT_STATUS_PENDING|
+|*anonymous*|PATIENT_STATUS_ACCEPTED|
+|*anonymous*|PATIENT_STATUS_CLOSED|
+|*anonymous*|PATIENT_STATUS_CANCELLED|
+
+<h2 id="tocS_v1Point">v1Point</h2>
+<!-- backwards compatibility -->
+<a id="schemav1point"></a>
+<a id="schema_v1Point"></a>
+<a id="tocSv1point"></a>
+<a id="tocsv1point"></a>
+
+```json
+{
+  "longitude": 0.1,
+  "latitude": 0.1
+}
+
+```
+
+Point is the coordinate pair attached to an Address. Absent when the
+projection row has neither longitude nor latitude.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|longitude|number(double)|false|none|none|
+|latitude|number(double)|false|none|none|
+
+<h2 id="tocS_v1PointInput">v1PointInput</h2>
+<!-- backwards compatibility -->
+<a id="schemav1pointinput"></a>
+<a id="schema_v1PointInput"></a>
+<a id="tocSv1pointinput"></a>
+<a id="tocsv1pointinput"></a>
+
+```json
+{
+  "longitude": 0.1,
+  "latitude": 0.1
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|longitude|number(double)|false|none|none|
+|latitude|number(double)|false|none|none|
+
+<h2 id="tocS_v1PriorityHistoryEntry">v1PriorityHistoryEntry</h2>
+<!-- backwards compatibility -->
+<a id="schemav1priorityhistoryentry"></a>
+<a id="schema_v1PriorityHistoryEntry"></a>
+<a id="tocSv1priorityhistoryentry"></a>
+<a id="tocsv1priorityhistoryentry"></a>
+
+```json
+{
+  "id": "string",
+  "oldPriority": "INCIDENT_PRIORITY_UNSPECIFIED",
+  "newPriority": "INCIDENT_PRIORITY_UNSPECIFIED",
+  "actor": {
+    "employeeId": "string",
+    "displayName": "string"
+  },
+  "changedAt": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|oldPriority|[queryIncidentV1IncidentPriority](#schemaqueryincidentv1incidentpriority)|false|none|none|
+|newPriority|[queryIncidentV1IncidentPriority](#schemaqueryincidentv1incidentpriority)|false|none|none|
+|actor|[v1ActorView](#schemav1actorview)|false|none|none|
+|changedAt|string|false|none|none|
+
+<h2 id="tocS_v1PublishPatientIncidentResponse">v1PublishPatientIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1publishpatientincidentresponse"></a>
+<a id="schema_v1PublishPatientIncidentResponse"></a>
+<a id="tocSv1publishpatientincidentresponse"></a>
+<a id="tocsv1publishpatientincidentresponse"></a>
+
+```json
+{
+  "incidentId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|incidentId|string|false|none|none|
+
+<h2 id="tocS_v1ReactivateIncidentCategoryResponse">v1ReactivateIncidentCategoryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1reactivateincidentcategoryresponse"></a>
+<a id="schema_v1ReactivateIncidentCategoryResponse"></a>
+<a id="tocSv1reactivateincidentcategoryresponse"></a>
+<a id="tocsv1reactivateincidentcategoryresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1ReactivateIncidentTypeResponse">v1ReactivateIncidentTypeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1reactivateincidenttyperesponse"></a>
+<a id="schema_v1ReactivateIncidentTypeResponse"></a>
+<a id="tocSv1reactivateincidenttyperesponse"></a>
+<a id="tocsv1reactivateincidenttyperesponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RegistrarView">v1RegistrarView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1registrarview"></a>
+<a id="schema_v1RegistrarView"></a>
+<a id="tocSv1registrarview"></a>
+<a id="tocsv1registrarview"></a>
+
+```json
+{
+  "employeeId": "string",
+  "displayName": "string",
+  "position": "string",
+  "organizationId": "string",
+  "clinicId": "string",
+  "departmentId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employeeId|string|false|none|none|
+|displayName|string|false|none|none|
+|position|string|false|none|none|
+|organizationId|string|false|none|none|
+|clinicId|string|false|none|none|
+|departmentId|string|false|none|none|
+
+<h2 id="tocS_v1RejectPatientIncidentResponse">v1RejectPatientIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1rejectpatientincidentresponse"></a>
+<a id="schema_v1RejectPatientIncidentResponse"></a>
+<a id="tocSv1rejectpatientincidentresponse"></a>
+<a id="tocsv1rejectpatientincidentresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RemoveClinicHeadDeputyResponse">v1RemoveClinicHeadDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1removeclinicheaddeputyresponse"></a>
+<a id="schema_v1RemoveClinicHeadDeputyResponse"></a>
+<a id="tocSv1removeclinicheaddeputyresponse"></a>
+<a id="tocsv1removeclinicheaddeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RemoveDepartmentResponsibleDeputyResponse">v1RemoveDepartmentResponsibleDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1removedepartmentresponsibledeputyresponse"></a>
+<a id="schema_v1RemoveDepartmentResponsibleDeputyResponse"></a>
+<a id="tocSv1removedepartmentresponsibledeputyresponse"></a>
+<a id="tocsv1removedepartmentresponsibledeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RemoveOrganizationAdminDeputyResponse">v1RemoveOrganizationAdminDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1removeorganizationadmindeputyresponse"></a>
+<a id="schema_v1RemoveOrganizationAdminDeputyResponse"></a>
+<a id="tocSv1removeorganizationadmindeputyresponse"></a>
+<a id="tocsv1removeorganizationadmindeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RemoveOrganizationDispatcherDeputyResponse">v1RemoveOrganizationDispatcherDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1removeorganizationdispatcherdeputyresponse"></a>
+<a id="schema_v1RemoveOrganizationDispatcherDeputyResponse"></a>
+<a id="tocSv1removeorganizationdispatcherdeputyresponse"></a>
+<a id="tocsv1removeorganizationdispatcherdeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RemoveOrganizationHeadDeputyResponse">v1RemoveOrganizationHeadDeputyResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1removeorganizationheaddeputyresponse"></a>
+<a id="schema_v1RemoveOrganizationHeadDeputyResponse"></a>
+<a id="tocSv1removeorganizationheaddeputyresponse"></a>
+<a id="tocsv1removeorganizationheaddeputyresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1ReopenIncidentResponse">v1ReopenIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1reopenincidentresponse"></a>
+<a id="schema_v1ReopenIncidentResponse"></a>
+<a id="tocSv1reopenincidentresponse"></a>
+<a id="tocsv1reopenincidentresponse"></a>
+
+```json
+{
+  "reopenedIncidentId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|reopenedIncidentId|string|false|none|none|
+
+<h2 id="tocS_v1RevokeClinicHeadResponse">v1RevokeClinicHeadResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1revokeclinicheadresponse"></a>
+<a id="schema_v1RevokeClinicHeadResponse"></a>
+<a id="tocSv1revokeclinicheadresponse"></a>
+<a id="tocsv1revokeclinicheadresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RevokeDepartmentResponsibleResponse">v1RevokeDepartmentResponsibleResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1revokedepartmentresponsibleresponse"></a>
+<a id="schema_v1RevokeDepartmentResponsibleResponse"></a>
+<a id="tocSv1revokedepartmentresponsibleresponse"></a>
+<a id="tocsv1revokedepartmentresponsibleresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RevokeOrganizationAdminResponse">v1RevokeOrganizationAdminResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1revokeorganizationadminresponse"></a>
+<a id="schema_v1RevokeOrganizationAdminResponse"></a>
+<a id="tocSv1revokeorganizationadminresponse"></a>
+<a id="tocsv1revokeorganizationadminresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RevokeOrganizationDispatcherResponse">v1RevokeOrganizationDispatcherResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1revokeorganizationdispatcherresponse"></a>
+<a id="schema_v1RevokeOrganizationDispatcherResponse"></a>
+<a id="tocSv1revokeorganizationdispatcherresponse"></a>
+<a id="tocsv1revokeorganizationdispatcherresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RevokeOrganizationHeadResponse">v1RevokeOrganizationHeadResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1revokeorganizationheadresponse"></a>
+<a id="schema_v1RevokeOrganizationHeadResponse"></a>
+<a id="tocSv1revokeorganizationheadresponse"></a>
+<a id="tocsv1revokeorganizationheadresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RevokeSystemAdminResponse">v1RevokeSystemAdminResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1revokesystemadminresponse"></a>
+<a id="schema_v1RevokeSystemAdminResponse"></a>
+<a id="tocSv1revokesystemadminresponse"></a>
+<a id="tocsv1revokesystemadminresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1RoleAssignment">v1RoleAssignment</h2>
+<!-- backwards compatibility -->
+<a id="schemav1roleassignment"></a>
+<a id="schema_v1RoleAssignment"></a>
+<a id="tocSv1roleassignment"></a>
+<a id="tocsv1roleassignment"></a>
+
+```json
+{
+  "holder": {
+    "employeeId": "string",
+    "zitadelUserId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "displayName": "string",
+    "email": "string",
+    "organizationId": "string",
+    "organizationName": "string",
+    "clinicId": "string",
+    "clinicName": "string",
+    "departmentId": "string",
+    "departmentName": "string",
+    "position": "string",
+    "terminatedAt": "string",
+    "currentVacationEndsAt": "string",
+    "nextVacationStartsAt": "string"
+  },
+  "deputy": {
+    "employeeId": "string",
+    "zitadelUserId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "displayName": "string",
+    "email": "string",
+    "organizationId": "string",
+    "organizationName": "string",
+    "clinicId": "string",
+    "clinicName": "string",
+    "departmentId": "string",
+    "departmentName": "string",
+    "position": "string",
+    "terminatedAt": "string",
+    "currentVacationEndsAt": "string",
+    "nextVacationStartsAt": "string"
+  }
+}
+
+```
+
+RoleAssignment is a role row enriched with the denormalised card for
+the holder and, when present, the deputy. Read-model callers use
+this so they do not need to follow role lookups with N+1 GetEmployee
+calls to render a name or email.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|holder|[v1EmployeeCardView](#schemav1employeecardview)|false|none|EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.|
+|deputy|[v1EmployeeCardView](#schemav1employeecardview)|false|none|EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.|
+
+<h2 id="tocS_v1ScheduleVacationResponse">v1ScheduleVacationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1schedulevacationresponse"></a>
+<a id="schema_v1ScheduleVacationResponse"></a>
+<a id="tocSv1schedulevacationresponse"></a>
+<a id="tocsv1schedulevacationresponse"></a>
+
+```json
+{
+  "vacationId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|vacationId|string|false|none|none|
+
+<h2 id="tocS_v1SearchEmployeesByOrganizationResponse">v1SearchEmployeesByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1searchemployeesbyorganizationresponse"></a>
+<a id="schema_v1SearchEmployeesByOrganizationResponse"></a>
+<a id="tocSv1searchemployeesbyorganizationresponse"></a>
+<a id="tocsv1searchemployeesbyorganizationresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+
+<h2 id="tocS_v1SearchOrganizationsResponse">v1SearchOrganizationsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1searchorganizationsresponse"></a>
+<a id="schema_v1SearchOrganizationsResponse"></a>
+<a id="tocSv1searchorganizationsresponse"></a>
+<a id="tocsv1searchorganizationsresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "name": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1OrganizationListItem](#schemav1organizationlistitem)]|false|none|[OrganizationListItem is the minimal shape returned by list endpoints.]|
+
+<h2 id="tocS_v1StartVacationNowResponse">v1StartVacationNowResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1startvacationnowresponse"></a>
+<a id="schema_v1StartVacationNowResponse"></a>
+<a id="tocSv1startvacationnowresponse"></a>
+<a id="tocsv1startvacationnowresponse"></a>
+
+```json
+{
+  "vacationId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|vacationId|string|false|none|none|
+
+<h2 id="tocS_v1StatusHistoryEntry">v1StatusHistoryEntry</h2>
+<!-- backwards compatibility -->
+<a id="schemav1statushistoryentry"></a>
+<a id="schema_v1StatusHistoryEntry"></a>
+<a id="tocSv1statushistoryentry"></a>
+<a id="tocsv1statushistoryentry"></a>
+
+```json
+{
+  "id": "string",
+  "oldStatus": "INCIDENT_STATUS_UNSPECIFIED",
+  "newStatus": "INCIDENT_STATUS_UNSPECIFIED",
+  "actor": {
+    "employeeId": "string",
+    "displayName": "string"
+  },
+  "changedAt": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|oldStatus|[queryIncidentV1IncidentStatus](#schemaqueryincidentv1incidentstatus)|false|none|none|
+|newStatus|[queryIncidentV1IncidentStatus](#schemaqueryincidentv1incidentstatus)|false|none|none|
+|actor|[v1ActorView](#schemav1actorview)|false|none|none|
+|changedAt|string|false|none|none|
+
+<h2 id="tocS_v1SubmitPatientIncidentRequest">v1SubmitPatientIncidentRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemav1submitpatientincidentrequest"></a>
+<a id="schema_v1SubmitPatientIncidentRequest"></a>
+<a id="tocSv1submitpatientincidentrequest"></a>
+<a id="tocsv1submitpatientincidentrequest"></a>
+
+```json
+{
+  "organizationId": "string",
+  "categoryId": "string",
+  "typeId": "string",
+  "description": "string",
+  "occurredAt": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|organizationId|string|false|none|none|
+|categoryId|string|false|none|none|
+|typeId|string|false|none|none|
+|description|string|false|none|none|
+|occurredAt|string|false|none|none|
+
+<h2 id="tocS_v1SubmitPatientIncidentResponse">v1SubmitPatientIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1submitpatientincidentresponse"></a>
+<a id="schema_v1SubmitPatientIncidentResponse"></a>
+<a id="tocSv1submitpatientincidentresponse"></a>
+<a id="tocsv1submitpatientincidentresponse"></a>
+
+```json
+{
+  "bufferId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|bufferId|string|false|none|none|
+
+<h2 id="tocS_v1SystemAdminView">v1SystemAdminView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1systemadminview"></a>
+<a id="schema_v1SystemAdminView"></a>
+<a id="tocSv1systemadminview"></a>
+<a id="tocsv1systemadminview"></a>
+
+```json
+{
+  "zitadelUserId": "string",
+  "createdAt": "string"
+}
+
+```
+
+SystemAdminView is the system-admin role; system admins are rooted in
+Zitadel user ids, not employee ids.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|zitadelUserId|string|false|none|none|
+|createdAt|string|false|none|none|
+
+<h2 id="tocS_v1TerminateEmployeeResponse">v1TerminateEmployeeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1terminateemployeeresponse"></a>
+<a id="schema_v1TerminateEmployeeResponse"></a>
+<a id="tocSv1terminateemployeeresponse"></a>
+<a id="tocsv1terminateemployeeresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateClinicDetailsResponse">v1UpdateClinicDetailsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateclinicdetailsresponse"></a>
+<a id="schema_v1UpdateClinicDetailsResponse"></a>
+<a id="tocSv1updateclinicdetailsresponse"></a>
+<a id="tocsv1updateclinicdetailsresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateClinicPhysicalAddressResponse">v1UpdateClinicPhysicalAddressResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateclinicphysicaladdressresponse"></a>
+<a id="schema_v1UpdateClinicPhysicalAddressResponse"></a>
+<a id="tocSv1updateclinicphysicaladdressresponse"></a>
+<a id="tocsv1updateclinicphysicaladdressresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateDepartmentDetailsResponse">v1UpdateDepartmentDetailsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updatedepartmentdetailsresponse"></a>
+<a id="schema_v1UpdateDepartmentDetailsResponse"></a>
+<a id="tocSv1updatedepartmentdetailsresponse"></a>
+<a id="tocsv1updatedepartmentdetailsresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateEmployeeDepartmentResponse">v1UpdateEmployeeDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateemployeedepartmentresponse"></a>
+<a id="schema_v1UpdateEmployeeDepartmentResponse"></a>
+<a id="tocSv1updateemployeedepartmentresponse"></a>
+<a id="tocsv1updateemployeedepartmentresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateEmployeePositionResponse">v1UpdateEmployeePositionResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateemployeepositionresponse"></a>
+<a id="schema_v1UpdateEmployeePositionResponse"></a>
+<a id="tocSv1updateemployeepositionresponse"></a>
+<a id="tocsv1updateemployeepositionresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateIncidentCategoryDetailsResponse">v1UpdateIncidentCategoryDetailsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateincidentcategorydetailsresponse"></a>
+<a id="schema_v1UpdateIncidentCategoryDetailsResponse"></a>
+<a id="tocSv1updateincidentcategorydetailsresponse"></a>
+<a id="tocsv1updateincidentcategorydetailsresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateIncidentDescriptionResponse">v1UpdateIncidentDescriptionResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateincidentdescriptionresponse"></a>
+<a id="schema_v1UpdateIncidentDescriptionResponse"></a>
+<a id="tocSv1updateincidentdescriptionresponse"></a>
+<a id="tocsv1updateincidentdescriptionresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateIncidentPriorityResponse">v1UpdateIncidentPriorityResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateincidentpriorityresponse"></a>
+<a id="schema_v1UpdateIncidentPriorityResponse"></a>
+<a id="tocSv1updateincidentpriorityresponse"></a>
+<a id="tocsv1updateincidentpriorityresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateIncidentStatusResponse">v1UpdateIncidentStatusResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateincidentstatusresponse"></a>
+<a id="schema_v1UpdateIncidentStatusResponse"></a>
+<a id="tocSv1updateincidentstatusresponse"></a>
+<a id="tocsv1updateincidentstatusresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateIncidentTypeDetailsResponse">v1UpdateIncidentTypeDetailsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateincidenttypedetailsresponse"></a>
+<a id="schema_v1UpdateIncidentTypeDetailsResponse"></a>
+<a id="tocSv1updateincidenttypedetailsresponse"></a>
+<a id="tocsv1updateincidenttypedetailsresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateOrganizationDetailsResponse">v1UpdateOrganizationDetailsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateorganizationdetailsresponse"></a>
+<a id="schema_v1UpdateOrganizationDetailsResponse"></a>
+<a id="tocSv1updateorganizationdetailsresponse"></a>
+<a id="tocsv1updateorganizationdetailsresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateOrganizationLegalAddressResponse">v1UpdateOrganizationLegalAddressResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updateorganizationlegaladdressresponse"></a>
+<a id="schema_v1UpdateOrganizationLegalAddressResponse"></a>
+<a id="tocSv1updateorganizationlegaladdressresponse"></a>
+<a id="tocsv1updateorganizationlegaladdressresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdatePatientIncidentResponse">v1UpdatePatientIncidentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updatepatientincidentresponse"></a>
+<a id="schema_v1UpdatePatientIncidentResponse"></a>
+<a id="tocSv1updatepatientincidentresponse"></a>
+<a id="tocsv1updatepatientincidentresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1UpdateVacationEndDateResponse">v1UpdateVacationEndDateResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1updatevacationenddateresponse"></a>
+<a id="schema_v1UpdateVacationEndDateResponse"></a>
+<a id="tocSv1updatevacationenddateresponse"></a>
+<a id="tocsv1updatevacationenddateresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1VacationView">v1VacationView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1vacationview"></a>
+<a id="schema_v1VacationView"></a>
+<a id="tocSv1vacationview"></a>
+<a id="tocsv1vacationview"></a>
+
+```json
+{
+  "id": "string",
+  "employeeId": "string",
+  "state": "string",
+  "startsAt": "string",
+  "endsAt": "string",
+  "createdAt": "string",
+  "updatedAt": "string"
+}
+
+```
+
+VacationView mirrors projections.employee_vacations. state is one of
+{scheduled, active, ended, cancelled}.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|id|string|false|none|none|
+|employeeId|string|false|none|none|
+|state|string|false|none|none|
+|startsAt|string|false|none|none|
+|endsAt|string|false|none|none|
+|createdAt|string|false|none|none|
+|updatedAt|string|false|none|none|

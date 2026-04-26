@@ -111,7 +111,18 @@ main.go wires constructors explicitly and drives teardown via `defer`.
     `<-` explicitly. Parent FKs are immutable — a clinic always
     belongs to exactly one organization and never changes parents;
     a department always belongs to exactly one clinic.
-15. **Build tooling split — Makefile vs Taskfile.**
+15. **Documentation is part of the definition of done.** Every new or
+    changed service method must be documented in `docs/` (Markdown,
+    Russian language). A method without documentation is considered
+    incomplete. When adding or changing a method, business rule,
+    permission, or status machine — update the relevant file in
+    `docs/services/` or `docs/architecture/` in the same commit.
+    Each Go service method must carry a doc comment with a `See:` link
+    to the corresponding Wiki page (e.g.
+    `// See: https://github.com/medincident/medincident-backend/wiki/Service-Incidents#createincident`).
+    Auto-generated files (`docs/api/Proto.md`, `docs/api/HTTP.md`) are
+    updated by `task gen` — do not edit them by hand.
+16. **Build tooling split — Makefile vs Taskfile.**
     - `Makefile` owns **binary compilation only**: `make build`,
       `make build-<binary>`, `make build-all`,
       `make build-all-<binary>`, `make clean`. Never add non-build
@@ -270,8 +281,8 @@ Everything else goes through `Taskfile.yml`.
 
 Taskfile commands:
 
-- `task gen` — `go tool buf generate` + docs template (pkg/, api/openapi/, docs/proto/)
-- `task gen:check` — verify `pkg/`, `api/openapi/`, `docs/proto/` are in sync with proto
+- `task gen` — `go tool buf generate` + docs template (pkg/, api/openapi/, docs/api/Proto.md) + widdershins (docs/api/HTTP.md)
+- `task gen:check` — verify `pkg/`, `api/openapi/`, `docs/api/` are in sync with proto
 - `task proto:fmt`, `task proto:fmt:check` — buf format for .proto files
 - `task proto:lint` — buf lint (STANDARD rules, except FIELD_LOWER_SNAKE_CASE)
 - `task proto:breaking` — buf breaking vs origin/main (gracefully skipped if main has no api/proto/)

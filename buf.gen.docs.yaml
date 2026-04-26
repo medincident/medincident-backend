@@ -2,7 +2,7 @@ version: v2
 
 # Generates one combined Markdown document covering every package in
 # the api/proto tree (event + command + query). Output lives at
-# docs/proto/medincident.md and is committed — task gen:check enforces
+# docs/api/Proto.md and is committed — task gen:check enforces
 # freshness.
 
 inputs:
@@ -10,6 +10,6 @@ inputs:
 
 plugins:
   - local: [go, tool, protoc-gen-doc]
-    out: docs/proto
+    out: docs/api
     strategy: all
-    opt: markdown,medincident.md
+    opt: markdown,Proto.md
