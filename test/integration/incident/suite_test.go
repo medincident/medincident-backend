@@ -426,7 +426,7 @@ func createIncident(
 			CategoryID:   categoryID.String(),
 			TypeID:       typeID.String(),
 			Description:  &desc,
-			OccurredAt:   time.Now().Add(-1 * time.Hour),
+			OccurredAt:   time.Now().Add(-1 * time.Hour).Format(time.RFC3339Nano),
 		},
 	})
 	require.NoError(t, err)
