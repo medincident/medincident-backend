@@ -33,12 +33,10 @@ import (
 // cascade loops. R is the GORM model type for the role table; K is
 // the type of the role's scope column (always uuid.UUID today).
 type cascadeSpec[R any, K comparable] struct {
-	// SQL column name for the scope ID (e.g. "clinic_id").
-	scopeCol string
-	// Raw SQL table name used when NULLing the deputy slot. The DELETE
-	// path uses gorm's model-based Delete, so only the clear path
-	// needs a table name.
-	table string
+	// Precomputed WHERE clause used when deleting a role row (scopeCol = ? AND employee_id = ?).
+	deleteWhere string
+	// Precomputed UPDATE statement used when NULLing the deputy slot.
+	clearDeputySQL string
 
 	// Error codes + scope string for oops.
 	loadErrCode   string
@@ -70,7 +68,6 @@ func cascadeRevokeRolesBy[R any, K comparable](
 	if err := tx.Where(where, args...).Find(&rows).Error; err != nil {
 		return oops.In(spec.scope).Code(spec.loadErrCode).Wrap(err)
 	}
-	deleteWhere := spec.scopeCol + " = ? AND employee_id = ?"
 	for i := range rows {
 		row := &rows[i]
 		scopeID := spec.scopeOf(row)
@@ -80,7 +77,7 @@ func cascadeRevokeRolesBy[R any, K comparable](
 				return err
 			}
 		}
-		if err := tx.Delete(new(R), deleteWhere, scopeID, empID).Error; err != nil {
+		if err := tx.Delete(new(R), spec.deleteWhere, scopeID, empID).Error; err != nil {
 			return oops.In(spec.scope).Code(spec.deleteErrCode).Wrap(err)
 		}
 		if err := spec.publishRevoked(tx, scopeID, empID, now); err != nil {
@@ -103,14 +100,11 @@ func cascadeClearRoleDeputyBy[R any, K comparable](
 	if err := tx.Where(where, args...).Find(&rows).Error; err != nil {
 		return oops.In(spec.scope).Code(spec.loadErrCode).Wrap(err)
 	}
-	updateSQL := `UPDATE ` + spec.table +
-		` SET deputy_employee_id = NULL, updated_at = now() WHERE ` +
-		spec.scopeCol + ` = ? AND employee_id = ?`
 	for i := range rows {
 		row := &rows[i]
 		scopeID := spec.scopeOf(row)
 		empID := spec.empOf(row)
-		if err := tx.Exec(updateSQL, scopeID, empID).Error; err != nil {
+		if err := tx.Exec(spec.clearDeputySQL, scopeID, empID).Error; err != nil {
 			return oops.In(spec.scope).Code(spec.saveErrCode).Wrap(err)
 		}
 		if err := spec.publishDeputyRemoved(tx, scopeID, empID, now); err != nil {
@@ -124,8 +118,8 @@ func cascadeClearRoleDeputyBy[R any, K comparable](
 // static and the closures hold no state.
 
 var drCascade = cascadeSpec[model.DepartmentResponsible, uuid.UUID]{
-	scopeCol:             "department_id",
-	table:                "domain.department_responsibles",
+	deleteWhere:          "department_id = ? AND employee_id = ?",
+	clearDeputySQL:       `UPDATE domain.department_responsibles SET deputy_employee_id = NULL, updated_at = now() WHERE department_id = ? AND employee_id = ?`,
 	loadErrCode:          ErrCodeDepartmentResponsibleLoadFailed,
 	saveErrCode:          ErrCodeDepartmentResponsibleSaveFailed,
 	deleteErrCode:        ErrCodeDepartmentResponsibleDeleteFailed,
@@ -138,8 +132,8 @@ var drCascade = cascadeSpec[model.DepartmentResponsible, uuid.UUID]{
 }
 
 var chCascade = cascadeSpec[model.ClinicHead, uuid.UUID]{
-	scopeCol:             "clinic_id",
-	table:                "domain.clinic_heads",
+	deleteWhere:          "clinic_id = ? AND employee_id = ?",
+	clearDeputySQL:       `UPDATE domain.clinic_heads SET deputy_employee_id = NULL, updated_at = now() WHERE clinic_id = ? AND employee_id = ?`,
 	loadErrCode:          ErrCodeClinicHeadLoadFailed,
 	saveErrCode:          ErrCodeClinicHeadSaveFailed,
 	deleteErrCode:        ErrCodeClinicHeadDeleteFailed,
@@ -152,8 +146,8 @@ var chCascade = cascadeSpec[model.ClinicHead, uuid.UUID]{
 }
 
 var orgAdminCascade = cascadeSpec[model.OrgAdmin, uuid.UUID]{
-	scopeCol:             "organization_id",
-	table:                "domain.org_admins",
+	deleteWhere:          "organization_id = ? AND employee_id = ?",
+	clearDeputySQL:       `UPDATE domain.org_admins SET deputy_employee_id = NULL, updated_at = now() WHERE organization_id = ? AND employee_id = ?`,
 	loadErrCode:          ErrCodeOrganizationAdminLoadFailed,
 	saveErrCode:          ErrCodeOrganizationAdminSaveFailed,
 	deleteErrCode:        ErrCodeOrganizationAdminDeleteFailed,
@@ -166,8 +160,8 @@ var orgAdminCascade = cascadeSpec[model.OrgAdmin, uuid.UUID]{
 }
 
 var orgHeadCascade = cascadeSpec[model.OrgHead, uuid.UUID]{
-	scopeCol:             "organization_id",
-	table:                "domain.org_heads",
+	deleteWhere:          "organization_id = ? AND employee_id = ?",
+	clearDeputySQL:       `UPDATE domain.org_heads SET deputy_employee_id = NULL, updated_at = now() WHERE organization_id = ? AND employee_id = ?`,
 	loadErrCode:          ErrCodeOrganizationHeadLoadFailed,
 	saveErrCode:          ErrCodeOrganizationHeadSaveFailed,
 	deleteErrCode:        ErrCodeOrganizationHeadDeleteFailed,
@@ -180,8 +174,8 @@ var orgHeadCascade = cascadeSpec[model.OrgHead, uuid.UUID]{
 }
 
 var orgDispatcherCascade = cascadeSpec[model.OrgDispatcher, uuid.UUID]{
-	scopeCol:             "organization_id",
-	table:                "domain.org_dispatchers",
+	deleteWhere:          "organization_id = ? AND employee_id = ?",
+	clearDeputySQL:       `UPDATE domain.org_dispatchers SET deputy_employee_id = NULL, updated_at = now() WHERE organization_id = ? AND employee_id = ?`,
 	loadErrCode:          ErrCodeOrganizationDispatcherLoadFailed,
 	saveErrCode:          ErrCodeOrganizationDispatcherSaveFailed,
 	deleteErrCode:        ErrCodeOrganizationDispatcherDeleteFailed,
