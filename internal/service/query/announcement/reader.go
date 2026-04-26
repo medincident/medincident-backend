@@ -345,7 +345,7 @@ func (r *Reader) ListForClinic(
 	var orgID uuid.UUID
 	if err := r.db.WithContext(ctx).
 		Raw(`SELECT organization_id FROM domain.clinics WHERE id = ? LIMIT 1`, clinicID).
-		Scan(&orgID).Error; err != nil || orgID == uuid.Nil {
+		Row().Scan(&orgID); err != nil || orgID == uuid.Nil {
 		return ListResult{}, oops.In(readerScope).
 			Code(ErrCodeAnnouncementReadFailed).
 			Public("Clinic not found.").
@@ -394,7 +394,7 @@ func (r *Reader) ListForDepartment(
 	var orgID uuid.UUID
 	if err := r.db.WithContext(ctx).
 		Raw(`SELECT organization_id FROM domain.clinics WHERE id = ? LIMIT 1`, clinicID).
-		Scan(&orgID).Error; err != nil || orgID == uuid.Nil {
+		Row().Scan(&orgID); err != nil || orgID == uuid.Nil {
 		return ListResult{}, oops.In(readerScope).Code(ErrCodeAnnouncementReadFailed).Wrap(err)
 	}
 
