@@ -21,10 +21,20 @@ func silentLogger() *zerolog.Logger {
 
 func TestGRPCCodeForError_Overrides(t *testing.T) {
 	cases := map[string]codes.Code{
-		"zitadel_verify_failed":       codes.Unavailable,
-		"zitadel_client_build_failed": codes.Internal,
-		"validation_failed":           codes.InvalidArgument,
-		"cleanup_failed":              codes.Internal,
+		"zitadel_verify_failed":                codes.Unavailable,
+		"zitadel_client_build_failed":          codes.Internal,
+		"validation_failed":                    codes.InvalidArgument,
+		"cleanup_failed":                       codes.Internal,
+		"buffer_not_patient_owner":             codes.PermissionDenied,
+		"buffer_not_pending":                   codes.FailedPrecondition,
+		"buffer_type_not_allowed_for_patients": codes.FailedPrecondition,
+		"announcement_archived":                codes.FailedPrecondition,
+		"announcement_query_bad_cursor":        codes.InvalidArgument,
+		"incident_not_cancellable":             codes.FailedPrecondition,
+		"incident_not_reopenable":              codes.FailedPrecondition,
+		"consume_start_failed":                 codes.Internal,
+		"consumer_create_failed":               codes.Internal,
+		"authz_check_failed":                   codes.Internal,
 	}
 	for code, want := range cases {
 		if got := gRPCCodeForError(code); got != want {
@@ -36,22 +46,38 @@ func TestGRPCCodeForError_Overrides(t *testing.T) {
 func TestGRPCCodeForError_SuffixRules(t *testing.T) {
 	cases := map[string]codes.Code{
 		// Internal
-		"employee_save_failed":           codes.Internal,
-		"employee_load_failed":           codes.Internal,
-		"organization_projection_failed": codes.Internal,
-		"employee_projection_failed":     codes.Internal,
-		"vacation_id_generation_failed":  codes.Internal,
-		"department_lookup_failed":       codes.Internal,
-		"postgres_open_failed":           codes.Internal,
+		"employee_save_failed":            codes.Internal,
+		"employee_load_failed":            codes.Internal,
+		"organization_projection_failed":  codes.Internal,
+		"employee_projection_failed":      codes.Internal,
+		"vacation_id_generation_failed":   codes.Internal,
+		"department_lookup_failed":        codes.Internal,
+		"postgres_open_failed":            codes.Internal,
+		"announcement_query_read_failed":  codes.Internal,
+		"buffer_query_read_failed":        codes.Internal,
+		"incident_query_read_failed":      codes.Internal,
+		"clinic_count_failed":             codes.Internal,
+		"organization_count_failed":       codes.Internal,
+		"incident_classifier_lock_failed": codes.Internal,
+		"envelope_unmarshal_malformed":    codes.Internal,
+		"payload_unmarshal_malformed":     codes.Internal,
 		// InvalidArgument — aggregate-specific codes emitted directly
 		// by services. Struct-tag validation never reaches the suffix
 		// table (it hits the validation_failed override).
-		"list_limit_out_of_range":   codes.InvalidArgument,
-		"list_offset_out_of_range":  codes.InvalidArgument,
-		"vacation_start_required":   codes.InvalidArgument,
-		"vacation_end_before_start": codes.InvalidArgument,
-		"vacation_end_in_past":      codes.InvalidArgument,
-		"vacation_start_in_past":    codes.InvalidArgument,
+		"list_limit_out_of_range":            codes.InvalidArgument,
+		"list_offset_out_of_range":           codes.InvalidArgument,
+		"vacation_start_required":            codes.InvalidArgument,
+		"vacation_end_before_start":          codes.InvalidArgument,
+		"vacation_end_in_past":               codes.InvalidArgument,
+		"vacation_start_in_past":             codes.InvalidArgument,
+		"buffer_occurred_at_in_future":       codes.InvalidArgument,
+		"incident_occurred_at_in_future":     codes.InvalidArgument,
+		"buffer_occurred_at_too_old":         codes.InvalidArgument,
+		"incident_occurred_at_too_old":       codes.InvalidArgument,
+		"employee_search_query_too_long":     codes.InvalidArgument,
+		"organization_search_query_too_long": codes.InvalidArgument,
+		"announcement_invalid_scope":         codes.InvalidArgument,
+		"announcement_invalid_time_range":    codes.InvalidArgument,
 		// NotFound
 		"employee_not_found":          codes.NotFound,
 		"department_not_found":        codes.NotFound,
@@ -75,6 +101,17 @@ func TestGRPCCodeForError_SuffixRules(t *testing.T) {
 		"incident_category_move_would_create_cycle":      codes.FailedPrecondition,
 		"incident_category_move_would_exceed_depth":      codes.FailedPrecondition,
 		"incident_category_reactivate_inactive_ancestor": codes.FailedPrecondition,
+		"incident_frozen":                                codes.FailedPrecondition,
+		"service_request_frozen":                         codes.FailedPrecondition,
+		"incident_invalid_status_transition":             codes.FailedPrecondition,
+		"service_request_invalid_status_transition":      codes.FailedPrecondition,
+		"incident_type_inactive":                         codes.FailedPrecondition,
+		"service_request_type_inactive":                  codes.FailedPrecondition,
+		"incident_type_category_mismatch":                codes.FailedPrecondition,
+		"incident_type_organization_mismatch":            codes.FailedPrecondition,
+		"service_request_type_org_mismatch":              codes.FailedPrecondition,
+		"service_request_incident_org_mismatch":          codes.FailedPrecondition,
+		"service_request_employee_dept_mismatch":         codes.FailedPrecondition,
 	}
 	for code, want := range cases {
 		if got := gRPCCodeForError(code); got != want {
