@@ -11,7 +11,7 @@ require (
 	github.com/medincident/medincident-zitadel-actions v0.0.3
 	github.com/nats-io/nats.go v1.51.0
 	github.com/rs/cors v1.11.1
-	github.com/rs/zerolog v1.35.0
+	github.com/rs/zerolog v1.35.1
 	github.com/samber/oops v1.21.0
 	github.com/samber/oops/loggers/zerolog v0.0.0-20260409201923-0372e7b9d26f
 	github.com/stretchr/testify v1.11.1
