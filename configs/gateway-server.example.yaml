@@ -34,6 +34,7 @@ server:
       allowed_headers:
         - "Authorization"
         - "Content-Type"
+      allow_credentials: true
       max_age_seconds: 3600
 
 # Upstream gRPC backends. Plaintext dial — trusted network.

@@ -538,9 +538,9 @@ var File_command_incident_buffer_v1_buffer_proto protoreflect.FileDescriptor
 
 const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\n" +
-	"'command/incident/buffer/v1/buffer.proto\x12\x1acommand.incident.buffer.v1\x1a\x1cgoogle/api/annotations.proto\"\x94\x02\n" +
-	"\x1cSubmitPatientIncidentRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12$\n" +
+	"'command/incident/buffer/v1/buffer.proto\x12\x1acommand.incident.buffer.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\x99\x02\n" +
+	"\x1cSubmitPatientIncidentRequest\x12,\n" +
+	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12$\n" +
 	"\vcategory_id\x18\x02 \x01(\tH\x00R\n" +
 	"categoryId\x88\x01\x01\x12\x1c\n" +
 	"\atype_id\x18\x03 \x01(\tH\x01R\x06typeId\x88\x01\x01\x12%\n" +
@@ -553,9 +553,9 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\f_descriptionB\x0e\n" +
 	"\f_occurred_at\"<\n" +
 	"\x1dSubmitPatientIncidentResponse\x12\x1b\n" +
-	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\"\x88\x02\n" +
-	"\x1cUpdatePatientIncidentRequest\x12\x1b\n" +
-	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\x12$\n" +
+	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\"\x8d\x02\n" +
+	"\x1cUpdatePatientIncidentRequest\x12 \n" +
+	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\x12$\n" +
 	"\vcategory_id\x18\x02 \x01(\tH\x00R\n" +
 	"categoryId\x88\x01\x01\x12\x1c\n" +
 	"\atype_id\x18\x03 \x01(\tH\x01R\x06typeId\x88\x01\x01\x12%\n" +
@@ -567,23 +567,23 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\b_type_idB\x0e\n" +
 	"\f_descriptionB\x0e\n" +
 	"\f_occurred_at\"\x1f\n" +
-	"\x1dUpdatePatientIncidentResponse\";\n" +
-	"\x1cCancelPatientIncidentRequest\x12\x1b\n" +
-	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\"\x1f\n" +
-	"\x1dCancelPatientIncidentResponse\"\xd2\x01\n" +
-	"\x1dPublishPatientIncidentRequest\x12\x1b\n" +
-	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\x12#\n" +
-	"\rdepartment_id\x18\x02 \x01(\tR\fdepartmentId\x12\x1f\n" +
-	"\vcategory_id\x18\x03 \x01(\tR\n" +
-	"categoryId\x12\x17\n" +
-	"\atype_id\x18\x04 \x01(\tR\x06typeId\x12%\n" +
+	"\x1dUpdatePatientIncidentResponse\"@\n" +
+	"\x1cCancelPatientIncidentRequest\x12 \n" +
+	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\"\x1f\n" +
+	"\x1dCancelPatientIncidentResponse\"\xe6\x01\n" +
+	"\x1dPublishPatientIncidentRequest\x12 \n" +
+	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\x12(\n" +
+	"\rdepartment_id\x18\x02 \x01(\tB\x03\xe0A\x02R\fdepartmentId\x12$\n" +
+	"\vcategory_id\x18\x03 \x01(\tB\x03\xe0A\x02R\n" +
+	"categoryId\x12\x1c\n" +
+	"\atype_id\x18\x04 \x01(\tB\x03\xe0A\x02R\x06typeId\x12%\n" +
 	"\vdescription\x18\x05 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"A\n" +
 	"\x1ePublishPatientIncidentResponse\x12\x1f\n" +
 	"\vincident_id\x18\x01 \x01(\tR\n" +
-	"incidentId\";\n" +
-	"\x1cRejectPatientIncidentRequest\x12\x1b\n" +
-	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\"\x1f\n" +
+	"incidentId\"@\n" +
+	"\x1cRejectPatientIncidentRequest\x12 \n" +
+	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\"\x1f\n" +
 	"\x1dRejectPatientIncidentResponse2\xd6\a\n" +
 	"\x1cIncidentBufferCommandService\x12\xae\x01\n" +
 	"\x15SubmitPatientIncident\x128.command.incident.buffer.v1.SubmitPatientIncidentRequest\x1a9.command.incident.buffer.v1.SubmitPatientIncidentResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/patient-incidents\x12\xba\x01\n" +

@@ -110,10 +110,11 @@ func main() {
 	handler = httpmw.AccessLog(logger)(handler)
 	if cfg.Server.HTTP.CORS != nil {
 		handler = httpmw.CORS(&cors.Options{
-			AllowedOrigins: cfg.Server.HTTP.CORS.AllowedOrigins,
-			AllowedMethods: cfg.Server.HTTP.CORS.AllowedMethods,
-			AllowedHeaders: cfg.Server.HTTP.CORS.AllowedHeaders,
-			MaxAge:         cfg.Server.HTTP.CORS.MaxAgeSeconds,
+			AllowedOrigins:   cfg.Server.HTTP.CORS.AllowedOrigins,
+			AllowedMethods:   cfg.Server.HTTP.CORS.AllowedMethods,
+			AllowedHeaders:   cfg.Server.HTTP.CORS.AllowedHeaders,
+			AllowCredentials: cfg.Server.HTTP.CORS.AllowCredentials,
+			MaxAge:           cfg.Server.HTTP.CORS.MaxAgeSeconds,
 		})(handler)
 	}
 

@@ -29,10 +29,11 @@ type httpConfig struct {
 }
 
 type corsConfig struct {
-	AllowedOrigins []string `yaml:"allowed_origins" validate:"required,min=1,dive,required"`
-	AllowedMethods []string `yaml:"allowed_methods" validate:"required,min=1,dive,required"`
-	AllowedHeaders []string `yaml:"allowed_headers" validate:"omitempty,dive,required"`
-	MaxAgeSeconds  int      `yaml:"max_age_seconds" validate:"min=0"`
+	AllowedOrigins   []string `yaml:"allowed_origins"   validate:"required,min=1,dive,required"`
+	AllowedMethods   []string `yaml:"allowed_methods"   validate:"required,min=1,dive,required"`
+	AllowedHeaders   []string `yaml:"allowed_headers"   validate:"omitempty,dive,required"`
+	AllowCredentials bool     `yaml:"allow_credentials"`
+	MaxAgeSeconds    int      `yaml:"max_age_seconds"   validate:"min=0"`
 }
 
 // upstreamsConfig fixes the two upstream gRPC backends the gateway

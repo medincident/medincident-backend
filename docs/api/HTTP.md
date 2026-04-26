@@ -3692,7 +3692,7 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 
 ```json
 {
-  "newStatus": "string"
+  "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED"
 }
 ```
 
@@ -6766,7 +6766,7 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
       "typeId": "string",
       "incidentId": "string",
       "description": "string",
-      "status": "string",
+      "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
       "authorId": "string",
       "authorDisplayName": "string",
       "executors": [
@@ -6832,7 +6832,7 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
       "typeId": "string",
       "incidentId": "string",
       "description": "string",
-      "status": "string",
+      "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
       "authorId": "string",
       "authorDisplayName": "string",
       "executors": [
@@ -6895,7 +6895,7 @@ curl -X GET /v1/service-requests/{id} \
     "typeId": "string",
     "incidentId": "string",
     "description": "string",
-    "status": "string",
+    "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
     "authorId": "string",
     "authorDisplayName": "string",
     "executors": [
@@ -6952,8 +6952,8 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
   "statusHistory": [
     {
       "id": "string",
-      "oldStatus": "string",
-      "newStatus": "string",
+      "oldStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+      "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
       "actorId": "string",
       "actorName": "string",
       "changedAt": "string"
@@ -7154,8 +7154,8 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|title|string|false|none|none|
-|content|string|false|none|none|
+|title|string|true|none|none|
+|content|string|true|none|none|
 |startsAt|string|false|none|none|
 |endsAt|string|false|none|none|
 
@@ -7177,7 +7177,7 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|false|none|none|
+|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|true|none|none|
 
 <h2 id="tocS_IncidentBufferCommandServicePublishPatientIncidentBody">IncidentBufferCommandServicePublishPatientIncidentBody</h2>
 <!-- backwards compatibility -->
@@ -7200,9 +7200,9 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|departmentId|string|false|none|none|
-|categoryId|string|false|none|none|
-|typeId|string|false|none|none|
+|departmentId|string|true|none|none|
+|categoryId|string|true|none|none|
+|typeId|string|true|none|none|
 |description|string|false|none|none|
 
 <h2 id="tocS_IncidentBufferCommandServiceUpdatePatientIncidentBody">IncidentBufferCommandServiceUpdatePatientIncidentBody</h2>
@@ -7399,7 +7399,7 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|priority|[commandIncidentV1IncidentPriority](#schemacommandincidentv1incidentpriority)|false|none|none|
+|priority|[commandIncidentV1IncidentPriority](#schemacommandincidentv1incidentpriority)|true|none|none|
 
 <h2 id="tocS_IncidentCommandServiceUpdateIncidentStatusBody">IncidentCommandServiceUpdateIncidentStatusBody</h2>
 <!-- backwards compatibility -->
@@ -7423,7 +7423,7 @@ Cancellation by registrar uses CancelIncident.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|newStatus|[commandIncidentV1IncidentStatus](#schemacommandincidentv1incidentstatus)|false|none|none|
+|newStatus|[commandIncidentV1IncidentStatus](#schemacommandincidentv1incidentstatus)|true|none|none|
 
 <h2 id="tocS_MembershipCommandServiceAssignClinicHeadBody">MembershipCommandServiceAssignClinicHeadBody</h2>
 <!-- backwards compatibility -->
@@ -7992,7 +7992,7 @@ Cancellation by registrar uses CancelIncident.
 
 ```json
 {
-  "newStatus": "string"
+  "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED"
 }
 
 ```
@@ -8001,7 +8001,7 @@ Cancellation by registrar uses CancelIncident.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|newStatus|string|true|none|none|
+|newStatus|[commandRequestV1ServiceRequestStatus](#schemacommandrequestv1servicerequeststatus)|true|none|none|
 
 <h2 id="tocS_classifierV1Type">classifierV1Type</h2>
 <!-- backwards compatibility -->
@@ -8123,6 +8123,35 @@ Type mirrors projections.incident_types row.
 |*anonymous*|INCIDENT_STATUS_DONE|
 |*anonymous*|INCIDENT_STATUS_REJECTED|
 |*anonymous*|INCIDENT_STATUS_CANCELLED|
+
+<h2 id="tocS_commandRequestV1ServiceRequestStatus">commandRequestV1ServiceRequestStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemacommandrequestv1servicerequeststatus"></a>
+<a id="schema_commandRequestV1ServiceRequestStatus"></a>
+<a id="tocScommandrequestv1servicerequeststatus"></a>
+<a id="tocscommandrequestv1servicerequeststatus"></a>
+
+```json
+"SERVICE_REQUEST_STATUS_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|SERVICE_REQUEST_STATUS_UNSPECIFIED|
+|*anonymous*|SERVICE_REQUEST_STATUS_IN_WORK|
+|*anonymous*|SERVICE_REQUEST_STATUS_ON_HOLD|
+|*anonymous*|SERVICE_REQUEST_STATUS_PENDING_REVIEW|
+|*anonymous*|SERVICE_REQUEST_STATUS_COMPLETED|
+|*anonymous*|SERVICE_REQUEST_STATUS_CANCELLED|
 
 <h2 id="tocS_protobufAny">protobufAny</h2>
 <!-- backwards compatibility -->
@@ -8261,6 +8290,36 @@ Type mirrors projections.incident_types row.
 |actor|[v1ActorView](#schemav1actorview)|false|none|none|
 |changedAt|string|false|none|none|
 
+<h2 id="tocS_queryRequestV1ServiceRequestStatus">queryRequestV1ServiceRequestStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemaqueryrequestv1servicerequeststatus"></a>
+<a id="schema_queryRequestV1ServiceRequestStatus"></a>
+<a id="tocSqueryrequestv1servicerequeststatus"></a>
+<a id="tocsqueryrequestv1servicerequeststatus"></a>
+
+```json
+"SERVICE_REQUEST_STATUS_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|SERVICE_REQUEST_STATUS_UNSPECIFIED|
+|*anonymous*|SERVICE_REQUEST_STATUS_CREATED|
+|*anonymous*|SERVICE_REQUEST_STATUS_IN_WORK|
+|*anonymous*|SERVICE_REQUEST_STATUS_ON_HOLD|
+|*anonymous*|SERVICE_REQUEST_STATUS_PENDING_REVIEW|
+|*anonymous*|SERVICE_REQUEST_STATUS_COMPLETED|
+|*anonymous*|SERVICE_REQUEST_STATUS_CANCELLED|
+
 <h2 id="tocS_queryRequestV1StatusHistoryEntry">queryRequestV1StatusHistoryEntry</h2>
 <!-- backwards compatibility -->
 <a id="schemaqueryrequestv1statushistoryentry"></a>
@@ -8271,8 +8330,8 @@ Type mirrors projections.incident_types row.
 ```json
 {
   "id": "string",
-  "oldStatus": "string",
-  "newStatus": "string",
+  "oldStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+  "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
   "actorId": "string",
   "actorName": "string",
   "changedAt": "string"
@@ -8285,8 +8344,8 @@ Type mirrors projections.incident_types row.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |id|string|false|none|none|
-|oldStatus|string|false|none|none|
-|newStatus|string|false|none|none|
+|oldStatus|[queryRequestV1ServiceRequestStatus](#schemaqueryrequestv1servicerequeststatus)|false|none|none|
+|newStatus|[queryRequestV1ServiceRequestStatus](#schemaqueryrequestv1servicerequeststatus)|false|none|none|
 |actorId|string|false|none|none|
 |actorName|string|false|none|none|
 |changedAt|string|false|none|none|
@@ -9063,12 +9122,12 @@ ClinicListItem is the minimal shape returned by list endpoints.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|organizationId|string|false|none|none|
+|organizationId|string|true|none|none|
 |clinicId|string|false|none|none|
 |departmentId|string|false|none|none|
-|title|string|false|none|none|
-|content|string|false|none|none|
-|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|false|none|none|
+|title|string|true|none|none|
+|content|string|true|none|none|
+|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|true|none|none|
 |startsAt|string|false|none|none|
 |endsAt|string|false|none|none|
 
@@ -9174,11 +9233,11 @@ ClinicListItem is the minimal shape returned by list endpoints.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|departmentId|string|false|none|none|
-|categoryId|string|false|none|none|
-|typeId|string|false|none|none|
+|departmentId|string|true|none|none|
+|categoryId|string|true|none|none|
+|typeId|string|true|none|none|
 |description|string|false|none|none|
-|occurredAt|string|false|none|none|
+|occurredAt|string|true|none|none|
 
 <h2 id="tocS_v1CreateIncidentResponse">v1CreateIncidentResponse</h2>
 <!-- backwards compatibility -->
@@ -10217,8 +10276,8 @@ when the backing column is NULL.
   "statusHistory": [
     {
       "id": "string",
-      "oldStatus": "string",
-      "newStatus": "string",
+      "oldStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+      "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
       "actorId": "string",
       "actorName": "string",
       "changedAt": "string"
@@ -10263,7 +10322,7 @@ when the backing column is NULL.
     "typeId": "string",
     "incidentId": "string",
     "description": "string",
-    "status": "string",
+    "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
     "authorId": "string",
     "authorDisplayName": "string",
     "executors": [
@@ -11380,7 +11439,7 @@ patient_status, description and timestamps are populated.
       "typeId": "string",
       "incidentId": "string",
       "description": "string",
-      "status": "string",
+      "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
       "authorId": "string",
       "authorDisplayName": "string",
       "executors": [
@@ -11422,7 +11481,7 @@ patient_status, description and timestamps are populated.
       "typeId": "string",
       "incidentId": "string",
       "description": "string",
-      "status": "string",
+      "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
       "authorId": "string",
       "authorDisplayName": "string",
       "executors": [
@@ -12274,7 +12333,7 @@ calls to render a name or email.
   "typeId": "string",
   "incidentId": "string",
   "description": "string",
-  "status": "string",
+  "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
   "authorId": "string",
   "authorDisplayName": "string",
   "executors": [
@@ -12301,7 +12360,7 @@ calls to render a name or email.
 |typeId|string|false|none|none|
 |incidentId|string|false|none|none|
 |description|string|false|none|none|
-|status|string|false|none|none|
+|status|[queryRequestV1ServiceRequestStatus](#schemaqueryrequestv1servicerequeststatus)|false|none|none|
 |authorId|string|false|none|none|
 |authorDisplayName|string|false|none|none|
 |executors|[[v1Executor](#schemav1executor)]|false|none|none|
@@ -12350,7 +12409,7 @@ calls to render a name or email.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|organizationId|string|false|none|none|
+|organizationId|string|true|none|none|
 |categoryId|string|false|none|none|
 |typeId|string|false|none|none|
 |description|string|false|none|none|

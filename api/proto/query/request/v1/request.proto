@@ -6,6 +6,16 @@ import "google/api/annotations.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/query/request/v1;requestqueryv1";
 
+enum ServiceRequestStatus {
+  SERVICE_REQUEST_STATUS_UNSPECIFIED = 0;
+  SERVICE_REQUEST_STATUS_CREATED = 1;
+  SERVICE_REQUEST_STATUS_IN_WORK = 2;
+  SERVICE_REQUEST_STATUS_ON_HOLD = 3;
+  SERVICE_REQUEST_STATUS_PENDING_REVIEW = 4;
+  SERVICE_REQUEST_STATUS_COMPLETED = 5;
+  SERVICE_REQUEST_STATUS_CANCELLED = 6;
+}
+
 service ServiceRequestQueryService {
   rpc GetServiceRequest(GetServiceRequestRequest) returns (GetServiceRequestResponse) {
     option (google.api.http) = {get: "/v1/service-requests/{id}"};
@@ -35,7 +45,7 @@ message ServiceRequest {
   string type_id = 5;
   optional string incident_id = 6;
   string description = 7;
-  string status = 8;
+  ServiceRequestStatus status = 8;
   string author_id = 9;
   string author_display_name = 10;
   repeated Executor executors = 11;
@@ -70,8 +80,8 @@ message ListServiceRequestsByIncidentResponse {
 
 message StatusHistoryEntry {
   string id = 1;
-  optional string old_status = 2;
-  string new_status = 3;
+  optional ServiceRequestStatus old_status = 2;
+  ServiceRequestStatus new_status = 3;
   string actor_id = 4;
   string actor_name = 5;
   string changed_at = 6;

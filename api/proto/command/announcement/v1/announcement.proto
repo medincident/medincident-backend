@@ -3,6 +3,7 @@ syntax = "proto3";
 package command.announcement.v1;
 
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/command/announcement/v1;announcementv1";
 
@@ -41,12 +42,12 @@ enum AnnouncementPriority {
 }
 
 message CreateAnnouncementRequest {
-  string organization_id = 1;
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
   optional string clinic_id = 2;
   optional string department_id = 3;
-  string title = 4;
-  string content = 5;
-  AnnouncementPriority priority = 6;
+  string title = 4 [(google.api.field_behavior) = REQUIRED];
+  string content = 5 [(google.api.field_behavior) = REQUIRED];
+  AnnouncementPriority priority = 6 [(google.api.field_behavior) = REQUIRED];
   optional string starts_at = 7; // RFC3339Nano
   optional string ends_at = 8; // RFC3339Nano
 }
@@ -55,26 +56,26 @@ message CreateAnnouncementResponse {
 }
 
 message UpdateAnnouncementRequest {
-  string id = 1;
-  string title = 2;
-  string content = 3;
+  string id = 1 [(google.api.field_behavior) = REQUIRED];
+  string title = 2 [(google.api.field_behavior) = REQUIRED];
+  string content = 3 [(google.api.field_behavior) = REQUIRED];
   optional string starts_at = 4; // RFC3339Nano; absent = clear
   optional string ends_at = 5; // RFC3339Nano; absent = clear
 }
 message UpdateAnnouncementResponse {}
 
 message UpdateAnnouncementPriorityRequest {
-  string id = 1;
-  AnnouncementPriority priority = 2;
+  string id = 1 [(google.api.field_behavior) = REQUIRED];
+  AnnouncementPriority priority = 2 [(google.api.field_behavior) = REQUIRED];
 }
 message UpdateAnnouncementPriorityResponse {}
 
 message ArchiveAnnouncementRequest {
-  string id = 1;
+  string id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 message ArchiveAnnouncementResponse {}
 
 message UnarchiveAnnouncementRequest {
-  string id = 1;
+  string id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 message UnarchiveAnnouncementResponse {}

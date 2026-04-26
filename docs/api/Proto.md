@@ -196,6 +196,8 @@
     - [UpdateServiceRequestStatusRequest](#command-request-v1-UpdateServiceRequestStatusRequest)
     - [UpdateServiceRequestStatusResponse](#command-request-v1-UpdateServiceRequestStatusResponse)
 
+    - [ServiceRequestStatus](#command-request-v1-ServiceRequestStatus)
+
     - [ServiceRequestCommandService](#command-request-v1-ServiceRequestCommandService)
 
 - [query/announcement/v1/announcement.proto](#query_announcement_v1_announcement-proto)
@@ -362,6 +364,8 @@
     - [ListServiceRequestsResponse](#query-request-v1-ListServiceRequestsResponse)
     - [ServiceRequest](#query-request-v1-ServiceRequest)
     - [StatusHistoryEntry](#query-request-v1-StatusHistoryEntry)
+
+    - [ServiceRequestStatus](#query-request-v1-ServiceRequestStatus)
 
     - [ServiceRequestQueryService](#query-request-v1-ServiceRequestQueryService)
 
@@ -2847,7 +2851,7 @@ generated under pkg/.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | service_request_id | [string](#string) |  |  |
-| new_status | [string](#string) |  |  |
+| new_status | [ServiceRequestStatus](#command-request-v1-ServiceRequestStatus) |  |  |
 
 
 
@@ -2863,6 +2867,22 @@ generated under pkg/.
 
 
 
+
+
+
+<a name="command-request-v1-ServiceRequestStatus"></a>
+
+### ServiceRequestStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| SERVICE_REQUEST_STATUS_UNSPECIFIED | 0 |  |
+| SERVICE_REQUEST_STATUS_IN_WORK | 1 |  |
+| SERVICE_REQUEST_STATUS_ON_HOLD | 2 |  |
+| SERVICE_REQUEST_STATUS_PENDING_REVIEW | 3 |  |
+| SERVICE_REQUEST_STATUS_COMPLETED | 4 |  |
+| SERVICE_REQUEST_STATUS_CANCELLED | 5 |  |
 
 
 
@@ -5380,7 +5400,7 @@ both values.
 | type_id | [string](#string) |  |  |
 | incident_id | [string](#string) | optional |  |
 | description | [string](#string) |  |  |
-| status | [string](#string) |  |  |
+| status | [ServiceRequestStatus](#query-request-v1-ServiceRequestStatus) |  |  |
 | author_id | [string](#string) |  |  |
 | author_display_name | [string](#string) |  |  |
 | executors | [Executor](#query-request-v1-Executor) | repeated |  |
@@ -5401,8 +5421,8 @@ both values.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  |  |
-| old_status | [string](#string) | optional |  |
-| new_status | [string](#string) |  |  |
+| old_status | [ServiceRequestStatus](#query-request-v1-ServiceRequestStatus) | optional |  |
+| new_status | [ServiceRequestStatus](#query-request-v1-ServiceRequestStatus) |  |  |
 | actor_id | [string](#string) |  |  |
 | actor_name | [string](#string) |  |  |
 | changed_at | [string](#string) |  |  |
@@ -5411,6 +5431,23 @@ both values.
 
 
 
+
+
+
+<a name="query-request-v1-ServiceRequestStatus"></a>
+
+### ServiceRequestStatus
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| SERVICE_REQUEST_STATUS_UNSPECIFIED | 0 |  |
+| SERVICE_REQUEST_STATUS_CREATED | 1 |  |
+| SERVICE_REQUEST_STATUS_IN_WORK | 2 |  |
+| SERVICE_REQUEST_STATUS_ON_HOLD | 3 |  |
+| SERVICE_REQUEST_STATUS_PENDING_REVIEW | 4 |  |
+| SERVICE_REQUEST_STATUS_COMPLETED | 5 |  |
+| SERVICE_REQUEST_STATUS_CANCELLED | 6 |  |
 
 
 

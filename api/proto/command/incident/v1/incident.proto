@@ -3,6 +3,7 @@ syntax = "proto3";
 package command.incident.v1;
 
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/command/incident/v1;incidentv1";
 
@@ -59,18 +60,18 @@ enum IncidentPriority {
 }
 
 message CreateIncidentRequest {
-  string department_id = 1;
-  string category_id = 2;
-  string type_id = 3;
+  string department_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string category_id = 2 [(google.api.field_behavior) = REQUIRED];
+  string type_id = 3 [(google.api.field_behavior) = REQUIRED];
   optional string description = 4;
-  string occurred_at = 5; // RFC3339Nano
+  string occurred_at = 5 [(google.api.field_behavior) = REQUIRED]; // RFC3339Nano
 }
 message CreateIncidentResponse {
   string incident_id = 1;
 }
 
 message CancelIncidentRequest {
-  string incident_id = 1;
+  string incident_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 message CancelIncidentResponse {}
 
@@ -78,25 +79,25 @@ message CancelIncidentResponse {}
 // pending -> in_progress, in_progress -> done, in_progress -> rejected.
 // Cancellation by registrar uses CancelIncident.
 message UpdateIncidentStatusRequest {
-  string incident_id = 1;
-  IncidentStatus new_status = 2;
+  string incident_id = 1 [(google.api.field_behavior) = REQUIRED];
+  IncidentStatus new_status = 2 [(google.api.field_behavior) = REQUIRED];
 }
 message UpdateIncidentStatusResponse {}
 
 message UpdateIncidentPriorityRequest {
-  string incident_id = 1;
-  IncidentPriority priority = 2;
+  string incident_id = 1 [(google.api.field_behavior) = REQUIRED];
+  IncidentPriority priority = 2 [(google.api.field_behavior) = REQUIRED];
 }
 message UpdateIncidentPriorityResponse {}
 
 message UpdateIncidentDescriptionRequest {
-  string incident_id = 1;
+  string incident_id = 1 [(google.api.field_behavior) = REQUIRED];
   optional string description = 2;
 }
 message UpdateIncidentDescriptionResponse {}
 
 message ReopenIncidentRequest {
-  string incident_id = 1;
+  string incident_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 message ReopenIncidentResponse {
   string reopened_incident_id = 1;
