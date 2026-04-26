@@ -1,6 +1,3 @@
-// Package classifier is the query-side reader for the request type classifier.
-//
-// See: docs/services/request/Classifier.md
 package classifier
 
 import (
