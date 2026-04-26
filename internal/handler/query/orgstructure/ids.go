@@ -12,12 +12,12 @@ const (
 	ErrCodeHandlerInvalidDepartmentID   = "handler_invalid_department_id"
 )
 
-func parseUUID(raw, field, code string) (uuid.UUID, error) {
+func parseUUID(raw, field, code, public string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
 	if err != nil {
 		return uuid.Nil, oops.In("handler.query.orgstructure").
 			Code(code).
-			Public(field+" is not a valid UUID.").
+			Public(public).
 			With(field, raw).
 			Wrap(err)
 	}
@@ -25,13 +25,13 @@ func parseUUID(raw, field, code string) (uuid.UUID, error) {
 }
 
 func parseOrganizationID(raw string) (uuid.UUID, error) {
-	return parseUUID(raw, "organization_id", ErrCodeHandlerInvalidOrganizationID)
+	return parseUUID(raw, "organization_id", ErrCodeHandlerInvalidOrganizationID, "Invalid organization id.")
 }
 
 func parseClinicID(raw string) (uuid.UUID, error) {
-	return parseUUID(raw, "clinic_id", ErrCodeHandlerInvalidClinicID)
+	return parseUUID(raw, "clinic_id", ErrCodeHandlerInvalidClinicID, "Invalid clinic id.")
 }
 
 func parseDepartmentID(raw string) (uuid.UUID, error) {
-	return parseUUID(raw, "department_id", ErrCodeHandlerInvalidDepartmentID)
+	return parseUUID(raw, "department_id", ErrCodeHandlerInvalidDepartmentID, "Invalid department id.")
 }

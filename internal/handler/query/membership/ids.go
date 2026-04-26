@@ -7,10 +7,10 @@ import (
 
 // Error codes emitted by handler-layer request parsing.
 const (
-	ErrCodeHandlerInvalidEmployeeID     = "handler_invalid_employee_id"
-	ErrCodeHandlerInvalidDepartmentID   = "handler_invalid_department_id"
-	ErrCodeHandlerInvalidClinicID       = "handler_invalid_clinic_id"
-	ErrCodeHandlerInvalidOrganizationID = "handler_invalid_organization_id"
+	ErrCodeHandlerInvalidEmployeeID     = "handler_employee_id_invalid"
+	ErrCodeHandlerInvalidDepartmentID   = "handler_department_id_invalid"
+	ErrCodeHandlerInvalidClinicID       = "handler_clinic_id_invalid"
+	ErrCodeHandlerInvalidOrganizationID = "handler_organization_id_invalid"
 )
 
 func parseUUID(raw, field, code string) (uuid.UUID, error) {
