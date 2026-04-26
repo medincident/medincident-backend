@@ -105,7 +105,7 @@
 
 ### Права доступа
 
-Привилегированные роли: `SystemAdmin`, `AdminOf.Organization(organizationID)`,
+Привилегированные роли: `AdminOf.Organization(organizationID)`,
 `OrgHeadOf.Organization(organizationID)`, `OrgDispatcherOf.Organization(organizationID)`,
 `ClinicHeadOf.Clinic(clinicID)`, `DeptResponsibleOf.Department(departmentID)`.
 
@@ -118,7 +118,7 @@
 
 ### Инварианты
 
-- Инцидент не должен быть в терминальном статусе (`cancelled`).
+- Инцидент не должен быть в терминальном статусе (`done`, `rejected`, `cancelled`).
 - Если новый приоритет совпадает с текущим — операция пропускается без ошибки (no-op), запись в историю не создаётся.
 
 ### Ошибки
