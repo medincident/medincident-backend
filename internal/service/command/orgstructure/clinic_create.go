@@ -30,10 +30,10 @@ const (
 // CreateClinicPayload is the validated client-facing payload of
 // CreateClinic.
 type CreateClinicPayload struct {
-	OrganizationID  string  `validate:"required,uuid"`
-	Name            string  `validate:"required,no_extra_ws,min=2,max=256"`
-	Description     *string `validate:"omitnil,no_extra_ws,min=8,max=2048"`
-	PhysicalAddress AddressInput
+	OrganizationID  string       `validate:"required,uuid"`
+	Name            string       `validate:"required,no_extra_ws,min=2,max=256"`
+	Description     *string      `validate:"omitnil,no_extra_ws,min=8,max=2048"`
+	PhysicalAddress AddressInput `validate:"required"`
 }
 
 // CreateClinicCommand = caller + payload.
