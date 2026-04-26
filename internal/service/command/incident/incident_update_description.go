@@ -36,7 +36,7 @@ type UpdateIncidentDescriptionCommand struct {
 //
 // See: docs/services/incident/Incidents.md
 func (s *IncidentService) UpdateDescription(
-	ctx context.Context, cmd *UpdateIncidentDescriptionCommand,
+	ctx context.Context, cmd UpdateIncidentDescriptionCommand,
 ) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err

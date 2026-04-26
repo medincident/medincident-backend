@@ -16,7 +16,7 @@ func (h *IncidentHandler) ReopenIncident(
 	if err != nil {
 		return nil, err
 	}
-	res, err := h.svc.Reopen(ctx, &incidentsvc.ReopenIncidentCommand{
+	res, err := h.svc.Reopen(ctx, incidentsvc.ReopenIncidentCommand{
 		Caller:  authz.Caller{ZitadelUserID: callerID},
 		Payload: incidentsvc.ReopenIncidentPayload{IncidentID: req.GetIncidentId()},
 	})

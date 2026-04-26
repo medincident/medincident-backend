@@ -34,7 +34,7 @@ type UpdateCommand struct {
 // the current value (no clear-to-null semantics).
 //
 // See: docs/services/incident/Buffer.md
-func (s *BufferService) Update(ctx context.Context, cmd *UpdateCommand) error {
+func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err
 	}

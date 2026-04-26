@@ -28,7 +28,7 @@ type RejectCommand struct {
 // the entry is pending.
 //
 // See: docs/services/incident/Buffer.md
-func (s *BufferService) Reject(ctx context.Context, cmd *RejectCommand) error {
+func (s *BufferService) Reject(ctx context.Context, cmd RejectCommand) error {
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err
 	}

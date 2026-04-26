@@ -16,7 +16,7 @@ func (h *IncidentHandler) UpdateIncidentDescription(
 	if err != nil {
 		return nil, err
 	}
-	if err := h.svc.UpdateDescription(ctx, &incidentsvc.UpdateIncidentDescriptionCommand{
+	if err := h.svc.UpdateDescription(ctx, incidentsvc.UpdateIncidentDescriptionCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: incidentsvc.UpdateIncidentDescriptionPayload{
 			IncidentID:  req.GetIncidentId(),

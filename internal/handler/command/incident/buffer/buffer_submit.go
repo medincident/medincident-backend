@@ -46,7 +46,7 @@ func (h *BufferHandler) SubmitPatientIncident(
 	if occurredSet {
 		occurred = &occurredVal
 	}
-	res, err := h.svc.Submit(ctx, &buffersvc.SubmitCommand{
+	res, err := h.svc.Submit(ctx, buffersvc.SubmitCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: buffersvc.SubmitPayload{
 			OrganizationID: req.GetOrganizationId(),

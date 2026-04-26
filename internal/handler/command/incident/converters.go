@@ -3,7 +3,6 @@ package incident
 import (
 	"github.com/samber/oops"
 
-	"github.com/medincident/medincident-backend/internal/model"
 	incidentv1 "github.com/medincident/medincident-backend/pkg/command/incident/v1"
 )
 
@@ -12,16 +11,16 @@ const (
 	errCodeHandlerInvalidStatus   = "handler_invalid_status"
 )
 
-func protoPriorityToModel(p incidentv1.IncidentPriority) (model.IncidentPriority, error) {
+func protoPriorityToString(p incidentv1.IncidentPriority) (string, error) {
 	switch p {
 	case incidentv1.IncidentPriority_INCIDENT_PRIORITY_LOW:
-		return model.IncidentPriorityLow, nil
+		return "low", nil
 	case incidentv1.IncidentPriority_INCIDENT_PRIORITY_NORMAL:
-		return model.IncidentPriorityNormal, nil
+		return "normal", nil
 	case incidentv1.IncidentPriority_INCIDENT_PRIORITY_HIGH:
-		return model.IncidentPriorityHigh, nil
+		return "high", nil
 	case incidentv1.IncidentPriority_INCIDENT_PRIORITY_CRITICAL:
-		return model.IncidentPriorityCritical, nil
+		return "critical", nil
 	default:
 		return "", oops.In("handler.command.incident").
 			Code(errCodeHandlerInvalidPriority).
@@ -29,18 +28,18 @@ func protoPriorityToModel(p incidentv1.IncidentPriority) (model.IncidentPriority
 	}
 }
 
-func protoStatusToModel(s incidentv1.IncidentStatus) (model.IncidentStatus, error) {
+func protoStatusToString(s incidentv1.IncidentStatus) (string, error) {
 	switch s {
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_PENDING:
-		return model.IncidentStatusPending, nil
+		return "pending", nil
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_IN_PROGRESS:
-		return model.IncidentStatusInProgress, nil
+		return "in_progress", nil
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_DONE:
-		return model.IncidentStatusDone, nil
+		return "done", nil
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_REJECTED:
-		return model.IncidentStatusRejected, nil
+		return "rejected", nil
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_CANCELLED:
-		return model.IncidentStatusCancelled, nil
+		return "cancelled", nil
 	default:
 		return "", oops.In("handler.command.incident").
 			Code(errCodeHandlerInvalidStatus).

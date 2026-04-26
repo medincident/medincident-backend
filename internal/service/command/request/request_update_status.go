@@ -17,8 +17,8 @@ import (
 
 // UpdateServiceRequestStatusPayload carries the new status.
 type UpdateServiceRequestStatusPayload struct {
-	ServiceRequestID string                     `validate:"required,uuid"`
-	NewStatus        model.ServiceRequestStatus `validate:"required,oneof=in_work on_hold pending_review completed cancelled"`
+	ServiceRequestID string `validate:"required,uuid"`
+	NewStatus        string `validate:"required,oneof=in_work on_hold pending_review completed cancelled"`
 }
 
 // UpdateServiceRequestStatusCommand = caller + payload.
@@ -37,6 +37,7 @@ func (s *ServiceRequestService) UpdateStatus(
 		return err
 	}
 	id := uuid.MustParse(cmd.Payload.ServiceRequestID)
+	newStatus := model.ServiceRequestStatus(cmd.Payload.NewStatus)
 	now := time.Now()
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -56,7 +57,7 @@ func (s *ServiceRequestService) UpdateStatus(
 			return err
 		}
 
-		if err := s.validateStatusTransition(ctx, sr, cmd.Payload.NewStatus, isExecutor, cmd.Caller.ZitadelUserID); err != nil {
+		if err := s.validateStatusTransition(ctx, sr, newStatus, isExecutor, cmd.Caller.ZitadelUserID); err != nil {
 			return err
 		}
 
@@ -66,7 +67,7 @@ func (s *ServiceRequestService) UpdateStatus(
 		}
 
 		old := sr.Status
-		sr.Status = cmd.Payload.NewStatus
+		sr.Status = newStatus
 		sr.UpdatedAt = now
 		if err := tx.Save(sr).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)

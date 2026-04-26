@@ -25,7 +25,7 @@ func (h *BufferHandler) UpdatePatientIncident(
 	if occurredSet {
 		occurred = &occurredVal
 	}
-	if err := h.svc.Update(ctx, &buffersvc.UpdateCommand{
+	if err := h.svc.Update(ctx, buffersvc.UpdateCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: buffersvc.UpdatePayload{
 			BufferID:    req.GetBufferId(),

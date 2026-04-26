@@ -16,11 +16,11 @@ func (h *IncidentHandler) UpdateIncidentPriority(
 	if err != nil {
 		return nil, err
 	}
-	pr, err := protoPriorityToModel(req.GetPriority())
+	pr, err := protoPriorityToString(req.GetPriority())
 	if err != nil {
 		return nil, err
 	}
-	if err := h.svc.UpdatePriority(ctx, &incidentsvc.UpdateIncidentPriorityCommand{
+	if err := h.svc.UpdatePriority(ctx, incidentsvc.UpdateIncidentPriorityCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: incidentsvc.UpdateIncidentPriorityPayload{
 			IncidentID: req.GetIncidentId(),
