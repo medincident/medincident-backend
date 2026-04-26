@@ -55,7 +55,7 @@ jobs:
           done < <(find docs -type f -name '*.md' -print0)
 
       - name: Push docs to Wiki
-        uses: Andrew-Chen-Wang/github-wiki-action@v4
+        uses: Andrew-Chen-Wang/github-wiki-action@v5
         with:
           path: .wiki-sync/
           token: ${{ secrets.GITHUB_TOKEN }}
