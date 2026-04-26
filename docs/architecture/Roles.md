@@ -54,6 +54,6 @@ SystemAdmin
 
 ## Где живёт код
 
-- Политики: [`internal/service/authz/policy.go`](../internal/service/authz/policy.go)
+- Политики: [`internal/service/authz/policy.go`](../../internal/service/authz/policy.go)
 - Роли: `org_admins.go`, `org_head.go`, `clinic_head.go`, `dept_responsible.go`, `org_dispatcher.go`
 - Применение: `s.authz.Require(ctx, cmd.Caller.ZitadelUserID, authz.AdminOf.X(scopeID))`

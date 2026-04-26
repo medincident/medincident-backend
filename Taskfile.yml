@@ -6,10 +6,11 @@ tasks:
     cmds:
       - go tool buf generate
       - go tool buf generate --template buf.gen.docs.yaml
-      - npx widdershins api/openapi/medincident.swagger.json
-          -o docs/api/HTTP.md
-          --language_tabs 'shell:Shell'
-          --summary
+      - |-
+        npx widdershins api/openapi/medincident.swagger.json \
+          -o docs/api/HTTP.md \
+          --language_tabs 'shell:Shell' \
+          --summary \
           --omitHeader
       # Normalize whitespace in generated docs so pre-commit hooks
       # (trailing-whitespace, end-of-file-fixer) don't cause drift

@@ -15,7 +15,7 @@
 
 ## Авторизация
 
-Авторизация — RBAC с scope-изоляцией. Реализована в [`internal/service/authz/`](../internal/service/authz/).
+Авторизация — RBAC с scope-изоляцией. Реализована в [`internal/service/authz/`](../../internal/service/authz/).
 
 ### Принцип работы
 

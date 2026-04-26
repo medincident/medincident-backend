@@ -11,10 +11,10 @@
 - [[Орг. структура|Service-OrgStructure]]
 - [[Сотрудники и роли|Service-Membership]]
 - [[Классификатор инцидентов|Service-Incident-Classifier]]
-- [[Инциденты|Service-Incidents]]
+- [[Инциденты|Service-Incident-Incidents]]
 - [[Буфер пациента|Service-Incident-Buffer]]
 - [[Классификатор заявок|Service-Request-Classifier]]
-- [[Заявки|Service-Requests]]
+- [[Заявки|Service-Request-Requests]]
 - [[Идентификация|Service-Identity]]
 - [[Статистика|Service-Stats]]
 

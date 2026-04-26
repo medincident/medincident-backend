@@ -19,10 +19,10 @@
 | [[Орг. структура\|Service-OrgStructure]] | Organization / Clinic / Department |
 | [[Сотрудники и роли\|Service-Membership]] | Employee, назначение ролей, отпуска |
 | [[Классификатор инцидентов\|Service-Incident-Classifier]] | Категории и типы |
-| [[Инциденты\|Service-Incidents]] | Создание, статусы, приоритеты |
+| [[Инциденты\|Service-Incident-Incidents]] | Создание, статусы, приоритеты |
 | [[Буфер пациента\|Service-Incident-Buffer]] | Заявки пациентов до публикации |
 | [[Классификатор заявок\|Service-Request-Classifier]] | Категории и типы заявок |
-| [[Заявки\|Service-Requests]] | ServiceRequest (в разработке) |
+| [[Заявки\|Service-Request-Requests]] | ServiceRequest (в разработке) |
 | [[Идентификация\|Service-Identity]] | Сессии Zitadel |
 | [[Статистика\|Service-Stats]] | Агрегированная статистика |
 
