@@ -59,22 +59,19 @@ func (s *AnnouncementService) Update(
 			return err
 		}
 
-		var startsAt null.Time
+		a.Title = strings.TrimSpace(cmd.Payload.Title)
+		a.Content = strings.TrimSpace(cmd.Payload.Content)
+		a.StartsAt = null.Time{}
 		if cmd.Payload.StartsAt != nil {
-			startsAt = null.TimeFrom(*cmd.Payload.StartsAt)
+			a.StartsAt = null.TimeFrom(*cmd.Payload.StartsAt)
 		}
-		var endsAt null.Time
+		a.EndsAt = null.Time{}
 		if cmd.Payload.EndsAt != nil {
-			endsAt = null.TimeFrom(*cmd.Payload.EndsAt)
+			a.EndsAt = null.TimeFrom(*cmd.Payload.EndsAt)
 		}
+		a.UpdatedAt = time.Now()
 
-		if err := tx.Model(a).Updates(map[string]any{
-			"title":      strings.TrimSpace(cmd.Payload.Title),
-			"content":    strings.TrimSpace(cmd.Payload.Content),
-			"starts_at":  startsAt,
-			"ends_at":    endsAt,
-			"updated_at": time.Now(),
-		}).Error; err != nil {
+		if err := tx.Save(a).Error; err != nil {
 			return oops.In(scope).
 				Code(ErrCodeAnnouncementSaveFailed).
 				With("announcement_id", id).

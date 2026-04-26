@@ -62,23 +62,25 @@ func (s *ServiceRequestService) Create(
 
 	var result CreateServiceRequestResult
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		var dept model.Department
-		if err := tx.First(&dept, "id = ?", deptID).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return oops.In(scope).Code(ErrCodeServiceRequestDeptNotFound).
-					Public("Department not found.").With("department_id", deptID).Wrap(err)
-			}
+		var deptClinic struct {
+			ClinicID       uuid.UUID
+			OrganizationID uuid.UUID
+		}
+		if err := tx.Raw(`SELECT c.id AS clinic_id, c.organization_id
+			FROM domain.departments d
+			JOIN domain.clinics c ON c.id = d.clinic_id
+			WHERE d.id = ?`, deptID).Scan(&deptClinic).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeServiceRequestLoadFailed).Wrap(err)
 		}
-		var clinic model.Clinic
-		if err := tx.First(&clinic, "id = ?", dept.ClinicID).Error; err != nil {
-			return oops.In(scope).Code(ErrCodeServiceRequestClinicNotFound).
-				With("clinic_id", dept.ClinicID).Wrap(err)
+		if deptClinic.ClinicID == uuid.Nil {
+			return oops.In(scope).Code(ErrCodeServiceRequestDeptNotFound).
+				Public("Department not found.").With("department_id", deptID).
+				Errorf("department not found")
 		}
-		orgID := clinic.OrganizationID
+		orgID := deptClinic.OrganizationID
 
 		if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID,
-			privilegedActorPolicy(orgID, clinic.ID, deptID)); err != nil {
+			privilegedActorPolicy(orgID, deptClinic.ClinicID, deptID)); err != nil {
 			return err
 		}
 
@@ -144,7 +146,7 @@ func (s *ServiceRequestService) Create(
 		sr := model.ServiceRequest{
 			ID:             id,
 			OrganizationID: orgID,
-			ClinicID:       clinic.ID,
+			ClinicID:       deptClinic.ClinicID,
 			DepartmentID:   deptID,
 			TypeID:         typeID,
 			IncidentID:     incidentID,

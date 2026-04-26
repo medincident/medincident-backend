@@ -2,7 +2,6 @@ package incident
 
 import (
 	"context"
-	"errors"
 	"strings"
 	"time"
 
@@ -77,26 +76,25 @@ func (s *IncidentService) Create(
 
 	var result CreateIncidentResult
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		// Resolve dept -> clinic -> organization.
-		var dept model.Department
-		if err := tx.First(&dept, "id = ?", deptID).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return oops.In(scope).
-					Code(ErrCodeIncidentDeptNotFound).
-					Public("Department not found.").
-					With("department_id", deptID).
-					Wrap(err)
-			}
+		// Resolve dept -> clinic -> organization in a single JOIN.
+		var deptClinic struct {
+			ClinicID       uuid.UUID
+			OrganizationID uuid.UUID
+		}
+		if err := tx.Raw(`SELECT c.id AS clinic_id, c.organization_id
+			FROM domain.departments d
+			JOIN domain.clinics c ON c.id = d.clinic_id
+			WHERE d.id = ?`, deptID).Scan(&deptClinic).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentLoadFailed).Wrap(err)
 		}
-		var clinic model.Clinic
-		if err := tx.First(&clinic, "id = ?", dept.ClinicID).Error; err != nil {
+		if deptClinic.ClinicID == uuid.Nil {
 			return oops.In(scope).
-				Code(ErrCodeIncidentClinicNotFound).
-				With("clinic_id", dept.ClinicID).
-				Wrap(err)
+				Code(ErrCodeIncidentDeptNotFound).
+				Public("Department not found.").
+				With("department_id", deptID).
+				Errorf("department not found")
 		}
-		orgID := clinic.OrganizationID
+		orgID := deptClinic.OrganizationID
 
 		// Authorization: caller is an employee of this org.
 		if err := s.authz.Require(ctx, cmd.Caller.ZitadelUserID,
@@ -156,7 +154,7 @@ func (s *IncidentService) Create(
 		inc := model.Incident{
 			ID:                  id,
 			OrganizationID:      orgID,
-			ClinicID:            clinic.ID,
+			ClinicID:            deptClinic.ClinicID,
 			DepartmentID:        deptID,
 			CategoryID:          categoryID,
 			TypeID:              typeID,
@@ -186,19 +184,31 @@ func (s *IncidentService) Create(
 func (s *IncidentService) loadRegistrarSnapshot(
 	tx *gorm.DB, callerZitadelID string, orgID uuid.UUID,
 ) (projector.IncidentRegistrarSnapshot, error) {
-	var emp model.Employee
-	if err := tx.Where("zitadel_user_id = ? AND organization_id = ?",
-		callerZitadelID, orgID).First(&emp).Error; err != nil {
+	var snap struct {
+		EmployeeID     uuid.UUID
+		Position       null.String
+		OrganizationID uuid.UUID
+		ClinicID       uuid.UUID
+		DepartmentID   uuid.UUID
+	}
+	if err := tx.Raw(`SELECT e.id AS employee_id, e.position, e.organization_id,
+			d.clinic_id, e.department_id
+		FROM domain.employees e
+		JOIN domain.departments d ON d.id = e.department_id
+		WHERE e.zitadel_user_id = ? AND e.organization_id = ?`,
+		callerZitadelID, orgID).Scan(&snap).Error; err != nil {
 		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
 			Code(ErrCodeIncidentEmployeeNotFound).
 			Public("Caller is not an employee of this organization.").
 			With("organization_id", orgID).
 			Wrap(err)
 	}
-	var dept model.Department
-	if err := tx.First(&dept, "id = ?", emp.DepartmentID).Error; err != nil {
+	if snap.EmployeeID == uuid.Nil {
 		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
-			Code(ErrCodeIncidentDeptNotFound).Wrap(err)
+			Code(ErrCodeIncidentEmployeeNotFound).
+			Public("Caller is not an employee of this organization.").
+			With("organization_id", orgID).
+			Errorf("employee not found")
 	}
 	// projections.users.display_name is the canonical denormalized name.
 	var displayName string
@@ -213,11 +223,11 @@ func (s *IncidentService) loadRegistrarSnapshot(
 			Errorf("display_name lookup failed")
 	}
 	return projector.IncidentRegistrarSnapshot{
-		EmployeeID:     emp.ID,
+		EmployeeID:     snap.EmployeeID,
 		DisplayName:    displayName,
-		Position:       emp.Position,
-		OrganizationID: emp.OrganizationID,
-		ClinicID:       dept.ClinicID,
-		DepartmentID:   emp.DepartmentID,
+		Position:       snap.Position,
+		OrganizationID: snap.OrganizationID,
+		ClinicID:       snap.ClinicID,
+		DepartmentID:   snap.DepartmentID,
 	}, nil
 }
