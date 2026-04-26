@@ -153,7 +153,7 @@ func TestBufferFlow_PublishCreatesIncident(t *testing.T) {
 	seedUser(t, patientID, "Публикуемый Пациент")
 	patient := authz.Caller{ZitadelUserID: patientID}
 
-	occAt := time.Now().Add(-2 * time.Hour)
+	occAt := time.Now().Add(-2 * time.Hour).Format(time.RFC3339Nano)
 	desc := "Жалоба пациента на боли в груди"
 	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller: patient,

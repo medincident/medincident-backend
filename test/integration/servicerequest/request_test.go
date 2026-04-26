@@ -155,7 +155,7 @@ func TestServiceRequest_UpdateDescription_FrozenRequest(t *testing.T) {
 		Caller: sysadminCaller,
 		Payload: requestsvc.UpdateServiceRequestStatusPayload{
 			ServiceRequestID: reqID.String(),
-			NewStatus:        model.ServiceRequestStatusCancelled,
+			NewStatus:        string(model.ServiceRequestStatusCancelled),
 		},
 	}))
 
@@ -185,7 +185,7 @@ func TestServiceRequest_UpdateStatus_ExecutorTransition(t *testing.T) {
 		Caller: authz.Caller{ZitadelUserID: executorZitadelID},
 		Payload: requestsvc.UpdateServiceRequestStatusPayload{
 			ServiceRequestID: reqID.String(),
-			NewStatus:        model.ServiceRequestStatusInWork,
+			NewStatus:        string(model.ServiceRequestStatusInWork),
 		},
 	}))
 	assert.Equal(t, model.ServiceRequestStatusInWork, loadRequest(t, reqID).Status)
@@ -212,15 +212,15 @@ func TestServiceRequest_UpdateStatus_ResponsibleCompletes(t *testing.T) {
 	executorCaller := authz.Caller{ZitadelUserID: executorZitadelID}
 	require.NoError(t, requestSvc.UpdateStatus(ctx, requestsvc.UpdateServiceRequestStatusCommand{
 		Caller:  executorCaller,
-		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: reqID.String(), NewStatus: model.ServiceRequestStatusInWork},
+		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: reqID.String(), NewStatus: string(model.ServiceRequestStatusInWork)},
 	}))
 	require.NoError(t, requestSvc.UpdateStatus(ctx, requestsvc.UpdateServiceRequestStatusCommand{
 		Caller:  executorCaller,
-		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: reqID.String(), NewStatus: model.ServiceRequestStatusPendingReview},
+		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: reqID.String(), NewStatus: string(model.ServiceRequestStatusPendingReview)},
 	}))
 	require.NoError(t, requestSvc.UpdateStatus(ctx, requestsvc.UpdateServiceRequestStatusCommand{
 		Caller:  sysadminCaller,
-		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: reqID.String(), NewStatus: model.ServiceRequestStatusCompleted},
+		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: reqID.String(), NewStatus: string(model.ServiceRequestStatusCompleted)},
 	}))
 	assert.Equal(t, model.ServiceRequestStatusCompleted, loadRequest(t, reqID).Status)
 }
@@ -240,7 +240,7 @@ func TestServiceRequest_UpdateStatus_InvalidFlow(t *testing.T) {
 		Caller: authz.Caller{ZitadelUserID: executorZitadelID},
 		Payload: requestsvc.UpdateServiceRequestStatusPayload{
 			ServiceRequestID: reqID.String(),
-			NewStatus:        model.ServiceRequestStatusCompleted,
+			NewStatus:        string(model.ServiceRequestStatusCompleted),
 		},
 	})
 	require.Error(t, err)

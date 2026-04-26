@@ -36,6 +36,7 @@ const (
 	ErrCodeIncidentTypeCategoryMismatch  = "incident_type_category_mismatch"
 	ErrCodeIncidentEmployeeNotFound      = "incident_employee_not_found"
 	ErrCodeIncidentRegistrarUserNotFound = "incident_registrar_user_not_found"
+	ErrCodeIncidentOccurredAtInvalid     = "incident_occurred_at_invalid"
 	ErrCodeIncidentOccurredAtFuture      = "incident_occurred_at_in_future"
 	ErrCodeIncidentOccurredAtTooOld      = "incident_occurred_at_too_old"
 	ErrCodeIncidentInvalidStatusFlow     = "incident_invalid_status_transition"

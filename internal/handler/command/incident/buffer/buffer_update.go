@@ -2,7 +2,6 @@ package buffer
 
 import (
 	"context"
-	"time"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
@@ -17,14 +16,6 @@ func (h *BufferHandler) UpdatePatientIncident(
 	if err != nil {
 		return nil, err
 	}
-	occurredVal, occurredSet, err := parseOptionalTimestamp(req.OccurredAt, "occurred_at")
-	if err != nil {
-		return nil, err
-	}
-	var occurred *time.Time
-	if occurredSet {
-		occurred = &occurredVal
-	}
 	if err := h.svc.Update(ctx, buffersvc.UpdateCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: buffersvc.UpdatePayload{
@@ -32,7 +23,7 @@ func (h *BufferHandler) UpdatePatientIncident(
 			CategoryID:  req.CategoryId,
 			TypeID:      req.TypeId,
 			Description: req.Description,
-			OccurredAt:  occurred,
+			OccurredAt:  req.OccurredAt,
 		},
 	}); err != nil {
 		return nil, err

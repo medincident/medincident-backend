@@ -19,11 +19,11 @@ import (
 
 // CreateIncidentPayload is the validated client-facing payload.
 type CreateIncidentPayload struct {
-	DepartmentID string    `validate:"required,uuid"`
-	CategoryID   string    `validate:"required,uuid"`
-	TypeID       string    `validate:"required,uuid"`
-	Description  *string   `validate:"omitnil,no_extra_ws,min=1,max=10000"`
-	OccurredAt   time.Time `validate:"required"`
+	DepartmentID string  `validate:"required,uuid"`
+	CategoryID   string  `validate:"required,uuid"`
+	TypeID       string  `validate:"required,uuid"`
+	Description  *string `validate:"omitnil,no_extra_ws,min=1,max=10000"`
+	OccurredAt   string  `validate:"required"`
 }
 
 type CreateIncidentCommand struct {
@@ -49,20 +49,27 @@ func (s *IncidentService) Create(
 	deptID := uuid.MustParse(cmd.Payload.DepartmentID)
 	categoryID := uuid.MustParse(cmd.Payload.CategoryID)
 	typeID := uuid.MustParse(cmd.Payload.TypeID)
+	occurred, err := time.Parse(time.RFC3339Nano, cmd.Payload.OccurredAt)
+	if err != nil {
+		return CreateIncidentResult{}, oops.In(scope).
+			Code(ErrCodeIncidentOccurredAtInvalid).
+			Public("occurred_at is not a valid RFC3339 timestamp.").
+			With("occurred_at", cmd.Payload.OccurredAt).Wrap(err)
+	}
 
 	now := time.Now()
-	if cmd.Payload.OccurredAt.After(now) {
+	if occurred.After(now) {
 		return CreateIncidentResult{}, oops.In(scope).
 			Code(ErrCodeIncidentOccurredAtFuture).
 			Public("occurred_at must not be in the future.").
-			With("occurred_at", cmd.Payload.OccurredAt).
+			With("occurred_at", occurred).
 			Errorf("future occurred_at")
 	}
-	if now.Sub(cmd.Payload.OccurredAt) > incidentMaxOccurredAtAge {
+	if now.Sub(occurred) > incidentMaxOccurredAtAge {
 		return CreateIncidentResult{}, oops.In(scope).
 			Code(ErrCodeIncidentOccurredAtTooOld).
 			Public("occurred_at exceeds the 48h registration window.").
-			With("occurred_at", cmd.Payload.OccurredAt).
+			With("occurred_at", occurred).
 			With("max_age_hours", int(incidentMaxOccurredAtAge.Hours())).
 			Errorf("occurred_at too old")
 	}
@@ -163,7 +170,7 @@ func (s *IncidentService) Create(
 			Status:              model.IncidentStatusPending,
 			Priority:            model.IncidentPriorityNormal,
 			Description:         desc,
-			OccurredAt:          cmd.Payload.OccurredAt,
+			OccurredAt:          occurred,
 			RegistrarEmployeeID: reg.EmployeeID,
 			CreatedAt:           now,
 			UpdatedAt:           now,

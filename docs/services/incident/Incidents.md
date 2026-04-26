@@ -69,32 +69,61 @@
 
 ## UpdateIncidentStatus
 
-**HTTP:** `PATCH /v1/incidents/{incident_id}/status`
+**HTTP:** `PUT /v1/incidents/{incident_id}/status`
 **gRPC:** `IncidentCommandService.UpdateIncidentStatus`
 
 ### Права доступа
 
-`AdminOf.Organization(organizationID)`
+`SystemAdmin` или `OrgAdminOf.Organization` или `OrgHeadOf.Organization` или `OrgDispatcherOf.Organization` или `ClinicHeadOf.Clinic` или `DeptResponsibleOf.Department`
 
 ### Параметры
 
 | Поле | Тип | Правила |
 |---|---|---|
 | `incident_id` | string (UUID) | required, uuid |
-| `status` | enum | required |
-| `priority` | enum | omitempty |
+| `new_status` | enum | required, oneof=in_progress done rejected |
 
 ### Инварианты
 
-- Допустимые переходы статусов: [Статусные машины](../../architecture/Status-Machines.md).
-- `cancelled` — терминальный статус, переход из него запрещён.
+- Допустимые переходы: `pending → in_progress`, `in_progress → done`, `in_progress → rejected`.
+- Отмена (`cancelled`) выполняется через отдельный метод `CancelIncident`.
 
 ### Ошибки
 
 | Код | Описание |
 |---|---|
 | `incident_not_found` | Инцидент не найден |
-| `incident_invalid_status_transition` | Недопустимый переход статуса |
+| `incident_invalid_status_flow` | Недопустимый переход статуса |
+
+---
+
+## UpdateIncidentPriority
+
+**HTTP:** `PUT /v1/incidents/{incident_id}/priority`
+**gRPC:** `IncidentCommandService.UpdateIncidentPriority`
+
+### Права доступа
+
+`SystemAdmin` или `OrgAdminOf.Organization` или `OrgHeadOf.Organization` или `OrgDispatcherOf.Organization` или `ClinicHeadOf.Clinic` или `DeptResponsibleOf.Department`
+
+### Параметры
+
+| Поле | Тип | Правила |
+|---|---|---|
+| `incident_id` | string (UUID) | required, uuid |
+| `priority` | enum | required, oneof=low normal high critical |
+
+### Инварианты
+
+- Недоступно для инцидентов в терминальном статусе (`done`, `rejected`, `cancelled`).
+- Если приоритет не изменился, строка истории не записывается.
+
+### Ошибки
+
+| Код | Описание |
+|---|---|
+| `incident_not_found` | Инцидент не найден |
+| `incident_frozen` | Инцидент находится в терминальном статусе |
 
 ---
 
