@@ -348,7 +348,7 @@ var errorCodeOverrides = map[string]codes.Code{
 	"announcement_archived": codes.FailedPrecondition,
 	// Announcement — bad pagination cursor from the client.
 	"announcement_query_bad_cursor": codes.InvalidArgument,
-	// Incident — frozen aggregates reject further mutations.
+	// Incident — status-based preconditions.
 	"incident_not_cancellable": codes.FailedPrecondition,
 	"incident_not_reopenable":  codes.FailedPrecondition,
 }
@@ -391,6 +391,8 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_too_long", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid_scope", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid_time_range", grpcCode: codes.InvalidArgument},
+
+	// State preconditions (FailedPrecondition).
 	{suffix: "_invalid_status_transition", grpcCode: codes.FailedPrecondition},
 
 	// Existence.
