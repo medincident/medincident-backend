@@ -2,7 +2,6 @@ package announcement
 
 import (
 	"context"
-	"errors"
 	"strings"
 	"time"
 
@@ -183,7 +182,7 @@ func (s *AnnouncementService) Create(
 			return oops.In(scope).
 				Code(ErrCodeAnnouncementSaveFailed).
 				With("announcement_id", id).
-				Wrap(errors.New("failed to seed view counter: " + err.Error()))
+				Wrap(err)
 		}
 
 		result.ID = id
