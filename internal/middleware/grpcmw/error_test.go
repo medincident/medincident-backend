@@ -263,6 +263,7 @@ func TestTranslateError_MultiError_FallsBackToCodeWhenNoField(t *testing.T) {
 func TestTranslateError_InternalError_MasksMessage(t *testing.T) {
 	err := oops.In("service.employee").
 		Code("employee_save_failed").
+		With("key_path", "/etc/secret/key.pem").
 		Wrap(errors.New("db exploded"))
 
 	got := translateError(silentLogger(), "/svc/Hire", err)
@@ -272,6 +273,14 @@ func TestTranslateError_InternalError_MasksMessage(t *testing.T) {
 	}
 	if st.Message() != "internal error" {
 		t.Errorf("expected masked message, got %q", st.Message())
+	}
+
+	// No ErrorInfo detail must be attached for server-fault codes
+	// so internal metadata (package paths, error codes) is never leaked.
+	for _, detail := range st.Details() {
+		if _, ok := detail.(*errdetails.ErrorInfo); ok {
+			t.Error("server-fault response must not carry ErrorInfo detail")
+		}
 	}
 }
 
@@ -284,5 +293,58 @@ func TestTranslateError_ZitadelVerifyFailed_Unavailable(t *testing.T) {
 	st, _ := status.FromError(got)
 	if st.Code() != codes.Unavailable {
 		t.Errorf("expected Unavailable, got %v", st.Code())
+	}
+	if st.Message() != "internal error" {
+		t.Errorf("expected masked message for Unavailable, got %q", st.Message())
+	}
+	// Unavailable is a server-fault code — no ErrorInfo must leak.
+	for _, detail := range st.Details() {
+		if _, ok := detail.(*errdetails.ErrorInfo); ok {
+			t.Error("server-fault response must not carry ErrorInfo detail")
+		}
+	}
+}
+
+func TestTranslateError_PermissionDenied_StripsSensitiveMetadata(t *testing.T) {
+	err := oops.In("service.authz").
+		Code("permission_denied").
+		Public("Permission denied.").
+		With("caller_id", "zitadel-user-abc123").
+		With("policy", "AdminOf.Organization(org-uuid)").
+		With("organization_id", "org-uuid").
+		Errorf("access denied")
+
+	got := translateError(silentLogger(), "/svc/Method", err)
+	st, ok := status.FromError(got)
+	if !ok {
+		t.Fatalf("expected status error, got %T", got)
+	}
+	if st.Code() != codes.PermissionDenied {
+		t.Errorf("expected PermissionDenied, got %v", st.Code())
+	}
+
+	var info *errdetails.ErrorInfo
+	for _, detail := range st.Details() {
+		if ei, ok := detail.(*errdetails.ErrorInfo); ok {
+			info = ei
+			break
+		}
+	}
+	if info == nil {
+		t.Fatal("expected ErrorInfo detail for PermissionDenied")
+	}
+	if info.GetReason() != "permission_denied" {
+		t.Errorf("expected reason=permission_denied, got %q", info.GetReason())
+	}
+	// caller_id and policy must be stripped.
+	if _, found := info.GetMetadata()["caller_id"]; found {
+		t.Error("caller_id must not appear in client-facing metadata")
+	}
+	if _, found := info.GetMetadata()["policy"]; found {
+		t.Error("policy must not appear in client-facing metadata")
+	}
+	// Non-sensitive keys must be preserved.
+	if info.GetMetadata()["organization_id"] != "org-uuid" {
+		t.Errorf("expected organization_id to be preserved, got %v", info.GetMetadata())
 	}
 }
