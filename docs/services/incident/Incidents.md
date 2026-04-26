@@ -98,6 +98,38 @@
 
 ---
 
+## UpdateIncidentPriority
+
+**HTTP:** `PUT /v1/incidents/{incident_id}/priority`
+**gRPC:** `IncidentCommandService.UpdateIncidentPriority`
+
+### Права доступа
+
+Привилегированные роли: `SystemAdmin`, `AdminOf.Organization(organizationID)`,
+`OrgHeadOf.Organization(organizationID)`, `OrgDispatcherOf.Organization(organizationID)`,
+`ClinicHeadOf.Clinic(clinicID)`, `DeptResponsibleOf.Department(departmentID)`.
+
+### Параметры
+
+| Поле | Тип | Правила |
+|---|---|---|
+| `incident_id` | string (UUID) | required, uuid |
+| `priority` | enum (`low`, `normal`, `high`, `critical`) | required |
+
+### Инварианты
+
+- Инцидент не должен быть в терминальном статусе (`cancelled`).
+- Если новый приоритет совпадает с текущим — операция пропускается без ошибки (no-op), запись в историю не создаётся.
+
+### Ошибки
+
+| Код | Описание |
+|---|---|
+| `incident_not_found` | Инцидент не найден |
+| `incident_frozen` | Инцидент в терминальном статусе и не может быть изменён |
+
+---
+
 ## CancelIncident
 
 **HTTP:** `POST /v1/incidents/{incident_id}/cancel`
