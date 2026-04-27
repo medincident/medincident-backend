@@ -71,7 +71,9 @@ func (s *AnnouncementService) Update(
 		}
 		a.UpdatedAt = time.Now()
 
-		if err := tx.Save(a).Error; err != nil {
+		if err := tx.Model(a).
+			Select("title", "content", "starts_at", "ends_at", "updated_at").
+			Updates(a).Error; err != nil {
 			return oops.In(scope).
 				Code(ErrCodeAnnouncementSaveFailed).
 				With("announcement_id", id).
