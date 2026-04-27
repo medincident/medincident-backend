@@ -14,6 +14,9 @@ type Config struct {
 	Server    serverConfig         `yaml:"server"    validate:"required"`
 	Upstreams upstreamsConfig      `yaml:"upstreams" validate:"required"`
 	Zerolog   config.ZerologConfig `yaml:"zerolog"   validate:"required"`
+	// Garage is optional. When present, /readyz performs a HeadBucket
+	// probe against the configured bucket and returns 503 if it fails.
+	Garage *config.GarageConfig `yaml:"garage,omitempty" validate:"omitempty"`
 }
 
 type serverConfig struct {

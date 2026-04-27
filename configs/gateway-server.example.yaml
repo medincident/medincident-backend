@@ -62,3 +62,13 @@ zerolog:
       pretty: true
       time_format: "15:04:05"
       parts_order: ["time", "level", "caller", "message"]
+
+# Garage — S3-compatible object storage. Optional. When present, the
+# gateway probes Garage via HeadBucket on /readyz and returns 503 if
+# the bucket is unreachable. Remove the block to skip the probe.
+#garage:
+#  endpoint: "${GARAGE_ENDPOINT}"                 # e.g. http://localhost:3900
+#  access_key_id: "${GARAGE_ACCESS_KEY_ID}"
+#  secret_access_key: "${GARAGE_SECRET_ACCESS_KEY}"
+#  region: "garage"
+#  bucket: "medincident"
