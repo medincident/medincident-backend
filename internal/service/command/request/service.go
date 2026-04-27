@@ -146,7 +146,7 @@ func (s *ServiceRequestService) resolveEmployeeName(tx *gorm.DB, employeeID uuid
 			Public("Employee user record is missing.").
 			With("op", "resolve_employee_name").
 			With("employee_id", employeeID).
-			Errorf("display_name is empty")
+			Wrap(errors.New("display_name is empty"))
 	}
 	return displayName, nil
 }
