@@ -3,8 +3,17 @@ package main
 import (
 	"time"
 
+	"github.com/samber/oops"
+
 	"github.com/medincident/medincident-backend/internal/config"
 )
+
+// ErrCodeGatewayCORSCredentialsWildcard is emitted when a CORS block
+// sets allow_credentials=true while allowed_origins contains the "*"
+// wildcard. The CORS spec forbids credentialed requests with a
+// wildcard Access-Control-Allow-Origin, so the gateway refuses to
+// boot rather than silently producing browser errors at runtime.
+const ErrCodeGatewayCORSCredentialsWildcard = "cors_credentials_wildcard"
 
 // Config is the YAML-backed runtime configuration for the gateway-server
 // binary. The gateway is a thin HTTP → gRPC translator that fronts
@@ -31,7 +40,7 @@ type httpConfig struct {
 type corsConfig struct {
 	AllowedOrigins   []string `yaml:"allowed_origins"   validate:"required,min=1,dive,required"`
 	AllowedMethods   []string `yaml:"allowed_methods"   validate:"required,min=1,dive,required"`
-	AllowedHeaders   []string `yaml:"allowed_headers"   validate:"omitempty,dive,required"`
+	AllowedHeaders   []string `yaml:"allowed_headers"   validate:"required,min=1,dive,required"`
 	AllowCredentials bool     `yaml:"allow_credentials"`
 	MaxAgeSeconds    int      `yaml:"max_age_seconds"   validate:"min=0"`
 }
@@ -79,5 +88,31 @@ func readConfig(path string) (*Config, error) {
 	if err := config.ReadAndValidate(path, &cfg); err != nil {
 		return nil, err
 	}
+	if err := validateCORS(cfg.Server.HTTP.CORS); err != nil {
+		return nil, err
+	}
 	return &cfg, nil
+}
+
+// validateCORS enforces CORS-spec constraints that struct-tag
+// validators cannot express. Specifically: a credentialed CORS policy
+// (`allow_credentials: true`) is incompatible with the "*" origin
+// wildcard — browsers reject the response when both are combined.
+func validateCORS(c *corsConfig) error {
+	if c == nil {
+		return nil
+	}
+	if !c.AllowCredentials {
+		return nil
+	}
+	for _, origin := range c.AllowedOrigins {
+		if origin == "*" {
+			return oops.
+				In("gateway").
+				Code(ErrCodeGatewayCORSCredentialsWildcard).
+				With("allowed_origins", c.AllowedOrigins).
+				Errorf("cors: allow_credentials=true is incompatible with allowed_origins=\"*\"")
+		}
+	}
+	return nil
 }

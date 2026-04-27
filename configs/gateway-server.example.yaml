@@ -20,8 +20,16 @@ server:
     address: ":8080"
 
     # Optional CORS block. Remove the block entirely to disable CORS.
-    # When present, origins/methods must be non-empty. allowed_headers
-    # typically includes "Authorization" so browsers can forward JWTs.
+    # When present, allowed_origins / allowed_methods / allowed_headers
+    # must each be non-empty. allowed_headers must list every header
+    # the browser is permitted to send in cross-origin requests —
+    # at minimum "Authorization" (so JWTs can be forwarded) and
+    # "Content-Type" (so JSON bodies pass preflight).
+    #
+    # When allow_credentials is true, allowed_origins MUST NOT contain
+    # "*"; the CORS spec forbids credentialed requests with a wildcard
+    # Access-Control-Allow-Origin, and the gateway refuses to boot
+    # in that combination.
     cors:
       allowed_origins:
         - "https://app.example.com"
