@@ -47,9 +47,11 @@ zitadel:
   domain: "${ZITADEL_DOMAIN}"           # e.g. https://auth.example.com
   key_path: "${ZITADEL_KEY_PATH}"       # filesystem path to the service user's key.json
 
-# Garage — S3-compatible object storage. Used for file attachments,
-# media uploads, and other binary objects. Garage requires path-style
-# addressing; the SDK client is configured accordingly.
+# Garage — S3-compatible object storage. Optional: remove the entire
+# block to disable S3 wiring. When present, every field is validated.
+# Used for file attachments, media uploads, and other binary objects.
+# Garage requires path-style addressing; the SDK client is configured
+# accordingly.
 garage:
   endpoint: "${GARAGE_ENDPOINT}"                 # e.g. http://localhost:3900
   access_key_id: "${GARAGE_ACCESS_KEY_ID}"

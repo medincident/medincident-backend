@@ -16,7 +16,9 @@
 
 ## Конфигурация
 
-Блок `garage` в YAML-конфигурации `command-server`:
+Блок `garage` опциональный — отсутствие блока отключает S3-wiring и (для `gateway-server`) пропускает проверку Garage в `/readyz`. Если блок присутствует, все его поля валидируются.
+
+Блок `garage` в YAML-конфигурации `command-server` и `gateway-server`:
 
 ```yaml
 garage:
@@ -37,9 +39,16 @@ garage:
 
 Секреты рекомендуется передавать через переменные окружения (`${GARAGE_ACCESS_KEY_ID}`, `${GARAGE_SECRET_ACCESS_KEY}`).
 
+## Readiness probe
+
+`gateway-server` выполняет `HeadBucket` против настроенного бакета на `/readyz`. При недоступности Garage эндпоинт возвращает `503 Service Unavailable` с ключом `"garage": "UNAVAILABLE"` в JSON-теле. Если блок `garage` отсутствует в конфиге gateway-server, ключ `garage` в ответе не появляется и проверка не выполняется. Таймаут одной проверки — 2 секунды (см. `garageProbeTimeout` в `internal/handler/gateway/health.go`).
+
 ## Файлы
 
 - `internal/config/garage.go` — структура конфигурации `GarageConfig`
 - `internal/bootstrap/garage.go` — создание S3-клиента `OpenGarage`
+- `internal/handler/gateway/health.go` — readiness-проба Garage в `/readyz`
 - `cmd/command-server/config.go` — подключение к конфигурации command-server
-- `cmd/command-server/main.go` — wiring в точке входа
+- `cmd/command-server/main.go` — wiring в точке входа command-server
+- `cmd/gateway-server/config.go` — подключение к конфигурации gateway-server
+- `cmd/gateway-server/main.go` — wiring + readiness в точке входа gateway-server

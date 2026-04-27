@@ -13,7 +13,9 @@ type Config struct {
 	Postgres config.PostgresConfig `yaml:"postgres" validate:"required"`
 	Zerolog  config.ZerologConfig  `yaml:"zerolog"  validate:"required"`
 	Zitadel  config.ZitadelConfig  `yaml:"zitadel"  validate:"required"`
-	Garage   config.GarageConfig   `yaml:"garage"   validate:"required"`
+	// Garage is optional — leaving the block out disables S3 wiring.
+	// When present, every field inside is validated.
+	Garage *config.GarageConfig `yaml:"garage,omitempty" validate:"omitempty"`
 }
 
 // serverConfig is the command-server's listener block. Command-server
