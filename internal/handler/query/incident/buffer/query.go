@@ -15,8 +15,9 @@ import (
 )
 
 const (
-	errCodeHandlerInvalidBufferID = "handler_invalid_buffer_id"
-	errCodeHandlerInvalidOrgID    = "handler_invalid_organization_id"
+	errCodeHandlerInvalidBufferID     = "handler_invalid_buffer_id"
+	errCodeHandlerInvalidOrgID        = "handler_invalid_organization_id"
+	errCodeHandlerInvalidBufferStatus = "handler_invalid_buffer_status"
 )
 
 // BufferQueryHandler implements the buffer read methods for IncidentQueryService.
@@ -115,7 +116,7 @@ func protoBufStatusToModel(s incidentqueryv1.BufferStatus) (model.BufferStatus, 
 		return model.BufferStatusCancelled, nil
 	default:
 		return "", oops.In("handler.query.incident.buffer").
-			Code("handler_invalid_buffer_status").
+			Code(errCodeHandlerInvalidBufferStatus).
 			Public("Invalid buffer status.").Errorf("unknown")
 	}
 }

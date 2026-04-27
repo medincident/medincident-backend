@@ -93,11 +93,11 @@ func (s *ServiceRequestService) Create(
 		if reqType.OrganizationID != orgID {
 			return oops.In(scope).Code(ErrCodeServiceRequestTypeOrgMismatch).
 				Public("Request type does not belong to the department's organization.").
-				With("type_id", typeID).Wrap(errors.New("org mismatch"))
+				With("type_id", typeID).Errorf("org mismatch")
 		}
 		if !reqType.IsActive {
 			return oops.In(scope).Code(ErrCodeServiceRequestTypeInactive).
-				Public("Request type is inactive.").With("type_id", typeID).Wrap(errors.New("inactive"))
+				Public("Request type is inactive.").With("type_id", typeID).Errorf("inactive")
 		}
 
 		incidentID := uuid.NullUUID{}
@@ -114,7 +114,7 @@ func (s *ServiceRequestService) Create(
 			if inc.OrganizationID != orgID {
 				return oops.In(scope).Code(ErrCodeServiceRequestIncidentOrgMismatch).
 					Public("Incident does not belong to the same organization.").
-					With("incident_id", incID).Wrap(errors.New("org mismatch"))
+					With("incident_id", incID).Errorf("org mismatch")
 			}
 			incidentID = uuid.NullUUID{UUID: incID, Valid: true}
 		}
@@ -131,7 +131,7 @@ func (s *ServiceRequestService) Create(
 			if emp.DepartmentID != deptID {
 				return oops.In(scope).Code(ErrCodeServiceRequestEmployeeDeptMismatch).
 					Public("Executor must be an employee of the request's department.").
-					With("employee_id", empID).With("department_id", deptID).Wrap(errors.New("dept mismatch"))
+					With("employee_id", empID).With("department_id", deptID).Errorf("dept mismatch")
 			}
 		}
 
