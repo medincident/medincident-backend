@@ -20,8 +20,8 @@ import (
 // UpdateClinicPhysicalAddressPayload carries the new physical address
 // for an existing clinic.
 type UpdateClinicPhysicalAddressPayload struct {
-	ID      string `validate:"required,uuid"`
-	Address AddressInput
+	ID      string       `validate:"required,uuid"`
+	Address AddressInput `validate:"required"`
 }
 
 // UpdateClinicPhysicalAddressCommand = caller + payload.

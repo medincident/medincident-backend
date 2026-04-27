@@ -19,8 +19,8 @@ import (
 
 // UpdateOrganizationLegalAddressPayload carries the new legal address.
 type UpdateOrganizationLegalAddressPayload struct {
-	ID      string `validate:"required,uuid"`
-	Address AddressInput
+	ID      string       `validate:"required,uuid"`
+	Address AddressInput `validate:"required"`
 }
 
 // UpdateOrganizationLegalAddressCommand = caller + payload.
