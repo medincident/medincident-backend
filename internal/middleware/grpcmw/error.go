@@ -362,6 +362,24 @@ var errorCodeOverrides = map[string]codes.Code{
 	"authz_vacation_access_check_failed":   codes.Internal,
 	"authz_category_access_check_failed":   codes.Internal,
 	"authz_type_access_check_failed":       codes.Internal,
+	"authz_check_failed":                   codes.Internal,
+	// Infrastructure — NATS consumer bootstrap failures.
+	"consume_start_failed":   codes.Internal,
+	"consumer_create_failed": codes.Internal,
+	// Buffer — ownership check is a permission issue, not a
+	// precondition or not-found error.
+	"buffer_not_patient_owner": codes.PermissionDenied,
+	// Buffer — state precondition: only pending buffers are editable.
+	"buffer_not_pending": codes.FailedPrecondition,
+	// Buffer — patient-type restriction is a business precondition.
+	"buffer_type_not_allowed_for_patients": codes.FailedPrecondition,
+	// Announcement — archived announcements cannot be modified.
+	"announcement_archived": codes.FailedPrecondition,
+	// Announcement — bad pagination cursor from the client.
+	"announcement_query_bad_cursor": codes.InvalidArgument,
+	// Incident — status-based preconditions.
+	"incident_not_cancellable": codes.FailedPrecondition,
+	"incident_not_reopenable":  codes.FailedPrecondition,
 }
 
 // errorCodeSuffixes is checked in order; the first matching suffix
@@ -381,6 +399,10 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_marshal_failed", grpcCode: codes.Internal},
 	{suffix: "_open_failed", grpcCode: codes.Internal},
 	{suffix: "_tune_failed", grpcCode: codes.Internal},
+	{suffix: "_read_failed", grpcCode: codes.Internal},
+	{suffix: "_count_failed", grpcCode: codes.Internal},
+	{suffix: "_lock_failed", grpcCode: codes.Internal},
+	{suffix: "_malformed", grpcCode: codes.Internal},
 
 	// Client input validation (InvalidArgument). Struct-tag
 	// validation goes through the explicit `validation_failed`
@@ -393,6 +415,11 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_end_before_start", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_in_past", grpcCode: codes.InvalidArgument},
 	{suffix: "_start_in_past", grpcCode: codes.InvalidArgument},
+	{suffix: "_in_future", grpcCode: codes.InvalidArgument},
+	{suffix: "_too_old", grpcCode: codes.InvalidArgument},
+	{suffix: "_too_long", grpcCode: codes.InvalidArgument},
+	{suffix: "_invalid_scope", grpcCode: codes.InvalidArgument},
+	{suffix: "_invalid_time_range", grpcCode: codes.InvalidArgument},
 
 	// Existence.
 	{suffix: "_not_found", grpcCode: codes.NotFound},
@@ -406,7 +433,8 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_name_conflict", grpcCode: codes.AlreadyExists},
 	{suffix: "_overlap", grpcCode: codes.AlreadyExists},
 
-	// Business preconditions (FailedPrecondition).
+	// State and business preconditions (FailedPrecondition).
+	{suffix: "_invalid_status_transition", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_department", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_clinic", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_organization", grpcCode: codes.FailedPrecondition},
@@ -423,6 +451,9 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_reactivate_name_conflict", grpcCode: codes.FailedPrecondition},
 	{suffix: "_parent_inactive", grpcCode: codes.FailedPrecondition},
 	{suffix: "_category_inactive", grpcCode: codes.FailedPrecondition},
+	{suffix: "_type_inactive", grpcCode: codes.FailedPrecondition},
+	{suffix: "_frozen", grpcCode: codes.FailedPrecondition},
+	{suffix: "_mismatch", grpcCode: codes.FailedPrecondition},
 
 	// Fallback buckets kept last so the specific rules above win.
 	// `_required` is declared once in the InvalidArgument group above;
