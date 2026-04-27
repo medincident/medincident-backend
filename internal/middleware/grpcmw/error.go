@@ -175,30 +175,30 @@ func buildBadRequestStatus(logger *zerolog.Logger, method string, leaves []*oops
 func buildSingleStatus(logger *zerolog.Logger, method string, leaf *oops.OopsError) error {
 	code := errorCodeString(leaf)
 	grpcCode := gRPCCodeForError(code)
+
+	// Always log the full error server-side before stripping details.
+	logSingleError(logger, method, leaf, grpcCode)
+
 	// For codes that indicate server-side faults, never leak internal
-	// details (error code, wrapped message) to the client. The full
-	// error is still logged below with its code and domain.
-	var msg string
-	switch grpcCode {
+	// details (error code, wrapped message, ErrorInfo) to the client.
+	// Return a bare status with a generic message.
+	switch grpcCode { //nolint:exhaustive // only server-fault codes need special handling
 	case codes.Internal, codes.Unavailable, codes.Unknown:
-		msg = "internal error"
-	default:
-		msg = errorDescription(leaf)
+		return status.New(grpcCode, "internal error").Err()
 	}
 
+	msg := errorDescription(leaf)
 	st := status.New(grpcCode, msg)
 	info := &errdetails.ErrorInfo{
 		Reason:   code,
 		Domain:   leaf.Domain(),
-		Metadata: errorContextToMetadata(leaf.Context()),
+		Metadata: sanitizeMetadata(grpcCode, errorContextToMetadata(leaf.Context())),
 	}
 	withDetails, detailErr := st.WithDetails(info)
 	if detailErr != nil {
 		logger.Error().Err(detailErr).Str("grpc_method", method).Msg("failed to attach ErrorInfo details")
-		logSingleError(logger, method, leaf, grpcCode)
 		return st.Err()
 	}
-	logSingleError(logger, method, leaf, grpcCode)
 	return withDetails.Err()
 }
 
@@ -264,6 +264,35 @@ func errorCodeString(leaf *oops.OopsError) string {
 		return s
 	}
 	return ""
+}
+
+// permissionDeniedSensitiveKeys lists metadata keys that must be
+// stripped from permission_denied responses before they reach the
+// client. caller_id exposes the Zitadel user ID and policy exposes
+// internal authorization rule names — both are useful for server-side
+// debugging but must not leak to untrusted callers.
+var permissionDeniedSensitiveKeys = map[string]struct{}{
+	"caller_id": {},
+	"policy":    {},
+}
+
+// sanitizeMetadata removes sensitive keys from the metadata map for
+// specific gRPC codes. For permission_denied it strips caller_id and
+// policy; other codes pass through unchanged.
+func sanitizeMetadata(grpcCode codes.Code, md map[string]string) map[string]string {
+	if grpcCode != codes.PermissionDenied || len(md) == 0 {
+		return md
+	}
+	clean := make(map[string]string, len(md))
+	for k, v := range md {
+		if _, sensitive := permissionDeniedSensitiveKeys[k]; !sensitive {
+			clean[k] = v
+		}
+	}
+	if len(clean) == 0 {
+		return nil
+	}
+	return clean
 }
 
 func errorContextToMetadata(ctx map[string]any) map[string]string {
