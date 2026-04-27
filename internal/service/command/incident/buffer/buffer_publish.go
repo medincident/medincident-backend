@@ -2,6 +2,7 @@ package buffer
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"time"
 
@@ -81,24 +82,21 @@ func (s *BufferService) Publish(
 				With("status", b.Status).Errorf("not pending")
 		}
 
-		// Department -> clinic -> organization in a single JOIN.
-		var deptClinic struct {
-			ClinicID       uuid.UUID
-			OrganizationID uuid.UUID
-		}
-		if err := tx.Raw(`SELECT c.id AS clinic_id, c.organization_id
-			FROM domain.departments d
-			JOIN domain.clinics c ON c.id = d.clinic_id
-			WHERE d.id = ?`, deptID).Scan(&deptClinic).Error; err != nil {
+		// Department -> clinic; clinic must belong to buffer's org.
+		var dept model.Department
+		if err := tx.First(&dept, "id = ?", deptID).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return oops.In(scope).Code(ErrCodeBufferDeptNotFound).
+					Public("Department not found.").
+					With("department_id", deptID).Wrap(err)
+			}
 			return oops.In(scope).Code(ErrCodeBufferLoadFailed).Wrap(err)
 		}
-		if deptClinic.ClinicID == uuid.Nil {
-			return oops.In(scope).Code(ErrCodeBufferDeptNotFound).
-				Public("Department not found.").
-				With("department_id", deptID).
-				Errorf("department not found")
+		var clinic model.Clinic
+		if err := tx.First(&clinic, "id = ?", dept.ClinicID).Error; err != nil {
+			return oops.In(scope).Code(ErrCodeBufferDeptNotFound).Wrap(err)
 		}
-		if deptClinic.OrganizationID != b.OrganizationID {
+		if clinic.OrganizationID != b.OrganizationID {
 			return oops.In(scope).Code(ErrCodeBufferDeptNotFound).
 				Public("Department does not belong to this organization.").
 				With("department_id", deptID).Errorf("org mismatch")
@@ -139,7 +137,7 @@ func (s *BufferService) Publish(
 		inc := model.Incident{
 			ID:                         incidentID,
 			OrganizationID:             b.OrganizationID,
-			ClinicID:                   deptClinic.ClinicID,
+			ClinicID:                   clinic.ID,
 			DepartmentID:               deptID,
 			CategoryID:                 categoryID,
 			TypeID:                     typeID,
@@ -184,28 +182,21 @@ func (s *BufferService) Publish(
 func (s *BufferService) loadDispatcherSnapshot(
 	tx *gorm.DB, callerZitadelID string, orgID uuid.UUID,
 ) (projector.IncidentRegistrarSnapshot, error) {
-	var snap struct {
-		EmployeeID     uuid.UUID
-		Position       null.String
-		OrganizationID uuid.UUID
-		ClinicID       uuid.UUID
-		DepartmentID   uuid.UUID
-	}
-	if err := tx.Raw(`SELECT e.id AS employee_id, e.position, e.organization_id,
-			d.clinic_id, e.department_id
-		FROM domain.employees e
-		JOIN domain.departments d ON d.id = e.department_id
-		WHERE e.zitadel_user_id = ? AND e.organization_id = ?`,
-		callerZitadelID, orgID).Scan(&snap).Error; err != nil {
+	var emp model.Employee
+	if err := tx.Where("zitadel_user_id = ? AND organization_id = ?",
+		callerZitadelID, orgID).First(&emp).Error; err != nil {
 		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
 			Code(ErrCodeBufferDispatcherNotFound).
 			Public("Dispatcher employee record not found.").Wrap(err)
 	}
-	if snap.EmployeeID == uuid.Nil {
+	// Dispatcher's department lookup failure IS a department-level
+	// error (the FK is a real domain.departments row referenced from
+	// the dispatcher's employee record), so keep ErrCodeBufferDeptNotFound here.
+	var dept model.Department
+	if err := tx.First(&dept, "id = ?", emp.DepartmentID).Error; err != nil {
 		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
-			Code(ErrCodeBufferDispatcherNotFound).
-			Public("Dispatcher employee record not found.").
-			Errorf("employee not found")
+			Code(ErrCodeBufferDeptNotFound).
+			With("department_id", emp.DepartmentID).Wrap(err)
 	}
 	var displayName string
 	if err := tx.Raw(
@@ -217,11 +208,11 @@ func (s *BufferService) loadDispatcherSnapshot(
 			Public("Dispatcher user record missing.").Errorf("display_name lookup failed")
 	}
 	return projector.IncidentRegistrarSnapshot{
-		EmployeeID:     snap.EmployeeID,
+		EmployeeID:     emp.ID,
 		DisplayName:    displayName,
-		Position:       snap.Position,
-		OrganizationID: snap.OrganizationID,
-		ClinicID:       snap.ClinicID,
-		DepartmentID:   snap.DepartmentID,
+		Position:       emp.Position,
+		OrganizationID: emp.OrganizationID,
+		ClinicID:       dept.ClinicID,
+		DepartmentID:   emp.DepartmentID,
 	}, nil
 }
