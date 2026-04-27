@@ -1,0 +1,8 @@
+-- migrate:up
+
+CREATE SCHEMA IF NOT EXISTS domain;
+CREATE SCHEMA IF NOT EXISTS projections;
+
+-- migrate:down
+DROP SCHEMA IF EXISTS projections CASCADE;
+DROP SCHEMA IF EXISTS domain CASCADE;
