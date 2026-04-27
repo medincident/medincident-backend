@@ -96,6 +96,23 @@ func main() {
 	}
 	defer func() { _ = queryConn.Close() }()
 
+	// Garage S3 client is wired only when the config block is present.
+	// /readyz performs a HeadBucket probe against the configured bucket
+	// when the client exists; an absent block disables the probe and
+	// keeps the readiness body limited to upstream gRPC state.
+	var (
+		garageProbe  gwhandler.GarageProbe
+		garageBucket string
+	)
+	if cfg.Garage != nil {
+		garage, garageCleanup := bootstrap.OpenGarage(cfg.Garage, logger)
+		defer garageCleanup()
+		garageProbe = garage
+		garageBucket = cfg.Garage.Bucket
+	} else {
+		logger.Info().Msg("garage s3 client disabled (no config); /readyz skips garage probe")
+	}
+
 	gwMux, err := buildGatewayMux(ctx, commandConn, queryConn)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("failed to register gateway handlers")
@@ -103,7 +120,7 @@ func main() {
 
 	router := http.NewServeMux()
 	router.Handle("/healthz", gwhandler.Liveness())
-	router.Handle("/readyz", gwhandler.Readiness(commandConn, queryConn))
+	router.Handle("/readyz", gwhandler.Readiness(commandConn, queryConn, garageProbe, garageBucket))
 	router.Handle("/", gwMux)
 
 	var handler http.Handler = router

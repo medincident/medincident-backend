@@ -28,6 +28,11 @@ func protoPriorityToString(p incidentv1.IncidentPriority) (string, error) {
 	}
 }
 
+// protoStatusToString maps the UpdateIncidentStatus enum to a domain
+// string. PENDING and CANCELLED are intentionally excluded: pending is
+// the initial state (not a client-driven transition) and cancellation
+// is a separate RPC (CancelIncident). Passing those values returns the
+// same explicit error as any other unknown enum value.
 func protoStatusToString(s incidentv1.IncidentStatus) (string, error) {
 	switch s {
 	case incidentv1.IncidentStatus_INCIDENT_STATUS_IN_PROGRESS:

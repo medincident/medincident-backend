@@ -53,10 +53,17 @@
 - **HTTP/JSON** — через `gateway-server` (grpc-gateway). Не все RPC экспонируются в HTTP; список — в [`docs/api/HTTP.md`](API-HTTP).
 - **NATS JetStream** — асинхронная доставка доменных событий от command к query.
 
+## Объектное хранилище (Garage S3)
+
+`command-server` подключается к [Garage](https://garagehq.deuxfleurs.fr/) — S3-совместимому объектному хранилищу. Клиент создаётся через `bootstrap.OpenGarage` на основе `config.GarageConfig` и использует AWS SDK v2 со статическими credentials и path-style адресацией (требование Garage).
+
+Подробнее: [`docs/architecture/Garage.md`](Garage.md)
+
 ## Технологический стек
 
 - Go 1.26, gRPC, grpc-gateway
 - gorm v2 + PostgreSQL 17
+- Garage (S3-совместимое объектное хранилище) через AWS SDK v2
 - buf + protoc-gen-go + protoc-gen-grpc-gateway + protoc-gen-openapiv2 + protoc-gen-doc
 - dbmate для миграций
 - zerolog для логирования

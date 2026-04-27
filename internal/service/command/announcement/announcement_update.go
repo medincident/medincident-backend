@@ -62,10 +62,10 @@ func (s *AnnouncementService) Update(
 		a.Title = strings.TrimSpace(cmd.Payload.Title)
 		a.Content = strings.TrimSpace(cmd.Payload.Content)
 		a.StartsAt = null.Time{}
+		a.EndsAt = null.Time{}
 		if cmd.Payload.StartsAt != nil {
 			a.StartsAt = null.TimeFrom(*cmd.Payload.StartsAt)
 		}
-		a.EndsAt = null.Time{}
 		if cmd.Payload.EndsAt != nil {
 			a.EndsAt = null.TimeFrom(*cmd.Payload.EndsAt)
 		}

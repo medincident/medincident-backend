@@ -210,7 +210,7 @@ func (s *BufferService) loadDispatcherSnapshot(
 	return projector.IncidentRegistrarSnapshot{
 		EmployeeID:     emp.ID,
 		DisplayName:    displayName,
-		Position:       emp.Position,
+		Position:       emp.Position.Ptr(),
 		OrganizationID: emp.OrganizationID,
 		ClinicID:       dept.ClinicID,
 		DepartmentID:   emp.DepartmentID,

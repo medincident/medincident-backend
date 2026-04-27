@@ -5,17 +5,32 @@
 package gateway
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
+	"time"
 
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"google.golang.org/grpc/connectivity"
 )
+
+// garageProbeTimeout caps a single HeadBucket call so a hung Garage
+// instance cannot stall a Kubernetes readiness probe past its own
+// deadline. Kept short on purpose: probes run frequently.
+const garageProbeTimeout = 2 * time.Second
 
 // StateReader is the narrow slice of *grpc.ClientConn that Readiness
 // needs. Defining it lets health_test.go drive state without a real
 // gRPC dial.
 type StateReader interface {
 	GetState() connectivity.State
+}
+
+// GarageProbe is the narrow slice of *s3.Client that Readiness needs
+// to verify object storage is reachable. Tests substitute a fake
+// implementation; production passes the real S3 client.
+type GarageProbe interface {
+	HeadBucket(ctx context.Context, params *s3.HeadBucketInput, optFns ...func(*s3.Options)) (*s3.HeadBucketOutput, error)
 }
 
 // Liveness returns an http.Handler that always answers 200 OK. It is
@@ -28,15 +43,17 @@ func Liveness() http.Handler {
 }
 
 // Readiness returns an http.Handler that reports the ClientConn state
-// of both upstream backends. The response body is
+// of both upstream backends and (when configured) the reachability of
+// the Garage S3 bucket. The response body is
 //
-//	{"command":"READY","query":"CONNECTING"}
+//	{"command":"READY","query":"CONNECTING","garage":"READY"}
 //
-// and the status code is 200 if both upstreams are in Ready or Idle
-// (IDLE is healthy pre-first-RPC — gRPC transitions to Connecting on
-// demand), otherwise 503.
-func Readiness(command, query StateReader) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+// and the status code is 200 if every probed dependency is healthy,
+// otherwise 503. gRPC IDLE is treated as healthy (transitions to
+// Connecting on demand). Garage is optional — pass a nil probe and an
+// empty bucket to omit it from the response entirely.
+func Readiness(command, query StateReader, garage GarageProbe, bucket string) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cs := command.GetState()
 		qs := query.GetState()
 		body := map[string]string{
@@ -47,10 +64,30 @@ func Readiness(command, query StateReader) http.Handler {
 		if !isHealthy(cs) || !isHealthy(qs) {
 			code = http.StatusServiceUnavailable
 		}
+		if garage != nil && bucket != "" {
+			gs := probeGarage(r.Context(), garage, bucket)
+			body["garage"] = gs
+			if gs != "READY" {
+				code = http.StatusServiceUnavailable
+			}
+		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(code)
 		_ = json.NewEncoder(w).Encode(body)
 	})
+}
+
+// probeGarage performs a bounded HeadBucket call. Any error (including
+// timeouts) maps to "UNAVAILABLE"; success maps to "READY". The status
+// strings echo the gRPC connectivity vocabulary so the readiness body
+// stays uniform.
+func probeGarage(ctx context.Context, garage GarageProbe, bucket string) string {
+	probeCtx, cancel := context.WithTimeout(ctx, garageProbeTimeout)
+	defer cancel()
+	if _, err := garage.HeadBucket(probeCtx, &s3.HeadBucketInput{Bucket: &bucket}); err != nil {
+		return "UNAVAILABLE"
+	}
+	return "READY"
 }
 
 func isHealthy(s connectivity.State) bool {

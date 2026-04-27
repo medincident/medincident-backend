@@ -99,7 +99,10 @@ func (s *ServiceRequestService) AssignExecutors(
 				if err := tx.Delete(&model.ServiceRequestExecutor{}, "id = ?", e.ID).Error; err != nil {
 					return oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
 				}
-				empName := s.resolveEmployeeName(tx, e.EmployeeID)
+				empName, err := s.resolveEmployeeName(tx, e.EmployeeID)
+				if err != nil {
+					return err
+				}
 				if err := projector.ServiceRequestExecutorRemoved(
 					tx, sr.ID, e.EmployeeID, empName,
 					cmd.Caller.ZitadelUserID, actorDisplayName, now,
@@ -128,7 +131,10 @@ func (s *ServiceRequestService) AssignExecutors(
 			if err := tx.Create(&exec).Error; err != nil {
 				return oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
 			}
-			empName := s.resolveEmployeeName(tx, empID)
+			empName, err := s.resolveEmployeeName(tx, empID)
+			if err != nil {
+				return err
+			}
 			if err := projector.ServiceRequestExecutorAssigned(
 				tx, sr.ID, empID, empName,
 				cmd.Caller.ZitadelUserID, actorDisplayName, now,

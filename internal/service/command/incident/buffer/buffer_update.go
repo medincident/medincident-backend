@@ -21,7 +21,7 @@ type UpdatePayload struct {
 	CategoryID  *string `validate:"omitnil,uuid"`
 	TypeID      *string `validate:"omitnil,uuid"`
 	Description *string `validate:"omitnil,no_extra_ws,min=1,max=10000"`
-	OccurredAt  *time.Time
+	OccurredAt  *string
 }
 
 type UpdateCommand struct {
@@ -43,10 +43,20 @@ func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 	}
 	id := uuid.MustParse(cmd.Payload.BufferID)
 	now := time.Now()
+	var occurred *null.Time
 	if cmd.Payload.OccurredAt != nil {
-		if err := validateOccurredAt(*cmd.Payload.OccurredAt, now); err != nil {
+		t, err := time.Parse(time.RFC3339Nano, *cmd.Payload.OccurredAt)
+		if err != nil {
+			return oops.In(scope).
+				Code(ErrCodeBufferOccurredAtInvalid).
+				Public("occurred_at is not a valid RFC3339 timestamp.").
+				With("occurred_at", *cmd.Payload.OccurredAt).Wrap(err)
+		}
+		if err := validateOccurredAt(t, now); err != nil {
 			return err
 		}
+		v := null.TimeFrom(t)
+		occurred = &v
 	}
 
 	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
@@ -77,8 +87,8 @@ func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 		if cmd.Payload.Description != nil {
 			b.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 		}
-		if cmd.Payload.OccurredAt != nil {
-			b.OccurredAt = null.TimeFrom(*cmd.Payload.OccurredAt)
+		if occurred != nil {
+			b.OccurredAt = *occurred
 		}
 		b.UpdatedAt = now
 

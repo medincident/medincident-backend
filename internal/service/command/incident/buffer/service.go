@@ -30,6 +30,7 @@ const (
 	ErrCodeBufferCategoryNotFound   = "buffer_category_not_found"
 	ErrCodeBufferTypeNotFound       = "buffer_type_not_found"
 	ErrCodeBufferTypeNotForPatients = "buffer_type_not_allowed_for_patients"
+	ErrCodeBufferOccurredAtInvalid  = "buffer_occurred_at_invalid"
 	ErrCodeBufferOccurredAtTooOld   = "buffer_occurred_at_too_old"
 	ErrCodeBufferOccurredAtFuture   = "buffer_occurred_at_in_future"
 	ErrCodeBufferNotPending         = "buffer_not_pending"

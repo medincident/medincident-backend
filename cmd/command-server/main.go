@@ -92,6 +92,18 @@ func main() {
 	}
 	defer dbCleanup()
 
+	// Garage S3 client is wired only when the config block is present.
+	// The handle itself is not consumed yet — it is reserved for future
+	// services (file attachments, media uploads) and explicitly discarded
+	// to keep the compiler happy until the first consumer lands.
+	if cfg.Garage != nil {
+		garage, garageCleanup := bootstrap.OpenGarage(cfg.Garage, logger)
+		defer garageCleanup()
+		_ = garage
+	} else {
+		logger.Info().Msg("garage s3 client disabled (no config)")
+	}
+
 	zitadelService, err := bootstrap.NewZitadelService(ctx, &cfg.Zitadel, logger)
 	if err != nil {
 		logger.Fatal().Err(err).Msg("failed to build zitadel service")

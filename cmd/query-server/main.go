@@ -44,6 +44,7 @@ import (
 	requestread "github.com/medincident/medincident-backend/internal/service/query/request"
 	requestclassifierread "github.com/medincident/medincident-backend/internal/service/query/request/classifier"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
+	"github.com/medincident/medincident-backend/internal/util/urlutil"
 	announcementqueryv1 "github.com/medincident/medincident-backend/pkg/query/announcement/v1"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	incidentqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
@@ -114,10 +115,10 @@ func main() {
 		nats.DrainTimeout(natsDrainTimeout),
 	)
 	if err != nil {
-		logger.Fatal().Err(err).Str("url", cfg.NATS.URL).Msg("failed to connect to NATS")
+		logger.Fatal().Err(err).Str("url", urlutil.Redact(cfg.NATS.URL)).Msg("failed to connect to NATS")
 	}
 	defer func() { _ = nc.Drain() }()
-	logger.Info().Str("url", cfg.NATS.URL).Msg("nats connection established")
+	logger.Info().Str("url", urlutil.Redact(cfg.NATS.URL)).Msg("nats connection established")
 
 	js, err := jetstream.New(nc)
 	if err != nil {

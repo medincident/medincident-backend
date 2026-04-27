@@ -19,7 +19,7 @@ import (
 type IncidentRegistrarSnapshot struct {
 	EmployeeID     uuid.UUID
 	DisplayName    string
-	Position       null.String
+	Position       *string
 	OrganizationID uuid.UUID
 	ClinicID       uuid.UUID
 	DepartmentID   uuid.UUID
@@ -46,7 +46,7 @@ func IncidentCreated(
 		inc.ID, inc.OrganizationID, inc.ClinicID, inc.DepartmentID,
 		inc.CategoryID, inc.TypeID, inc.Status, inc.Priority,
 		inc.Description, inc.PatientOriginalDescription, inc.OccurredAt,
-		reg.EmployeeID, reg.DisplayName, reg.Position,
+		reg.EmployeeID, reg.DisplayName, null.StringFromPtr(reg.Position),
 		reg.OrganizationID, reg.ClinicID, reg.DepartmentID,
 		inc.SourcePatientZitadelUserID, inc.SourceBufferID,
 		inc.ReopenedFromIncidentID, inc.CreatedAt, inc.UpdatedAt,
@@ -149,14 +149,14 @@ func IncidentPriorityChanged(
 func IncidentDescriptionUpdated(
 	tx *gorm.DB,
 	incidentID uuid.UUID,
-	description null.String,
+	description *string,
 	updatedAt time.Time,
 ) error {
 	if err := tx.Exec(`
 		UPDATE projections.incidents
 		   SET description = ?, updated_at = ?
 		 WHERE id = ?`,
-		description, updatedAt, incidentID,
+		null.StringFromPtr(description), updatedAt, incidentID,
 	).Error; err != nil {
 		return wrapIncidentLifecycle(err, "update description projection", incidentID)
 	}

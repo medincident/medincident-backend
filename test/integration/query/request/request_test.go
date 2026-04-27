@@ -118,7 +118,7 @@ func TestGetServiceRequestHistory_HappyPath(t *testing.T) {
 		Caller: authz.Caller{ZitadelUserID: executorZitadelID},
 		Payload: requestsvc.UpdateServiceRequestStatusPayload{
 			ServiceRequestID: reqID.String(),
-			NewStatus:        model.ServiceRequestStatusInWork,
+			NewStatus:        string(model.ServiceRequestStatusInWork),
 		},
 	}))
 
