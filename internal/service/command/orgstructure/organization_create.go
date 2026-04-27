@@ -27,8 +27,10 @@ const (
 )
 
 // CreateOrganizationPayload is the validated client-facing payload of
-// CreateOrganization. All fields are primitives so the transport layer
-// can hand raw proto values straight through.
+// CreateOrganization. Scalar fields are primitives the transport layer
+// can hand straight through; LegalAddress is a nested validated
+// AddressInput and must be mapped from the corresponding nested
+// transport/proto message.
 type CreateOrganizationPayload struct {
 	Name         string       `validate:"required,no_extra_ws,min=2,max=256"`
 	Description  *string      `validate:"omitnil,no_extra_ws,min=8,max=2048"`
