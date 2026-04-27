@@ -6766,7 +6766,7 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
       "typeId": "string",
       "incidentId": "string",
       "description": "string",
-      "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+      "status": "string",
       "authorId": "string",
       "authorDisplayName": "string",
       "executors": [
@@ -6832,7 +6832,7 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
       "typeId": "string",
       "incidentId": "string",
       "description": "string",
-      "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+      "status": "string",
       "authorId": "string",
       "authorDisplayName": "string",
       "executors": [
@@ -6895,7 +6895,7 @@ curl -X GET /v1/service-requests/{id} \
     "typeId": "string",
     "incidentId": "string",
     "description": "string",
-    "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+    "status": "string",
     "authorId": "string",
     "authorDisplayName": "string",
     "executors": [
@@ -6952,8 +6952,8 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
   "statusHistory": [
     {
       "id": "string",
-      "oldStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
-      "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+      "oldStatus": "string",
+      "newStatus": "string",
       "actorId": "string",
       "actorName": "string",
       "changedAt": "string"
@@ -8001,7 +8001,7 @@ Cancellation by registrar uses CancelIncident.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|newStatus|[commandRequestV1ServiceRequestStatus](#schemacommandrequestv1servicerequeststatus)|true|none|none|
+|newStatus|[v1ServiceRequestStatus](#schemav1servicerequeststatus)|true|none|none|
 
 <h2 id="tocS_classifierV1Type">classifierV1Type</h2>
 <!-- backwards compatibility -->
@@ -8123,35 +8123,6 @@ Type mirrors projections.incident_types row.
 |*anonymous*|INCIDENT_STATUS_DONE|
 |*anonymous*|INCIDENT_STATUS_REJECTED|
 |*anonymous*|INCIDENT_STATUS_CANCELLED|
-
-<h2 id="tocS_commandRequestV1ServiceRequestStatus">commandRequestV1ServiceRequestStatus</h2>
-<!-- backwards compatibility -->
-<a id="schemacommandrequestv1servicerequeststatus"></a>
-<a id="schema_commandRequestV1ServiceRequestStatus"></a>
-<a id="tocScommandrequestv1servicerequeststatus"></a>
-<a id="tocscommandrequestv1servicerequeststatus"></a>
-
-```json
-"SERVICE_REQUEST_STATUS_UNSPECIFIED"
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|string|false|none|none|
-
-#### Enumerated Values
-
-|Property|Value|
-|---|---|
-|*anonymous*|SERVICE_REQUEST_STATUS_UNSPECIFIED|
-|*anonymous*|SERVICE_REQUEST_STATUS_IN_WORK|
-|*anonymous*|SERVICE_REQUEST_STATUS_ON_HOLD|
-|*anonymous*|SERVICE_REQUEST_STATUS_PENDING_REVIEW|
-|*anonymous*|SERVICE_REQUEST_STATUS_COMPLETED|
-|*anonymous*|SERVICE_REQUEST_STATUS_CANCELLED|
 
 <h2 id="tocS_protobufAny">protobufAny</h2>
 <!-- backwards compatibility -->
@@ -8290,36 +8261,6 @@ Type mirrors projections.incident_types row.
 |actor|[v1ActorView](#schemav1actorview)|false|none|none|
 |changedAt|string|false|none|none|
 
-<h2 id="tocS_queryRequestV1ServiceRequestStatus">queryRequestV1ServiceRequestStatus</h2>
-<!-- backwards compatibility -->
-<a id="schemaqueryrequestv1servicerequeststatus"></a>
-<a id="schema_queryRequestV1ServiceRequestStatus"></a>
-<a id="tocSqueryrequestv1servicerequeststatus"></a>
-<a id="tocsqueryrequestv1servicerequeststatus"></a>
-
-```json
-"SERVICE_REQUEST_STATUS_UNSPECIFIED"
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|string|false|none|none|
-
-#### Enumerated Values
-
-|Property|Value|
-|---|---|
-|*anonymous*|SERVICE_REQUEST_STATUS_UNSPECIFIED|
-|*anonymous*|SERVICE_REQUEST_STATUS_CREATED|
-|*anonymous*|SERVICE_REQUEST_STATUS_IN_WORK|
-|*anonymous*|SERVICE_REQUEST_STATUS_ON_HOLD|
-|*anonymous*|SERVICE_REQUEST_STATUS_PENDING_REVIEW|
-|*anonymous*|SERVICE_REQUEST_STATUS_COMPLETED|
-|*anonymous*|SERVICE_REQUEST_STATUS_CANCELLED|
-
 <h2 id="tocS_queryRequestV1StatusHistoryEntry">queryRequestV1StatusHistoryEntry</h2>
 <!-- backwards compatibility -->
 <a id="schemaqueryrequestv1statushistoryentry"></a>
@@ -8330,8 +8271,8 @@ Type mirrors projections.incident_types row.
 ```json
 {
   "id": "string",
-  "oldStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
-  "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+  "oldStatus": "string",
+  "newStatus": "string",
   "actorId": "string",
   "actorName": "string",
   "changedAt": "string"
@@ -8344,8 +8285,8 @@ Type mirrors projections.incident_types row.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |id|string|false|none|none|
-|oldStatus|[queryRequestV1ServiceRequestStatus](#schemaqueryrequestv1servicerequeststatus)|false|none|none|
-|newStatus|[queryRequestV1ServiceRequestStatus](#schemaqueryrequestv1servicerequeststatus)|false|none|none|
+|oldStatus|string|false|none|none|
+|newStatus|string|false|none|none|
 |actorId|string|false|none|none|
 |actorName|string|false|none|none|
 |changedAt|string|false|none|none|
@@ -10276,8 +10217,8 @@ when the backing column is NULL.
   "statusHistory": [
     {
       "id": "string",
-      "oldStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
-      "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+      "oldStatus": "string",
+      "newStatus": "string",
       "actorId": "string",
       "actorName": "string",
       "changedAt": "string"
@@ -10322,7 +10263,7 @@ when the backing column is NULL.
     "typeId": "string",
     "incidentId": "string",
     "description": "string",
-    "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+    "status": "string",
     "authorId": "string",
     "authorDisplayName": "string",
     "executors": [
@@ -11439,7 +11380,7 @@ patient_status, description and timestamps are populated.
       "typeId": "string",
       "incidentId": "string",
       "description": "string",
-      "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+      "status": "string",
       "authorId": "string",
       "authorDisplayName": "string",
       "executors": [
@@ -11481,7 +11422,7 @@ patient_status, description and timestamps are populated.
       "typeId": "string",
       "incidentId": "string",
       "description": "string",
-      "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+      "status": "string",
       "authorId": "string",
       "authorDisplayName": "string",
       "executors": [
@@ -12333,7 +12274,7 @@ calls to render a name or email.
   "typeId": "string",
   "incidentId": "string",
   "description": "string",
-  "status": "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+  "status": "string",
   "authorId": "string",
   "authorDisplayName": "string",
   "executors": [
@@ -12360,12 +12301,41 @@ calls to render a name or email.
 |typeId|string|false|none|none|
 |incidentId|string|false|none|none|
 |description|string|false|none|none|
-|status|[queryRequestV1ServiceRequestStatus](#schemaqueryrequestv1servicerequeststatus)|false|none|none|
+|status|string|false|none|none|
 |authorId|string|false|none|none|
 |authorDisplayName|string|false|none|none|
 |executors|[[v1Executor](#schemav1executor)]|false|none|none|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
+
+<h2 id="tocS_v1ServiceRequestStatus">v1ServiceRequestStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemav1servicerequeststatus"></a>
+<a id="schema_v1ServiceRequestStatus"></a>
+<a id="tocSv1servicerequeststatus"></a>
+<a id="tocsv1servicerequeststatus"></a>
+
+```json
+"SERVICE_REQUEST_STATUS_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|SERVICE_REQUEST_STATUS_UNSPECIFIED|
+|*anonymous*|SERVICE_REQUEST_STATUS_IN_WORK|
+|*anonymous*|SERVICE_REQUEST_STATUS_ON_HOLD|
+|*anonymous*|SERVICE_REQUEST_STATUS_PENDING_REVIEW|
+|*anonymous*|SERVICE_REQUEST_STATUS_COMPLETED|
+|*anonymous*|SERVICE_REQUEST_STATUS_CANCELLED|
 
 <h2 id="tocS_v1StartVacationNowResponse">v1StartVacationNowResponse</h2>
 <!-- backwards compatibility -->

@@ -22,67 +22,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type ServiceRequestStatus int32
-
-const (
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_UNSPECIFIED    ServiceRequestStatus = 0
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_CREATED        ServiceRequestStatus = 1
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_IN_WORK        ServiceRequestStatus = 2
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_ON_HOLD        ServiceRequestStatus = 3
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_PENDING_REVIEW ServiceRequestStatus = 4
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_COMPLETED      ServiceRequestStatus = 5
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_CANCELLED      ServiceRequestStatus = 6
-)
-
-// Enum value maps for ServiceRequestStatus.
-var (
-	ServiceRequestStatus_name = map[int32]string{
-		0: "SERVICE_REQUEST_STATUS_UNSPECIFIED",
-		1: "SERVICE_REQUEST_STATUS_CREATED",
-		2: "SERVICE_REQUEST_STATUS_IN_WORK",
-		3: "SERVICE_REQUEST_STATUS_ON_HOLD",
-		4: "SERVICE_REQUEST_STATUS_PENDING_REVIEW",
-		5: "SERVICE_REQUEST_STATUS_COMPLETED",
-		6: "SERVICE_REQUEST_STATUS_CANCELLED",
-	}
-	ServiceRequestStatus_value = map[string]int32{
-		"SERVICE_REQUEST_STATUS_UNSPECIFIED":    0,
-		"SERVICE_REQUEST_STATUS_CREATED":        1,
-		"SERVICE_REQUEST_STATUS_IN_WORK":        2,
-		"SERVICE_REQUEST_STATUS_ON_HOLD":        3,
-		"SERVICE_REQUEST_STATUS_PENDING_REVIEW": 4,
-		"SERVICE_REQUEST_STATUS_COMPLETED":      5,
-		"SERVICE_REQUEST_STATUS_CANCELLED":      6,
-	}
-)
-
-func (x ServiceRequestStatus) Enum() *ServiceRequestStatus {
-	p := new(ServiceRequestStatus)
-	*p = x
-	return p
-}
-
-func (x ServiceRequestStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (ServiceRequestStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_query_request_v1_request_proto_enumTypes[0].Descriptor()
-}
-
-func (ServiceRequestStatus) Type() protoreflect.EnumType {
-	return &file_query_request_v1_request_proto_enumTypes[0]
-}
-
-func (x ServiceRequestStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use ServiceRequestStatus.Descriptor instead.
-func (ServiceRequestStatus) EnumDescriptor() ([]byte, []int) {
-	return file_query_request_v1_request_proto_rawDescGZIP(), []int{0}
-}
-
 type Executor struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
@@ -152,7 +91,7 @@ type ServiceRequest struct {
 	TypeId            string                 `protobuf:"bytes,5,opt,name=type_id,json=typeId,proto3" json:"type_id,omitempty"`
 	IncidentId        *string                `protobuf:"bytes,6,opt,name=incident_id,json=incidentId,proto3,oneof" json:"incident_id,omitempty"`
 	Description       string                 `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
-	Status            ServiceRequestStatus   `protobuf:"varint,8,opt,name=status,proto3,enum=query.request.v1.ServiceRequestStatus" json:"status,omitempty"`
+	Status            string                 `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
 	AuthorId          string                 `protobuf:"bytes,9,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty"`
 	AuthorDisplayName string                 `protobuf:"bytes,10,opt,name=author_display_name,json=authorDisplayName,proto3" json:"author_display_name,omitempty"`
 	Executors         []*Executor            `protobuf:"bytes,11,rep,name=executors,proto3" json:"executors,omitempty"`
@@ -241,11 +180,11 @@ func (x *ServiceRequest) GetDescription() string {
 	return ""
 }
 
-func (x *ServiceRequest) GetStatus() ServiceRequestStatus {
+func (x *ServiceRequest) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
-	return ServiceRequestStatus_SERVICE_REQUEST_STATUS_UNSPECIFIED
+	return ""
 }
 
 func (x *ServiceRequest) GetAuthorId() string {
@@ -582,8 +521,8 @@ func (x *ListServiceRequestsByIncidentResponse) GetItems() []*ServiceRequest {
 type StatusHistoryEntry struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	OldStatus     *ServiceRequestStatus  `protobuf:"varint,2,opt,name=old_status,json=oldStatus,proto3,enum=query.request.v1.ServiceRequestStatus,oneof" json:"old_status,omitempty"`
-	NewStatus     ServiceRequestStatus   `protobuf:"varint,3,opt,name=new_status,json=newStatus,proto3,enum=query.request.v1.ServiceRequestStatus" json:"new_status,omitempty"`
+	OldStatus     *string                `protobuf:"bytes,2,opt,name=old_status,json=oldStatus,proto3,oneof" json:"old_status,omitempty"`
+	NewStatus     string                 `protobuf:"bytes,3,opt,name=new_status,json=newStatus,proto3" json:"new_status,omitempty"`
 	ActorId       string                 `protobuf:"bytes,4,opt,name=actor_id,json=actorId,proto3" json:"actor_id,omitempty"`
 	ActorName     string                 `protobuf:"bytes,5,opt,name=actor_name,json=actorName,proto3" json:"actor_name,omitempty"`
 	ChangedAt     string                 `protobuf:"bytes,6,opt,name=changed_at,json=changedAt,proto3" json:"changed_at,omitempty"`
@@ -628,18 +567,18 @@ func (x *StatusHistoryEntry) GetId() string {
 	return ""
 }
 
-func (x *StatusHistoryEntry) GetOldStatus() ServiceRequestStatus {
+func (x *StatusHistoryEntry) GetOldStatus() string {
 	if x != nil && x.OldStatus != nil {
 		return *x.OldStatus
 	}
-	return ServiceRequestStatus_SERVICE_REQUEST_STATUS_UNSPECIFIED
+	return ""
 }
 
-func (x *StatusHistoryEntry) GetNewStatus() ServiceRequestStatus {
+func (x *StatusHistoryEntry) GetNewStatus() string {
 	if x != nil {
 		return x.NewStatus
 	}
-	return ServiceRequestStatus_SERVICE_REQUEST_STATUS_UNSPECIFIED
+	return ""
 }
 
 func (x *StatusHistoryEntry) GetActorId() string {
@@ -861,7 +800,7 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"employeeId\x12\x1f\n" +
 	"\vassigned_at\x18\x02 \x01(\tR\n" +
 	"assignedAt\x12$\n" +
-	"\x0eassigned_by_id\x18\x03 \x01(\tR\fassignedById\"\x81\x04\n" +
+	"\x0eassigned_by_id\x18\x03 \x01(\tR\fassignedById\"\xd9\x03\n" +
 	"\x0eServiceRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12\x1b\n" +
@@ -870,8 +809,8 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\atype_id\x18\x05 \x01(\tR\x06typeId\x12$\n" +
 	"\vincident_id\x18\x06 \x01(\tH\x00R\n" +
 	"incidentId\x88\x01\x01\x12 \n" +
-	"\vdescription\x18\a \x01(\tR\vdescription\x12>\n" +
-	"\x06status\x18\b \x01(\x0e2&.query.request.v1.ServiceRequestStatusR\x06status\x12\x1b\n" +
+	"\vdescription\x18\a \x01(\tR\vdescription\x12\x16\n" +
+	"\x06status\x18\b \x01(\tR\x06status\x12\x1b\n" +
 	"\tauthor_id\x18\t \x01(\tR\bauthorId\x12.\n" +
 	"\x13author_display_name\x18\n" +
 	" \x01(\tR\x11authorDisplayName\x128\n" +
@@ -897,13 +836,13 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x03 \x01(\x05R\x06offset\"_\n" +
 	"%ListServiceRequestsByIncidentResponse\x126\n" +
-	"\x05items\x18\x01 \x03(\v2 .query.request.v1.ServiceRequestR\x05items\"\x9f\x02\n" +
+	"\x05items\x18\x01 \x03(\v2 .query.request.v1.ServiceRequestR\x05items\"\xcf\x01\n" +
 	"\x12StatusHistoryEntry\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12J\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\"\n" +
 	"\n" +
-	"old_status\x18\x02 \x01(\x0e2&.query.request.v1.ServiceRequestStatusH\x00R\toldStatus\x88\x01\x01\x12E\n" +
+	"old_status\x18\x02 \x01(\tH\x00R\toldStatus\x88\x01\x01\x12\x1d\n" +
 	"\n" +
-	"new_status\x18\x03 \x01(\x0e2&.query.request.v1.ServiceRequestStatusR\tnewStatus\x12\x19\n" +
+	"new_status\x18\x03 \x01(\tR\tnewStatus\x12\x19\n" +
 	"\bactor_id\x18\x04 \x01(\tR\aactorId\x12\x1d\n" +
 	"\n" +
 	"actor_name\x18\x05 \x01(\tR\tactorName\x12\x1d\n" +
@@ -925,15 +864,7 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x12service_request_id\x18\x01 \x01(\tR\x10serviceRequestId\"\xc2\x01\n" +
 	" GetServiceRequestHistoryResponse\x12K\n" +
 	"\x0estatus_history\x18\x01 \x03(\v2$.query.request.v1.StatusHistoryEntryR\rstatusHistory\x12Q\n" +
-	"\x10executor_history\x18\x02 \x03(\v2&.query.request.v1.ExecutorHistoryEntryR\x0fexecutorHistory*\xa1\x02\n" +
-	"\x14ServiceRequestStatus\x12&\n" +
-	"\"SERVICE_REQUEST_STATUS_UNSPECIFIED\x10\x00\x12\"\n" +
-	"\x1eSERVICE_REQUEST_STATUS_CREATED\x10\x01\x12\"\n" +
-	"\x1eSERVICE_REQUEST_STATUS_IN_WORK\x10\x02\x12\"\n" +
-	"\x1eSERVICE_REQUEST_STATUS_ON_HOLD\x10\x03\x12)\n" +
-	"%SERVICE_REQUEST_STATUS_PENDING_REVIEW\x10\x04\x12$\n" +
-	" SERVICE_REQUEST_STATUS_COMPLETED\x10\x05\x12$\n" +
-	" SERVICE_REQUEST_STATUS_CANCELLED\x10\x062\xe9\x05\n" +
+	"\x10executor_history\x18\x02 \x03(\v2&.query.request.v1.ExecutorHistoryEntryR\x0fexecutorHistory2\xe9\x05\n" +
 	"\x1aServiceRequestQueryService\x12\x8f\x01\n" +
 	"\x11GetServiceRequest\x12*.query.request.v1.GetServiceRequestRequest\x1a+.query.request.v1.GetServiceRequestResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/service-requests/{id}\x12\xb0\x01\n" +
 	"\x13ListServiceRequests\x12,.query.request.v1.ListServiceRequestsRequest\x1a-.query.request.v1.ListServiceRequestsResponse\"<\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/service-requests\x12\xc6\x01\n" +
@@ -953,46 +884,41 @@ func file_query_request_v1_request_proto_rawDescGZIP() []byte {
 	return file_query_request_v1_request_proto_rawDescData
 }
 
-var file_query_request_v1_request_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_query_request_v1_request_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_query_request_v1_request_proto_goTypes = []any{
-	(ServiceRequestStatus)(0),                     // 0: query.request.v1.ServiceRequestStatus
-	(*Executor)(nil),                              // 1: query.request.v1.Executor
-	(*ServiceRequest)(nil),                        // 2: query.request.v1.ServiceRequest
-	(*GetServiceRequestRequest)(nil),              // 3: query.request.v1.GetServiceRequestRequest
-	(*GetServiceRequestResponse)(nil),             // 4: query.request.v1.GetServiceRequestResponse
-	(*ListServiceRequestsRequest)(nil),            // 5: query.request.v1.ListServiceRequestsRequest
-	(*ListServiceRequestsResponse)(nil),           // 6: query.request.v1.ListServiceRequestsResponse
-	(*ListServiceRequestsByIncidentRequest)(nil),  // 7: query.request.v1.ListServiceRequestsByIncidentRequest
-	(*ListServiceRequestsByIncidentResponse)(nil), // 8: query.request.v1.ListServiceRequestsByIncidentResponse
-	(*StatusHistoryEntry)(nil),                    // 9: query.request.v1.StatusHistoryEntry
-	(*ExecutorHistoryEntry)(nil),                  // 10: query.request.v1.ExecutorHistoryEntry
-	(*GetServiceRequestHistoryRequest)(nil),       // 11: query.request.v1.GetServiceRequestHistoryRequest
-	(*GetServiceRequestHistoryResponse)(nil),      // 12: query.request.v1.GetServiceRequestHistoryResponse
+	(*Executor)(nil),                              // 0: query.request.v1.Executor
+	(*ServiceRequest)(nil),                        // 1: query.request.v1.ServiceRequest
+	(*GetServiceRequestRequest)(nil),              // 2: query.request.v1.GetServiceRequestRequest
+	(*GetServiceRequestResponse)(nil),             // 3: query.request.v1.GetServiceRequestResponse
+	(*ListServiceRequestsRequest)(nil),            // 4: query.request.v1.ListServiceRequestsRequest
+	(*ListServiceRequestsResponse)(nil),           // 5: query.request.v1.ListServiceRequestsResponse
+	(*ListServiceRequestsByIncidentRequest)(nil),  // 6: query.request.v1.ListServiceRequestsByIncidentRequest
+	(*ListServiceRequestsByIncidentResponse)(nil), // 7: query.request.v1.ListServiceRequestsByIncidentResponse
+	(*StatusHistoryEntry)(nil),                    // 8: query.request.v1.StatusHistoryEntry
+	(*ExecutorHistoryEntry)(nil),                  // 9: query.request.v1.ExecutorHistoryEntry
+	(*GetServiceRequestHistoryRequest)(nil),       // 10: query.request.v1.GetServiceRequestHistoryRequest
+	(*GetServiceRequestHistoryResponse)(nil),      // 11: query.request.v1.GetServiceRequestHistoryResponse
 }
 var file_query_request_v1_request_proto_depIdxs = []int32{
-	0,  // 0: query.request.v1.ServiceRequest.status:type_name -> query.request.v1.ServiceRequestStatus
-	1,  // 1: query.request.v1.ServiceRequest.executors:type_name -> query.request.v1.Executor
-	2,  // 2: query.request.v1.GetServiceRequestResponse.service_request:type_name -> query.request.v1.ServiceRequest
-	2,  // 3: query.request.v1.ListServiceRequestsResponse.items:type_name -> query.request.v1.ServiceRequest
-	2,  // 4: query.request.v1.ListServiceRequestsByIncidentResponse.items:type_name -> query.request.v1.ServiceRequest
-	0,  // 5: query.request.v1.StatusHistoryEntry.old_status:type_name -> query.request.v1.ServiceRequestStatus
-	0,  // 6: query.request.v1.StatusHistoryEntry.new_status:type_name -> query.request.v1.ServiceRequestStatus
-	9,  // 7: query.request.v1.GetServiceRequestHistoryResponse.status_history:type_name -> query.request.v1.StatusHistoryEntry
-	10, // 8: query.request.v1.GetServiceRequestHistoryResponse.executor_history:type_name -> query.request.v1.ExecutorHistoryEntry
-	3,  // 9: query.request.v1.ServiceRequestQueryService.GetServiceRequest:input_type -> query.request.v1.GetServiceRequestRequest
-	5,  // 10: query.request.v1.ServiceRequestQueryService.ListServiceRequests:input_type -> query.request.v1.ListServiceRequestsRequest
-	7,  // 11: query.request.v1.ServiceRequestQueryService.ListServiceRequestsByIncident:input_type -> query.request.v1.ListServiceRequestsByIncidentRequest
-	11, // 12: query.request.v1.ServiceRequestQueryService.GetServiceRequestHistory:input_type -> query.request.v1.GetServiceRequestHistoryRequest
-	4,  // 13: query.request.v1.ServiceRequestQueryService.GetServiceRequest:output_type -> query.request.v1.GetServiceRequestResponse
-	6,  // 14: query.request.v1.ServiceRequestQueryService.ListServiceRequests:output_type -> query.request.v1.ListServiceRequestsResponse
-	8,  // 15: query.request.v1.ServiceRequestQueryService.ListServiceRequestsByIncident:output_type -> query.request.v1.ListServiceRequestsByIncidentResponse
-	12, // 16: query.request.v1.ServiceRequestQueryService.GetServiceRequestHistory:output_type -> query.request.v1.GetServiceRequestHistoryResponse
-	13, // [13:17] is the sub-list for method output_type
-	9,  // [9:13] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	0,  // 0: query.request.v1.ServiceRequest.executors:type_name -> query.request.v1.Executor
+	1,  // 1: query.request.v1.GetServiceRequestResponse.service_request:type_name -> query.request.v1.ServiceRequest
+	1,  // 2: query.request.v1.ListServiceRequestsResponse.items:type_name -> query.request.v1.ServiceRequest
+	1,  // 3: query.request.v1.ListServiceRequestsByIncidentResponse.items:type_name -> query.request.v1.ServiceRequest
+	8,  // 4: query.request.v1.GetServiceRequestHistoryResponse.status_history:type_name -> query.request.v1.StatusHistoryEntry
+	9,  // 5: query.request.v1.GetServiceRequestHistoryResponse.executor_history:type_name -> query.request.v1.ExecutorHistoryEntry
+	2,  // 6: query.request.v1.ServiceRequestQueryService.GetServiceRequest:input_type -> query.request.v1.GetServiceRequestRequest
+	4,  // 7: query.request.v1.ServiceRequestQueryService.ListServiceRequests:input_type -> query.request.v1.ListServiceRequestsRequest
+	6,  // 8: query.request.v1.ServiceRequestQueryService.ListServiceRequestsByIncident:input_type -> query.request.v1.ListServiceRequestsByIncidentRequest
+	10, // 9: query.request.v1.ServiceRequestQueryService.GetServiceRequestHistory:input_type -> query.request.v1.GetServiceRequestHistoryRequest
+	3,  // 10: query.request.v1.ServiceRequestQueryService.GetServiceRequest:output_type -> query.request.v1.GetServiceRequestResponse
+	5,  // 11: query.request.v1.ServiceRequestQueryService.ListServiceRequests:output_type -> query.request.v1.ListServiceRequestsResponse
+	7,  // 12: query.request.v1.ServiceRequestQueryService.ListServiceRequestsByIncident:output_type -> query.request.v1.ListServiceRequestsByIncidentResponse
+	11, // 13: query.request.v1.ServiceRequestQueryService.GetServiceRequestHistory:output_type -> query.request.v1.GetServiceRequestHistoryResponse
+	10, // [10:14] is the sub-list for method output_type
+	6,  // [6:10] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_query_request_v1_request_proto_init() }
@@ -1007,14 +933,13 @@ func file_query_request_v1_request_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_request_v1_request_proto_rawDesc), len(file_query_request_v1_request_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_query_request_v1_request_proto_goTypes,
 		DependencyIndexes: file_query_request_v1_request_proto_depIdxs,
-		EnumInfos:         file_query_request_v1_request_proto_enumTypes,
 		MessageInfos:      file_query_request_v1_request_proto_msgTypes,
 	}.Build()
 	File_query_request_v1_request_proto = out.File

@@ -9,7 +9,6 @@ import (
 	"github.com/samber/oops"
 
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
-	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	queryrequest "github.com/medincident/medincident-backend/internal/service/query/request"
 	requestqueryv1 "github.com/medincident/medincident-backend/pkg/query/request/v1"
@@ -124,22 +123,6 @@ func (h *ServiceRequestQueryHandler) GetServiceRequestHistory(
 	}, nil
 }
 
-var statusToProto = map[model.ServiceRequestStatus]requestqueryv1.ServiceRequestStatus{
-	model.ServiceRequestStatusCreated:       requestqueryv1.ServiceRequestStatus_SERVICE_REQUEST_STATUS_CREATED,
-	model.ServiceRequestStatusInWork:        requestqueryv1.ServiceRequestStatus_SERVICE_REQUEST_STATUS_IN_WORK,
-	model.ServiceRequestStatusOnHold:        requestqueryv1.ServiceRequestStatus_SERVICE_REQUEST_STATUS_ON_HOLD,
-	model.ServiceRequestStatusPendingReview: requestqueryv1.ServiceRequestStatus_SERVICE_REQUEST_STATUS_PENDING_REVIEW,
-	model.ServiceRequestStatusCompleted:     requestqueryv1.ServiceRequestStatus_SERVICE_REQUEST_STATUS_COMPLETED,
-	model.ServiceRequestStatusCancelled:     requestqueryv1.ServiceRequestStatus_SERVICE_REQUEST_STATUS_CANCELLED,
-}
-
-func statusStringToProto(s string) requestqueryv1.ServiceRequestStatus {
-	if v, ok := statusToProto[model.ServiceRequestStatus(s)]; ok {
-		return v
-	}
-	return requestqueryv1.ServiceRequestStatus_SERVICE_REQUEST_STATUS_UNSPECIFIED
-}
-
 func serviceRequestToProto(v *queryrequest.ServiceRequestView) *requestqueryv1.ServiceRequest {
 	out := &requestqueryv1.ServiceRequest{
 		Id:                v.ID.String(),
@@ -148,7 +131,7 @@ func serviceRequestToProto(v *queryrequest.ServiceRequestView) *requestqueryv1.S
 		DepartmentId:      v.DepartmentID.String(),
 		TypeId:            v.TypeID.String(),
 		Description:       v.Description,
-		Status:            statusToProto[v.Status],
+		Status:            string(v.Status),
 		AuthorId:          v.AuthorID,
 		AuthorDisplayName: v.AuthorDisplayName,
 		CreatedAt:         v.CreatedAt.UTC().Format(time.RFC3339Nano),
@@ -182,14 +165,13 @@ func statusHistoryToProto(items []queryrequest.StatusHistoryView) []*requestquer
 		e := &items[i]
 		entry := &requestqueryv1.StatusHistoryEntry{
 			Id:        e.ID.String(),
-			NewStatus: statusStringToProto(e.NewStatus),
+			NewStatus: e.NewStatus,
 			ActorId:   e.ActorID,
 			ActorName: e.ActorName,
 			ChangedAt: e.ChangedAt.UTC().Format(time.RFC3339Nano),
 		}
 		if e.OldStatus != nil {
-			v := statusStringToProto(*e.OldStatus)
-			entry.OldStatus = &v
+			entry.OldStatus = e.OldStatus
 		}
 		out = append(out, entry)
 	}

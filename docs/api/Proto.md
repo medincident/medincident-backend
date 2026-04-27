@@ -365,8 +365,6 @@
     - [ServiceRequest](#query-request-v1-ServiceRequest)
     - [StatusHistoryEntry](#query-request-v1-StatusHistoryEntry)
 
-    - [ServiceRequestStatus](#query-request-v1-ServiceRequestStatus)
-
     - [ServiceRequestQueryService](#query-request-v1-ServiceRequestQueryService)
 
 - [query/stats/v1/stats.proto](#query_stats_v1_stats-proto)
@@ -5400,7 +5398,7 @@ both values.
 | type_id | [string](#string) |  |  |
 | incident_id | [string](#string) | optional |  |
 | description | [string](#string) |  |  |
-| status | [ServiceRequestStatus](#query-request-v1-ServiceRequestStatus) |  |  |
+| status | [string](#string) |  |  |
 | author_id | [string](#string) |  |  |
 | author_display_name | [string](#string) |  |  |
 | executors | [Executor](#query-request-v1-Executor) | repeated |  |
@@ -5421,8 +5419,8 @@ both values.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  |  |
-| old_status | [ServiceRequestStatus](#query-request-v1-ServiceRequestStatus) | optional |  |
-| new_status | [ServiceRequestStatus](#query-request-v1-ServiceRequestStatus) |  |  |
+| old_status | [string](#string) | optional |  |
+| new_status | [string](#string) |  |  |
 | actor_id | [string](#string) |  |  |
 | actor_name | [string](#string) |  |  |
 | changed_at | [string](#string) |  |  |
@@ -5431,23 +5429,6 @@ both values.
 
 
 
-
-
-
-<a name="query-request-v1-ServiceRequestStatus"></a>
-
-### ServiceRequestStatus
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| SERVICE_REQUEST_STATUS_UNSPECIFIED | 0 |  |
-| SERVICE_REQUEST_STATUS_CREATED | 1 |  |
-| SERVICE_REQUEST_STATUS_IN_WORK | 2 |  |
-| SERVICE_REQUEST_STATUS_ON_HOLD | 3 |  |
-| SERVICE_REQUEST_STATUS_PENDING_REVIEW | 4 |  |
-| SERVICE_REQUEST_STATUS_COMPLETED | 5 |  |
-| SERVICE_REQUEST_STATUS_CANCELLED | 6 |  |
 
 
 

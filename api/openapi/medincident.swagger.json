@@ -5684,7 +5684,7 @@
       "type": "object",
       "properties": {
         "newStatus": {
-          "$ref": "#/definitions/commandRequestV1ServiceRequestStatus"
+          "$ref": "#/definitions/v1ServiceRequestStatus"
         }
       },
       "required": [
@@ -5756,18 +5756,6 @@
       ],
       "default": "INCIDENT_STATUS_UNSPECIFIED"
     },
-    "commandRequestV1ServiceRequestStatus": {
-      "type": "string",
-      "enum": [
-        "SERVICE_REQUEST_STATUS_UNSPECIFIED",
-        "SERVICE_REQUEST_STATUS_IN_WORK",
-        "SERVICE_REQUEST_STATUS_ON_HOLD",
-        "SERVICE_REQUEST_STATUS_PENDING_REVIEW",
-        "SERVICE_REQUEST_STATUS_COMPLETED",
-        "SERVICE_REQUEST_STATUS_CANCELLED"
-      ],
-      "default": "SERVICE_REQUEST_STATUS_UNSPECIFIED"
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -5830,19 +5818,6 @@
         }
       }
     },
-    "queryRequestV1ServiceRequestStatus": {
-      "type": "string",
-      "enum": [
-        "SERVICE_REQUEST_STATUS_UNSPECIFIED",
-        "SERVICE_REQUEST_STATUS_CREATED",
-        "SERVICE_REQUEST_STATUS_IN_WORK",
-        "SERVICE_REQUEST_STATUS_ON_HOLD",
-        "SERVICE_REQUEST_STATUS_PENDING_REVIEW",
-        "SERVICE_REQUEST_STATUS_COMPLETED",
-        "SERVICE_REQUEST_STATUS_CANCELLED"
-      ],
-      "default": "SERVICE_REQUEST_STATUS_UNSPECIFIED"
-    },
     "queryRequestV1StatusHistoryEntry": {
       "type": "object",
       "properties": {
@@ -5850,10 +5825,10 @@
           "type": "string"
         },
         "oldStatus": {
-          "$ref": "#/definitions/queryRequestV1ServiceRequestStatus"
+          "type": "string"
         },
         "newStatus": {
-          "$ref": "#/definitions/queryRequestV1ServiceRequestStatus"
+          "type": "string"
         },
         "actorId": {
           "type": "string"
@@ -7527,7 +7502,7 @@
           "type": "string"
         },
         "status": {
-          "$ref": "#/definitions/queryRequestV1ServiceRequestStatus"
+          "type": "string"
         },
         "authorId": {
           "type": "string"
@@ -7549,6 +7524,18 @@
           "type": "string"
         }
       }
+    },
+    "v1ServiceRequestStatus": {
+      "type": "string",
+      "enum": [
+        "SERVICE_REQUEST_STATUS_UNSPECIFIED",
+        "SERVICE_REQUEST_STATUS_IN_WORK",
+        "SERVICE_REQUEST_STATUS_ON_HOLD",
+        "SERVICE_REQUEST_STATUS_PENDING_REVIEW",
+        "SERVICE_REQUEST_STATUS_COMPLETED",
+        "SERVICE_REQUEST_STATUS_CANCELLED"
+      ],
+      "default": "SERVICE_REQUEST_STATUS_UNSPECIFIED"
     },
     "v1StartVacationNowResponse": {
       "type": "object",
