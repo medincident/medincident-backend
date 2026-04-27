@@ -7,15 +7,6 @@ import "google/api/field_behavior.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/command/request/v1;requestv1";
 
-enum ServiceRequestStatus {
-  SERVICE_REQUEST_STATUS_UNSPECIFIED = 0;
-  SERVICE_REQUEST_STATUS_IN_WORK = 1;
-  SERVICE_REQUEST_STATUS_ON_HOLD = 2;
-  SERVICE_REQUEST_STATUS_PENDING_REVIEW = 3;
-  SERVICE_REQUEST_STATUS_COMPLETED = 4;
-  SERVICE_REQUEST_STATUS_CANCELLED = 5;
-}
-
 service ServiceRequestCommandService {
   rpc CreateServiceRequest(CreateServiceRequestRequest) returns (CreateServiceRequestResponse) {
     option (google.api.http) = {
@@ -62,7 +53,7 @@ message UpdateServiceRequestDescriptionResponse {}
 
 message UpdateServiceRequestStatusRequest {
   string service_request_id = 1 [(google.api.field_behavior) = REQUIRED];
-  ServiceRequestStatus new_status = 2 [(google.api.field_behavior) = REQUIRED];
+  string new_status = 2 [(google.api.field_behavior) = REQUIRED];
 }
 message UpdateServiceRequestStatusResponse {}
 

@@ -3692,7 +3692,7 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 
 ```json
 {
-  "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED"
+  "newStatus": "string"
 }
 ```
 
@@ -7992,7 +7992,7 @@ Cancellation by registrar uses CancelIncident.
 
 ```json
 {
-  "newStatus": "SERVICE_REQUEST_STATUS_UNSPECIFIED"
+  "newStatus": "string"
 }
 
 ```
@@ -8001,7 +8001,7 @@ Cancellation by registrar uses CancelIncident.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|newStatus|[v1ServiceRequestStatus](#schemav1servicerequeststatus)|true|none|none|
+|newStatus|string|true|none|none|
 
 <h2 id="tocS_classifierV1Type">classifierV1Type</h2>
 <!-- backwards compatibility -->
@@ -12307,35 +12307,6 @@ calls to render a name or email.
 |executors|[[v1Executor](#schemav1executor)]|false|none|none|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
-
-<h2 id="tocS_v1ServiceRequestStatus">v1ServiceRequestStatus</h2>
-<!-- backwards compatibility -->
-<a id="schemav1servicerequeststatus"></a>
-<a id="schema_v1ServiceRequestStatus"></a>
-<a id="tocSv1servicerequeststatus"></a>
-<a id="tocsv1servicerequeststatus"></a>
-
-```json
-"SERVICE_REQUEST_STATUS_UNSPECIFIED"
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|*anonymous*|string|false|none|none|
-
-#### Enumerated Values
-
-|Property|Value|
-|---|---|
-|*anonymous*|SERVICE_REQUEST_STATUS_UNSPECIFIED|
-|*anonymous*|SERVICE_REQUEST_STATUS_IN_WORK|
-|*anonymous*|SERVICE_REQUEST_STATUS_ON_HOLD|
-|*anonymous*|SERVICE_REQUEST_STATUS_PENDING_REVIEW|
-|*anonymous*|SERVICE_REQUEST_STATUS_COMPLETED|
-|*anonymous*|SERVICE_REQUEST_STATUS_CANCELLED|
 
 <h2 id="tocS_v1StartVacationNowResponse">v1StartVacationNowResponse</h2>
 <!-- backwards compatibility -->

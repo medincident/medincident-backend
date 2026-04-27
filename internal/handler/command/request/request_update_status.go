@@ -17,15 +17,11 @@ func (h *ServiceRequestHandler) UpdateServiceRequestStatus(
 	if err != nil {
 		return nil, err
 	}
-	st, err := protoStatusToString(req.GetNewStatus())
-	if err != nil {
-		return nil, err
-	}
 	if err := h.svc.UpdateStatus(ctx, requestsvc.UpdateServiceRequestStatusCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: requestsvc.UpdateServiceRequestStatusPayload{
 			ServiceRequestID: req.GetServiceRequestId(),
-			NewStatus:        st,
+			NewStatus:        req.GetNewStatus(),
 		},
 	}); err != nil {
 		return nil, err

@@ -5684,7 +5684,7 @@
       "type": "object",
       "properties": {
         "newStatus": {
-          "$ref": "#/definitions/v1ServiceRequestStatus"
+          "type": "string"
         }
       },
       "required": [
@@ -7524,18 +7524,6 @@
           "type": "string"
         }
       }
-    },
-    "v1ServiceRequestStatus": {
-      "type": "string",
-      "enum": [
-        "SERVICE_REQUEST_STATUS_UNSPECIFIED",
-        "SERVICE_REQUEST_STATUS_IN_WORK",
-        "SERVICE_REQUEST_STATUS_ON_HOLD",
-        "SERVICE_REQUEST_STATUS_PENDING_REVIEW",
-        "SERVICE_REQUEST_STATUS_COMPLETED",
-        "SERVICE_REQUEST_STATUS_CANCELLED"
-      ],
-      "default": "SERVICE_REQUEST_STATUS_UNSPECIFIED"
     },
     "v1StartVacationNowResponse": {
       "type": "object",

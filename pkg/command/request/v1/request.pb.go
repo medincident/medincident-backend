@@ -22,64 +22,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type ServiceRequestStatus int32
-
-const (
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_UNSPECIFIED    ServiceRequestStatus = 0
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_IN_WORK        ServiceRequestStatus = 1
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_ON_HOLD        ServiceRequestStatus = 2
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_PENDING_REVIEW ServiceRequestStatus = 3
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_COMPLETED      ServiceRequestStatus = 4
-	ServiceRequestStatus_SERVICE_REQUEST_STATUS_CANCELLED      ServiceRequestStatus = 5
-)
-
-// Enum value maps for ServiceRequestStatus.
-var (
-	ServiceRequestStatus_name = map[int32]string{
-		0: "SERVICE_REQUEST_STATUS_UNSPECIFIED",
-		1: "SERVICE_REQUEST_STATUS_IN_WORK",
-		2: "SERVICE_REQUEST_STATUS_ON_HOLD",
-		3: "SERVICE_REQUEST_STATUS_PENDING_REVIEW",
-		4: "SERVICE_REQUEST_STATUS_COMPLETED",
-		5: "SERVICE_REQUEST_STATUS_CANCELLED",
-	}
-	ServiceRequestStatus_value = map[string]int32{
-		"SERVICE_REQUEST_STATUS_UNSPECIFIED":    0,
-		"SERVICE_REQUEST_STATUS_IN_WORK":        1,
-		"SERVICE_REQUEST_STATUS_ON_HOLD":        2,
-		"SERVICE_REQUEST_STATUS_PENDING_REVIEW": 3,
-		"SERVICE_REQUEST_STATUS_COMPLETED":      4,
-		"SERVICE_REQUEST_STATUS_CANCELLED":      5,
-	}
-)
-
-func (x ServiceRequestStatus) Enum() *ServiceRequestStatus {
-	p := new(ServiceRequestStatus)
-	*p = x
-	return p
-}
-
-func (x ServiceRequestStatus) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (ServiceRequestStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_command_request_v1_request_proto_enumTypes[0].Descriptor()
-}
-
-func (ServiceRequestStatus) Type() protoreflect.EnumType {
-	return &file_command_request_v1_request_proto_enumTypes[0]
-}
-
-func (x ServiceRequestStatus) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use ServiceRequestStatus.Descriptor instead.
-func (ServiceRequestStatus) EnumDescriptor() ([]byte, []int) {
-	return file_command_request_v1_request_proto_rawDescGZIP(), []int{0}
-}
-
 type CreateServiceRequestRequest struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	DepartmentId        string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
@@ -291,7 +233,7 @@ func (*UpdateServiceRequestDescriptionResponse) Descriptor() ([]byte, []int) {
 type UpdateServiceRequestStatusRequest struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	ServiceRequestId string                 `protobuf:"bytes,1,opt,name=service_request_id,json=serviceRequestId,proto3" json:"service_request_id,omitempty"`
-	NewStatus        ServiceRequestStatus   `protobuf:"varint,2,opt,name=new_status,json=newStatus,proto3,enum=command.request.v1.ServiceRequestStatus" json:"new_status,omitempty"`
+	NewStatus        string                 `protobuf:"bytes,2,opt,name=new_status,json=newStatus,proto3" json:"new_status,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -333,11 +275,11 @@ func (x *UpdateServiceRequestStatusRequest) GetServiceRequestId() string {
 	return ""
 }
 
-func (x *UpdateServiceRequestStatusRequest) GetNewStatus() ServiceRequestStatus {
+func (x *UpdateServiceRequestStatusRequest) GetNewStatus() string {
 	if x != nil {
 		return x.NewStatus
 	}
-	return ServiceRequestStatus_SERVICE_REQUEST_STATUS_UNSPECIFIED
+	return ""
 }
 
 type UpdateServiceRequestStatusResponse struct {
@@ -482,23 +424,16 @@ const file_command_request_v1_request_proto_rawDesc = "" +
 	"&UpdateServiceRequestDescriptionRequest\x121\n" +
 	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x12%\n" +
 	"\vdescription\x18\x02 \x01(\tB\x03\xe0A\x02R\vdescription\")\n" +
-	"'UpdateServiceRequestDescriptionResponse\"\xa4\x01\n" +
+	"'UpdateServiceRequestDescriptionResponse\"z\n" +
 	"!UpdateServiceRequestStatusRequest\x121\n" +
-	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x12L\n" +
+	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x12\"\n" +
 	"\n" +
-	"new_status\x18\x02 \x01(\x0e2(.command.request.v1.ServiceRequestStatusB\x03\xe0A\x02R\tnewStatus\"$\n" +
+	"new_status\x18\x02 \x01(\tB\x03\xe0A\x02R\tnewStatus\"$\n" +
 	"\"UpdateServiceRequestStatusResponse\"\x84\x01\n" +
 	"\x16AssignExecutorsRequest\x121\n" +
 	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x127\n" +
 	"\x15executor_employee_ids\x18\x02 \x03(\tB\x03\xe0A\x02R\x13executorEmployeeIds\"\x19\n" +
-	"\x17AssignExecutorsResponse*\xfd\x01\n" +
-	"\x14ServiceRequestStatus\x12&\n" +
-	"\"SERVICE_REQUEST_STATUS_UNSPECIFIED\x10\x00\x12\"\n" +
-	"\x1eSERVICE_REQUEST_STATUS_IN_WORK\x10\x01\x12\"\n" +
-	"\x1eSERVICE_REQUEST_STATUS_ON_HOLD\x10\x02\x12)\n" +
-	"%SERVICE_REQUEST_STATUS_PENDING_REVIEW\x10\x03\x12$\n" +
-	" SERVICE_REQUEST_STATUS_COMPLETED\x10\x04\x12$\n" +
-	" SERVICE_REQUEST_STATUS_CANCELLED\x10\x052\x92\x06\n" +
+	"\x17AssignExecutorsResponse2\x92\x06\n" +
 	"\x1cServiceRequestCommandService\x12\x9a\x01\n" +
 	"\x14CreateServiceRequest\x12/.command.request.v1.CreateServiceRequestRequest\x1a0.command.request.v1.CreateServiceRequestResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/service-requests\x12\xdc\x01\n" +
 	"\x1fUpdateServiceRequestDescription\x12:.command.request.v1.UpdateServiceRequestDescriptionRequest\x1a;.command.request.v1.UpdateServiceRequestDescriptionResponse\"@\x82\xd3\xe4\x93\x02::\x01*\x1a5/v1/service-requests/{service_request_id}/description\x12\xc8\x01\n" +
@@ -518,34 +453,31 @@ func file_command_request_v1_request_proto_rawDescGZIP() []byte {
 	return file_command_request_v1_request_proto_rawDescData
 }
 
-var file_command_request_v1_request_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_command_request_v1_request_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_command_request_v1_request_proto_goTypes = []any{
-	(ServiceRequestStatus)(0),                       // 0: command.request.v1.ServiceRequestStatus
-	(*CreateServiceRequestRequest)(nil),             // 1: command.request.v1.CreateServiceRequestRequest
-	(*CreateServiceRequestResponse)(nil),            // 2: command.request.v1.CreateServiceRequestResponse
-	(*UpdateServiceRequestDescriptionRequest)(nil),  // 3: command.request.v1.UpdateServiceRequestDescriptionRequest
-	(*UpdateServiceRequestDescriptionResponse)(nil), // 4: command.request.v1.UpdateServiceRequestDescriptionResponse
-	(*UpdateServiceRequestStatusRequest)(nil),       // 5: command.request.v1.UpdateServiceRequestStatusRequest
-	(*UpdateServiceRequestStatusResponse)(nil),      // 6: command.request.v1.UpdateServiceRequestStatusResponse
-	(*AssignExecutorsRequest)(nil),                  // 7: command.request.v1.AssignExecutorsRequest
-	(*AssignExecutorsResponse)(nil),                 // 8: command.request.v1.AssignExecutorsResponse
+	(*CreateServiceRequestRequest)(nil),             // 0: command.request.v1.CreateServiceRequestRequest
+	(*CreateServiceRequestResponse)(nil),            // 1: command.request.v1.CreateServiceRequestResponse
+	(*UpdateServiceRequestDescriptionRequest)(nil),  // 2: command.request.v1.UpdateServiceRequestDescriptionRequest
+	(*UpdateServiceRequestDescriptionResponse)(nil), // 3: command.request.v1.UpdateServiceRequestDescriptionResponse
+	(*UpdateServiceRequestStatusRequest)(nil),       // 4: command.request.v1.UpdateServiceRequestStatusRequest
+	(*UpdateServiceRequestStatusResponse)(nil),      // 5: command.request.v1.UpdateServiceRequestStatusResponse
+	(*AssignExecutorsRequest)(nil),                  // 6: command.request.v1.AssignExecutorsRequest
+	(*AssignExecutorsResponse)(nil),                 // 7: command.request.v1.AssignExecutorsResponse
 }
 var file_command_request_v1_request_proto_depIdxs = []int32{
-	0, // 0: command.request.v1.UpdateServiceRequestStatusRequest.new_status:type_name -> command.request.v1.ServiceRequestStatus
-	1, // 1: command.request.v1.ServiceRequestCommandService.CreateServiceRequest:input_type -> command.request.v1.CreateServiceRequestRequest
-	3, // 2: command.request.v1.ServiceRequestCommandService.UpdateServiceRequestDescription:input_type -> command.request.v1.UpdateServiceRequestDescriptionRequest
-	5, // 3: command.request.v1.ServiceRequestCommandService.UpdateServiceRequestStatus:input_type -> command.request.v1.UpdateServiceRequestStatusRequest
-	7, // 4: command.request.v1.ServiceRequestCommandService.AssignExecutors:input_type -> command.request.v1.AssignExecutorsRequest
-	2, // 5: command.request.v1.ServiceRequestCommandService.CreateServiceRequest:output_type -> command.request.v1.CreateServiceRequestResponse
-	4, // 6: command.request.v1.ServiceRequestCommandService.UpdateServiceRequestDescription:output_type -> command.request.v1.UpdateServiceRequestDescriptionResponse
-	6, // 7: command.request.v1.ServiceRequestCommandService.UpdateServiceRequestStatus:output_type -> command.request.v1.UpdateServiceRequestStatusResponse
-	8, // 8: command.request.v1.ServiceRequestCommandService.AssignExecutors:output_type -> command.request.v1.AssignExecutorsResponse
-	5, // [5:9] is the sub-list for method output_type
-	1, // [1:5] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // 0: command.request.v1.ServiceRequestCommandService.CreateServiceRequest:input_type -> command.request.v1.CreateServiceRequestRequest
+	2, // 1: command.request.v1.ServiceRequestCommandService.UpdateServiceRequestDescription:input_type -> command.request.v1.UpdateServiceRequestDescriptionRequest
+	4, // 2: command.request.v1.ServiceRequestCommandService.UpdateServiceRequestStatus:input_type -> command.request.v1.UpdateServiceRequestStatusRequest
+	6, // 3: command.request.v1.ServiceRequestCommandService.AssignExecutors:input_type -> command.request.v1.AssignExecutorsRequest
+	1, // 4: command.request.v1.ServiceRequestCommandService.CreateServiceRequest:output_type -> command.request.v1.CreateServiceRequestResponse
+	3, // 5: command.request.v1.ServiceRequestCommandService.UpdateServiceRequestDescription:output_type -> command.request.v1.UpdateServiceRequestDescriptionResponse
+	5, // 6: command.request.v1.ServiceRequestCommandService.UpdateServiceRequestStatus:output_type -> command.request.v1.UpdateServiceRequestStatusResponse
+	7, // 7: command.request.v1.ServiceRequestCommandService.AssignExecutors:output_type -> command.request.v1.AssignExecutorsResponse
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_command_request_v1_request_proto_init() }
@@ -559,14 +491,13 @@ func file_command_request_v1_request_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_command_request_v1_request_proto_rawDesc), len(file_command_request_v1_request_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_command_request_v1_request_proto_goTypes,
 		DependencyIndexes: file_command_request_v1_request_proto_depIdxs,
-		EnumInfos:         file_command_request_v1_request_proto_enumTypes,
 		MessageInfos:      file_command_request_v1_request_proto_msgTypes,
 	}.Build()
 	File_command_request_v1_request_proto = out.File

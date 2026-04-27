@@ -196,8 +196,6 @@
     - [UpdateServiceRequestStatusRequest](#command-request-v1-UpdateServiceRequestStatusRequest)
     - [UpdateServiceRequestStatusResponse](#command-request-v1-UpdateServiceRequestStatusResponse)
 
-    - [ServiceRequestStatus](#command-request-v1-ServiceRequestStatus)
-
     - [ServiceRequestCommandService](#command-request-v1-ServiceRequestCommandService)
 
 - [query/announcement/v1/announcement.proto](#query_announcement_v1_announcement-proto)
@@ -2849,7 +2847,7 @@ generated under pkg/.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | service_request_id | [string](#string) |  |  |
-| new_status | [ServiceRequestStatus](#command-request-v1-ServiceRequestStatus) |  |  |
+| new_status | [string](#string) |  |  |
 
 
 
@@ -2865,22 +2863,6 @@ generated under pkg/.
 
 
 
-
-
-
-<a name="command-request-v1-ServiceRequestStatus"></a>
-
-### ServiceRequestStatus
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| SERVICE_REQUEST_STATUS_UNSPECIFIED | 0 |  |
-| SERVICE_REQUEST_STATUS_IN_WORK | 1 |  |
-| SERVICE_REQUEST_STATUS_ON_HOLD | 2 |  |
-| SERVICE_REQUEST_STATUS_PENDING_REVIEW | 3 |  |
-| SERVICE_REQUEST_STATUS_COMPLETED | 4 |  |
-| SERVICE_REQUEST_STATUS_CANCELLED | 5 |  |
 
 
 
