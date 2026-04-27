@@ -694,42 +694,42 @@ var File_command_incident_v1_incident_proto protoreflect.FileDescriptor
 
 const file_command_incident_v1_incident_proto_rawDesc = "" +
 	"\n" +
-	"\"command/incident/v1/incident.proto\x12\x13command.incident.v1\x1a\x1cgoogle/api/annotations.proto\"\xce\x01\n" +
-	"\x15CreateIncidentRequest\x12#\n" +
-	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\x12\x1f\n" +
-	"\vcategory_id\x18\x02 \x01(\tR\n" +
-	"categoryId\x12\x17\n" +
-	"\atype_id\x18\x03 \x01(\tR\x06typeId\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1f\n" +
-	"\voccurred_at\x18\x05 \x01(\tR\n" +
+	"\"command/incident/v1/incident.proto\x12\x13command.incident.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xe2\x01\n" +
+	"\x15CreateIncidentRequest\x12(\n" +
+	"\rdepartment_id\x18\x01 \x01(\tB\x03\xe0A\x02R\fdepartmentId\x12$\n" +
+	"\vcategory_id\x18\x02 \x01(\tB\x03\xe0A\x02R\n" +
+	"categoryId\x12\x1c\n" +
+	"\atype_id\x18\x03 \x01(\tB\x03\xe0A\x02R\x06typeId\x12%\n" +
+	"\vdescription\x18\x04 \x01(\tH\x00R\vdescription\x88\x01\x01\x12$\n" +
+	"\voccurred_at\x18\x05 \x01(\tB\x03\xe0A\x02R\n" +
 	"occurredAtB\x0e\n" +
 	"\f_description\"9\n" +
 	"\x16CreateIncidentResponse\x12\x1f\n" +
 	"\vincident_id\x18\x01 \x01(\tR\n" +
-	"incidentId\"8\n" +
-	"\x15CancelIncidentRequest\x12\x1f\n" +
-	"\vincident_id\x18\x01 \x01(\tR\n" +
+	"incidentId\"=\n" +
+	"\x15CancelIncidentRequest\x12$\n" +
+	"\vincident_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
 	"incidentId\"\x18\n" +
-	"\x16CancelIncidentResponse\"\x82\x01\n" +
-	"\x1bUpdateIncidentStatusRequest\x12\x1f\n" +
-	"\vincident_id\x18\x01 \x01(\tR\n" +
-	"incidentId\x12B\n" +
+	"\x16CancelIncidentResponse\"\x8c\x01\n" +
+	"\x1bUpdateIncidentStatusRequest\x12$\n" +
+	"\vincident_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
+	"incidentId\x12G\n" +
 	"\n" +
-	"new_status\x18\x02 \x01(\x0e2#.command.incident.v1.IncidentStatusR\tnewStatus\"\x1e\n" +
-	"\x1cUpdateIncidentStatusResponse\"\x83\x01\n" +
-	"\x1dUpdateIncidentPriorityRequest\x12\x1f\n" +
-	"\vincident_id\x18\x01 \x01(\tR\n" +
-	"incidentId\x12A\n" +
-	"\bpriority\x18\x02 \x01(\x0e2%.command.incident.v1.IncidentPriorityR\bpriority\" \n" +
-	"\x1eUpdateIncidentPriorityResponse\"z\n" +
-	" UpdateIncidentDescriptionRequest\x12\x1f\n" +
-	"\vincident_id\x18\x01 \x01(\tR\n" +
+	"new_status\x18\x02 \x01(\x0e2#.command.incident.v1.IncidentStatusB\x03\xe0A\x02R\tnewStatus\"\x1e\n" +
+	"\x1cUpdateIncidentStatusResponse\"\x8d\x01\n" +
+	"\x1dUpdateIncidentPriorityRequest\x12$\n" +
+	"\vincident_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
+	"incidentId\x12F\n" +
+	"\bpriority\x18\x02 \x01(\x0e2%.command.incident.v1.IncidentPriorityB\x03\xe0A\x02R\bpriority\" \n" +
+	"\x1eUpdateIncidentPriorityResponse\"\x7f\n" +
+	" UpdateIncidentDescriptionRequest\x12$\n" +
+	"\vincident_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
 	"incidentId\x12%\n" +
 	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"#\n" +
-	"!UpdateIncidentDescriptionResponse\"8\n" +
-	"\x15ReopenIncidentRequest\x12\x1f\n" +
-	"\vincident_id\x18\x01 \x01(\tR\n" +
+	"!UpdateIncidentDescriptionResponse\"=\n" +
+	"\x15ReopenIncidentRequest\x12$\n" +
+	"\vincident_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
 	"incidentId\"J\n" +
 	"\x16ReopenIncidentResponse\x120\n" +
 	"\x14reopened_incident_id\x18\x01 \x01(\tR\x12reopenedIncidentId*\xc6\x01\n" +

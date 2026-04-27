@@ -7154,8 +7154,8 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|title|string|false|none|none|
-|content|string|false|none|none|
+|title|string|true|none|none|
+|content|string|true|none|none|
 |startsAt|string|false|none|none|
 |endsAt|string|false|none|none|
 
@@ -7177,7 +7177,7 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|false|none|none|
+|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|true|none|none|
 
 <h2 id="tocS_IncidentBufferCommandServicePublishPatientIncidentBody">IncidentBufferCommandServicePublishPatientIncidentBody</h2>
 <!-- backwards compatibility -->
@@ -7200,9 +7200,9 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|departmentId|string|false|none|none|
-|categoryId|string|false|none|none|
-|typeId|string|false|none|none|
+|departmentId|string|true|none|none|
+|categoryId|string|true|none|none|
+|typeId|string|true|none|none|
 |description|string|false|none|none|
 
 <h2 id="tocS_IncidentBufferCommandServiceUpdatePatientIncidentBody">IncidentBufferCommandServiceUpdatePatientIncidentBody</h2>
@@ -7399,7 +7399,7 @@ This operation does not require authentication
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|priority|[commandIncidentV1IncidentPriority](#schemacommandincidentv1incidentpriority)|false|none|none|
+|priority|[commandIncidentV1IncidentPriority](#schemacommandincidentv1incidentpriority)|true|none|none|
 
 <h2 id="tocS_IncidentCommandServiceUpdateIncidentStatusBody">IncidentCommandServiceUpdateIncidentStatusBody</h2>
 <!-- backwards compatibility -->
@@ -7423,7 +7423,7 @@ Cancellation by registrar uses CancelIncident.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|newStatus|[commandIncidentV1IncidentStatus](#schemacommandincidentv1incidentstatus)|false|none|none|
+|newStatus|[commandIncidentV1IncidentStatus](#schemacommandincidentv1incidentstatus)|true|none|none|
 
 <h2 id="tocS_MembershipCommandServiceAssignClinicHeadBody">MembershipCommandServiceAssignClinicHeadBody</h2>
 <!-- backwards compatibility -->
@@ -9063,12 +9063,12 @@ ClinicListItem is the minimal shape returned by list endpoints.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|organizationId|string|false|none|none|
+|organizationId|string|true|none|none|
 |clinicId|string|false|none|none|
 |departmentId|string|false|none|none|
-|title|string|false|none|none|
-|content|string|false|none|none|
-|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|false|none|none|
+|title|string|true|none|none|
+|content|string|true|none|none|
+|priority|[commandAnnouncementV1AnnouncementPriority](#schemacommandannouncementv1announcementpriority)|true|none|none|
 |startsAt|string|false|none|none|
 |endsAt|string|false|none|none|
 
@@ -9174,11 +9174,11 @@ ClinicListItem is the minimal shape returned by list endpoints.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|departmentId|string|false|none|none|
-|categoryId|string|false|none|none|
-|typeId|string|false|none|none|
+|departmentId|string|true|none|none|
+|categoryId|string|true|none|none|
+|typeId|string|true|none|none|
 |description|string|false|none|none|
-|occurredAt|string|false|none|none|
+|occurredAt|string|true|none|none|
 
 <h2 id="tocS_v1CreateIncidentResponse">v1CreateIncidentResponse</h2>
 <!-- backwards compatibility -->
@@ -12350,7 +12350,7 @@ calls to render a name or email.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|organizationId|string|false|none|none|
+|organizationId|string|true|none|none|
 |categoryId|string|false|none|none|
 |typeId|string|false|none|none|
 |description|string|false|none|none|

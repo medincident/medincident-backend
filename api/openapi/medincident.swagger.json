@@ -5199,7 +5199,11 @@
           "type": "string",
           "title": "RFC3339Nano; absent = clear"
         }
-      }
+      },
+      "required": [
+        "title",
+        "content"
+      ]
     },
     "AnnouncementCommandServiceUpdateAnnouncementPriorityBody": {
       "type": "object",
@@ -5207,7 +5211,10 @@
         "priority": {
           "$ref": "#/definitions/commandAnnouncementV1AnnouncementPriority"
         }
-      }
+      },
+      "required": [
+        "priority"
+      ]
     },
     "IncidentBufferCommandServicePublishPatientIncidentBody": {
       "type": "object",
@@ -5225,7 +5232,12 @@
           "type": "string",
           "title": "dispatcher's edited description"
         }
-      }
+      },
+      "required": [
+        "departmentId",
+        "categoryId",
+        "typeId"
+      ]
     },
     "IncidentBufferCommandServiceUpdatePatientIncidentBody": {
       "type": "object",
@@ -5336,7 +5348,10 @@
         "priority": {
           "$ref": "#/definitions/commandIncidentV1IncidentPriority"
         }
-      }
+      },
+      "required": [
+        "priority"
+      ]
     },
     "IncidentCommandServiceUpdateIncidentStatusBody": {
       "type": "object",
@@ -5345,7 +5360,10 @@
           "$ref": "#/definitions/commandIncidentV1IncidentStatus"
         }
       },
-      "description": "UpdateIncidentStatus only handles forward transitions:\npending -\u003e in_progress, in_progress -\u003e done, in_progress -\u003e rejected.\nCancellation by registrar uses CancelIncident."
+      "description": "UpdateIncidentStatus only handles forward transitions:\npending -\u003e in_progress, in_progress -\u003e done, in_progress -\u003e rejected.\nCancellation by registrar uses CancelIncident.",
+      "required": [
+        "newStatus"
+      ]
     },
     "MembershipCommandServiceAssignClinicHeadBody": {
       "type": "object",
@@ -6219,7 +6237,13 @@
           "type": "string",
           "title": "RFC3339Nano"
         }
-      }
+      },
+      "required": [
+        "organizationId",
+        "title",
+        "content",
+        "priority"
+      ]
     },
     "v1CreateAnnouncementResponse": {
       "type": "object",
@@ -6272,7 +6296,13 @@
           "type": "string",
           "title": "RFC3339Nano"
         }
-      }
+      },
+      "required": [
+        "departmentId",
+        "categoryId",
+        "typeId",
+        "occurredAt"
+      ]
     },
     "v1CreateIncidentResponse": {
       "type": "object",
@@ -7522,7 +7552,10 @@
           "type": "string",
           "title": "RFC3339Nano"
         }
-      }
+      },
+      "required": [
+        "organizationId"
+      ]
     },
     "v1SubmitPatientIncidentResponse": {
       "type": "object",

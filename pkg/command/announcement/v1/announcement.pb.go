@@ -579,14 +579,14 @@ var File_command_announcement_v1_announcement_proto protoreflect.FileDescriptor
 
 const file_command_announcement_v1_announcement_proto_rawDesc = "" +
 	"\n" +
-	"*command/announcement/v1/announcement.proto\x12\x17command.announcement.v1\x1a\x1cgoogle/api/annotations.proto\"\x85\x03\n" +
-	"\x19CreateAnnouncementRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12 \n" +
+	"*command/announcement/v1/announcement.proto\x12\x17command.announcement.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\x99\x03\n" +
+	"\x19CreateAnnouncementRequest\x12,\n" +
+	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12 \n" +
 	"\tclinic_id\x18\x02 \x01(\tH\x00R\bclinicId\x88\x01\x01\x12(\n" +
-	"\rdepartment_id\x18\x03 \x01(\tH\x01R\fdepartmentId\x88\x01\x01\x12\x14\n" +
-	"\x05title\x18\x04 \x01(\tR\x05title\x12\x18\n" +
-	"\acontent\x18\x05 \x01(\tR\acontent\x12I\n" +
-	"\bpriority\x18\x06 \x01(\x0e2-.command.announcement.v1.AnnouncementPriorityR\bpriority\x12 \n" +
+	"\rdepartment_id\x18\x03 \x01(\tH\x01R\fdepartmentId\x88\x01\x01\x12\x19\n" +
+	"\x05title\x18\x04 \x01(\tB\x03\xe0A\x02R\x05title\x12\x1d\n" +
+	"\acontent\x18\x05 \x01(\tB\x03\xe0A\x02R\acontent\x12N\n" +
+	"\bpriority\x18\x06 \x01(\x0e2-.command.announcement.v1.AnnouncementPriorityB\x03\xe0A\x02R\bpriority\x12 \n" +
 	"\tstarts_at\x18\a \x01(\tH\x02R\bstartsAt\x88\x01\x01\x12\x1c\n" +
 	"\aends_at\x18\b \x01(\tH\x03R\x06endsAt\x88\x01\x01B\f\n" +
 	"\n" +
@@ -597,27 +597,27 @@ const file_command_announcement_v1_announcement_proto_rawDesc = "" +
 	"\n" +
 	"\b_ends_at\",\n" +
 	"\x1aCreateAnnouncementResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xb5\x01\n" +
-	"\x19UpdateAnnouncementRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\x12 \n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xc4\x01\n" +
+	"\x19UpdateAnnouncementRequest\x12\x13\n" +
+	"\x02id\x18\x01 \x01(\tB\x03\xe0A\x02R\x02id\x12\x19\n" +
+	"\x05title\x18\x02 \x01(\tB\x03\xe0A\x02R\x05title\x12\x1d\n" +
+	"\acontent\x18\x03 \x01(\tB\x03\xe0A\x02R\acontent\x12 \n" +
 	"\tstarts_at\x18\x04 \x01(\tH\x00R\bstartsAt\x88\x01\x01\x12\x1c\n" +
 	"\aends_at\x18\x05 \x01(\tH\x01R\x06endsAt\x88\x01\x01B\f\n" +
 	"\n" +
 	"_starts_atB\n" +
 	"\n" +
 	"\b_ends_at\"\x1c\n" +
-	"\x1aUpdateAnnouncementResponse\"~\n" +
-	"!UpdateAnnouncementPriorityRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12I\n" +
-	"\bpriority\x18\x02 \x01(\x0e2-.command.announcement.v1.AnnouncementPriorityR\bpriority\"$\n" +
-	"\"UpdateAnnouncementPriorityResponse\",\n" +
-	"\x1aArchiveAnnouncementRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x1d\n" +
-	"\x1bArchiveAnnouncementResponse\".\n" +
-	"\x1cUnarchiveAnnouncementRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x1f\n" +
+	"\x1aUpdateAnnouncementResponse\"\x88\x01\n" +
+	"!UpdateAnnouncementPriorityRequest\x12\x13\n" +
+	"\x02id\x18\x01 \x01(\tB\x03\xe0A\x02R\x02id\x12N\n" +
+	"\bpriority\x18\x02 \x01(\x0e2-.command.announcement.v1.AnnouncementPriorityB\x03\xe0A\x02R\bpriority\"$\n" +
+	"\"UpdateAnnouncementPriorityResponse\"1\n" +
+	"\x1aArchiveAnnouncementRequest\x12\x13\n" +
+	"\x02id\x18\x01 \x01(\tB\x03\xe0A\x02R\x02id\"\x1d\n" +
+	"\x1bArchiveAnnouncementResponse\"3\n" +
+	"\x1cUnarchiveAnnouncementRequest\x12\x13\n" +
+	"\x02id\x18\x01 \x01(\tB\x03\xe0A\x02R\x02id\"\x1f\n" +
 	"\x1dUnarchiveAnnouncementResponse*\x7f\n" +
 	"\x14AnnouncementPriority\x12%\n" +
 	"!ANNOUNCEMENT_PRIORITY_UNSPECIFIED\x10\x00\x12 \n" +

@@ -3,6 +3,7 @@ syntax = "proto3";
 package command.incident.buffer.v1;
 
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/command/incident/buffer/v1;bufferv1";
 
@@ -38,7 +39,7 @@ service IncidentBufferCommandService {
 }
 
 message SubmitPatientIncidentRequest {
-  string organization_id = 1;
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
   optional string category_id = 2;
   optional string type_id = 3;
   optional string description = 4;
@@ -49,7 +50,7 @@ message SubmitPatientIncidentResponse {
 }
 
 message UpdatePatientIncidentRequest {
-  string buffer_id = 1;
+  string buffer_id = 1 [(google.api.field_behavior) = REQUIRED];
   optional string category_id = 2;
   optional string type_id = 3;
   optional string description = 4;
@@ -58,15 +59,15 @@ message UpdatePatientIncidentRequest {
 message UpdatePatientIncidentResponse {}
 
 message CancelPatientIncidentRequest {
-  string buffer_id = 1;
+  string buffer_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 message CancelPatientIncidentResponse {}
 
 message PublishPatientIncidentRequest {
-  string buffer_id = 1;
-  string department_id = 2;
-  string category_id = 3;
-  string type_id = 4;
+  string buffer_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string department_id = 2 [(google.api.field_behavior) = REQUIRED];
+  string category_id = 3 [(google.api.field_behavior) = REQUIRED];
+  string type_id = 4 [(google.api.field_behavior) = REQUIRED];
   optional string description = 5; // dispatcher's edited description
 }
 message PublishPatientIncidentResponse {
@@ -74,6 +75,6 @@ message PublishPatientIncidentResponse {
 }
 
 message RejectPatientIncidentRequest {
-  string buffer_id = 1;
+  string buffer_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 message RejectPatientIncidentResponse {}
