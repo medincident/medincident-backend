@@ -67,12 +67,12 @@ func (s *IncidentService) UpdateDescription(
 			}
 		}
 
-		desc := null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
-		inc.Description = desc
+		trimmed := strings.TrimSpace(*cmd.Payload.Description)
+		inc.Description = null.StringFrom(trimmed)
 		inc.UpdatedAt = now
 		if err := tx.Save(inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-		return projector.IncidentDescriptionUpdated(tx, inc.ID, desc, now)
+		return projector.IncidentDescriptionUpdated(tx, inc.ID, &trimmed, now)
 	})
 }
