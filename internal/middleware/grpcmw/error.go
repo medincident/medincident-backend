@@ -392,9 +392,6 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_invalid_scope", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid_time_range", grpcCode: codes.InvalidArgument},
 
-	// State preconditions (FailedPrecondition).
-	{suffix: "_invalid_status_transition", grpcCode: codes.FailedPrecondition},
-
 	// Existence.
 	{suffix: "_not_found", grpcCode: codes.NotFound},
 
@@ -407,7 +404,8 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_name_conflict", grpcCode: codes.AlreadyExists},
 	{suffix: "_overlap", grpcCode: codes.AlreadyExists},
 
-	// Business preconditions (FailedPrecondition).
+	// State and business preconditions (FailedPrecondition).
+	{suffix: "_invalid_status_transition", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_department", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_clinic", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_organization", grpcCode: codes.FailedPrecondition},
