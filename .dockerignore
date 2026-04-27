@@ -1,0 +1,13 @@
+dist/
+.git/
+.github/
+.claude/
+.env
+.env.*
+!.env.example
+docs/
+test/
+configs/
+docker-compose*.yml
+*.md
+LICENSE

@@ -2,15 +2,16 @@
 # command-server.Dockerfile and query-server.Dockerfile; differs
 # only in the build target.
 
-ARG GO_VERSION=1.26
+ARG GO_VERSION=1.26.2
 
-FROM golang:${GO_VERSION}-alpine AS build
+FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine AS build
+ARG TARGETOS TARGETARCH
 WORKDIR /src
 RUN apk add --no-cache ca-certificates git
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags "-s -w" -o /out/gateway-server ./cmd/gateway-server
 
 FROM gcr.io/distroless/static-debian12:nonroot

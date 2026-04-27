@@ -1,0 +1,137 @@
+name: CD
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/medincident
+
+jobs:
+  # ── Validate ───────────────────────────────────────────────────────────────
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: arduino/setup-task@v2
+        with:
+          version: 3.x
+      - run: task proto:fmt:check
+      - run: task proto:lint
+      - run: task gen:check
+      - run: task fmt:check
+      - run: task lint
+      - run: task vuln
+      - run: task test
+
+  # ── Cross-compile binaries ─────────────────────────────────────────────────
+  binaries:
+    name: Build binaries
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - run: make build-all
+      - uses: actions/upload-artifact@v4
+        with:
+          name: binaries
+          path: dist/
+          retention-days: 1
+
+  # ── Docker images ──────────────────────────────────────────────────────────
+  images:
+    name: Push ${{ matrix.image }}
+    needs: check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - image: command-server
+            dockerfile: build/command-server.Dockerfile
+          - image: query-server
+            dockerfile: build/query-server.Dockerfile
+          - image: gateway-server
+            dockerfile: build/gateway-server.Dockerfile
+          - image: migrate
+            dockerfile: build/migrate.Dockerfile
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: docker/setup-qemu-action@v3
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable=${{ !contains(github.ref_name, '-') }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # ── GitHub Release ─────────────────────────────────────────────────────────
+  release:
+    name: GitHub Release
+    needs: [binaries, images]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: binaries
+          path: dist/
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          PRERELEASE_FLAG=""
+          if echo "$TAG" | grep -q '-'; then
+            PRERELEASE_FLAG="--prerelease"
+          fi
+
+          gh release create "$TAG" dist/* \
+            --title "$TAG" \
+            --generate-notes \
+            $PRERELEASE_FLAG

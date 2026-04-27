@@ -5,14 +5,15 @@
 #
 # Runtime: set DATABASE_URL and run the container once before services start.
 
-ARG GO_VERSION=1.26
+ARG GO_VERSION=1.26.2
 
-FROM golang:${GO_VERSION}-alpine AS build
+FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine AS build
+ARG TARGETOS TARGETARCH
 WORKDIR /src
 RUN apk add --no-cache ca-certificates git
 COPY go.mod go.sum ./
 RUN go mod download
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} \
     go build -trimpath -ldflags "-s -w" -o /out/dbmate github.com/amacneil/dbmate/v2
 
 FROM alpine:3.21
