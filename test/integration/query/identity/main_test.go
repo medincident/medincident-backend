@@ -91,10 +91,18 @@ func TestMain(m *testing.M) {
 	}
 
 	// Create the zitadel stream up-front so the consumer can subscribe.
-	nc, err := nats.Connect(natsURL)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to connect nats: %v\n", err)
-		os.Exit(1)
+	// Retry connection to handle slow NATS startup in CI.
+	var nc *nats.Conn
+	for i := range 10 {
+		nc, err = nats.Connect(natsURL)
+		if err == nil {
+			break
+		}
+		if i == 9 {
+			fmt.Fprintf(os.Stderr, "failed to connect nats after retries: %v\n", err)
+			os.Exit(1)
+		}
+		time.Sleep(500 * time.Millisecond)
 	}
 	js, err := jetstream.New(nc)
 	if err != nil {

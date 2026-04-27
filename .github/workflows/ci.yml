@@ -3,46 +3,9 @@ name: CI
 on:
   push:
     branches: [main]
-    paths:
-      - "**.go"
-      - "go.mod"
-      - "go.sum"
-      - "**.proto"
-      - "**.sql"
-      - "api/proto/buf.yaml"
-      - "api/proto/buf.lock"
-      - "buf.gen.yaml"
-      - "buf.gen.docs.yaml"
-      - "db/migrations/**"
-      - "Taskfile.yml"
-      - "Makefile"
-      - "cmd/**"
-      - "build/**"
-      - "configs/**"
-      - "package.json"
-      - "package-lock.json"
-      - ".github/workflows/ci.yml"
+    tags: ["v*"]
   pull_request:
     branches: [main]
-    paths:
-      - "**.go"
-      - "go.mod"
-      - "go.sum"
-      - "**.proto"
-      - "**.sql"
-      - "api/proto/buf.yaml"
-      - "api/proto/buf.lock"
-      - "buf.gen.yaml"
-      - "buf.gen.docs.yaml"
-      - "db/migrations/**"
-      - "Taskfile.yml"
-      - "Makefile"
-      - "cmd/**"
-      - "build/**"
-      - "configs/**"
-      - "package.json"
-      - "package-lock.json"
-      - ".github/workflows/ci.yml"
 
 permissions:
   contents: read

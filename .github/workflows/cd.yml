@@ -1,8 +1,10 @@
 name: CD
 
 on:
-  push:
-    tags: ["v*"]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: ["v*"]
 
 permissions:
   contents: write
@@ -13,40 +15,28 @@ env:
   IMAGE_PREFIX: ghcr.io/medincident
 
 jobs:
-  # ── Validate ───────────────────────────────────────────────────────────────
-  check:
-    name: Check
+  # ── Gate: only proceed if CI succeeded on a tag push ───────────────────────
+  gate:
+    name: Verify CI passed
     runs-on: ubuntu-latest
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      startsWith(github.event.workflow_run.head_branch, 'v')
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-go@v6
-        with:
-          go-version-file: go.mod
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - uses: arduino/setup-task@v2
-        with:
-          version: 3.x
-      - run: task proto:fmt:check
-      - run: task proto:lint
-      - run: task gen:check
-      - run: task fmt:check
-      - run: task lint
-      - run: task vuln
-      - run: task test
+      - id: tag
+        run: echo "tag=${{ github.event.workflow_run.head_branch }}" >> "$GITHUB_OUTPUT"
 
   # ── Cross-compile binaries ─────────────────────────────────────────────────
   binaries:
     name: Build binaries
-    needs: check
+    needs: gate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.gate.outputs.tag }}
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
@@ -60,7 +50,7 @@ jobs:
   # ── Docker images ──────────────────────────────────────────────────────────
   images:
     name: Push ${{ matrix.image }}
-    needs: check
+    needs: gate
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -75,6 +65,8 @@ jobs:
             dockerfile: build/migrate.Dockerfile
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.gate.outputs.tag }}
 
       - uses: docker/setup-qemu-action@v3
 
@@ -91,9 +83,8 @@ jobs:
         with:
           images: ${{ env.IMAGE_PREFIX }}/${{ matrix.image }}
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=raw,value=latest,enable=${{ !contains(github.ref_name, '-') }}
+            type=raw,value=${{ needs.gate.outputs.tag }}
+            type=raw,value=latest,enable=${{ !contains(needs.gate.outputs.tag, '-') }}
 
       - uses: docker/build-push-action@v6
         with:
@@ -109,11 +100,12 @@ jobs:
   # ── GitHub Release ─────────────────────────────────────────────────────────
   release:
     name: GitHub Release
-    needs: [binaries, images]
+    needs: [gate, binaries, images]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
+          ref: ${{ needs.gate.outputs.tag }}
           fetch-depth: 0
 
       - uses: actions/download-artifact@v4
@@ -124,7 +116,7 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ needs.gate.outputs.tag }}
         run: |
           PRERELEASE_FLAG=""
           if echo "$TAG" | grep -q '-'; then
