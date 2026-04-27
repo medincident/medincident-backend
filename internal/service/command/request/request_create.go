@@ -176,7 +176,10 @@ func (s *ServiceRequestService) Create(
 					With("service_request_id", id).With("employee_id", empID).Wrap(err)
 			}
 
-			empName := s.resolveEmployeeName(tx, empID)
+			empName, err := s.resolveEmployeeName(tx, empID)
+			if err != nil {
+				return err
+			}
 			if err := projector.ServiceRequestExecutorAssigned(
 				tx, id, empID, empName, cmd.Caller.ZitadelUserID, authorDisplayName, now,
 			); err != nil {

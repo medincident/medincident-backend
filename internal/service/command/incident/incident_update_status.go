@@ -112,8 +112,16 @@ func (s *IncidentService) resolveActor(tx *gorm.DB, callerID string) (uuid.NullU
 		callerID,
 	).Scan(&displayName).Error; err != nil {
 		return uuid.NullUUID{}, "", oops.In(scope).
+			Code(ErrCodeIncidentRegistrarLookupFailed).
+			With("zitadel_user_id", callerID).
+			Wrap(err)
+	}
+	if displayName == "" {
+		return uuid.NullUUID{}, "", oops.In(scope).
 			Code(ErrCodeIncidentRegistrarUserNotFound).
-			With("zitadel_user_id", callerID).Wrap(err)
+			Public("Actor user record is missing.").
+			With("zitadel_user_id", callerID).
+			Errorf("user not found")
 	}
 	return empID, displayName, nil
 }
