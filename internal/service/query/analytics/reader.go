@@ -24,6 +24,7 @@ import (
 
 const (
 	ErrCodeAnalyticsOrgNotFound    = "analytics_org_not_found"
+	ErrCodeAnalyticsInvalidScope   = "analytics_invalid_scope"
 	ErrCodeAnalyticsClinicNotFound = "analytics_clinic_not_found"
 	ErrCodeAnalyticsDeptNotFound   = "analytics_dept_not_found"
 	ErrCodeAnalyticsPeriodInvalid  = "analytics_period_invalid"
@@ -33,6 +34,7 @@ const (
 
 const (
 	analyticsMaxSnapshotPeriodDays = 366
+	analyticsMaxTimeSeriesBuckets  = 1000
 	analyticsTopNDistributions     = 10
 	analyticsResolutionP50         = 0.50
 	analyticsResolutionP90         = 0.90
@@ -96,7 +98,7 @@ func parseFilter(orgIDStr, fromStr, toStr string, clinicIDStr, deptIDStr *string
 		id, err := uuid.Parse(*clinicIDStr)
 		if err != nil {
 			return nil, oops.In("analytics").
-				Code(ErrCodeAnalyticsClinicNotFound).
+				Code(ErrCodeAnalyticsInvalidScope).
 				Public("clinic_id is not a valid UUID.").
 				Wrap(err)
 		}
@@ -107,7 +109,7 @@ func parseFilter(orgIDStr, fromStr, toStr string, clinicIDStr, deptIDStr *string
 		id, err := uuid.Parse(*deptIDStr)
 		if err != nil {
 			return nil, oops.In("analytics").
-				Code(ErrCodeAnalyticsDeptNotFound).
+				Code(ErrCodeAnalyticsInvalidScope).
 				Public("department_id is not a valid UUID.").
 				Wrap(err)
 		}
@@ -166,7 +168,7 @@ func (r *Reader) validateScope(ctx context.Context, f *filter) error {
 			return oops.In("analytics").
 				Code(ErrCodeAnalyticsClinicNotFound).
 				Public("clinic not found in this organization.").
-				With("clinic_id", f.clinicID).
+				With("clinic_id", *f.clinicID).
 				With("organization_id", f.orgID).
 				Wrap(fmt.Errorf("clinic not in org"))
 		}
@@ -188,7 +190,7 @@ func (r *Reader) validateScope(ctx context.Context, f *filter) error {
 			return oops.In("analytics").
 				Code(ErrCodeAnalyticsDeptNotFound).
 				Public("department not found in this organization.").
-				With("department_id", f.deptID).
+				With("department_id", *f.deptID).
 				With("organization_id", f.orgID).
 				Wrap(fmt.Errorf("department not in org"))
 		}
@@ -348,10 +350,15 @@ func (r *Reader) snapshotIncidents(ctx context.Context, f *filter) ([]SnapshotIn
 		  i.department_id,
 		  (i.source_patient_zitadel_user_id IS NOT NULL) AS is_patient_source,
 		  (i.reopened_from_incident_id IS NOT NULL)      AS is_reopened,
-		  (SELECT COUNT(*)::int FROM domain.service_requests sr WHERE sr.incident_id = i.id) AS linked_requests_count
+		  COALESCE(sr_counts.cnt, 0)                     AS linked_requests_count
 		FROM domain.incidents i
 		JOIN domain.incident_categories ic ON ic.id = i.category_id
 		JOIN domain.incident_types it ON it.id = i.type_id
+		LEFT JOIN (
+		  SELECT incident_id, COUNT(*)::int AS cnt
+		  FROM domain.service_requests
+		  GROUP BY incident_id
+		) sr_counts ON sr_counts.incident_id = i.id
 		WHERE %s
 		ORDER BY i.created_at`, where)
 
@@ -908,6 +915,15 @@ func (r *Reader) GetTimeSeries(
 	}
 
 	interval := granularityInterval(gran)
+	granDur := granularityDuration(gran)
+	if bucketCount := int(f.to.Sub(f.from)/granDur) + 1; bucketCount > analyticsMaxTimeSeriesBuckets {
+		return nil, oops.In("analytics").
+			Code(ErrCodeAnalyticsPeriodTooLarge).
+			Public("Time series period produces too many buckets. Reduce the range or use a coarser granularity.").
+			With("bucket_count", bucketCount).
+			With("max", analyticsMaxTimeSeriesBuckets).
+			Wrap(fmt.Errorf("too many buckets: %d > %d", bucketCount, analyticsMaxTimeSeriesBuckets))
+	}
 
 	type incidentBucketRow struct {
 		BucketStart time.Time
@@ -941,7 +957,7 @@ func (r *Reader) GetTimeSeries(
 		query := fmt.Sprintf(`
 			WITH buckets AS (
 			  SELECT gs AS bucket_start, gs + INTERVAL '%s' AS bucket_end
-			  FROM generate_series(?::timestamptz, ?::timestamptz, INTERVAL '%s') gs
+			  FROM generate_series(?::timestamptz, ?::timestamptz - INTERVAL '1 microsecond', INTERVAL '%s') gs
 			)
 			SELECT
 			  b.bucket_start, b.bucket_end,
@@ -987,7 +1003,7 @@ func (r *Reader) GetTimeSeries(
 		query := fmt.Sprintf(`
 			WITH buckets AS (
 			  SELECT gs AS bucket_start, gs + INTERVAL '%s' AS bucket_end
-			  FROM generate_series(?::timestamptz, ?::timestamptz, INTERVAL '%s') gs
+			  FROM generate_series(?::timestamptz, ?::timestamptz - INTERVAL '1 microsecond', INTERVAL '%s') gs
 			)
 			SELECT
 			  b.bucket_start, b.bucket_end,
@@ -1026,9 +1042,14 @@ func (r *Reader) GetTimeSeries(
 		return nil, err
 	}
 
+	reqByBucket := make(map[int64]requestBucketRow, len(rRows))
+	for _, rr := range rRows {
+		reqByBucket[rr.BucketStart.UnixNano()] = rr
+	}
+
 	buckets := make([]TimeSeriesBucket, len(iRows))
 	for i, ir := range iRows {
-		buckets[i] = TimeSeriesBucket{
+		b := TimeSeriesBucket{
 			BucketStart:    ir.BucketStart,
 			BucketEnd:      ir.BucketEnd,
 			IncidentTotal:  ir.Total,
@@ -1041,13 +1062,13 @@ func (r *Reader) GetTimeSeries(
 			IPatientSource: ir.Patient,
 			IReopened:      ir.Reopened,
 		}
-		if i < len(rRows) {
-			rr := rRows[i]
-			buckets[i].ReqTotal = rr.Total
-			buckets[i].ReqCompleted = rr.Completed
-			buckets[i].ReqCancelled = rr.Cancelled
-			buckets[i].ReqLinked = rr.Linked
+		if rr, ok := reqByBucket[ir.BucketStart.UnixNano()]; ok {
+			b.ReqTotal = rr.Total
+			b.ReqCompleted = rr.Completed
+			b.ReqCancelled = rr.Cancelled
+			b.ReqLinked = rr.Linked
 		}
+		buckets[i] = b
 	}
 	return buckets, nil
 }
@@ -1060,5 +1081,19 @@ func granularityInterval(g TimeSeriesGranularity) string {
 		return "1 month"
 	default:
 		return "1 day"
+	}
+}
+
+// granularityDuration returns an approximate Go duration for bucket-count validation.
+// Monthly uses 30 days as a conservative lower bound so the bucket cap is never
+// tighter than the actual generate_series output.
+func granularityDuration(g TimeSeriesGranularity) time.Duration {
+	switch g {
+	case GranularityWeek:
+		return 7 * 24 * time.Hour
+	case GranularityMonth:
+		return 30 * 24 * time.Hour
+	default:
+		return 24 * time.Hour
 	}
 }

@@ -24,14 +24,16 @@
 
 ### Параметры
 
-| Поле | Тип | Правила |
-|---|---|---|
-| `organization_id` | string (UUID) | обязательный |
-| `from` | string (RFC3339) | обязательный; должен быть меньше `to` |
-| `to` | string (RFC3339) | обязательный |
-| `clinic_id` | string (UUID) | необязательный; фильтр по клинике |
-| `department_id` | string (UUID) | необязательный; фильтр по отделению |
-| `include_patient_buffer` | bool | необязательный; по умолчанию `false` |
+> HTTP-параметры используют camelCase (grpc-gateway): `organizationId`, `from`, `to`, `clinicId`, `departmentId`, `includePatientBuffer`. gRPC-поля — snake_case.
+
+| Поле | HTTP-параметр | Тип | Правила |
+|---|---|---|---|
+| `organization_id` | `organizationId` | string (UUID) | обязательный |
+| `from` | `from` | string (RFC3339) | обязательный; должен быть меньше `to` |
+| `to` | `to` | string (RFC3339) | обязательный |
+| `clinic_id` | `clinicId` | string (UUID) | необязательный; фильтр по клинике |
+| `department_id` | `departmentId` | string (UUID) | необязательный; фильтр по отделению |
+| `include_patient_buffer` | `includePatientBuffer` | bool | необязательный; по умолчанию `false` |
 
 ### Ответ
 
@@ -53,13 +55,15 @@
 
 ### Параметры
 
-| Поле | Тип | Правила |
-|---|---|---|
-| `organization_id` | string (UUID) | обязательный |
-| `from` | string (RFC3339) | обязательный; должен быть меньше `to` |
-| `to` | string (RFC3339) | обязательный |
-| `clinic_id` | string (UUID) | необязательный; фильтр по клинике |
-| `department_id` | string (UUID) | необязательный; фильтр по отделению |
+> HTTP-параметры используют camelCase (grpc-gateway): `organizationId`, `from`, `to`, `clinicId`, `departmentId`. gRPC-поля — snake_case.
+
+| Поле | HTTP-параметр | Тип | Правила |
+|---|---|---|---|
+| `organization_id` | `organizationId` | string (UUID) | обязательный |
+| `from` | `from` | string (RFC3339) | обязательный; должен быть меньше `to` |
+| `to` | `to` | string (RFC3339) | обязательный |
+| `clinic_id` | `clinicId` | string (UUID) | необязательный; фильтр по клинике |
+| `department_id` | `departmentId` | string (UUID) | необязательный; фильтр по отделению |
 
 ### Ответ
 
@@ -109,14 +113,18 @@
 
 ### Параметры
 
-| Поле | Тип | Правила |
-|---|---|---|
-| `organization_id` | string (UUID) | обязательный |
-| `from` | string (RFC3339) | обязательный; должен быть меньше `to` |
-| `to` | string (RFC3339) | обязательный |
-| `clinic_id` | string (UUID) | необязательный; фильтр по клинике |
-| `department_id` | string (UUID) | необязательный; фильтр по отделению |
-| `granularity` | enum | `DAY` / `WEEK` / `MONTH` |
+> HTTP-параметры используют camelCase (grpc-gateway): `organizationId`, `from`, `to`, `clinicId`, `departmentId`, `granularity`. gRPC-поля — snake_case.
+
+Максимальное количество бакетов — **1000**. Запросы, превышающие это значение (например, 2 года с `DAY`), отклоняются с кодом `analytics_period_too_large`.
+
+| Поле | HTTP-параметр | Тип | Правила |
+|---|---|---|---|
+| `organization_id` | `organizationId` | string (UUID) | обязательный |
+| `from` | `from` | string (RFC3339) | обязательный; должен быть меньше `to` |
+| `to` | `to` | string (RFC3339) | обязательный |
+| `clinic_id` | `clinicId` | string (UUID) | необязательный; фильтр по клинике |
+| `department_id` | `departmentId` | string (UUID) | необязательный; фильтр по отделению |
+| `granularity` | `granularity` | enum | `DAY` / `WEEK` / `MONTH` |
 
 ### Ответ
 
@@ -176,8 +184,9 @@
 | Код | Описание |
 |---|---|
 | `analytics_org_not_found` | Некорректный или отсутствующий `organization_id` |
+| `analytics_invalid_scope` | `clinic_id` или `department_id` не является валидным UUID |
 | `analytics_clinic_not_found` | `clinic_id` не принадлежит организации |
 | `analytics_dept_not_found` | `department_id` не принадлежит организации |
 | `analytics_period_invalid` | Некорректный диапазон дат (`from >= to` или неверный формат RFC3339) |
-| `analytics_period_too_large` | Период превышает 366 дней (только для `GetSnapshot`) |
+| `analytics_period_too_large` | Период превышает 366 дней (`GetSnapshot`) или 1000 бакетов (`GetTimeSeries`) |
 | `analytics_query_failed` | Ошибка выполнения SQL-запроса |
