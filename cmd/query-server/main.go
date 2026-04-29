@@ -23,6 +23,7 @@ import (
 	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
+	analyticshandler "github.com/medincident/medincident-backend/internal/handler/query/analytics"
 	announcementqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/announcement"
 	incidentqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident"
 	bufferqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/incident/buffer"
@@ -34,6 +35,7 @@ import (
 	statshandler "github.com/medincident/medincident-backend/internal/handler/query/stats"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
+	analyticsread "github.com/medincident/medincident-backend/internal/service/query/analytics"
 	announcementread "github.com/medincident/medincident-backend/internal/service/query/announcement"
 	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 	incidentread "github.com/medincident/medincident-backend/internal/service/query/incident"
@@ -45,6 +47,7 @@ import (
 	requestclassifierread "github.com/medincident/medincident-backend/internal/service/query/request/classifier"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
 	"github.com/medincident/medincident-backend/internal/util/urlutil"
+	analyticsqueryv1 "github.com/medincident/medincident-backend/pkg/query/analytics/v1"
 	announcementqueryv1 "github.com/medincident/medincident-backend/pkg/query/announcement/v1"
 	classifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	incidentqueryv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
@@ -141,6 +144,7 @@ func main() {
 	roleReader := membershipread.NewRoleReader(db, az, logger)
 	classReader := classifierread.NewReader(db, az, logger)
 	statsReader := statsread.NewReader(db, az, logger)
+	analyticsReader := analyticsread.NewReader(db, az, logger)
 	incidentReader := incidentread.NewReader(db, logger)
 	bufferReader := bufferread.NewReader(db, logger, incidentReader)
 	reqClassifierReader := requestclassifierread.NewReader(db, az, logger)
@@ -154,6 +158,7 @@ func main() {
 	memH := membershiphandler.NewMembershipQueryHandler(empReader, roleReader)
 	clsH := classifierhandler.NewIncidentClassifierQueryHandler(classReader)
 	statsH := statshandler.NewStatsQueryHandler(statsReader)
+	analyticsH := analyticshandler.NewAnalyticsQueryHandler(analyticsReader)
 	incidentQH := incidentqueryhandler.NewIncidentQueryHandler(incidentReader)
 	bufferQH := bufferqueryhandler.NewBufferQueryHandler(bufferReader)
 	combinedIncidentH := incidentqueryhandler.NewCombinedIncidentQueryHandler(incidentQH, bufferQH)
@@ -177,6 +182,7 @@ func main() {
 	membershipqueryv1.RegisterMembershipQueryServiceServer(grpcServer, memH)
 	classifierqueryv1.RegisterIncidentClassifierQueryServiceServer(grpcServer, clsH)
 	statsqueryv1.RegisterStatsQueryServiceServer(grpcServer, statsH)
+	analyticsqueryv1.RegisterAnalyticsQueryServiceServer(grpcServer, analyticsH)
 	incidentqueryv1.RegisterIncidentQueryServiceServer(grpcServer, combinedIncidentH)
 	requestclassifierqueryv1.RegisterRequestClassifierQueryServiceServer(grpcServer, reqClassifierQH)
 	requestqueryv1.RegisterServiceRequestQueryServiceServer(grpcServer, reqQH)
