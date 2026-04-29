@@ -358,3 +358,87 @@ func uuidNew() string {
 	}
 	return id.String()
 }
+
+// updateIncidentStatus transitions incidentID via incidentSvc.UpdateStatus.
+func updateIncidentStatus(t *testing.T, caller authz.Caller, incidentID uuid.UUID, newStatus string) {
+	t.Helper()
+	require.NoError(t, incidentSvc.UpdateStatus(context.Background(), incidentsvc.UpdateIncidentStatusCommand{
+		Caller: caller,
+		Payload: incidentsvc.UpdateIncidentStatusPayload{
+			IncidentID: incidentID.String(),
+			NewStatus:  newStatus,
+		},
+	}))
+}
+
+// doneIncident transitions incidentID to done (pending→in_progress→done).
+func doneIncident(t *testing.T, caller authz.Caller, incidentID uuid.UUID) {
+	t.Helper()
+	updateIncidentStatus(t, caller, incidentID, "in_progress")
+	updateIncidentStatus(t, caller, incidentID, "done")
+}
+
+// createRequest creates a service request and returns its ID.
+// executorEmpID is the employee who will be the executor.
+func createRequest(t *testing.T, caller authz.Caller, deptID, typeID, executorEmpID uuid.UUID) uuid.UUID {
+	t.Helper()
+	res, err := requestSvc.Create(context.Background(), &requestsvc.CreateServiceRequestCommand{
+		Caller: caller,
+		Payload: requestsvc.CreateServiceRequestPayload{
+			DepartmentID:        deptID.String(),
+			TypeID:              typeID.String(),
+			Description:         "Тестовое описание заявки достаточной длины для прохождения валидации",
+			ExecutorEmployeeIDs: []string{executorEmpID.String()},
+		},
+	})
+	require.NoError(t, err)
+	return res.ID
+}
+
+// completeRequest transitions requestID to completed (created→in_work→pending_review→completed).
+// executorCaller is the executor; managerCaller is a privileged role (OrgAdmin etc) for the final step.
+func completeRequest(t *testing.T, executorCaller, managerCaller authz.Caller, requestID uuid.UUID) {
+	t.Helper()
+	require.NoError(t, requestSvc.UpdateStatus(context.Background(), requestsvc.UpdateServiceRequestStatusCommand{
+		Caller:  executorCaller,
+		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: requestID.String(), NewStatus: "in_work"},
+	}))
+	require.NoError(t, requestSvc.UpdateStatus(context.Background(), requestsvc.UpdateServiceRequestStatusCommand{
+		Caller:  executorCaller,
+		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: requestID.String(), NewStatus: "pending_review"},
+	}))
+	require.NoError(t, requestSvc.UpdateStatus(context.Background(), requestsvc.UpdateServiceRequestStatusCommand{
+		Caller:  managerCaller,
+		Payload: requestsvc.UpdateServiceRequestStatusPayload{ServiceRequestID: requestID.String(), NewStatus: "completed"},
+	}))
+}
+
+// seedOrgHead grants orgHead role to an employee in an org.
+func seedOrgHead(t *testing.T, empID, orgID uuid.UUID) {
+	t.Helper()
+	raw, err := testDB.DB()
+	if err != nil {
+		t.Fatalf("get raw db: %v", err)
+	}
+	if _, err := raw.Exec(`INSERT INTO domain.org_heads (organization_id, employee_id) VALUES ($1, $2)`, orgID, empID); err != nil {
+		t.Fatalf("insert domain.org_heads: %v", err)
+	}
+	if _, err := raw.Exec(`INSERT INTO projections.org_heads (organization_id, employee_id, created_at) VALUES ($1, $2, now())`, orgID, empID); err != nil {
+		t.Fatalf("insert projections.org_heads: %v", err)
+	}
+}
+
+// seedOrgDispatcher grants orgDispatcher role to an employee in an org.
+func seedOrgDispatcher(t *testing.T, empID, orgID uuid.UUID) {
+	t.Helper()
+	raw, err := testDB.DB()
+	if err != nil {
+		t.Fatalf("get raw db: %v", err)
+	}
+	if _, err := raw.Exec(`INSERT INTO domain.org_dispatchers (organization_id, employee_id) VALUES ($1, $2)`, orgID, empID); err != nil {
+		t.Fatalf("insert domain.org_dispatchers: %v", err)
+	}
+	if _, err := raw.Exec(`INSERT INTO projections.org_dispatchers (organization_id, employee_id, created_at) VALUES ($1, $2, now())`, orgID, empID); err != nil {
+		t.Fatalf("insert projections.org_dispatchers: %v", err)
+	}
+}

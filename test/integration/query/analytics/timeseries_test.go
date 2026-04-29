@@ -102,3 +102,176 @@ func TestGetTimeSeries_CrossTenantDeptRejected(t *testing.T) {
 	_, err := analyticsRdr.GetTimeSeries(ctx, sysadminCaller, orgA.String(), from, to, nil, &deptBStr, analyticsread.GranularityDay)
 	require.Error(t, err)
 }
+
+func TestGetTimeSeries_MonthGranularity(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+
+	orgID := seedOrg(t)
+
+	now := time.Now().UTC()
+	from := now.AddDate(0, 0, -60).Truncate(24 * time.Hour).Format(time.RFC3339)
+	to := now.Truncate(24 * time.Hour).Format(time.RFC3339)
+
+	buckets, err := analyticsRdr.GetTimeSeries(ctx, sysadminCaller, orgID.String(), from, to, nil, nil, analyticsread.GranularityMonth)
+	require.NoError(t, err)
+	assert.NotEmpty(t, buckets)
+	assert.GreaterOrEqual(t, len(buckets), 2)
+}
+
+func TestGetTimeSeries_ClinicFilter_ReturnsOnlyClinicData(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+
+	orgID := seedOrg(t)
+	clinicA := seedClinic(t, orgID)
+	clinicB := seedClinic(t, orgID)
+	deptA := seedDept(t, clinicA)
+	deptB := seedDept(t, clinicB)
+	categoryID := seedCategory(t, orgID)
+	typeID := seedIncidentType(t, categoryID)
+	seedUser(t, userAZitadelID, "User A")
+	empA := seedEmployee(t, userAZitadelID, orgID, deptA)
+	seedOrgAdmin(t, empA, orgID)
+	caller := authz.Caller{ZitadelUserID: userAZitadelID}
+
+	createIncident(t, caller, deptA, categoryID, typeID)
+	createIncident(t, caller, deptB, categoryID, typeID)
+
+	now := time.Now().UTC()
+	from := now.AddDate(0, 0, -2).Truncate(24 * time.Hour).Format(time.RFC3339)
+	to := now.AddDate(0, 0, 1).Truncate(24 * time.Hour).Format(time.RFC3339)
+	clinicAStr := clinicA.String()
+
+	buckets, err := analyticsRdr.GetTimeSeries(ctx, caller, orgID.String(), from, to, &clinicAStr, nil, analyticsread.GranularityDay)
+	require.NoError(t, err)
+
+	var total int64
+	for _, b := range buckets {
+		total += b.IncidentTotal
+	}
+	assert.Equal(t, int64(1), total)
+}
+
+func TestGetTimeSeries_DeptFilter_ReturnsOnlyDeptData(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+
+	orgID := seedOrg(t)
+	clinicID := seedClinic(t, orgID)
+	deptA := seedDept(t, clinicID)
+	deptB := seedDept(t, clinicID)
+	categoryID := seedCategory(t, orgID)
+	typeID := seedIncidentType(t, categoryID)
+	seedUser(t, userAZitadelID, "User A")
+	empA := seedEmployee(t, userAZitadelID, orgID, deptA)
+	seedOrgAdmin(t, empA, orgID)
+	caller := authz.Caller{ZitadelUserID: userAZitadelID}
+
+	createIncident(t, caller, deptA, categoryID, typeID)
+	createIncident(t, caller, deptA, categoryID, typeID)
+	createIncident(t, caller, deptB, categoryID, typeID)
+
+	now := time.Now().UTC()
+	from := now.AddDate(0, 0, -2).Truncate(24 * time.Hour).Format(time.RFC3339)
+	to := now.AddDate(0, 0, 1).Truncate(24 * time.Hour).Format(time.RFC3339)
+	deptAStr := deptA.String()
+
+	buckets, err := analyticsRdr.GetTimeSeries(ctx, caller, orgID.String(), from, to, nil, &deptAStr, analyticsread.GranularityDay)
+	require.NoError(t, err)
+
+	var total int64
+	for _, b := range buckets {
+		total += b.IncidentTotal
+	}
+	assert.Equal(t, int64(2), total)
+}
+
+func TestGetTimeSeries_PermissionDenied_ForNonManager(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+
+	orgID := seedOrg(t)
+	clinicID := seedClinic(t, orgID)
+	deptID := seedDept(t, clinicID)
+	seedUser(t, userAZitadelID, "Regular User")
+	seedEmployee(t, userAZitadelID, orgID, deptID)
+	caller := authz.Caller{ZitadelUserID: userAZitadelID}
+
+	now := time.Now().UTC()
+	from := now.AddDate(0, 0, -1).Truncate(24 * time.Hour).Format(time.RFC3339)
+	to := now.AddDate(0, 0, 1).Truncate(24 * time.Hour).Format(time.RFC3339)
+
+	_, err := analyticsRdr.GetTimeSeries(ctx, caller, orgID.String(), from, to, nil, nil, analyticsread.GranularityDay)
+	require.Error(t, err)
+}
+
+func TestGetTimeSeries_ClinicHead_CanReadClinicScope(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+
+	orgID := seedOrg(t)
+	clinicID := seedClinic(t, orgID)
+	deptID := seedDept(t, clinicID)
+	seedUser(t, userAZitadelID, "Clinic Head")
+	empID := seedEmployee(t, userAZitadelID, orgID, deptID)
+	seedClinicHead(t, empID, clinicID)
+	caller := authz.Caller{ZitadelUserID: userAZitadelID}
+
+	now := time.Now().UTC()
+	from := now.AddDate(0, 0, -2).Truncate(24 * time.Hour).Format(time.RFC3339)
+	to := now.AddDate(0, 0, 1).Truncate(24 * time.Hour).Format(time.RFC3339)
+	clinicStr := clinicID.String()
+
+	_, err := analyticsRdr.GetTimeSeries(ctx, caller, orgID.String(), from, to, &clinicStr, nil, analyticsread.GranularityDay)
+	require.NoError(t, err)
+}
+
+func TestGetTimeSeries_ClinicHead_CannotReadOrgScope(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+
+	orgID := seedOrg(t)
+	clinicID := seedClinic(t, orgID)
+	deptID := seedDept(t, clinicID)
+	seedUser(t, userAZitadelID, "Clinic Head")
+	empID := seedEmployee(t, userAZitadelID, orgID, deptID)
+	seedClinicHead(t, empID, clinicID)
+	caller := authz.Caller{ZitadelUserID: userAZitadelID}
+
+	now := time.Now().UTC()
+	from := now.AddDate(0, 0, -1).Truncate(24 * time.Hour).Format(time.RFC3339)
+	to := now.AddDate(0, 0, 1).Truncate(24 * time.Hour).Format(time.RFC3339)
+
+	_, err := analyticsRdr.GetTimeSeries(ctx, caller, orgID.String(), from, to, nil, nil, analyticsread.GranularityDay)
+	require.Error(t, err)
+}
+
+func TestGetTimeSeries_CountsRequests(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+
+	orgID := seedOrg(t)
+	clinicID := seedClinic(t, orgID)
+	deptID := seedDept(t, clinicID)
+	requestTypeID := seedRequestType(t, orgID)
+	seedUser(t, userAZitadelID, "User A")
+	empA := seedEmployee(t, userAZitadelID, orgID, deptID)
+	seedOrgAdmin(t, empA, orgID)
+	caller := authz.Caller{ZitadelUserID: userAZitadelID}
+
+	createRequest(t, caller, deptID, requestTypeID, empA)
+
+	now := time.Now().UTC()
+	from := now.AddDate(0, 0, -2).Truncate(24 * time.Hour).Format(time.RFC3339)
+	to := now.AddDate(0, 0, 1).Truncate(24 * time.Hour).Format(time.RFC3339)
+
+	buckets, err := analyticsRdr.GetTimeSeries(ctx, caller, orgID.String(), from, to, nil, nil, analyticsread.GranularityDay)
+	require.NoError(t, err)
+
+	var total int64
+	for _, b := range buckets {
+		total += b.ReqTotal
+	}
+	assert.Equal(t, int64(1), total)
+}
