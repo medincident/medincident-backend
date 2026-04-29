@@ -1,0 +1,228 @@
+// api/proto/query/analytics/v1/analytics.proto
+syntax = "proto3";
+
+package query.analytics.v1;
+
+import "google/api/annotations.proto";
+
+service AnalyticsQueryService {
+  rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse) {
+    option (google.api.http) = {get: "/v1/analytics/snapshot"};
+  }
+  rpc GetSummary(GetSummaryRequest) returns (GetSummaryResponse) {
+    option (google.api.http) = {get: "/v1/analytics/summary"};
+  }
+  rpc GetTimeSeries(GetTimeSeriesRequest) returns (GetTimeSeriesResponse) {
+    option (google.api.http) = {get: "/v1/analytics/timeseries"};
+  }
+}
+
+message GetSnapshotRequest {
+  string organization_id = 1;
+  string from = 2;
+  string to = 3;
+  optional string clinic_id = 4;
+  optional string department_id = 5;
+  bool include_patient_buffer = 6;
+}
+
+message GetSummaryRequest {
+  string organization_id = 1;
+  string from = 2;
+  string to = 3;
+  optional string clinic_id = 4;
+  optional string department_id = 5;
+}
+
+message GetTimeSeriesRequest {
+  string organization_id = 1;
+  string from = 2;
+  string to = 3;
+  optional string clinic_id = 4;
+  optional string department_id = 5;
+  TimeSeriesGranularity granularity = 6;
+}
+
+enum TimeSeriesGranularity {
+  TIME_SERIES_GRANULARITY_UNSPECIFIED = 0;
+  TIME_SERIES_GRANULARITY_DAY = 1;
+  TIME_SERIES_GRANULARITY_WEEK = 2;
+  TIME_SERIES_GRANULARITY_MONTH = 3;
+}
+
+message GetSnapshotResponse {
+  repeated SnapshotIncident incidents = 1;
+  repeated SnapshotRequest requests = 2;
+  repeated SnapshotPatientBuffer patient_buffer = 3;
+}
+
+message SnapshotIncident {
+  string created_at = 1;
+  string occurred_at = 2;
+  optional string closed_at = 3;
+  string status = 4;
+  string priority = 5;
+  string category_id = 6;
+  string category_name = 7;
+  string type_id = 8;
+  string type_name = 9;
+  string clinic_id = 10;
+  string department_id = 11;
+  bool is_patient_source = 12;
+  bool is_reopened = 13;
+  int32 linked_requests_count = 14;
+}
+
+message SnapshotRequest {
+  string created_at = 1;
+  optional string completed_at = 2;
+  string status = 3;
+  string type_id = 4;
+  string type_name = 5;
+  string department_id = 6;
+  bool has_linked_incident = 7;
+}
+
+message SnapshotPatientBuffer {
+  string created_at = 1;
+  string status = 2;
+  optional string category_id = 3;
+}
+
+message GetSummaryResponse {
+  IncidentSummary incidents = 1;
+  RequestSummary requests = 2;
+  PatientBufferSummary patient_buffer = 3;
+  SummaryPeriod period = 4;
+}
+
+message IncidentSummary {
+  int64 total = 1;
+  IncidentStatusBreakdown by_status = 2;
+  IncidentPriorityBreakdown by_priority = 3;
+  IncidentSourceBreakdown by_source = 4;
+  int64 reopened = 5;
+  int64 with_linked_requests = 6;
+  optional ResolutionStats resolution = 7;
+  repeated CategoryCount top_categories = 8;
+  repeated TypeCount top_types = 9;
+  repeated DepartmentCount top_departments = 10;
+}
+
+message IncidentStatusBreakdown {
+  int64 pending = 1;
+  int64 in_progress = 2;
+  int64 done = 3;
+  int64 rejected = 4;
+  int64 cancelled = 5;
+}
+
+message IncidentPriorityBreakdown {
+  int64 low = 1;
+  int64 normal = 2;
+  int64 high = 3;
+  int64 critical = 4;
+}
+
+message IncidentSourceBreakdown {
+  int64 staff = 1;
+  int64 patient = 2;
+}
+
+message RequestSummary {
+  int64 total = 1;
+  RequestStatusBreakdown by_status = 2;
+  int64 linked = 3;
+  int64 unlinked = 4;
+  optional ResolutionStats completion = 5;
+  repeated TypeCount top_types = 6;
+  repeated DepartmentCount top_departments = 7;
+}
+
+message RequestStatusBreakdown {
+  int64 created = 1;
+  int64 in_work = 2;
+  int64 on_hold = 3;
+  int64 pending_review = 4;
+  int64 completed = 5;
+  int64 cancelled = 6;
+}
+
+message PatientBufferSummary {
+  int64 total = 1;
+  PatientBufferStatusBreakdown by_status = 2;
+  double acceptance_rate = 3;
+  double rejection_rate = 4;
+}
+
+message PatientBufferStatusBreakdown {
+  int64 pending = 1;
+  int64 published = 2;
+  int64 rejected = 3;
+  int64 cancelled = 4;
+}
+
+message ResolutionStats {
+  double avg_minutes = 1;
+  double min_minutes = 2;
+  double max_minutes = 3;
+  double p50_minutes = 4;
+  double p90_minutes = 5;
+  double p95_minutes = 6;
+}
+
+message CategoryCount {
+  string category_id = 1;
+  string category_name = 2;
+  int64 count = 3;
+}
+
+message TypeCount {
+  string type_id = 1;
+  string type_name = 2;
+  int64 count = 3;
+}
+
+message DepartmentCount {
+  string department_id = 1;
+  string department_name = 2;
+  int64 count = 3;
+}
+
+message SummaryPeriod {
+  string organization_id = 1;
+  string from = 2;
+  string to = 3;
+  optional string clinic_id = 4;
+  optional string department_id = 5;
+}
+
+message GetTimeSeriesResponse {
+  repeated TimeSeriesBucket buckets = 1;
+}
+
+message TimeSeriesBucket {
+  string bucket_start = 1;
+  string bucket_end = 2;
+  TimeSeriesIncidentBucket incidents = 3;
+  TimeSeriesRequestBucket requests = 4;
+}
+
+message TimeSeriesIncidentBucket {
+  int64 total = 1;
+  int64 pending = 2;
+  int64 in_progress = 3;
+  int64 done = 4;
+  int64 rejected = 5;
+  int64 cancelled = 6;
+  int64 high_critical = 7;
+  int64 patient_source = 8;
+  int64 reopened = 9;
+}
+
+message TimeSeriesRequestBucket {
+  int64 total = 1;
+  int64 completed = 2;
+  int64 cancelled = 3;
+  int64 linked = 4;
+}

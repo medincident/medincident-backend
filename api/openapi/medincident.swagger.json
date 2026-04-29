@@ -30,6 +30,9 @@
       "name": "ServiceRequestCommandService"
     },
     {
+      "name": "AnalyticsQueryService"
+    },
+    {
       "name": "AnnouncementQueryService"
     },
     {
@@ -61,6 +64,187 @@
     "application/json"
   ],
   "paths": {
+    "/v1/analytics/snapshot": {
+      "get": {
+        "operationId": "AnalyticsQueryService_GetSnapshot",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSnapshotResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "clinicId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "includePatientBuffer",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "AnalyticsQueryService"
+        ]
+      }
+    },
+    "/v1/analytics/summary": {
+      "get": {
+        "operationId": "AnalyticsQueryService_GetSummary",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSummaryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "clinicId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AnalyticsQueryService"
+        ]
+      }
+    },
+    "/v1/analytics/timeseries": {
+      "get": {
+        "operationId": "AnalyticsQueryService_GetTimeSeries",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetTimeSeriesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "clinicId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "departmentId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "granularity",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "TIME_SERIES_GRANULARITY_UNSPECIFIED",
+              "TIME_SERIES_GRANULARITY_DAY",
+              "TIME_SERIES_GRANULARITY_WEEK",
+              "TIME_SERIES_GRANULARITY_MONTH"
+            ],
+            "default": "TIME_SERIES_GRANULARITY_UNSPECIFIED"
+          }
+        ],
+        "tags": [
+          "AnalyticsQueryService"
+        ]
+      }
+    },
     "/v1/announcements": {
       "post": {
         "operationId": "AnnouncementCommandService_CreateAnnouncement",
@@ -6080,6 +6264,21 @@
       },
       "description": "Category mirrors projections.incident_categories row."
     },
+    "v1CategoryCount": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "string"
+        },
+        "categoryName": {
+          "type": "string"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1Clinic": {
       "type": "object",
       "properties": {
@@ -6433,6 +6632,21 @@
       },
       "description": "Department mirrors the projections.departments row returned by\nGetDepartment."
     },
+    "v1DepartmentCount": {
+      "type": "object",
+      "properties": {
+        "departmentId": {
+          "type": "string"
+        },
+        "departmentName": {
+          "type": "string"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "v1DepartmentListItem": {
       "type": "object",
       "properties": {
@@ -6728,6 +6942,61 @@
         }
       }
     },
+    "v1GetSnapshotResponse": {
+      "type": "object",
+      "properties": {
+        "incidents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SnapshotIncident"
+          }
+        },
+        "requests": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SnapshotRequest"
+          }
+        },
+        "patientBuffer": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1SnapshotPatientBuffer"
+          }
+        }
+      }
+    },
+    "v1GetSummaryResponse": {
+      "type": "object",
+      "properties": {
+        "incidents": {
+          "$ref": "#/definitions/v1IncidentSummary"
+        },
+        "requests": {
+          "$ref": "#/definitions/v1RequestSummary"
+        },
+        "patientBuffer": {
+          "$ref": "#/definitions/v1PatientBufferSummary"
+        },
+        "period": {
+          "$ref": "#/definitions/v1SummaryPeriod"
+        }
+      }
+    },
+    "v1GetTimeSeriesResponse": {
+      "type": "object",
+      "properties": {
+        "buckets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1TimeSeriesBucket"
+          }
+        }
+      }
+    },
     "v1GetTypeResponse": {
       "type": "object",
       "properties": {
@@ -6773,6 +7042,115 @@
       "properties": {
         "employeeId": {
           "type": "string"
+        }
+      }
+    },
+    "v1IncidentPriorityBreakdown": {
+      "type": "object",
+      "properties": {
+        "low": {
+          "type": "string",
+          "format": "int64"
+        },
+        "normal": {
+          "type": "string",
+          "format": "int64"
+        },
+        "high": {
+          "type": "string",
+          "format": "int64"
+        },
+        "critical": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1IncidentSourceBreakdown": {
+      "type": "object",
+      "properties": {
+        "staff": {
+          "type": "string",
+          "format": "int64"
+        },
+        "patient": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1IncidentStatusBreakdown": {
+      "type": "object",
+      "properties": {
+        "pending": {
+          "type": "string",
+          "format": "int64"
+        },
+        "inProgress": {
+          "type": "string",
+          "format": "int64"
+        },
+        "done": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rejected": {
+          "type": "string",
+          "format": "int64"
+        },
+        "cancelled": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1IncidentSummary": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "byStatus": {
+          "$ref": "#/definitions/v1IncidentStatusBreakdown"
+        },
+        "byPriority": {
+          "$ref": "#/definitions/v1IncidentPriorityBreakdown"
+        },
+        "bySource": {
+          "$ref": "#/definitions/v1IncidentSourceBreakdown"
+        },
+        "reopened": {
+          "type": "string",
+          "format": "int64"
+        },
+        "withLinkedRequests": {
+          "type": "string",
+          "format": "int64"
+        },
+        "resolution": {
+          "$ref": "#/definitions/v1ResolutionStats"
+        },
+        "topCategories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1CategoryCount"
+          }
+        },
+        "topTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1TypeCount"
+          }
+        },
+        "topDepartments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DepartmentCount"
+          }
         }
       }
     },
@@ -7264,6 +7642,47 @@
         }
       }
     },
+    "v1PatientBufferStatusBreakdown": {
+      "type": "object",
+      "properties": {
+        "pending": {
+          "type": "string",
+          "format": "int64"
+        },
+        "published": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rejected": {
+          "type": "string",
+          "format": "int64"
+        },
+        "cancelled": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1PatientBufferSummary": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "byStatus": {
+          "$ref": "#/definitions/v1PatientBufferStatusBreakdown"
+        },
+        "acceptanceRate": {
+          "type": "number",
+          "format": "double"
+        },
+        "rejectionRate": {
+          "type": "number",
+          "format": "double"
+        }
+      }
+    },
     "v1PatientStatus": {
       "type": "string",
       "enum": [
@@ -7389,6 +7808,72 @@
         }
       }
     },
+    "v1RequestStatusBreakdown": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "int64"
+        },
+        "inWork": {
+          "type": "string",
+          "format": "int64"
+        },
+        "onHold": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pendingReview": {
+          "type": "string",
+          "format": "int64"
+        },
+        "completed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "cancelled": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1RequestSummary": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "byStatus": {
+          "$ref": "#/definitions/v1RequestStatusBreakdown"
+        },
+        "linked": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unlinked": {
+          "type": "string",
+          "format": "int64"
+        },
+        "completion": {
+          "$ref": "#/definitions/v1ResolutionStats"
+        },
+        "topTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1TypeCount"
+          }
+        },
+        "topDepartments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1DepartmentCount"
+          }
+        }
+      }
+    },
     "v1RequestType": {
       "type": "object",
       "properties": {
@@ -7412,6 +7897,35 @@
         },
         "updatedAt": {
           "type": "string"
+        }
+      }
+    },
+    "v1ResolutionStats": {
+      "type": "object",
+      "properties": {
+        "avgMinutes": {
+          "type": "number",
+          "format": "double"
+        },
+        "minMinutes": {
+          "type": "number",
+          "format": "double"
+        },
+        "maxMinutes": {
+          "type": "number",
+          "format": "double"
+        },
+        "p50Minutes": {
+          "type": "number",
+          "format": "double"
+        },
+        "p90Minutes": {
+          "type": "number",
+          "format": "double"
+        },
+        "p95Minutes": {
+          "type": "number",
+          "format": "double"
         }
       }
     },
@@ -7525,6 +8039,94 @@
         }
       }
     },
+    "v1SnapshotIncident": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "occurredAt": {
+          "type": "string"
+        },
+        "closedAt": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
+        },
+        "categoryName": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "typeName": {
+          "type": "string"
+        },
+        "clinicId": {
+          "type": "string"
+        },
+        "departmentId": {
+          "type": "string"
+        },
+        "isPatientSource": {
+          "type": "boolean"
+        },
+        "isReopened": {
+          "type": "boolean"
+        },
+        "linkedRequestsCount": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1SnapshotPatientBuffer": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
+        }
+      }
+    },
+    "v1SnapshotRequest": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string"
+        },
+        "completedAt": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "typeId": {
+          "type": "string"
+        },
+        "typeName": {
+          "type": "string"
+        },
+        "departmentId": {
+          "type": "string"
+        },
+        "hasLinkedIncident": {
+          "type": "boolean"
+        }
+      }
+    },
     "v1StartVacationNowResponse": {
       "type": "object",
       "properties": {
@@ -7565,6 +8167,26 @@
         }
       }
     },
+    "v1SummaryPeriod": {
+      "type": "object",
+      "properties": {
+        "organizationId": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "clinicId": {
+          "type": "string"
+        },
+        "departmentId": {
+          "type": "string"
+        }
+      }
+    },
     "v1SystemAdminView": {
       "type": "object",
       "properties": {
@@ -7579,6 +8201,110 @@
     },
     "v1TerminateEmployeeResponse": {
       "type": "object"
+    },
+    "v1TimeSeriesBucket": {
+      "type": "object",
+      "properties": {
+        "bucketStart": {
+          "type": "string"
+        },
+        "bucketEnd": {
+          "type": "string"
+        },
+        "incidents": {
+          "$ref": "#/definitions/v1TimeSeriesIncidentBucket"
+        },
+        "requests": {
+          "$ref": "#/definitions/v1TimeSeriesRequestBucket"
+        }
+      }
+    },
+    "v1TimeSeriesGranularity": {
+      "type": "string",
+      "enum": [
+        "TIME_SERIES_GRANULARITY_UNSPECIFIED",
+        "TIME_SERIES_GRANULARITY_DAY",
+        "TIME_SERIES_GRANULARITY_WEEK",
+        "TIME_SERIES_GRANULARITY_MONTH"
+      ],
+      "default": "TIME_SERIES_GRANULARITY_UNSPECIFIED"
+    },
+    "v1TimeSeriesIncidentBucket": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pending": {
+          "type": "string",
+          "format": "int64"
+        },
+        "inProgress": {
+          "type": "string",
+          "format": "int64"
+        },
+        "done": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rejected": {
+          "type": "string",
+          "format": "int64"
+        },
+        "cancelled": {
+          "type": "string",
+          "format": "int64"
+        },
+        "highCritical": {
+          "type": "string",
+          "format": "int64"
+        },
+        "patientSource": {
+          "type": "string",
+          "format": "int64"
+        },
+        "reopened": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1TimeSeriesRequestBucket": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "completed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "cancelled": {
+          "type": "string",
+          "format": "int64"
+        },
+        "linked": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1TypeCount": {
+      "type": "object",
+      "properties": {
+        "typeId": {
+          "type": "string"
+        },
+        "typeName": {
+          "type": "string"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
     },
     "v1UnarchiveAnnouncementResponse": {
       "type": "object"

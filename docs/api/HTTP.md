@@ -3722,6 +3722,317 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 This operation does not require authentication
 </aside>
 
+<h1 id="command-announcement-v1-announcement-proto-analyticsqueryservice">AnalyticsQueryService</h1>
+
+## AnalyticsQueryService_GetSnapshot
+
+<a id="opIdAnalyticsQueryService_GetSnapshot"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/analytics/snapshot \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/analytics/snapshot`
+
+<h3 id="analyticsqueryservice_getsnapshot-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|query|string|false|none|
+|from|query|string|false|none|
+|to|query|string|false|none|
+|clinicId|query|string|false|none|
+|departmentId|query|string|false|none|
+|includePatientBuffer|query|boolean|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "incidents": [
+    {
+      "createdAt": "string",
+      "occurredAt": "string",
+      "closedAt": "string",
+      "status": "string",
+      "priority": "string",
+      "categoryId": "string",
+      "categoryName": "string",
+      "typeId": "string",
+      "typeName": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "isPatientSource": true,
+      "isReopened": true,
+      "linkedRequestsCount": 0
+    }
+  ],
+  "requests": [
+    {
+      "createdAt": "string",
+      "completedAt": "string",
+      "status": "string",
+      "typeId": "string",
+      "typeName": "string",
+      "departmentId": "string",
+      "hasLinkedIncident": true
+    }
+  ],
+  "patientBuffer": [
+    {
+      "createdAt": "string",
+      "status": "string",
+      "categoryId": "string"
+    }
+  ]
+}
+```
+
+<h3 id="analyticsqueryservice_getsnapshot-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetSnapshotResponse](#schemav1getsnapshotresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnalyticsQueryService_GetSummary
+
+<a id="opIdAnalyticsQueryService_GetSummary"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/analytics/summary \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/analytics/summary`
+
+<h3 id="analyticsqueryservice_getsummary-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|query|string|false|none|
+|from|query|string|false|none|
+|to|query|string|false|none|
+|clinicId|query|string|false|none|
+|departmentId|query|string|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "incidents": {
+    "total": "string",
+    "byStatus": {
+      "pending": "string",
+      "inProgress": "string",
+      "done": "string",
+      "rejected": "string",
+      "cancelled": "string"
+    },
+    "byPriority": {
+      "low": "string",
+      "normal": "string",
+      "high": "string",
+      "critical": "string"
+    },
+    "bySource": {
+      "staff": "string",
+      "patient": "string"
+    },
+    "reopened": "string",
+    "withLinkedRequests": "string",
+    "resolution": {
+      "avgMinutes": 0.1,
+      "minMinutes": 0.1,
+      "maxMinutes": 0.1,
+      "p50Minutes": 0.1,
+      "p90Minutes": 0.1,
+      "p95Minutes": 0.1
+    },
+    "topCategories": [
+      {
+        "categoryId": "string",
+        "categoryName": "string",
+        "count": "string"
+      }
+    ],
+    "topTypes": [
+      {
+        "typeId": "string",
+        "typeName": "string",
+        "count": "string"
+      }
+    ],
+    "topDepartments": [
+      {
+        "departmentId": "string",
+        "departmentName": "string",
+        "count": "string"
+      }
+    ]
+  },
+  "requests": {
+    "total": "string",
+    "byStatus": {
+      "created": "string",
+      "inWork": "string",
+      "onHold": "string",
+      "pendingReview": "string",
+      "completed": "string",
+      "cancelled": "string"
+    },
+    "linked": "string",
+    "unlinked": "string",
+    "completion": {
+      "avgMinutes": 0.1,
+      "minMinutes": 0.1,
+      "maxMinutes": 0.1,
+      "p50Minutes": 0.1,
+      "p90Minutes": 0.1,
+      "p95Minutes": 0.1
+    },
+    "topTypes": [
+      {
+        "typeId": "string",
+        "typeName": "string",
+        "count": "string"
+      }
+    ],
+    "topDepartments": [
+      {
+        "departmentId": "string",
+        "departmentName": "string",
+        "count": "string"
+      }
+    ]
+  },
+  "patientBuffer": {
+    "total": "string",
+    "byStatus": {
+      "pending": "string",
+      "published": "string",
+      "rejected": "string",
+      "cancelled": "string"
+    },
+    "acceptanceRate": 0.1,
+    "rejectionRate": 0.1
+  },
+  "period": {
+    "organizationId": "string",
+    "from": "string",
+    "to": "string",
+    "clinicId": "string",
+    "departmentId": "string"
+  }
+}
+```
+
+<h3 id="analyticsqueryservice_getsummary-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetSummaryResponse](#schemav1getsummaryresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## AnalyticsQueryService_GetTimeSeries
+
+<a id="opIdAnalyticsQueryService_GetTimeSeries"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/analytics/timeseries \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/analytics/timeseries`
+
+<h3 id="analyticsqueryservice_gettimeseries-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|query|string|false|none|
+|from|query|string|false|none|
+|to|query|string|false|none|
+|clinicId|query|string|false|none|
+|departmentId|query|string|false|none|
+|granularity|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|granularity|TIME_SERIES_GRANULARITY_UNSPECIFIED|
+|granularity|TIME_SERIES_GRANULARITY_DAY|
+|granularity|TIME_SERIES_GRANULARITY_WEEK|
+|granularity|TIME_SERIES_GRANULARITY_MONTH|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "buckets": [
+    {
+      "bucketStart": "string",
+      "bucketEnd": "string",
+      "incidents": {
+        "total": "string",
+        "pending": "string",
+        "inProgress": "string",
+        "done": "string",
+        "rejected": "string",
+        "cancelled": "string",
+        "highCritical": "string",
+        "patientSource": "string",
+        "reopened": "string"
+      },
+      "requests": {
+        "total": "string",
+        "completed": "string",
+        "cancelled": "string",
+        "linked": "string"
+      }
+    }
+  ]
+}
+```
+
+<h3 id="analyticsqueryservice_gettimeseries-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetTimeSeriesResponse](#schemav1gettimeseriesresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 <h1 id="command-announcement-v1-announcement-proto-announcementqueryservice">AnnouncementQueryService</h1>
 
 ## AnnouncementQueryService_GetAnnouncement
@@ -8804,6 +9115,30 @@ Category mirrors projections.incident_categories row.
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
+<h2 id="tocS_v1CategoryCount">v1CategoryCount</h2>
+<!-- backwards compatibility -->
+<a id="schemav1categorycount"></a>
+<a id="schema_v1CategoryCount"></a>
+<a id="tocSv1categorycount"></a>
+<a id="tocsv1categorycount"></a>
+
+```json
+{
+  "categoryId": "string",
+  "categoryName": "string",
+  "count": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|categoryId|string|false|none|none|
+|categoryName|string|false|none|none|
+|count|string(int64)|false|none|none|
+
 <h2 id="tocS_v1Clinic">v1Clinic</h2>
 <!-- backwards compatibility -->
 <a id="schemav1clinic"></a>
@@ -9468,6 +9803,30 @@ GetDepartment.
 |description|string|false|none|none|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
+
+<h2 id="tocS_v1DepartmentCount">v1DepartmentCount</h2>
+<!-- backwards compatibility -->
+<a id="schemav1departmentcount"></a>
+<a id="schema_v1DepartmentCount"></a>
+<a id="tocSv1departmentcount"></a>
+<a id="tocsv1departmentcount"></a>
+
+```json
+{
+  "departmentId": "string",
+  "departmentName": "string",
+  "count": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|departmentId|string|false|none|none|
+|departmentName|string|false|none|none|
+|count|string(int64)|false|none|none|
 
 <h2 id="tocS_v1DepartmentListItem">v1DepartmentListItem</h2>
 <!-- backwards compatibility -->
@@ -10286,6 +10645,231 @@ when the backing column is NULL.
 |---|---|---|---|---|
 |serviceRequest|[v1ServiceRequest](#schemav1servicerequest)|false|none|none|
 
+<h2 id="tocS_v1GetSnapshotResponse">v1GetSnapshotResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getsnapshotresponse"></a>
+<a id="schema_v1GetSnapshotResponse"></a>
+<a id="tocSv1getsnapshotresponse"></a>
+<a id="tocsv1getsnapshotresponse"></a>
+
+```json
+{
+  "incidents": [
+    {
+      "createdAt": "string",
+      "occurredAt": "string",
+      "closedAt": "string",
+      "status": "string",
+      "priority": "string",
+      "categoryId": "string",
+      "categoryName": "string",
+      "typeId": "string",
+      "typeName": "string",
+      "clinicId": "string",
+      "departmentId": "string",
+      "isPatientSource": true,
+      "isReopened": true,
+      "linkedRequestsCount": 0
+    }
+  ],
+  "requests": [
+    {
+      "createdAt": "string",
+      "completedAt": "string",
+      "status": "string",
+      "typeId": "string",
+      "typeName": "string",
+      "departmentId": "string",
+      "hasLinkedIncident": true
+    }
+  ],
+  "patientBuffer": [
+    {
+      "createdAt": "string",
+      "status": "string",
+      "categoryId": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|incidents|[[v1SnapshotIncident](#schemav1snapshotincident)]|false|none|none|
+|requests|[[v1SnapshotRequest](#schemav1snapshotrequest)]|false|none|none|
+|patientBuffer|[[v1SnapshotPatientBuffer](#schemav1snapshotpatientbuffer)]|false|none|none|
+
+<h2 id="tocS_v1GetSummaryResponse">v1GetSummaryResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getsummaryresponse"></a>
+<a id="schema_v1GetSummaryResponse"></a>
+<a id="tocSv1getsummaryresponse"></a>
+<a id="tocsv1getsummaryresponse"></a>
+
+```json
+{
+  "incidents": {
+    "total": "string",
+    "byStatus": {
+      "pending": "string",
+      "inProgress": "string",
+      "done": "string",
+      "rejected": "string",
+      "cancelled": "string"
+    },
+    "byPriority": {
+      "low": "string",
+      "normal": "string",
+      "high": "string",
+      "critical": "string"
+    },
+    "bySource": {
+      "staff": "string",
+      "patient": "string"
+    },
+    "reopened": "string",
+    "withLinkedRequests": "string",
+    "resolution": {
+      "avgMinutes": 0.1,
+      "minMinutes": 0.1,
+      "maxMinutes": 0.1,
+      "p50Minutes": 0.1,
+      "p90Minutes": 0.1,
+      "p95Minutes": 0.1
+    },
+    "topCategories": [
+      {
+        "categoryId": "string",
+        "categoryName": "string",
+        "count": "string"
+      }
+    ],
+    "topTypes": [
+      {
+        "typeId": "string",
+        "typeName": "string",
+        "count": "string"
+      }
+    ],
+    "topDepartments": [
+      {
+        "departmentId": "string",
+        "departmentName": "string",
+        "count": "string"
+      }
+    ]
+  },
+  "requests": {
+    "total": "string",
+    "byStatus": {
+      "created": "string",
+      "inWork": "string",
+      "onHold": "string",
+      "pendingReview": "string",
+      "completed": "string",
+      "cancelled": "string"
+    },
+    "linked": "string",
+    "unlinked": "string",
+    "completion": {
+      "avgMinutes": 0.1,
+      "minMinutes": 0.1,
+      "maxMinutes": 0.1,
+      "p50Minutes": 0.1,
+      "p90Minutes": 0.1,
+      "p95Minutes": 0.1
+    },
+    "topTypes": [
+      {
+        "typeId": "string",
+        "typeName": "string",
+        "count": "string"
+      }
+    ],
+    "topDepartments": [
+      {
+        "departmentId": "string",
+        "departmentName": "string",
+        "count": "string"
+      }
+    ]
+  },
+  "patientBuffer": {
+    "total": "string",
+    "byStatus": {
+      "pending": "string",
+      "published": "string",
+      "rejected": "string",
+      "cancelled": "string"
+    },
+    "acceptanceRate": 0.1,
+    "rejectionRate": 0.1
+  },
+  "period": {
+    "organizationId": "string",
+    "from": "string",
+    "to": "string",
+    "clinicId": "string",
+    "departmentId": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|incidents|[v1IncidentSummary](#schemav1incidentsummary)|false|none|none|
+|requests|[v1RequestSummary](#schemav1requestsummary)|false|none|none|
+|patientBuffer|[v1PatientBufferSummary](#schemav1patientbuffersummary)|false|none|none|
+|period|[v1SummaryPeriod](#schemav1summaryperiod)|false|none|none|
+
+<h2 id="tocS_v1GetTimeSeriesResponse">v1GetTimeSeriesResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1gettimeseriesresponse"></a>
+<a id="schema_v1GetTimeSeriesResponse"></a>
+<a id="tocSv1gettimeseriesresponse"></a>
+<a id="tocsv1gettimeseriesresponse"></a>
+
+```json
+{
+  "buckets": [
+    {
+      "bucketStart": "string",
+      "bucketEnd": "string",
+      "incidents": {
+        "total": "string",
+        "pending": "string",
+        "inProgress": "string",
+        "done": "string",
+        "rejected": "string",
+        "cancelled": "string",
+        "highCritical": "string",
+        "patientSource": "string",
+        "reopened": "string"
+      },
+      "requests": {
+        "total": "string",
+        "completed": "string",
+        "cancelled": "string",
+        "linked": "string"
+      }
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|buckets|[[v1TimeSeriesBucket](#schemav1timeseriesbucket)]|false|none|none|
+
 <h2 id="tocS_v1GetTypeResponse">v1GetTypeResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1gettyperesponse"></a>
@@ -10395,6 +10979,159 @@ when the backing column is NULL.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |employeeId|string|false|none|none|
+
+<h2 id="tocS_v1IncidentPriorityBreakdown">v1IncidentPriorityBreakdown</h2>
+<!-- backwards compatibility -->
+<a id="schemav1incidentprioritybreakdown"></a>
+<a id="schema_v1IncidentPriorityBreakdown"></a>
+<a id="tocSv1incidentprioritybreakdown"></a>
+<a id="tocsv1incidentprioritybreakdown"></a>
+
+```json
+{
+  "low": "string",
+  "normal": "string",
+  "high": "string",
+  "critical": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|low|string(int64)|false|none|none|
+|normal|string(int64)|false|none|none|
+|high|string(int64)|false|none|none|
+|critical|string(int64)|false|none|none|
+
+<h2 id="tocS_v1IncidentSourceBreakdown">v1IncidentSourceBreakdown</h2>
+<!-- backwards compatibility -->
+<a id="schemav1incidentsourcebreakdown"></a>
+<a id="schema_v1IncidentSourceBreakdown"></a>
+<a id="tocSv1incidentsourcebreakdown"></a>
+<a id="tocsv1incidentsourcebreakdown"></a>
+
+```json
+{
+  "staff": "string",
+  "patient": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|staff|string(int64)|false|none|none|
+|patient|string(int64)|false|none|none|
+
+<h2 id="tocS_v1IncidentStatusBreakdown">v1IncidentStatusBreakdown</h2>
+<!-- backwards compatibility -->
+<a id="schemav1incidentstatusbreakdown"></a>
+<a id="schema_v1IncidentStatusBreakdown"></a>
+<a id="tocSv1incidentstatusbreakdown"></a>
+<a id="tocsv1incidentstatusbreakdown"></a>
+
+```json
+{
+  "pending": "string",
+  "inProgress": "string",
+  "done": "string",
+  "rejected": "string",
+  "cancelled": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|pending|string(int64)|false|none|none|
+|inProgress|string(int64)|false|none|none|
+|done|string(int64)|false|none|none|
+|rejected|string(int64)|false|none|none|
+|cancelled|string(int64)|false|none|none|
+
+<h2 id="tocS_v1IncidentSummary">v1IncidentSummary</h2>
+<!-- backwards compatibility -->
+<a id="schemav1incidentsummary"></a>
+<a id="schema_v1IncidentSummary"></a>
+<a id="tocSv1incidentsummary"></a>
+<a id="tocsv1incidentsummary"></a>
+
+```json
+{
+  "total": "string",
+  "byStatus": {
+    "pending": "string",
+    "inProgress": "string",
+    "done": "string",
+    "rejected": "string",
+    "cancelled": "string"
+  },
+  "byPriority": {
+    "low": "string",
+    "normal": "string",
+    "high": "string",
+    "critical": "string"
+  },
+  "bySource": {
+    "staff": "string",
+    "patient": "string"
+  },
+  "reopened": "string",
+  "withLinkedRequests": "string",
+  "resolution": {
+    "avgMinutes": 0.1,
+    "minMinutes": 0.1,
+    "maxMinutes": 0.1,
+    "p50Minutes": 0.1,
+    "p90Minutes": 0.1,
+    "p95Minutes": 0.1
+  },
+  "topCategories": [
+    {
+      "categoryId": "string",
+      "categoryName": "string",
+      "count": "string"
+    }
+  ],
+  "topTypes": [
+    {
+      "typeId": "string",
+      "typeName": "string",
+      "count": "string"
+    }
+  ],
+  "topDepartments": [
+    {
+      "departmentId": "string",
+      "departmentName": "string",
+      "count": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+|byStatus|[v1IncidentStatusBreakdown](#schemav1incidentstatusbreakdown)|false|none|none|
+|byPriority|[v1IncidentPriorityBreakdown](#schemav1incidentprioritybreakdown)|false|none|none|
+|bySource|[v1IncidentSourceBreakdown](#schemav1incidentsourcebreakdown)|false|none|none|
+|reopened|string(int64)|false|none|none|
+|withLinkedRequests|string(int64)|false|none|none|
+|resolution|[v1ResolutionStats](#schemav1resolutionstats)|false|none|none|
+|topCategories|[[v1CategoryCount](#schemav1categorycount)]|false|none|none|
+|topTypes|[[v1TypeCount](#schemav1typecount)]|false|none|none|
+|topDepartments|[[v1DepartmentCount](#schemav1departmentcount)]|false|none|none|
 
 <h2 id="tocS_v1IncidentView">v1IncidentView</h2>
 <!-- backwards compatibility -->
@@ -11658,6 +12395,63 @@ OrganizationListItem is the minimal shape returned by list endpoints.
 |employeesOnVacation|string(int64)|false|none|none|
 |vacationsScheduled|string(int64)|false|none|none|
 
+<h2 id="tocS_v1PatientBufferStatusBreakdown">v1PatientBufferStatusBreakdown</h2>
+<!-- backwards compatibility -->
+<a id="schemav1patientbufferstatusbreakdown"></a>
+<a id="schema_v1PatientBufferStatusBreakdown"></a>
+<a id="tocSv1patientbufferstatusbreakdown"></a>
+<a id="tocsv1patientbufferstatusbreakdown"></a>
+
+```json
+{
+  "pending": "string",
+  "published": "string",
+  "rejected": "string",
+  "cancelled": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|pending|string(int64)|false|none|none|
+|published|string(int64)|false|none|none|
+|rejected|string(int64)|false|none|none|
+|cancelled|string(int64)|false|none|none|
+
+<h2 id="tocS_v1PatientBufferSummary">v1PatientBufferSummary</h2>
+<!-- backwards compatibility -->
+<a id="schemav1patientbuffersummary"></a>
+<a id="schema_v1PatientBufferSummary"></a>
+<a id="tocSv1patientbuffersummary"></a>
+<a id="tocsv1patientbuffersummary"></a>
+
+```json
+{
+  "total": "string",
+  "byStatus": {
+    "pending": "string",
+    "published": "string",
+    "rejected": "string",
+    "cancelled": "string"
+  },
+  "acceptanceRate": 0.1,
+  "rejectionRate": 0.1
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+|byStatus|[v1PatientBufferStatusBreakdown](#schemav1patientbufferstatusbreakdown)|false|none|none|
+|acceptanceRate|number(double)|false|none|none|
+|rejectionRate|number(double)|false|none|none|
+
 <h2 id="tocS_v1PatientStatus">v1PatientStatus</h2>
 <!-- backwards compatibility -->
 <a id="schemav1patientstatus"></a>
@@ -11985,6 +12779,94 @@ projection row has neither longitude nor latitude.
 |---|---|---|---|---|
 |reopenedIncidentId|string|false|none|none|
 
+<h2 id="tocS_v1RequestStatusBreakdown">v1RequestStatusBreakdown</h2>
+<!-- backwards compatibility -->
+<a id="schemav1requeststatusbreakdown"></a>
+<a id="schema_v1RequestStatusBreakdown"></a>
+<a id="tocSv1requeststatusbreakdown"></a>
+<a id="tocsv1requeststatusbreakdown"></a>
+
+```json
+{
+  "created": "string",
+  "inWork": "string",
+  "onHold": "string",
+  "pendingReview": "string",
+  "completed": "string",
+  "cancelled": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|created|string(int64)|false|none|none|
+|inWork|string(int64)|false|none|none|
+|onHold|string(int64)|false|none|none|
+|pendingReview|string(int64)|false|none|none|
+|completed|string(int64)|false|none|none|
+|cancelled|string(int64)|false|none|none|
+
+<h2 id="tocS_v1RequestSummary">v1RequestSummary</h2>
+<!-- backwards compatibility -->
+<a id="schemav1requestsummary"></a>
+<a id="schema_v1RequestSummary"></a>
+<a id="tocSv1requestsummary"></a>
+<a id="tocsv1requestsummary"></a>
+
+```json
+{
+  "total": "string",
+  "byStatus": {
+    "created": "string",
+    "inWork": "string",
+    "onHold": "string",
+    "pendingReview": "string",
+    "completed": "string",
+    "cancelled": "string"
+  },
+  "linked": "string",
+  "unlinked": "string",
+  "completion": {
+    "avgMinutes": 0.1,
+    "minMinutes": 0.1,
+    "maxMinutes": 0.1,
+    "p50Minutes": 0.1,
+    "p90Minutes": 0.1,
+    "p95Minutes": 0.1
+  },
+  "topTypes": [
+    {
+      "typeId": "string",
+      "typeName": "string",
+      "count": "string"
+    }
+  ],
+  "topDepartments": [
+    {
+      "departmentId": "string",
+      "departmentName": "string",
+      "count": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+|byStatus|[v1RequestStatusBreakdown](#schemav1requeststatusbreakdown)|false|none|none|
+|linked|string(int64)|false|none|none|
+|unlinked|string(int64)|false|none|none|
+|completion|[v1ResolutionStats](#schemav1resolutionstats)|false|none|none|
+|topTypes|[[v1TypeCount](#schemav1typecount)]|false|none|none|
+|topDepartments|[[v1DepartmentCount](#schemav1departmentcount)]|false|none|none|
+
 <h2 id="tocS_v1RequestType">v1RequestType</h2>
 <!-- backwards compatibility -->
 <a id="schemav1requesttype"></a>
@@ -12016,6 +12898,36 @@ projection row has neither longitude nor latitude.
 |isActive|boolean|false|none|none|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
+
+<h2 id="tocS_v1ResolutionStats">v1ResolutionStats</h2>
+<!-- backwards compatibility -->
+<a id="schemav1resolutionstats"></a>
+<a id="schema_v1ResolutionStats"></a>
+<a id="tocSv1resolutionstats"></a>
+<a id="tocsv1resolutionstats"></a>
+
+```json
+{
+  "avgMinutes": 0.1,
+  "minMinutes": 0.1,
+  "maxMinutes": 0.1,
+  "p50Minutes": 0.1,
+  "p90Minutes": 0.1,
+  "p95Minutes": 0.1
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|avgMinutes|number(double)|false|none|none|
+|minMinutes|number(double)|false|none|none|
+|maxMinutes|number(double)|false|none|none|
+|p50Minutes|number(double)|false|none|none|
+|p90Minutes|number(double)|false|none|none|
+|p95Minutes|number(double)|false|none|none|
 
 <h2 id="tocS_v1RevokeClinicHeadResponse">v1RevokeClinicHeadResponse</h2>
 <!-- backwards compatibility -->
@@ -12308,6 +13220,108 @@ calls to render a name or email.
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
+<h2 id="tocS_v1SnapshotIncident">v1SnapshotIncident</h2>
+<!-- backwards compatibility -->
+<a id="schemav1snapshotincident"></a>
+<a id="schema_v1SnapshotIncident"></a>
+<a id="tocSv1snapshotincident"></a>
+<a id="tocsv1snapshotincident"></a>
+
+```json
+{
+  "createdAt": "string",
+  "occurredAt": "string",
+  "closedAt": "string",
+  "status": "string",
+  "priority": "string",
+  "categoryId": "string",
+  "categoryName": "string",
+  "typeId": "string",
+  "typeName": "string",
+  "clinicId": "string",
+  "departmentId": "string",
+  "isPatientSource": true,
+  "isReopened": true,
+  "linkedRequestsCount": 0
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|createdAt|string|false|none|none|
+|occurredAt|string|false|none|none|
+|closedAt|string|false|none|none|
+|status|string|false|none|none|
+|priority|string|false|none|none|
+|categoryId|string|false|none|none|
+|categoryName|string|false|none|none|
+|typeId|string|false|none|none|
+|typeName|string|false|none|none|
+|clinicId|string|false|none|none|
+|departmentId|string|false|none|none|
+|isPatientSource|boolean|false|none|none|
+|isReopened|boolean|false|none|none|
+|linkedRequestsCount|integer(int32)|false|none|none|
+
+<h2 id="tocS_v1SnapshotPatientBuffer">v1SnapshotPatientBuffer</h2>
+<!-- backwards compatibility -->
+<a id="schemav1snapshotpatientbuffer"></a>
+<a id="schema_v1SnapshotPatientBuffer"></a>
+<a id="tocSv1snapshotpatientbuffer"></a>
+<a id="tocsv1snapshotpatientbuffer"></a>
+
+```json
+{
+  "createdAt": "string",
+  "status": "string",
+  "categoryId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|createdAt|string|false|none|none|
+|status|string|false|none|none|
+|categoryId|string|false|none|none|
+
+<h2 id="tocS_v1SnapshotRequest">v1SnapshotRequest</h2>
+<!-- backwards compatibility -->
+<a id="schemav1snapshotrequest"></a>
+<a id="schema_v1SnapshotRequest"></a>
+<a id="tocSv1snapshotrequest"></a>
+<a id="tocsv1snapshotrequest"></a>
+
+```json
+{
+  "createdAt": "string",
+  "completedAt": "string",
+  "status": "string",
+  "typeId": "string",
+  "typeName": "string",
+  "departmentId": "string",
+  "hasLinkedIncident": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|createdAt|string|false|none|none|
+|completedAt|string|false|none|none|
+|status|string|false|none|none|
+|typeId|string|false|none|none|
+|typeName|string|false|none|none|
+|departmentId|string|false|none|none|
+|hasLinkedIncident|boolean|false|none|none|
+
 <h2 id="tocS_v1StartVacationNowResponse">v1StartVacationNowResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1startvacationnowresponse"></a>
@@ -12376,6 +13390,34 @@ calls to render a name or email.
 |---|---|---|---|---|
 |bufferId|string|false|none|none|
 
+<h2 id="tocS_v1SummaryPeriod">v1SummaryPeriod</h2>
+<!-- backwards compatibility -->
+<a id="schemav1summaryperiod"></a>
+<a id="schema_v1SummaryPeriod"></a>
+<a id="tocSv1summaryperiod"></a>
+<a id="tocsv1summaryperiod"></a>
+
+```json
+{
+  "organizationId": "string",
+  "from": "string",
+  "to": "string",
+  "clinicId": "string",
+  "departmentId": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|organizationId|string|false|none|none|
+|from|string|false|none|none|
+|to|string|false|none|none|
+|clinicId|string|false|none|none|
+|departmentId|string|false|none|none|
+
 <h2 id="tocS_v1SystemAdminView">v1SystemAdminView</h2>
 <!-- backwards compatibility -->
 <a id="schemav1systemadminview"></a>
@@ -12416,6 +13458,160 @@ Zitadel user ids, not employee ids.
 ### Properties
 
 *None*
+
+<h2 id="tocS_v1TimeSeriesBucket">v1TimeSeriesBucket</h2>
+<!-- backwards compatibility -->
+<a id="schemav1timeseriesbucket"></a>
+<a id="schema_v1TimeSeriesBucket"></a>
+<a id="tocSv1timeseriesbucket"></a>
+<a id="tocsv1timeseriesbucket"></a>
+
+```json
+{
+  "bucketStart": "string",
+  "bucketEnd": "string",
+  "incidents": {
+    "total": "string",
+    "pending": "string",
+    "inProgress": "string",
+    "done": "string",
+    "rejected": "string",
+    "cancelled": "string",
+    "highCritical": "string",
+    "patientSource": "string",
+    "reopened": "string"
+  },
+  "requests": {
+    "total": "string",
+    "completed": "string",
+    "cancelled": "string",
+    "linked": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|bucketStart|string|false|none|none|
+|bucketEnd|string|false|none|none|
+|incidents|[v1TimeSeriesIncidentBucket](#schemav1timeseriesincidentbucket)|false|none|none|
+|requests|[v1TimeSeriesRequestBucket](#schemav1timeseriesrequestbucket)|false|none|none|
+
+<h2 id="tocS_v1TimeSeriesGranularity">v1TimeSeriesGranularity</h2>
+<!-- backwards compatibility -->
+<a id="schemav1timeseriesgranularity"></a>
+<a id="schema_v1TimeSeriesGranularity"></a>
+<a id="tocSv1timeseriesgranularity"></a>
+<a id="tocsv1timeseriesgranularity"></a>
+
+```json
+"TIME_SERIES_GRANULARITY_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|TIME_SERIES_GRANULARITY_UNSPECIFIED|
+|*anonymous*|TIME_SERIES_GRANULARITY_DAY|
+|*anonymous*|TIME_SERIES_GRANULARITY_WEEK|
+|*anonymous*|TIME_SERIES_GRANULARITY_MONTH|
+
+<h2 id="tocS_v1TimeSeriesIncidentBucket">v1TimeSeriesIncidentBucket</h2>
+<!-- backwards compatibility -->
+<a id="schemav1timeseriesincidentbucket"></a>
+<a id="schema_v1TimeSeriesIncidentBucket"></a>
+<a id="tocSv1timeseriesincidentbucket"></a>
+<a id="tocsv1timeseriesincidentbucket"></a>
+
+```json
+{
+  "total": "string",
+  "pending": "string",
+  "inProgress": "string",
+  "done": "string",
+  "rejected": "string",
+  "cancelled": "string",
+  "highCritical": "string",
+  "patientSource": "string",
+  "reopened": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+|pending|string(int64)|false|none|none|
+|inProgress|string(int64)|false|none|none|
+|done|string(int64)|false|none|none|
+|rejected|string(int64)|false|none|none|
+|cancelled|string(int64)|false|none|none|
+|highCritical|string(int64)|false|none|none|
+|patientSource|string(int64)|false|none|none|
+|reopened|string(int64)|false|none|none|
+
+<h2 id="tocS_v1TimeSeriesRequestBucket">v1TimeSeriesRequestBucket</h2>
+<!-- backwards compatibility -->
+<a id="schemav1timeseriesrequestbucket"></a>
+<a id="schema_v1TimeSeriesRequestBucket"></a>
+<a id="tocSv1timeseriesrequestbucket"></a>
+<a id="tocsv1timeseriesrequestbucket"></a>
+
+```json
+{
+  "total": "string",
+  "completed": "string",
+  "cancelled": "string",
+  "linked": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|total|string(int64)|false|none|none|
+|completed|string(int64)|false|none|none|
+|cancelled|string(int64)|false|none|none|
+|linked|string(int64)|false|none|none|
+
+<h2 id="tocS_v1TypeCount">v1TypeCount</h2>
+<!-- backwards compatibility -->
+<a id="schemav1typecount"></a>
+<a id="schema_v1TypeCount"></a>
+<a id="tocSv1typecount"></a>
+<a id="tocsv1typecount"></a>
+
+```json
+{
+  "typeId": "string",
+  "typeName": "string",
+  "count": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|typeId|string|false|none|none|
+|typeName|string|false|none|none|
+|count|string(int64)|false|none|none|
 
 <h2 id="tocS_v1UnarchiveAnnouncementResponse">v1UnarchiveAnnouncementResponse</h2>
 <!-- backwards compatibility -->
