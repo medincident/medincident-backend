@@ -32,6 +32,7 @@ import (
 const (
 	sysadminZitadelID = "sysadmin"
 	userAZitadelID    = "user-a"
+	userBZitadelID    = "user-b"
 )
 
 var (
@@ -232,6 +233,26 @@ func seedIncidentType(t *testing.T, categoryID uuid.UUID) uuid.UUID {
 	res, err := typeSvc.Create(context.Background(), classifiersvc.CreateIncidentTypeCommand{
 		Caller:  sysadminCaller,
 		Payload: classifiersvc.CreateIncidentTypePayload{CategoryID: categoryID.String(), Name: "Тип инцидента"},
+	})
+	require.NoError(t, err)
+	return res.ID
+}
+
+func seedCategoryNamed(t *testing.T, orgID uuid.UUID, name string) uuid.UUID {
+	t.Helper()
+	res, err := categorySvc.Create(context.Background(), classifiersvc.CreateIncidentCategoryCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{OrganizationID: orgID.String(), Name: name},
+	})
+	require.NoError(t, err)
+	return res.ID
+}
+
+func seedIncidentTypeNamed(t *testing.T, categoryID uuid.UUID, name string) uuid.UUID {
+	t.Helper()
+	res, err := typeSvc.Create(context.Background(), classifiersvc.CreateIncidentTypeCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{CategoryID: categoryID.String(), Name: name},
 	})
 	require.NoError(t, err)
 	return res.ID

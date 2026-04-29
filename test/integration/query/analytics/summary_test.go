@@ -7,33 +7,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
 )
-
-func seedCategoryNamed(t *testing.T, orgID uuid.UUID, name string) uuid.UUID {
-	t.Helper()
-	res, err := categorySvc.Create(context.Background(), classifiersvc.CreateIncidentCategoryCommand{
-		Caller:  sysadminCaller,
-		Payload: classifiersvc.CreateIncidentCategoryPayload{OrganizationID: orgID.String(), Name: name},
-	})
-	require.NoError(t, err)
-	return res.ID
-}
-
-func seedIncidentTypeNamed(t *testing.T, categoryID uuid.UUID, name string) uuid.UUID {
-	t.Helper()
-	res, err := typeSvc.Create(context.Background(), classifiersvc.CreateIncidentTypeCommand{
-		Caller:  sysadminCaller,
-		Payload: classifiersvc.CreateIncidentTypePayload{CategoryID: categoryID.String(), Name: name},
-	})
-	require.NoError(t, err)
-	return res.ID
-}
 
 func TestGetSummary_BasicCounts(t *testing.T) {
 	resetDB(t)
@@ -108,7 +86,6 @@ func TestGetSummary_PatientBufferRates(t *testing.T) {
 	raw, err := testDB.DB()
 	require.NoError(t, err)
 
-	// Insert 2 published + 1 rejected directly into domain.patient_incident_buffer
 	for range 2 {
 		_, err = raw.Exec(
 			`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, status, created_at)
@@ -145,13 +122,18 @@ func TestGetSummary_DeptResponsible_CanReadDeptScope(t *testing.T) {
 	deptID := seedDept(t, clinicID)
 	categoryID := seedCategory(t, orgID)
 	typeID := seedIncidentType(t, categoryID)
+
+	seedUser(t, userBZitadelID, "Org Admin")
+	orgAdminEmpID := seedEmployee(t, userBZitadelID, orgID, deptID)
+	seedOrgAdmin(t, orgAdminEmpID, orgID)
+	orgAdminCaller := authz.Caller{ZitadelUserID: userBZitadelID}
+
 	seedUser(t, userAZitadelID, "Dept Responsible")
 	empID := seedEmployee(t, userAZitadelID, orgID, deptID)
 	seedDeptResponsible(t, empID, deptID)
 	deptResponsibleCaller := authz.Caller{ZitadelUserID: userAZitadelID}
 
-	// create incident as dept responsible caller (who is an org member)
-	createIncident(t, deptResponsibleCaller, deptID, categoryID, typeID)
+	createIncident(t, orgAdminCaller, deptID, categoryID, typeID)
 
 	from := time.Now().Add(-2 * time.Hour).Format(time.RFC3339)
 	to := time.Now().Add(1 * time.Hour).Format(time.RFC3339)

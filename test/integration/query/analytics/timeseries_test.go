@@ -82,6 +82,7 @@ func TestGetTimeSeries_WeekGranularity(t *testing.T) {
 	buckets, err := analyticsRdr.GetTimeSeries(ctx, sysadminCaller, orgID.String(), from, to, nil, nil, analyticsread.GranularityWeek)
 	require.NoError(t, err)
 	assert.NotEmpty(t, buckets)
+	assert.GreaterOrEqual(t, len(buckets), 2)
 }
 
 func TestGetTimeSeries_CrossTenantDeptRejected(t *testing.T) {
@@ -99,5 +100,5 @@ func TestGetTimeSeries_CrossTenantDeptRejected(t *testing.T) {
 	deptBStr := deptB.String()
 
 	_, err := analyticsRdr.GetTimeSeries(ctx, sysadminCaller, orgA.String(), from, to, nil, &deptBStr, analyticsread.GranularityDay)
-	assert.Error(t, err)
+	require.Error(t, err)
 }
