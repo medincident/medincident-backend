@@ -198,6 +198,37 @@
 
     - [ServiceRequestCommandService](#command-request-v1-ServiceRequestCommandService)
 
+- [query/analytics/v1/analytics.proto](#query_analytics_v1_analytics-proto)
+    - [CategoryCount](#query-analytics-v1-CategoryCount)
+    - [DepartmentCount](#query-analytics-v1-DepartmentCount)
+    - [GetSnapshotRequest](#query-analytics-v1-GetSnapshotRequest)
+    - [GetSnapshotResponse](#query-analytics-v1-GetSnapshotResponse)
+    - [GetSummaryRequest](#query-analytics-v1-GetSummaryRequest)
+    - [GetSummaryResponse](#query-analytics-v1-GetSummaryResponse)
+    - [GetTimeSeriesRequest](#query-analytics-v1-GetTimeSeriesRequest)
+    - [GetTimeSeriesResponse](#query-analytics-v1-GetTimeSeriesResponse)
+    - [IncidentPriorityBreakdown](#query-analytics-v1-IncidentPriorityBreakdown)
+    - [IncidentSourceBreakdown](#query-analytics-v1-IncidentSourceBreakdown)
+    - [IncidentStatusBreakdown](#query-analytics-v1-IncidentStatusBreakdown)
+    - [IncidentSummary](#query-analytics-v1-IncidentSummary)
+    - [PatientBufferStatusBreakdown](#query-analytics-v1-PatientBufferStatusBreakdown)
+    - [PatientBufferSummary](#query-analytics-v1-PatientBufferSummary)
+    - [RequestStatusBreakdown](#query-analytics-v1-RequestStatusBreakdown)
+    - [RequestSummary](#query-analytics-v1-RequestSummary)
+    - [ResolutionStats](#query-analytics-v1-ResolutionStats)
+    - [SnapshotIncident](#query-analytics-v1-SnapshotIncident)
+    - [SnapshotPatientBuffer](#query-analytics-v1-SnapshotPatientBuffer)
+    - [SnapshotRequest](#query-analytics-v1-SnapshotRequest)
+    - [SummaryPeriod](#query-analytics-v1-SummaryPeriod)
+    - [TimeSeriesBucket](#query-analytics-v1-TimeSeriesBucket)
+    - [TimeSeriesIncidentBucket](#query-analytics-v1-TimeSeriesIncidentBucket)
+    - [TimeSeriesRequestBucket](#query-analytics-v1-TimeSeriesRequestBucket)
+    - [TypeCount](#query-analytics-v1-TypeCount)
+
+    - [TimeSeriesGranularity](#query-analytics-v1-TimeSeriesGranularity)
+
+    - [AnalyticsQueryService](#query-analytics-v1-AnalyticsQueryService)
+
 - [query/announcement/v1/announcement.proto](#query_announcement_v1_announcement-proto)
     - [AnnouncementView](#query-announcement-v1-AnnouncementView)
     - [GetAnnouncementRequest](#query-announcement-v1-GetAnnouncementRequest)
@@ -2881,6 +2912,526 @@ generated under pkg/.
 | UpdateServiceRequestDescription | [UpdateServiceRequestDescriptionRequest](#command-request-v1-UpdateServiceRequestDescriptionRequest) | [UpdateServiceRequestDescriptionResponse](#command-request-v1-UpdateServiceRequestDescriptionResponse) |  |
 | UpdateServiceRequestStatus | [UpdateServiceRequestStatusRequest](#command-request-v1-UpdateServiceRequestStatusRequest) | [UpdateServiceRequestStatusResponse](#command-request-v1-UpdateServiceRequestStatusResponse) |  |
 | AssignExecutors | [AssignExecutorsRequest](#command-request-v1-AssignExecutorsRequest) | [AssignExecutorsResponse](#command-request-v1-AssignExecutorsResponse) |  |
+
+
+
+
+
+<a name="query_analytics_v1_analytics-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## query/analytics/v1/analytics.proto
+api/proto/query/analytics/v1/analytics.proto
+
+
+<a name="query-analytics-v1-CategoryCount"></a>
+
+### CategoryCount
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| category_id | [string](#string) |  |  |
+| category_name | [string](#string) |  |  |
+| count | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-DepartmentCount"></a>
+
+### DepartmentCount
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+| department_name | [string](#string) |  |  |
+| count | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-GetSnapshotRequest"></a>
+
+### GetSnapshotRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| from | [string](#string) |  |  |
+| to | [string](#string) |  |  |
+| clinic_id | [string](#string) | optional |  |
+| department_id | [string](#string) | optional |  |
+| include_patient_buffer | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-GetSnapshotResponse"></a>
+
+### GetSnapshotResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incidents | [SnapshotIncident](#query-analytics-v1-SnapshotIncident) | repeated |  |
+| requests | [SnapshotRequest](#query-analytics-v1-SnapshotRequest) | repeated |  |
+| patient_buffer | [SnapshotPatientBuffer](#query-analytics-v1-SnapshotPatientBuffer) | repeated |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-GetSummaryRequest"></a>
+
+### GetSummaryRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| from | [string](#string) |  |  |
+| to | [string](#string) |  |  |
+| clinic_id | [string](#string) | optional |  |
+| department_id | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-GetSummaryResponse"></a>
+
+### GetSummaryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incidents | [IncidentSummary](#query-analytics-v1-IncidentSummary) |  |  |
+| requests | [RequestSummary](#query-analytics-v1-RequestSummary) |  |  |
+| patient_buffer | [PatientBufferSummary](#query-analytics-v1-PatientBufferSummary) |  |  |
+| period | [SummaryPeriod](#query-analytics-v1-SummaryPeriod) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-GetTimeSeriesRequest"></a>
+
+### GetTimeSeriesRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| from | [string](#string) |  |  |
+| to | [string](#string) |  |  |
+| clinic_id | [string](#string) | optional |  |
+| department_id | [string](#string) | optional |  |
+| granularity | [TimeSeriesGranularity](#query-analytics-v1-TimeSeriesGranularity) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-GetTimeSeriesResponse"></a>
+
+### GetTimeSeriesResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buckets | [TimeSeriesBucket](#query-analytics-v1-TimeSeriesBucket) | repeated |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-IncidentPriorityBreakdown"></a>
+
+### IncidentPriorityBreakdown
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| low | [int64](#int64) |  |  |
+| normal | [int64](#int64) |  |  |
+| high | [int64](#int64) |  |  |
+| critical | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-IncidentSourceBreakdown"></a>
+
+### IncidentSourceBreakdown
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| staff | [int64](#int64) |  |  |
+| patient | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-IncidentStatusBreakdown"></a>
+
+### IncidentStatusBreakdown
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| pending | [int64](#int64) |  |  |
+| in_progress | [int64](#int64) |  |  |
+| done | [int64](#int64) |  |  |
+| rejected | [int64](#int64) |  |  |
+| cancelled | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-IncidentSummary"></a>
+
+### IncidentSummary
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+| by_status | [IncidentStatusBreakdown](#query-analytics-v1-IncidentStatusBreakdown) |  |  |
+| by_priority | [IncidentPriorityBreakdown](#query-analytics-v1-IncidentPriorityBreakdown) |  |  |
+| by_source | [IncidentSourceBreakdown](#query-analytics-v1-IncidentSourceBreakdown) |  |  |
+| reopened | [int64](#int64) |  |  |
+| with_linked_requests | [int64](#int64) |  |  |
+| resolution | [ResolutionStats](#query-analytics-v1-ResolutionStats) | optional |  |
+| top_categories | [CategoryCount](#query-analytics-v1-CategoryCount) | repeated |  |
+| top_types | [TypeCount](#query-analytics-v1-TypeCount) | repeated |  |
+| top_departments | [DepartmentCount](#query-analytics-v1-DepartmentCount) | repeated |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-PatientBufferStatusBreakdown"></a>
+
+### PatientBufferStatusBreakdown
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| pending | [int64](#int64) |  |  |
+| published | [int64](#int64) |  |  |
+| rejected | [int64](#int64) |  |  |
+| cancelled | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-PatientBufferSummary"></a>
+
+### PatientBufferSummary
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+| by_status | [PatientBufferStatusBreakdown](#query-analytics-v1-PatientBufferStatusBreakdown) |  |  |
+| acceptance_rate | [double](#double) |  |  |
+| rejection_rate | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-RequestStatusBreakdown"></a>
+
+### RequestStatusBreakdown
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| created | [int64](#int64) |  |  |
+| in_work | [int64](#int64) |  |  |
+| on_hold | [int64](#int64) |  |  |
+| pending_review | [int64](#int64) |  |  |
+| completed | [int64](#int64) |  |  |
+| cancelled | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-RequestSummary"></a>
+
+### RequestSummary
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+| by_status | [RequestStatusBreakdown](#query-analytics-v1-RequestStatusBreakdown) |  |  |
+| linked | [int64](#int64) |  |  |
+| unlinked | [int64](#int64) |  |  |
+| completion | [ResolutionStats](#query-analytics-v1-ResolutionStats) | optional |  |
+| top_types | [TypeCount](#query-analytics-v1-TypeCount) | repeated |  |
+| top_departments | [DepartmentCount](#query-analytics-v1-DepartmentCount) | repeated |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-ResolutionStats"></a>
+
+### ResolutionStats
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| avg_minutes | [double](#double) |  |  |
+| min_minutes | [double](#double) |  |  |
+| max_minutes | [double](#double) |  |  |
+| p50_minutes | [double](#double) |  |  |
+| p90_minutes | [double](#double) |  |  |
+| p95_minutes | [double](#double) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-SnapshotIncident"></a>
+
+### SnapshotIncident
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| created_at | [string](#string) |  |  |
+| occurred_at | [string](#string) |  |  |
+| closed_at | [string](#string) | optional |  |
+| status | [string](#string) |  |  |
+| priority | [string](#string) |  |  |
+| category_id | [string](#string) |  |  |
+| category_name | [string](#string) |  |  |
+| type_id | [string](#string) |  |  |
+| type_name | [string](#string) |  |  |
+| clinic_id | [string](#string) |  |  |
+| department_id | [string](#string) |  |  |
+| is_patient_source | [bool](#bool) |  |  |
+| is_reopened | [bool](#bool) |  |  |
+| linked_requests_count | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-SnapshotPatientBuffer"></a>
+
+### SnapshotPatientBuffer
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| created_at | [string](#string) |  |  |
+| status | [string](#string) |  |  |
+| category_id | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-SnapshotRequest"></a>
+
+### SnapshotRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| created_at | [string](#string) |  |  |
+| completed_at | [string](#string) | optional |  |
+| status | [string](#string) |  |  |
+| type_id | [string](#string) |  |  |
+| type_name | [string](#string) |  |  |
+| department_id | [string](#string) |  |  |
+| has_linked_incident | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-SummaryPeriod"></a>
+
+### SummaryPeriod
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| from | [string](#string) |  |  |
+| to | [string](#string) |  |  |
+| clinic_id | [string](#string) | optional |  |
+| department_id | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-TimeSeriesBucket"></a>
+
+### TimeSeriesBucket
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| bucket_start | [string](#string) |  |  |
+| bucket_end | [string](#string) |  |  |
+| incidents | [TimeSeriesIncidentBucket](#query-analytics-v1-TimeSeriesIncidentBucket) |  |  |
+| requests | [TimeSeriesRequestBucket](#query-analytics-v1-TimeSeriesRequestBucket) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-TimeSeriesIncidentBucket"></a>
+
+### TimeSeriesIncidentBucket
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+| pending | [int64](#int64) |  |  |
+| in_progress | [int64](#int64) |  |  |
+| done | [int64](#int64) |  |  |
+| rejected | [int64](#int64) |  |  |
+| cancelled | [int64](#int64) |  |  |
+| high_critical | [int64](#int64) |  |  |
+| patient_source | [int64](#int64) |  |  |
+| reopened | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-TimeSeriesRequestBucket"></a>
+
+### TimeSeriesRequestBucket
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| total | [int64](#int64) |  |  |
+| completed | [int64](#int64) |  |  |
+| cancelled | [int64](#int64) |  |  |
+| linked | [int64](#int64) |  |  |
+
+
+
+
+
+
+<a name="query-analytics-v1-TypeCount"></a>
+
+### TypeCount
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| type_id | [string](#string) |  |  |
+| type_name | [string](#string) |  |  |
+| count | [int64](#int64) |  |  |
+
+
+
+
+
+
+
+
+<a name="query-analytics-v1-TimeSeriesGranularity"></a>
+
+### TimeSeriesGranularity
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| TIME_SERIES_GRANULARITY_UNSPECIFIED | 0 |  |
+| TIME_SERIES_GRANULARITY_DAY | 1 |  |
+| TIME_SERIES_GRANULARITY_WEEK | 2 |  |
+| TIME_SERIES_GRANULARITY_MONTH | 3 |  |
+
+
+
+
+
+
+
+<a name="query-analytics-v1-AnalyticsQueryService"></a>
+
+### AnalyticsQueryService
+
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| GetSnapshot | [GetSnapshotRequest](#query-analytics-v1-GetSnapshotRequest) | [GetSnapshotResponse](#query-analytics-v1-GetSnapshotResponse) |  |
+| GetSummary | [GetSummaryRequest](#query-analytics-v1-GetSummaryRequest) | [GetSummaryResponse](#query-analytics-v1-GetSummaryResponse) |  |
+| GetTimeSeries | [GetTimeSeriesRequest](#query-analytics-v1-GetTimeSeriesRequest) | [GetTimeSeriesResponse](#query-analytics-v1-GetTimeSeriesResponse) |  |
 
 
 
