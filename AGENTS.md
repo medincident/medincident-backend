@@ -131,6 +131,14 @@ main.go wires constructors explicitly and drives teardown via `defer`.
       tests, vuln scan, proto tooling, DB migrations, Docker image
       builds (`docker:*`). Never add Go-binary compilation tasks
       to the Taskfile — they belong in the Makefile.
+17. **`errors.Join` is not recommended in service-layer code.** When
+    multiple validation failures occur in a single operation, the
+    error handler (`grpcmw/error.go`) collapses them into a single
+    `validation_failed` status with one `ValidationFailedDetails.FieldViolation`
+    per leaf. If `errors.Join` is used, each leaf must carry an oops
+    code so the handler can build a meaningful violation entry.
+    Current usage: `ScheduleVacation` in
+    `internal/service/command/membership/vacation_schedule.go`.
 
 ## Directory layout
 
