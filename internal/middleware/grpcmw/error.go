@@ -67,7 +67,11 @@ func translateError(logger *zerolog.Logger, method string, err error) error {
 	return buildSingleStatus(logger, method, leaves[0])
 }
 
-// flattenErrorLeaves walks err and collects oops leaves.
+// flattenErrorLeaves walks err and collects oops leaves. errors.Join produces
+// an error whose Unwrap() returns []error; we recurse into those branches.
+// Everything else is probed with oops.AsOops and, if it matches, added as a
+// leaf. Leaves are stored as pointers to avoid copying the 280-byte OopsError
+// struct on every operation.
 func flattenErrorLeaves(err error) []*oops.OopsError {
 	var leaves []*oops.OopsError
 	var walk func(error)
@@ -89,6 +93,8 @@ func flattenErrorLeaves(err error) []*oops.OopsError {
 	return leaves
 }
 
+// buildValidationStatus emits ErrorCode{validation_failed} + ValidationFailedDetails
+// from the struct-tag violations carried on the single oops leaf.
 func buildValidationStatus(logger *zerolog.Logger, method string, leaf *oops.OopsError, violations []validation.Violation) error {
 	fvs := make([]*errorv1.ValidationFailedDetails_FieldViolation, 0, len(violations))
 	for _, v := range violations {
@@ -114,6 +120,9 @@ func buildValidationStatus(logger *zerolog.Logger, method string, leaf *oops.Oop
 	return withDetails.Err()
 }
 
+// buildMultiLeafStatus handles errors.Join leaves: emits ErrorCode{validation_failed}
+// + ValidationFailedDetails with one FieldViolation per leaf, using each leaf's
+// field name and oops code as the violation coordinates.
 func buildMultiLeafStatus(logger *zerolog.Logger, method string, leaves []*oops.OopsError) error {
 	fvs := make([]*errorv1.ValidationFailedDetails_FieldViolation, 0, len(leaves))
 	for _, leaf := range leaves {
@@ -135,6 +144,9 @@ func buildMultiLeafStatus(logger *zerolog.Logger, method string, leaves []*oops.
 	return withDetails.Err()
 }
 
+// buildSingleStatus maps a single oops leaf to a gRPC status. Server-fault codes
+// (Internal, Unavailable, Unknown) get no details and mask the message as
+// "internal error" so implementation details never leak to the client.
 func buildSingleStatus(logger *zerolog.Logger, method string, leaf *oops.OopsError) error {
 	code := errorCodeString(leaf)
 	grpcCode := gRPCCodeForError(code)
@@ -232,6 +244,9 @@ func errorCodeString(leaf *oops.OopsError) string {
 	return ""
 }
 
+// gRPCCodeForError is pure and table-driven. Override wins over suffix; if
+// nothing matches, we default to Internal because an unclassified error is
+// never a client problem.
 func gRPCCodeForError(code string) codes.Code {
 	if override, ok := errorCodeOverrides[code]; ok {
 		return override
@@ -277,6 +292,7 @@ var errorCodeSuffixes = []struct {
 	suffix   string
 	grpcCode codes.Code
 }{
+	// Internal infrastructure failures.
 	{suffix: "_id_generation_failed", grpcCode: codes.Internal},
 	{suffix: "_projection_failed", grpcCode: codes.Internal},
 	{suffix: "_save_failed", grpcCode: codes.Internal},
@@ -291,6 +307,7 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_count_failed", grpcCode: codes.Internal},
 	{suffix: "_lock_failed", grpcCode: codes.Internal},
 	{suffix: "_malformed", grpcCode: codes.Internal},
+	// Client input validation (InvalidArgument).
 	{suffix: "_required", grpcCode: codes.InvalidArgument},
 	{suffix: "_out_of_range", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_before_start", grpcCode: codes.InvalidArgument},
@@ -301,7 +318,9 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_too_long", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid_scope", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid_time_range", grpcCode: codes.InvalidArgument},
+	// Existence.
 	{suffix: "_not_found", grpcCode: codes.NotFound},
+	// Duplicates (AlreadyExists).
 	{suffix: "_already_hired", grpcCode: codes.AlreadyExists},
 	{suffix: "_already_assigned", grpcCode: codes.AlreadyExists},
 	{suffix: "_already_granted", grpcCode: codes.AlreadyExists},
@@ -309,6 +328,7 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_already_ended", grpcCode: codes.AlreadyExists},
 	{suffix: "_name_conflict", grpcCode: codes.AlreadyExists},
 	{suffix: "_overlap", grpcCode: codes.AlreadyExists},
+	// Business-rule preconditions (FailedPrecondition).
 	{suffix: "_invalid_status_transition", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_department", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_clinic", grpcCode: codes.FailedPrecondition},
@@ -329,6 +349,7 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_type_inactive", grpcCode: codes.FailedPrecondition},
 	{suffix: "_frozen", grpcCode: codes.FailedPrecondition},
 	{suffix: "_mismatch", grpcCode: codes.FailedPrecondition},
+	// Catch-all client input (InvalidArgument) — kept last so more specific suffixes win.
 	{suffix: "_empty", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid", grpcCode: codes.InvalidArgument},
 }
