@@ -58,6 +58,10 @@ curl -X POST /v1/announcements \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateAnnouncementResponse](#schemav1createannouncementresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -111,6 +115,10 @@ curl -X PUT /v1/announcements/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateAnnouncementResponse](#schemav1updateannouncementresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -161,6 +169,10 @@ curl -X PUT /v1/announcements/{id}/priority \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateAnnouncementPriorityResponse](#schemav1updateannouncementpriorityresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -201,6 +213,10 @@ curl -X POST /v1/announcements/{id}:archive \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ArchiveAnnouncementResponse](#schemav1archiveannouncementresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -241,6 +257,10 @@ curl -X POST /v1/announcements/{id}:unarchive \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UnarchiveAnnouncementResponse](#schemav1unarchiveannouncementresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -298,6 +318,10 @@ curl -X POST /v1/patient-incidents \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SubmitPatientIncidentResponse](#schemav1submitpatientincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -351,6 +375,10 @@ curl -X PUT /v1/patient-incidents/{bufferId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdatePatientIncidentResponse](#schemav1updatepatientincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -391,6 +419,10 @@ curl -X POST /v1/patient-incidents/{bufferId}:cancel \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CancelPatientIncidentResponse](#schemav1cancelpatientincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -446,6 +478,10 @@ curl -X POST /v1/patient-incidents/{bufferId}:publish \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1PublishPatientIncidentResponse](#schemav1publishpatientincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -486,6 +522,10 @@ curl -X POST /v1/patient-incidents/{bufferId}:reject \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RejectPatientIncidentResponse](#schemav1rejectpatientincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -528,6 +568,10 @@ curl -X DELETE /v1/incident-categories/{categoryId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeleteIncidentCategoryResponse](#schemav1deleteincidentcategoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -568,6 +612,10 @@ curl -X POST /v1/incident-categories/{categoryId}/deactivations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateIncidentCategoryResponse](#schemav1deactivateincidentcategoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -619,6 +667,10 @@ curl -X PUT /v1/incident-categories/{categoryId}/details \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentCategoryDetailsResponse](#schemav1updateincidentcategorydetailsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -659,6 +711,10 @@ curl -X POST /v1/incident-categories/{categoryId}/reactivations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ReactivateIncidentCategoryResponse](#schemav1reactivateincidentcategoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -712,6 +768,10 @@ curl -X POST /v1/incident-categories/{categoryId}/types \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateIncidentTypeResponse](#schemav1createincidenttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -762,6 +822,10 @@ curl -X POST /v1/incident-categories/{categoryId}:move \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1MoveIncidentCategoryResponse](#schemav1moveincidentcategoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -802,6 +866,10 @@ curl -X DELETE /v1/incident-types/{typeId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeleteIncidentTypeResponse](#schemav1deleteincidenttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -842,6 +910,10 @@ curl -X POST /v1/incident-types/{typeId}/deactivations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateIncidentTypeResponse](#schemav1deactivateincidenttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -893,6 +965,10 @@ curl -X PUT /v1/incident-types/{typeId}/details \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentTypeDetailsResponse](#schemav1updateincidenttypedetailsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -933,6 +1009,10 @@ curl -X DELETE /v1/incident-types/{typeId}/patient-allowances \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DisallowIncidentTypeForPatientsResponse](#schemav1disallowincidenttypeforpatientsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -973,6 +1053,10 @@ curl -X POST /v1/incident-types/{typeId}/patient-allowances \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AllowIncidentTypeForPatientsResponse](#schemav1allowincidenttypeforpatientsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1013,6 +1097,10 @@ curl -X POST /v1/incident-types/{typeId}/reactivations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ReactivateIncidentTypeResponse](#schemav1reactivateincidenttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1063,6 +1151,10 @@ curl -X POST /v1/incident-types/{typeId}:move \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1MoveIncidentTypeResponse](#schemav1moveincidenttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1117,6 +1209,10 @@ curl -X POST /v1/organizations/{organizationId}/incident-categories \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateIncidentCategoryResponse](#schemav1createincidentcategoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1174,6 +1270,10 @@ curl -X POST /v1/incidents \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateIncidentResponse](#schemav1createincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1224,6 +1324,10 @@ curl -X PUT /v1/incidents/{incidentId}/description \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentDescriptionResponse](#schemav1updateincidentdescriptionresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1274,6 +1378,10 @@ curl -X PUT /v1/incidents/{incidentId}/priority \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentPriorityResponse](#schemav1updateincidentpriorityresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1324,6 +1432,10 @@ curl -X PUT /v1/incidents/{incidentId}/status \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateIncidentStatusResponse](#schemav1updateincidentstatusresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1364,6 +1476,10 @@ curl -X POST /v1/incidents/{incidentId}:cancel \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CancelIncidentResponse](#schemav1cancelincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1406,6 +1522,10 @@ curl -X POST /v1/incidents/{incidentId}:reopen \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ReopenIncidentResponse](#schemav1reopenincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1458,6 +1578,10 @@ curl -X POST /v1/clinics/{clinicId}/heads \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignClinicHeadResponse](#schemav1assignclinicheadresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1499,6 +1623,10 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeClinicHeadResponse](#schemav1revokeclinicheadresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1540,6 +1668,10 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveClinicHeadDeputyResponse](#schemav1removeclinicheaddeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1591,6 +1723,10 @@ curl -X POST /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignClinicHeadDeputyResponse](#schemav1assignclinicheaddeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1641,6 +1777,10 @@ curl -X POST /v1/departments/{departmentId}/responsibles \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignDepartmentResponsibleResponse](#schemav1assigndepartmentresponsibleresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1682,6 +1822,10 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeDepartmentResponsibleResponse](#schemav1revokedepartmentresponsibleresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1723,6 +1867,10 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveDepartmentResponsibleDeputyResponse](#schemav1removedepartmentresponsibledeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1774,6 +1922,10 @@ curl -X POST /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignDepartmentResponsibleDeputyResponse](#schemav1assigndepartmentresponsibledeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1827,6 +1979,10 @@ curl -X POST /v1/employees \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1HireEmployeeResponse](#schemav1hireemployeeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1867,6 +2023,10 @@ curl -X DELETE /v1/employees/{employeeId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1TerminateEmployeeResponse](#schemav1terminateemployeeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1917,6 +2077,10 @@ curl -X PUT /v1/employees/{employeeId}/department \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateEmployeeDepartmentResponse](#schemav1updateemployeedepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -1967,6 +2131,10 @@ curl -X PUT /v1/employees/{employeeId}/position \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateEmployeePositionResponse](#schemav1updateemployeepositionresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2020,6 +2188,10 @@ curl -X POST /v1/employees/{employeeId}/vacations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ScheduleVacationResponse](#schemav1schedulevacationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2072,6 +2244,10 @@ curl -X POST /v1/employees/{employeeId}/vacations:start-now \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1StartVacationNowResponse](#schemav1startvacationnowresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2122,6 +2298,10 @@ curl -X POST /v1/organizations/{organizationId}/admins \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationAdminResponse](#schemav1assignorganizationadminresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2163,6 +2343,10 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeOrganizationAdminResponse](#schemav1revokeorganizationadminresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2204,6 +2388,10 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveOrganizationAdminDeputyResponse](#schemav1removeorganizationadmindeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2255,6 +2443,10 @@ curl -X POST /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationAdminDeputyResponse](#schemav1assignorganizationadmindeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2305,6 +2497,10 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationDispatcherResponse](#schemav1assignorganizationdispatcherresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2346,6 +2542,10 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeOrganizationDispatcherResponse](#schemav1revokeorganizationdispatcherresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2387,6 +2587,10 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}/deput
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveOrganizationDispatcherDeputyResponse](#schemav1removeorganizationdispatcherdeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2438,6 +2642,10 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationDispatcherDeputyResponse](#schemav1assignorganizationdispatcherdeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2488,6 +2696,10 @@ curl -X POST /v1/organizations/{organizationId}/heads \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationHeadResponse](#schemav1assignorganizationheadresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2529,6 +2741,10 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeOrganizationHeadResponse](#schemav1revokeorganizationheadresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2570,6 +2786,10 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RemoveOrganizationHeadDeputyResponse](#schemav1removeorganizationheaddeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2621,6 +2841,10 @@ curl -X POST /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignOrganizationHeadDeputyResponse](#schemav1assignorganizationheaddeputyresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2670,6 +2894,10 @@ curl -X POST /v1/system-admins \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GrantSystemAdminResponse](#schemav1grantsystemadminresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2710,6 +2938,10 @@ curl -X DELETE /v1/system-admins/{zitadelUserId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1RevokeSystemAdminResponse](#schemav1revokesystemadminresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2750,6 +2982,10 @@ curl -X POST /v1/vacations/{vacationId}/cancellations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CancelScheduledVacationResponse](#schemav1cancelscheduledvacationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2800,6 +3036,10 @@ curl -X PUT /v1/vacations/{vacationId}/end-date \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateVacationEndDateResponse](#schemav1updatevacationenddateresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2840,6 +3080,10 @@ curl -X POST /v1/vacations/{vacationId}/terminations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ForceEndVacationResponse](#schemav1forceendvacationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2895,6 +3139,10 @@ curl -X POST /v1/clinics/{clinicId}/departments \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateDepartmentResponse](#schemav1createdepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -2946,6 +3194,10 @@ curl -X PUT /v1/clinics/{clinicId}/details \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateClinicDetailsResponse](#schemav1updateclinicdetailsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3002,6 +3254,10 @@ curl -X PUT /v1/clinics/{clinicId}/physical-address \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateClinicPhysicalAddressResponse](#schemav1updateclinicphysicaladdressresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3053,6 +3309,10 @@ curl -X PUT /v1/departments/{departmentId}/details \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateDepartmentDetailsResponse](#schemav1updatedepartmentdetailsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3112,6 +3372,10 @@ curl -X POST /v1/organizations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateOrganizationResponse](#schemav1createorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3172,6 +3436,10 @@ curl -X POST /v1/organizations/{organizationId}/clinics \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateClinicResponse](#schemav1createclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3223,6 +3491,10 @@ curl -X PUT /v1/organizations/{organizationId}/details \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateOrganizationDetailsResponse](#schemav1updateorganizationdetailsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3279,6 +3551,10 @@ curl -X PUT /v1/organizations/{organizationId}/legal-address \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateOrganizationLegalAddressResponse](#schemav1updateorganizationlegaladdressresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3334,6 +3610,10 @@ curl -X POST /v1/organizations/{organizationId}/request-types \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateRequestTypeResponse](#schemav1createrequesttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3374,6 +3654,10 @@ curl -X DELETE /v1/request-types/{typeId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeleteRequestTypeResponse](#schemav1deleterequesttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3414,6 +3698,10 @@ curl -X POST /v1/request-types/{typeId}/deactivations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateRequestTypeResponse](#schemav1deactivaterequesttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3465,6 +3753,10 @@ curl -X PUT /v1/request-types/{typeId}/details \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateRequestTypeDetailsResponse](#schemav1updaterequesttypedetailsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3505,6 +3797,10 @@ curl -X POST /v1/request-types/{typeId}/reactivations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ReactivateRequestTypeResponse](#schemav1reactivaterequesttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3564,6 +3860,10 @@ curl -X POST /v1/service-requests \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateServiceRequestResponse](#schemav1createservicerequestresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3614,6 +3914,10 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/description \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateServiceRequestDescriptionResponse](#schemav1updateservicerequestdescriptionresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3666,6 +3970,10 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/executors \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1AssignExecutorsResponse](#schemav1assignexecutorsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3716,6 +4024,10 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdateServiceRequestStatusResponse](#schemav1updateservicerequeststatusresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3800,6 +4112,10 @@ curl -X GET /v1/analytics/snapshot \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetSnapshotResponse](#schemav1getsnapshotresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -3949,6 +4265,10 @@ curl -X GET /v1/analytics/summary \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetSummaryResponse](#schemav1getsummaryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4027,6 +4347,10 @@ curl -X GET /v1/analytics/timeseries \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetTimeSeriesResponse](#schemav1gettimeseriesresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4086,6 +4410,10 @@ curl -X GET /v1/query/announcements/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetAnnouncementResponse](#schemav1getannouncementresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4158,6 +4486,10 @@ curl -X GET /v1/query/clinics/{clinicId}/announcements \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForClinicResponse](#schemav1listannouncementsforclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4230,6 +4562,10 @@ curl -X GET /v1/query/departments/{departmentId}/announcements \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForDepartmentResponse](#schemav1listannouncementsfordepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4302,6 +4638,10 @@ curl -X GET /v1/query/organizations/{organizationId}/announcements \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForOrganizationResponse](#schemav1listannouncementsfororganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4360,6 +4700,10 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListTypesByCategoryResponse](#schemav1listtypesbycategoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4411,6 +4755,10 @@ curl -X GET /v1/incident-categories/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetCategoryResponse](#schemav1getcategoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4464,6 +4812,10 @@ curl -X GET /v1/incident-categories/{rootCategoryId}:subtree \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCategorySubtreeResponse](#schemav1listcategorysubtreeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4516,6 +4868,10 @@ curl -X GET /v1/incident-types/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetTypeResponse](#schemav1gettyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4571,6 +4927,10 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCategoriesByOrganizationResponse](#schemav1listcategoriesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4626,6 +4986,10 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visib
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListPatientVisibleCategoriesByOrganizationResponse](#schemav1listpatientvisiblecategoriesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4681,6 +5045,10 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveRootCategoriesResponse](#schemav1listactiverootcategoriesresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4737,6 +5105,10 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveTypesByOrganizationResponse](#schemav1listactivetypesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4799,6 +5171,10 @@ an-incident.-responses">Responses</h3>
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListPatientAllowedTypesByOrganizationResponse](#schemav1listpatientallowedtypesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4869,6 +5245,10 @@ curl -X GET /v1/query/incidents/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetIncidentResponse](#schemav1getincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -4934,6 +5314,10 @@ curl -X GET /v1/query/incidents/{incidentId}/history \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetIncidentHistoryResponse](#schemav1getincidenthistoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5005,6 +5389,10 @@ curl -X GET /v1/query/incidents:mine \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListMyIncidentsResponse](#schemav1listmyincidentsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5101,6 +5489,10 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListIncidentsResponse](#schemav1listincidentsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5171,6 +5563,10 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListBufferEntriesResponse](#schemav1listbufferentriesresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5226,6 +5622,10 @@ curl -X GET /v1/query/patient-incidents/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetBufferEntryResponse](#schemav1getbufferentryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5284,6 +5684,10 @@ curl -X GET /v1/query/patient-incidents:mine \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListMyBufferEntriesResponse](#schemav1listmybufferentriesresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5363,6 +5767,10 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByClinicResponse](#schemav1listemployeesbyclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5419,6 +5827,10 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountEmployeesByClinicResponse](#schemav1countemployeesbyclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5498,6 +5910,10 @@ curl -X GET /v1/clinics/{clinicId}/head \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetClinicHeadResponse](#schemav1getclinicheadresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5575,6 +5991,10 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByDepartmentResponse](#schemav1listemployeesbydepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5631,6 +6051,10 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountEmployeesByDepartmentResponse](#schemav1countemployeesbydepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5710,6 +6134,10 @@ curl -X GET /v1/departments/{departmentId}/responsible \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetDepartmentResponsibleResponse](#schemav1getdepartmentresponsibleresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5770,6 +6198,10 @@ Valid values: scheduled, active, ended, cancelled.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListVacationsByEmployeeResponse](#schemav1listvacationsbyemployeeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5818,6 +6250,10 @@ Valid values: scheduled, active, ended, cancelled.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountVacationsByEmployeeResponse](#schemav1countvacationsbyemployeeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5877,6 +6313,10 @@ curl -X GET /v1/employees/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetEmployeeResponse](#schemav1getemployeeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -5960,6 +6400,10 @@ curl -X GET /v1/organizations/{organizationId}/admins \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgAdminsResponse](#schemav1listorgadminsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6043,6 +6487,10 @@ curl -X GET /v1/organizations/{organizationId}/dispatchers \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgDispatchersResponse](#schemav1listorgdispatchersresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6120,6 +6568,10 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByOrganizationResponse](#schemav1listemployeesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6176,6 +6628,10 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountEmployeesByOrganizationResponse](#schemav1countemployeesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6261,6 +6717,10 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SearchEmployeesByOrganizationResponse](#schemav1searchemployeesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6344,6 +6804,10 @@ curl -X GET /v1/organizations/{organizationId}/heads \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgHeadsResponse](#schemav1listorgheadsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6392,6 +6856,10 @@ curl -X GET /v1/system-admins \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListSystemAdminsResponse](#schemav1listsystemadminsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6444,6 +6912,10 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListDepartmentsByClinicResponse](#schemav1listdepartmentsbyclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6486,6 +6958,10 @@ curl -X GET /v1/clinics/{clinicId}/departments:count \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountDepartmentsByClinicResponse](#schemav1countdepartmentsbyclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6542,6 +7018,10 @@ curl -X GET /v1/clinics/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetClinicResponse](#schemav1getclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6591,6 +7071,10 @@ curl -X GET /v1/departments/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetDepartmentResponse](#schemav1getdepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6639,6 +7123,10 @@ curl -X GET /v1/organizations \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrganizationsResponse](#schemav1listorganizationsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6694,6 +7182,10 @@ curl -X GET /v1/organizations/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetOrganizationResponse](#schemav1getorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6744,6 +7236,10 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListClinicsByOrganizationResponse](#schemav1listclinicsbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6786,6 +7282,10 @@ curl -X GET /v1/organizations/{organizationId}/clinics:count \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountClinicsByOrganizationResponse](#schemav1countclinicsbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6822,6 +7322,10 @@ curl -X GET /v1/organizations:count \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CountOrganizationsResponse](#schemav1countorganizationsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6871,6 +7375,10 @@ curl -X GET /v1/organizations:search \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SearchOrganizationsResponse](#schemav1searchorganizationsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6927,6 +7435,10 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListRequestTypesByOrganizationResponse](#schemav1listrequesttypesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -6981,6 +7493,10 @@ curl -X GET /v1/organizations/{organizationId}/request-types:active \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveRequestTypesByOrganizationResponse](#schemav1listactiverequesttypesbyorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -7031,6 +7547,10 @@ curl -X GET /v1/request-types/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetRequestTypeResponse](#schemav1getrequesttyperesponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -7099,6 +7619,10 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListServiceRequestsByIncidentResponse](#schemav1listservicerequestsbyincidentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -7165,6 +7689,10 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListServiceRequestsResponse](#schemav1listservicerequestsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -7227,6 +7755,10 @@ curl -X GET /v1/service-requests/{id} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetServiceRequestResponse](#schemav1getservicerequestresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -7289,6 +7821,10 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetServiceRequestHistoryResponse](#schemav1getservicerequesthistoryresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -7339,6 +7875,10 @@ curl -X GET /v1/clinics/{clinicId}/stats \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetClinicStatsResponse](#schemav1getclinicstatsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -7387,6 +7927,10 @@ curl -X GET /v1/departments/{departmentId}/stats \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetDepartmentStatsResponse](#schemav1getdepartmentstatsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -7436,6 +7980,10 @@ curl -X GET /v1/organizations/{organizationId}/stats \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetOrganizationStatsResponse](#schemav1getorganizationstatsresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
@@ -8313,6 +8861,32 @@ Cancellation by registrar uses CancelIncident.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |newStatus|string|true|none|none|
+
+<h2 id="tocS_ValidationFailedDetailsFieldViolation">ValidationFailedDetailsFieldViolation</h2>
+<!-- backwards compatibility -->
+<a id="schemavalidationfaileddetailsfieldviolation"></a>
+<a id="schema_ValidationFailedDetailsFieldViolation"></a>
+<a id="tocSvalidationfaileddetailsfieldviolation"></a>
+<a id="tocsvalidationfaileddetailsfieldviolation"></a>
+
+```json
+{
+  "field": "string",
+  "rule": "string",
+  "message": "string",
+  "param": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|field|string|false|none|none|
+|rule|string|false|none|none|
+|message|string|false|none|none|
+|param|string|false|none|none|
 
 <h2 id="tocS_classifierV1Type">classifierV1Type</h2>
 <!-- backwards compatibility -->
@@ -9952,6 +10526,41 @@ when the backing column is NULL.
 |terminatedAt|string|false|none|none|
 |currentVacationEndsAt|string|false|none|none|
 |nextVacationStartsAt|string|false|none|none|
+
+<h2 id="tocS_v1ErrorResponse">v1ErrorResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1errorresponse"></a>
+<a id="schema_v1ErrorResponse"></a>
+<a id="tocSv1errorresponse"></a>
+<a id="tocsv1errorresponse"></a>
+
+```json
+{
+  "code": "string",
+  "message": "string",
+  "details": {
+    "violations": [
+      {
+        "field": "string",
+        "rule": "string",
+        "message": "string",
+        "param": "string"
+      }
+    ]
+  }
+}
+
+```
+
+ErrorResponse
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|code|string|false|none|none|
+|message|string|false|none|none|
+|details|[v1ValidationFailedDetails](#schemav1validationfaileddetails)|false|none|ValidationFailedDetails is present only when code = "validation_failed".<br>Each violation corresponds to one struct-tag rule failure or one<br>domain-level leaf error from errors.Join.|
 
 <h2 id="tocS_v1Executor">v1Executor</h2>
 <!-- backwards compatibility -->
@@ -13967,3 +14576,34 @@ VacationView mirrors projections.employee_vacations. state is one of
 |endsAt|string|false|none|none|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
+
+<h2 id="tocS_v1ValidationFailedDetails">v1ValidationFailedDetails</h2>
+<!-- backwards compatibility -->
+<a id="schemav1validationfaileddetails"></a>
+<a id="schema_v1ValidationFailedDetails"></a>
+<a id="tocSv1validationfaileddetails"></a>
+<a id="tocsv1validationfaileddetails"></a>
+
+```json
+{
+  "violations": [
+    {
+      "field": "string",
+      "rule": "string",
+      "message": "string",
+      "param": "string"
+    }
+  ]
+}
+
+```
+
+ValidationFailedDetails is present only when code = "validation_failed".
+Each violation corresponds to one struct-tag rule failure or one
+domain-level leaf error from errors.Join.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|violations|[[ValidationFailedDetailsFieldViolation](#schemavalidationfaileddetailsfieldviolation)]|false|none|none|

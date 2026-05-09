@@ -9,6 +9,7 @@
 package errorv1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -117,9 +118,9 @@ func (x *ValidationFailedDetails) GetViolations() []*ValidationFailedDetails_Fie
 }
 
 // ErrorResponse is the HTTP response body written by the gateway error
-// handler. Declared here so that openapiv2_swagger annotations in service
-// proto files can reference it and force its schema into the generated
-// OpenAPI definitions.
+// handler. The openapiv2_schema option forces this message into the
+// generated OpenAPI definitions so that service-level $ref annotations
+// can reference it by name.
 type ErrorResponse struct {
 	state         protoimpl.MessageState   `protogen:"open.v1"`
 	Code          string                   `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
@@ -252,7 +253,7 @@ var File_error_v1_error_proto protoreflect.FileDescriptor
 
 const file_error_v1_error_proto_rawDesc = "" +
 	"\n" +
-	"\x14error/v1/error.proto\x12\berror.v1\"\x1f\n" +
+	"\x14error/v1/error.proto\x12\berror.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x1f\n" +
 	"\tErrorCode\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\"\xe6\x01\n" +
 	"\x17ValidationFailedDetails\x12P\n" +
@@ -264,11 +265,12 @@ const file_error_v1_error_proto_rawDesc = "" +
 	"\x04rule\x18\x02 \x01(\tR\x04rule\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\x12\x19\n" +
 	"\x05param\x18\x04 \x01(\tH\x00R\x05param\x88\x01\x01B\b\n" +
-	"\x06_param\"\x8b\x01\n" +
+	"\x06_param\"\xec\x01\n" +
 	"\rErrorResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12@\n" +
-	"\adetails\x18\x03 \x01(\v2!.error.v1.ValidationFailedDetailsH\x00R\adetails\x88\x01\x01B\n" +
+	"\adetails\x18\x03 \x01(\v2!.error.v1.ValidationFailedDetailsH\x00R\adetails\x88\x01\x01:_\x92A\\\n" +
+	"Z*\rErrorResponse2IStandard error response body returned by the gateway for all HTTP errors.B\n" +
 	"\n" +
 	"\b_detailsB\x9e\x01\n" +
 	"\fcom.error.v1B\n" +

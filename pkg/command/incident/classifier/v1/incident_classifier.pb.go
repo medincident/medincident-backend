@@ -7,6 +7,8 @@
 package classifierv1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -1250,7 +1252,7 @@ var File_command_incident_classifier_v1_incident_classifier_proto protoreflect.F
 
 const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = "" +
 	"\n" +
-	"8command/incident/classifier/v1/incident_classifier.proto\x12\x1ecommand.incident.classifier.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xe7\x01\n" +
+	"8command/incident/classifier/v1/incident_classifier.proto\x12\x1ecommand.incident.classifier.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xe7\x01\n" +
 	"\x1dCreateIncidentCategoryRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x121\n" +
 	"\x12parent_category_id\x18\x02 \x01(\tH\x00R\x10parentCategoryId\x88\x01\x01\x12\x17\n" +
@@ -1333,7 +1335,19 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"\x16ReactivateIncidentType\x12=.command.incident.classifier.v1.ReactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.ReactivateIncidentTypeResponse\"2\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/reactivations\x12\xb1\x01\n" +
 	"\x12DeleteIncidentType\x129.command.incident.classifier.v1.DeleteIncidentTypeRequest\x1a:.command.incident.classifier.v1.DeleteIncidentTypeResponse\"$\x82\xd3\xe4\x93\x02\x1e*\x1c/v1/incident-types/{type_id}\x12\xe2\x01\n" +
 	"\x1cAllowIncidentTypeForPatients\x12C.command.incident.classifier.v1.AllowIncidentTypeForPatientsRequest\x1aD.command.incident.classifier.v1.AllowIncidentTypeForPatientsResponse\"7\x82\xd3\xe4\x93\x021\"//v1/incident-types/{type_id}/patient-allowances\x12\xeb\x01\n" +
-	"\x1fDisallowIncidentTypeForPatients\x12F.command.incident.classifier.v1.DisallowIncidentTypeForPatientsRequest\x1aG.command.incident.classifier.v1.DisallowIncidentTypeForPatientsResponse\"7\x82\xd3\xe4\x93\x021*//v1/incident-types/{type_id}/patient-allowancesB\xb4\x02\n" +
+	"\x1fDisallowIncidentTypeForPatients\x12F.command.incident.classifier.v1.DisallowIncidentTypeForPatientsRequest\x1aG.command.incident.classifier.v1.DisallowIncidentTypeForPatientsResponse\"7\x82\xd3\xe4\x93\x021*//v1/incident-types/{type_id}/patient-allowancesB\xd2\x04\x92A\x9a\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\"com.command.incident.classifier.v1B\x17IncidentClassifierProtoP\x01ZZgithub.com/medincident/medincident-backend/pkg/command/incident/classifier/v1;classifierv1\xa2\x02\x03CIC\xaa\x02\x1eCommand.Incident.Classifier.V1\xca\x02\x1eCommand\\Incident\\Classifier\\V1\xe2\x02*Command\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02!Command::Incident::Classifier::V1b\x06proto3"
 
 var (

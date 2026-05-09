@@ -4,6 +4,25 @@ lint:
     - STANDARD
   except:
     - FIELD_LOWER_SNAKE_CASE
+  ignore_only:
+    IMPORT_USED:
+      - command/announcement/v1/announcement.proto
+      - command/incident/buffer/v1/buffer.proto
+      - command/incident/classifier/v1/incident_classifier.proto
+      - command/incident/v1/incident.proto
+      - command/membership/v1/membership.proto
+      - command/orgstructure/v1/orgstructure.proto
+      - command/request/classifier/v1/request_classifier.proto
+      - command/request/v1/request.proto
+      - query/analytics/v1/analytics.proto
+      - query/announcement/v1/announcement.proto
+      - query/incident/classifier/v1/classifier.proto
+      - query/incident/v1/incident.proto
+      - query/membership/v1/membership.proto
+      - query/orgstructure/v1/orgstructure.proto
+      - query/request/classifier/v1/classifier.proto
+      - query/request/v1/request.proto
+      - query/stats/v1/stats.proto
 breaking:
   use:
     - FILE

@@ -3,6 +3,12 @@
 
 ## Table of Contents
 
+- [error/v1/error.proto](#error_v1_error-proto)
+    - [ErrorCode](#error-v1-ErrorCode)
+    - [ErrorResponse](#error-v1-ErrorResponse)
+    - [ValidationFailedDetails](#error-v1-ValidationFailedDetails)
+    - [ValidationFailedDetails.FieldViolation](#error-v1-ValidationFailedDetails-FieldViolation)
+
 - [command/announcement/v1/announcement.proto](#command_announcement_v1_announcement-proto)
     - [ArchiveAnnouncementRequest](#command-announcement-v1-ArchiveAnnouncementRequest)
     - [ArchiveAnnouncementResponse](#command-announcement-v1-ArchiveAnnouncementResponse)
@@ -197,12 +203,6 @@
     - [UpdateServiceRequestStatusResponse](#command-request-v1-UpdateServiceRequestStatusResponse)
 
     - [ServiceRequestCommandService](#command-request-v1-ServiceRequestCommandService)
-
-- [error/v1/error.proto](#error_v1_error-proto)
-    - [ErrorCode](#error-v1-ErrorCode)
-    - [ErrorResponse](#error-v1-ErrorResponse)
-    - [ValidationFailedDetails](#error-v1-ValidationFailedDetails)
-    - [ValidationFailedDetails.FieldViolation](#error-v1-ValidationFailedDetails-FieldViolation)
 
 - [query/analytics/v1/analytics.proto](#query_analytics_v1_analytics-proto)
     - [CategoryCount](#query-analytics-v1-CategoryCount)
@@ -416,6 +416,93 @@
     - [StatsQueryService](#query-stats-v1-StatsQueryService)
 
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="error_v1_error-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## error/v1/error.proto
+api/proto/error/v1/error.proto
+
+
+<a name="error-v1-ErrorCode"></a>
+
+### ErrorCode
+ErrorCode is always present in gRPC status details for client-visible
+errors. It carries the machine-readable domain error code.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| code | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="error-v1-ErrorResponse"></a>
+
+### ErrorResponse
+ErrorResponse is the HTTP response body written by the gateway error
+handler. The openapiv2_schema option forces this message into the
+generated OpenAPI definitions so that service-level $ref annotations
+can reference it by name.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| code | [string](#string) |  |  |
+| message | [string](#string) |  |  |
+| details | [ValidationFailedDetails](#error-v1-ValidationFailedDetails) | optional |  |
+
+
+
+
+
+
+<a name="error-v1-ValidationFailedDetails"></a>
+
+### ValidationFailedDetails
+ValidationFailedDetails is present only when code = &#34;validation_failed&#34;.
+Each violation corresponds to one struct-tag rule failure or one
+domain-level leaf error from errors.Join.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| violations | [ValidationFailedDetails.FieldViolation](#error-v1-ValidationFailedDetails-FieldViolation) | repeated |  |
+
+
+
+
+
+
+<a name="error-v1-ValidationFailedDetails-FieldViolation"></a>
+
+### ValidationFailedDetails.FieldViolation
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| field | [string](#string) |  |  |
+| rule | [string](#string) |  |  |
+| message | [string](#string) |  |  |
+| param | [string](#string) | optional |  |
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2918,93 +3005,6 @@ generated under pkg/.
 | UpdateServiceRequestDescription | [UpdateServiceRequestDescriptionRequest](#command-request-v1-UpdateServiceRequestDescriptionRequest) | [UpdateServiceRequestDescriptionResponse](#command-request-v1-UpdateServiceRequestDescriptionResponse) |  |
 | UpdateServiceRequestStatus | [UpdateServiceRequestStatusRequest](#command-request-v1-UpdateServiceRequestStatusRequest) | [UpdateServiceRequestStatusResponse](#command-request-v1-UpdateServiceRequestStatusResponse) |  |
 | AssignExecutors | [AssignExecutorsRequest](#command-request-v1-AssignExecutorsRequest) | [AssignExecutorsResponse](#command-request-v1-AssignExecutorsResponse) |  |
-
-
-
-
-
-<a name="error_v1_error-proto"></a>
-<p align="right"><a href="#top">Top</a></p>
-
-## error/v1/error.proto
-api/proto/error/v1/error.proto
-
-
-<a name="error-v1-ErrorCode"></a>
-
-### ErrorCode
-ErrorCode is always present in gRPC status details for client-visible
-errors. It carries the machine-readable domain error code.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="error-v1-ErrorResponse"></a>
-
-### ErrorResponse
-ErrorResponse is the HTTP response body written by the gateway error
-handler. Declared here so that openapiv2_swagger annotations in service
-proto files can reference it and force its schema into the generated
-OpenAPI definitions.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [string](#string) |  |  |
-| message | [string](#string) |  |  |
-| details | [ValidationFailedDetails](#error-v1-ValidationFailedDetails) | optional |  |
-
-
-
-
-
-
-<a name="error-v1-ValidationFailedDetails"></a>
-
-### ValidationFailedDetails
-ValidationFailedDetails is present only when code = &#34;validation_failed&#34;.
-Each violation corresponds to one struct-tag rule failure or one
-domain-level leaf error from errors.Join.
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| violations | [ValidationFailedDetails.FieldViolation](#error-v1-ValidationFailedDetails-FieldViolation) | repeated |  |
-
-
-
-
-
-
-<a name="error-v1-ValidationFailedDetails-FieldViolation"></a>
-
-### ValidationFailedDetails.FieldViolation
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| field | [string](#string) |  |  |
-| rule | [string](#string) |  |  |
-| message | [string](#string) |  |  |
-| param | [string](#string) | optional |  |
-
-
-
-
-
-
-
-
-
-
 
 
 

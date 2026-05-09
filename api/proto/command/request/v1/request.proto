@@ -2,10 +2,50 @@ syntax = "proto3";
 
 package command.request.v1;
 
+import "error/v1/error.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/command/request/v1;requestv1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  responses: {
+    key: "400"
+    value: {
+      description: "Validation failed or invalid input."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "401"
+    value: {
+      description: "Unauthenticated — missing or invalid token."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "403"
+    value: {
+      description: "Permission denied."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "500"
+    value: {
+      description: "Unexpected server error."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+};
 
 service ServiceRequestCommandService {
   rpc CreateServiceRequest(CreateServiceRequestRequest) returns (CreateServiceRequestResponse) {

@@ -3,6 +3,8 @@ syntax = "proto3";
 
 package error.v1;
 
+import "protoc-gen-openapiv2/options/annotations.proto";
+
 // ErrorCode is always present in gRPC status details for client-visible
 // errors. It carries the machine-readable domain error code.
 message ErrorCode {
@@ -24,10 +26,17 @@ message ValidationFailedDetails {
 }
 
 // ErrorResponse is the HTTP response body written by the gateway error
-// handler. Declared here so that openapiv2_swagger annotations in service
-// proto files can reference it and force its schema into the generated
-// OpenAPI definitions.
+// handler. The openapiv2_schema option forces this message into the
+// generated OpenAPI definitions so that service-level $ref annotations
+// can reference it by name.
 message ErrorResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "ErrorResponse"
+      description: "Standard error response body returned by the gateway for all HTTP errors."
+    }
+  };
+
   string code = 1;
   string message = 2;
   optional ValidationFailedDetails details = 3;

@@ -7,6 +7,8 @@
 package requestv1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -410,7 +412,7 @@ var File_command_request_v1_request_proto protoreflect.FileDescriptor
 
 const file_command_request_v1_request_proto_rawDesc = "" +
 	"\n" +
-	" command/request/v1/request.proto\x12\x12command.request.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\xfb\x01\n" +
+	" command/request/v1/request.proto\x12\x12command.request.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xfb\x01\n" +
 	"\x1bCreateServiceRequestRequest\x12(\n" +
 	"\rdepartment_id\x18\x01 \x01(\tB\x03\xe0A\x02R\fdepartmentId\x12\x1c\n" +
 	"\atype_id\x18\x02 \x01(\tB\x03\xe0A\x02R\x06typeId\x12$\n" +
@@ -438,7 +440,19 @@ const file_command_request_v1_request_proto_rawDesc = "" +
 	"\x14CreateServiceRequest\x12/.command.request.v1.CreateServiceRequestRequest\x1a0.command.request.v1.CreateServiceRequestResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/service-requests\x12\xdc\x01\n" +
 	"\x1fUpdateServiceRequestDescription\x12:.command.request.v1.UpdateServiceRequestDescriptionRequest\x1a;.command.request.v1.UpdateServiceRequestDescriptionResponse\"@\x82\xd3\xe4\x93\x02::\x01*\x1a5/v1/service-requests/{service_request_id}/description\x12\xc8\x01\n" +
 	"\x1aUpdateServiceRequestStatus\x125.command.request.v1.UpdateServiceRequestStatusRequest\x1a6.command.request.v1.UpdateServiceRequestStatusResponse\";\x82\xd3\xe4\x93\x025:\x01*\x1a0/v1/service-requests/{service_request_id}/status\x12\xaa\x01\n" +
-	"\x0fAssignExecutors\x12*.command.request.v1.AssignExecutorsRequest\x1a+.command.request.v1.AssignExecutorsResponse\">\x82\xd3\xe4\x93\x028:\x01*\x1a3/v1/service-requests/{service_request_id}/executorsB\xdd\x01\n" +
+	"\x0fAssignExecutors\x12*.command.request.v1.AssignExecutorsRequest\x1a+.command.request.v1.AssignExecutorsResponse\">\x82\xd3\xe4\x93\x028:\x01*\x1a3/v1/service-requests/{service_request_id}/executorsB\xfb\x03\x92A\x9a\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x16com.command.request.v1B\fRequestProtoP\x01ZKgithub.com/medincident/medincident-backend/pkg/command/request/v1;requestv1\xa2\x02\x03CRX\xaa\x02\x12Command.Request.V1\xca\x02\x12Command\\Request\\V1\xe2\x02\x1eCommand\\Request\\V1\\GPBMetadata\xea\x02\x14Command::Request::V1b\x06proto3"
 
 var (

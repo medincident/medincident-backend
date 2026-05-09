@@ -7,6 +7,8 @@
 package classifierv1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -1124,7 +1126,7 @@ var File_query_incident_classifier_v1_classifier_proto protoreflect.FileDescript
 
 const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\n" +
-	"-query/incident/classifier/v1/classifier.proto\x12\x1cquery.incident.classifier.v1\x1a\x1cgoogle/api/annotations.proto\"\xb3\x02\n" +
+	"-query/incident/classifier/v1/classifier.proto\x12\x1cquery.incident.classifier.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xb3\x02\n" +
 	"\bCategory\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x121\n" +
@@ -1210,7 +1212,19 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/incident-categories/{category_id}/types\x12\xeb\x01\n" +
 	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"A\x82\xd3\xe4\x93\x02;\x129/v1/organizations/{organization_id}/incident-types:active\x12\x8c\x02\n" +
 	"%ListPatientAllowedTypesByOrganization\x12J.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest\x1aK.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse\"J\x82\xd3\xe4\x93\x02D\x12B/v1/organizations/{organization_id}/incident-types:patient-allowed\x12\xa0\x02\n" +
-	"*ListPatientVisibleCategoriesByOrganization\x12O.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest\x1aP.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse\"O\x82\xd3\xe4\x93\x02I\x12G/v1/organizations/{organization_id}/incident-categories:patient-visibleB\xa0\x02\n" +
+	"*ListPatientVisibleCategoriesByOrganization\x12O.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest\x1aP.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse\"O\x82\xd3\xe4\x93\x02I\x12G/v1/organizations/{organization_id}/incident-categories:patient-visibleB\xbe\x04\x92A\x9a\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	" com.query.incident.classifier.v1B\x0fClassifierProtoP\x01ZXgithub.com/medincident/medincident-backend/pkg/query/incident/classifier/v1;classifierv1\xa2\x02\x03QIC\xaa\x02\x1cQuery.Incident.Classifier.V1\xca\x02\x1cQuery\\Incident\\Classifier\\V1\xe2\x02(Query\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02\x1fQuery::Incident::Classifier::V1b\x06proto3"
 
 var (

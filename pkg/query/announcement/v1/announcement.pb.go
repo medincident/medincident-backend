@@ -7,6 +7,8 @@
 package announcementv1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -695,7 +697,7 @@ var File_query_announcement_v1_announcement_proto protoreflect.FileDescriptor
 
 const file_query_announcement_v1_announcement_proto_rawDesc = "" +
 	"\n" +
-	"(query/announcement/v1/announcement.proto\x12\x15query.announcement.v1\x1a\x1cgoogle/api/annotations.proto\"\xa5\x04\n" +
+	"(query/announcement/v1/announcement.proto\x12\x15query.announcement.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xa5\x04\n" +
 	"\x10AnnouncementView\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12 \n" +
@@ -771,7 +773,19 @@ const file_query_announcement_v1_announcement_proto_rawDesc = "" +
 	"\x0fGetAnnouncement\x12-.query.announcement.v1.GetAnnouncementRequest\x1a..query.announcement.v1.GetAnnouncementResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/query/announcements/{id}\x12\xe4\x01\n" +
 	" ListAnnouncementsForOrganization\x12>.query.announcement.v1.ListAnnouncementsForOrganizationRequest\x1a?.query.announcement.v1.ListAnnouncementsForOrganizationResponse\"?\x82\xd3\xe4\x93\x029\x127/v1/query/organizations/{organization_id}/announcements\x12\xc6\x01\n" +
 	"\x1aListAnnouncementsForClinic\x128.query.announcement.v1.ListAnnouncementsForClinicRequest\x1a9.query.announcement.v1.ListAnnouncementsForClinicResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/query/clinics/{clinic_id}/announcements\x12\xda\x01\n" +
-	"\x1eListAnnouncementsForDepartment\x12<.query.announcement.v1.ListAnnouncementsForDepartmentRequest\x1a=.query.announcement.v1.ListAnnouncementsForDepartmentResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/departments/{department_id}/announcementsB\xf9\x01\n" +
+	"\x1eListAnnouncementsForDepartment\x12<.query.announcement.v1.ListAnnouncementsForDepartmentRequest\x1a=.query.announcement.v1.ListAnnouncementsForDepartmentResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/departments/{department_id}/announcementsB\x97\x04\x92A\x9a\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x19com.query.announcement.v1B\x11AnnouncementProtoP\x01ZSgithub.com/medincident/medincident-backend/pkg/query/announcement/v1;announcementv1\xa2\x02\x03QAX\xaa\x02\x15Query.Announcement.V1\xca\x02\x15Query\\Announcement\\V1\xe2\x02!Query\\Announcement\\V1\\GPBMetadata\xea\x02\x17Query::Announcement::V1b\x06proto3"
 
 var (
