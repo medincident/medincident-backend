@@ -8,12 +8,8 @@ import (
 
 // Error codes emitted by SelfReader identity and organization list methods.
 const (
-	ErrCodeSelfIdentityFailed     = "self_identity_failed"
-	ErrCodeSelfOrgsFailed         = "self_orgs_failed"
-	ErrCodeSelfClinicRoleNotFound = "self_clinic_role_not_found"
-	ErrCodeSelfClinicRoleFailed   = "self_clinic_role_failed"
-	ErrCodeSelfDeptRoleNotFound   = "self_dept_role_not_found"
-	ErrCodeSelfDeptRoleFailed     = "self_dept_role_failed"
+	ErrCodeSelfIdentityFailed = "self_identity_failed"
+	ErrCodeSelfOrgsFailed     = "self_orgs_failed"
 )
 
 // IdentityView carries the global identity facts about the caller.
