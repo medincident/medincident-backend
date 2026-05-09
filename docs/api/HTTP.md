@@ -7295,6 +7295,298 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
 This operation does not require authentication
 </aside>
 
+<h1 id="command-announcement-v1-announcement-proto-selfqueryservice">SelfQueryService</h1>
+
+## GetMyIdentity returns whether the caller is a system administrator.
+
+<a id="opIdSelfQueryService_GetMyIdentity"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/me \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/me`
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "isSystemAdmin": true
+}
+```
+
+<h3 id="getmyidentity-returns-whether-the-caller-is-a-system-administrator.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetMyIdentityResponse](#schemav1getmyidentityresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## GetMyClinicRole returns whether the caller is the clinic head of
+the given clinic. Returns NOT_FOUND when the caller is not an
+active employee of that clinic.
+
+<a id="opIdSelfQueryService_GetMyClinicRole"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/me/clinics/{clinicId}/role \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/me/clinics/{clinicId}/role`
+
+<h3 id="getmyclinicrole-returns-whether-the-caller-is-the-clinic-head-of
+the-given-clinic.-returns-not_found-when-the-caller-is-not-an
+active-employee-of-that-clinic.-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "isClinicHead": true
+}
+```
+
+<h3 id="getmyclinicrole-returns-whether-the-caller-is-the-clinic-head-of
+the-given-clinic.-returns-not_found-when-the-caller-is-not-an
+active-employee-of-that-clinic.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetMyClinicRoleResponse](#schemav1getmyclinicroleresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## GetMyDepartmentRole returns whether the caller is the department
+responsible for the given department. Returns NOT_FOUND when the
+caller is not an active employee of that department.
+
+<a id="opIdSelfQueryService_GetMyDepartmentRole"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/me/departments/{departmentId}/role \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/me/departments/{departmentId}/role`
+
+<h3 id="getmydepartmentrole-returns-whether-the-caller-is-the-department
+responsible-for-the-given-department.-returns-not_found-when-the
+caller-is-not-an-active-employee-of-that-department.-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "isDepartmentResponsible": true
+}
+```
+
+<h3 id="getmydepartmentrole-returns-whether-the-caller-is-the-department
+responsible-for-the-given-department.-returns-not_found-when-the
+caller-is-not-an-active-employee-of-that-department.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetMyDepartmentRoleResponse](#schemav1getmydepartmentroleresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## ListMyOrganizations returns every organization where the caller
+has an active (non-terminated) employee record.
+
+<a id="opIdSelfQueryService_ListMyOrganizations"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/me/organizations \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/me/organizations`
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "organizations": [
+    {
+      "id": "string",
+      "name": "string"
+    }
+  ]
+}
+```
+
+<h3 id="listmyorganizations-returns-every-organization-where-the-caller
+has-an-active-(non-terminated)-employee-record.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListMyOrganizationsResponse](#schemav1listmyorganizationsresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## GetMyEmployment returns the caller's employee card in the given
+organization. Returns NOT_FOUND when the caller is not an active
+employee of that organization.
+
+<a id="opIdSelfQueryService_GetMyEmployment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/me/organizations/{organizationId}/employment \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/me/organizations/{organizationId}/employment`
+
+<h3 id="getmyemployment-returns-the-caller's-employee-card-in-the-given
+organization.-returns-not_found-when-the-caller-is-not-an-active
+employee-of-that-organization.-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "employee": {
+    "employeeId": "string",
+    "zitadelUserId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "displayName": "string",
+    "email": "string",
+    "organizationId": "string",
+    "organizationName": "string",
+    "clinicId": "string",
+    "clinicName": "string",
+    "departmentId": "string",
+    "departmentName": "string",
+    "position": "string",
+    "terminatedAt": "string",
+    "currentVacationEndsAt": "string",
+    "nextVacationStartsAt": "string"
+  }
+}
+```
+
+<h3 id="getmyemployment-returns-the-caller's-employee-card-in-the-given
+organization.-returns-not_found-when-the-caller-is-not-an-active
+employee-of-that-organization.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetMyEmploymentResponse](#schemav1getmyemploymentresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## GetMyOrganizationRole returns the caller's named roles in the
+given organization. Returns NOT_FOUND when the caller is not an
+active employee of that organization.
+
+<a id="opIdSelfQueryService_GetMyOrganizationRole"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/me/organizations/{organizationId}/role \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/me/organizations/{organizationId}/role`
+
+<h3 id="getmyorganizationrole-returns-the-caller's-named-roles-in-the
+given-organization.-returns-not_found-when-the-caller-is-not-an
+active-employee-of-that-organization.-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "isOrgAdmin": true,
+  "isOrgHead": true,
+  "isOrgDispatcher": true
+}
+```
+
+<h3 id="getmyorganizationrole-returns-the-caller's-named-roles-in-the
+given-organization.-returns-not_found-when-the-caller-is-not-an
+active-employee-of-that-organization.-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetMyOrganizationRoleResponse](#schemav1getmyorganizationroleresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 <h1 id="command-announcement-v1-announcement-proto-statsqueryservice">StatsQueryService</h1>
 
 ## StatsQueryService_GetClinicStats
@@ -10476,6 +10768,127 @@ when the backing column is NULL.
 |---|---|---|---|---|
 |incident|[v1IncidentView](#schemav1incidentview)|false|none|IncidentView is the unified payload. For patients only id, status,<br>patient_status, description and timestamps are populated.|
 
+<h2 id="tocS_v1GetMyClinicRoleResponse">v1GetMyClinicRoleResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getmyclinicroleresponse"></a>
+<a id="schema_v1GetMyClinicRoleResponse"></a>
+<a id="tocSv1getmyclinicroleresponse"></a>
+<a id="tocsv1getmyclinicroleresponse"></a>
+
+```json
+{
+  "isClinicHead": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|isClinicHead|boolean|false|none|none|
+
+<h2 id="tocS_v1GetMyDepartmentRoleResponse">v1GetMyDepartmentRoleResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getmydepartmentroleresponse"></a>
+<a id="schema_v1GetMyDepartmentRoleResponse"></a>
+<a id="tocSv1getmydepartmentroleresponse"></a>
+<a id="tocsv1getmydepartmentroleresponse"></a>
+
+```json
+{
+  "isDepartmentResponsible": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|isDepartmentResponsible|boolean|false|none|none|
+
+<h2 id="tocS_v1GetMyEmploymentResponse">v1GetMyEmploymentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getmyemploymentresponse"></a>
+<a id="schema_v1GetMyEmploymentResponse"></a>
+<a id="tocSv1getmyemploymentresponse"></a>
+<a id="tocsv1getmyemploymentresponse"></a>
+
+```json
+{
+  "employee": {
+    "employeeId": "string",
+    "zitadelUserId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "displayName": "string",
+    "email": "string",
+    "organizationId": "string",
+    "organizationName": "string",
+    "clinicId": "string",
+    "clinicName": "string",
+    "departmentId": "string",
+    "departmentName": "string",
+    "position": "string",
+    "terminatedAt": "string",
+    "currentVacationEndsAt": "string",
+    "nextVacationStartsAt": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employee|[v1EmployeeCardView](#schemav1employeecardview)|false|none|EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.|
+
+<h2 id="tocS_v1GetMyIdentityResponse">v1GetMyIdentityResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getmyidentityresponse"></a>
+<a id="schema_v1GetMyIdentityResponse"></a>
+<a id="tocSv1getmyidentityresponse"></a>
+<a id="tocsv1getmyidentityresponse"></a>
+
+```json
+{
+  "isSystemAdmin": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|isSystemAdmin|boolean|false|none|none|
+
+<h2 id="tocS_v1GetMyOrganizationRoleResponse">v1GetMyOrganizationRoleResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getmyorganizationroleresponse"></a>
+<a id="schema_v1GetMyOrganizationRoleResponse"></a>
+<a id="tocSv1getmyorganizationroleresponse"></a>
+<a id="tocsv1getmyorganizationroleresponse"></a>
+
+```json
+{
+  "isOrgAdmin": true,
+  "isOrgHead": true,
+  "isOrgDispatcher": true
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|isOrgAdmin|boolean|false|none|none|
+|isOrgHead|boolean|false|none|none|
+|isOrgDispatcher|boolean|false|none|none|
+
 <h2 id="tocS_v1GetOrganizationResponse">v1GetOrganizationResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1getorganizationresponse"></a>
@@ -11803,6 +12216,31 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1IncidentView](#schemav1incidentview)]|false|none|[IncidentView is the unified payload. For patients only id, status,<br>patient_status, description and timestamps are populated.]|
+
+<h2 id="tocS_v1ListMyOrganizationsResponse">v1ListMyOrganizationsResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listmyorganizationsresponse"></a>
+<a id="schema_v1ListMyOrganizationsResponse"></a>
+<a id="tocSv1listmyorganizationsresponse"></a>
+<a id="tocsv1listmyorganizationsresponse"></a>
+
+```json
+{
+  "organizations": [
+    {
+      "id": "string",
+      "name": "string"
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|organizations|[[v1OrganizationListItem](#schemav1organizationlistitem)]|false|none|[OrganizationListItem is the minimal shape returned by list endpoints.]|
 
 <h2 id="tocS_v1ListOrgAdminsResponse">v1ListOrgAdminsResponse</h2>
 <!-- backwards compatibility -->

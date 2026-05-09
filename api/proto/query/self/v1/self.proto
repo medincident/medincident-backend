@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package query.self.v1;
+
+import "google/api/annotations.proto";
+import "query/membership/v1/membership.proto";
+import "query/orgstructure/v1/orgstructure.proto";
+
+// SelfQueryService exposes read methods over the caller's own
+// memberships and roles. Every RPC is gated only by authentication
+// (valid Zitadel JWT) — no additional role check is performed inside
+// these handlers because the caller is querying data about themselves.
+service SelfQueryService {
+  // GetMyIdentity returns whether the caller is a system administrator.
+  rpc GetMyIdentity(GetMyIdentityRequest) returns (GetMyIdentityResponse) {
+    option (google.api.http) = {get: "/v1/me"};
+  }
+
+  // ListMyOrganizations returns every organization where the caller
+  // has an active (non-terminated) employee record.
+  rpc ListMyOrganizations(ListMyOrganizationsRequest) returns (ListMyOrganizationsResponse) {
+    option (google.api.http) = {get: "/v1/me/organizations"};
+  }
+
+  // GetMyEmployment returns the caller's employee card in the given
+  // organization. Returns NOT_FOUND when the caller is not an active
+  // employee of that organization.
+  rpc GetMyEmployment(GetMyEmploymentRequest) returns (GetMyEmploymentResponse) {
+    option (google.api.http) = {get: "/v1/me/organizations/{organization_id}/employment"};
+  }
+
+  // GetMyOrganizationRole returns the caller's named roles in the
+  // given organization. Returns NOT_FOUND when the caller is not an
+  // active employee of that organization.
+  rpc GetMyOrganizationRole(GetMyOrganizationRoleRequest) returns (GetMyOrganizationRoleResponse) {
+    option (google.api.http) = {get: "/v1/me/organizations/{organization_id}/role"};
+  }
+
+  // GetMyClinicRole returns whether the caller is the clinic head of
+  // the given clinic. Returns NOT_FOUND when the caller is not an
+  // active employee of that clinic.
+  rpc GetMyClinicRole(GetMyClinicRoleRequest) returns (GetMyClinicRoleResponse) {
+    option (google.api.http) = {get: "/v1/me/clinics/{clinic_id}/role"};
+  }
+
+  // GetMyDepartmentRole returns whether the caller is the department
+  // responsible for the given department. Returns NOT_FOUND when the
+  // caller is not an active employee of that department.
+  rpc GetMyDepartmentRole(GetMyDepartmentRoleRequest) returns (GetMyDepartmentRoleResponse) {
+    option (google.api.http) = {get: "/v1/me/departments/{department_id}/role"};
+  }
+}
+
+message GetMyIdentityRequest {}
+
+message GetMyIdentityResponse {
+  bool is_system_admin = 1;
+}
+
+message ListMyOrganizationsRequest {}
+
+message ListMyOrganizationsResponse {
+  repeated query.orgstructure.v1.OrganizationListItem organizations = 1;
+}
+
+message GetMyEmploymentRequest {
+  string organization_id = 1;
+}
+
+message GetMyEmploymentResponse {
+  query.membership.v1.EmployeeCardView employee = 1;
+}
+
+message GetMyOrganizationRoleRequest {
+  string organization_id = 1;
+}
+
+message GetMyOrganizationRoleResponse {
+  bool is_org_admin = 1;
+  bool is_org_head = 2;
+  bool is_org_dispatcher = 3;
+}
+
+message GetMyClinicRoleRequest {
+  string clinic_id = 1;
+}
+
+message GetMyClinicRoleResponse {
+  bool is_clinic_head = 1;
+}
+
+message GetMyDepartmentRoleRequest {
+  string department_id = 1;
+}
+
+message GetMyDepartmentRoleResponse {
+  bool is_department_responsible = 1;
+}

@@ -54,6 +54,9 @@
       "name": "ServiceRequestQueryService"
     },
     {
+      "name": "SelfQueryService"
+    },
+    {
       "name": "StatsQueryService"
     }
   ],
@@ -2495,6 +2498,176 @@
         ],
         "tags": [
           "IncidentCommandService"
+        ]
+      }
+    },
+    "/v1/me": {
+      "get": {
+        "summary": "GetMyIdentity returns whether the caller is a system administrator.",
+        "operationId": "SelfQueryService_GetMyIdentity",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyIdentityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "SelfQueryService"
+        ]
+      }
+    },
+    "/v1/me/clinics/{clinicId}/role": {
+      "get": {
+        "summary": "GetMyClinicRole returns whether the caller is the clinic head of\nthe given clinic. Returns NOT_FOUND when the caller is not an\nactive employee of that clinic.",
+        "operationId": "SelfQueryService_GetMyClinicRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyClinicRoleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "clinicId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfQueryService"
+        ]
+      }
+    },
+    "/v1/me/departments/{departmentId}/role": {
+      "get": {
+        "summary": "GetMyDepartmentRole returns whether the caller is the department\nresponsible for the given department. Returns NOT_FOUND when the\ncaller is not an active employee of that department.",
+        "operationId": "SelfQueryService_GetMyDepartmentRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyDepartmentRoleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfQueryService"
+        ]
+      }
+    },
+    "/v1/me/organizations": {
+      "get": {
+        "summary": "ListMyOrganizations returns every organization where the caller\nhas an active (non-terminated) employee record.",
+        "operationId": "SelfQueryService_ListMyOrganizations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListMyOrganizationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "SelfQueryService"
+        ]
+      }
+    },
+    "/v1/me/organizations/{organizationId}/employment": {
+      "get": {
+        "summary": "GetMyEmployment returns the caller's employee card in the given\norganization. Returns NOT_FOUND when the caller is not an active\nemployee of that organization.",
+        "operationId": "SelfQueryService_GetMyEmployment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyEmploymentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfQueryService"
+        ]
+      }
+    },
+    "/v1/me/organizations/{organizationId}/role": {
+      "get": {
+        "summary": "GetMyOrganizationRole returns the caller's named roles in the\ngiven organization. Returns NOT_FOUND when the caller is not an\nactive employee of that organization.",
+        "operationId": "SelfQueryService_GetMyOrganizationRole",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyOrganizationRoleResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "SelfQueryService"
         ]
       }
     },
@@ -6891,6 +7064,52 @@
         }
       }
     },
+    "v1GetMyClinicRoleResponse": {
+      "type": "object",
+      "properties": {
+        "isClinicHead": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1GetMyDepartmentRoleResponse": {
+      "type": "object",
+      "properties": {
+        "isDepartmentResponsible": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1GetMyEmploymentResponse": {
+      "type": "object",
+      "properties": {
+        "employee": {
+          "$ref": "#/definitions/v1EmployeeCardView"
+        }
+      }
+    },
+    "v1GetMyIdentityResponse": {
+      "type": "object",
+      "properties": {
+        "isSystemAdmin": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1GetMyOrganizationRoleResponse": {
+      "type": "object",
+      "properties": {
+        "isOrgAdmin": {
+          "type": "boolean"
+        },
+        "isOrgHead": {
+          "type": "boolean"
+        },
+        "isOrgDispatcher": {
+          "type": "boolean"
+        }
+      }
+    },
     "v1GetOrganizationResponse": {
       "type": "object",
       "properties": {
@@ -7424,6 +7643,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1IncidentView"
+          }
+        }
+      }
+    },
+    "v1ListMyOrganizationsResponse": {
+      "type": "object",
+      "properties": {
+        "organizations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1OrganizationListItem"
           }
         }
       }

@@ -396,6 +396,22 @@
 
     - [ServiceRequestQueryService](#query-request-v1-ServiceRequestQueryService)
 
+- [query/self/v1/self.proto](#query_self_v1_self-proto)
+    - [GetMyClinicRoleRequest](#query-self-v1-GetMyClinicRoleRequest)
+    - [GetMyClinicRoleResponse](#query-self-v1-GetMyClinicRoleResponse)
+    - [GetMyDepartmentRoleRequest](#query-self-v1-GetMyDepartmentRoleRequest)
+    - [GetMyDepartmentRoleResponse](#query-self-v1-GetMyDepartmentRoleResponse)
+    - [GetMyEmploymentRequest](#query-self-v1-GetMyEmploymentRequest)
+    - [GetMyEmploymentResponse](#query-self-v1-GetMyEmploymentResponse)
+    - [GetMyIdentityRequest](#query-self-v1-GetMyIdentityRequest)
+    - [GetMyIdentityResponse](#query-self-v1-GetMyIdentityResponse)
+    - [GetMyOrganizationRoleRequest](#query-self-v1-GetMyOrganizationRoleRequest)
+    - [GetMyOrganizationRoleResponse](#query-self-v1-GetMyOrganizationRoleResponse)
+    - [ListMyOrganizationsRequest](#query-self-v1-ListMyOrganizationsRequest)
+    - [ListMyOrganizationsResponse](#query-self-v1-ListMyOrganizationsResponse)
+
+    - [SelfQueryService](#query-self-v1-SelfQueryService)
+
 - [query/stats/v1/stats.proto](#query_stats_v1_stats-proto)
     - [ClinicStats](#query-stats-v1-ClinicStats)
     - [DepartmentStats](#query-stats-v1-DepartmentStats)
@@ -5980,6 +5996,212 @@ both values.
 | ListServiceRequests | [ListServiceRequestsRequest](#query-request-v1-ListServiceRequestsRequest) | [ListServiceRequestsResponse](#query-request-v1-ListServiceRequestsResponse) |  |
 | ListServiceRequestsByIncident | [ListServiceRequestsByIncidentRequest](#query-request-v1-ListServiceRequestsByIncidentRequest) | [ListServiceRequestsByIncidentResponse](#query-request-v1-ListServiceRequestsByIncidentResponse) |  |
 | GetServiceRequestHistory | [GetServiceRequestHistoryRequest](#query-request-v1-GetServiceRequestHistoryRequest) | [GetServiceRequestHistoryResponse](#query-request-v1-GetServiceRequestHistoryResponse) |  |
+
+
+
+
+
+<a name="query_self_v1_self-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## query/self/v1/self.proto
+
+
+
+<a name="query-self-v1-GetMyClinicRoleRequest"></a>
+
+### GetMyClinicRoleRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-GetMyClinicRoleResponse"></a>
+
+### GetMyClinicRoleResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| is_clinic_head | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-GetMyDepartmentRoleRequest"></a>
+
+### GetMyDepartmentRoleRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-GetMyDepartmentRoleResponse"></a>
+
+### GetMyDepartmentRoleResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| is_department_responsible | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-GetMyEmploymentRequest"></a>
+
+### GetMyEmploymentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-GetMyEmploymentResponse"></a>
+
+### GetMyEmploymentResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee | [query.membership.v1.EmployeeCardView](#query-membership-v1-EmployeeCardView) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-GetMyIdentityRequest"></a>
+
+### GetMyIdentityRequest
+
+
+
+
+
+
+
+<a name="query-self-v1-GetMyIdentityResponse"></a>
+
+### GetMyIdentityResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| is_system_admin | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-GetMyOrganizationRoleRequest"></a>
+
+### GetMyOrganizationRoleRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-GetMyOrganizationRoleResponse"></a>
+
+### GetMyOrganizationRoleResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| is_org_admin | [bool](#bool) |  |  |
+| is_org_head | [bool](#bool) |  |  |
+| is_org_dispatcher | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="query-self-v1-ListMyOrganizationsRequest"></a>
+
+### ListMyOrganizationsRequest
+
+
+
+
+
+
+
+<a name="query-self-v1-ListMyOrganizationsResponse"></a>
+
+### ListMyOrganizationsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organizations | [query.orgstructure.v1.OrganizationListItem](#query-orgstructure-v1-OrganizationListItem) | repeated |  |
+
+
+
+
+
+
+
+
+
+
+
+
+<a name="query-self-v1-SelfQueryService"></a>
+
+### SelfQueryService
+SelfQueryService exposes read methods over the caller&#39;s own
+memberships and roles. Every RPC is gated only by authentication
+(valid Zitadel JWT) — no additional role check is performed inside
+these handlers because the caller is querying data about themselves.
+
+| Method Name | Request Type | Response Type | Description |
+| ----------- | ------------ | ------------- | ------------|
+| GetMyIdentity | [GetMyIdentityRequest](#query-self-v1-GetMyIdentityRequest) | [GetMyIdentityResponse](#query-self-v1-GetMyIdentityResponse) | GetMyIdentity returns whether the caller is a system administrator. |
+| ListMyOrganizations | [ListMyOrganizationsRequest](#query-self-v1-ListMyOrganizationsRequest) | [ListMyOrganizationsResponse](#query-self-v1-ListMyOrganizationsResponse) | ListMyOrganizations returns every organization where the caller has an active (non-terminated) employee record. |
+| GetMyEmployment | [GetMyEmploymentRequest](#query-self-v1-GetMyEmploymentRequest) | [GetMyEmploymentResponse](#query-self-v1-GetMyEmploymentResponse) | GetMyEmployment returns the caller&#39;s employee card in the given organization. Returns NOT_FOUND when the caller is not an active employee of that organization. |
+| GetMyOrganizationRole | [GetMyOrganizationRoleRequest](#query-self-v1-GetMyOrganizationRoleRequest) | [GetMyOrganizationRoleResponse](#query-self-v1-GetMyOrganizationRoleResponse) | GetMyOrganizationRole returns the caller&#39;s named roles in the given organization. Returns NOT_FOUND when the caller is not an active employee of that organization. |
+| GetMyClinicRole | [GetMyClinicRoleRequest](#query-self-v1-GetMyClinicRoleRequest) | [GetMyClinicRoleResponse](#query-self-v1-GetMyClinicRoleResponse) | GetMyClinicRole returns whether the caller is the clinic head of the given clinic. Returns NOT_FOUND when the caller is not an active employee of that clinic. |
+| GetMyDepartmentRole | [GetMyDepartmentRoleRequest](#query-self-v1-GetMyDepartmentRoleRequest) | [GetMyDepartmentRoleResponse](#query-self-v1-GetMyDepartmentRoleResponse) | GetMyDepartmentRole returns whether the caller is the department responsible for the given department. Returns NOT_FOUND when the caller is not an active employee of that department. |
 
 
 
