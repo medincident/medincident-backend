@@ -52,9 +52,13 @@ nats:
   subjects: ["zitadel.users.>"]
   durable_name: "medincident-query-server-zitadel"
 
-# Zitadel — used by the authn interceptor for JWT introspection on
-# every read RPC. Same shape as command-server's zitadel block: both
-# binaries validate tokens the same way.
+# Zitadel — used by the authn interceptor for JWT introspection on every
+# read RPC. Query-server only needs the Application key for introspection;
+# management_key_path is not used here.
+#
+#   introspection_key_path — key.json downloaded from a Zitadel Application
+#     (project → Application → Keys). Must be the same Application that is
+#     registered as the introspection client in the project.
 zitadel:
-  domain: "${ZITADEL_DOMAIN}"           # e.g. https://auth.example.com
-  key_path: "${ZITADEL_KEY_PATH}"       # filesystem path to service user key.json
+  domain: "${ZITADEL_DOMAIN}"
+  introspection_key_path: "${ZITADEL_INTROSPECTION_KEY_PATH}"  # Application key

@@ -34,7 +34,7 @@ func NewZitadelAuthorizer(ctx context.Context, cfg *config.ZitadelConfig) (*auth
 	return authorization.New[*oauth.IntrospectionContext](
 		initCtx,
 		zitadel.New(hostname, opts...),
-		oauth.DefaultAuthorization(cfg.KeyPath),
+		oauth.DefaultAuthorization(cfg.IntrospectionKeyPath),
 	)
 }
 
@@ -44,5 +44,5 @@ func NewZitadelAuthorizer(ctx context.Context, cfg *config.ZitadelConfig) (*auth
 func NewZitadelService(ctx context.Context, cfg *config.ZitadelConfig, logger *zerolog.Logger) (*zitadelsvc.Service, error) {
 	initCtx, cancel := context.WithTimeout(ctx, ZitadelInitTimeout)
 	defer cancel()
-	return zitadelsvc.NewServiceFromKeyFile(initCtx, logger, cfg.Domain, cfg.KeyPath)
+	return zitadelsvc.NewServiceFromKeyFile(initCtx, logger, cfg.Domain, cfg.ManagementKeyPath)
 }

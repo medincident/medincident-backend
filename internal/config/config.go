@@ -49,12 +49,18 @@ type PostgresConfig struct {
 	DSN string `yaml:"dsn" validate:"required,startswith=postgres://|startswith=postgresql://"`
 }
 
-// ZitadelConfig points at the Zitadel domain and the service-user key
-// used for JWT introspection. Shared: both binaries validate tokens the
-// same way, so both need the same two fields.
+// ZitadelConfig points at the Zitadel domain and the key files used for
+// JWT introspection and Management API access. The two operations require
+// different Zitadel identities:
+//   - IntrospectionKeyPath — key file for the Zitadel Application (OAuth
+//     client) that validates Bearer tokens on every inbound request.
+//   - ManagementKeyPath — key file for the Zitadel Service User that has
+//     ORG_USER_MANAGER / IAM_USER_MANAGER to call the Management API.
+//     Only command-server needs this field; query-server leaves it empty.
 type ZitadelConfig struct {
-	Domain  string `yaml:"domain"   validate:"required,url"`
-	KeyPath string `yaml:"key_path" validate:"required,file"`
+	Domain               string `yaml:"domain"                 validate:"required,url"`
+	IntrospectionKeyPath string `yaml:"introspection_key_path" validate:"required,file"`
+	ManagementKeyPath    string `yaml:"management_key_path"    validate:"omitempty,file"`
 }
 
 // ReadAndValidate is the shared YAML-load + env-expand + validator

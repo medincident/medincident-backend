@@ -17,6 +17,21 @@
 
 Хендлеры извлекают `callerID` через `grpcmw.CallerID(ctx)` и формируют `authz.Caller{ZitadelUserID: callerID}`.
 
+### Два ключа Zitadel (command-server)
+
+Zitadel разграничивает **OAuth-клиентов** (Applications) и **пользователей** (Service Users). Для двух задач нужны разные identity:
+
+| Задача | Identity | Конфиг |
+|---|---|---|
+| JWT introspection (проверка Bearer на каждый запрос) | **Application** в проекте Zitadel | `introspection_key_path` |
+| Management API — проверка существования пользователя перед наймом | **Service User** с ролью `ORG_USER_MANAGER` или `IAM_USER_MANAGER` | `management_key_path` |
+
+Application не может получить административную роль; Service User не является OAuth-клиентом и не пройдёт introspection. Поэтому `command-server` требует **оба** ключа. `query-server` использует только `introspection_key_path`.
+
+**Как создать каждый ключ:**
+- `introspection_key_path` — Zitadel Console → проект → Application (тип API) → вкладка Keys → Add Key → скачать JSON.
+- `management_key_path` — Zitadel Console → Users → Service Users → выбрать пользователя с ролью `ORG_USER_MANAGER` → вкладка Keys → Add Key → скачать JSON.
+
 ## Авторизация
 
 Авторизация — RBAC с scope-изоляцией. Реализована в [`internal/service/authz/`](../../internal/service/authz/).
