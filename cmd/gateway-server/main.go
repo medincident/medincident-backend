@@ -23,6 +23,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
+	// Blank import registers google.rpc error detail types (BadRequest,
+	// ErrorInfo, …) in the global protobuf type registry so that
+	// grpc-gateway's JSON marshaler can resolve google.protobuf.Any fields
+	// in gRPC status errors received from upstream servers.
+	_ "google.golang.org/genproto/googleapis/rpc/errdetails"
+
 	"github.com/medincident/medincident-backend/internal/bootstrap"
 	gwhandler "github.com/medincident/medincident-backend/internal/handler/gateway"
 	"github.com/medincident/medincident-backend/internal/middleware/httpmw"
