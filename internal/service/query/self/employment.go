@@ -11,6 +11,11 @@ import (
 	memberread "github.com/medincident/medincident-backend/internal/service/query/membership"
 )
 
+const (
+	ErrCodeSelfEmploymentNotFound = "self_employment_not_found"
+	ErrCodeSelfEmploymentFailed   = "self_employment_failed"
+)
+
 // GetMyEmployment returns the caller's employee card in the given
 // organization. Returns a NOT_FOUND oops error (ErrCodeSelfEmploymentNotFound)
 // when the caller is not an active employee of that organization.

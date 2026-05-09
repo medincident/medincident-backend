@@ -6,12 +6,10 @@ import (
 	"github.com/samber/oops"
 )
 
-// Error codes emitted by SelfReader.
+// Error codes emitted by SelfReader identity and organization methods.
 const (
 	ErrCodeSelfIdentityFailed     = "self_identity_failed"
 	ErrCodeSelfOrgsFailed         = "self_orgs_failed"
-	ErrCodeSelfEmploymentNotFound = "self_employment_not_found"
-	ErrCodeSelfEmploymentFailed   = "self_employment_failed"
 	ErrCodeSelfOrgRoleNotFound    = "self_org_role_not_found"
 	ErrCodeSelfOrgRoleFailed      = "self_org_role_failed"
 	ErrCodeSelfClinicRoleNotFound = "self_clinic_role_not_found"
