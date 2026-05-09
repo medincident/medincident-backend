@@ -24,7 +24,7 @@ const (
 // Methods whose full name appears in skip are passed through without
 // authentication (health checks, reflection, etc.).
 func AuthnInterceptor(
-	authorizer *authorization.Authorizer[*oauth.IntrospectionContext],
+	authorizer authorization.AuthorizationChecker[*oauth.IntrospectionContext],
 	skip map[string]struct{},
 ) grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
@@ -32,15 +32,15 @@ func AuthnInterceptor(
 			return handler(ctx, req)
 		}
 
-		token := bearerTokenFromMD(ctx)
-		if token == "" {
+		authHeader := authorizationFromMD(ctx)
+		if authHeader == "" {
 			return nil, oops.In("grpcmw.authn").
 				Code(ErrCodeUnauthenticated).
 				Public("Missing or malformed authorization header.").
-				Errorf("empty bearer token")
+				Errorf("missing or malformed authorization header")
 		}
 
-		authCtx, err := authorizer.CheckAuthorization(ctx, token)
+		authCtx, err := authorizer.CheckAuthorization(ctx, authHeader)
 		if err != nil {
 			return nil, oops.In("grpcmw.authn").
 				Code(ErrCodeUnauthenticated).
@@ -53,10 +53,11 @@ func AuthnInterceptor(
 	}
 }
 
-// bearerTokenFromMD extracts the Bearer token from the gRPC
-// "authorization" metadata header. Returns "" when absent or when
-// the scheme is not "Bearer".
-func bearerTokenFromMD(ctx context.Context) string {
+// authorizationFromMD extracts the Authorization header from the gRPC
+// incoming metadata. Returns "" when absent or when the scheme is not
+// "Bearer". The returned value includes the canonical "Bearer " prefix
+// as required by authorization.AuthorizationChecker.CheckAuthorization.
+func authorizationFromMD(ctx context.Context) string {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return ""
@@ -70,5 +71,7 @@ func bearerTokenFromMD(ctx context.Context) string {
 	if len(v) <= len(prefix) || !strings.EqualFold(v[:len(prefix)], prefix) {
 		return ""
 	}
-	return v[len(prefix):]
+	// Normalize to canonical casing: CheckAuthorization does a
+	// case-sensitive strings.CutPrefix("Bearer ", ...) internally.
+	return prefix + v[len(prefix):]
 }

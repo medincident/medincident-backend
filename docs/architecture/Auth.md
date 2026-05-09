@@ -8,10 +8,12 @@
 
 **Цепочка проверки:**
 
-1. gRPC-интерсептор `authn.go` извлекает Bearer-токен из метаданных запроса.
-2. Токен верифицируется через Zitadel introspection endpoint.
+1. gRPC-интерсептор `authn.go` читает заголовок `authorization` из gRPC-метаданных и проверяет схему Bearer (регистронезависимо).
+2. Значение заголовка целиком — `Bearer <token>` с каноническим регистром — передаётся в `authorization.Authorizer.CheckAuthorization`. SDK самостоятельно срезает префикс и выполняет introspection.
 3. При успехе в контекст записывается `callerID` (Zitadel user ID).
 4. При неуспехе — запрос отклоняется с `codes.Unauthenticated`.
+
+> **Важно:** Zitadel SDK (`zitadel-go/v3`) ожидает строку вида `Bearer <token>` **целиком**, а не голый токен. Функция `authorizationFromMD` нормализует регистр схемы и возвращает заголовок без срезания префикса — именно в таком виде значение попадает в `CheckAuthorization`.
 
 Хендлеры извлекают `callerID` через `grpcmw.CallerID(ctx)` и формируют `authz.Caller{ZitadelUserID: callerID}`.
 

@@ -61,7 +61,7 @@
 
 ## Технологический стек
 
-- Go 1.26, gRPC, grpc-gateway
+- Go 1.26.3, gRPC, grpc-gateway
 - gorm v2 + PostgreSQL 17
 - Garage (S3-совместимое объектное хранилище) через AWS SDK v2
 - buf + protoc-gen-go + protoc-gen-grpc-gateway + protoc-gen-openapiv2 + protoc-gen-doc
