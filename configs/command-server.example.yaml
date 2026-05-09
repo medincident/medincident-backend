@@ -40,12 +40,24 @@ zerolog:
       time_format: "15:04:05"
       parts_order: ["time", "level", "caller", "message"]
 
-# Zitadel — identity provider. Used to verify that a Zitadel user
-# exists before hiring them as an employee. Machine-to-machine auth
-# uses JWT Profile (service user + downloaded private key file).
+# Zitadel — identity provider. Two separate key files are required because
+# Zitadel distinguishes OAuth Applications (introspection clients) from
+# Service Users (Management API callers) — a single identity cannot serve
+# both roles.
+#
+#   introspection_key_path — key.json downloaded from a Zitadel Application
+#     (project → Application → Keys). The Application must be an API-type
+#     app registered in the same Zitadel project. Used by the authn
+#     interceptor to verify every inbound Bearer token.
+#
+#   management_key_path — key.json downloaded from a Zitadel Service User
+#     (Users → Service Users → <user> → Keys). The Service User must hold
+#     the ORG_USER_MANAGER or IAM_USER_MANAGER role. Used by EmployeeService
+#     to verify that a Zitadel user exists before hiring.
 zitadel:
-  domain: "${ZITADEL_DOMAIN}"           # e.g. https://auth.example.com
-  key_path: "${ZITADEL_KEY_PATH}"       # filesystem path to the service user's key.json
+  domain: "${ZITADEL_DOMAIN}"
+  introspection_key_path: "${ZITADEL_INTROSPECTION_KEY_PATH}"  # Application key
+  management_key_path: "${ZITADEL_MANAGEMENT_KEY_PATH}"        # Service User key
 
 # Garage — S3-compatible object storage. Optional: remove the entire
 # block to disable S3 wiring. When present, every field is validated.

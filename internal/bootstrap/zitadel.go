@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -34,15 +35,22 @@ func NewZitadelAuthorizer(ctx context.Context, cfg *config.ZitadelConfig) (*auth
 	return authorization.New[*oauth.IntrospectionContext](
 		initCtx,
 		zitadel.New(hostname, opts...),
-		oauth.DefaultAuthorization(cfg.KeyPath),
+		oauth.DefaultAuthorization(cfg.IntrospectionKeyPath),
 	)
 }
 
 // NewZitadelService builds the richer Zitadel client used by the
 // command-side EmployeeService to verify that a Zitadel user exists
 // before hiring. Query-server and gateway-server do not need this.
+//
+// management_key_path is optional in ZitadelConfig (query-server omits it),
+// so we validate it explicitly here to surface a clear error at startup
+// rather than an opaque "open : no such file" from the SDK.
 func NewZitadelService(ctx context.Context, cfg *config.ZitadelConfig, logger *zerolog.Logger) (*zitadelsvc.Service, error) {
+	if cfg.ManagementKeyPath == "" {
+		return nil, errors.New("zitadel management_key_path is required for command-server but is not set")
+	}
 	initCtx, cancel := context.WithTimeout(ctx, ZitadelInitTimeout)
 	defer cancel()
-	return zitadelsvc.NewServiceFromKeyFile(initCtx, logger, cfg.Domain, cfg.KeyPath)
+	return zitadelsvc.NewServiceFromKeyFile(initCtx, logger, cfg.Domain, cfg.ManagementKeyPath)
 }
