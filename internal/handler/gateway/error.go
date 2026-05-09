@@ -35,6 +35,8 @@ type violationBody struct {
 // maps our domain code to an HTTP status, and writes clean JSON without
 // gRPC numeric codes or @type fields.
 func GatewayErrorHandler(_ context.Context, _ *runtime.ServeMux, _ runtime.Marshaler, w http.ResponseWriter, _ *http.Request, err error) {
+	// grpc-gateway always passes status errors here; a raw error produces a
+	// synthetic codes.Unknown status, which maps safely to 500+unexpected_error.
 	st, _ := grpcstatus.FromError(err)
 
 	var code string
