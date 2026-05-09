@@ -1,34 +1,14 @@
 // Package middleware hosts cross-cutting gRPC interceptors for the
-// command service. Each file in the package exposes one interceptor
-// constructor (e.g. ErrorInterceptor) that can be chained at server
-// construction time.
+// command service.
 //
 // The error interceptor converts oops-wrapped service errors into gRPC
-// status errors with rich google.rpc.errdetails payloads, so that
-// clients can distinguish validation failures, missing entities,
-// precondition violations and internal faults without parsing
-// free-form strings.
+// status errors with custom errorv1 detail payloads:
 //
-// Mapping rules:
-//
-//   - A single oops leaf with code validation_failed (emitted by
-//     internal/service/validation on struct-tag failure) is unpacked
-//     into a codes.InvalidArgument status with one
-//     BadRequest.FieldViolation per entry in its "violations" context
-//     slice. Reason is the raw validator tag ("required", "min", …);
-//     the field path already implies the type, so no type-prefixed
-//     codes are emitted.
-//   - `errors.Join` results (multiple aggregate-level leaves) are
-//     flattened into a single codes.InvalidArgument status with one
-//     BadRequest.FieldViolation per leaf. Field name comes from the
-//     leaf's oops context under key "field" when set, otherwise the
-//     leaf's Code() string.
-//   - A single oops leaf is mapped to a gRPC code via a suffix-based
-//     table with explicit overrides for the handful of codes that
-//     don't fit the pattern. The leaf's Public() string becomes the
-//     status message for client-visible codes; for Internal/Unavailable
-//     the client only sees "internal error" while the server log keeps
-//     the full context.
+//   - ErrorCode{code} is always attached for client-visible errors.
+//   - ValidationFailedDetails is attached when code == "validation_failed"
+//     (struct-tag validation or errors.Join of domain leaves).
+//   - Server-fault codes (Internal, Unavailable, Unknown) get no details;
+//     the message is always "internal error".
 package grpcmw
 
 import (
@@ -38,12 +18,12 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
-	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	errorv1 "github.com/medincident/medincident-backend/pkg/error/v1"
 )
 
 // ErrorInterceptor returns a grpc.UnaryServerInterceptor that runs the
@@ -58,10 +38,7 @@ func ErrorInterceptor(logger *zerolog.Logger) grpc.UnaryServerInterceptor {
 	}
 }
 
-// translateError is the pure function half of ErrorInterceptor; kept
-// unexported and tested directly.
 func translateError(logger *zerolog.Logger, method string, err error) error {
-	// context errors are not wrapped in oops; map them before the oops path.
 	if errors.Is(err, context.DeadlineExceeded) {
 		logger.Warn().Err(err).Str("grpc_method", method).Str("grpc_code", codes.DeadlineExceeded.String()).Msg("handler error")
 		return status.Error(codes.DeadlineExceeded, "deadline exceeded")
@@ -78,27 +55,19 @@ func translateError(logger *zerolog.Logger, method string, err error) error {
 		return status.Error(codes.Internal, "internal error")
 	}
 
-	// Struct-tag validation collapses every FieldError into one oops
-	// leaf whose context carries the full violation list. Unpack it
-	// here so clients see one FieldViolation per rule failure, without
-	// the validation package having to fan-out into errors.Join.
 	if len(leaves) == 1 && errorCodeString(leaves[0]) == validation.CodeValidationFailed {
 		if vs, ok := leaves[0].Context()[validation.ContextKeyViolations].([]validation.Violation); ok && len(vs) > 0 {
-			return buildValidationBadRequest(logger, method, leaves[0], vs)
+			return buildValidationStatus(logger, method, leaves[0], vs)
 		}
 	}
 
 	if len(leaves) > 1 {
-		return buildBadRequestStatus(logger, method, leaves)
+		return buildMultiLeafStatus(logger, method, leaves)
 	}
 	return buildSingleStatus(logger, method, leaves[0])
 }
 
-// flattenErrorLeaves walks err and collects oops leaves. `errors.Join`
-// produces an error whose Unwrap() returns []error; we recurse into
-// those branches. Everything else is probed with oops.AsOops and, if it
-// matches, added as a leaf. Leaves are stored as pointers to avoid
-// copying the 280-byte OopsError struct on every operation.
+// flattenErrorLeaves walks err and collects oops leaves.
 func flattenErrorLeaves(err error) []*oops.OopsError {
 	var leaves []*oops.OopsError
 	var walk func(error)
@@ -120,26 +89,74 @@ func flattenErrorLeaves(err error) []*oops.OopsError {
 	return leaves
 }
 
-func buildValidationBadRequest(logger *zerolog.Logger, method string, leaf *oops.OopsError, violations []validation.Violation) error {
-	fvs := make([]*errdetails.BadRequest_FieldViolation, 0, len(violations))
+func buildValidationStatus(logger *zerolog.Logger, method string, leaf *oops.OopsError, violations []validation.Violation) error {
+	fvs := make([]*errorv1.ValidationFailedDetails_FieldViolation, 0, len(violations))
 	for _, v := range violations {
-		fvs = append(fvs, &errdetails.BadRequest_FieldViolation{
-			Field:       v.Field,
-			Description: v.Message,
-			Reason:      v.Rule,
-		})
+		fv := &errorv1.ValidationFailedDetails_FieldViolation{
+			Field:   v.Field,
+			Rule:    v.Rule,
+			Message: v.Message,
+		}
+		if v.Param != "" {
+			fv.Param = &v.Param
+		}
+		fvs = append(fvs, fv)
 	}
-	st := status.New(codes.InvalidArgument, "request is invalid")
-	withDetails, detailErr := st.WithDetails(&errdetails.BadRequest{FieldViolations: fvs})
+	ec := &errorv1.ErrorCode{Code: validation.CodeValidationFailed}
+	vfd := &errorv1.ValidationFailedDetails{Violations: fvs}
+	st := status.New(codes.InvalidArgument, errorDescription(leaf))
+	withDetails, detailErr := st.WithDetails(ec, vfd)
 	if detailErr != nil {
-		logger.Error().Err(detailErr).Str("grpc_method", method).Msg("failed to attach BadRequest details")
+		logger.Error().Err(detailErr).Str("grpc_method", method).Msg("failed to attach validation details")
 		return st.Err()
 	}
-	logValidationBadRequest(logger, method, leaf, violations)
+	logValidationStatus(logger, method, leaf, violations)
 	return withDetails.Err()
 }
 
-func logValidationBadRequest(logger *zerolog.Logger, method string, leaf *oops.OopsError, violations []validation.Violation) {
+func buildMultiLeafStatus(logger *zerolog.Logger, method string, leaves []*oops.OopsError) error {
+	fvs := make([]*errorv1.ValidationFailedDetails_FieldViolation, 0, len(leaves))
+	for _, leaf := range leaves {
+		fvs = append(fvs, &errorv1.ValidationFailedDetails_FieldViolation{
+			Field:   errorFieldName(leaf),
+			Rule:    errorCodeString(leaf),
+			Message: errorDescription(leaf),
+		})
+	}
+	ec := &errorv1.ErrorCode{Code: validation.CodeValidationFailed}
+	vfd := &errorv1.ValidationFailedDetails{Violations: fvs}
+	st := status.New(codes.InvalidArgument, "request is invalid")
+	withDetails, detailErr := st.WithDetails(ec, vfd)
+	if detailErr != nil {
+		logger.Error().Err(detailErr).Str("grpc_method", method).Msg("failed to attach multi-leaf validation details")
+		return st.Err()
+	}
+	logMultiLeafError(logger, method, leaves)
+	return withDetails.Err()
+}
+
+func buildSingleStatus(logger *zerolog.Logger, method string, leaf *oops.OopsError) error {
+	code := errorCodeString(leaf)
+	grpcCode := gRPCCodeForError(code)
+
+	logSingleError(logger, method, leaf, grpcCode)
+
+	switch grpcCode { //nolint:exhaustive // only server-fault codes need special handling
+	case codes.Internal, codes.Unavailable, codes.Unknown:
+		return status.New(grpcCode, "internal error").Err()
+	}
+
+	msg := errorDescription(leaf)
+	st := status.New(grpcCode, msg)
+	withDetails, detailErr := st.WithDetails(&errorv1.ErrorCode{Code: code})
+	if detailErr != nil {
+		logger.Error().Err(detailErr).Str("grpc_method", method).Msg("failed to attach ErrorCode detail")
+		return st.Err()
+	}
+	return withDetails.Err()
+}
+
+func logValidationStatus(logger *zerolog.Logger, method string, leaf *oops.OopsError, violations []validation.Violation) {
 	fields := make([]string, len(violations))
 	for i, v := range violations {
 		fields[i] = v.Field + "=" + v.Rule
@@ -153,56 +170,7 @@ func logValidationBadRequest(logger *zerolog.Logger, method string, leaf *oops.O
 		Msg("invalid request")
 }
 
-func buildBadRequestStatus(logger *zerolog.Logger, method string, leaves []*oops.OopsError) error {
-	violations := make([]*errdetails.BadRequest_FieldViolation, 0, len(leaves))
-	for _, leaf := range leaves {
-		violations = append(violations, &errdetails.BadRequest_FieldViolation{
-			Field:       errorFieldName(leaf),
-			Description: errorDescription(leaf),
-			Reason:      errorCodeString(leaf),
-		})
-	}
-	st := status.New(codes.InvalidArgument, "request is invalid")
-	withDetails, detailErr := st.WithDetails(&errdetails.BadRequest{FieldViolations: violations})
-	if detailErr != nil {
-		logger.Error().Err(detailErr).Str("grpc_method", method).Msg("failed to attach BadRequest details")
-		return st.Err()
-	}
-	logBadRequestError(logger, method, leaves)
-	return withDetails.Err()
-}
-
-func buildSingleStatus(logger *zerolog.Logger, method string, leaf *oops.OopsError) error {
-	code := errorCodeString(leaf)
-	grpcCode := gRPCCodeForError(code)
-
-	// Always log the full error server-side before stripping details.
-	logSingleError(logger, method, leaf, grpcCode)
-
-	// For codes that indicate server-side faults, never leak internal
-	// details (error code, wrapped message, ErrorInfo) to the client.
-	// Return a bare status with a generic message.
-	switch grpcCode { //nolint:exhaustive // only server-fault codes need special handling
-	case codes.Internal, codes.Unavailable, codes.Unknown:
-		return status.New(grpcCode, "internal error").Err()
-	}
-
-	msg := errorDescription(leaf)
-	st := status.New(grpcCode, msg)
-	info := &errdetails.ErrorInfo{
-		Reason:   code,
-		Domain:   leaf.Domain(),
-		Metadata: sanitizeMetadata(grpcCode, errorContextToMetadata(leaf.Context())),
-	}
-	withDetails, detailErr := st.WithDetails(info)
-	if detailErr != nil {
-		logger.Error().Err(detailErr).Str("grpc_method", method).Msg("failed to attach ErrorInfo details")
-		return st.Err()
-	}
-	return withDetails.Err()
-}
-
-func logBadRequestError(logger *zerolog.Logger, method string, leaves []*oops.OopsError) {
+func logMultiLeafError(logger *zerolog.Logger, method string, leaves []*oops.OopsError) {
 	fields := make([]string, len(leaves))
 	for i, leaf := range leaves {
 		fields[i] = errorFieldName(leaf) + "=" + errorCodeString(leaf)
@@ -215,8 +183,6 @@ func logBadRequestError(logger *zerolog.Logger, method string, leaves []*oops.Oo
 }
 
 func logSingleError(logger *zerolog.Logger, method string, leaf *oops.OopsError, grpcCode codes.Code) {
-	// Build the full event in one chain so zerologlint is happy and
-	// the level matches the severity of the translated gRPC code.
 	switch grpcCode {
 	case codes.Internal, codes.Unavailable, codes.Unknown:
 		logger.Error().
@@ -266,68 +232,6 @@ func errorCodeString(leaf *oops.OopsError) string {
 	return ""
 }
 
-// permissionDeniedSensitiveKeys lists metadata keys that must be
-// stripped from permission_denied responses before they reach the
-// client. caller_id exposes the Zitadel user ID and policy exposes
-// internal authorization rule names — both are useful for server-side
-// debugging but must not leak to untrusted callers.
-var permissionDeniedSensitiveKeys = map[string]struct{}{
-	"caller_id": {},
-	"policy":    {},
-}
-
-// sanitizeMetadata removes sensitive keys from the metadata map for
-// specific gRPC codes. For permission_denied it strips caller_id and
-// policy; other codes pass through unchanged.
-func sanitizeMetadata(grpcCode codes.Code, md map[string]string) map[string]string {
-	if grpcCode != codes.PermissionDenied || len(md) == 0 {
-		return md
-	}
-	clean := make(map[string]string, len(md))
-	for k, v := range md {
-		if _, sensitive := permissionDeniedSensitiveKeys[k]; !sensitive {
-			clean[k] = v
-		}
-	}
-	if len(clean) == 0 {
-		return nil
-	}
-	return clean
-}
-
-func errorContextToMetadata(ctx map[string]any) map[string]string {
-	if len(ctx) == 0 {
-		return nil
-	}
-	md := make(map[string]string, len(ctx))
-	for k, v := range ctx {
-		if s, ok := v.(string); ok {
-			md[k] = s
-			continue
-		}
-		md[k] = errorContextValueToString(v)
-	}
-	return md
-}
-
-// errorContextValueToString converts the scalar types we actually stash
-// into oops context (IDs, counts, flags). Anything else falls through
-// to the empty string to keep the metadata map clean.
-func errorContextValueToString(v any) string {
-	switch x := v.(type) {
-	case string:
-		return x
-	case error:
-		return x.Error()
-	case interface{ String() string }:
-		return x.String()
-	}
-	return ""
-}
-
-// gRPCCodeForError is pure and table-driven. Override wins over suffix;
-// if nothing matches, we default to Internal because an unclassified
-// error is never a client problem.
 func gRPCCodeForError(code string) codes.Code {
 	if override, ok := errorCodeOverrides[code]; ok {
 		return override
@@ -340,20 +244,15 @@ func gRPCCodeForError(code string) codes.Code {
 	return codes.Internal
 }
 
-// errorCodeOverrides lists codes that either don't match any suffix
-// rule or need a different mapping than the suffix would produce.
 var errorCodeOverrides = map[string]codes.Code{
-	"zitadel_verify_failed":       codes.Unavailable,
-	"zitadel_client_build_failed": codes.Internal,
-	"read_failed":                 codes.Internal,
-	"validation_failed":           codes.InvalidArgument,
-	"unmarshal_failed":            codes.Internal,
-	"cleanup_failed":              codes.Internal,
-	"unauthenticated":             codes.Unauthenticated,
-	"permission_denied":           codes.PermissionDenied,
-	// Each authz.* check failure is a DB-level fault, not a client
-	// error — the generic suffix rules below would route them to
-	// Internal too, but the explicit overrides document the policy.
+	"zitadel_verify_failed":                codes.Unavailable,
+	"zitadel_client_build_failed":          codes.Internal,
+	"read_failed":                          codes.Internal,
+	"validation_failed":                    codes.InvalidArgument,
+	"unmarshal_failed":                     codes.Internal,
+	"cleanup_failed":                       codes.Internal,
+	"unauthenticated":                      codes.Unauthenticated,
+	"permission_denied":                    codes.PermissionDenied,
 	"authz_system_admin_check_failed":      codes.Internal,
 	"authz_org_access_check_failed":        codes.Internal,
 	"authz_clinic_access_check_failed":     codes.Internal,
@@ -363,32 +262,21 @@ var errorCodeOverrides = map[string]codes.Code{
 	"authz_category_access_check_failed":   codes.Internal,
 	"authz_type_access_check_failed":       codes.Internal,
 	"authz_check_failed":                   codes.Internal,
-	// Infrastructure — NATS consumer bootstrap failures.
-	"consume_start_failed":   codes.Internal,
-	"consumer_create_failed": codes.Internal,
-	// Buffer — ownership check is a permission issue, not a
-	// precondition or not-found error.
-	"buffer_not_patient_owner": codes.PermissionDenied,
-	// Buffer — state precondition: only pending buffers are editable.
-	"buffer_not_pending": codes.FailedPrecondition,
-	// Buffer — patient-type restriction is a business precondition.
+	"consume_start_failed":                 codes.Internal,
+	"consumer_create_failed":               codes.Internal,
+	"buffer_not_patient_owner":             codes.PermissionDenied,
+	"buffer_not_pending":                   codes.FailedPrecondition,
 	"buffer_type_not_allowed_for_patients": codes.FailedPrecondition,
-	// Announcement — archived announcements cannot be modified.
-	"announcement_archived": codes.FailedPrecondition,
-	// Announcement — bad pagination cursor from the client.
-	"announcement_query_bad_cursor": codes.InvalidArgument,
-	// Incident — status-based preconditions.
-	"incident_not_cancellable": codes.FailedPrecondition,
-	"incident_not_reopenable":  codes.FailedPrecondition,
+	"announcement_archived":                codes.FailedPrecondition,
+	"announcement_query_bad_cursor":        codes.InvalidArgument,
+	"incident_not_cancellable":             codes.FailedPrecondition,
+	"incident_not_reopenable":              codes.FailedPrecondition,
 }
 
-// errorCodeSuffixes is checked in order; the first matching suffix
-// wins. More specific suffixes must precede shorter, ambiguous ones.
 var errorCodeSuffixes = []struct {
 	suffix   string
 	grpcCode codes.Code
 }{
-	// Internal infrastructure failures.
 	{suffix: "_id_generation_failed", grpcCode: codes.Internal},
 	{suffix: "_projection_failed", grpcCode: codes.Internal},
 	{suffix: "_save_failed", grpcCode: codes.Internal},
@@ -403,13 +291,6 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_count_failed", grpcCode: codes.Internal},
 	{suffix: "_lock_failed", grpcCode: codes.Internal},
 	{suffix: "_malformed", grpcCode: codes.Internal},
-
-	// Client input validation (InvalidArgument). Struct-tag
-	// validation goes through the explicit `validation_failed`
-	// override above and never reaches these suffixes; what remains
-	// are aggregate-specific codes emitted directly by services
-	// (vacation_start_required, vacation_end_before_start,
-	// list_limit_out_of_range, …).
 	{suffix: "_required", grpcCode: codes.InvalidArgument},
 	{suffix: "_out_of_range", grpcCode: codes.InvalidArgument},
 	{suffix: "_end_before_start", grpcCode: codes.InvalidArgument},
@@ -420,11 +301,7 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_too_long", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid_scope", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid_time_range", grpcCode: codes.InvalidArgument},
-
-	// Existence.
 	{suffix: "_not_found", grpcCode: codes.NotFound},
-
-	// Uniqueness / already-exists semantics.
 	{suffix: "_already_hired", grpcCode: codes.AlreadyExists},
 	{suffix: "_already_assigned", grpcCode: codes.AlreadyExists},
 	{suffix: "_already_granted", grpcCode: codes.AlreadyExists},
@@ -432,8 +309,6 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_already_ended", grpcCode: codes.AlreadyExists},
 	{suffix: "_name_conflict", grpcCode: codes.AlreadyExists},
 	{suffix: "_overlap", grpcCode: codes.AlreadyExists},
-
-	// State and business preconditions (FailedPrecondition).
 	{suffix: "_invalid_status_transition", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_department", grpcCode: codes.FailedPrecondition},
 	{suffix: "_not_in_clinic", grpcCode: codes.FailedPrecondition},
@@ -454,11 +329,6 @@ var errorCodeSuffixes = []struct {
 	{suffix: "_type_inactive", grpcCode: codes.FailedPrecondition},
 	{suffix: "_frozen", grpcCode: codes.FailedPrecondition},
 	{suffix: "_mismatch", grpcCode: codes.FailedPrecondition},
-
-	// Fallback buckets kept last so the specific rules above win.
-	// `_required` is declared once in the InvalidArgument group above;
-	// `_empty` / `_invalid` live here as catch-alls for codes that
-	// predate the unified validation vocabulary.
 	{suffix: "_empty", grpcCode: codes.InvalidArgument},
 	{suffix: "_invalid", grpcCode: codes.InvalidArgument},
 }
