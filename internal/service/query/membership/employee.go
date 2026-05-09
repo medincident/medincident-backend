@@ -50,9 +50,9 @@ type EmployeeCardView struct {
 	NextVacationStartsAt  *time.Time
 }
 
-// selectEmployeeCard is the reusable SELECT list matching the scan
+// SelectEmployeeCard is the reusable SELECT list matching the scan
 // order used by every employee_card query.
-const selectEmployeeCard = `
+const SelectEmployeeCard = `
 	SELECT employee_id, zitadel_user_id,
 	       first_name, last_name, display_name, email,
 	       organization_id, organization_name,
@@ -62,8 +62,8 @@ const selectEmployeeCard = `
 	       current_vacation_ends_at, next_vacation_starts_at
 	  FROM projections.employee_cards`
 
-// scanEmployeeCard reads one row from a *sql.Rows cursor into a view.
-func scanEmployeeCard(scanner interface {
+// ScanEmployeeCard reads one row from a *sql.Rows cursor into a view.
+func ScanEmployeeCard(scanner interface {
 	Scan(dest ...any) error
 }, out *EmployeeCardView,
 ) error {
@@ -92,8 +92,8 @@ func (r *EmployeeReader) Get(
 		return nil, err
 	}
 	var out EmployeeCardView
-	err := scanEmployeeCard(
-		r.db.WithContext(ctx).Raw(selectEmployeeCard+` WHERE employee_id = ?`, id).Row(),
+	err := ScanEmployeeCard(
+		r.db.WithContext(ctx).Raw(SelectEmployeeCard+` WHERE employee_id = ?`, id).Row(),
 		&out,
 	)
 	if err != nil {
@@ -160,7 +160,7 @@ func (r *EmployeeReader) listByField(
 	args = append(args, value)
 	args = append(args, filterArgs...)
 	args = append(args, q.Limit, q.Offset)
-	rows, err := r.db.WithContext(ctx).Raw(selectEmployeeCard+
+	rows, err := r.db.WithContext(ctx).Raw(SelectEmployeeCard+
 		` WHERE `+field+` = ?`+filterClause+
 		` ORDER BY updated_at DESC, employee_id DESC
 		 LIMIT ? OFFSET ?`, args...,
@@ -175,7 +175,7 @@ func (r *EmployeeReader) listByField(
 	out := make([]EmployeeCardView, 0, q.Limit)
 	for rows.Next() {
 		var v EmployeeCardView
-		if err := scanEmployeeCard(rows, &v); err != nil {
+		if err := ScanEmployeeCard(rows, &v); err != nil {
 			return nil, oops.In("reader.membership.employee").
 				Code(ErrCodeEmployeeLoadFailed).
 				With(field, value).
@@ -276,7 +276,7 @@ func (r *EmployeeReader) SearchByOrganization(
 		return nil, err
 	}
 	filterClause, filterArgs := filter.buildFilterClause()
-	sqlBuf := selectEmployeeCard + ` WHERE organization_id = ?` + filterClause
+	sqlBuf := SelectEmployeeCard + ` WHERE organization_id = ?` + filterClause
 	args := make([]any, 0, 3+len(filterArgs)+4)
 	args = append(args, orgID)
 	args = append(args, filterArgs...)
@@ -304,7 +304,7 @@ func (r *EmployeeReader) SearchByOrganization(
 	out := make([]EmployeeCardView, 0, q.Limit)
 	for rows.Next() {
 		var v EmployeeCardView
-		if err := scanEmployeeCard(rows, &v); err != nil {
+		if err := ScanEmployeeCard(rows, &v); err != nil {
 			return nil, oops.In("reader.membership.employee").
 				Code(ErrCodeEmployeeLoadFailed).
 				With("organization_id", orgID).
