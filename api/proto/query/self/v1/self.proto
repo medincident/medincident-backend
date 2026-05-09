@@ -43,9 +43,10 @@ service SelfQueryService {
     option (google.api.http) = {get: "/v1/me/clinics/{clinic_id}/role"};
   }
 
-  // GetMyDepartmentRole returns whether the caller is the department
-  // responsible for the given department. Returns NOT_FOUND when the
-  // caller is not an active employee of that department.
+  // GetMyDepartmentRole returns whether the caller holds the
+  // department-responsible role for the given department. Returns
+  // NOT_FOUND when the caller is not an active employee of that
+  // department.
   rpc GetMyDepartmentRole(GetMyDepartmentRoleRequest) returns (GetMyDepartmentRoleResponse) {
     option (google.api.http) = {get: "/v1/me/departments/{department_id}/role"};
   }
@@ -60,7 +61,7 @@ message GetMyIdentityResponse {
 message ListMyOrganizationsRequest {}
 
 message ListMyOrganizationsResponse {
-  repeated query.orgstructure.v1.OrganizationListItem organizations = 1;
+  repeated query.orgstructure.v1.OrganizationListItem items = 1;
 }
 
 message GetMyEmploymentRequest {

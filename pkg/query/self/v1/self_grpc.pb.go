@@ -53,9 +53,10 @@ type SelfQueryServiceClient interface {
 	// the given clinic. Returns NOT_FOUND when the caller is not an
 	// active employee of that clinic.
 	GetMyClinicRole(ctx context.Context, in *GetMyClinicRoleRequest, opts ...grpc.CallOption) (*GetMyClinicRoleResponse, error)
-	// GetMyDepartmentRole returns whether the caller is the department
-	// responsible for the given department. Returns NOT_FOUND when the
-	// caller is not an active employee of that department.
+	// GetMyDepartmentRole returns whether the caller holds the
+	// department-responsible role for the given department. Returns
+	// NOT_FOUND when the caller is not an active employee of that
+	// department.
 	GetMyDepartmentRole(ctx context.Context, in *GetMyDepartmentRoleRequest, opts ...grpc.CallOption) (*GetMyDepartmentRoleResponse, error)
 }
 
@@ -153,9 +154,10 @@ type SelfQueryServiceServer interface {
 	// the given clinic. Returns NOT_FOUND when the caller is not an
 	// active employee of that clinic.
 	GetMyClinicRole(context.Context, *GetMyClinicRoleRequest) (*GetMyClinicRoleResponse, error)
-	// GetMyDepartmentRole returns whether the caller is the department
-	// responsible for the given department. Returns NOT_FOUND when the
-	// caller is not an active employee of that department.
+	// GetMyDepartmentRole returns whether the caller holds the
+	// department-responsible role for the given department. Returns
+	// NOT_FOUND when the caller is not an active employee of that
+	// department.
 	GetMyDepartmentRole(context.Context, *GetMyDepartmentRoleRequest) (*GetMyDepartmentRoleResponse, error)
 	mustEmbedUnimplementedSelfQueryServiceServer()
 }

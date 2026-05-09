@@ -2557,7 +2557,7 @@
     },
     "/v1/me/departments/{departmentId}/role": {
       "get": {
-        "summary": "GetMyDepartmentRole returns whether the caller is the department\nresponsible for the given department. Returns NOT_FOUND when the\ncaller is not an active employee of that department.",
+        "summary": "GetMyDepartmentRole returns whether the caller holds the\ndepartment-responsible role for the given department. Returns\nNOT_FOUND when the caller is not an active employee of that\ndepartment.",
         "operationId": "SelfQueryService_GetMyDepartmentRole",
         "responses": {
           "200": {
@@ -7650,7 +7650,7 @@
     "v1ListMyOrganizationsResponse": {
       "type": "object",
       "properties": {
-        "organizations": {
+        "items": {
           "type": "array",
           "items": {
             "type": "object",

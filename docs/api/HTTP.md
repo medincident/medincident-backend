@@ -7381,9 +7381,10 @@ active-employee-of-that-clinic.-responses">Responses</h3>
 This operation does not require authentication
 </aside>
 
-## GetMyDepartmentRole returns whether the caller is the department
-responsible for the given department. Returns NOT_FOUND when the
-caller is not an active employee of that department.
+## GetMyDepartmentRole returns whether the caller holds the
+department-responsible role for the given department. Returns
+NOT_FOUND when the caller is not an active employee of that
+department.
 
 <a id="opIdSelfQueryService_GetMyDepartmentRole"></a>
 
@@ -7398,9 +7399,10 @@ curl -X GET /v1/me/departments/{departmentId}/role \
 
 `GET /v1/me/departments/{departmentId}/role`
 
-<h3 id="getmydepartmentrole-returns-whether-the-caller-is-the-department
-responsible-for-the-given-department.-returns-not_found-when-the
-caller-is-not-an-active-employee-of-that-department.-parameters">Parameters</h3>
+<h3 id="getmydepartmentrole-returns-whether-the-caller-holds-the
+department-responsible-role-for-the-given-department.-returns
+not_found-when-the-caller-is-not-an-active-employee-of-that
+department.-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
@@ -7416,9 +7418,10 @@ caller-is-not-an-active-employee-of-that-department.-parameters">Parameters</h3>
 }
 ```
 
-<h3 id="getmydepartmentrole-returns-whether-the-caller-is-the-department
-responsible-for-the-given-department.-returns-not_found-when-the
-caller-is-not-an-active-employee-of-that-department.-responses">Responses</h3>
+<h3 id="getmydepartmentrole-returns-whether-the-caller-holds-the
+department-responsible-role-for-the-given-department.-returns
+not_found-when-the-caller-is-not-an-active-employee-of-that
+department.-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
@@ -7451,7 +7454,7 @@ curl -X GET /v1/me/organizations \
 
 ```json
 {
-  "organizations": [
+  "items": [
     {
       "id": "string",
       "name": "string"
@@ -12226,7 +12229,7 @@ patient_status, description and timestamps are populated.
 
 ```json
 {
-  "organizations": [
+  "items": [
     {
       "id": "string",
       "name": "string"
@@ -12240,7 +12243,7 @@ patient_status, description and timestamps are populated.
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|organizations|[[v1OrganizationListItem](#schemav1organizationlistitem)]|false|none|[OrganizationListItem is the minimal shape returned by list endpoints.]|
+|items|[[v1OrganizationListItem](#schemav1organizationlistitem)]|false|none|[OrganizationListItem is the minimal shape returned by list endpoints.]|
 
 <h2 id="tocS_v1ListOrgAdminsResponse">v1ListOrgAdminsResponse</h2>
 <!-- backwards compatibility -->

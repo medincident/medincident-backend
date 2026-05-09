@@ -6173,7 +6173,7 @@ both values.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| organizations | [query.orgstructure.v1.OrganizationListItem](#query-orgstructure-v1-OrganizationListItem) | repeated |  |
+| items | [query.orgstructure.v1.OrganizationListItem](#query-orgstructure-v1-OrganizationListItem) | repeated |  |
 
 
 
@@ -6201,7 +6201,7 @@ these handlers because the caller is querying data about themselves.
 | GetMyEmployment | [GetMyEmploymentRequest](#query-self-v1-GetMyEmploymentRequest) | [GetMyEmploymentResponse](#query-self-v1-GetMyEmploymentResponse) | GetMyEmployment returns the caller&#39;s employee card in the given organization. Returns NOT_FOUND when the caller is not an active employee of that organization. |
 | GetMyOrganizationRole | [GetMyOrganizationRoleRequest](#query-self-v1-GetMyOrganizationRoleRequest) | [GetMyOrganizationRoleResponse](#query-self-v1-GetMyOrganizationRoleResponse) | GetMyOrganizationRole returns the caller&#39;s named roles in the given organization. Returns NOT_FOUND when the caller is not an active employee of that organization. |
 | GetMyClinicRole | [GetMyClinicRoleRequest](#query-self-v1-GetMyClinicRoleRequest) | [GetMyClinicRoleResponse](#query-self-v1-GetMyClinicRoleResponse) | GetMyClinicRole returns whether the caller is the clinic head of the given clinic. Returns NOT_FOUND when the caller is not an active employee of that clinic. |
-| GetMyDepartmentRole | [GetMyDepartmentRoleRequest](#query-self-v1-GetMyDepartmentRoleRequest) | [GetMyDepartmentRoleResponse](#query-self-v1-GetMyDepartmentRoleResponse) | GetMyDepartmentRole returns whether the caller is the department responsible for the given department. Returns NOT_FOUND when the caller is not an active employee of that department. |
+| GetMyDepartmentRole | [GetMyDepartmentRoleRequest](#query-self-v1-GetMyDepartmentRoleRequest) | [GetMyDepartmentRoleResponse](#query-self-v1-GetMyDepartmentRoleResponse) | GetMyDepartmentRole returns whether the caller holds the department-responsible role for the given department. Returns NOT_FOUND when the caller is not an active employee of that department. |
 
 
 

@@ -142,7 +142,7 @@ func (*ListMyOrganizationsRequest) Descriptor() ([]byte, []int) {
 
 type ListMyOrganizationsResponse struct {
 	state         protoimpl.MessageState     `protogen:"open.v1"`
-	Organizations []*v1.OrganizationListItem `protobuf:"bytes,1,rep,name=organizations,proto3" json:"organizations,omitempty"`
+	Items         []*v1.OrganizationListItem `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -177,9 +177,9 @@ func (*ListMyOrganizationsResponse) Descriptor() ([]byte, []int) {
 	return file_query_self_v1_self_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListMyOrganizationsResponse) GetOrganizations() []*v1.OrganizationListItem {
+func (x *ListMyOrganizationsResponse) GetItems() []*v1.OrganizationListItem {
 	if x != nil {
-		return x.Organizations
+		return x.Items
 	}
 	return nil
 }
@@ -560,9 +560,9 @@ const file_query_self_v1_self_proto_rawDesc = "" +
 	"\x14GetMyIdentityRequest\"?\n" +
 	"\x15GetMyIdentityResponse\x12&\n" +
 	"\x0fis_system_admin\x18\x01 \x01(\bR\risSystemAdmin\"\x1c\n" +
-	"\x1aListMyOrganizationsRequest\"p\n" +
-	"\x1bListMyOrganizationsResponse\x12Q\n" +
-	"\rorganizations\x18\x01 \x03(\v2+.query.orgstructure.v1.OrganizationListItemR\rorganizations\"A\n" +
+	"\x1aListMyOrganizationsRequest\"`\n" +
+	"\x1bListMyOrganizationsResponse\x12A\n" +
+	"\x05items\x18\x01 \x03(\v2+.query.orgstructure.v1.OrganizationListItemR\x05items\"A\n" +
 	"\x16GetMyEmploymentRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\"\\\n" +
 	"\x17GetMyEmploymentResponse\x12A\n" +
@@ -621,7 +621,7 @@ var file_query_self_v1_self_proto_goTypes = []any{
 	(*v11.EmployeeCardView)(nil),          // 13: query.membership.v1.EmployeeCardView
 }
 var file_query_self_v1_self_proto_depIdxs = []int32{
-	12, // 0: query.self.v1.ListMyOrganizationsResponse.organizations:type_name -> query.orgstructure.v1.OrganizationListItem
+	12, // 0: query.self.v1.ListMyOrganizationsResponse.items:type_name -> query.orgstructure.v1.OrganizationListItem
 	13, // 1: query.self.v1.GetMyEmploymentResponse.employee:type_name -> query.membership.v1.EmployeeCardView
 	0,  // 2: query.self.v1.SelfQueryService.GetMyIdentity:input_type -> query.self.v1.GetMyIdentityRequest
 	2,  // 3: query.self.v1.SelfQueryService.ListMyOrganizations:input_type -> query.self.v1.ListMyOrganizationsRequest
