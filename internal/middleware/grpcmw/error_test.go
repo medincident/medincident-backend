@@ -7,11 +7,11 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
-	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	errorv1 "github.com/medincident/medincident-backend/pkg/error/v1"
 )
 
 func silentLogger() *zerolog.Logger {
@@ -45,53 +45,46 @@ func TestGRPCCodeForError_Overrides(t *testing.T) {
 
 func TestGRPCCodeForError_SuffixRules(t *testing.T) {
 	cases := map[string]codes.Code{
-		// Internal
-		"employee_save_failed":            codes.Internal,
-		"employee_load_failed":            codes.Internal,
-		"organization_projection_failed":  codes.Internal,
-		"employee_projection_failed":      codes.Internal,
-		"vacation_id_generation_failed":   codes.Internal,
-		"department_lookup_failed":        codes.Internal,
-		"postgres_open_failed":            codes.Internal,
-		"announcement_query_read_failed":  codes.Internal,
-		"buffer_query_read_failed":        codes.Internal,
-		"incident_query_read_failed":      codes.Internal,
-		"clinic_count_failed":             codes.Internal,
-		"organization_count_failed":       codes.Internal,
-		"incident_classifier_lock_failed": codes.Internal,
-		"envelope_unmarshal_malformed":    codes.Internal,
-		"payload_unmarshal_malformed":     codes.Internal,
-		// InvalidArgument — aggregate-specific codes emitted directly
-		// by services. Struct-tag validation never reaches the suffix
-		// table (it hits the validation_failed override).
-		"list_limit_out_of_range":            codes.InvalidArgument,
-		"list_offset_out_of_range":           codes.InvalidArgument,
-		"vacation_start_required":            codes.InvalidArgument,
-		"vacation_end_before_start":          codes.InvalidArgument,
-		"vacation_end_in_past":               codes.InvalidArgument,
-		"vacation_start_in_past":             codes.InvalidArgument,
-		"buffer_occurred_at_in_future":       codes.InvalidArgument,
-		"incident_occurred_at_in_future":     codes.InvalidArgument,
-		"buffer_occurred_at_too_old":         codes.InvalidArgument,
-		"incident_occurred_at_too_old":       codes.InvalidArgument,
-		"employee_search_query_too_long":     codes.InvalidArgument,
-		"organization_search_query_too_long": codes.InvalidArgument,
-		"announcement_invalid_scope":         codes.InvalidArgument,
-		"announcement_invalid_time_range":    codes.InvalidArgument,
-		// NotFound
-		"employee_not_found":          codes.NotFound,
-		"department_not_found":        codes.NotFound,
-		"zitadel_user_not_found":      codes.NotFound,
-		"incident_category_not_found": codes.NotFound,
-		// AlreadyExists
-		"employee_already_hired":          codes.AlreadyExists,
-		"clinic_head_already_assigned":    codes.AlreadyExists,
-		"system_admin_already_granted":    codes.AlreadyExists,
-		"vacation_already_started":        codes.AlreadyExists,
-		"vacation_already_ended":          codes.AlreadyExists,
-		"incident_category_name_conflict": codes.AlreadyExists,
-		"vacation_overlap":                codes.AlreadyExists,
-		// FailedPrecondition
+		"employee_save_failed":                           codes.Internal,
+		"employee_load_failed":                           codes.Internal,
+		"organization_projection_failed":                 codes.Internal,
+		"employee_projection_failed":                     codes.Internal,
+		"vacation_id_generation_failed":                  codes.Internal,
+		"department_lookup_failed":                       codes.Internal,
+		"postgres_open_failed":                           codes.Internal,
+		"announcement_query_read_failed":                 codes.Internal,
+		"buffer_query_read_failed":                       codes.Internal,
+		"incident_query_read_failed":                     codes.Internal,
+		"clinic_count_failed":                            codes.Internal,
+		"organization_count_failed":                      codes.Internal,
+		"incident_classifier_lock_failed":                codes.Internal,
+		"envelope_unmarshal_malformed":                   codes.Internal,
+		"payload_unmarshal_malformed":                    codes.Internal,
+		"list_limit_out_of_range":                        codes.InvalidArgument,
+		"list_offset_out_of_range":                       codes.InvalidArgument,
+		"vacation_start_required":                        codes.InvalidArgument,
+		"vacation_end_before_start":                      codes.InvalidArgument,
+		"vacation_end_in_past":                           codes.InvalidArgument,
+		"vacation_start_in_past":                         codes.InvalidArgument,
+		"buffer_occurred_at_in_future":                   codes.InvalidArgument,
+		"incident_occurred_at_in_future":                 codes.InvalidArgument,
+		"buffer_occurred_at_too_old":                     codes.InvalidArgument,
+		"incident_occurred_at_too_old":                   codes.InvalidArgument,
+		"employee_search_query_too_long":                 codes.InvalidArgument,
+		"organization_search_query_too_long":             codes.InvalidArgument,
+		"announcement_invalid_scope":                     codes.InvalidArgument,
+		"announcement_invalid_time_range":                codes.InvalidArgument,
+		"employee_not_found":                             codes.NotFound,
+		"department_not_found":                           codes.NotFound,
+		"zitadel_user_not_found":                         codes.NotFound,
+		"incident_category_not_found":                    codes.NotFound,
+		"employee_already_hired":                         codes.AlreadyExists,
+		"clinic_head_already_assigned":                   codes.AlreadyExists,
+		"system_admin_already_granted":                   codes.AlreadyExists,
+		"vacation_already_started":                       codes.AlreadyExists,
+		"vacation_already_ended":                         codes.AlreadyExists,
+		"incident_category_name_conflict":                codes.AlreadyExists,
+		"vacation_overlap":                               codes.AlreadyExists,
 		"employee_not_in_department":                     codes.FailedPrecondition,
 		"department_not_in_same_organization":            codes.FailedPrecondition,
 		"vacation_not_started":                           codes.FailedPrecondition,
@@ -159,28 +152,29 @@ func TestTranslateError_SingleLeaf_MapsCode(t *testing.T) {
 		t.Errorf("expected Public message, got %q", st.Message())
 	}
 
-	var info *errdetails.ErrorInfo
+	var code *errorv1.ErrorCode
 	for _, detail := range st.Details() {
-		if ei, ok := detail.(*errdetails.ErrorInfo); ok {
-			info = ei
+		if ec, ok := detail.(*errorv1.ErrorCode); ok {
+			code = ec
 			break
 		}
 	}
-	if info == nil {
-		t.Fatal("expected ErrorInfo detail")
+	if code == nil {
+		t.Fatal("expected ErrorCode detail")
 	}
-	if info.GetReason() != "employee_not_found" {
-		t.Errorf("expected reason=employee_not_found, got %q", info.GetReason())
+	if code.Code != "employee_not_found" {
+		t.Errorf("expected code=employee_not_found, got %q", code.Code)
 	}
-	if info.GetDomain() != "service.employee" {
-		t.Errorf("expected domain=service.employee, got %q", info.GetDomain())
-	}
-	if info.GetMetadata()["employee_id"] != "123e4567-e89b-12d3-a456-426614174000" {
-		t.Errorf("expected metadata to carry employee_id, got %v", info.GetMetadata())
+
+	// No ValidationFailedDetails for a simple domain error.
+	for _, detail := range st.Details() {
+		if _, ok := detail.(*errorv1.ValidationFailedDetails); ok {
+			t.Error("domain error must not carry ValidationFailedDetails")
+		}
 	}
 }
 
-func TestTranslateError_ValidationFailed_EmitsBadRequest(t *testing.T) {
+func TestTranslateError_ValidationFailed_EmitsErrorCodeAndDetails(t *testing.T) {
 	violations := []validation.Violation{
 		{Field: "zitadel_user_id", Rule: "required", Message: "required"},
 		{Field: "position", Rule: "max", Param: "256", Message: "length must be at most 256 characters"},
@@ -199,34 +193,48 @@ func TestTranslateError_ValidationFailed_EmitsBadRequest(t *testing.T) {
 	if st.Code() != codes.InvalidArgument {
 		t.Errorf("expected InvalidArgument, got %v", st.Code())
 	}
+	if st.Message() != "request is invalid" {
+		t.Errorf("expected 'request is invalid', got %q", st.Message())
+	}
 
-	var bad *errdetails.BadRequest
+	var code *errorv1.ErrorCode
+	var vfd *errorv1.ValidationFailedDetails
 	for _, detail := range st.Details() {
-		if br, ok := detail.(*errdetails.BadRequest); ok {
-			bad = br
-			break
+		switch d := detail.(type) {
+		case *errorv1.ErrorCode:
+			code = d
+		case *errorv1.ValidationFailedDetails:
+			vfd = d
 		}
 	}
-	if bad == nil {
-		t.Fatal("expected BadRequest detail")
+
+	if code == nil || code.Code != "validation_failed" {
+		t.Fatalf("expected ErrorCode{validation_failed}, got %+v", code)
 	}
-	if len(bad.GetFieldViolations()) != 2 {
-		t.Fatalf("expected 2 violations, got %d", len(bad.GetFieldViolations()))
+	if vfd == nil {
+		t.Fatal("expected ValidationFailedDetails")
+	}
+	if len(vfd.Violations) != 2 {
+		t.Fatalf("expected 2 violations, got %d", len(vfd.Violations))
 	}
 
-	byField := map[string]*errdetails.BadRequest_FieldViolation{}
-	for _, v := range bad.GetFieldViolations() {
-		byField[v.GetField()] = v
+	byField := map[string]*errorv1.ValidationFailedDetails_FieldViolation{}
+	for _, v := range vfd.Violations {
+		byField[v.Field] = v
 	}
-	if got := byField["zitadel_user_id"]; got == nil || got.GetReason() != "required" {
+	if got := byField["zitadel_user_id"]; got == nil || got.Rule != "required" {
 		t.Errorf("zitadel_user_id violation: got %+v", got)
 	}
-	if got := byField["position"]; got == nil || got.GetReason() != "max" || got.GetDescription() == "" {
-		t.Errorf("position violation: got %+v", got)
+	pos := byField["position"]
+	if pos == nil || pos.Rule != "max" || pos.Message == "" {
+		t.Errorf("position violation: got %+v", pos)
+	}
+	if pos != nil && (pos.Param == nil || *pos.Param != "256") {
+		t.Errorf("position violation: expected Param=256, got %+v", pos.Param)
 	}
 }
 
-func TestTranslateError_MultiError_EmitsBadRequest(t *testing.T) {
+func TestTranslateError_MultiError_EmitsValidationDetails(t *testing.T) {
 	f1 := oops.In("service.vacation").
 		Code("vacation_start_required").
 		With("field", "start").
@@ -245,20 +253,27 @@ func TestTranslateError_MultiError_EmitsBadRequest(t *testing.T) {
 		t.Errorf("expected InvalidArgument, got %v", st.Code())
 	}
 
-	var bad *errdetails.BadRequest
+	var code *errorv1.ErrorCode
+	var vfd *errorv1.ValidationFailedDetails
 	for _, detail := range st.Details() {
-		if br, ok := detail.(*errdetails.BadRequest); ok {
-			bad = br
-			break
+		switch d := detail.(type) {
+		case *errorv1.ErrorCode:
+			code = d
+		case *errorv1.ValidationFailedDetails:
+			vfd = d
 		}
 	}
-	if bad == nil || len(bad.GetFieldViolations()) != 2 {
-		t.Fatalf("expected 2 violations, got %+v", bad)
+
+	if code == nil || code.Code != "validation_failed" {
+		t.Fatalf("expected ErrorCode{validation_failed}, got %+v", code)
+	}
+	if vfd == nil || len(vfd.Violations) != 2 {
+		t.Fatalf("expected 2 violations, got %+v", vfd)
 	}
 
 	fields := map[string]string{}
-	for _, v := range bad.GetFieldViolations() {
-		fields[v.GetField()] = v.GetReason()
+	for _, v := range vfd.Violations {
+		fields[v.Field] = v.Rule
 	}
 	if fields["start"] != "vacation_start_required" {
 		t.Errorf("missing start violation: %v", fields)
@@ -282,18 +297,18 @@ func TestTranslateError_MultiError_FallsBackToCodeWhenNoField(t *testing.T) {
 		t.Errorf("expected InvalidArgument, got %v", st.Code())
 	}
 
-	var bad *errdetails.BadRequest
+	var vfd *errorv1.ValidationFailedDetails
 	for _, detail := range st.Details() {
-		if br, ok := detail.(*errdetails.BadRequest); ok {
-			bad = br
-			break
+		if d, ok := detail.(*errorv1.ValidationFailedDetails); ok {
+			vfd = d
 		}
 	}
-	if bad == nil || len(bad.GetFieldViolations()) != 2 {
-		t.Fatalf("expected 2 violations, got %+v", bad)
+	if vfd == nil || len(vfd.Violations) != 2 {
+		t.Fatalf("expected 2 violations, got %+v", vfd)
 	}
-	if bad.GetFieldViolations()[0].GetField() != "vacation_start_required" {
-		t.Errorf("expected fallback field=code, got %q", bad.GetFieldViolations()[0].GetField())
+	// When no "field" context key, Field falls back to the error code.
+	if vfd.Violations[0].Field != "vacation_start_required" {
+		t.Errorf("expected fallback field=code, got %q", vfd.Violations[0].Field)
 	}
 }
 
@@ -312,11 +327,10 @@ func TestTranslateError_InternalError_MasksMessage(t *testing.T) {
 		t.Errorf("expected masked message, got %q", st.Message())
 	}
 
-	// No ErrorInfo detail must be attached for server-fault codes
-	// so internal metadata (package paths, error codes) is never leaked.
+	// Server faults must not carry any ErrorCode detail.
 	for _, detail := range st.Details() {
-		if _, ok := detail.(*errdetails.ErrorInfo); ok {
-			t.Error("server-fault response must not carry ErrorInfo detail")
+		if _, ok := detail.(*errorv1.ErrorCode); ok {
+			t.Error("server-fault response must not carry ErrorCode detail")
 		}
 	}
 }
@@ -332,17 +346,16 @@ func TestTranslateError_ZitadelVerifyFailed_Unavailable(t *testing.T) {
 		t.Errorf("expected Unavailable, got %v", st.Code())
 	}
 	if st.Message() != "internal error" {
-		t.Errorf("expected masked message for Unavailable, got %q", st.Message())
+		t.Errorf("expected masked message, got %q", st.Message())
 	}
-	// Unavailable is a server-fault code — no ErrorInfo must leak.
 	for _, detail := range st.Details() {
-		if _, ok := detail.(*errdetails.ErrorInfo); ok {
-			t.Error("server-fault response must not carry ErrorInfo detail")
+		if _, ok := detail.(*errorv1.ErrorCode); ok {
+			t.Error("server-fault response must not carry ErrorCode detail")
 		}
 	}
 }
 
-func TestTranslateError_PermissionDenied_StripsSensitiveMetadata(t *testing.T) {
+func TestTranslateError_PermissionDenied_EmitsCodeOnly(t *testing.T) {
 	err := oops.In("service.authz").
 		Code("permission_denied").
 		Public("Permission denied.").
@@ -360,28 +373,21 @@ func TestTranslateError_PermissionDenied_StripsSensitiveMetadata(t *testing.T) {
 		t.Errorf("expected PermissionDenied, got %v", st.Code())
 	}
 
-	var info *errdetails.ErrorInfo
+	var code *errorv1.ErrorCode
 	for _, detail := range st.Details() {
-		if ei, ok := detail.(*errdetails.ErrorInfo); ok {
-			info = ei
+		if ec, ok := detail.(*errorv1.ErrorCode); ok {
+			code = ec
 			break
 		}
 	}
-	if info == nil {
-		t.Fatal("expected ErrorInfo detail for PermissionDenied")
+	if code == nil {
+		t.Fatal("expected ErrorCode detail for PermissionDenied")
 	}
-	if info.GetReason() != "permission_denied" {
-		t.Errorf("expected reason=permission_denied, got %q", info.GetReason())
+	if code.Code != "permission_denied" {
+		t.Errorf("expected code=permission_denied, got %q", code.Code)
 	}
-	// caller_id and policy must be stripped.
-	if _, found := info.GetMetadata()["caller_id"]; found {
-		t.Error("caller_id must not appear in client-facing metadata")
-	}
-	if _, found := info.GetMetadata()["policy"]; found {
-		t.Error("policy must not appear in client-facing metadata")
-	}
-	// Non-sensitive keys must be preserved.
-	if info.GetMetadata()["organization_id"] != "org-uuid" {
-		t.Errorf("expected organization_id to be preserved, got %v", info.GetMetadata())
+	// No ValidationFailedDetails and no other details that expose metadata.
+	if len(st.Details()) != 1 {
+		t.Errorf("expected exactly 1 detail (ErrorCode only), got %d", len(st.Details()))
 	}
 }

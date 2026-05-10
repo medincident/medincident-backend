@@ -7,6 +7,8 @@
 package orgstructurev1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -914,7 +916,7 @@ var File_command_orgstructure_v1_orgstructure_proto protoreflect.FileDescriptor
 
 const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\n" +
-	"*command/orgstructure/v1/orgstructure.proto\x12\x17command.orgstructure.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"F\n" +
+	"*command/orgstructure/v1/orgstructure.proto\x12\x17command.orgstructure.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"F\n" +
 	"\n" +
 	"PointInput\x12\x1c\n" +
 	"\tlongitude\x18\x01 \x01(\x01R\tlongitude\x12\x1a\n" +
@@ -979,7 +981,19 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x13UpdateClinicDetails\x123.command.orgstructure.v1.UpdateClinicDetailsRequest\x1a4.command.orgstructure.v1.UpdateClinicDetailsResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/clinics/{clinic_id}/details\x12\xcd\x01\n" +
 	"\x1bUpdateClinicPhysicalAddress\x12;.command.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.command.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"3\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\xa7\x01\n" +
 	"\x10CreateDepartment\x120.command.orgstructure.v1.CreateDepartmentRequest\x1a1.command.orgstructure.v1.CreateDepartmentResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/clinics/{clinic_id}/departments\x12\xc0\x01\n" +
-	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\x85\x02\n" +
+	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\xa3\x04\x92A\x9a\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x1bcom.command.orgstructure.v1B\x11OrgstructureProtoP\x01ZUgithub.com/medincident/medincident-backend/pkg/command/orgstructure/v1;orgstructurev1\xa2\x02\x03COX\xaa\x02\x17Command.Orgstructure.V1\xca\x02\x17Command\\Orgstructure\\V1\xe2\x02#Command\\Orgstructure\\V1\\GPBMetadata\xea\x02\x19Command::Orgstructure::V1b\x06proto3"
 
 var (

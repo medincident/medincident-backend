@@ -1,0 +1,43 @@
+// api/proto/error/v1/error.proto
+syntax = "proto3";
+
+package error.v1;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// ErrorCode is always present in gRPC status details for client-visible
+// errors. It carries the machine-readable domain error code.
+message ErrorCode {
+  string code = 1;
+}
+
+// ValidationFailedDetails is present only when code = "validation_failed".
+// Each violation corresponds to one struct-tag rule failure or one
+// domain-level leaf error from errors.Join.
+message ValidationFailedDetails {
+  repeated FieldViolation violations = 1;
+
+  message FieldViolation {
+    string field = 1;
+    string rule = 2;
+    string message = 3;
+    optional string param = 4;
+  }
+}
+
+// ErrorResponse is the HTTP response body written by the gateway error
+// handler. The openapiv2_schema option forces this message into the
+// generated OpenAPI definitions so that service-level $ref annotations
+// can reference it by name.
+message ErrorResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "ErrorResponse"
+      description: "Standard error response body returned by the gateway for all HTTP errors."
+    }
+  };
+
+  string code = 1;
+  string message = 2;
+  optional ValidationFailedDetails details = 3;
+}

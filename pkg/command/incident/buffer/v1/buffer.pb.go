@@ -7,6 +7,8 @@
 package bufferv1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -538,7 +540,7 @@ var File_command_incident_buffer_v1_buffer_proto protoreflect.FileDescriptor
 
 const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\n" +
-	"'command/incident/buffer/v1/buffer.proto\x12\x1acommand.incident.buffer.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\"\x99\x02\n" +
+	"'command/incident/buffer/v1/buffer.proto\x12\x1acommand.incident.buffer.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x99\x02\n" +
 	"\x1cSubmitPatientIncidentRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12$\n" +
 	"\vcategory_id\x18\x02 \x01(\tH\x00R\n" +
@@ -590,7 +592,19 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\x15UpdatePatientIncident\x128.command.incident.buffer.v1.UpdatePatientIncidentRequest\x1a9.command.incident.buffer.v1.UpdatePatientIncidentResponse\",\x82\xd3\xe4\x93\x02&:\x01*\x1a!/v1/patient-incidents/{buffer_id}\x12\xbe\x01\n" +
 	"\x15CancelPatientIncident\x128.command.incident.buffer.v1.CancelPatientIncidentRequest\x1a9.command.incident.buffer.v1.CancelPatientIncidentResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:cancel\x12\xc5\x01\n" +
 	"\x16PublishPatientIncident\x129.command.incident.buffer.v1.PublishPatientIncidentRequest\x1a:.command.incident.buffer.v1.PublishPatientIncidentResponse\"4\x82\xd3\xe4\x93\x02.:\x01*\")/v1/patient-incidents/{buffer_id}:publish\x12\xbe\x01\n" +
-	"\x15RejectPatientIncident\x128.command.incident.buffer.v1.RejectPatientIncidentRequest\x1a9.command.incident.buffer.v1.RejectPatientIncidentResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:rejectB\x8c\x02\n" +
+	"\x15RejectPatientIncident\x128.command.incident.buffer.v1.RejectPatientIncidentRequest\x1a9.command.incident.buffer.v1.RejectPatientIncidentResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:rejectB\xaa\x04\x92A\x9a\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x1ecom.command.incident.buffer.v1B\vBufferProtoP\x01ZRgithub.com/medincident/medincident-backend/pkg/command/incident/buffer/v1;bufferv1\xa2\x02\x03CIB\xaa\x02\x1aCommand.Incident.Buffer.V1\xca\x02\x1aCommand\\Incident\\Buffer\\V1\xe2\x02&Command\\Incident\\Buffer\\V1\\GPBMetadata\xea\x02\x1dCommand::Incident::Buffer::V1b\x06proto3"
 
 var (

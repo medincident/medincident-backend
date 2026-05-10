@@ -77,6 +77,30 @@
               "$ref": "#/definitions/v1GetSnapshotResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -137,6 +161,30 @@
               "$ref": "#/definitions/v1GetSummaryResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -189,6 +237,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1GetTimeSeriesResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -258,6 +330,30 @@
               "$ref": "#/definitions/v1CreateAnnouncementResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -288,6 +384,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateAnnouncementResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -328,6 +448,30 @@
               "$ref": "#/definitions/v1UpdateAnnouncementPriorityResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -366,6 +510,30 @@
               "$ref": "#/definitions/v1ArchiveAnnouncementResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -396,6 +564,30 @@
               "$ref": "#/definitions/v1UnarchiveAnnouncementResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -424,6 +616,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListDepartmentsByClinicResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -468,6 +684,30 @@
               "$ref": "#/definitions/v1CreateDepartmentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -506,6 +746,30 @@
               "$ref": "#/definitions/v1CountDepartmentsByClinicResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -534,6 +798,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateClinicDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -572,6 +860,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListEmployeesByClinicResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -639,6 +951,30 @@
               "$ref": "#/definitions/v1CountEmployeesByClinicResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -690,6 +1026,30 @@
               "$ref": "#/definitions/v1GetClinicHeadResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -719,6 +1079,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AssignClinicHeadResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -759,6 +1143,30 @@
               "$ref": "#/definitions/v1RevokeClinicHeadResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -795,6 +1203,30 @@
               "$ref": "#/definitions/v1RemoveClinicHeadDeputyResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -827,6 +1259,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AssignClinicHeadDeputyResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -873,6 +1329,30 @@
               "$ref": "#/definitions/v1UpdateClinicPhysicalAddressResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -911,6 +1391,30 @@
               "$ref": "#/definitions/v1GetClinicStatsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -941,6 +1445,30 @@
               "$ref": "#/definitions/v1GetClinicResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -969,6 +1497,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateDepartmentDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1007,6 +1559,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListEmployeesByDepartmentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1074,6 +1650,30 @@
               "$ref": "#/definitions/v1CountEmployeesByDepartmentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1125,6 +1725,30 @@
               "$ref": "#/definitions/v1GetDepartmentResponsibleResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1154,6 +1778,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AssignDepartmentResponsibleResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1194,6 +1842,30 @@
               "$ref": "#/definitions/v1RevokeDepartmentResponsibleResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1230,6 +1902,30 @@
               "$ref": "#/definitions/v1RemoveDepartmentResponsibleDeputyResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1262,6 +1958,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AssignDepartmentResponsibleDeputyResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1308,6 +2028,30 @@
               "$ref": "#/definitions/v1GetDepartmentStatsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1336,6 +2080,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1GetDepartmentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1367,6 +2135,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1HireEmployeeResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1401,6 +2193,30 @@
               "$ref": "#/definitions/v1TerminateEmployeeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1429,6 +2245,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateEmployeeDepartmentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1469,6 +2309,30 @@
               "$ref": "#/definitions/v1UpdateEmployeePositionResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1505,6 +2369,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListVacationsByEmployeeResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1556,6 +2444,30 @@
               "$ref": "#/definitions/v1ScheduleVacationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1592,6 +2504,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1CountVacationsByEmployeeResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1632,6 +2568,30 @@
               "$ref": "#/definitions/v1StartVacationNowResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1670,6 +2630,30 @@
               "$ref": "#/definitions/v1GetEmployeeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1698,6 +2682,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1DeleteIncidentCategoryResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1730,6 +2738,30 @@
               "$ref": "#/definitions/v1DeactivateIncidentCategoryResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1758,6 +2790,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateIncidentCategoryDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1798,6 +2854,30 @@
               "$ref": "#/definitions/v1ReactivateIncidentCategoryResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1826,6 +2906,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListTypesByCategoryResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1871,6 +2975,30 @@
               "$ref": "#/definitions/v1CreateIncidentTypeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1907,6 +3035,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1MoveIncidentCategoryResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -1947,6 +3099,30 @@
               "$ref": "#/definitions/v1GetCategoryResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -1975,6 +3151,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListCategorySubtreeResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2007,6 +3207,30 @@
               "$ref": "#/definitions/v1GetTypeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2035,6 +3259,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1DeleteIncidentTypeResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2067,6 +3315,30 @@
               "$ref": "#/definitions/v1DeactivateIncidentTypeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2095,6 +3367,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateIncidentTypeDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2135,6 +3431,30 @@
               "$ref": "#/definitions/v1DisallowIncidentTypeForPatientsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2161,6 +3481,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AllowIncidentTypeForPatientsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2193,6 +3537,30 @@
               "$ref": "#/definitions/v1ReactivateIncidentTypeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2221,6 +3589,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1MoveIncidentTypeResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2261,6 +3653,30 @@
               "$ref": "#/definitions/v1CreateIncidentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2291,6 +3707,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateIncidentDescriptionResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2331,6 +3771,30 @@
               "$ref": "#/definitions/v1UpdateIncidentPriorityResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2367,6 +3831,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListServiceRequestsByIncidentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2413,6 +3901,30 @@
               "$ref": "#/definitions/v1UpdateIncidentStatusResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2451,6 +3963,30 @@
               "$ref": "#/definitions/v1CancelIncidentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2479,6 +4015,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ReopenIncidentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2681,6 +4241,30 @@
               "$ref": "#/definitions/v1ListOrganizationsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2717,6 +4301,30 @@
               "$ref": "#/definitions/v1CreateOrganizationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2749,6 +4357,30 @@
               "$ref": "#/definitions/v1GetOrganizationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2777,6 +4409,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListOrgAdminsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2822,6 +4478,30 @@
               "$ref": "#/definitions/v1AssignOrganizationAdminResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2860,6 +4540,30 @@
               "$ref": "#/definitions/v1RevokeOrganizationAdminResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2896,6 +4600,30 @@
               "$ref": "#/definitions/v1RemoveOrganizationAdminDeputyResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -2928,6 +4656,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AssignOrganizationAdminDeputyResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -2974,6 +4726,30 @@
               "$ref": "#/definitions/v1ListClinicsByOrganizationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3016,6 +4792,30 @@
               "$ref": "#/definitions/v1CreateClinicResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3054,6 +4854,30 @@
               "$ref": "#/definitions/v1CountClinicsByOrganizationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3082,6 +4906,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateOrganizationDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -3120,6 +4968,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListOrgDispatchersResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -3165,6 +5037,30 @@
               "$ref": "#/definitions/v1AssignOrganizationDispatcherResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3203,6 +5099,30 @@
               "$ref": "#/definitions/v1RevokeOrganizationDispatcherResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3239,6 +5159,30 @@
               "$ref": "#/definitions/v1RemoveOrganizationDispatcherDeputyResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3271,6 +5215,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AssignOrganizationDispatcherDeputyResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -3315,6 +5283,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListEmployeesByOrganizationResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -3382,6 +5374,30 @@
               "$ref": "#/definitions/v1CountEmployeesByOrganizationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3431,6 +5447,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1SearchEmployeesByOrganizationResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -3505,6 +5545,30 @@
               "$ref": "#/definitions/v1ListOrgHeadsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3548,6 +5612,30 @@
               "$ref": "#/definitions/v1AssignOrganizationHeadResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3586,6 +5674,30 @@
               "$ref": "#/definitions/v1RevokeOrganizationHeadResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3622,6 +5734,30 @@
               "$ref": "#/definitions/v1RemoveOrganizationHeadDeputyResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3654,6 +5790,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1AssignOrganizationHeadDeputyResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -3700,6 +5860,30 @@
               "$ref": "#/definitions/v1ListCategoriesByOrganizationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3743,6 +5927,30 @@
               "$ref": "#/definitions/v1CreateIncidentCategoryResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3779,6 +5987,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListPatientVisibleCategoriesByOrganizationResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -3825,6 +6057,30 @@
               "$ref": "#/definitions/v1ListActiveRootCategoriesResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3867,6 +6123,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListActiveTypesByOrganizationResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -3914,6 +6194,30 @@
               "$ref": "#/definitions/v1ListPatientAllowedTypesByOrganizationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3958,6 +6262,30 @@
               "$ref": "#/definitions/v1UpdateOrganizationLegalAddressResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -3994,6 +6322,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListRequestTypesByOrganizationResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4038,6 +6390,30 @@
               "$ref": "#/definitions/v1CreateRequestTypeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4074,6 +6450,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListActiveRequestTypesByOrganizationResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4120,6 +6520,30 @@
               "$ref": "#/definitions/v1ListServiceRequestsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4164,6 +6588,30 @@
               "$ref": "#/definitions/v1GetOrganizationStatsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4194,6 +6642,30 @@
               "$ref": "#/definitions/v1CountOrganizationsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4214,6 +6686,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1SearchOrganizationsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4260,6 +6756,30 @@
               "$ref": "#/definitions/v1SubmitPatientIncidentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4290,6 +6810,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdatePatientIncidentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4330,6 +6874,30 @@
               "$ref": "#/definitions/v1CancelPatientIncidentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4358,6 +6926,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1PublishPatientIncidentResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4398,6 +6990,30 @@
               "$ref": "#/definitions/v1RejectPatientIncidentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4428,6 +7044,30 @@
               "$ref": "#/definitions/v1GetAnnouncementResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4456,6 +7096,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListAnnouncementsForClinicResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4519,6 +7183,30 @@
               "$ref": "#/definitions/v1ListAnnouncementsForDepartmentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4580,6 +7268,30 @@
               "$ref": "#/definitions/v1GetIncidentResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4610,6 +7322,30 @@
               "$ref": "#/definitions/v1GetIncidentHistoryResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4638,6 +7374,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListMyIncidentsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4676,6 +7436,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListAnnouncementsForOrganizationResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4738,6 +7522,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListIncidentsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4856,6 +7664,30 @@
               "$ref": "#/definitions/v1ListBufferEntriesResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4918,6 +7750,30 @@
               "$ref": "#/definitions/v1GetBufferEntryResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -4946,6 +7802,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ListMyBufferEntriesResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -4986,6 +7866,30 @@
               "$ref": "#/definitions/v1GetRequestTypeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5014,6 +7918,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1DeleteRequestTypeResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -5046,6 +7974,30 @@
               "$ref": "#/definitions/v1DeactivateRequestTypeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5074,6 +8026,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateRequestTypeDetailsResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -5114,6 +8090,30 @@
               "$ref": "#/definitions/v1ReactivateRequestTypeResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5142,6 +8142,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1CreateServiceRequestResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -5176,6 +8200,30 @@
               "$ref": "#/definitions/v1GetServiceRequestResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5204,6 +8252,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateServiceRequestDescriptionResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -5244,6 +8316,30 @@
               "$ref": "#/definitions/v1AssignExecutorsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5282,6 +8378,30 @@
               "$ref": "#/definitions/v1GetServiceRequestHistoryResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5310,6 +8430,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateServiceRequestStatusResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -5350,6 +8494,30 @@
               "$ref": "#/definitions/v1ListSystemAdminsResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5387,6 +8555,30 @@
               "$ref": "#/definitions/v1GrantSystemAdminResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5419,6 +8611,30 @@
               "$ref": "#/definitions/v1RevokeSystemAdminResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5449,6 +8665,30 @@
               "$ref": "#/definitions/v1CancelScheduledVacationResponse"
             }
           },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
           "default": {
             "description": "An unexpected error response.",
             "schema": {
@@ -5477,6 +8717,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1UpdateVacationEndDateResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -5515,6 +8779,30 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1ForceEndVacationResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           },
           "default": {
@@ -6047,6 +9335,23 @@
       "required": [
         "newStatus"
       ]
+    },
+    "ValidationFailedDetailsFieldViolation": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "param": {
+          "type": "string"
+        }
+      }
     },
     "classifierV1Type": {
       "type": "object",
@@ -6913,6 +10218,22 @@
         }
       },
       "description": "EmployeeCardView is the denormalised card projection returned by\nboth Get and List endpoints. Fields mirror projections.employee_cards\ncolumns; timestamps are RFC3339 strings. Optional fields stay unset\nwhen the backing column is NULL."
+    },
+    "v1ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ValidationFailedDetails"
+        }
+      },
+      "description": "Standard error response body returned by the gateway for all HTTP errors.",
+      "title": "ErrorResponse"
     },
     "v1Executor": {
       "type": "object",
@@ -8623,6 +11944,19 @@
         }
       },
       "description": "VacationView mirrors projections.employee_vacations. state is one of\n{scheduled, active, ended, cancelled}."
+    },
+    "v1ValidationFailedDetails": {
+      "type": "object",
+      "properties": {
+        "violations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValidationFailedDetailsFieldViolation"
+          }
+        }
+      },
+      "description": "ValidationFailedDetails is present only when code = \"validation_failed\".\nEach violation corresponds to one struct-tag rule failure or one\ndomain-level leaf error from errors.Join."
     }
   }
 }
