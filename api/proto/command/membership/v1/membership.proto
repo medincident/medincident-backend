@@ -2,79 +2,10 @@ syntax = "proto3";
 
 package command.membership.v1;
 
-import "error/v1/error.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
-
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
-  responses: {
-    key: "400"
-    value: {
-      description: "Validation failed or invalid input."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}"
-      }
-    }
-  }
-  responses: {
-    key: "401"
-    value: {
-      description: "Unauthenticated — missing or invalid token."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}"
-      }
-    }
-  }
-  responses: {
-    key: "403"
-    value: {
-      description: "Permission denied."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"permission_denied\",\"message\":\"permission denied\"}"
-      }
-    }
-  }
-  responses: {
-    key: "500"
-    value: {
-      description: "Unexpected server error."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"unexpected_error\",\"message\":\"internal error\"}"
-      }
-    }
-  }
-  responses: {
-    key: "default"
-    value: {
-      description: "An unexpected error response (e.g. deadline exceeded or request canceled)."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}"
-      }
-    }
-  }
-};
 
 // MembershipService is the command-side contract for who-works-where
 // data. It covers the Employee lifecycle (hire / update / terminate),
@@ -93,42 +24,15 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `employee_already_hired` — this Zitadel user is already an active employee of this organization."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"employee_already_hired\",\"message\":\"Employee already hired.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `employee_already_hired` — this Zitadel user is already an active employee of this organization."}
       }
       responses: {
         key: "503"
-        value: {
-          description: "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"zitadel_verify_failed\",\"message\":\"Identity service unavailable.\"}"
-          }
-        }
+        value: {description: "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable."}
       }
     };
   }
@@ -140,16 +44,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
       }
     };
   }
@@ -161,16 +56,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist."}
       }
     };
   }
@@ -179,16 +65,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
       }
     };
   }
@@ -202,16 +79,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
       }
     };
   }
@@ -223,16 +91,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
       }
     };
   }
@@ -244,16 +103,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"vacation_not_found\",\"message\":\"Vacation not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."}
       }
     };
   }
@@ -262,16 +112,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"vacation_not_found\",\"message\":\"Vacation not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."}
       }
     };
   }
@@ -280,16 +121,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"vacation_not_found\",\"message\":\"Vacation not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."}
       }
     };
   }
@@ -303,29 +135,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `department_responsible_already_assigned` — this employee is already the department responsible."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"department_responsible_already_assigned\",\"message\":\"Department responsible already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `department_responsible_already_assigned` — this employee is already the department responsible."}
       }
     };
   }
@@ -334,16 +148,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `department_responsible_not_found` — this employee is not the department responsible.\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"department_responsible_not_found\",\"message\":\"Department responsible not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `department_responsible_not_found` — this employee is not the department responsible.\n- `employee_not_found` — employee with the given ID does not exist."}
       }
     };
   }
@@ -355,29 +160,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
       }
     };
   }
@@ -386,16 +173,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."}
       }
     };
   }
@@ -409,29 +187,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `clinic_head_already_assigned` — this clinic already has a head assigned."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"clinic_head_already_assigned\",\"message\":\"Clinic head already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `clinic_head_already_assigned` — this clinic already has a head assigned."}
       }
     };
   }
@@ -440,16 +200,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `clinic_head_not_found` — this employee is not the clinic head."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"clinic_head_not_found\",\"message\":\"Clinic head not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `clinic_head_not_found` — this employee is not the clinic head."}
       }
     };
   }
@@ -461,29 +212,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
       }
     };
   }
@@ -492,16 +225,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."}
       }
     };
   }
@@ -515,29 +239,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `organization_admin_already_assigned` — this employee is already an organization admin."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_admin_already_assigned\",\"message\":\"Organization admin already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `organization_admin_already_assigned` — this employee is already an organization admin."}
       }
     };
   }
@@ -546,16 +252,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_admin_not_found` — this employee is not an organization admin."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_admin_not_found\",\"message\":\"Organization admin not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_admin_not_found` — this employee is not an organization admin."}
       }
     };
   }
@@ -567,29 +264,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
       }
     };
   }
@@ -598,16 +277,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
       }
     };
   }
@@ -621,29 +291,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `organization_head_already_assigned` — this organization already has a head assigned."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_head_already_assigned\",\"message\":\"Organization head already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `organization_head_already_assigned` — this organization already has a head assigned."}
       }
     };
   }
@@ -652,16 +304,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_head_not_found` — this employee is not the organization head."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_head_not_found\",\"message\":\"Organization head not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_head_not_found` — this employee is not the organization head."}
       }
     };
   }
@@ -673,29 +316,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
       }
     };
   }
@@ -704,16 +329,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
       }
     };
   }
@@ -727,29 +343,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `organization_dispatcher_already_assigned` — this employee is already an organization dispatcher."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_dispatcher_already_assigned\",\"message\":\"Organization dispatcher already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `organization_dispatcher_already_assigned` — this employee is already an organization dispatcher."}
       }
     };
   }
@@ -758,16 +356,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_dispatcher_not_found` — this employee is not an organization dispatcher."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_dispatcher_not_found\",\"message\":\"Organization dispatcher not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_dispatcher_not_found` — this employee is not an organization dispatcher."}
       }
     };
   }
@@ -779,29 +368,11 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
       }
     };
   }
@@ -810,16 +381,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
       }
     };
   }
@@ -833,42 +395,15 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"zitadel_user_not_found\",\"message\":\"Zitadel user not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `system_admin_already_granted` — this user is already a system admin."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"system_admin_already_granted\",\"message\":\"System admin already granted.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `system_admin_already_granted` — this user is already a system admin."}
       }
       responses: {
         key: "503"
-        value: {
-          description: "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"zitadel_verify_failed\",\"message\":\"Identity service unavailable.\"}"
-          }
-        }
+        value: {description: "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable."}
       }
     };
   }
@@ -877,16 +412,7 @@ service MembershipCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `system_admin_not_found` — this user is not a system admin."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"system_admin_not_found\",\"message\":\"System admin not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `system_admin_not_found` — this user is not a system admin."}
       }
     };
   }

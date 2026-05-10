@@ -8,7 +8,6 @@ package incidentv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -1600,7 +1599,7 @@ var File_query_incident_v1_incident_proto protoreflect.FileDescriptor
 
 const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\n" +
-	" query/incident/v1/incident.proto\x12\x11query.incident.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xec\x01\n" +
+	" query/incident/v1/incident.proto\x12\x11query.incident.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xec\x01\n" +
 	"\rRegistrarView\x12\x1f\n" +
 	"\vemployee_id\x18\x01 \x01(\tR\n" +
 	"employeeId\x12!\n" +
@@ -1779,50 +1778,24 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x16PATIENT_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17PATIENT_STATUS_ACCEPTED\x10\x02\x12\x19\n" +
 	"\x15PATIENT_STATUS_CLOSED\x10\x03\x12\x1c\n" +
-	"\x18PATIENT_STATUS_CANCELLED\x10\x042\xa3\x0e\n" +
-	"\x14IncidentQueryService\x12\xe9\x02\n" +
-	"\vGetIncident\x12%.query.incident.v1.GetIncidentRequest\x1a&.query.incident.v1.GetIncidentResponse\"\x8a\x02\x92A\xe6\x01J\xe3\x01\n" +
-	"\x03404\x12\xdb\x01\n" +
+	"\x18PATIENT_STATUS_CANCELLED\x10\x042\xb2\v\n" +
+	"\x14IncidentQueryService\x12\xf0\x01\n" +
+	"\vGetIncident\x12%.query.incident.v1.GetIncidentRequest\x1a&.query.incident.v1.GetIncidentResponse\"\x91\x01\x92AnJl\n" +
+	"\x03404\x12e\n" +
 	"cNot found. Error codes:\n" +
-	"- `incident_query_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
-	"\x10application/json\x12C{\"code\":\"incident_query_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents/{id}\x12\x9f\x01\n" +
+	"- `incident_query_not_found` — incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents/{id}\x12\x9f\x01\n" +
 	"\rListIncidents\x12'.query.incident.v1.ListIncidentsRequest\x1a(.query.incident.v1.ListIncidentsResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/organizations/{organization_id}/incidents\x12\x8a\x01\n" +
-	"\x0fListMyIncidents\x12).query.incident.v1.ListMyIncidentsRequest\x1a*.query.incident.v1.ListMyIncidentsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents:mine\x12\x8f\x03\n" +
-	"\x12GetIncidentHistory\x12,.query.incident.v1.GetIncidentHistoryRequest\x1a-.query.incident.v1.GetIncidentHistoryResponse\"\x9b\x02\x92A\xe6\x01J\xe3\x01\n" +
-	"\x03404\x12\xdb\x01\n" +
+	"\x0fListMyIncidents\x12).query.incident.v1.ListMyIncidentsRequest\x1a*.query.incident.v1.ListMyIncidentsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents:mine\x12\x96\x02\n" +
+	"\x12GetIncidentHistory\x12,.query.incident.v1.GetIncidentHistoryRequest\x1a-.query.incident.v1.GetIncidentHistoryResponse\"\xa2\x01\x92AnJl\n" +
+	"\x03404\x12e\n" +
 	"cNot found. Error codes:\n" +
-	"- `incident_query_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
-	"\x10application/json\x12C{\"code\":\"incident_query_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02+\x12)/v1/query/incidents/{incident_id}/history\x12\x86\x03\n" +
-	"\x0eGetBufferEntry\x12(.query.incident.v1.GetBufferEntryRequest\x1a).query.incident.v1.GetBufferEntryResponse\"\x9e\x02\x92A\xf2\x01J\xef\x01\n" +
-	"\x03404\x12\xe7\x01\n" +
+	"- `incident_query_not_found` — incident with the given ID does not exist.\x82\xd3\xe4\x93\x02+\x12)/v1/query/incidents/{incident_id}/history\x12\x87\x02\n" +
+	"\x0eGetBufferEntry\x12(.query.incident.v1.GetBufferEntryRequest\x1a).query.incident.v1.GetBufferEntryResponse\"\x9f\x01\x92AtJr\n" +
+	"\x03404\x12k\n" +
 	"iNot found. Error codes:\n" +
-	"- `buffer_query_not_found` — patient incident with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"]\n" +
-	"\x10application/json\x12I{\"code\":\"buffer_query_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xb3\x01\n" +
+	"- `buffer_query_not_found` — patient incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xb3\x01\n" +
 	"\x11ListBufferEntries\x12+.query.incident.v1.ListBufferEntriesRequest\x1a,.query.incident.v1.ListBufferEntriesResponse\"C\x82\xd3\xe4\x93\x02=\x12;/v1/query/organizations/{organization_id}/patient-incidents\x12\x9e\x01\n" +
-	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xe4\b\x92A\x87\aR\xff\x01\n" +
-	"\x03400\x12\xf7\x01\n" +
-	"#Validation failed or invalid input.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
-	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
-	"\x03401\x12\x98\x01\n" +
-	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}R\x89\x01\n" +
-	"\x03403\x12\x81\x01\n" +
-	"\x12Permission denied.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
-	"\x10application/json\x12:{\"code\":\"permission_denied\",\"message\":\"permission denied\"}R\x8b\x01\n" +
-	"\x03500\x12\x83\x01\n" +
-	"\x18Unexpected server error.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}R\xc5\x01\n" +
-	"\adefault\x12\xb9\x01\n" +
-	"JAn unexpected error response (e.g. deadline exceeded or request canceled).\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
-	"\x10application/json\x12:{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}\n" +
+	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xd9\x01\n" +
 	"\x15com.query.incident.v1B\rIncidentProtoP\x01ZKgithub.com/medincident/medincident-backend/pkg/query/incident/v1;incidentv1\xa2\x02\x03QIX\xaa\x02\x11Query.Incident.V1\xca\x02\x11Query\\Incident\\V1\xe2\x02\x1dQuery\\Incident\\V1\\GPBMetadata\xea\x02\x13Query::Incident::V1b\x06proto3"
 
 var (

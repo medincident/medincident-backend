@@ -2,78 +2,10 @@ syntax = "proto3";
 
 package query.request.v1;
 
-import "error/v1/error.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/query/request/v1;requestqueryv1";
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
-  responses: {
-    key: "400"
-    value: {
-      description: "Validation failed or invalid input."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}"
-      }
-    }
-  }
-  responses: {
-    key: "401"
-    value: {
-      description: "Unauthenticated — missing or invalid token."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}"
-      }
-    }
-  }
-  responses: {
-    key: "403"
-    value: {
-      description: "Permission denied."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"permission_denied\",\"message\":\"permission denied\"}"
-      }
-    }
-  }
-  responses: {
-    key: "500"
-    value: {
-      description: "Unexpected server error."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"unexpected_error\",\"message\":\"internal error\"}"
-      }
-    }
-  }
-  responses: {
-    key: "default"
-    value: {
-      description: "An unexpected error response (e.g. deadline exceeded or request canceled)."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}"
-      }
-    }
-  }
-};
 
 service ServiceRequestQueryService {
   rpc GetServiceRequest(GetServiceRequestRequest) returns (GetServiceRequestResponse) {
@@ -81,16 +13,7 @@ service ServiceRequestQueryService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `service_request_query_not_found` — service request with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"service_request_query_not_found\",\"message\":\"Service request not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `service_request_query_not_found` — service request with the given ID does not exist."}
       }
     };
   }
@@ -99,16 +22,7 @@ service ServiceRequestQueryService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "400"
-        value: {
-          description: "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `service_request_list_offset_out_of_range` — offset is out of the allowed range."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"service_request_list_limit_out_of_range\",\"message\":\"Limit out of range.\"}"
-          }
-        }
+        value: {description: "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `service_request_list_offset_out_of_range` — offset is out of the allowed range."}
       }
     };
   }
@@ -117,16 +31,7 @@ service ServiceRequestQueryService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `service_request_query_incident_not_found` — incident with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"service_request_query_incident_not_found\",\"message\":\"Incident not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `service_request_query_incident_not_found` — incident with the given ID does not exist."}
       }
     };
   }

@@ -8,7 +8,6 @@ package orgstructurev1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -1504,7 +1503,7 @@ var File_query_orgstructure_v1_orgstructure_proto protoreflect.FileDescriptor
 
 const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\n" +
-	"(query/orgstructure/v1/orgstructure.proto\x12\x15query.orgstructure.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"A\n" +
+	"(query/orgstructure/v1/orgstructure.proto\x12\x15query.orgstructure.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"A\n" +
 	"\x05Point\x12\x1c\n" +
 	"\tlongitude\x18\x01 \x01(\x01R\tlongitude\x12\x1a\n" +
 	"\blatitude\x18\x02 \x01(\x01R\blatitude\"`\n" +
@@ -1602,53 +1601,27 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x1fCountDepartmentsByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\"8\n" +
 	" CountDepartmentsByClinicResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total2\xc0\x12\n" +
-	"\x18OrgStructureQueryService\x12\xff\x02\n" +
-	"\x0fGetOrganization\x12-.query.orgstructure.v1.GetOrganizationRequest\x1a..query.orgstructure.v1.GetOrganizationResponse\"\x8c\x02\x92A\xea\x01J\xe7\x01\n" +
-	"\x03404\x12\xdf\x01\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total2\xde\x0f\n" +
+	"\x18OrgStructureQueryService\x12\x84\x02\n" +
+	"\x0fGetOrganization\x12-.query.orgstructure.v1.GetOrganizationRequest\x1a..query.orgstructure.v1.GetOrganizationResponse\"\x91\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `organization_not_found` — organization with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
-	"\x10application/json\x12E{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/organizations/{id}\x12\x91\x01\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/organizations/{id}\x12\x91\x01\n" +
 	"\x11ListOrganizations\x12/.query.orgstructure.v1.ListOrganizationsRequest\x1a0.query.orgstructure.v1.ListOrganizationsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/organizations\x12\x9a\x01\n" +
 	"\x12CountOrganizations\x120.query.orgstructure.v1.CountOrganizationsRequest\x1a1.query.orgstructure.v1.CountOrganizationsResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/organizations:count\x12\x9e\x01\n" +
-	"\x13SearchOrganizations\x121.query.orgstructure.v1.SearchOrganizationsRequest\x1a2.query.orgstructure.v1.SearchOrganizationsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/organizations:search\x12\xcf\x02\n" +
-	"\tGetClinic\x12'.query.orgstructure.v1.GetClinicRequest\x1a(.query.orgstructure.v1.GetClinicResponse\"\xee\x01\x92A\xd2\x01J\xcf\x01\n" +
-	"\x03404\x12\xc7\x01\n" +
+	"\x13SearchOrganizations\x121.query.orgstructure.v1.SearchOrganizationsRequest\x1a2.query.orgstructure.v1.SearchOrganizationsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/organizations:search\x12\xdf\x01\n" +
+	"\tGetClinic\x12'.query.orgstructure.v1.GetClinicRequest\x1a(.query.orgstructure.v1.GetClinicResponse\"\x7f\x92AdJb\n" +
+	"\x03404\x12[\n" +
 	"YNot found. Error codes:\n" +
-	"- `clinic_not_found` — clinic with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"M\n" +
-	"\x10application/json\x129{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/clinics/{id}\x12\xc3\x01\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/clinics/{id}\x12\xc3\x01\n" +
 	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/organizations/{organization_id}/clinics\x12\xcc\x01\n" +
-	"\x1aCountClinicsByOrganization\x128.query.orgstructure.v1.CountClinicsByOrganizationRequest\x1a9.query.orgstructure.v1.CountClinicsByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/clinics:count\x12\xef\x02\n" +
-	"\rGetDepartment\x12+.query.orgstructure.v1.GetDepartmentRequest\x1a,.query.orgstructure.v1.GetDepartmentResponse\"\x82\x02\x92A\xe2\x01J\xdf\x01\n" +
-	"\x03404\x12\xd7\x01\n" +
+	"\x1aCountClinicsByOrganization\x128.query.orgstructure.v1.CountClinicsByOrganizationRequest\x1a9.query.orgstructure.v1.CountClinicsByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/clinics:count\x12\xf8\x01\n" +
+	"\rGetDepartment\x12+.query.orgstructure.v1.GetDepartmentRequest\x1a,.query.orgstructure.v1.GetDepartmentResponse\"\x8b\x01\x92AlJj\n" +
+	"\x03404\x12c\n" +
 	"aNot found. Error codes:\n" +
-	"- `department_not_found` — department with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"U\n" +
-	"\x10application/json\x12A{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/departments/{id}\x12\xb5\x01\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/departments/{id}\x12\xb5\x01\n" +
 	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"+\x82\xd3\xe4\x93\x02%\x12#/v1/clinics/{clinic_id}/departments\x12\xbe\x01\n" +
-	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/clinics/{clinic_id}/departments:countB\x84\t\x92A\x87\aR\xff\x01\n" +
-	"\x03400\x12\xf7\x01\n" +
-	"#Validation failed or invalid input.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
-	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
-	"\x03401\x12\x98\x01\n" +
-	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}R\x89\x01\n" +
-	"\x03403\x12\x81\x01\n" +
-	"\x12Permission denied.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
-	"\x10application/json\x12:{\"code\":\"permission_denied\",\"message\":\"permission denied\"}R\x8b\x01\n" +
-	"\x03500\x12\x83\x01\n" +
-	"\x18Unexpected server error.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}R\xc5\x01\n" +
-	"\adefault\x12\xb9\x01\n" +
-	"JAn unexpected error response (e.g. deadline exceeded or request canceled).\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
-	"\x10application/json\x12:{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}\n" +
+	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/clinics/{clinic_id}/departments:countB\xf9\x01\n" +
 	"\x19com.query.orgstructure.v1B\x11OrgstructureProtoP\x01ZSgithub.com/medincident/medincident-backend/pkg/query/orgstructure/v1;orgstructurev1\xa2\x02\x03QOX\xaa\x02\x15Query.Orgstructure.V1\xca\x02\x15Query\\Orgstructure\\V1\xe2\x02!Query\\Orgstructure\\V1\\GPBMetadata\xea\x02\x17Query::Orgstructure::V1b\x06proto3"
 
 var (

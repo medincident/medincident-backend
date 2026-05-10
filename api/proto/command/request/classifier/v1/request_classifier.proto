@@ -2,79 +2,11 @@ syntax = "proto3";
 
 package command.request.classifier.v1;
 
-import "error/v1/error.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/command/request/classifier/v1;requestclassifierv1";
-option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
-  responses: {
-    key: "400"
-    value: {
-      description: "Validation failed or invalid input."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}"
-      }
-    }
-  }
-  responses: {
-    key: "401"
-    value: {
-      description: "Unauthenticated — missing or invalid token."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}"
-      }
-    }
-  }
-  responses: {
-    key: "403"
-    value: {
-      description: "Permission denied."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"permission_denied\",\"message\":\"permission denied\"}"
-      }
-    }
-  }
-  responses: {
-    key: "500"
-    value: {
-      description: "Unexpected server error."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"unexpected_error\",\"message\":\"internal error\"}"
-      }
-    }
-  }
-  responses: {
-    key: "default"
-    value: {
-      description: "An unexpected error response (e.g. deadline exceeded or request canceled)."
-      schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
-      }
-      examples: {
-        key: "application/json"
-        value: "{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}"
-      }
-    }
-  }
-};
 
 service RequestClassifierCommandService {
   rpc CreateRequestType(CreateRequestTypeRequest) returns (CreateRequestTypeResponse) {
@@ -85,16 +17,7 @@ service RequestClassifierCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `request_type_name_conflict` — a request type with this name already exists in the organization."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `request_type_name_conflict` — a request type with this name already exists in the organization."}
       }
     };
   }
@@ -106,29 +29,11 @@ service RequestClassifierCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `request_type_name_conflict` — a request type with this name already exists in the organization."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `request_type_name_conflict` — a request type with this name already exists in the organization."}
       }
     };
   }
@@ -137,16 +42,7 @@ service RequestClassifierCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."}
       }
     };
   }
@@ -155,29 +51,11 @@ service RequestClassifierCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."}
       }
       responses: {
         key: "409"
-        value: {
-          description: "Conflict. Error codes:\n- `request_type_name_conflict` — reactivation would create a name conflict with an active type."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}"
-          }
-        }
+        value: {description: "Conflict. Error codes:\n- `request_type_name_conflict` — reactivation would create a name conflict with an active type."}
       }
     };
   }
@@ -186,16 +64,7 @@ service RequestClassifierCommandService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "404"
-        value: {
-          description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."
-          schema: {
-            json_schema: {ref: ".error.v1.ErrorResponse"}
-          }
-          examples: {
-            key: "application/json"
-            value: "{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}"
-          }
-        }
+        value: {description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."}
       }
     };
   }

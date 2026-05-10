@@ -10,7 +10,6 @@ package analyticsv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -2006,7 +2005,7 @@ var File_query_analytics_v1_analytics_proto protoreflect.FileDescriptor
 
 const file_query_analytics_v1_analytics_proto_rawDesc = "" +
 	"\n" +
-	"\"query/analytics/v1/analytics.proto\x12\x12query.analytics.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x83\x02\n" +
+	"\"query/analytics/v1/analytics.proto\x12\x12query.analytics.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x83\x02\n" +
 	"\x12GetSnapshotRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x12\n" +
 	"\x04from\x18\x02 \x01(\tR\x04from\x12\x0e\n" +
@@ -2206,53 +2205,27 @@ const file_query_analytics_v1_analytics_proto_rawDesc = "" +
 	"#TIME_SERIES_GRANULARITY_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bTIME_SERIES_GRANULARITY_DAY\x10\x01\x12 \n" +
 	"\x1cTIME_SERIES_GRANULARITY_WEEK\x10\x02\x12!\n" +
-	"\x1dTIME_SERIES_GRANULARITY_MONTH\x10\x032\xc2\f\n" +
-	"\x15AnalyticsQueryService\x12\x8a\x04\n" +
-	"\vGetSnapshot\x12&.query.analytics.v1.GetSnapshotRequest\x1a'.query.analytics.v1.GetSnapshotResponse\"\xa9\x03\x92A\x87\x03J\x84\x03\n" +
-	"\x03404\x12\xfc\x02\n" +
+	"\x1dTIME_SERIES_GRANULARITY_MONTH\x10\x032\xd7\t\n" +
+	"\x15AnalyticsQueryService\x12\x91\x03\n" +
+	"\vGetSnapshot\x12&.query.analytics.v1.GetSnapshotRequest\x1a'.query.analytics.v1.GetSnapshotResponse\"\xb0\x02\x92A\x8e\x02J\x8b\x02\n" +
+	"\x03404\x12\x83\x02\n" +
 	"\x80\x02Not found. Error codes:\n" +
 	"- `analytics_org_not_found` — organization with the given ID does not exist.\n" +
 	"- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n" +
-	"- `analytics_dept_not_found` — department with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"Z\n" +
-	"\x10application/json\x12F{\"code\":\"analytics_org_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/analytics/snapshot\x12\x86\x04\n" +
+	"- `analytics_dept_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/analytics/snapshot\x12\x8d\x03\n" +
 	"\n" +
-	"GetSummary\x12%.query.analytics.v1.GetSummaryRequest\x1a&.query.analytics.v1.GetSummaryResponse\"\xa8\x03\x92A\x87\x03J\x84\x03\n" +
-	"\x03404\x12\xfc\x02\n" +
+	"GetSummary\x12%.query.analytics.v1.GetSummaryRequest\x1a&.query.analytics.v1.GetSummaryResponse\"\xaf\x02\x92A\x8e\x02J\x8b\x02\n" +
+	"\x03404\x12\x83\x02\n" +
 	"\x80\x02Not found. Error codes:\n" +
 	"- `analytics_org_not_found` — organization with the given ID does not exist.\n" +
 	"- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n" +
-	"- `analytics_dept_not_found` — department with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"Z\n" +
-	"\x10application/json\x12F{\"code\":\"analytics_org_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/analytics/summary\x12\x92\x04\n" +
-	"\rGetTimeSeries\x12(.query.analytics.v1.GetTimeSeriesRequest\x1a).query.analytics.v1.GetTimeSeriesResponse\"\xab\x03\x92A\x87\x03J\x84\x03\n" +
-	"\x03404\x12\xfc\x02\n" +
+	"- `analytics_dept_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/analytics/summary\x12\x99\x03\n" +
+	"\rGetTimeSeries\x12(.query.analytics.v1.GetTimeSeriesRequest\x1a).query.analytics.v1.GetTimeSeriesResponse\"\xb2\x02\x92A\x8e\x02J\x8b\x02\n" +
+	"\x03404\x12\x83\x02\n" +
 	"\x80\x02Not found. Error codes:\n" +
 	"- `analytics_org_not_found` — organization with the given ID does not exist.\n" +
 	"- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n" +
-	"- `analytics_dept_not_found` — department with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"Z\n" +
-	"\x10application/json\x12F{\"code\":\"analytics_org_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/analytics/timeseriesB\xec\b\x92A\x87\aR\xff\x01\n" +
-	"\x03400\x12\xf7\x01\n" +
-	"#Validation failed or invalid input.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
-	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
-	"\x03401\x12\x98\x01\n" +
-	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}R\x89\x01\n" +
-	"\x03403\x12\x81\x01\n" +
-	"\x12Permission denied.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
-	"\x10application/json\x12:{\"code\":\"permission_denied\",\"message\":\"permission denied\"}R\x8b\x01\n" +
-	"\x03500\x12\x83\x01\n" +
-	"\x18Unexpected server error.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}R\xc5\x01\n" +
-	"\adefault\x12\xb9\x01\n" +
-	"JAn unexpected error response (e.g. deadline exceeded or request canceled).\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
-	"\x10application/json\x12:{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}\n" +
+	"- `analytics_dept_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/analytics/timeseriesB\xe1\x01\n" +
 	"\x16com.query.analytics.v1B\x0eAnalyticsProtoP\x01ZMgithub.com/medincident/medincident-backend/pkg/query/analytics/v1;analyticsv1\xa2\x02\x03QAX\xaa\x02\x12Query.Analytics.V1\xca\x02\x12Query\\Analytics\\V1\xe2\x02\x1eQuery\\Analytics\\V1\\GPBMetadata\xea\x02\x14Query::Analytics::V1b\x06proto3"
 
 var (

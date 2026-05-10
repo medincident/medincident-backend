@@ -8,7 +8,6 @@ package orgstructurev1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
-	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -916,7 +915,7 @@ var File_command_orgstructure_v1_orgstructure_proto protoreflect.FileDescriptor
 
 const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\n" +
-	"*command/orgstructure/v1/orgstructure.proto\x12\x17command.orgstructure.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"F\n" +
+	"*command/orgstructure/v1/orgstructure.proto\x12\x17command.orgstructure.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"F\n" +
 	"\n" +
 	"PointInput\x12\x1c\n" +
 	"\tlongitude\x18\x01 \x01(\x01R\tlongitude\x12\x1a\n" +
@@ -972,71 +971,37 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"!\n" +
-	"\x1fUpdateDepartmentDetailsResponse2\xd8\x18\n" +
+	"\x1fUpdateDepartmentDetailsResponse2\x91\x12\n" +
 	"\x1aOrgStructureCommandService\x12\x9b\x01\n" +
-	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xb9\x03\n" +
-	"\x19UpdateOrganizationDetails\x129.command.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.command.orgstructure.v1.UpdateOrganizationDetailsResponse\"\xa4\x02\x92A\xea\x01J\xe7\x01\n" +
-	"\x03404\x12\xdf\x01\n" +
+	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xbe\x02\n" +
+	"\x19UpdateOrganizationDetails\x129.command.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.command.orgstructure.v1.UpdateOrganizationDetailsResponse\"\xa9\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `organization_not_found` — organization with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
-	"\x10application/json\x12E{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x020:\x01*\x1a+/v1/organizations/{organization_id}/details\x12\xce\x03\n" +
-	"\x1eUpdateOrganizationLegalAddress\x12>.command.orgstructure.v1.UpdateOrganizationLegalAddressRequest\x1a?.command.orgstructure.v1.UpdateOrganizationLegalAddressResponse\"\xaa\x02\x92A\xea\x01J\xe7\x01\n" +
-	"\x03404\x12\xdf\x01\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x020:\x01*\x1a+/v1/organizations/{organization_id}/details\x12\xd3\x02\n" +
+	"\x1eUpdateOrganizationLegalAddress\x12>.command.orgstructure.v1.UpdateOrganizationLegalAddressRequest\x1a?.command.orgstructure.v1.UpdateOrganizationLegalAddressResponse\"\xaf\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `organization_not_found` — organization with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
-	"\x10application/json\x12E{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x026:\x01*\x1a1/v1/organizations/{organization_id}/legal-address\x12\xa0\x03\n" +
-	"\fCreateClinic\x12,.command.orgstructure.v1.CreateClinicRequest\x1a-.command.orgstructure.v1.CreateClinicResponse\"\xb2\x02\x92A\xf8\x01J\xf5\x01\n" +
-	"\x03404\x12\xed\x01\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x026:\x01*\x1a1/v1/organizations/{organization_id}/legal-address\x12\x9e\x02\n" +
+	"\fCreateClinic\x12,.command.orgstructure.v1.CreateClinicRequest\x1a-.command.orgstructure.v1.CreateClinicResponse\"\xb0\x01\x92AwJu\n" +
+	"\x03404\x12n\n" +
 	"lNot found. Error codes:\n" +
-	"- `clinic_organization_not_found` — organization with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"`\n" +
-	"\x10application/json\x12L{\"code\":\"clinic_organization_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x020:\x01*\"+/v1/organizations/{organization_id}/clinics\x12\x83\x03\n" +
-	"\x13UpdateClinicDetails\x123.command.orgstructure.v1.UpdateClinicDetailsRequest\x1a4.command.orgstructure.v1.UpdateClinicDetailsResponse\"\x80\x02\x92A\xd2\x01J\xcf\x01\n" +
-	"\x03404\x12\xc7\x01\n" +
+	"- `clinic_organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x020:\x01*\"+/v1/organizations/{organization_id}/clinics\x12\x94\x02\n" +
+	"\x13UpdateClinicDetails\x123.command.orgstructure.v1.UpdateClinicDetailsRequest\x1a4.command.orgstructure.v1.UpdateClinicDetailsResponse\"\x91\x01\x92AdJb\n" +
+	"\x03404\x12[\n" +
 	"YNot found. Error codes:\n" +
-	"- `clinic_not_found` — clinic with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"M\n" +
-	"\x10application/json\x129{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/clinics/{clinic_id}/details\x12\xa4\x03\n" +
-	"\x1bUpdateClinicPhysicalAddress\x12;.command.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.command.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"\x89\x02\x92A\xd2\x01J\xcf\x01\n" +
-	"\x03404\x12\xc7\x01\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/clinics/{clinic_id}/details\x12\xb5\x02\n" +
+	"\x1bUpdateClinicPhysicalAddress\x12;.command.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.command.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"\x9a\x01\x92AdJb\n" +
+	"\x03404\x12[\n" +
 	"YNot found. Error codes:\n" +
-	"- `clinic_not_found` — clinic with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"M\n" +
-	"\x10application/json\x129{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\x94\x03\n" +
-	"\x10CreateDepartment\x120.command.orgstructure.v1.CreateDepartmentRequest\x1a1.command.orgstructure.v1.CreateDepartmentResponse\"\x9a\x02\x92A\xe8\x01J\xe5\x01\n" +
-	"\x03404\x12\xdd\x01\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\x9a\x02\n" +
+	"\x10CreateDepartment\x120.command.orgstructure.v1.CreateDepartmentRequest\x1a1.command.orgstructure.v1.CreateDepartmentResponse\"\xa0\x01\x92AoJm\n" +
+	"\x03404\x12f\n" +
 	"dNot found. Error codes:\n" +
-	"- `department_clinic_not_found` — clinic with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"X\n" +
-	"\x10application/json\x12D{\"code\":\"department_clinic_not_found\",\"message\":\"Clinic not found.\"}\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/clinics/{clinic_id}/departments\x12\xa7\x03\n" +
-	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"\x98\x02\x92A\xe2\x01J\xdf\x01\n" +
-	"\x03404\x12\xd7\x01\n" +
+	"- `department_clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/clinics/{clinic_id}/departments\x12\xb0\x02\n" +
+	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"\xa1\x01\x92AlJj\n" +
+	"\x03404\x12c\n" +
 	"aNot found. Error codes:\n" +
-	"- `department_not_found` — department with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"U\n" +
-	"\x10application/json\x12A{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\x90\t\x92A\x87\aR\xff\x01\n" +
-	"\x03400\x12\xf7\x01\n" +
-	"#Validation failed or invalid input.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
-	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
-	"\x03401\x12\x98\x01\n" +
-	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}R\x89\x01\n" +
-	"\x03403\x12\x81\x01\n" +
-	"\x12Permission denied.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
-	"\x10application/json\x12:{\"code\":\"permission_denied\",\"message\":\"permission denied\"}R\x8b\x01\n" +
-	"\x03500\x12\x83\x01\n" +
-	"\x18Unexpected server error.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}R\xc5\x01\n" +
-	"\adefault\x12\xb9\x01\n" +
-	"JAn unexpected error response (e.g. deadline exceeded or request canceled).\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
-	"\x10application/json\x12:{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\x85\x02\n" +
 	"\x1bcom.command.orgstructure.v1B\x11OrgstructureProtoP\x01ZUgithub.com/medincident/medincident-backend/pkg/command/orgstructure/v1;orgstructurev1\xa2\x02\x03COX\xaa\x02\x17Command.Orgstructure.V1\xca\x02\x17Command\\Orgstructure\\V1\xe2\x02#Command\\Orgstructure\\V1\\GPBMetadata\xea\x02\x19Command::Orgstructure::V1b\x06proto3"
 
 var (
