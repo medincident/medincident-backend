@@ -38,12 +38,14 @@ import (
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	analyticsread "github.com/medincident/medincident-backend/internal/service/query/analytics"
 	announcementread "github.com/medincident/medincident-backend/internal/service/query/announcement"
+	domainread "github.com/medincident/medincident-backend/internal/service/query/domain"
 	identityread "github.com/medincident/medincident-backend/internal/service/query/identity"
 	incidentread "github.com/medincident/medincident-backend/internal/service/query/incident"
 	bufferread "github.com/medincident/medincident-backend/internal/service/query/incident/buffer"
 	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
 	membershipread "github.com/medincident/medincident-backend/internal/service/query/membership"
 	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
 	requestread "github.com/medincident/medincident-backend/internal/service/query/request"
 	requestclassifierread "github.com/medincident/medincident-backend/internal/service/query/request/classifier"
 	selfread "github.com/medincident/medincident-backend/internal/service/query/self"
@@ -114,23 +116,41 @@ func main() {
 	}
 	defer dbCleanup()
 
-	nc, err := nats.Connect(cfg.NATS.URL,
+	nc, err := nats.Connect(cfg.NATSZitadel.URL,
 		nats.Name("medincident-query-server"),
 		nats.ReconnectWait(natsReconnectWait),
 		nats.MaxReconnects(-1),
 		nats.DrainTimeout(natsDrainTimeout),
 	)
 	if err != nil {
-		logger.Fatal().Err(err).Str("url", urlutil.Redact(cfg.NATS.URL)).Msg("failed to connect to NATS")
+		logger.Fatal().Err(err).Str("url", urlutil.Redact(cfg.NATSZitadel.URL)).Msg("failed to connect to NATS")
 	}
 	defer func() { _ = nc.Drain() }()
-	logger.Info().Str("url", urlutil.Redact(cfg.NATS.URL)).Msg("nats connection established")
+	logger.Info().Str("url", urlutil.Redact(cfg.NATSZitadel.URL)).Msg("nats connection established")
 
 	js, err := jetstream.New(nc)
 	if err != nil {
 		logger.Fatal().
 			Err(oops.In("query.bootstrap").Code(ErrCodeJetStreamInitFailed).Wrap(err)).
 			Msg("failed to init JetStream")
+	}
+
+	ncDomain, err := nats.Connect(cfg.NATSDomain.URL,
+		nats.Name("medincident-query-server-domain"),
+		nats.ReconnectWait(natsReconnectWait),
+		nats.MaxReconnects(-1),
+		nats.DrainTimeout(natsDrainTimeout),
+	)
+	if err != nil {
+		logger.Fatal().Err(err).Str("url", urlutil.Redact(cfg.NATSDomain.URL)).Msg("failed to connect to NATS (domain)")
+	}
+	defer func() { _ = ncDomain.Drain() }()
+
+	jsDomain, err := jetstream.New(ncDomain)
+	if err != nil {
+		logger.Fatal().
+			Err(oops.In("query.bootstrap").Code(ErrCodeJetStreamInitFailed).Wrap(err)).
+			Msg("failed to init JetStream (domain)")
 	}
 
 	authorizer, err := bootstrap.NewZitadelAuthorizer(ctx, &cfg.Zitadel)
@@ -156,7 +176,10 @@ func main() {
 	selfReader := selfread.NewSelfReader(db, logger)
 
 	projector := identityread.NewProjector(db, logger)
-	consumer := identityread.NewConsumer(js, &cfg.NATS, projector, logger)
+	consumer := identityread.NewConsumer(js, &cfg.NATSZitadel, projector, logger)
+
+	proj := qprojector.NewProjectors()
+	domainConsumer := domainread.NewConsumer(jsDomain, &cfg.NATSDomain, db, proj, logger)
 
 	orgH := orghandler.NewOrgStructureQueryHandler(orgReader, clinReader, deptReader)
 	memH := membershiphandler.NewMembershipQueryHandler(empReader, roleReader)
@@ -200,15 +223,24 @@ func main() {
 		logger.Fatal().Err(err).Str("addr", cfg.Server.GRPC.Address).Msg("failed to listen")
 	}
 
-	// Start the identity consumer BEFORE gRPC so new connections never
-	// see a half-booted projection state. If startup is aborted by a
-	// shutdown signal, exit quietly and let deferred cleanups run.
+	// Start consumers BEFORE gRPC so new connections never see a
+	// half-booted projection state. If startup is aborted by a shutdown
+	// signal, exit quietly and let deferred cleanups run.
 	if err := consumer.Start(ctx); err != nil {
 		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 			logger.Info().Err(err).Msg("consumer start aborted by shutdown signal")
 			return
 		}
 		logger.Error().Err(err).Msg("failed to start identity consumer")
+		return
+	}
+
+	if err := domainConsumer.Start(ctx); err != nil {
+		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+			logger.Info().Err(err).Msg("domain consumer start aborted by shutdown signal")
+			return
+		}
+		logger.Error().Err(err).Msg("failed to start domain consumer")
 		return
 	}
 
@@ -233,12 +265,18 @@ func main() {
 		}
 	}
 
-	// Shut the consumer first so no new writes land during DB teardown.
+	// Shut consumers first so no new writes land during DB teardown.
 	consumerCtx, cancelConsumer := context.WithTimeout(context.Background(), consumerShutdownTimeout)
 	if err := consumer.Shutdown(consumerCtx); err != nil {
 		logger.Warn().Err(err).Msg("consumer shutdown error")
 	}
 	cancelConsumer()
+
+	consumerCtx2, cancelConsumer2 := context.WithTimeout(context.Background(), consumerShutdownTimeout)
+	if err := domainConsumer.Shutdown(consumerCtx2); err != nil {
+		logger.Warn().Err(err).Msg("domain consumer shutdown error")
+	}
+	cancelConsumer2()
 
 	shutdownGRPC(grpcServer, logger)
 	logger.Info().Msg("query-server stopped")
