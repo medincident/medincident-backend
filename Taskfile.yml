@@ -6,6 +6,42 @@ tasks:
     cmds:
       - go tool buf generate
       - go tool buf generate --template buf.gen.docs.yaml
+      - |
+        jq '
+          .definitions["v1ValidationErrorResponse"] = {
+            "type": "object",
+            "title": "ValidationErrorResponse",
+            "description": "Error response body returned for validation failures (HTTP 400, code=validation_failed). The details field contains a list of field violations.",
+            "properties": {
+              "code": {"type": "string"},
+              "message": {"type": "string"},
+              "details": {"$ref": "#/definitions/v1ValidationFailedDetails"}
+            }
+          } |
+          del(.definitions["v1ErrorResponse"].properties.details) |
+          .paths |= with_entries(
+            .value |= with_entries(
+              .value.responses |= (
+                if . != null and has("400") and (."400".description == "Validation failed or invalid input.") then
+                  ."400".schema["$ref"] = "#/definitions/v1ValidationErrorResponse"
+                else . end
+              )
+            )
+          ) |
+          .paths |= with_entries(
+            .value |= with_entries(
+              .value.responses |= (
+                if . != null and has("default") and (.default.schema["$ref"] // "" | test("rpcStatus")) then
+                  .default = {
+                    "description": "An unexpected error response.",
+                    "schema": {"$ref": "#/definitions/v1ErrorResponse"}
+                  }
+                else . end
+              )
+            )
+          )
+        ' api/openapi/medincident.swagger.json > /tmp/medincident_swagger.tmp \
+          && mv /tmp/medincident_swagger.tmp api/openapi/medincident.swagger.json
       - |-
         npx widdershins api/openapi/medincident.swagger.json \
           -o docs/api/HTTP.md \

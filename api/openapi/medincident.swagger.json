@@ -80,7 +80,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -116,7 +116,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -176,7 +176,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -212,7 +212,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -266,7 +266,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -302,7 +302,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -369,7 +369,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -405,7 +405,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -479,7 +479,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -559,7 +559,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -597,7 +597,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -633,7 +633,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -663,7 +663,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -699,7 +699,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -729,7 +729,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -753,7 +753,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -795,7 +795,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -831,7 +831,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -869,7 +869,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -893,7 +893,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -923,7 +923,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -959,7 +959,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -997,7 +997,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1021,7 +1021,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1055,7 +1055,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1086,7 +1086,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1110,7 +1110,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1130,7 +1130,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1161,7 +1161,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1185,7 +1185,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1216,7 +1216,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1264,7 +1264,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1302,7 +1302,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1338,7 +1338,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1374,7 +1374,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1410,7 +1410,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1444,7 +1444,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1492,7 +1492,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1536,7 +1536,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1572,7 +1572,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1610,7 +1610,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1634,7 +1634,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1664,7 +1664,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1700,7 +1700,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1730,7 +1730,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1766,7 +1766,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1804,7 +1804,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1828,7 +1828,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1862,7 +1862,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1893,7 +1893,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1917,7 +1917,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -1937,7 +1937,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1968,7 +1968,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -1992,7 +1992,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2023,7 +2023,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2071,7 +2071,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2109,7 +2109,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2145,7 +2145,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2181,7 +2181,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2217,7 +2217,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2251,7 +2251,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2299,7 +2299,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2343,7 +2343,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2367,7 +2367,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2397,7 +2397,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2433,7 +2433,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2464,7 +2464,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2524,7 +2524,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2556,7 +2556,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2592,7 +2592,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2622,7 +2622,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2658,7 +2658,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2696,7 +2696,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2732,7 +2732,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2770,7 +2770,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2794,7 +2794,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2843,7 +2843,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2879,7 +2879,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2917,7 +2917,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -2941,7 +2941,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -2979,7 +2979,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3015,7 +3015,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3053,7 +3053,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3089,7 +3089,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3119,7 +3119,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3155,7 +3155,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3185,7 +3185,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3221,7 +3221,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3251,7 +3251,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3299,7 +3299,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3391,7 +3391,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3421,7 +3421,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3445,7 +3445,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3542,7 +3542,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3622,7 +3622,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3660,7 +3660,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3696,7 +3696,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3726,7 +3726,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3750,7 +3750,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3780,7 +3780,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3816,7 +3816,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3846,7 +3846,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3882,7 +3882,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3912,7 +3912,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -3948,7 +3948,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -3978,7 +3978,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -4026,7 +4026,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4064,7 +4064,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -4100,7 +4100,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4128,7 +4128,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -4164,7 +4164,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4248,7 +4248,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4320,7 +4320,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4400,7 +4400,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4474,7 +4474,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4554,7 +4554,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4592,7 +4592,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -4628,7 +4628,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4714,7 +4714,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4794,7 +4794,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4866,7 +4866,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4897,7 +4897,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -4921,7 +4921,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -4944,7 +4944,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -4980,7 +4980,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5011,7 +5011,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5047,7 +5047,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5078,7 +5078,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5102,7 +5102,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5125,7 +5125,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5161,7 +5161,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5192,7 +5192,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5228,7 +5228,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5258,7 +5258,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5282,7 +5282,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5318,7 +5318,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5342,7 +5342,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5374,7 +5374,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5410,7 +5410,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5440,7 +5440,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5464,7 +5464,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5507,7 +5507,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5555,7 +5555,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5593,7 +5593,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5629,7 +5629,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5665,7 +5665,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5701,7 +5701,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5735,7 +5735,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5783,7 +5783,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5827,7 +5827,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5851,7 +5851,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5893,7 +5893,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5929,7 +5929,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -5967,7 +5967,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -5991,7 +5991,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6021,7 +6021,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6057,7 +6057,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6095,7 +6095,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6119,7 +6119,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6162,7 +6162,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6210,7 +6210,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6248,7 +6248,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6284,7 +6284,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6320,7 +6320,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6356,7 +6356,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6390,7 +6390,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6438,7 +6438,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6482,7 +6482,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6506,7 +6506,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6540,7 +6540,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -6571,7 +6571,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6595,7 +6595,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6615,7 +6615,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -6646,7 +6646,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6670,7 +6670,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6711,7 +6711,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -6742,7 +6742,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6766,7 +6766,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6809,7 +6809,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6857,7 +6857,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6895,7 +6895,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -6931,7 +6931,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -6967,7 +6967,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7003,7 +7003,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7037,7 +7037,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7085,7 +7085,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7129,7 +7129,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7153,7 +7153,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7250,7 +7250,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7288,7 +7288,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7312,7 +7312,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7356,7 +7356,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7380,7 +7380,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7424,7 +7424,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7448,7 +7448,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7493,7 +7493,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7517,7 +7517,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7561,7 +7561,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7597,7 +7597,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7635,7 +7635,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7659,7 +7659,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7701,7 +7701,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7737,7 +7737,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7775,7 +7775,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7799,7 +7799,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7843,7 +7843,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7867,7 +7867,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7911,7 +7911,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7935,7 +7935,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -7965,7 +7965,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -7989,7 +7989,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8011,7 +8011,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -8035,7 +8035,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8121,7 +8121,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8201,7 +8201,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8287,7 +8287,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8359,7 +8359,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8439,7 +8439,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8469,7 +8469,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -8505,7 +8505,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8535,7 +8535,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -8559,7 +8559,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8620,7 +8620,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -8644,7 +8644,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8705,7 +8705,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -8741,7 +8741,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8771,7 +8771,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -8807,7 +8807,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8837,7 +8837,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -8861,7 +8861,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8899,7 +8899,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -8923,7 +8923,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -8985,7 +8985,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9009,7 +9009,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9125,7 +9125,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9149,7 +9149,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9211,7 +9211,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9247,7 +9247,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9277,7 +9277,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9301,7 +9301,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9339,7 +9339,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9375,7 +9375,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9405,7 +9405,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9441,7 +9441,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9471,7 +9471,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9507,7 +9507,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9537,7 +9537,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9585,7 +9585,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9623,7 +9623,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9671,7 +9671,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9743,7 +9743,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9775,7 +9775,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -9811,7 +9811,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9883,7 +9883,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -9963,7 +9963,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10001,7 +10001,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -10025,7 +10025,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10097,7 +10097,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10135,7 +10135,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -10159,7 +10159,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10196,7 +10196,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -10256,7 +10256,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10288,7 +10288,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -10324,7 +10324,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10354,7 +10354,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -10390,7 +10390,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10420,7 +10420,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -10456,7 +10456,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10494,7 +10494,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
+              "$ref": "#/definitions/v1ValidationErrorResponse"
             }
           },
           "401": {
@@ -10530,7 +10530,7 @@
           "default": {
             "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/rpcStatus"
+              "$ref": "#/definitions/v1ErrorResponse"
             }
           }
         },
@@ -10727,7 +10727,7 @@
           "$ref": "#/definitions/commandIncidentV1IncidentStatus"
         }
       },
-      "description": "UpdateIncidentStatus only handles forward transitions:\npending -\u003e in_progress, in_progress -\u003e done, in_progress -\u003e rejected.\nCancellation by registrar uses CancelIncident.",
+      "description": "UpdateIncidentStatus only handles forward transitions:\npending -> in_progress, in_progress -> done, in_progress -> rejected.\nCancellation by registrar uses CancelIncident.",
       "required": [
         "newStatus"
       ]
@@ -11949,9 +11949,6 @@
         },
         "message": {
           "type": "string"
-        },
-        "details": {
-          "$ref": "#/definitions/v1ValidationFailedDetails"
         }
       },
       "description": "Standard error response body returned by the gateway for all HTTP errors.",
@@ -13679,6 +13676,22 @@
         }
       },
       "description": "ValidationFailedDetails is present only when code = \"validation_failed\".\nEach violation corresponds to one struct-tag rule failure or one\ndomain-level leaf error from errors.Join."
+    },
+    "v1ValidationErrorResponse": {
+      "type": "object",
+      "title": "ValidationErrorResponse",
+      "description": "Error response body returned for validation failures (HTTP 400, code=validation_failed). The details field contains a list of field violations.",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ValidationFailedDetails"
+        }
+      }
     }
   }
 }
