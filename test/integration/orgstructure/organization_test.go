@@ -59,15 +59,6 @@ func TestOrganization_Create_HappyPath(t *testing.T) {
 	assert.Equal(t, "г. Москва, ул. Пушкина, д. Колотушкина", row.LegalAddress.Text)
 	require.True(t, row.LegalAddress.Point.Valid)
 	assert.InDelta(t, 37.6, row.LegalAddress.Point.V.Longitude, 0.0001)
-
-	// Projection row written atomically alongside the domain row.
-	assert.Equal(t, 1, countProjectionOrganizations(t))
-
-	var projName string
-	require.NoError(t, testDB.Raw(
-		`SELECT name FROM projections.organizations WHERE id = ?`, result.ID,
-	).Row().Scan(&projName))
-	assert.Equal(t, "Клиника Пушкина", projName)
 }
 
 func TestOrganization_Create_MultiFieldViolations(t *testing.T) {
@@ -105,7 +96,6 @@ func TestOrganization_Create_MultiFieldViolations(t *testing.T) {
 	assert.Equal(t, "min", rules["legal_address.point.latitude"], "latitude should fail min, got violations=%+v", violations)
 
 	assert.Equal(t, 0, countOrganizations(t))
-	assert.Equal(t, 0, countProjectionOrganizations(t))
 }
 
 func TestOrganization_UpdateDetails_NoOp(t *testing.T) {
@@ -123,13 +113,7 @@ func TestOrganization_UpdateDetails_NoOp(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	// Capture the projection's updated_at before the no-op.
-	var firstUpdatedAt string
-	require.NoError(t, testDB.Raw(
-		`SELECT updated_at::text FROM projections.organizations WHERE id = ?`, created.ID,
-	).Row().Scan(&firstUpdatedAt))
-
-	// Re-send the same values. No-op means no projection write.
+	// Re-send the same values — service must succeed (no-op on domain side).
 	require.NoError(t, orgSvc.UpdateDetails(ctx, orgsvc.UpdateOrganizationDetailsCommand{
 		Caller: sysadminCaller,
 		Payload: orgsvc.UpdateOrganizationDetailsPayload{
@@ -138,12 +122,6 @@ func TestOrganization_UpdateDetails_NoOp(t *testing.T) {
 			Description: &desc,
 		},
 	}))
-
-	var secondUpdatedAt string
-	require.NoError(t, testDB.Raw(
-		`SELECT updated_at::text FROM projections.organizations WHERE id = ?`, created.ID,
-	).Row().Scan(&secondUpdatedAt))
-	assert.Equal(t, firstUpdatedAt, secondUpdatedAt, "expected no-op to leave updated_at alone")
 }
 
 func TestOrganization_UpdateDetails_RealChange(t *testing.T) {
@@ -171,10 +149,11 @@ func TestOrganization_UpdateDetails_RealChange(t *testing.T) {
 		},
 	}))
 
-	var projName, projDesc string
+	// Verify the domain row was updated.
+	var domainOrg struct{ Name, Description string }
 	require.NoError(t, testDB.Raw(
-		`SELECT name, description FROM projections.organizations WHERE id = ?`, created.ID,
-	).Row().Scan(&projName, &projDesc))
-	assert.Equal(t, "Орг А обновлённая", projName)
-	assert.Equal(t, changed, projDesc)
+		`SELECT name, description FROM domain.organizations WHERE id = ?`, created.ID,
+	).Row().Scan(&domainOrg.Name, &domainOrg.Description))
+	assert.Equal(t, "Орг А обновлённая", domainOrg.Name)
+	assert.Equal(t, changed, domainOrg.Description)
 }

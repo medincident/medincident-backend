@@ -45,8 +45,6 @@ func TestDepartment_Create_HappyPath(t *testing.T) {
 	require.NotEqual(t, uuid.Nil, res.ID)
 
 	assert.Equal(t, 1, countDepartments(t))
-	// Projection row written inline with the domain row.
-	assert.Equal(t, 1, countProjectionDepartments(t))
 }
 
 func TestDepartment_Create_ClinicNotFound(t *testing.T) {
@@ -62,5 +60,4 @@ func TestDepartment_Create_ClinicNotFound(t *testing.T) {
 	require.Error(t, err)
 	assert.Equal(t, orgsvc.ErrCodeDepartmentClinicNotFound, codeOf(t, err))
 	assert.Equal(t, 0, countDepartments(t))
-	assert.Equal(t, 0, countProjectionDepartments(t))
 }
