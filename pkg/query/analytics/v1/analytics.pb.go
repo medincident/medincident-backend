@@ -2232,10 +2232,10 @@ const file_query_analytics_v1_analytics_proto_rawDesc = "" +
 	"- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n" +
 	"- `analytics_dept_not_found` — department with the given ID does not exist.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"Z\n" +
-	"\x10application/json\x12F{\"code\":\"analytics_org_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/analytics/timeseriesB\xa4\a\x92A\xbf\x05R\xff\x01\n" +
-	"\x03400\x12\xf7\x01\n" +
-	"#Validation failed or invalid input.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
+	"\x10application/json\x12F{\"code\":\"analytics_org_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/analytics/timeseriesB\xf6\b\x92A\x91\aR\x89\x02\n" +
+	"\x03400\x12\x81\x02\n" +
+	"#Validation failed or invalid input.\x12%\n" +
+	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
@@ -2248,7 +2248,11 @@ const file_query_analytics_v1_analytics_proto_rawDesc = "" +
 	"\x03500\x12\x83\x01\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}\n" +
+	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}R\xc5\x01\n" +
+	"\adefault\x12\xb9\x01\n" +
+	"JAn unexpected error response (e.g. deadline exceeded or request canceled).\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
+	"\x10application/json\x12:{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}\n" +
 	"\x16com.query.analytics.v1B\x0eAnalyticsProtoP\x01ZMgithub.com/medincident/medincident-backend/pkg/query/analytics/v1;analyticsv1\xa2\x02\x03QAX\xaa\x02\x12Query.Analytics.V1\xca\x02\x12Query\\Analytics\\V1\xe2\x02\x1eQuery\\Analytics\\V1\\GPBMetadata\xea\x02\x14Query::Analytics::V1b\x06proto3"
 
 var (

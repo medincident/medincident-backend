@@ -110,7 +110,7 @@ curl -X POST /v1/announcements \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -132,7 +132,7 @@ curl -X POST /v1/announcements \
 - `announcement_clinic_not_found` — clinic with the given ID does not exist.
 - `announcement_department_not_found` — department with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -227,7 +227,7 @@ curl -X PUT /v1/announcements/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -248,7 +248,7 @@ curl -X PUT /v1/announcements/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `announcement_not_found` — announcement with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -340,7 +340,7 @@ curl -X PUT /v1/announcements/{id}/priority \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -361,7 +361,7 @@ curl -X PUT /v1/announcements/{id}/priority \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `announcement_not_found` — announcement with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -451,7 +451,7 @@ curl -X POST /v1/announcements/{id}:archive \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -471,7 +471,7 @@ curl -X POST /v1/announcements/{id}:archive \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `announcement_not_found` — announcement with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -561,7 +561,7 @@ curl -X POST /v1/announcements/{id}:unarchive \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -581,7 +581,7 @@ curl -X POST /v1/announcements/{id}:unarchive \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `announcement_not_found` — announcement with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -680,7 +680,7 @@ curl -X POST /v1/patient-incidents \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -701,7 +701,7 @@ curl -X POST /v1/patient-incidents \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `buffer_organization_not_found` — organization with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -797,7 +797,7 @@ curl -X PUT /v1/patient-incidents/{bufferId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -819,7 +819,7 @@ curl -X PUT /v1/patient-incidents/{bufferId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `buffer_not_found` — patient incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -902,7 +902,7 @@ curl -X POST /v1/patient-incidents/{bufferId}:cancel \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -924,7 +924,7 @@ curl -X POST /v1/patient-incidents/{bufferId}:cancel \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `buffer_not_found` — patient incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1024,7 +1024,7 @@ curl -X POST /v1/patient-incidents/{bufferId}:publish \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1048,7 +1048,7 @@ curl -X POST /v1/patient-incidents/{bufferId}:publish \
 - `buffer_category_not_found` — category with the given ID does not exist.
 - `buffer_dispatcher_not_found` — dispatcher employee not found.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1130,7 +1130,7 @@ curl -X POST /v1/patient-incidents/{bufferId}:reject \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1151,7 +1151,7 @@ curl -X POST /v1/patient-incidents/{bufferId}:reject \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `buffer_not_found` — patient incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1243,7 +1243,7 @@ curl -X DELETE /v1/incident-categories/{categoryId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1263,7 +1263,7 @@ curl -X DELETE /v1/incident-categories/{categoryId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1353,7 +1353,7 @@ curl -X POST /v1/incident-categories/{categoryId}/deactivations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1373,7 +1373,7 @@ curl -X POST /v1/incident-categories/{categoryId}/deactivations \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1484,7 +1484,7 @@ curl -X PUT /v1/incident-categories/{categoryId}/details \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1506,7 +1506,7 @@ curl -X PUT /v1/incident-categories/{categoryId}/details \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `incident_category_name_conflict` — a category with this name already exists in the same scope.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1598,7 +1598,7 @@ curl -X POST /v1/incident-categories/{categoryId}/reactivations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1621,7 +1621,7 @@ curl -X POST /v1/incident-categories/{categoryId}/reactivations \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `incident_category_reactivate_name_conflict` — reactivation would create a name conflict with an active category.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1726,7 +1726,7 @@ curl -X POST /v1/incident-categories/{categoryId}/types \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1749,7 +1749,7 @@ curl -X POST /v1/incident-categories/{categoryId}/types \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `incident_type_name_conflict` — a type with this name already exists in the same category.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1845,7 +1845,7 @@ curl -X POST /v1/incident-categories/{categoryId}:move \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1870,7 +1870,7 @@ curl -X POST /v1/incident-categories/{categoryId}:move \
 - `incident_category_not_found` — category with the given ID does not exist.
 - `incident_category_parent_not_found` — target parent category with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1960,7 +1960,7 @@ curl -X DELETE /v1/incident-types/{typeId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -1980,7 +1980,7 @@ curl -X DELETE /v1/incident-types/{typeId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2070,7 +2070,7 @@ curl -X POST /v1/incident-types/{typeId}/deactivations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -2090,7 +2090,7 @@ curl -X POST /v1/incident-types/{typeId}/deactivations \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2201,7 +2201,7 @@ curl -X PUT /v1/incident-types/{typeId}/details \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -2223,7 +2223,7 @@ curl -X PUT /v1/incident-types/{typeId}/details \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `incident_type_name_conflict` — a type with this name already exists in the same category.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2313,7 +2313,7 @@ curl -X DELETE /v1/incident-types/{typeId}/patient-allowances \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -2333,7 +2333,7 @@ curl -X DELETE /v1/incident-types/{typeId}/patient-allowances \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2423,7 +2423,7 @@ curl -X POST /v1/incident-types/{typeId}/patient-allowances \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -2443,7 +2443,7 @@ curl -X POST /v1/incident-types/{typeId}/patient-allowances \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2535,7 +2535,7 @@ curl -X POST /v1/incident-types/{typeId}/reactivations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -2558,7 +2558,7 @@ curl -X POST /v1/incident-types/{typeId}/reactivations \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `incident_type_reactivate_name_conflict` — reactivation would create a name conflict with an active type.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2653,7 +2653,7 @@ curl -X POST /v1/incident-types/{typeId}:move \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -2677,7 +2677,7 @@ curl -X POST /v1/incident-types/{typeId}:move \
 - `incident_type_not_found` — type with the given ID does not exist.
 - `incident_type_category_not_found` — target category with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2784,7 +2784,7 @@ curl -X POST /v1/organizations/{organizationId}/incident-categories \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -2808,7 +2808,7 @@ curl -X POST /v1/organizations/{organizationId}/incident-categories \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `incident_category_name_conflict` — a category with this name already exists in the same scope.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2911,7 +2911,7 @@ curl -X POST /v1/incidents \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -2936,7 +2936,7 @@ curl -X POST /v1/incidents \
 - `incident_type_not_found` — incident type with the given ID does not exist.
 - `incident_employee_not_found` — registrar employee not found.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3028,7 +3028,7 @@ curl -X PUT /v1/incidents/{incidentId}/description \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3049,7 +3049,7 @@ curl -X PUT /v1/incidents/{incidentId}/description \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3141,7 +3141,7 @@ curl -X PUT /v1/incidents/{incidentId}/priority \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3162,7 +3162,7 @@ curl -X PUT /v1/incidents/{incidentId}/priority \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3255,7 +3255,7 @@ curl -X PUT /v1/incidents/{incidentId}/status \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3277,7 +3277,7 @@ curl -X PUT /v1/incidents/{incidentId}/status \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3359,7 +3359,7 @@ curl -X POST /v1/incidents/{incidentId}:cancel \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3380,7 +3380,7 @@ curl -X POST /v1/incidents/{incidentId}:cancel \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3464,7 +3464,7 @@ curl -X POST /v1/incidents/{incidentId}:reopen \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3485,7 +3485,7 @@ curl -X POST /v1/incidents/{incidentId}:reopen \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3598,7 +3598,7 @@ curl -X POST /v1/clinics/{clinicId}/heads \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3621,7 +3621,7 @@ curl -X POST /v1/clinics/{clinicId}/heads \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `clinic_head_already_assigned` — this clinic already has a head assigned.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3712,7 +3712,7 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3732,7 +3732,7 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `clinic_head_not_found` — this employee is not the clinic head.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3823,7 +3823,7 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3843,7 +3843,7 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3956,7 +3956,7 @@ curl -X POST /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -3980,7 +3980,7 @@ curl -X POST /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `deputy_already_assigned` — this employee is already a deputy for this role.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4091,7 +4091,7 @@ curl -X POST /v1/departments/{departmentId}/responsibles \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -4114,7 +4114,7 @@ curl -X POST /v1/departments/{departmentId}/responsibles \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `department_responsible_already_assigned` — this employee is already the department responsible.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4206,7 +4206,7 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -4227,7 +4227,7 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId} \
 - `department_responsible_not_found` — this employee is not the department responsible.
 - `employee_not_found` — employee with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4318,7 +4318,7 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -4338,7 +4338,7 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `department_not_found` — department with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4451,7 +4451,7 @@ curl -X POST /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -4475,7 +4475,7 @@ curl -X POST /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `deputy_already_assigned` — this employee is already a deputy for this role.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4599,7 +4599,7 @@ curl -X POST /v1/employees \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -4624,7 +4624,7 @@ curl -X POST /v1/employees \
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |503|[Service Unavailable](https://tools.ietf.org/html/rfc7231#section-6.6.4)|Service unavailable. Error codes:
 - `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4714,7 +4714,7 @@ curl -X DELETE /v1/employees/{employeeId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -4734,7 +4734,7 @@ curl -X DELETE /v1/employees/{employeeId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4835,7 +4835,7 @@ curl -X PUT /v1/employees/{employeeId}/department \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -4856,7 +4856,7 @@ curl -X PUT /v1/employees/{employeeId}/department \
 - `employee_not_found` — employee with the given ID does not exist.
 - `department_not_found` — department with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4956,7 +4956,7 @@ curl -X PUT /v1/employees/{employeeId}/position \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -4976,7 +4976,7 @@ curl -X PUT /v1/employees/{employeeId}/position \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5079,7 +5079,7 @@ curl -X POST /v1/employees/{employeeId}/vacations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -5099,7 +5099,7 @@ curl -X POST /v1/employees/{employeeId}/vacations \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5201,7 +5201,7 @@ curl -X POST /v1/employees/{employeeId}/vacations:start-now \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -5221,7 +5221,7 @@ curl -X POST /v1/employees/{employeeId}/vacations:start-now \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5332,7 +5332,7 @@ curl -X POST /v1/organizations/{organizationId}/admins \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -5355,7 +5355,7 @@ curl -X POST /v1/organizations/{organizationId}/admins \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `organization_admin_already_assigned` — this employee is already an organization admin.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5446,7 +5446,7 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -5466,7 +5466,7 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_admin_not_found` — this employee is not an organization admin.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5557,7 +5557,7 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -5577,7 +5577,7 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5690,7 +5690,7 @@ curl -X POST /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -5714,7 +5714,7 @@ curl -X POST /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `deputy_already_assigned` — this employee is already a deputy for this role.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5825,7 +5825,7 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -5848,7 +5848,7 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `organization_dispatcher_already_assigned` — this employee is already an organization dispatcher.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5939,7 +5939,7 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -5959,7 +5959,7 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_dispatcher_not_found` — this employee is not an organization dispatcher.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6050,7 +6050,7 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}/deput
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -6070,7 +6070,7 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}/deput
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6183,7 +6183,7 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy 
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -6207,7 +6207,7 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy 
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `deputy_already_assigned` — this employee is already a deputy for this role.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6318,7 +6318,7 @@ curl -X POST /v1/organizations/{organizationId}/heads \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -6341,7 +6341,7 @@ curl -X POST /v1/organizations/{organizationId}/heads \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `organization_head_already_assigned` — this organization already has a head assigned.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6432,7 +6432,7 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -6452,7 +6452,7 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_head_not_found` — this employee is not the organization head.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6543,7 +6543,7 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -6563,7 +6563,7 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6676,7 +6676,7 @@ curl -X POST /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -6700,7 +6700,7 @@ curl -X POST /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `deputy_already_assigned` — this employee is already a deputy for this role.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6819,7 +6819,7 @@ curl -X POST /v1/system-admins \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -6843,7 +6843,7 @@ curl -X POST /v1/system-admins \
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |503|[Service Unavailable](https://tools.ietf.org/html/rfc7231#section-6.6.4)|Service unavailable. Error codes:
 - `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6933,7 +6933,7 @@ curl -X DELETE /v1/system-admins/{zitadelUserId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -6953,7 +6953,7 @@ curl -X DELETE /v1/system-admins/{zitadelUserId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `system_admin_not_found` — this user is not a system admin.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7043,7 +7043,7 @@ curl -X POST /v1/vacations/{vacationId}/cancellations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -7063,7 +7063,7 @@ curl -X POST /v1/vacations/{vacationId}/cancellations \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `vacation_not_found` — vacation with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7163,7 +7163,7 @@ curl -X PUT /v1/vacations/{vacationId}/end-date \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -7183,7 +7183,7 @@ curl -X PUT /v1/vacations/{vacationId}/end-date \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `vacation_not_found` — vacation with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7273,7 +7273,7 @@ curl -X POST /v1/vacations/{vacationId}/terminations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -7293,7 +7293,7 @@ curl -X POST /v1/vacations/{vacationId}/terminations \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `vacation_not_found` — vacation with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7398,7 +7398,7 @@ curl -X POST /v1/clinics/{clinicId}/departments \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -7418,7 +7418,7 @@ curl -X POST /v1/clinics/{clinicId}/departments \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `department_clinic_not_found` — clinic with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7519,7 +7519,7 @@ curl -X PUT /v1/clinics/{clinicId}/details \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -7539,7 +7539,7 @@ curl -X PUT /v1/clinics/{clinicId}/details \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7645,7 +7645,7 @@ curl -X PUT /v1/clinics/{clinicId}/physical-address \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -7665,7 +7665,7 @@ curl -X PUT /v1/clinics/{clinicId}/physical-address \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7766,7 +7766,7 @@ curl -X PUT /v1/departments/{departmentId}/details \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -7786,7 +7786,7 @@ curl -X PUT /v1/departments/{departmentId}/details \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `department_not_found` — department with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7885,7 +7885,7 @@ curl -X POST /v1/organizations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -7903,7 +7903,7 @@ curl -X POST /v1/organizations \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8013,7 +8013,7 @@ curl -X POST /v1/organizations/{organizationId}/clinics \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -8033,7 +8033,7 @@ curl -X POST /v1/organizations/{organizationId}/clinics \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `clinic_organization_not_found` — organization with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8134,7 +8134,7 @@ curl -X PUT /v1/organizations/{organizationId}/details \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -8154,7 +8154,7 @@ curl -X PUT /v1/organizations/{organizationId}/details \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8260,7 +8260,7 @@ curl -X PUT /v1/organizations/{organizationId}/legal-address \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -8280,7 +8280,7 @@ curl -X PUT /v1/organizations/{organizationId}/legal-address \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8385,7 +8385,7 @@ curl -X POST /v1/organizations/{organizationId}/request-types \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -8405,7 +8405,7 @@ curl -X POST /v1/organizations/{organizationId}/request-types \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `request_type_name_conflict` — a request type with this name already exists in the organization.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8495,7 +8495,7 @@ curl -X DELETE /v1/request-types/{typeId} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -8515,7 +8515,7 @@ curl -X DELETE /v1/request-types/{typeId} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `request_type_not_found` — request type with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8605,7 +8605,7 @@ curl -X POST /v1/request-types/{typeId}/deactivations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -8625,7 +8625,7 @@ curl -X POST /v1/request-types/{typeId}/deactivations \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `request_type_not_found` — request type with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8736,7 +8736,7 @@ curl -X PUT /v1/request-types/{typeId}/details \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -8758,7 +8758,7 @@ curl -X PUT /v1/request-types/{typeId}/details \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `request_type_name_conflict` — a request type with this name already exists in the organization.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8858,7 +8858,7 @@ curl -X POST /v1/request-types/{typeId}/reactivations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -8880,7 +8880,7 @@ curl -X POST /v1/request-types/{typeId}/reactivations \
 |409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
 - `request_type_name_conflict` — reactivation would create a name conflict with an active type.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8987,7 +8987,7 @@ curl -X POST /v1/service-requests \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -9014,7 +9014,7 @@ curl -X POST /v1/service-requests \
 - `service_request_incident_not_found` — linked incident with the given ID does not exist.
 - `service_request_employee_not_found` — one of the executor employees was not found.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -9106,7 +9106,7 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/description \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -9127,7 +9127,7 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/description \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `service_request_not_found` — service request with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -9223,7 +9223,7 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/executors \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -9246,7 +9246,7 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/executors \
 - `service_request_not_found` — service request with the given ID does not exist.
 - `service_request_employee_not_found` — one of the executor employees was not found.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -9339,7 +9339,7 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -9361,7 +9361,7 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `service_request_not_found` — service request with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -9497,7 +9497,7 @@ curl -X GET /v1/analytics/snapshot \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -9519,7 +9519,7 @@ curl -X GET /v1/analytics/snapshot \
 - `analytics_clinic_not_found` — clinic with the given ID does not exist.
 - `analytics_dept_not_found` — department with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -9720,7 +9720,7 @@ curl -X GET /v1/analytics/summary \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -9742,7 +9742,7 @@ curl -X GET /v1/analytics/summary \
 - `analytics_clinic_not_found` — clinic with the given ID does not exist.
 - `analytics_dept_not_found` — department with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -9872,7 +9872,7 @@ curl -X GET /v1/analytics/timeseries \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -9894,7 +9894,7 @@ curl -X GET /v1/analytics/timeseries \
 - `analytics_clinic_not_found` — clinic with the given ID does not exist.
 - `analytics_dept_not_found` — department with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10003,7 +10003,7 @@ curl -X GET /v1/query/announcements/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10023,7 +10023,7 @@ curl -X GET /v1/query/announcements/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `announcement_query_not_found` — announcement with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10135,7 +10135,7 @@ curl -X GET /v1/query/clinics/{clinicId}/announcements \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10153,7 +10153,7 @@ curl -X GET /v1/query/clinics/{clinicId}/announcements \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10265,7 +10265,7 @@ curl -X GET /v1/query/departments/{departmentId}/announcements \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10283,7 +10283,7 @@ curl -X GET /v1/query/departments/{departmentId}/announcements \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10395,7 +10395,7 @@ curl -X GET /v1/query/organizations/{organizationId}/announcements \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10413,7 +10413,7 @@ curl -X GET /v1/query/organizations/{organizationId}/announcements \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10511,7 +10511,7 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10529,7 +10529,7 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10630,7 +10630,7 @@ curl -X GET /v1/incident-categories/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10650,7 +10650,7 @@ curl -X GET /v1/incident-categories/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10743,7 +10743,7 @@ curl -X GET /v1/incident-categories/{rootCategoryId}:subtree \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10761,7 +10761,7 @@ curl -X GET /v1/incident-categories/{rootCategoryId}:subtree \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10863,7 +10863,7 @@ curl -X GET /v1/incident-types/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10883,7 +10883,7 @@ curl -X GET /v1/incident-types/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -10978,7 +10978,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -10996,7 +10996,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -11091,7 +11091,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visib
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -11109,7 +11109,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visib
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -11204,7 +11204,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -11222,7 +11222,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -11318,7 +11318,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -11336,7 +11336,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -11436,7 +11436,7 @@ an-incident.-parameters">Parameters</h3>
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -11456,7 +11456,7 @@ an-incident.-responses">Responses</h3>
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -11576,7 +11576,7 @@ curl -X GET /v1/query/incidents/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -11596,7 +11596,7 @@ curl -X GET /v1/query/incidents/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_query_not_found` — incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -11711,7 +11711,7 @@ curl -X GET /v1/query/incidents/{incidentId}/history \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -11731,7 +11731,7 @@ curl -X GET /v1/query/incidents/{incidentId}/history \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_query_not_found` — incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -11842,7 +11842,7 @@ curl -X GET /v1/query/incidents:mine \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -11860,7 +11860,7 @@ curl -X GET /v1/query/incidents:mine \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -11996,7 +11996,7 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -12014,7 +12014,7 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -12124,7 +12124,7 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -12142,7 +12142,7 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -12247,7 +12247,7 @@ curl -X GET /v1/query/patient-incidents/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -12267,7 +12267,7 @@ curl -X GET /v1/query/patient-incidents/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `buffer_query_not_found` — patient incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -12365,7 +12365,7 @@ curl -X GET /v1/query/patient-incidents:mine \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -12383,7 +12383,7 @@ curl -X GET /v1/query/patient-incidents:mine \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -12502,7 +12502,7 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -12520,7 +12520,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -12616,7 +12616,7 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -12634,7 +12634,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -12753,7 +12753,7 @@ curl -X GET /v1/clinics/{clinicId}/head \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -12771,7 +12771,7 @@ curl -X GET /v1/clinics/{clinicId}/head \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -12888,7 +12888,7 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -12906,7 +12906,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -13002,7 +13002,7 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -13020,7 +13020,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -13139,7 +13139,7 @@ curl -X GET /v1/departments/{departmentId}/responsible \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -13157,7 +13157,7 @@ curl -X GET /v1/departments/{departmentId}/responsible \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -13257,7 +13257,7 @@ Valid values: scheduled, active, ended, cancelled.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -13275,7 +13275,7 @@ Valid values: scheduled, active, ended, cancelled.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -13363,7 +13363,7 @@ Valid values: scheduled, active, ended, cancelled.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -13381,7 +13381,7 @@ Valid values: scheduled, active, ended, cancelled.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -13490,7 +13490,7 @@ curl -X GET /v1/employees/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -13510,7 +13510,7 @@ curl -X GET /v1/employees/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `employee_card_not_found` — employee with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -13633,7 +13633,7 @@ curl -X GET /v1/organizations/{organizationId}/admins \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -13651,7 +13651,7 @@ curl -X GET /v1/organizations/{organizationId}/admins \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -13774,7 +13774,7 @@ curl -X GET /v1/organizations/{organizationId}/dispatchers \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -13792,7 +13792,7 @@ curl -X GET /v1/organizations/{organizationId}/dispatchers \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -13909,7 +13909,7 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -13927,7 +13927,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14023,7 +14023,7 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14041,7 +14041,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14166,7 +14166,7 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14184,7 +14184,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14307,7 +14307,7 @@ curl -X GET /v1/organizations/{organizationId}/heads \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14325,7 +14325,7 @@ curl -X GET /v1/organizations/{organizationId}/heads \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14413,7 +14413,7 @@ curl -X GET /v1/system-admins \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14431,7 +14431,7 @@ curl -X GET /v1/system-admins \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14523,7 +14523,7 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14541,7 +14541,7 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14623,7 +14623,7 @@ curl -X GET /v1/clinics/{clinicId}/departments:count \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14641,7 +14641,7 @@ curl -X GET /v1/clinics/{clinicId}/departments:count \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14747,7 +14747,7 @@ curl -X GET /v1/clinics/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14767,7 +14767,7 @@ curl -X GET /v1/clinics/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14866,7 +14866,7 @@ curl -X GET /v1/departments/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14886,7 +14886,7 @@ curl -X GET /v1/departments/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `department_not_found` — department with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -14974,7 +14974,7 @@ curl -X GET /v1/organizations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -14992,7 +14992,7 @@ curl -X GET /v1/organizations \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15097,7 +15097,7 @@ curl -X GET /v1/organizations/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -15117,7 +15117,7 @@ curl -X GET /v1/organizations/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15207,7 +15207,7 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -15225,7 +15225,7 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15307,7 +15307,7 @@ curl -X GET /v1/organizations/{organizationId}/clinics:count \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -15325,7 +15325,7 @@ curl -X GET /v1/organizations/{organizationId}/clinics:count \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15401,7 +15401,7 @@ curl -X GET /v1/organizations:count \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -15419,7 +15419,7 @@ curl -X GET /v1/organizations:count \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15508,7 +15508,7 @@ curl -X GET /v1/organizations:search \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -15526,7 +15526,7 @@ curl -X GET /v1/organizations:search \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15622,7 +15622,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -15640,7 +15640,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15734,7 +15734,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types:active \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -15752,7 +15752,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types:active \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15852,7 +15852,7 @@ curl -X GET /v1/request-types/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -15872,7 +15872,7 @@ curl -X GET /v1/request-types/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `request_type_not_found` — request type with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -15990,7 +15990,7 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16010,7 +16010,7 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `service_request_query_incident_not_found` — incident with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -16116,7 +16116,7 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16134,7 +16134,7 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -16246,7 +16246,7 @@ curl -X GET /v1/service-requests/{id} \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16266,7 +16266,7 @@ curl -X GET /v1/service-requests/{id} \
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `service_request_query_not_found` — service request with the given ID does not exist.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -16368,7 +16368,7 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16386,7 +16386,7 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -16464,7 +16464,7 @@ curl -X GET /v1/me \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16482,7 +16482,7 @@ curl -X GET /v1/me \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -16578,7 +16578,7 @@ active-employee-of-that-clinic.-parameters">Parameters</h3>
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16600,7 +16600,7 @@ active-employee-of-that-clinic.-responses">Responses</h3>
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `self_clinic_role_not_found` — caller is not an active employee of the given clinic.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -16698,7 +16698,7 @@ department.-parameters">Parameters</h3>
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16721,7 +16721,7 @@ department.-responses">Responses</h3>
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `self_dept_role_not_found` — caller is not an active employee of the given department.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -16803,7 +16803,7 @@ curl -X GET /v1/me/organizations \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16822,7 +16822,7 @@ has-an-active-(non-terminated)-employee-record.-responses">Responses</h3>
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -16935,7 +16935,7 @@ employee-of-that-organization.-parameters">Parameters</h3>
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -16957,7 +16957,7 @@ employee-of-that-organization.-responses">Responses</h3>
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `self_employment_not_found` — caller is not an active employee of the given organization.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -17055,7 +17055,7 @@ active-employee-of-that-organization.-parameters">Parameters</h3>
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -17077,7 +17077,7 @@ active-employee-of-that-organization.-responses">Responses</h3>
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `self_org_role_not_found` — caller is not an active employee of the given organization.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -17167,7 +17167,7 @@ curl -X GET /v1/clinics/{clinicId}/stats \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -17185,7 +17185,7 @@ curl -X GET /v1/clinics/{clinicId}/stats \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -17273,7 +17273,7 @@ curl -X GET /v1/departments/{departmentId}/stats \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -17291,7 +17291,7 @@ curl -X GET /v1/departments/{departmentId}/stats \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -17380,7 +17380,7 @@ curl -X GET /v1/organizations/{organizationId}/stats \
 }
 ```
 
-> An unexpected error response.
+> An unexpected error response (e.g. deadline exceeded or request canceled).
 
 ```json
 {
@@ -17398,7 +17398,7 @@ curl -X GET /v1/organizations/{organizationId}/stats \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response (e.g. deadline exceeded or request canceled).|[v1ErrorResponse](#schemav1errorresponse)|
 
 <aside class="success">
 This operation does not require authentication
@@ -18275,32 +18275,6 @@ Cancellation by registrar uses CancelIncident.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |newStatus|string|true|none|none|
-
-<h2 id="tocS_ValidationFailedDetailsFieldViolation">ValidationFailedDetailsFieldViolation</h2>
-<!-- backwards compatibility -->
-<a id="schemavalidationfaileddetailsfieldviolation"></a>
-<a id="schema_ValidationFailedDetailsFieldViolation"></a>
-<a id="tocSvalidationfaileddetailsfieldviolation"></a>
-<a id="tocsvalidationfaileddetailsfieldviolation"></a>
-
-```json
-{
-  "field": "string",
-  "rule": "string",
-  "message": "string",
-  "param": "string"
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|field|string|false|none|none|
-|rule|string|false|none|none|
-|message|string|false|none|none|
-|param|string|false|none|none|
 
 <h2 id="tocS_classifierV1Type">classifierV1Type</h2>
 <!-- backwards compatibility -->
@@ -24073,37 +24047,6 @@ VacationView mirrors projections.employee_vacations. state is one of
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
-<h2 id="tocS_v1ValidationFailedDetails">v1ValidationFailedDetails</h2>
-<!-- backwards compatibility -->
-<a id="schemav1validationfaileddetails"></a>
-<a id="schema_v1ValidationFailedDetails"></a>
-<a id="tocSv1validationfaileddetails"></a>
-<a id="tocsv1validationfaileddetails"></a>
-
-```json
-{
-  "violations": [
-    {
-      "field": "string",
-      "rule": "string",
-      "message": "string",
-      "param": "string"
-    }
-  ]
-}
-
-```
-
-ValidationFailedDetails is present only when code = "validation_failed".
-Each violation corresponds to one struct-tag rule failure or one
-domain-level leaf error from errors.Join.
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|violations|[[ValidationFailedDetailsFieldViolation](#schemavalidationfaileddetailsfieldviolation)]|false|none|none|
-
 <h2 id="tocS_v1ValidationErrorResponse">v1ValidationErrorResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1validationerrorresponse"></a>
@@ -24115,10 +24058,7 @@ domain-level leaf error from errors.Join.
 {
   "code": "string",
   "message": "string",
-  "details": {
-    "property1": null,
-    "property2": null
-  }
+  "details": {}
 }
 
 ```
@@ -24131,5 +24071,4 @@ ValidationErrorResponse
 |---|---|---|---|---|
 |code|string|false|none|none|
 |message|string|false|none|none|
-|details|object|false|none|Additional error details. Shape depends on the error code. For code=validation_failed: a v1ValidationFailedDetails object containing a violations array.|
-|» **additionalProperties**|any|false|none|none|
+|details|object|false|none|details shape depends on the error code; for validation_failed contains a violations array.|

@@ -147,7 +147,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -282,7 +282,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -411,7 +411,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -553,7 +553,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -651,7 +651,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -755,7 +755,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -868,7 +868,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -973,7 +973,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1066,7 +1066,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1183,7 +1183,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1284,7 +1284,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1389,7 +1389,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1490,7 +1490,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1532,7 +1532,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1618,7 +1618,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1646,7 +1646,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -1732,7 +1732,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1850,7 +1850,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -1963,7 +1963,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2074,7 +2074,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2195,7 +2195,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2314,7 +2314,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2415,7 +2415,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2520,7 +2520,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2625,7 +2625,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2726,7 +2726,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2768,7 +2768,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -2854,7 +2854,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -2882,7 +2882,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -2968,7 +2968,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3086,7 +3086,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3199,7 +3199,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3310,7 +3310,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3431,7 +3431,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3538,7 +3538,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3643,7 +3643,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3773,7 +3773,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3880,7 +3880,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -3985,7 +3985,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4098,7 +4098,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4199,7 +4199,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4323,7 +4323,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4424,7 +4424,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4537,7 +4537,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4650,7 +4650,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4755,7 +4755,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4860,7 +4860,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -4977,7 +4977,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5093,7 +5093,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5186,7 +5186,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5307,7 +5307,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5411,7 +5411,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5524,7 +5524,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5617,7 +5617,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5722,7 +5722,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5827,7 +5827,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -5932,7 +5932,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6049,7 +6049,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6162,7 +6162,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6265,7 +6265,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6373,7 +6373,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6469,7 +6469,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6573,7 +6573,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6671,7 +6671,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6775,7 +6775,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6888,7 +6888,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6998,7 +6998,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7102,7 +7102,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7198,7 +7198,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7292,7 +7292,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7390,7 +7390,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7496,7 +7496,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7590,7 +7590,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7688,7 +7688,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7794,7 +7794,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7887,7 +7887,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -7986,7 +7986,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8093,7 +8093,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8186,7 +8186,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8316,7 +8316,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8429,7 +8429,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8540,7 +8540,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8661,7 +8661,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8768,7 +8768,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8885,7 +8885,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -8986,7 +8986,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9091,7 +9091,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9192,7 +9192,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9322,7 +9322,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9435,7 +9435,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9546,7 +9546,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9667,7 +9667,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9774,7 +9774,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9816,7 +9816,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -9902,7 +9902,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -9930,7 +9930,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -10016,7 +10016,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -10065,7 +10065,7 @@
           },
           {
             "name": "onVacation",
-            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND > now()).",
+            "description": "When true, restrict to employees currently on an active vacation\n(current_vacation_ends_at IS NOT NULL AND \u003e now()).",
             "in": "query",
             "required": false,
             "type": "boolean"
@@ -10151,7 +10151,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -10281,7 +10281,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -10394,7 +10394,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -10505,7 +10505,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -10626,7 +10626,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -10733,7 +10733,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -10854,7 +10854,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -10955,7 +10955,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11062,7 +11062,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11169,7 +11169,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11277,7 +11277,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11396,7 +11396,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11497,7 +11497,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11614,7 +11614,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11715,7 +11715,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11822,7 +11822,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -11929,7 +11929,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12022,7 +12022,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12107,7 +12107,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12217,7 +12217,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12315,7 +12315,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12419,7 +12419,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12515,7 +12515,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12619,7 +12619,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12724,7 +12724,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12817,7 +12817,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12941,7 +12941,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -13077,7 +13077,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -13182,7 +13182,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -13275,7 +13275,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -13376,7 +13376,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -13501,7 +13501,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -13680,7 +13680,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -13817,7 +13817,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -13910,7 +13910,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14023,7 +14023,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14128,7 +14128,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14233,7 +14233,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14350,7 +14350,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14475,7 +14475,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14571,7 +14571,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14678,7 +14678,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14774,7 +14774,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14878,7 +14878,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14979,7 +14979,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -15075,7 +15075,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -15176,7 +15176,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -15312,7 +15312,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -15419,7 +15419,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -15524,7 +15524,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -15629,7 +15629,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -15742,7 +15742,7 @@
             }
           },
           "default": {
-            "description": "An unexpected error response.",
+            "description": "An unexpected error response (e.g. deadline exceeded or request canceled).",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -15947,7 +15947,7 @@
           "$ref": "#/definitions/commandIncidentV1IncidentStatus"
         }
       },
-      "description": "UpdateIncidentStatus only handles forward transitions:\npending -> in_progress, in_progress -> done, in_progress -> rejected.\nCancellation by registrar uses CancelIncident.",
+      "description": "UpdateIncidentStatus only handles forward transitions:\npending -\u003e in_progress, in_progress -\u003e done, in_progress -\u003e rejected.\nCancellation by registrar uses CancelIncident.",
       "required": [
         "newStatus"
       ]
@@ -16277,23 +16277,6 @@
       "required": [
         "newStatus"
       ]
-    },
-    "ValidationFailedDetailsFieldViolation": {
-      "type": "object",
-      "properties": {
-        "field": {
-          "type": "string"
-        },
-        "rule": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "param": {
-          "type": "string"
-        }
-      }
     },
     "classifierV1Type": {
       "type": "object",
@@ -18856,23 +18839,8 @@
       },
       "description": "VacationView mirrors projections.employee_vacations. state is one of\n{scheduled, active, ended, cancelled}."
     },
-    "v1ValidationFailedDetails": {
-      "type": "object",
-      "properties": {
-        "violations": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/ValidationFailedDetailsFieldViolation"
-          }
-        }
-      },
-      "description": "ValidationFailedDetails is present only when code = \"validation_failed\".\nEach violation corresponds to one struct-tag rule failure or one\ndomain-level leaf error from errors.Join."
-    },
     "v1ValidationErrorResponse": {
       "type": "object",
-      "title": "ValidationErrorResponse",
-      "description": "Error response body returned for validation failures (HTTP 400, code=validation_failed). The details field contains a list of field violations.",
       "properties": {
         "code": {
           "type": "string"
@@ -18882,10 +18850,11 @@
         },
         "details": {
           "type": "object",
-          "description": "Additional error details. Shape depends on the error code. For code=validation_failed: a v1ValidationFailedDetails object containing a violations array.",
-          "additionalProperties": {}
+          "description": "details shape depends on the error code; for validation_failed contains a violations array."
         }
-      }
+      },
+      "description": "Error response body returned for validation failures (HTTP 400, code=validation_failed).",
+      "title": "ValidationErrorResponse"
     }
   }
 }

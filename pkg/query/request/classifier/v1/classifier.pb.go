@@ -452,10 +452,10 @@ const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
 	"\x10application/json\x12E{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/request-types/{id}\x12\xe4\x01\n" +
 	"\x1eListRequestTypesByOrganization\x12B.query.request.classifier.v1.ListRequestTypesByOrganizationRequest\x1aC.query.request.classifier.v1.ListRequestTypesByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/request-types\x12\xfd\x01\n" +
-	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\xdd\a\x92A\xbf\x05R\xff\x01\n" +
-	"\x03400\x12\xf7\x01\n" +
-	"#Validation failed or invalid input.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
+	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\xaf\t\x92A\x91\aR\x89\x02\n" +
+	"\x03400\x12\x81\x02\n" +
+	"#Validation failed or invalid input.\x12%\n" +
+	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
@@ -468,7 +468,11 @@ const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x03500\x12\x83\x01\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
-	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}\n" +
+	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}R\xc5\x01\n" +
+	"\adefault\x12\xb9\x01\n" +
+	"JAn unexpected error response (e.g. deadline exceeded or request canceled).\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
+	"\x10application/json\x12:{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}\n" +
 	"\x1fcom.query.request.classifier.v1B\x0fClassifierProtoP\x01ZWgithub.com/medincident/medincident-backend/pkg/query/request/classifier/v1;classifierv1\xa2\x02\x03QRC\xaa\x02\x1bQuery.Request.Classifier.V1\xca\x02\x1bQuery\\Request\\Classifier\\V1\xe2\x02'Query\\Request\\Classifier\\V1\\GPBMetadata\xea\x02\x1eQuery::Request::Classifier::V1b\x06proto3"
 
 var (

@@ -12,7 +12,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Validation failed or invalid input."
       schema: {
-        json_schema: {ref: ".error.v1.ErrorResponse"}
+        json_schema: {ref: ".error.v1.ValidationErrorResponse"}
       }
       examples: {
         key: "application/json"
@@ -56,6 +56,19 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       examples: {
         key: "application/json"
         value: "{\"code\":\"unexpected_error\",\"message\":\"internal error\"}"
+      }
+    }
+  }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response (e.g. deadline exceeded or request canceled)."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+      examples: {
+        key: "application/json"
+        value: "{\"code\":\"deadline_exceeded\",\"message\":\"deadline exceeded\"}"
       }
     }
   }
