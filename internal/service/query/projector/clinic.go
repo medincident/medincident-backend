@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
@@ -28,6 +29,10 @@ func ClinicCreated(
 		lon, lat = &lo, &la
 	}
 	createdAt := ev.GetCreatedAt().AsTime()
+	var desc null.String
+	if ev.GetDescription() != "" {
+		desc = null.StringFrom(ev.GetDescription())
+	}
 
 	if err := tx.Exec(`
 		INSERT INTO projections.clinics
@@ -36,7 +41,7 @@ func ClinicCreated(
 		     created_at, updated_at)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 		ON CONFLICT (id) DO NOTHING`,
-		id, orgID, ev.GetName(), ev.GetDescription(),
+		id, orgID, ev.GetName(), desc,
 		ev.GetPhysicalAddress().GetText(), lon, lat,
 		createdAt, createdAt,
 	).Error; err != nil {
@@ -82,12 +87,16 @@ func ClinicDetailsChanged(
 ) error {
 	id := uuid.MustParse(aggregateID)
 	updatedAt := ev.GetUpdatedAt().AsTime()
+	var desc null.String
+	if ev.GetDescription() != "" {
+		desc = null.StringFrom(ev.GetDescription())
+	}
 
 	if err := tx.Exec(`
 		UPDATE projections.clinics
 		   SET name = ?, description = ?, updated_at = ?
 		 WHERE id = ?`,
-		ev.GetName(), ev.GetDescription(), updatedAt, id,
+		ev.GetName(), desc, updatedAt, id,
 	).Error; err != nil {
 		return oops.In("projector.clinic").
 			Code(ErrCodeClinicProjectionFailed).

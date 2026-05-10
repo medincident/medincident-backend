@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
@@ -33,12 +34,17 @@ func DepartmentCreated(
 			Wrap(err)
 	}
 
+	var desc null.String
+	if ev.GetDescription() != "" {
+		desc = null.StringFrom(ev.GetDescription())
+	}
+
 	if err := tx.Exec(`
 		INSERT INTO projections.departments
 		    (id, clinic_id, name, description, created_at, updated_at)
 		VALUES (?, ?, ?, ?, ?, ?)
 		ON CONFLICT (id) DO NOTHING`,
-		id, clinicID, ev.GetName(), ev.GetDescription(),
+		id, clinicID, ev.GetName(), desc,
 		createdAt, createdAt,
 	).Error; err != nil {
 		return oops.In("projector.department").
@@ -94,12 +100,16 @@ func DepartmentDetailsChanged(
 ) error {
 	id := uuid.MustParse(aggregateID)
 	updatedAt := ev.GetUpdatedAt().AsTime()
+	var desc null.String
+	if ev.GetDescription() != "" {
+		desc = null.StringFrom(ev.GetDescription())
+	}
 
 	if err := tx.Exec(`
 		UPDATE projections.departments
 		   SET name = ?, description = ?, updated_at = ?
 		 WHERE id = ?`,
-		ev.GetName(), ev.GetDescription(), updatedAt, id,
+		ev.GetName(), desc, updatedAt, id,
 	).Error; err != nil {
 		return oops.In("projector.department").
 			Code(ErrCodeDepartmentProjectionFailed).

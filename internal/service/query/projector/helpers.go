@@ -18,7 +18,7 @@ import (
 //
 //nolint:unused // used by membership projectors added in a later task
 func lookupClinicID(tx *gorm.DB, deptID uuid.UUID) (*uuid.UUID, error) {
-	var clinicID uuid.UUID
+	var clinicID *uuid.UUID
 	err := tx.Raw(
 		`SELECT clinic_id FROM projections.departments WHERE id = ?`, deptID,
 	).Row().Scan(&clinicID)
@@ -31,10 +31,7 @@ func lookupClinicID(tx *gorm.DB, deptID uuid.UUID) (*uuid.UUID, error) {
 		}
 		return nil, err
 	}
-	if clinicID == uuid.Nil {
-		return nil, nil //nolint:nilnil // NULL clinic_id — dept directly under org
-	}
-	return &clinicID, nil
+	return clinicID, nil // nil when SQL NULL (dept directly under org)
 }
 
 // lookupUserName reads the four user-display columns from projections.users.
@@ -89,7 +86,10 @@ func lookupOrgIDForClinic(tx *gorm.DB, clinicID uuid.UUID) (uuid.UUID, error) {
 	if err := tx.Raw(
 		`SELECT organization_id FROM projections.clinics WHERE id = ?`, clinicID,
 	).Row().Scan(&orgID); err != nil {
-		return uuid.Nil, err
+		return uuid.Nil, oops.In("projector.clinic").
+			Code(ErrCodeClinicProjectionFailed).
+			With("clinic_id", clinicID).
+			Wrap(err)
 	}
 	return orgID, nil
 }
