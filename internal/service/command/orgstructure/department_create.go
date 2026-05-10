@@ -8,12 +8,16 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // Error codes emitted by Department-aggregate commands that are not
@@ -43,6 +47,30 @@ type CreateDepartmentCommand struct {
 // CreateDepartmentResult is the output of DepartmentService.Create.
 type CreateDepartmentResult struct {
 	ID uuid.UUID
+}
+
+func buildDepartmentCreatedEnvelope(d *model.Department) (*eventv1.Envelope, error) {
+	var desc string
+	if d.Description.Valid {
+		desc = d.Description.String
+	}
+	msg := &deptv1.DepartmentCreated{
+		ClinicId:    d.ClinicID.String(),
+		Name:        d.Name,
+		Description: desc,
+		CreatedAt:   timestamppb.New(d.CreatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.orgstructure.department").
+			Code(ErrCodeDepartmentSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(d.CreatedAt),
+		AggregateType: "department",
+		AggregateId:   d.ID.String(),
+		Payload:       payload,
+	}, nil
 }
 
 // Create persists a new Department under the given clinic.
@@ -93,7 +121,11 @@ func (s *DepartmentService) Create(
 				Wrap(err)
 		}
 
-		if err := projector.DepartmentCreated(tx, &dept); err != nil {
+		env, err := buildDepartmentCreatedEnvelope(&dept)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.department.v1.created", env); err != nil {
 			return err
 		}
 		result.ID = id

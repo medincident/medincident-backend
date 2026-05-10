@@ -8,13 +8,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateClinicPhysicalAddressPayload carries the new physical address
@@ -28,6 +32,24 @@ type UpdateClinicPhysicalAddressPayload struct {
 type UpdateClinicPhysicalAddressCommand struct {
 	Caller  authz.Caller
 	Payload UpdateClinicPhysicalAddressPayload
+}
+
+func buildClinicPhysicalAddressChangedEnvelope(c *model.Clinic) (*eventv1.Envelope, error) {
+	msg := &clinicv1.ClinicPhysicalAddressChanged{
+		PhysicalAddress: buildClinicAddressProto(c.PhysicalAddress),
+		UpdatedAt:       timestamppb.New(c.UpdatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.orgstructure.clinic").
+			Code(ErrCodeClinicSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(c.UpdatedAt),
+		AggregateType: "clinic",
+		AggregateId:   c.ID.String(),
+		Payload:       payload,
+	}, nil
 }
 
 // UpdatePhysicalAddress replaces the clinic's physical address.
@@ -80,6 +102,10 @@ func (s *ClinicService) UpdatePhysicalAddress(
 				Wrap(err)
 		}
 
-		return projector.ClinicPhysicalAddressChanged(tx, &clinic)
+		env, err := buildClinicPhysicalAddressChangedEnvelope(&clinic)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.clinic.v1.physical_address_changed", env)
 	})
 }

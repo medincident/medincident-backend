@@ -7,12 +7,16 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // Error codes emitted by Organization-aggregate commands that are not
@@ -51,8 +55,52 @@ type CreateOrganizationResult struct {
 	ID uuid.UUID
 }
 
+// buildOrgAddressProto converts a model.Address to the org proto Address.
+func buildOrgAddressProto(a model.Address) *orgv1.Address {
+	addr := &orgv1.Address{Text: a.Text}
+	if a.Point.Valid {
+		addr.Point = &orgv1.Point{
+			Longitude: a.Point.V.Longitude,
+			Latitude:  a.Point.V.Latitude,
+		}
+	}
+	return addr
+}
+
+func buildOrganizationCreatedEnvelope(org *model.Organization) (*eventv1.Envelope, error) {
+	addr := &orgv1.Address{Text: org.LegalAddress.Text}
+	if org.LegalAddress.Point.Valid {
+		addr.Point = &orgv1.Point{
+			Longitude: org.LegalAddress.Point.V.Longitude,
+			Latitude:  org.LegalAddress.Point.V.Latitude,
+		}
+	}
+	var desc string
+	if org.Description.Valid {
+		desc = org.Description.String
+	}
+	msg := &orgv1.OrganizationCreated{
+		Name:         org.Name,
+		Description:  desc,
+		LegalAddress: addr,
+		CreatedAt:    timestamppb.New(org.CreatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.orgstructure.organization").
+			Code(ErrCodeOrganizationSaveFailed).
+			Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(org.CreatedAt),
+		AggregateType: "organization",
+		AggregateId:   org.ID.String(),
+		Payload:       payload,
+	}, nil
+}
+
 // Create persists a new Organization and writes the matching
-// projection row in one transaction via the synchronous projector.
+// outbox event in one transaction.
 //
 // See: docs/services/OrgStructure.md
 func (s *OrganizationService) Create(
@@ -100,7 +148,11 @@ func (s *OrganizationService) Create(
 				Wrap(err)
 		}
 
-		if err := projector.OrganizationCreated(tx, &org); err != nil {
+		env, err := buildOrganizationCreatedEnvelope(&org)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.organization.v1.created", env); err != nil {
 			return err
 		}
 		result.ID = id

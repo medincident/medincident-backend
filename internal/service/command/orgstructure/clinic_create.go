@@ -8,12 +8,16 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // Error codes emitted by Clinic-aggregate commands that are not
@@ -45,6 +49,50 @@ type CreateClinicCommand struct {
 // CreateClinicResult is the output of ClinicService.Create.
 type CreateClinicResult struct {
 	ID uuid.UUID
+}
+
+// buildClinicAddressProto converts a model.Address to the clinic proto Address.
+func buildClinicAddressProto(a model.Address) *clinicv1.Address {
+	addr := &clinicv1.Address{Text: a.Text}
+	if a.Point.Valid {
+		addr.Point = &clinicv1.Point{
+			Longitude: a.Point.V.Longitude,
+			Latitude:  a.Point.V.Latitude,
+		}
+	}
+	return addr
+}
+
+func buildClinicCreatedEnvelope(c *model.Clinic) (*eventv1.Envelope, error) {
+	addr := &clinicv1.Address{Text: c.PhysicalAddress.Text}
+	if c.PhysicalAddress.Point.Valid {
+		addr.Point = &clinicv1.Point{
+			Longitude: c.PhysicalAddress.Point.V.Longitude,
+			Latitude:  c.PhysicalAddress.Point.V.Latitude,
+		}
+	}
+	var desc string
+	if c.Description.Valid {
+		desc = c.Description.String
+	}
+	msg := &clinicv1.ClinicCreated{
+		OrganizationId:  c.OrganizationID.String(),
+		Name:            c.Name,
+		Description:     desc,
+		PhysicalAddress: addr,
+		CreatedAt:       timestamppb.New(c.CreatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.orgstructure.clinic").
+			Code(ErrCodeClinicSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(c.CreatedAt),
+		AggregateType: "clinic",
+		AggregateId:   c.ID.String(),
+		Payload:       payload,
+	}, nil
 }
 
 // Create persists a new Clinic under the given organization.
@@ -106,7 +154,11 @@ func (s *ClinicService) Create(
 				Wrap(err)
 		}
 
-		if err := projector.ClinicCreated(tx, &clinic); err != nil {
+		env, err := buildClinicCreatedEnvelope(&clinic)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.clinic.v1.created", env); err != nil {
 			return err
 		}
 		result.ID = id

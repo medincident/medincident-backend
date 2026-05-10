@@ -8,13 +8,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateClinicDetailsPayload carries the new name and (optional)
@@ -29,6 +33,29 @@ type UpdateClinicDetailsPayload struct {
 type UpdateClinicDetailsCommand struct {
 	Caller  authz.Caller
 	Payload UpdateClinicDetailsPayload
+}
+
+func buildClinicDetailsChangedEnvelope(c *model.Clinic) (*eventv1.Envelope, error) {
+	var desc string
+	if c.Description.Valid {
+		desc = c.Description.String
+	}
+	msg := &clinicv1.ClinicDetailsChanged{
+		Name:        c.Name,
+		Description: desc,
+		UpdatedAt:   timestamppb.New(c.UpdatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.orgstructure.clinic").
+			Code(ErrCodeClinicSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(c.UpdatedAt),
+		AggregateType: "clinic",
+		AggregateId:   c.ID.String(),
+		Payload:       payload,
+	}, nil
 }
 
 // UpdateDetails changes a clinic's name and description.
@@ -80,6 +107,10 @@ func (s *ClinicService) UpdateDetails(
 				Wrap(err)
 		}
 
-		return projector.ClinicDetailsChanged(tx, &clinic)
+		env, err := buildClinicDetailsChangedEnvelope(&clinic)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.clinic.v1.details_changed", env)
 	})
 }
