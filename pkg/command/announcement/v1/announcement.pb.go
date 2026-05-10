@@ -667,10 +667,10 @@ const file_command_announcement_v1_announcement_proto_rawDesc = "" +
 	"eNot found. Error codes:\n" +
 	"- `announcement_not_found` — announcement with the given ID does not exist.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
-	"\x10application/json\x12E{\"code\":\"announcement_not_found\",\"message\":\"Announcement not found.\"}\x82\xd3\xe4\x93\x02\"\" /v1/announcements/{id}:unarchiveB\x9a\t\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x10application/json\x12E{\"code\":\"announcement_not_found\",\"message\":\"Announcement not found.\"}\x82\xd3\xe4\x93\x02\"\" /v1/announcements/{id}:unarchiveB\x90\t\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

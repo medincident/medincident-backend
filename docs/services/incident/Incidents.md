@@ -40,10 +40,14 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
+| `incident_category_inactive` | 400 | Категория деактивирована |
+| `incident_type_inactive` | 400 | Тип инцидента деактивирован |
 | `permission_denied` | 403 | Нет прав доступа |
 | `incident_department_not_found` | 404 | Отдел не найден |
 | `incident_category_not_found` | 404 | Категория не найдена |
 | `incident_type_not_found` | 404 | Тип инцидента не найден |
+| `incident_employee_not_found` | 404 | Регистратор (сотрудник) не найден |
+| `incident_registrar_user_not_found` | 404 | Проекция пользователя регистратора не найдена |
 
 ---
 

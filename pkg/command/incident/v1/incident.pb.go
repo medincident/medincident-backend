@@ -747,21 +747,22 @@ const file_command_incident_v1_incident_proto_rawDesc = "" +
 	"\x15INCIDENT_PRIORITY_LOW\x10\x01\x12\x1c\n" +
 	"\x18INCIDENT_PRIORITY_NORMAL\x10\x02\x12\x1a\n" +
 	"\x16INCIDENT_PRIORITY_HIGH\x10\x03\x12\x1e\n" +
-	"\x1aINCIDENT_PRIORITY_CRITICAL\x10\x042\x8b\"\n" +
-	"\x16IncidentCommandService\x12\xb3\a\n" +
-	"\x0eCreateIncident\x12*.command.incident.v1.CreateIncidentRequest\x1a+.command.incident.v1.CreateIncidentResponse\"\xc7\x06\x92A\xab\x06J\xc9\x02\n" +
+	"\x1aINCIDENT_PRIORITY_CRITICAL\x10\x042\xe3\"\n" +
+	"\x16IncidentCommandService\x12\x8b\b\n" +
+	"\x0eCreateIncident\x12*.command.incident.v1.CreateIncidentRequest\x1a+.command.incident.v1.CreateIncidentResponse\"\x9f\a\x92A\x83\aJ\xc9\x02\n" +
 	"\x03400\x12\xc1\x02\n" +
 	"\xbb\x01Validation failed or precondition not met. Error codes:\n" +
 	"- `incident_category_inactive` — the selected category is inactive.\n" +
 	"- `incident_type_inactive` — the selected type is inactive.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"d\n" +
-	"\x10application/json\x12P{\"code\":\"incident_category_inactive\",\"message\":\"Incident category is inactive.\"}J\xdc\x03\n" +
-	"\x03404\x12\xd4\x03\n" +
-	"\xd4\x02Not found. Error codes:\n" +
+	"\x10application/json\x12P{\"code\":\"incident_category_inactive\",\"message\":\"Incident category is inactive.\"}J\xb4\x04\n" +
+	"\x03404\x12\xac\x04\n" +
+	"\xac\x03Not found. Error codes:\n" +
 	"- `incident_department_not_found` — department with the given ID does not exist.\n" +
 	"- `incident_category_not_found` — incident category with the given ID does not exist.\n" +
 	"- `incident_type_not_found` — incident type with the given ID does not exist.\n" +
-	"- `incident_employee_not_found` — registrar employee not found.\x12\x1b\n" +
+	"- `incident_employee_not_found` — registrar employee not found.\n" +
+	"- `incident_registrar_user_not_found` — registrar's user projection record not found.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"^\n" +
 	"\x10application/json\x12J{\"code\":\"incident_department_not_found\",\"message\":\"Department not found.\"}\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/incidents\x12\x99\x05\n" +
 	"\x0eCancelIncident\x12*.command.incident.v1.CancelIncidentRequest\x1a+.command.incident.v1.CancelIncidentResponse\"\xad\x04\x92A\xff\x03J\xa2\x02\n" +
@@ -819,10 +820,10 @@ const file_command_incident_v1_incident_proto_rawDesc = "" +
 	"]Not found. Error codes:\n" +
 	"- `incident_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"Q\n" +
-	"\x10application/json\x12={\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:reopenB\xfa\b\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x10application/json\x12={\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:reopenB\xf0\b\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

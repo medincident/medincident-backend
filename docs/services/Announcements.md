@@ -144,7 +144,16 @@
 | `announcement_clinic_not_found` | 404 | Клиника не найдена |
 | `announcement_department_not_found` | 404 | Отдел не найден |
 
-**UpdateAnnouncement / UpdateAnnouncementPriority / ArchiveAnnouncement / UnarchiveAnnouncement:**
+**UpdateAnnouncement / UpdateAnnouncementPriority:**
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `announcement_archived` | 400 | Объявление архивировано и не может быть изменено |
+| `permission_denied` | 403 | Недостаточно прав |
+| `announcement_not_found` | 404 | Объявление не найдено |
+
+**ArchiveAnnouncement / UnarchiveAnnouncement:**
 
 | Код | HTTP | Описание |
 |---|---|---|

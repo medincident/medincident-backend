@@ -13,7 +13,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Validation failed or invalid input."
       schema: {
-        json_schema: {ref: ".error.v1.ValidationErrorResponse"}
+        json_schema: {ref: ".error.v1.ErrorResponse"}
       }
       examples: {
         key: "application/json"
@@ -92,13 +92,13 @@ service IncidentClassifierCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found. Error codes:\n- `incident_category_not_found` — parent category with the given ID does not exist."
+          description: "Not found. Error codes:\n- `incident_category_parent_not_found` — parent category with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
           }
           examples: {
             key: "application/json"
-            value: "{\"code\":\"incident_category_not_found\",\"message\":\"Parent category not found.\"}"
+            value: "{\"code\":\"incident_category_parent_not_found\",\"message\":\"Parent category not found.\"}"
           }
         }
       }

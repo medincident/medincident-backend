@@ -435,9 +435,10 @@ const file_command_request_v1_request_proto_rawDesc = "" +
 	"\x16AssignExecutorsRequest\x121\n" +
 	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x127\n" +
 	"\x15executor_employee_ids\x18\x02 \x03(\tB\x03\xe0A\x02R\x13executorEmployeeIds\"\x19\n" +
-	"\x17AssignExecutorsResponse2\xf9\x1c\n" +
-	"\x1cServiceRequestCommandService\x12\xd9\t\n" +
-	"\x14CreateServiceRequest\x12/.command.request.v1.CreateServiceRequestRequest\x1a0.command.request.v1.CreateServiceRequestResponse\"\xdd\b\x92A\xba\bJ\xa9\x04\n" +
+	"\x17AssignExecutorsResponse2\xd2\x1d\n" +
+	"\x1cServiceRequestCommandService\x12\xb2\n" +
+	"\n" +
+	"\x14CreateServiceRequest\x12/.command.request.v1.CreateServiceRequestRequest\x1a0.command.request.v1.CreateServiceRequestResponse\"\xb6\t\x92A\x93\tJ\xa9\x04\n" +
 	"\x03400\x12\xa1\x04\n" +
 	"\x9d\x03Failed precondition. Error codes:\n" +
 	"- `service_request_type_inactive` — the request type is inactive.\n" +
@@ -445,10 +446,11 @@ const file_command_request_v1_request_proto_rawDesc = "" +
 	"- `service_request_incident_org_mismatch` — the linked incident belongs to a different organization.\n" +
 	"- `service_request_employee_dept_mismatch` — an executor employee does not belong to the specified department.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"b\n" +
-	"\x10application/json\x12N{\"code\":\"service_request_type_inactive\",\"message\":\"Request type is inactive.\"}J\x8b\x04\n" +
-	"\x03404\x12\x83\x04\n" +
-	"\xfc\x02Not found. Error codes:\n" +
+	"\x10application/json\x12N{\"code\":\"service_request_type_inactive\",\"message\":\"Request type is inactive.\"}J\xe4\x04\n" +
+	"\x03404\x12\xdc\x04\n" +
+	"\xd5\x03Not found. Error codes:\n" +
 	"- `service_request_department_not_found` — department with the given ID does not exist.\n" +
+	"- `service_request_clinic_not_found` — clinic linked to the department does not exist.\n" +
 	"- `service_request_type_not_found` — request type with the given ID does not exist.\n" +
 	"- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n" +
 	"- `service_request_employee_not_found` — one of the executor employees was not found.\x12\x1b\n" +
@@ -489,10 +491,10 @@ const file_command_request_v1_request_proto_rawDesc = "" +
 	"- `service_request_not_found` — service request with the given ID does not exist.\n" +
 	"- `service_request_employee_not_found` — one of the executor employees was not found.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"_\n" +
-	"\x10application/json\x12K{\"code\":\"service_request_not_found\",\"message\":\"Service request not found.\"}\x82\xd3\xe4\x93\x028:\x01*\x1a3/v1/service-requests/{service_request_id}/executorsB\xf2\b\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x10application/json\x12K{\"code\":\"service_request_not_found\",\"message\":\"Service request not found.\"}\x82\xd3\xe4\x93\x028:\x01*\x1a3/v1/service-requests/{service_request_id}/executorsB\xe8\b\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

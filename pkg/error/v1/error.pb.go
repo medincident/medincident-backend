@@ -12,7 +12,6 @@ import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	structpb "google.golang.org/protobuf/types/known/structpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -118,13 +117,15 @@ func (x *ValidationFailedDetails) GetViolations() []*ValidationFailedDetails_Fie
 	return nil
 }
 
-// ErrorResponse is the HTTP response body for all non-validation errors.
-// The openapiv2_schema option forces this message into the generated OpenAPI
-// definitions so that service-level $ref annotations can reference it by name.
+// ErrorResponse is the HTTP response body written by the gateway error
+// handler. The openapiv2_schema option forces this message into the
+// generated OpenAPI definitions so that service-level $ref annotations
+// can reference it by name.
 type ErrorResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Code          string                   `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Message       string                   `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Details       *ValidationFailedDetails `protobuf:"bytes,3,opt,name=details,proto3,oneof" json:"details,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -173,65 +174,7 @@ func (x *ErrorResponse) GetMessage() string {
 	return ""
 }
 
-// ValidationErrorResponse is the HTTP response body for validation failures
-// (HTTP 400, code=validation_failed). The details field is a generic object
-// whose shape depends on the error code; for validation_failed it contains
-// a violations array (see ValidationFailedDetails).
-type ValidationErrorResponse struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	Code    string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	// details shape depends on the error code; for validation_failed contains a violations array.
-	Details       *structpb.Struct `protobuf:"bytes,3,opt,name=details,proto3" json:"details,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ValidationErrorResponse) Reset() {
-	*x = ValidationErrorResponse{}
-	mi := &file_error_v1_error_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ValidationErrorResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ValidationErrorResponse) ProtoMessage() {}
-
-func (x *ValidationErrorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_error_v1_error_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ValidationErrorResponse.ProtoReflect.Descriptor instead.
-func (*ValidationErrorResponse) Descriptor() ([]byte, []int) {
-	return file_error_v1_error_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *ValidationErrorResponse) GetCode() string {
-	if x != nil {
-		return x.Code
-	}
-	return ""
-}
-
-func (x *ValidationErrorResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *ValidationErrorResponse) GetDetails() *structpb.Struct {
+func (x *ErrorResponse) GetDetails() *ValidationFailedDetails {
 	if x != nil {
 		return x.Details
 	}
@@ -250,7 +193,7 @@ type ValidationFailedDetails_FieldViolation struct {
 
 func (x *ValidationFailedDetails_FieldViolation) Reset() {
 	*x = ValidationFailedDetails_FieldViolation{}
-	mi := &file_error_v1_error_proto_msgTypes[4]
+	mi := &file_error_v1_error_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -262,7 +205,7 @@ func (x *ValidationFailedDetails_FieldViolation) String() string {
 func (*ValidationFailedDetails_FieldViolation) ProtoMessage() {}
 
 func (x *ValidationFailedDetails_FieldViolation) ProtoReflect() protoreflect.Message {
-	mi := &file_error_v1_error_proto_msgTypes[4]
+	mi := &file_error_v1_error_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,7 +253,7 @@ var File_error_v1_error_proto protoreflect.FileDescriptor
 
 const file_error_v1_error_proto_rawDesc = "" +
 	"\n" +
-	"\x14error/v1/error.proto\x12\berror.v1\x1a\x1cgoogle/protobuf/struct.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x1f\n" +
+	"\x14error/v1/error.proto\x12\berror.v1\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x1f\n" +
 	"\tErrorCode\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\"\xe6\x01\n" +
 	"\x17ValidationFailedDetails\x12P\n" +
@@ -322,16 +265,14 @@ const file_error_v1_error_proto_rawDesc = "" +
 	"\x04rule\x18\x02 \x01(\tR\x04rule\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\x12\x19\n" +
 	"\x05param\x18\x04 \x01(\tH\x00R\x05param\x88\x01\x01B\b\n" +
-	"\x06_param\"\xad\x01\n" +
+	"\x06_param\"\xaf\x02\n" +
 	"\rErrorResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage:_\x92A\\\n" +
-	"Z*\rErrorResponse2IStandard error response body returned by the gateway for all HTTP errors.J\x04\b\x03\x10\x04R\adetails\"\xf4\x01\n" +
-	"\x17ValidationErrorResponse\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x121\n" +
-	"\adetails\x18\x03 \x01(\v2\x17.google.protobuf.StructR\adetails:x\x92Au\n" +
-	"s*\x17ValidationErrorResponse2XError response body returned for validation failures (HTTP 400, code=validation_failed).B\x9e\x01\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12@\n" +
+	"\adetails\x18\x03 \x01(\v2!.error.v1.ValidationFailedDetailsH\x00R\adetails\x88\x01\x01:\xa1\x01\x92A\x9d\x01\n" +
+	"\x9a\x01*\rErrorResponse2\x88\x01Standard error response body returned by the gateway for all HTTP errors. The details field is only present when code=validation_failed.B\n" +
+	"\n" +
+	"\b_detailsB\x9e\x01\n" +
 	"\fcom.error.v1B\n" +
 	"ErrorProtoP\x01Z?github.com/medincident/medincident-backend/pkg/error/v1;errorv1\xa2\x02\x03EXX\xaa\x02\bError.V1\xca\x02\tError_\\V1\xe2\x02\x15Error_\\V1\\GPBMetadata\xea\x02\tError::V1b\x06proto3"
 
@@ -347,18 +288,16 @@ func file_error_v1_error_proto_rawDescGZIP() []byte {
 	return file_error_v1_error_proto_rawDescData
 }
 
-var file_error_v1_error_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_error_v1_error_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_error_v1_error_proto_goTypes = []any{
 	(*ErrorCode)(nil),                              // 0: error.v1.ErrorCode
 	(*ValidationFailedDetails)(nil),                // 1: error.v1.ValidationFailedDetails
 	(*ErrorResponse)(nil),                          // 2: error.v1.ErrorResponse
-	(*ValidationErrorResponse)(nil),                // 3: error.v1.ValidationErrorResponse
-	(*ValidationFailedDetails_FieldViolation)(nil), // 4: error.v1.ValidationFailedDetails.FieldViolation
-	(*structpb.Struct)(nil),                        // 5: google.protobuf.Struct
+	(*ValidationFailedDetails_FieldViolation)(nil), // 3: error.v1.ValidationFailedDetails.FieldViolation
 }
 var file_error_v1_error_proto_depIdxs = []int32{
-	4, // 0: error.v1.ValidationFailedDetails.violations:type_name -> error.v1.ValidationFailedDetails.FieldViolation
-	5, // 1: error.v1.ValidationErrorResponse.details:type_name -> google.protobuf.Struct
+	3, // 0: error.v1.ValidationFailedDetails.violations:type_name -> error.v1.ValidationFailedDetails.FieldViolation
+	1, // 1: error.v1.ErrorResponse.details:type_name -> error.v1.ValidationFailedDetails
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -371,14 +310,15 @@ func file_error_v1_error_proto_init() {
 	if File_error_v1_error_proto != nil {
 		return
 	}
-	file_error_v1_error_proto_msgTypes[4].OneofWrappers = []any{}
+	file_error_v1_error_proto_msgTypes[2].OneofWrappers = []any{}
+	file_error_v1_error_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_error_v1_error_proto_rawDesc), len(file_error_v1_error_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

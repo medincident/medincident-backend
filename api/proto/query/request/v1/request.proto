@@ -13,7 +13,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Validation failed or invalid input."
       schema: {
-        json_schema: {ref: ".error.v1.ValidationErrorResponse"}
+        json_schema: {ref: ".error.v1.ErrorResponse"}
       }
       examples: {
         key: "application/json"
@@ -96,6 +96,21 @@ service ServiceRequestQueryService {
   }
   rpc ListServiceRequests(ListServiceRequestsRequest) returns (ListServiceRequestsResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/service-requests"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `service_request_list_offset_out_of_range` — offset is out of the allowed range."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_list_limit_out_of_range\",\"message\":\"Limit out of range.\"}"
+          }
+        }
+      }
+    };
   }
   rpc ListServiceRequestsByIncident(ListServiceRequestsByIncidentRequest) returns (ListServiceRequestsByIncidentResponse) {
     option (google.api.http) = {get: "/v1/incidents/{incident_id}/service-requests"};

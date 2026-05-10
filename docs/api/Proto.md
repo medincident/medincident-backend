@@ -6,7 +6,6 @@
 - [error/v1/error.proto](#error_v1_error-proto)
     - [ErrorCode](#error-v1-ErrorCode)
     - [ErrorResponse](#error-v1-ErrorResponse)
-    - [ValidationErrorResponse](#error-v1-ValidationErrorResponse)
     - [ValidationFailedDetails](#error-v1-ValidationFailedDetails)
     - [ValidationFailedDetails.FieldViolation](#error-v1-ValidationFailedDetails-FieldViolation)
 
@@ -462,35 +461,17 @@ errors. It carries the machine-readable domain error code.
 <a name="error-v1-ErrorResponse"></a>
 
 ### ErrorResponse
-ErrorResponse is the HTTP response body for all non-validation errors.
-The openapiv2_schema option forces this message into the generated OpenAPI
-definitions so that service-level $ref annotations can reference it by name.
+ErrorResponse is the HTTP response body written by the gateway error
+handler. The openapiv2_schema option forces this message into the
+generated OpenAPI definitions so that service-level $ref annotations
+can reference it by name.
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | code | [string](#string) |  |  |
 | message | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="error-v1-ValidationErrorResponse"></a>
-
-### ValidationErrorResponse
-ValidationErrorResponse is the HTTP response body for validation failures
-(HTTP 400, code=validation_failed). The details field is a generic object
-whose shape depends on the error code; for validation_failed it contains
-a violations array (see ValidationFailedDetails).
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| code | [string](#string) |  |  |
-| message | [string](#string) |  |  |
-| details | [google.protobuf.Struct](#google-protobuf-Struct) |  | details shape depends on the error code; for validation_failed contains a violations array. |
+| details | [ValidationFailedDetails](#error-v1-ValidationFailedDetails) | optional |  |
 
 
 

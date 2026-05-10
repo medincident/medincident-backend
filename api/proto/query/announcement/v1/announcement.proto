@@ -13,7 +13,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Validation failed or invalid input."
       schema: {
-        json_schema: {ref: ".error.v1.ValidationErrorResponse"}
+        json_schema: {ref: ".error.v1.ErrorResponse"}
       }
       examples: {
         key: "application/json"

@@ -586,33 +586,41 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"incidentId\"@\n" +
 	"\x1cRejectPatientIncidentRequest\x12 \n" +
 	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\"\x1f\n" +
-	"\x1dRejectPatientIncidentResponse2\xfe\"\n" +
-	"\x1cIncidentBufferCommandService\x12\x87\x06\n" +
-	"\x15SubmitPatientIncident\x128.command.incident.buffer.v1.SubmitPatientIncidentRequest\x1a9.command.incident.buffer.v1.SubmitPatientIncidentResponse\"\xf8\x04\x92A\xd4\x04J\xd9\x02\n" +
-	"\x03400\x12\xd1\x02\n" +
-	"\xa9\x01Validation failed or precondition not met. Error codes:\n" +
-	"- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\x12\x1b\n" +
+	"\x1dRejectPatientIncidentResponse2\xaa(\n" +
+	"\x1cIncidentBufferCommandService\x12\xfd\a\n" +
+	"\x15SubmitPatientIncident\x128.command.incident.buffer.v1.SubmitPatientIncidentRequest\x1a9.command.incident.buffer.v1.SubmitPatientIncidentResponse\"\xee\x06\x92A\xca\x06J\xb3\x03\n" +
+	"\x03400\x12\xab\x03\n" +
+	"\x83\x02Validation failed or precondition not met. Error codes:\n" +
+	"- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\n" +
+	"- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"\x85\x01\n" +
-	"\x10application/json\x12q{\"code\":\"buffer_type_not_allowed_for_patients\",\"message\":\"Incident type is not allowed for patient submissions.\"}J\xf5\x01\n" +
-	"\x03404\x12\xed\x01\n" +
-	"lNot found. Error codes:\n" +
-	"- `buffer_organization_not_found` — organization with the given ID does not exist.\x12\x1b\n" +
+	"\x10application/json\x12q{\"code\":\"buffer_type_not_allowed_for_patients\",\"message\":\"Incident type is not allowed for patient submissions.\"}J\x91\x03\n" +
+	"\x03404\x12\x89\x03\n" +
+	"\x87\x02Not found. Error codes:\n" +
+	"- `buffer_organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `buffer_category_not_found` — category with the given ID does not exist.\n" +
+	"- `buffer_type_not_found` — incident type with the given ID does not exist.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"`\n" +
-	"\x10application/json\x12L{\"code\":\"buffer_organization_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/patient-incidents\x12\xdb\a\n" +
-	"\x15UpdatePatientIncident\x128.command.incident.buffer.v1.UpdatePatientIncidentRequest\x1a9.command.incident.buffer.v1.UpdatePatientIncidentResponse\"\xcc\x06\x92A\x9c\x06J\xa5\x02\n" +
-	"\x03400\x12\x9d\x02\n" +
-	"\x93\x01Validation failed or precondition not met. Error codes:\n" +
-	"- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\x12\x1b\n" +
+	"\x10application/json\x12L{\"code\":\"buffer_organization_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/patient-incidents\x12\xc3\n" +
+	"\n" +
+	"\x15UpdatePatientIncident\x128.command.incident.buffer.v1.UpdatePatientIncidentRequest\x1a9.command.incident.buffer.v1.UpdatePatientIncidentResponse\"\xb4\t\x92A\x84\tJ\xf1\x03\n" +
+	"\x03400\x12\xe9\x03\n" +
+	"\xdf\x02Validation failed or precondition not met. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\n" +
+	"- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\n" +
+	"- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"h\n" +
 	"\x10application/json\x12T{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}J\x8b\x02\n" +
 	"\x03403\x12\x83\x02\n" +
 	"wPermission denied. Error codes:\n" +
 	"- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"k\n" +
-	"\x10application/json\x12W{\"code\":\"buffer_not_patient_owner\",\"message\":\"Not the owner of this patient incident.\"}J\xe3\x01\n" +
-	"\x03404\x12\xdb\x01\n" +
-	"cNot found. Error codes:\n" +
-	"- `buffer_not_found` — patient incident with the given ID does not exist.\x12\x1b\n" +
+	"\x10application/json\x12W{\"code\":\"buffer_not_patient_owner\",\"message\":\"Not the owner of this patient incident.\"}J\xff\x02\n" +
+	"\x03404\x12\xf7\x02\n" +
+	"\xfe\x01Not found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.\n" +
+	"- `buffer_category_not_found` — category with the given ID does not exist.\n" +
+	"- `buffer_type_not_found` — incident type with the given ID does not exist.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
 	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02&:\x01*\x1a!/v1/patient-incidents/{buffer_id}\x12\xe1\a\n" +
 	"\x15CancelPatientIncident\x128.command.incident.buffer.v1.CancelPatientIncidentRequest\x1a9.command.incident.buffer.v1.CancelPatientIncidentResponse\"\xd2\x06\x92A\x9e\x06J\xa7\x02\n" +
@@ -630,18 +638,19 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"cNot found. Error codes:\n" +
 	"- `buffer_not_found` — patient incident with the given ID does not exist.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
-	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:cancel\x12\xbc\a\n" +
-	"\x16PublishPatientIncident\x129.command.incident.buffer.v1.PublishPatientIncidentRequest\x1a:.command.incident.buffer.v1.PublishPatientIncidentResponse\"\xaa\x06\x92A\xf2\x05J\xa7\x02\n" +
+	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:cancel\x12\x8a\b\n" +
+	"\x16PublishPatientIncident\x129.command.incident.buffer.v1.PublishPatientIncidentRequest\x1a:.command.incident.buffer.v1.PublishPatientIncidentResponse\"\xf8\x06\x92A\xc0\x06J\xa7\x02\n" +
 	"\x03400\x12\x9f\x02\n" +
 	"\x95\x01Validation failed or precondition not met. Error codes:\n" +
 	"- `buffer_not_pending` — patient incident is not in pending status and cannot be published.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"h\n" +
-	"\x10application/json\x12T{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}J\xc5\x03\n" +
-	"\x03404\x12\xbd\x03\n" +
-	"\xc4\x02Not found. Error codes:\n" +
+	"\x10application/json\x12T{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}J\x93\x04\n" +
+	"\x03404\x12\x8b\x04\n" +
+	"\x92\x03Not found. Error codes:\n" +
 	"- `buffer_not_found` — patient incident with the given ID does not exist.\n" +
 	"- `buffer_department_not_found` — department with the given ID does not exist.\n" +
 	"- `buffer_category_not_found` — category with the given ID does not exist.\n" +
+	"- `buffer_type_not_found` — incident type with the given ID does not exist.\n" +
 	"- `buffer_dispatcher_not_found` — dispatcher employee not found.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
 	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02.:\x01*\")/v1/patient-incidents/{buffer_id}:publish\x12\xd2\x05\n" +
@@ -655,10 +664,10 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"cNot found. Error codes:\n" +
 	"- `buffer_not_found` — patient incident with the given ID does not exist.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
-	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:rejectB\xa1\t\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:rejectB\x97\t\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

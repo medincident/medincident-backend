@@ -1320,20 +1320,20 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"$AllowIncidentTypeForPatientsResponse\"F\n" +
 	"&DisallowIncidentTypeForPatientsRequest\x12\x1c\n" +
 	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\")\n" +
-	"'DisallowIncidentTypeForPatientsResponse2\x90R\n" +
-	" IncidentClassifierCommandService\x12\xda\b\n" +
-	"\x16CreateIncidentCategory\x12=.command.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.command.incident.classifier.v1.CreateIncidentCategoryResponse\"\xc0\a\x92A\xfa\x06J\xef\x02\n" +
+	"'DisallowIncidentTypeForPatientsResponse2\x9eR\n" +
+	" IncidentClassifierCommandService\x12\xe8\b\n" +
+	"\x16CreateIncidentCategory\x12=.command.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.command.incident.classifier.v1.CreateIncidentCategoryResponse\"\xce\a\x92A\x88\aJ\xef\x02\n" +
 	"\x03400\x12\xe7\x02\n" +
 	"\xdc\x01Validation failed or precondition not met. Error codes:\n" +
 	"- `incident_category_parent_inactive` — parent category is inactive.\n" +
 	"- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"i\n" +
-	"\x10application/json\x12U{\"code\":\"incident_category_parent_inactive\",\"message\":\"Parent category is inactive.\"}J\xf7\x01\n" +
-	"\x03404\x12\xef\x01\n" +
-	"mNot found. Error codes:\n" +
-	"- `incident_category_not_found` — parent category with the given ID does not exist.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\"a\n" +
-	"\x10application/json\x12M{\"code\":\"incident_category_not_found\",\"message\":\"Parent category not found.\"}J\x8b\x02\n" +
+	"\x10application/json\x12U{\"code\":\"incident_category_parent_inactive\",\"message\":\"Parent category is inactive.\"}J\x85\x02\n" +
+	"\x03404\x12\xfd\x01\n" +
+	"tNot found. Error codes:\n" +
+	"- `incident_category_parent_not_found` — parent category with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"h\n" +
+	"\x10application/json\x12T{\"code\":\"incident_category_parent_not_found\",\"message\":\"Parent category not found.\"}J\x8b\x02\n" +
 	"\x03409\x12\x83\x02\n" +
 	"zConflict. Error codes:\n" +
 	"- `incident_category_name_conflict` — a category with this name already exists in the same scope.\x12\x1b\n" +
@@ -1473,10 +1473,10 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"^Not found. Error codes:\n" +
 	"- `incident_type_not_found` — type with the given ID does not exist.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"R\n" +
-	"\x10application/json\x12>{\"code\":\"incident_type_not_found\",\"message\":\"Type not found.\"}\x82\xd3\xe4\x93\x021*//v1/incident-types/{type_id}/patient-allowancesB\xc9\t\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x10application/json\x12>{\"code\":\"incident_type_not_found\",\"message\":\"Type not found.\"}\x82\xd3\xe4\x93\x021*//v1/incident-types/{type_id}/patient-allowancesB\xbf\t\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

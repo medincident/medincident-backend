@@ -1628,10 +1628,10 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"U\n" +
 	"\x10application/json\x12A{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/departments/{id}\x12\xb5\x01\n" +
 	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"+\x82\xd3\xe4\x93\x02%\x12#/v1/clinics/{clinic_id}/departments\x12\xbe\x01\n" +
-	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/clinics/{clinic_id}/departments:countB\x8e\t\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/clinics/{clinic_id}/departments:countB\x84\t\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

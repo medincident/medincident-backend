@@ -14,7 +14,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Validation failed or invalid input."
       schema: {
-        json_schema: {ref: ".error.v1.ValidationErrorResponse"}
+        json_schema: {ref: ".error.v1.ErrorResponse"}
       }
       examples: {
         key: "application/json"
@@ -86,7 +86,7 @@ service ServiceRequestCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found. Error codes:\n- `service_request_department_not_found` — department with the given ID does not exist.\n- `service_request_type_not_found` — request type with the given ID does not exist.\n- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found."
+          description: "Not found. Error codes:\n- `service_request_department_not_found` — department with the given ID does not exist.\n- `service_request_clinic_not_found` — clinic linked to the department does not exist.\n- `service_request_type_not_found` — request type with the given ID does not exist.\n- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
           }

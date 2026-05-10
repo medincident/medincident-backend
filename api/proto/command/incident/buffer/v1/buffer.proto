@@ -14,7 +14,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     value: {
       description: "Validation failed or invalid input."
       schema: {
-        json_schema: {ref: ".error.v1.ValidationErrorResponse"}
+        json_schema: {ref: ".error.v1.ErrorResponse"}
       }
       examples: {
         key: "application/json"
@@ -90,7 +90,7 @@ service IncidentBufferCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found. Error codes:\n- `buffer_organization_not_found` — organization with the given ID does not exist."
+          description: "Not found. Error codes:\n- `buffer_organization_not_found` — organization with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
           }
@@ -103,7 +103,7 @@ service IncidentBufferCommandService {
       responses: {
         key: "400"
         value: {
-          description: "Validation failed or precondition not met. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions."
+          description: "Validation failed or precondition not met. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
           }
@@ -124,7 +124,7 @@ service IncidentBufferCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist."
+          description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
           }
@@ -137,7 +137,7 @@ service IncidentBufferCommandService {
       responses: {
         key: "400"
         value: {
-          description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated."
+          description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
           }
@@ -215,7 +215,7 @@ service IncidentBufferCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_department_not_found` — department with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_dispatcher_not_found` — dispatcher employee not found."
+          description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_department_not_found` — department with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist.\n- `buffer_dispatcher_not_found` — dispatcher employee not found."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
           }

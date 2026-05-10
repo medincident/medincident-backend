@@ -80,7 +80,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -215,7 +215,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -344,7 +344,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -486,7 +486,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -801,7 +801,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -906,7 +906,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1011,7 +1011,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1116,7 +1116,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1229,7 +1229,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1322,7 +1322,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1435,7 +1435,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1563,7 +1563,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1677,7 +1677,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1771,7 +1771,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -1896,7 +1896,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2007,7 +2007,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2116,7 +2116,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2247,7 +2247,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2360,7 +2360,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2453,7 +2453,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2558,7 +2558,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2671,7 +2671,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2799,7 +2799,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -2913,7 +2913,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3007,7 +3007,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3132,7 +3132,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3243,7 +3243,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3352,7 +3352,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3483,7 +3483,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3576,7 +3576,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3682,7 +3682,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3813,7 +3813,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -3918,7 +3918,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4031,7 +4031,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4144,7 +4144,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4256,7 +4256,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4369,7 +4369,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4470,7 +4470,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4583,7 +4583,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4688,7 +4688,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4793,7 +4793,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -4898,7 +4898,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -5131,7 +5131,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -5457,7 +5457,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -5562,7 +5562,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -5655,7 +5655,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -5760,7 +5760,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -5865,7 +5865,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -5970,7 +5970,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -6095,7 +6095,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -6198,7 +6198,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -6549,7 +6549,7 @@
             }
           },
           "404": {
-            "description": "Not found. Error codes:\n- `incident_department_not_found` — department with the given ID does not exist.\n- `incident_category_not_found` — incident category with the given ID does not exist.\n- `incident_type_not_found` — incident type with the given ID does not exist.\n- `incident_employee_not_found` — registrar employee not found.",
+            "description": "Not found. Error codes:\n- `incident_department_not_found` — department with the given ID does not exist.\n- `incident_category_not_found` — incident category with the given ID does not exist.\n- `incident_type_not_found` — incident type with the given ID does not exist.\n- `incident_employee_not_found` — registrar employee not found.\n- `incident_registrar_user_not_found` — registrar's user projection record not found.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -6821,7 +6821,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -7237,7 +7237,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -7323,7 +7323,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -7429,7 +7429,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -7535,7 +7535,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -7621,7 +7621,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -7727,7 +7727,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -7832,7 +7832,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -7931,7 +7931,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8026,7 +8026,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8131,7 +8131,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8237,7 +8237,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8362,7 +8362,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8473,7 +8473,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8582,7 +8582,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8713,7 +8713,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8818,7 +8818,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -8931,7 +8931,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9024,7 +9024,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9137,7 +9137,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9243,7 +9243,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9368,7 +9368,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9479,7 +9479,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9588,7 +9588,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9719,7 +9719,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9847,7 +9847,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -9961,7 +9961,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -10096,7 +10096,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -10202,7 +10202,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -10327,7 +10327,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -10438,7 +10438,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -10547,7 +10547,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -10678,7 +10678,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -10818,13 +10818,13 @@
             }
           },
           "404": {
-            "description": "Not found. Error codes:\n- `incident_category_not_found` — parent category with the given ID does not exist.",
+            "description": "Not found. Error codes:\n- `incident_category_parent_not_found` — parent category with the given ID does not exist.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
-                "code": "incident_category_not_found",
+                "code": "incident_category_parent_not_found",
                 "message": "Parent category not found."
               }
             }
@@ -10900,7 +10900,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11007,7 +11007,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11114,7 +11114,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11222,7 +11222,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11329,7 +11329,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11442,7 +11442,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11547,7 +11547,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11660,7 +11660,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11765,23 +11765,14 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `service_request_list_offset_out_of_range` — offset is out of the allowed range.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
-                "code": "validation_failed",
-                "message": "Validation failed.",
-                "details": {
-                  "violations": [
-                    {
-                      "field": "field_name",
-                      "rule": "required",
-                      "message": "field is required"
-                    }
-                  ]
-                }
+                "code": "service_request_list_limit_out_of_range",
+                "message": "Limit out of range."
               }
             }
           },
@@ -11874,7 +11865,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -11967,7 +11958,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -12052,7 +12043,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -12157,7 +12148,7 @@
             }
           },
           "400": {
-            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12193,7 +12184,7 @@
             }
           },
           "404": {
-            "description": "Not found. Error codes:\n- `buffer_organization_not_found` — organization with the given ID does not exist.",
+            "description": "Not found. Error codes:\n- `buffer_organization_not_found` — organization with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12255,7 +12246,7 @@
             }
           },
           "400": {
-            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12291,7 +12282,7 @@
             }
           },
           "404": {
-            "description": "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.",
+            "description": "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12491,7 +12482,7 @@
             }
           },
           "404": {
-            "description": "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_department_not_found` — department with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_dispatcher_not_found` — dispatcher employee not found.",
+            "description": "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_department_not_found` — department with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist.\n- `buffer_dispatcher_not_found` — dispatcher employee not found.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -12657,7 +12648,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -12762,7 +12753,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -12886,7 +12877,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13010,7 +13001,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13115,7 +13106,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13220,7 +13211,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13321,7 +13312,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13446,7 +13437,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13625,7 +13616,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13750,7 +13741,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13855,7 +13846,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -13956,7 +13947,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -14061,7 +14052,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -14166,7 +14157,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -14271,7 +14262,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -14396,7 +14387,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -14547,7 +14538,7 @@
             }
           },
           "404": {
-            "description": "Not found. Error codes:\n- `service_request_department_not_found` — department with the given ID does not exist.\n- `service_request_type_not_found` — request type with the given ID does not exist.\n- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found.",
+            "description": "Not found. Error codes:\n- `service_request_department_not_found` — department with the given ID does not exist.\n- `service_request_clinic_not_found` — clinic linked to the department does not exist.\n- `service_request_type_not_found` — request type with the given ID does not exist.\n- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
             },
@@ -14611,7 +14602,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -14924,7 +14915,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -15121,7 +15112,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -15221,7 +15212,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -15352,7 +15343,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -15457,7 +15448,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -15562,7 +15553,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -15675,7 +15666,7 @@
           "400": {
             "description": "Validation failed or invalid input.",
             "schema": {
-              "$ref": "#/definitions/v1ValidationErrorResponse"
+              "$ref": "#/definitions/v1ErrorResponse"
             },
             "examples": {
               "application/json": {
@@ -16277,6 +16268,23 @@
       "required": [
         "newStatus"
       ]
+    },
+    "ValidationFailedDetailsFieldViolation": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "param": {
+          "type": "string"
+        }
+      }
     },
     "classifierV1Type": {
       "type": "object",
@@ -17124,9 +17132,12 @@
         },
         "message": {
           "type": "string"
+        },
+        "details": {
+          "$ref": "#/definitions/v1ValidationFailedDetails"
         }
       },
-      "description": "Standard error response body returned by the gateway for all HTTP errors.",
+      "description": "Standard error response body returned by the gateway for all HTTP errors. The details field is only present when code=validation_failed.",
       "title": "ErrorResponse"
     },
     "v1Executor": {
@@ -18839,22 +18850,18 @@
       },
       "description": "VacationView mirrors projections.employee_vacations. state is one of\n{scheduled, active, ended, cancelled}."
     },
-    "v1ValidationErrorResponse": {
+    "v1ValidationFailedDetails": {
       "type": "object",
       "properties": {
-        "code": {
-          "type": "string"
-        },
-        "message": {
-          "type": "string"
-        },
-        "details": {
-          "type": "object",
-          "description": "details shape depends on the error code; for validation_failed contains a violations array."
+        "violations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValidationFailedDetailsFieldViolation"
+          }
         }
       },
-      "description": "Error response body returned for validation failures (HTTP 400, code=validation_failed).",
-      "title": "ValidationErrorResponse"
+      "description": "ValidationFailedDetails is present only when code = \"validation_failed\".\nEach violation corresponds to one struct-tag rule failure or one\ndomain-level leaf error from errors.Join."
     }
   }
 }

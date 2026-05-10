@@ -1802,10 +1802,10 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\"]\n" +
 	"\x10application/json\x12I{\"code\":\"buffer_query_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xb3\x01\n" +
 	"\x11ListBufferEntries\x12+.query.incident.v1.ListBufferEntriesRequest\x1a,.query.incident.v1.ListBufferEntriesResponse\"C\x82\xd3\xe4\x93\x02=\x12;/v1/query/organizations/{organization_id}/patient-incidents\x12\x9e\x01\n" +
-	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xee\b\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xe4\b\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

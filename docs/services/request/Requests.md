@@ -75,14 +75,16 @@ created → in_work ←→ on_hold
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
 | `permission_denied` | 403 | Недостаточно прав |
-| `service_request_department_not_found` | 404 | Отдел не найден |
-| `service_request_type_not_found` | 404 | Тип заявки не найден |
-| `service_request_incident_not_found` | 404 | Инцидент не найден |
-| `service_request_employee_not_found` | 404 | Сотрудник-исполнитель не найден |
 | `service_request_type_inactive` | 400 | Тип заявки деактивирован |
 | `service_request_type_org_mismatch` | 400 | Тип не принадлежит организации |
 | `service_request_incident_org_mismatch` | 400 | Инцидент из другой организации |
 | `service_request_employee_dept_mismatch` | 400 | Исполнитель не из указанного отдела |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_department_not_found` | 404 | Отдел не найден |
+| `service_request_clinic_not_found` | 404 | Клиника, к которой относится отдел, не найдена |
+| `service_request_type_not_found` | 404 | Тип заявки не найден |
+| `service_request_incident_not_found` | 404 | Инцидент не найден |
+| `service_request_employee_not_found` | 404 | Сотрудник-исполнитель не найден |
 
 ---
 
@@ -104,6 +106,7 @@ created → in_work ←→ on_hold
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
+| `service_request_frozen` | 400 | Заявка заморожена и не может быть изменена |
 | `permission_denied` | 403 | Недостаточно прав |
 | `service_request_not_found` | 404 | Заявка не найдена |
 
@@ -133,6 +136,8 @@ created → in_work ←→ on_hold
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
+| `service_request_invalid_status_transition` | 400 | Недопустимый переход статуса |
+| `service_request_frozen` | 400 | Заявка заморожена и не может быть изменена |
 | `permission_denied` | 403 | Недостаточно прав |
 | `service_request_not_found` | 404 | Заявка не найдена |
 
@@ -166,8 +171,11 @@ created → in_work ←→ on_hold
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
+| `service_request_frozen` | 400 | Заявка заморожена и не может быть изменена |
+| `service_request_employee_dept_mismatch` | 400 | Исполнитель не из отдела заявки |
 | `permission_denied` | 403 | Недостаточно прав |
 | `service_request_not_found` | 404 | Заявка не найдена |
+| `service_request_employee_not_found` | 404 | Сотрудник-исполнитель не найден |
 
 ---
 

@@ -24,12 +24,14 @@
 | Поле | Тип | Правила |
 |---|---|---|
 | `organization_id` | string (UUID) | required, uuid |
-| `incident_type_id` | string (UUID) | required, uuid |
-| `description` | string | required, min=1, max=4096 |
+| `category_id` | string (UUID) | omitempty, uuid |
+| `type_id` | string (UUID) | omitempty, uuid |
+| `description` | string | omitempty, max=10000 |
+| `occurred_at` | string (RFC3339Nano) | omitempty |
 
 ### Инварианты
 
-- Тип инцидента должен быть активным и иметь флаг `is_allowed_for_patients=true`.
+- Тип инцидента должен иметь флаг `is_allowed_for_patients=true`.
 - Начальный статус заявки — `pending`.
 
 ### Ошибки
@@ -37,7 +39,11 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
+| `buffer_type_not_allowed_for_patients` | 400 | Тип инцидента недоступен для пациентов |
+| `buffer_occurred_at_invalid` | 400 | Некорректный формат даты occurred_at |
 | `buffer_organization_not_found` | 404 | Организация не найдена |
+| `buffer_category_not_found` | 404 | Категория не найдена |
+| `buffer_type_not_found` | 404 | Тип инцидента не найден |
 
 ---
 
@@ -55,12 +61,15 @@
 | Поле | Тип | Правила |
 |---|---|---|
 | `buffer_id` | string (UUID) | required, uuid |
-| `description` | string | omitempty, min=1, max=4096 |
-| `incident_type_id` | string (UUID) | omitempty, uuid |
+| `category_id` | string (UUID) | omitempty, uuid |
+| `type_id` | string (UUID) | omitempty, uuid |
+| `description` | string | omitempty, max=10000 |
+| `occurred_at` | string (RFC3339Nano) | omitempty |
 
 ### Инварианты
 
 - Доступно только для заявок в статусе `pending`.
+- Тип инцидента должен иметь флаг `is_allowed_for_patients=true`.
 
 ### Ошибки
 
@@ -68,7 +77,12 @@
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
 | `buffer_not_pending` | 400 | Заявка не в статусе pending |
+| `buffer_type_not_allowed_for_patients` | 400 | Тип инцидента недоступен для пациентов |
+| `buffer_occurred_at_invalid` | 400 | Некорректный формат даты occurred_at |
 | `permission_denied` / `buffer_not_patient_owner` | 403 | Нет прав доступа |
+| `buffer_not_found` | 404 | Заявка не найдена |
+| `buffer_category_not_found` | 404 | Категория не найдена |
+| `buffer_type_not_found` | 404 | Тип инцидента не найден |
 
 ---
 
@@ -123,7 +137,9 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
+| `buffer_not_pending` | 400 | Заявка не в статусе pending |
 | `permission_denied` | 403 | Нет прав доступа |
+| `buffer_not_found` | 404 | Заявка не найдена |
 | `buffer_department_not_found` | 404 | Отдел не найден |
 | `buffer_category_not_found` | 404 | Категория не найдена |
 | `buffer_type_not_found` | 404 | Тип инцидента не найден |

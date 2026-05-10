@@ -2394,10 +2394,10 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v1/organizations/{organization_id}/admins\x12\xae\x01\n" +
 	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/organizations/{organization_id}/dispatchers\x12\x96\x01\n" +
 	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/heads\x12\x8a\x01\n" +
-	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xfe\b\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xf4\b\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

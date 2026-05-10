@@ -565,10 +565,10 @@ const file_query_stats_v1_stats_proto_rawDesc = "" +
 	"\x11StatsQueryService\x12\xa4\x01\n" +
 	"\x14GetOrganizationStats\x12+.query.stats.v1.GetOrganizationStatsRequest\x1a,.query.stats.v1.GetOrganizationStatsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/stats\x12\x86\x01\n" +
 	"\x0eGetClinicStats\x12%.query.stats.v1.GetClinicStatsRequest\x1a&.query.stats.v1.GetClinicStatsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/clinics/{clinic_id}/stats\x12\x9a\x01\n" +
-	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xd6\b\x92A\x91\aR\x89\x02\n" +
-	"\x03400\x12\x81\x02\n" +
-	"#Validation failed or invalid input.\x12%\n" +
-	"#\x1a!.error.v1.ValidationErrorResponse\"\xb2\x01\n" +
+	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xcc\b\x92A\x87\aR\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
 	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
 	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +

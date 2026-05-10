@@ -3,7 +3,6 @@ syntax = "proto3";
 
 package error.v1;
 
-import "google/protobuf/struct.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 // ErrorCode is always present in gRPC status details for client-visible
@@ -26,37 +25,19 @@ message ValidationFailedDetails {
   }
 }
 
-// ErrorResponse is the HTTP response body for all non-validation errors.
-// The openapiv2_schema option forces this message into the generated OpenAPI
-// definitions so that service-level $ref annotations can reference it by name.
+// ErrorResponse is the HTTP response body written by the gateway error
+// handler. The openapiv2_schema option forces this message into the
+// generated OpenAPI definitions so that service-level $ref annotations
+// can reference it by name.
 message ErrorResponse {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "ErrorResponse"
-      description: "Standard error response body returned by the gateway for all HTTP errors."
+      description: "Standard error response body returned by the gateway for all HTTP errors. The details field is only present when code=validation_failed."
     }
   };
 
   string code = 1;
   string message = 2;
-  reserved 3;
-  reserved "details";
-}
-
-// ValidationErrorResponse is the HTTP response body for validation failures
-// (HTTP 400, code=validation_failed). The details field is a generic object
-// whose shape depends on the error code; for validation_failed it contains
-// a violations array (see ValidationFailedDetails).
-message ValidationErrorResponse {
-  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
-    json_schema: {
-      title: "ValidationErrorResponse"
-      description: "Error response body returned for validation failures (HTTP 400, code=validation_failed)."
-    }
-  };
-
-  string code = 1;
-  string message = 2;
-  // details shape depends on the error code; for validation_failed contains a violations array.
-  google.protobuf.Struct details = 3;
+  optional ValidationFailedDetails details = 3;
 }
