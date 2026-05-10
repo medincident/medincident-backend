@@ -95,6 +95,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `analytics_org_not_found` — organization with the given ID does not exist.\n- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n- `analytics_dept_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "analytics_org_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -179,6 +191,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `analytics_org_not_found` — organization with the given ID does not exist.\n- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n- `analytics_dept_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "analytics_org_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -255,6 +279,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `analytics_org_not_found` — organization with the given ID does not exist.\n- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n- `analytics_dept_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "analytics_org_not_found",
+                "message": "Organization not found."
+              }
             }
           },
           "500": {
@@ -348,6 +384,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `announcement_organization_not_found` — organization with the given ID does not exist.\n- `announcement_clinic_not_found` — clinic with the given ID does not exist.\n- `announcement_department_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "announcement_organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -387,9 +435,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Failed precondition. Error codes:\n- `announcement_archived` — announcement is archived and cannot be modified.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "announcement_archived",
+                "message": "Announcement is archived."
+              }
             }
           },
           "401": {
@@ -402,6 +456,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `announcement_not_found` — announcement with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "announcement_not_found",
+                "message": "Announcement not found."
+              }
             }
           },
           "500": {
@@ -449,9 +515,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Failed precondition. Error codes:\n- `announcement_archived` — announcement is archived and cannot be modified.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "announcement_archived",
+                "message": "Announcement is archived."
+              }
             }
           },
           "401": {
@@ -464,6 +536,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `announcement_not_found` — announcement with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "announcement_not_found",
+                "message": "Announcement not found."
+              }
             }
           },
           "500": {
@@ -528,6 +612,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `announcement_not_found` — announcement with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "announcement_not_found",
+                "message": "Announcement not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -580,6 +676,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `announcement_not_found` — announcement with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "announcement_not_found",
+                "message": "Announcement not found."
+              }
             }
           },
           "500": {
@@ -702,6 +810,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `department_clinic_not_found` — clinic with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_clinic_not_found",
+                "message": "Clinic not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -816,6 +936,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_not_found",
+                "message": "Clinic not found."
+              }
             }
           },
           "500": {
@@ -1099,6 +1231,30 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_not_found",
+                "message": "Clinic not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `clinic_head_already_assigned` — this clinic already has a head assigned.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_head_already_assigned",
+                "message": "Clinic head already assigned."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -1161,6 +1317,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `clinic_head_not_found` — this employee is not the clinic head.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_head_not_found",
+                "message": "Clinic head not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -1221,6 +1389,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_not_found",
+                "message": "Clinic not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -1277,6 +1457,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_not_found",
+                "message": "Clinic not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "deputy_already_assigned",
+                "message": "Deputy already assigned."
+              }
             }
           },
           "500": {
@@ -1345,6 +1549,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_not_found",
+                "message": "Clinic not found."
+              }
             }
           },
           "500": {
@@ -1463,6 +1679,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_not_found",
+                "message": "Clinic not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -1515,6 +1743,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_not_found",
+                "message": "Department not found."
+              }
             }
           },
           "500": {
@@ -1798,6 +2038,30 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_not_found",
+                "message": "Department not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `department_responsible_already_assigned` — this employee is already the department responsible.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_responsible_already_assigned",
+                "message": "Department responsible already assigned."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -1860,6 +2124,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `department_responsible_not_found` — this employee is not the department responsible.\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_responsible_not_found",
+                "message": "Department responsible not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -1920,6 +2196,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_not_found",
+                "message": "Department not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -1976,6 +2264,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_not_found",
+                "message": "Department not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "deputy_already_assigned",
+                "message": "Deputy already assigned."
+              }
             }
           },
           "500": {
@@ -2100,6 +2412,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_not_found",
+                "message": "Department not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -2155,10 +2479,46 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "department_not_found",
+                "message": "Department not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `employee_already_hired` — this Zitadel user is already an active employee of this organization.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "employee_already_hired",
+                "message": "Employee already hired."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "503": {
+            "description": "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "zitadel_verify_failed",
+                "message": "Identity service unavailable."
+              }
             }
           },
           "default": {
@@ -2209,6 +2569,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "employee_not_found",
+                "message": "Employee not found."
+              }
             }
           },
           "500": {
@@ -2263,6 +2635,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "employee_not_found",
+                "message": "Employee not found."
+              }
             }
           },
           "500": {
@@ -2325,6 +2709,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "employee_not_found",
+                "message": "Employee not found."
+              }
             }
           },
           "500": {
@@ -2462,6 +2858,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "employee_not_found",
+                "message": "Employee not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -2586,6 +2994,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "employee_not_found",
+                "message": "Employee not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -2648,6 +3068,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `employee_card_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "employee_card_not_found",
+                "message": "Employee not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -2700,6 +3132,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_category_not_found` — category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_not_found",
+                "message": "Category not found."
+              }
             }
           },
           "500": {
@@ -2756,6 +3200,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_category_not_found` — category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_not_found",
+                "message": "Category not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -2810,6 +3266,30 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_category_not_found` — category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_not_found",
+                "message": "Category not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `incident_category_name_conflict` — a category with this name already exists in the same scope.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_name_conflict",
+                "message": "Category name already exists."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -2855,9 +3335,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_category_reactivate_inactive_ancestor` — an ancestor category is inactive and must be reactivated first.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_reactivate_inactive_ancestor",
+                "message": "Ancestor category is inactive."
+              }
             }
           },
           "401": {
@@ -2870,6 +3356,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_category_not_found` — category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_not_found",
+                "message": "Category not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `incident_category_reactivate_name_conflict` — reactivation would create a name conflict with an active category.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_reactivate_name_conflict",
+                "message": "Name conflict on reactivation."
+              }
             }
           },
           "500": {
@@ -2976,9 +3486,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_category_inactive` — the category is inactive; new types cannot be created in an inactive category.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_inactive",
+                "message": "Category is inactive."
+              }
             }
           },
           "401": {
@@ -2991,6 +3507,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_category_not_found` — category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_not_found",
+                "message": "Category not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `incident_type_name_conflict` — a type with this name already exists in the same category.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_name_conflict",
+                "message": "Type name already exists."
+              }
             }
           },
           "500": {
@@ -3038,9 +3578,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_category_move_organization_mismatch` — target parent belongs to a different organization.\n- `incident_category_move_would_create_cycle` — move would create a cycle in the category tree.\n- `incident_category_move_would_exceed_depth` — move would exceed the maximum category depth.\n- `incident_category_parent_inactive` — target parent category is inactive.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_move_would_create_cycle",
+                "message": "Move would create a cycle."
+              }
             }
           },
           "401": {
@@ -3053,6 +3599,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_category_not_found` — category with the given ID does not exist.\n- `incident_category_parent_not_found` — target parent category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_not_found",
+                "message": "Category not found."
+              }
             }
           },
           "500": {
@@ -3115,6 +3673,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_category_not_found` — category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_not_found",
+                "message": "Category not found."
+              }
             }
           },
           "500": {
@@ -3225,6 +3795,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_not_found",
+                "message": "Type not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -3277,6 +3859,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_not_found",
+                "message": "Type not found."
+              }
             }
           },
           "500": {
@@ -3333,6 +3927,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_not_found",
+                "message": "Type not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -3385,6 +3991,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_not_found",
+                "message": "Type not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `incident_type_name_conflict` — a type with this name already exists in the same category.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_name_conflict",
+                "message": "Type name already exists."
+              }
             }
           },
           "500": {
@@ -3449,6 +4079,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_not_found",
+                "message": "Type not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -3501,6 +4143,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_not_found",
+                "message": "Type not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -3538,9 +4192,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_type_reactivate_inactive_ancestor` — the parent category is inactive and must be reactivated first.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_reactivate_inactive_ancestor",
+                "message": "Parent category is inactive."
+              }
             }
           },
           "401": {
@@ -3553,6 +4213,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_not_found",
+                "message": "Type not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `incident_type_reactivate_name_conflict` — reactivation would create a name conflict with an active type.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_reactivate_name_conflict",
+                "message": "Name conflict on reactivation."
+              }
             }
           },
           "500": {
@@ -3592,9 +4276,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_type_move_organization_mismatch` — target category belongs to a different organization.\n- `incident_type_category_inactive` — target category is inactive.\n- `incident_category_inactive` — target category is inactive.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_move_organization_mismatch",
+                "message": "Target category belongs to a different organization."
+              }
             }
           },
           "401": {
@@ -3607,6 +4297,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist.\n- `incident_type_category_not_found` — target category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_type_not_found",
+                "message": "Type not found."
+              }
             }
           },
           "500": {
@@ -3654,9 +4356,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_category_inactive` — the selected category is inactive.\n- `incident_type_inactive` — the selected type is inactive.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_inactive",
+                "message": "Incident category is inactive."
+              }
             }
           },
           "401": {
@@ -3669,6 +4377,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_department_not_found` — department with the given ID does not exist.\n- `incident_category_not_found` — incident category with the given ID does not exist.\n- `incident_type_not_found` — incident type with the given ID does not exist.\n- `incident_employee_not_found` — registrar employee not found.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_department_not_found",
+                "message": "Department not found."
+              }
             }
           },
           "500": {
@@ -3710,9 +4430,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_frozen",
+                "message": "Incident is frozen."
+              }
             }
           },
           "401": {
@@ -3725,6 +4451,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_not_found",
+                "message": "Incident not found."
+              }
             }
           },
           "500": {
@@ -3772,9 +4510,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_frozen",
+                "message": "Incident is frozen."
+              }
             }
           },
           "401": {
@@ -3787,6 +4531,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_not_found",
+                "message": "Incident not found."
+              }
             }
           },
           "500": {
@@ -3851,6 +4607,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `service_request_query_incident_not_found` — incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_query_incident_not_found",
+                "message": "Incident not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -3902,9 +4670,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_invalid_status_transition` — the requested status transition is not allowed.\n- `incident_frozen` — incident is frozen and cannot be modified.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_invalid_status_transition",
+                "message": "Invalid status transition."
+              }
             }
           },
           "401": {
@@ -3917,6 +4691,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_not_found",
+                "message": "Incident not found."
+              }
             }
           },
           "500": {
@@ -3964,9 +4750,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_not_cancellable` — incident is not in a cancellable status.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_not_cancellable",
+                "message": "Incident cannot be cancelled in its current status."
+              }
             }
           },
           "401": {
@@ -3979,6 +4771,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_not_found",
+                "message": "Incident not found."
+              }
             }
           },
           "500": {
@@ -4018,9 +4822,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_not_reopenable` — incident cannot be reopened from its current status.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_not_reopenable",
+                "message": "Incident cannot be reopened."
+              }
             }
           },
           "401": {
@@ -4033,6 +4843,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_not_found",
+                "message": "Incident not found."
+              }
             }
           },
           "500": {
@@ -4137,6 +4959,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `self_clinic_role_not_found` — caller is not an active employee of the given clinic.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "self_clinic_role_not_found",
+                "message": "Clinic role not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -4190,6 +5024,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `self_dept_role_not_found` — caller is not an active employee of the given department.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "self_dept_role_not_found",
+                "message": "Department role not found."
+              }
             }
           },
           "500": {
@@ -4294,6 +5140,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `self_employment_not_found` — caller is not an active employee of the given organization.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "self_employment_not_found",
+                "message": "Employment not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -4347,6 +5205,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `self_org_role_not_found` — caller is not an active employee of the given organization.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "self_org_role_not_found",
+                "message": "Organization role not found."
+              }
             }
           },
           "500": {
@@ -4519,6 +5389,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -4640,6 +5522,30 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `organization_admin_already_assigned` — this employee is already an organization admin.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_admin_already_assigned",
+                "message": "Organization admin already assigned."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -4702,6 +5608,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_admin_not_found` — this employee is not an organization admin.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_admin_not_found",
+                "message": "Organization admin not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -4762,6 +5680,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -4818,6 +5748,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "deputy_already_assigned",
+                "message": "Deputy already assigned."
+              }
             }
           },
           "500": {
@@ -4954,6 +5908,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `clinic_organization_not_found` — organization with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "clinic_organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -5068,6 +6034,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
             }
           },
           "500": {
@@ -5199,6 +6177,30 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `organization_dispatcher_already_assigned` — this employee is already an organization dispatcher.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_dispatcher_already_assigned",
+                "message": "Organization dispatcher already assigned."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -5261,6 +6263,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_dispatcher_not_found` — this employee is not an organization dispatcher.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_dispatcher_not_found",
+                "message": "Organization dispatcher not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -5321,6 +6335,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -5377,6 +6403,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "deputy_already_assigned",
+                "message": "Deputy already assigned."
+              }
             }
           },
           "500": {
@@ -5774,6 +6824,30 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `organization_head_already_assigned` — this organization already has a head assigned.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_head_already_assigned",
+                "message": "Organization head already assigned."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -5836,6 +6910,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_head_not_found` — this employee is not the organization head.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_head_not_found",
+                "message": "Organization head not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -5896,6 +6982,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -5952,6 +7050,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "deputy_already_assigned",
+                "message": "Deputy already assigned."
+              }
             }
           },
           "500": {
@@ -6072,9 +7194,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_category_parent_inactive` — parent category is inactive.\n- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_parent_inactive",
+                "message": "Parent category is inactive."
+              }
             }
           },
           "401": {
@@ -6087,6 +7215,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_category_not_found` — parent category with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_not_found",
+                "message": "Parent category not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `incident_category_name_conflict` — a category with this name already exists in the same scope.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_category_name_conflict",
+                "message": "Category name already exists."
+              }
             }
           },
           "500": {
@@ -6424,6 +7576,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "organization_not_found",
+                "message": "Organization not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -6550,6 +7714,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `request_type_name_conflict` — a request type with this name already exists in the organization.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "request_type_name_conflict",
+                "message": "Request type name already exists."
+              }
             }
           },
           "500": {
@@ -6901,9 +8077,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_type_not_allowed_for_patients",
+                "message": "Incident type is not allowed for patient submissions."
+              }
             }
           },
           "401": {
@@ -6916,6 +8098,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `buffer_organization_not_found` — organization with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_organization_not_found",
+                "message": "Organization not found."
+              }
             }
           },
           "500": {
@@ -6957,9 +8151,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_pending",
+                "message": "Patient incident is not in pending status."
+              }
             }
           },
           "401": {
@@ -6969,9 +8169,27 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
+            "description": "Permission denied. Error codes:\n- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_patient_owner",
+                "message": "Not the owner of this patient incident."
+              }
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_found",
+                "message": "Patient incident not found."
+              }
             }
           },
           "500": {
@@ -7019,9 +8237,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be cancelled.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_pending",
+                "message": "Patient incident is not in pending status."
+              }
             }
           },
           "401": {
@@ -7031,9 +8255,27 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
+            "description": "Permission denied. Error codes:\n- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_patient_owner",
+                "message": "Not the owner of this patient incident."
+              }
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_found",
+                "message": "Patient incident not found."
+              }
             }
           },
           "500": {
@@ -7073,9 +8315,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be published.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_pending",
+                "message": "Patient incident is not in pending status."
+              }
             }
           },
           "401": {
@@ -7088,6 +8336,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_department_not_found` — department with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_dispatcher_not_found` — dispatcher employee not found.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_found",
+                "message": "Patient incident not found."
+              }
             }
           },
           "500": {
@@ -7135,9 +8395,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be rejected.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_pending",
+                "message": "Patient incident is not in pending status."
+              }
             }
           },
           "401": {
@@ -7150,6 +8416,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_not_found",
+                "message": "Patient incident not found."
+              }
             }
           },
           "500": {
@@ -7204,6 +8482,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `announcement_query_not_found` — announcement with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "announcement_query_not_found",
+                "message": "Announcement not found."
+              }
             }
           },
           "500": {
@@ -7430,6 +8720,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_query_not_found` — incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_query_not_found",
+                "message": "Incident not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -7482,6 +8784,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `incident_query_not_found` — incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "incident_query_not_found",
+                "message": "Incident not found."
+              }
             }
           },
           "500": {
@@ -7912,6 +9226,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `buffer_query_not_found` — patient incident with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "buffer_query_not_found",
+                "message": "Patient incident not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -8028,6 +9354,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "request_type_not_found",
+                "message": "Request type not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -8080,6 +9418,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "request_type_not_found",
+                "message": "Request type not found."
+              }
             }
           },
           "500": {
@@ -8136,6 +9486,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "request_type_not_found",
+                "message": "Request type not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -8188,6 +9550,30 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "request_type_not_found",
+                "message": "Request type not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `request_type_name_conflict` — a request type with this name already exists in the organization.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "request_type_name_conflict",
+                "message": "Request type name already exists."
+              }
             }
           },
           "500": {
@@ -8252,6 +9638,30 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "request_type_not_found",
+                "message": "Request type not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `request_type_name_conflict` — reactivation would create a name conflict with an active type.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "request_type_name_conflict",
+                "message": "Request type name already exists."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -8289,9 +9699,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Failed precondition. Error codes:\n- `service_request_type_inactive` — the request type is inactive.\n- `service_request_type_org_mismatch` — the request type belongs to a different organization.\n- `service_request_incident_org_mismatch` — the linked incident belongs to a different organization.\n- `service_request_employee_dept_mismatch` — an executor employee does not belong to the specified department.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_type_inactive",
+                "message": "Request type is inactive."
+              }
             }
           },
           "401": {
@@ -8304,6 +9720,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `service_request_department_not_found` — department with the given ID does not exist.\n- `service_request_type_not_found` — request type with the given ID does not exist.\n- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_department_not_found",
+                "message": "Department not found."
+              }
             }
           },
           "500": {
@@ -8362,6 +9790,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `service_request_query_not_found` — service request with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_query_not_found",
+                "message": "Service request not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -8399,9 +9839,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Failed precondition. Error codes:\n- `service_request_frozen` — service request is frozen and cannot be modified.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_frozen",
+                "message": "Service request is frozen."
+              }
             }
           },
           "401": {
@@ -8414,6 +9860,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_not_found",
+                "message": "Service request not found."
+              }
             }
           },
           "500": {
@@ -8461,9 +9919,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Failed precondition. Error codes:\n- `service_request_frozen` — service request is frozen and cannot be modified.\n- `service_request_employee_dept_mismatch` — an executor employee does not belong to the service request's department.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_frozen",
+                "message": "Service request is frozen."
+              }
             }
           },
           "401": {
@@ -8476,6 +9940,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_not_found",
+                "message": "Service request not found."
+              }
             }
           },
           "500": {
@@ -8577,9 +10053,15 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
+            "description": "Failed precondition. Error codes:\n- `service_request_invalid_status_transition` — the requested status transition is not allowed.\n- `service_request_frozen` — service request is frozen and cannot be modified.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_invalid_status_transition",
+                "message": "Invalid status transition."
+              }
             }
           },
           "401": {
@@ -8592,6 +10074,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "service_request_not_found",
+                "message": "Service request not found."
+              }
             }
           },
           "500": {
@@ -8717,10 +10211,46 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "zitadel_user_not_found",
+                "message": "Zitadel user not found."
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Error codes:\n- `system_admin_already_granted` — this user is already a system admin.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "system_admin_already_granted",
+                "message": "System admin already granted."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "503": {
+            "description": "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "zitadel_verify_failed",
+                "message": "Identity service unavailable."
+              }
             }
           },
           "default": {
@@ -8771,6 +10301,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `system_admin_not_found` — this user is not a system admin.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "system_admin_not_found",
+                "message": "System admin not found."
+              }
             }
           },
           "500": {
@@ -8827,6 +10369,18 @@
               "$ref": "#/definitions/v1ErrorResponse"
             }
           },
+          "404": {
+            "description": "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "vacation_not_found",
+                "message": "Vacation not found."
+              }
+            }
+          },
           "500": {
             "description": "Unexpected server error.",
             "schema": {
@@ -8879,6 +10433,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "vacation_not_found",
+                "message": "Vacation not found."
+              }
             }
           },
           "500": {
@@ -8941,6 +10507,18 @@
             "description": "Permission denied.",
             "schema": {
               "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            },
+            "examples": {
+              "application/json": {
+                "code": "vacation_not_found",
+                "message": "Vacation not found."
+              }
             }
           },
           "500": {

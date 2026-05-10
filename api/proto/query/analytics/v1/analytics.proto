@@ -53,9 +53,13 @@ service AnalyticsQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `analytics_org_not_found` — organization with the given ID does not exist.\n- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n- `analytics_dept_not_found` — department with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"analytics_org_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
@@ -67,9 +71,13 @@ service AnalyticsQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `analytics_org_not_found` — organization with the given ID does not exist.\n- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n- `analytics_dept_not_found` — department with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"analytics_org_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
@@ -81,9 +89,13 @@ service AnalyticsQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `analytics_org_not_found` — organization with the given ID does not exist.\n- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n- `analytics_dept_not_found` — department with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"analytics_org_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }

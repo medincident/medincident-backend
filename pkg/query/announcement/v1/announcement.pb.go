@@ -768,9 +768,14 @@ const file_query_announcement_v1_announcement_proto_rawDesc = "" +
 	"\x14AnnouncementPriority\x12%\n" +
 	"!ANNOUNCEMENT_PRIORITY_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cANNOUNCEMENT_PRIORITY_NORMAL\x10\x01\x12\x1e\n" +
-	"\x1aANNOUNCEMENT_PRIORITY_HIGH\x10\x022\xc0\x06\n" +
-	"\x18AnnouncementQueryService\x12\x96\x01\n" +
-	"\x0fGetAnnouncement\x12-.query.announcement.v1.GetAnnouncementRequest\x1a..query.announcement.v1.GetAnnouncementResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/query/announcements/{id}\x12\xe4\x01\n" +
+	"\x1aANNOUNCEMENT_PRIORITY_HIGH\x10\x022\xbb\b\n" +
+	"\x18AnnouncementQueryService\x12\x91\x03\n" +
+	"\x0fGetAnnouncement\x12-.query.announcement.v1.GetAnnouncementRequest\x1a..query.announcement.v1.GetAnnouncementResponse\"\x9e\x02\x92A\xf6\x01J\xf3\x01\n" +
+	"\x03404\x12\xeb\x01\n" +
+	"kNot found. Error codes:\n" +
+	"- `announcement_query_not_found` — announcement with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"_\n" +
+	"\x10application/json\x12K{\"code\":\"announcement_query_not_found\",\"message\":\"Announcement not found.\"}\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/query/announcements/{id}\x12\xe4\x01\n" +
 	" ListAnnouncementsForOrganization\x12>.query.announcement.v1.ListAnnouncementsForOrganizationRequest\x1a?.query.announcement.v1.ListAnnouncementsForOrganizationResponse\"?\x82\xd3\xe4\x93\x029\x127/v1/query/organizations/{organization_id}/announcements\x12\xc6\x01\n" +
 	"\x1aListAnnouncementsForClinic\x128.query.announcement.v1.ListAnnouncementsForClinicRequest\x1a9.query.announcement.v1.ListAnnouncementsForClinicResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/query/clinics/{clinic_id}/announcements\x12\xda\x01\n" +
 	"\x1eListAnnouncementsForDepartment\x12<.query.announcement.v1.ListAnnouncementsForDepartmentRequest\x1a=.query.announcement.v1.ListAnnouncementsForDepartmentResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/departments/{department_id}/announcementsB\x97\x04\x92A\x9a\x02RI\n" +

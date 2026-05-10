@@ -624,13 +624,50 @@ const file_command_announcement_v1_announcement_proto_rawDesc = "" +
 	"\x14AnnouncementPriority\x12%\n" +
 	"!ANNOUNCEMENT_PRIORITY_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cANNOUNCEMENT_PRIORITY_NORMAL\x10\x01\x12\x1e\n" +
-	"\x1aANNOUNCEMENT_PRIORITY_HIGH\x10\x022\xff\x06\n" +
-	"\x1aAnnouncementCommandService\x12\x9b\x01\n" +
-	"\x12CreateAnnouncement\x122.command.announcement.v1.CreateAnnouncementRequest\x1a3.command.announcement.v1.CreateAnnouncementResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/announcements\x12\xa0\x01\n" +
-	"\x12UpdateAnnouncement\x122.command.announcement.v1.UpdateAnnouncementRequest\x1a3.command.announcement.v1.UpdateAnnouncementResponse\"!\x82\xd3\xe4\x93\x02\x1b:\x01*\x1a\x16/v1/announcements/{id}\x12\xc1\x01\n" +
-	"\x1aUpdateAnnouncementPriority\x12:.command.announcement.v1.UpdateAnnouncementPriorityRequest\x1a;.command.announcement.v1.UpdateAnnouncementPriorityResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/announcements/{id}/priority\x12\xa8\x01\n" +
-	"\x13ArchiveAnnouncement\x123.command.announcement.v1.ArchiveAnnouncementRequest\x1a4.command.announcement.v1.ArchiveAnnouncementResponse\"&\x82\xd3\xe4\x93\x02 \"\x1e/v1/announcements/{id}:archive\x12\xb0\x01\n" +
-	"\x15UnarchiveAnnouncement\x125.command.announcement.v1.UnarchiveAnnouncementRequest\x1a6.command.announcement.v1.UnarchiveAnnouncementResponse\"(\x82\xd3\xe4\x93\x02\"\" /v1/announcements/{id}:unarchiveB\xa3\x04\x92A\x9a\x02RI\n" +
+	"\x1aANNOUNCEMENT_PRIORITY_HIGH\x10\x022\xd7\x15\n" +
+	"\x1aAnnouncementCommandService\x12\xcb\x04\n" +
+	"\x12CreateAnnouncement\x122.command.announcement.v1.CreateAnnouncementRequest\x1a3.command.announcement.v1.CreateAnnouncementResponse\"\xcb\x03\x92A\xab\x03J\xa8\x03\n" +
+	"\x03404\x12\xa0\x03\n" +
+	"\x98\x02Not found. Error codes:\n" +
+	"- `announcement_organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `announcement_clinic_not_found` — clinic with the given ID does not exist.\n" +
+	"- `announcement_department_not_found` — department with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"f\n" +
+	"\x10application/json\x12R{\"code\":\"announcement_organization_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/announcements\x12\x85\x05\n" +
+	"\x12UpdateAnnouncement\x122.command.announcement.v1.UpdateAnnouncementRequest\x1a3.command.announcement.v1.UpdateAnnouncementResponse\"\x85\x04\x92A\xe0\x03J\xf3\x01\n" +
+	"\x03400\x12\xeb\x01\n" +
+	"pFailed precondition. Error codes:\n" +
+	"- `announcement_archived` — announcement is archived and cannot be modified.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Z\n" +
+	"\x10application/json\x12F{\"code\":\"announcement_archived\",\"message\":\"Announcement is archived.\"}J\xe7\x01\n" +
+	"\x03404\x12\xdf\x01\n" +
+	"eNot found. Error codes:\n" +
+	"- `announcement_not_found` — announcement with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
+	"\x10application/json\x12E{\"code\":\"announcement_not_found\",\"message\":\"Announcement not found.\"}\x82\xd3\xe4\x93\x02\x1b:\x01*\x1a\x16/v1/announcements/{id}\x12\xa6\x05\n" +
+	"\x1aUpdateAnnouncementPriority\x12:.command.announcement.v1.UpdateAnnouncementPriorityRequest\x1a;.command.announcement.v1.UpdateAnnouncementPriorityResponse\"\x8e\x04\x92A\xe0\x03J\xf3\x01\n" +
+	"\x03400\x12\xeb\x01\n" +
+	"pFailed precondition. Error codes:\n" +
+	"- `announcement_archived` — announcement is archived and cannot be modified.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Z\n" +
+	"\x10application/json\x12F{\"code\":\"announcement_archived\",\"message\":\"Announcement is archived.\"}J\xe7\x01\n" +
+	"\x03404\x12\xdf\x01\n" +
+	"eNot found. Error codes:\n" +
+	"- `announcement_not_found` — announcement with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
+	"\x10application/json\x12E{\"code\":\"announcement_not_found\",\"message\":\"Announcement not found.\"}\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/announcements/{id}/priority\x12\x97\x03\n" +
+	"\x13ArchiveAnnouncement\x123.command.announcement.v1.ArchiveAnnouncementRequest\x1a4.command.announcement.v1.ArchiveAnnouncementResponse\"\x94\x02\x92A\xea\x01J\xe7\x01\n" +
+	"\x03404\x12\xdf\x01\n" +
+	"eNot found. Error codes:\n" +
+	"- `announcement_not_found` — announcement with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
+	"\x10application/json\x12E{\"code\":\"announcement_not_found\",\"message\":\"Announcement not found.\"}\x82\xd3\xe4\x93\x02 \"\x1e/v1/announcements/{id}:archive\x12\x9f\x03\n" +
+	"\x15UnarchiveAnnouncement\x125.command.announcement.v1.UnarchiveAnnouncementRequest\x1a6.command.announcement.v1.UnarchiveAnnouncementResponse\"\x96\x02\x92A\xea\x01J\xe7\x01\n" +
+	"\x03404\x12\xdf\x01\n" +
+	"eNot found. Error codes:\n" +
+	"- `announcement_not_found` — announcement with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
+	"\x10application/json\x12E{\"code\":\"announcement_not_found\",\"message\":\"Announcement not found.\"}\x82\xd3\xe4\x93\x02\"\" /v1/announcements/{id}:unarchiveB\xa3\x04\x92A\x9a\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

@@ -53,9 +53,13 @@ service ServiceRequestQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `service_request_query_not_found` — service request with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_query_not_found\",\"message\":\"Service request not found.\"}"
           }
         }
       }
@@ -70,9 +74,13 @@ service ServiceRequestQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `service_request_query_incident_not_found` — incident with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_query_incident_not_found\",\"message\":\"Incident not found.\"}"
           }
         }
       }

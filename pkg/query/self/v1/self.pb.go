@@ -7,6 +7,7 @@
 package selfv1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	v11 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
 	v1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
@@ -556,7 +557,7 @@ var File_query_self_v1_self_proto protoreflect.FileDescriptor
 
 const file_query_self_v1_self_proto_rawDesc = "" +
 	"\n" +
-	"\x18query/self/v1/self.proto\x12\rquery.self.v1\x1a\x1cgoogle/api/annotations.proto\x1a$query/membership/v1/membership.proto\x1a(query/orgstructure/v1/orgstructure.proto\"\x16\n" +
+	"\x18query/self/v1/self.proto\x12\rquery.self.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a$query/membership/v1/membership.proto\x1a(query/orgstructure/v1/orgstructure.proto\"\x16\n" +
 	"\x14GetMyIdentityRequest\"?\n" +
 	"\x15GetMyIdentityResponse\x12&\n" +
 	"\x0fis_system_admin\x18\x01 \x01(\bR\risSystemAdmin\"\x1c\n" +
@@ -581,14 +582,46 @@ const file_query_self_v1_self_proto_rawDesc = "" +
 	"\x1aGetMyDepartmentRoleRequest\x12#\n" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\"Y\n" +
 	"\x1bGetMyDepartmentRoleResponse\x12:\n" +
-	"\x19is_department_responsible\x18\x01 \x01(\bR\x17isDepartmentResponsible2\xff\x06\n" +
+	"\x19is_department_responsible\x18\x01 \x01(\bR\x17isDepartmentResponsible2\x80\x0f\n" +
 	"\x10SelfQueryService\x12j\n" +
 	"\rGetMyIdentity\x12#.query.self.v1.GetMyIdentityRequest\x1a$.query.self.v1.GetMyIdentityResponse\"\x0e\x82\xd3\xe4\x93\x02\b\x12\x06/v1/me\x12\x8a\x01\n" +
-	"\x13ListMyOrganizations\x12).query.self.v1.ListMyOrganizationsRequest\x1a*.query.self.v1.ListMyOrganizationsResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/me/organizations\x12\x9b\x01\n" +
-	"\x0fGetMyEmployment\x12%.query.self.v1.GetMyEmploymentRequest\x1a&.query.self.v1.GetMyEmploymentResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/me/organizations/{organization_id}/employment\x12\xa7\x01\n" +
-	"\x15GetMyOrganizationRole\x12+.query.self.v1.GetMyOrganizationRoleRequest\x1a,.query.self.v1.GetMyOrganizationRoleResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/me/organizations/{organization_id}/role\x12\x89\x01\n" +
-	"\x0fGetMyClinicRole\x12%.query.self.v1.GetMyClinicRoleRequest\x1a&.query.self.v1.GetMyClinicRoleResponse\"'\x82\xd3\xe4\x93\x02!\x12\x1f/v1/me/clinics/{clinic_id}/role\x12\x9d\x01\n" +
-	"\x13GetMyDepartmentRole\x12).query.self.v1.GetMyDepartmentRoleRequest\x1a*.query.self.v1.GetMyDepartmentRoleResponse\"/\x82\xd3\xe4\x93\x02)\x12'/v1/me/departments/{department_id}/roleB\xb9\x01\n" +
+	"\x13ListMyOrganizations\x12).query.self.v1.ListMyOrganizationsRequest\x1a*.query.self.v1.ListMyOrganizationsResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/me/organizations\x12\x9b\x03\n" +
+	"\x0fGetMyEmployment\x12%.query.self.v1.GetMyEmploymentRequest\x1a&.query.self.v1.GetMyEmploymentResponse\"\xb8\x02\x92A\xfb\x01J\xf8\x01\n" +
+	"\x03404\x12\xf0\x01\n" +
+	"uNot found. Error codes:\n" +
+	"- `self_employment_not_found` — caller is not an active employee of the given organization.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Z\n" +
+	"\x10application/json\x12F{\"code\":\"self_employment_not_found\",\"message\":\"Employment not found.\"}\x82\xd3\xe4\x93\x023\x121/v1/me/organizations/{organization_id}/employment\x12\xaa\x03\n" +
+	"\x15GetMyOrganizationRole\x12+.query.self.v1.GetMyOrganizationRoleRequest\x1a,.query.self.v1.GetMyOrganizationRoleResponse\"\xb5\x02\x92A\xfe\x01J\xfb\x01\n" +
+	"\x03404\x12\xf3\x01\n" +
+	"sNot found. Error codes:\n" +
+	"- `self_org_role_not_found` — caller is not an active employee of the given organization.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"_\n" +
+	"\x10application/json\x12K{\"code\":\"self_org_role_not_found\",\"message\":\"Organization role not found.\"}\x82\xd3\xe4\x93\x02-\x12+/v1/me/organizations/{organization_id}/role\x12\x86\x03\n" +
+	"\x0fGetMyClinicRole\x12%.query.self.v1.GetMyClinicRoleRequest\x1a&.query.self.v1.GetMyClinicRoleResponse\"\xa3\x02\x92A\xf8\x01J\xf5\x01\n" +
+	"\x03404\x12\xed\x01\n" +
+	"pNot found. Error codes:\n" +
+	"- `self_clinic_role_not_found` — caller is not an active employee of the given clinic.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\\\n" +
+	"\x10application/json\x12H{\"code\":\"self_clinic_role_not_found\",\"message\":\"Clinic role not found.\"}\x82\xd3\xe4\x93\x02!\x12\x1f/v1/me/clinics/{clinic_id}/role\x12\x9e\x03\n" +
+	"\x13GetMyDepartmentRole\x12).query.self.v1.GetMyDepartmentRoleRequest\x1a*.query.self.v1.GetMyDepartmentRoleResponse\"\xaf\x02\x92A\xfc\x01J\xf9\x01\n" +
+	"\x03404\x12\xf1\x01\n" +
+	"rNot found. Error codes:\n" +
+	"- `self_dept_role_not_found` — caller is not an active employee of the given department.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"^\n" +
+	"\x10application/json\x12J{\"code\":\"self_dept_role_not_found\",\"message\":\"Department role not found.\"}\x82\xd3\xe4\x93\x02)\x12'/v1/me/departments/{department_id}/roleB\xd7\x03\x92A\x9a\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x11com.query.self.v1B\tSelfProtoP\x01ZCgithub.com/medincident/medincident-backend/pkg/query/self/v1;selfv1\xa2\x02\x03QSX\xaa\x02\rQuery.Self.V1\xca\x02\rQuery\\Self\\V1\xe2\x02\x19Query\\Self\\V1\\GPBMetadata\xea\x02\x0fQuery::Self::V1b\x06proto3"
 
 var (

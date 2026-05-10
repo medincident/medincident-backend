@@ -59,9 +59,26 @@ service IncidentCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_department_not_found` — department with the given ID does not exist.\n- `incident_category_not_found` — incident category with the given ID does not exist.\n- `incident_type_not_found` — incident type with the given ID does not exist.\n- `incident_employee_not_found` — registrar employee not found."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_department_not_found\",\"message\":\"Department not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `incident_category_inactive` — the selected category is inactive.\n- `incident_type_inactive` — the selected type is inactive."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_category_inactive\",\"message\":\"Incident category is inactive.\"}"
           }
         }
       }
@@ -73,9 +90,26 @@ service IncidentCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `incident_not_cancellable` — incident is not in a cancellable status."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_not_cancellable\",\"message\":\"Incident cannot be cancelled in its current status.\"}"
           }
         }
       }
@@ -90,9 +124,26 @@ service IncidentCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `incident_invalid_status_transition` — the requested status transition is not allowed.\n- `incident_frozen` — incident is frozen and cannot be modified."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_invalid_status_transition\",\"message\":\"Invalid status transition.\"}"
           }
         }
       }
@@ -107,9 +158,26 @@ service IncidentCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_frozen\",\"message\":\"Incident is frozen.\"}"
           }
         }
       }
@@ -124,9 +192,26 @@ service IncidentCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_frozen\",\"message\":\"Incident is frozen.\"}"
           }
         }
       }
@@ -138,9 +223,26 @@ service IncidentCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `incident_not_reopenable` — incident cannot be reopened from its current status."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_not_reopenable\",\"message\":\"Incident cannot be reopened.\"}"
           }
         }
       }

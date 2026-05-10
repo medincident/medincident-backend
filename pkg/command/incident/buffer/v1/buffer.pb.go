@@ -586,13 +586,76 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"incidentId\"@\n" +
 	"\x1cRejectPatientIncidentRequest\x12 \n" +
 	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\"\x1f\n" +
-	"\x1dRejectPatientIncidentResponse2\xd6\a\n" +
-	"\x1cIncidentBufferCommandService\x12\xae\x01\n" +
-	"\x15SubmitPatientIncident\x128.command.incident.buffer.v1.SubmitPatientIncidentRequest\x1a9.command.incident.buffer.v1.SubmitPatientIncidentResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/patient-incidents\x12\xba\x01\n" +
-	"\x15UpdatePatientIncident\x128.command.incident.buffer.v1.UpdatePatientIncidentRequest\x1a9.command.incident.buffer.v1.UpdatePatientIncidentResponse\",\x82\xd3\xe4\x93\x02&:\x01*\x1a!/v1/patient-incidents/{buffer_id}\x12\xbe\x01\n" +
-	"\x15CancelPatientIncident\x128.command.incident.buffer.v1.CancelPatientIncidentRequest\x1a9.command.incident.buffer.v1.CancelPatientIncidentResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:cancel\x12\xc5\x01\n" +
-	"\x16PublishPatientIncident\x129.command.incident.buffer.v1.PublishPatientIncidentRequest\x1a:.command.incident.buffer.v1.PublishPatientIncidentResponse\"4\x82\xd3\xe4\x93\x02.:\x01*\")/v1/patient-incidents/{buffer_id}:publish\x12\xbe\x01\n" +
-	"\x15RejectPatientIncident\x128.command.incident.buffer.v1.RejectPatientIncidentRequest\x1a9.command.incident.buffer.v1.RejectPatientIncidentResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:rejectB\xaa\x04\x92A\x9a\x02RI\n" +
+	"\x1dRejectPatientIncidentResponse2\xfe\"\n" +
+	"\x1cIncidentBufferCommandService\x12\x87\x06\n" +
+	"\x15SubmitPatientIncident\x128.command.incident.buffer.v1.SubmitPatientIncidentRequest\x1a9.command.incident.buffer.v1.SubmitPatientIncidentResponse\"\xf8\x04\x92A\xd4\x04J\xd9\x02\n" +
+	"\x03400\x12\xd1\x02\n" +
+	"\xa9\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\x85\x01\n" +
+	"\x10application/json\x12q{\"code\":\"buffer_type_not_allowed_for_patients\",\"message\":\"Incident type is not allowed for patient submissions.\"}J\xf5\x01\n" +
+	"\x03404\x12\xed\x01\n" +
+	"lNot found. Error codes:\n" +
+	"- `buffer_organization_not_found` — organization with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"`\n" +
+	"\x10application/json\x12L{\"code\":\"buffer_organization_not_found\",\"message\":\"Organization not found.\"}\x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/patient-incidents\x12\xdb\a\n" +
+	"\x15UpdatePatientIncident\x128.command.incident.buffer.v1.UpdatePatientIncidentRequest\x1a9.command.incident.buffer.v1.UpdatePatientIncidentResponse\"\xcc\x06\x92A\x9c\x06J\xa5\x02\n" +
+	"\x03400\x12\x9d\x02\n" +
+	"\x93\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"h\n" +
+	"\x10application/json\x12T{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}J\x8b\x02\n" +
+	"\x03403\x12\x83\x02\n" +
+	"wPermission denied. Error codes:\n" +
+	"- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"k\n" +
+	"\x10application/json\x12W{\"code\":\"buffer_not_patient_owner\",\"message\":\"Not the owner of this patient incident.\"}J\xe3\x01\n" +
+	"\x03404\x12\xdb\x01\n" +
+	"cNot found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
+	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02&:\x01*\x1a!/v1/patient-incidents/{buffer_id}\x12\xe1\a\n" +
+	"\x15CancelPatientIncident\x128.command.incident.buffer.v1.CancelPatientIncidentRequest\x1a9.command.incident.buffer.v1.CancelPatientIncidentResponse\"\xd2\x06\x92A\x9e\x06J\xa7\x02\n" +
+	"\x03400\x12\x9f\x02\n" +
+	"\x95\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be cancelled.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"h\n" +
+	"\x10application/json\x12T{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}J\x8b\x02\n" +
+	"\x03403\x12\x83\x02\n" +
+	"wPermission denied. Error codes:\n" +
+	"- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"k\n" +
+	"\x10application/json\x12W{\"code\":\"buffer_not_patient_owner\",\"message\":\"Not the owner of this patient incident.\"}J\xe3\x01\n" +
+	"\x03404\x12\xdb\x01\n" +
+	"cNot found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
+	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:cancel\x12\xbc\a\n" +
+	"\x16PublishPatientIncident\x129.command.incident.buffer.v1.PublishPatientIncidentRequest\x1a:.command.incident.buffer.v1.PublishPatientIncidentResponse\"\xaa\x06\x92A\xf2\x05J\xa7\x02\n" +
+	"\x03400\x12\x9f\x02\n" +
+	"\x95\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be published.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"h\n" +
+	"\x10application/json\x12T{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}J\xc5\x03\n" +
+	"\x03404\x12\xbd\x03\n" +
+	"\xc4\x02Not found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.\n" +
+	"- `buffer_department_not_found` — department with the given ID does not exist.\n" +
+	"- `buffer_category_not_found` — category with the given ID does not exist.\n" +
+	"- `buffer_dispatcher_not_found` — dispatcher employee not found.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
+	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02.:\x01*\")/v1/patient-incidents/{buffer_id}:publish\x12\xd2\x05\n" +
+	"\x15RejectPatientIncident\x128.command.incident.buffer.v1.RejectPatientIncidentRequest\x1a9.command.incident.buffer.v1.RejectPatientIncidentResponse\"\xc3\x04\x92A\x8f\x04J\xa6\x02\n" +
+	"\x03400\x12\x9e\x02\n" +
+	"\x94\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be rejected.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"h\n" +
+	"\x10application/json\x12T{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}J\xe3\x01\n" +
+	"\x03404\x12\xdb\x01\n" +
+	"cNot found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
+	"\x10application/json\x12C{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:rejectB\xaa\x04\x92A\x9a\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

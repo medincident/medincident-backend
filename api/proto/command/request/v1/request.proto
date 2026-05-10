@@ -57,9 +57,26 @@ service ServiceRequestCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `service_request_department_not_found` — department with the given ID does not exist.\n- `service_request_type_not_found` — request type with the given ID does not exist.\n- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_department_not_found\",\"message\":\"Department not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Failed precondition. Error codes:\n- `service_request_type_inactive` — the request type is inactive.\n- `service_request_type_org_mismatch` — the request type belongs to a different organization.\n- `service_request_incident_org_mismatch` — the linked incident belongs to a different organization.\n- `service_request_employee_dept_mismatch` — an executor employee does not belong to the specified department."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_type_inactive\",\"message\":\"Request type is inactive.\"}"
           }
         }
       }
@@ -74,9 +91,26 @@ service ServiceRequestCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_not_found\",\"message\":\"Service request not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Failed precondition. Error codes:\n- `service_request_frozen` — service request is frozen and cannot be modified."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_frozen\",\"message\":\"Service request is frozen.\"}"
           }
         }
       }
@@ -91,9 +125,26 @@ service ServiceRequestCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_not_found\",\"message\":\"Service request not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Failed precondition. Error codes:\n- `service_request_invalid_status_transition` — the requested status transition is not allowed.\n- `service_request_frozen` — service request is frozen and cannot be modified."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_invalid_status_transition\",\"message\":\"Invalid status transition.\"}"
           }
         }
       }
@@ -108,9 +159,26 @@ service ServiceRequestCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_not_found\",\"message\":\"Service request not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Failed precondition. Error codes:\n- `service_request_frozen` — service request is frozen and cannot be modified.\n- `service_request_employee_dept_mismatch` — an executor employee does not belong to the service request's department."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"service_request_frozen\",\"message\":\"Service request is frozen.\"}"
           }
         }
       }

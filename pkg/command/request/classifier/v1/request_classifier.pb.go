@@ -490,13 +490,48 @@ const file_command_request_classifier_v1_request_classifier_proto_rawDesc = "" +
 	"\x1dReactivateRequestTypeResponse\"8\n" +
 	"\x18DeleteRequestTypeRequest\x12\x1c\n" +
 	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\"\x1b\n" +
-	"\x19DeleteRequestTypeResponse2\xf4\a\n" +
-	"\x1fRequestClassifierCommandService\x12\xc4\x01\n" +
-	"\x11CreateRequestType\x127.command.request.classifier.v1.CreateRequestTypeRequest\x1a8.command.request.classifier.v1.CreateRequestTypeResponse\"<\x82\xd3\xe4\x93\x026:\x01*\"1/v1/organizations/{organization_id}/request-types\x12\xcb\x01\n" +
-	"\x18UpdateRequestTypeDetails\x12>.command.request.classifier.v1.UpdateRequestTypeDetailsRequest\x1a?.command.request.classifier.v1.UpdateRequestTypeDetailsResponse\".\x82\xd3\xe4\x93\x02(:\x01*\x1a#/v1/request-types/{type_id}/details\x12\xc5\x01\n" +
-	"\x15DeactivateRequestType\x12;.command.request.classifier.v1.DeactivateRequestTypeRequest\x1a<.command.request.classifier.v1.DeactivateRequestTypeResponse\"1\x82\xd3\xe4\x93\x02+\")/v1/request-types/{type_id}/deactivations\x12\xc5\x01\n" +
-	"\x15ReactivateRequestType\x12;.command.request.classifier.v1.ReactivateRequestTypeRequest\x1a<.command.request.classifier.v1.ReactivateRequestTypeResponse\"1\x82\xd3\xe4\x93\x02+\")/v1/request-types/{type_id}/reactivations\x12\xab\x01\n" +
-	"\x11DeleteRequestType\x127.command.request.classifier.v1.DeleteRequestTypeRequest\x1a8.command.request.classifier.v1.DeleteRequestTypeResponse\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/request-types/{type_id}B\xcb\x04\x92A\x9a\x02RI\n" +
+	"\x19DeleteRequestTypeResponse2\xdc\x15\n" +
+	"\x1fRequestClassifierCommandService\x12\xd7\x03\n" +
+	"\x11CreateRequestType\x127.command.request.classifier.v1.CreateRequestTypeRequest\x1a8.command.request.classifier.v1.CreateRequestTypeResponse\"\xce\x02\x92A\x8e\x02J\x8b\x02\n" +
+	"\x03409\x12\x83\x02\n" +
+	"{Conflict. Error codes:\n" +
+	"- `request_type_name_conflict` — a request type with this name already exists in the organization.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"g\n" +
+	"\x10application/json\x12S{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}\x82\xd3\xe4\x93\x026:\x01*\"1/v1/organizations/{organization_id}/request-types\x12\xc8\x05\n" +
+	"\x18UpdateRequestTypeDetails\x12>.command.request.classifier.v1.UpdateRequestTypeDetailsRequest\x1a?.command.request.classifier.v1.UpdateRequestTypeDetailsResponse\"\xaa\x04\x92A\xf8\x03J\xe7\x01\n" +
+	"\x03404\x12\xdf\x01\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
+	"\x10application/json\x12E{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}J\x8b\x02\n" +
+	"\x03409\x12\x83\x02\n" +
+	"{Conflict. Error codes:\n" +
+	"- `request_type_name_conflict` — a request type with this name already exists in the organization.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"g\n" +
+	"\x10application/json\x12S{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}\x82\xd3\xe4\x93\x02(:\x01*\x1a#/v1/request-types/{type_id}/details\x12\xb4\x03\n" +
+	"\x15DeactivateRequestType\x12;.command.request.classifier.v1.DeactivateRequestTypeRequest\x1a<.command.request.classifier.v1.DeactivateRequestTypeResponse\"\x9f\x02\x92A\xea\x01J\xe7\x01\n" +
+	"\x03404\x12\xdf\x01\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
+	"\x10application/json\x12E{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}\x82\xd3\xe4\x93\x02+\")/v1/request-types/{type_id}/deactivations\x12\xbf\x05\n" +
+	"\x15ReactivateRequestType\x12;.command.request.classifier.v1.ReactivateRequestTypeRequest\x1a<.command.request.classifier.v1.ReactivateRequestTypeResponse\"\xaa\x04\x92A\xf5\x03J\xe7\x01\n" +
+	"\x03404\x12\xdf\x01\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
+	"\x10application/json\x12E{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}J\x88\x02\n" +
+	"\x03409\x12\x80\x02\n" +
+	"xConflict. Error codes:\n" +
+	"- `request_type_name_conflict` — reactivation would create a name conflict with an active type.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"g\n" +
+	"\x10application/json\x12S{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}\x82\xd3\xe4\x93\x02+\")/v1/request-types/{type_id}/reactivations\x12\x9a\x03\n" +
+	"\x11DeleteRequestType\x127.command.request.classifier.v1.DeleteRequestTypeRequest\x1a8.command.request.classifier.v1.DeleteRequestTypeResponse\"\x91\x02\x92A\xea\x01J\xe7\x01\n" +
+	"\x03404\x12\xdf\x01\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Y\n" +
+	"\x10application/json\x12E{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/request-types/{type_id}B\xcb\x04\x92A\x9a\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

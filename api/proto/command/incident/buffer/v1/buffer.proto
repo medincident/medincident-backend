@@ -61,9 +61,26 @@ service IncidentBufferCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `buffer_organization_not_found` — organization with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_organization_not_found\",\"message\":\"Organization not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_type_not_allowed_for_patients\",\"message\":\"Incident type is not allowed for patient submissions.\"}"
           }
         }
       }
@@ -74,9 +91,91 @@ service IncidentBufferCommandService {
       put: "/v1/patient-incidents/{buffer_id}"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "403"
+        value: {
+          description: "Permission denied. Error codes:\n- `buffer_not_patient_owner` — caller is not the patient who submitted this incident."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_patient_owner\",\"message\":\"Not the owner of this patient incident.\"}"
+          }
+        }
+      }
+    };
   }
   rpc CancelPatientIncident(CancelPatientIncidentRequest) returns (CancelPatientIncidentResponse) {
     option (google.api.http) = {post: "/v1/patient-incidents/{buffer_id}:cancel"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be cancelled."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "403"
+        value: {
+          description: "Permission denied. Error codes:\n- `buffer_not_patient_owner` — caller is not the patient who submitted this incident."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_patient_owner\",\"message\":\"Not the owner of this patient incident.\"}"
+          }
+        }
+      }
+    };
   }
   rpc PublishPatientIncident(PublishPatientIncidentRequest) returns (PublishPatientIncidentResponse) {
     option (google.api.http) = {
@@ -87,9 +186,26 @@ service IncidentBufferCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_department_not_found` — department with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_dispatcher_not_found` — dispatcher employee not found."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be published."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}"
           }
         }
       }
@@ -97,6 +213,34 @@ service IncidentBufferCommandService {
   }
   rpc RejectPatientIncident(RejectPatientIncidentRequest) returns (RejectPatientIncidentResponse) {
     option (google.api.http) = {post: "/v1/patient-incidents/{buffer_id}:reject"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_found\",\"message\":\"Patient incident not found.\"}"
+          }
+        }
+      }
+      responses: {
+        key: "400"
+        value: {
+          description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be rejected."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_not_pending\",\"message\":\"Patient incident is not in pending status.\"}"
+          }
+        }
+      }
+    };
   }
 }
 

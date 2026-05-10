@@ -70,9 +70,13 @@ service OrgStructureCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Organization not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
@@ -87,9 +91,13 @@ service OrgStructureCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Organization not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
@@ -105,9 +113,13 @@ service OrgStructureCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Organization not found."
+          description: "Not found. Error codes:\n- `clinic_organization_not_found` — organization with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"clinic_organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
@@ -122,9 +134,13 @@ service OrgStructureCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Clinic not found."
+          description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}"
           }
         }
       }
@@ -139,9 +155,13 @@ service OrgStructureCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Clinic not found."
+          description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}"
           }
         }
       }
@@ -157,9 +177,13 @@ service OrgStructureCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Clinic not found."
+          description: "Not found. Error codes:\n- `department_clinic_not_found` — clinic with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"department_clinic_not_found\",\"message\":\"Clinic not found.\"}"
           }
         }
       }
@@ -174,9 +198,13 @@ service OrgStructureCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Department not found."
+          description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
           }
         }
       }

@@ -56,9 +56,13 @@ service IncidentQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_query_not_found` — incident with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_query_not_found\",\"message\":\"Incident not found.\"}"
           }
         }
       }
@@ -72,6 +76,21 @@ service IncidentQueryService {
   }
   rpc GetIncidentHistory(GetIncidentHistoryRequest) returns (GetIncidentHistoryResponse) {
     option (google.api.http) = {get: "/v1/query/incidents/{incident_id}/history"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found. Error codes:\n- `incident_query_not_found` — incident with the given ID does not exist."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_query_not_found\",\"message\":\"Incident not found.\"}"
+          }
+        }
+      }
+    };
   }
 
   // Buffer reads.
@@ -81,9 +100,13 @@ service IncidentQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `buffer_query_not_found` — patient incident with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"buffer_query_not_found\",\"message\":\"Patient incident not found.\"}"
           }
         }
       }

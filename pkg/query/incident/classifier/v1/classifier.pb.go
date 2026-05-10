@@ -1202,13 +1202,23 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x03 \x01(\x05R\x06offset\"r\n" +
 	"2ListPatientVisibleCategoriesByOrganizationResponse\x12<\n" +
-	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items2\xbc\x0f\n" +
-	"\x1eIncidentClassifierQueryService\x12\x98\x01\n" +
-	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/incident-categories/{id}\x12\xe6\x01\n" +
+	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items2\x8e\x13\n" +
+	"\x1eIncidentClassifierQueryService\x12\x89\x03\n" +
+	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"\x94\x02\x92A\xec\x01J\xe9\x01\n" +
+	"\x03404\x12\xe1\x01\n" +
+	"fNot found. Error codes:\n" +
+	"- `incident_category_not_found` — category with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Z\n" +
+	"\x10application/json\x12F{\"code\":\"incident_category_not_found\",\"message\":\"Category not found.\"}\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/incident-categories/{id}\x12\xe6\x01\n" +
 	"\x1cListCategoriesByOrganization\x12A.query.incident.classifier.v1.ListCategoriesByOrganizationRequest\x1aB.query.incident.classifier.v1.ListCategoriesByOrganizationResponse\"?\x82\xd3\xe4\x93\x029\x127/v1/organizations/{organization_id}/incident-categories\x12\xe0\x01\n" +
 	"\x18ListActiveRootCategories\x12=.query.incident.classifier.v1.ListActiveRootCategoriesRequest\x1a>.query.incident.classifier.v1.ListActiveRootCategoriesResponse\"E\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/incident-categories:roots\x12\xc6\x01\n" +
-	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\":\x82\xd3\xe4\x93\x024\x122/v1/incident-categories/{root_category_id}:subtree\x12\x87\x01\n" +
-	"\aGetType\x12,.query.incident.classifier.v1.GetTypeRequest\x1a-.query.incident.classifier.v1.GetTypeResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/incident-types/{id}\x12\xbf\x01\n" +
+	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\":\x82\xd3\xe4\x93\x024\x122/v1/incident-categories/{root_category_id}:subtree\x12\xe8\x02\n" +
+	"\aGetType\x12,.query.incident.classifier.v1.GetTypeRequest\x1a-.query.incident.classifier.v1.GetTypeResponse\"\xff\x01\x92A\xdc\x01J\xd9\x01\n" +
+	"\x03404\x12\xd1\x01\n" +
+	"^Not found. Error codes:\n" +
+	"- `incident_type_not_found` — type with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"R\n" +
+	"\x10application/json\x12>{\"code\":\"incident_type_not_found\",\"message\":\"Type not found.\"}\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/incident-types/{id}\x12\xbf\x01\n" +
 	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/incident-categories/{category_id}/types\x12\xeb\x01\n" +
 	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"A\x82\xd3\xe4\x93\x02;\x129/v1/organizations/{organization_id}/incident-types:active\x12\x8c\x02\n" +
 	"%ListPatientAllowedTypesByOrganization\x12J.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest\x1aK.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse\"J\x82\xd3\xe4\x93\x02D\x12B/v1/organizations/{organization_id}/incident-types:patient-allowed\x12\xa0\x02\n" +

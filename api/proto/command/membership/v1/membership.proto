@@ -65,27 +65,39 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `employee_already_hired` — this Zitadel user is already an active employee of this organization."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"employee_already_hired\",\"message\":\"Employee already hired.\"}"
           }
         }
       }
       responses: {
         key: "503"
         value: {
-          description: "External identity service unavailable."
+          description: "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"zitadel_verify_failed\",\"message\":\"Identity service unavailable.\"}"
           }
         }
       }
@@ -100,9 +112,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
           }
         }
       }
@@ -117,9 +133,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
           }
         }
       }
@@ -131,9 +151,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
           }
         }
       }
@@ -150,9 +174,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
           }
         }
       }
@@ -162,6 +190,21 @@ service MembershipCommandService {
     option (google.api.http) = {
       post: "/v1/employees/{employee_id}/vacations"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"employee_not_found\",\"message\":\"Employee not found.\"}"
+          }
+        }
+      }
     };
   }
   rpc UpdateVacationEndDate(UpdateVacationEndDateRequest) returns (UpdateVacationEndDateResponse) {
@@ -173,9 +216,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"vacation_not_found\",\"message\":\"Vacation not found.\"}"
           }
         }
       }
@@ -187,9 +234,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"vacation_not_found\",\"message\":\"Vacation not found.\"}"
           }
         }
       }
@@ -201,9 +252,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"vacation_not_found\",\"message\":\"Vacation not found.\"}"
           }
         }
       }
@@ -220,18 +275,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `department_responsible_already_assigned` — this employee is already the department responsible."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"department_responsible_already_assigned\",\"message\":\"Department responsible already assigned.\"}"
           }
         }
       }
@@ -243,9 +306,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `department_responsible_not_found` — this employee is not the department responsible.\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"department_responsible_not_found\",\"message\":\"Department responsible not found.\"}"
           }
         }
       }
@@ -260,18 +327,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
           }
         }
       }
@@ -283,9 +358,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"department_not_found\",\"message\":\"Department not found.\"}"
           }
         }
       }
@@ -302,18 +381,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `clinic_head_already_assigned` — this clinic already has a head assigned."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"clinic_head_already_assigned\",\"message\":\"Clinic head already assigned.\"}"
           }
         }
       }
@@ -325,9 +412,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `clinic_head_not_found` — this employee is not the clinic head."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"clinic_head_not_found\",\"message\":\"Clinic head not found.\"}"
           }
         }
       }
@@ -342,18 +433,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
           }
         }
       }
@@ -365,9 +464,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"clinic_not_found\",\"message\":\"Clinic not found.\"}"
           }
         }
       }
@@ -384,18 +487,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `organization_admin_already_assigned` — this employee is already an organization admin."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_admin_already_assigned\",\"message\":\"Organization admin already assigned.\"}"
           }
         }
       }
@@ -407,9 +518,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_admin_not_found` — this employee is not an organization admin."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_admin_not_found\",\"message\":\"Organization admin not found.\"}"
           }
         }
       }
@@ -424,18 +539,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
           }
         }
       }
@@ -447,9 +570,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
@@ -466,18 +593,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `organization_head_already_assigned` — this organization already has a head assigned."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_head_already_assigned\",\"message\":\"Organization head already assigned.\"}"
           }
         }
       }
@@ -489,9 +624,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_head_not_found` — this employee is not the organization head."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_head_not_found\",\"message\":\"Organization head not found.\"}"
           }
         }
       }
@@ -506,18 +645,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
           }
         }
       }
@@ -529,9 +676,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
@@ -548,18 +699,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `organization_dispatcher_already_assigned` — this employee is already an organization dispatcher."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_dispatcher_already_assigned\",\"message\":\"Organization dispatcher already assigned.\"}"
           }
         }
       }
@@ -571,9 +730,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_dispatcher_not_found` — this employee is not an organization dispatcher."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_dispatcher_not_found\",\"message\":\"Organization dispatcher not found.\"}"
           }
         }
       }
@@ -588,18 +751,26 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"deputy_already_assigned\",\"message\":\"Deputy already assigned.\"}"
           }
         }
       }
@@ -611,9 +782,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"organization_not_found\",\"message\":\"Organization not found.\"}"
           }
         }
       }
@@ -630,27 +805,39 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"zitadel_user_not_found\",\"message\":\"Zitadel user not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `system_admin_already_granted` — this user is already a system admin."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"system_admin_already_granted\",\"message\":\"System admin already granted.\"}"
           }
         }
       }
       responses: {
         key: "503"
         value: {
-          description: "External identity service unavailable."
+          description: "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"zitadel_verify_failed\",\"message\":\"Identity service unavailable.\"}"
           }
         }
       }
@@ -662,9 +849,13 @@ service MembershipCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `system_admin_not_found` — this user is not a system admin."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"system_admin_not_found\",\"message\":\"System admin not found.\"}"
           }
         }
       }

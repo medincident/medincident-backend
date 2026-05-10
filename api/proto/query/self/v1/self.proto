@@ -71,9 +71,13 @@ service SelfQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `self_employment_not_found` — caller is not an active employee of the given organization."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"self_employment_not_found\",\"message\":\"Employment not found.\"}"
           }
         }
       }
@@ -89,9 +93,13 @@ service SelfQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `self_org_role_not_found` — caller is not an active employee of the given organization."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"self_org_role_not_found\",\"message\":\"Organization role not found.\"}"
           }
         }
       }
@@ -107,9 +115,13 @@ service SelfQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `self_clinic_role_not_found` — caller is not an active employee of the given clinic."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"self_clinic_role_not_found\",\"message\":\"Clinic role not found.\"}"
           }
         }
       }
@@ -126,9 +138,13 @@ service SelfQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `self_dept_role_not_found` — caller is not an active employee of the given department."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"self_dept_role_not_found\",\"message\":\"Department role not found.\"}"
           }
         }
       }

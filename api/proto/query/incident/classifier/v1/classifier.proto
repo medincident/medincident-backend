@@ -56,9 +56,13 @@ service IncidentClassifierQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_category_not_found` — category with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_category_not_found\",\"message\":\"Category not found.\"}"
           }
         }
       }
@@ -80,9 +84,13 @@ service IncidentClassifierQueryService {
       responses: {
         key: "404"
         value: {
-          description: "Resource not found."
+          description: "Not found. Error codes:\n- `incident_type_not_found` — type with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"incident_type_not_found\",\"message\":\"Type not found.\"}"
           }
         }
       }

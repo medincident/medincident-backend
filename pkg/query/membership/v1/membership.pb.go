@@ -2372,9 +2372,14 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x02 \x01(\x05R\x06offset\"V\n" +
 	"\x18ListSystemAdminsResponse\x12:\n" +
-	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items2\xab\x16\n" +
-	"\x16MembershipQueryService\x12|\n" +
-	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xbd\x01\n" +
+	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items2\x95\x18\n" +
+	"\x16MembershipQueryService\x12\xe5\x02\n" +
+	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x82\x02\x92A\xe4\x01J\xe1\x01\n" +
+	"\x03404\x12\xd9\x01\n" +
+	"bNot found. Error codes:\n" +
+	"- `employee_card_not_found` — employee with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"V\n" +
+	"\x10application/json\x12B{\"code\":\"employee_card_not_found\",\"message\":\"Employee not found.\"}\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xbd\x01\n" +
 	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/departments/{department_id}/employees\x12\xa9\x01\n" +
 	"\x15ListEmployeesByClinic\x121.query.membership.v1.ListEmployeesByClinicRequest\x1a2.query.membership.v1.ListEmployeesByClinicResponse\")\x82\xd3\xe4\x93\x02#\x12!/v1/clinics/{clinic_id}/employees\x12\xc7\x01\n" +
 	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xc6\x01\n" +

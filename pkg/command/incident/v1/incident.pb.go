@@ -747,14 +747,79 @@ const file_command_incident_v1_incident_proto_rawDesc = "" +
 	"\x15INCIDENT_PRIORITY_LOW\x10\x01\x12\x1c\n" +
 	"\x18INCIDENT_PRIORITY_NORMAL\x10\x02\x12\x1a\n" +
 	"\x16INCIDENT_PRIORITY_HIGH\x10\x03\x12\x1e\n" +
-	"\x1aINCIDENT_PRIORITY_CRITICAL\x10\x042\xf1\a\n" +
-	"\x16IncidentCommandService\x12\x83\x01\n" +
-	"\x0eCreateIncident\x12*.command.incident.v1.CreateIncidentRequest\x1a+.command.incident.v1.CreateIncidentResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/incidents\x12\x95\x01\n" +
-	"\x0eCancelIncident\x12*.command.incident.v1.CancelIncidentRequest\x1a+.command.incident.v1.CancelIncidentResponse\"*\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:cancel\x12\xaa\x01\n" +
-	"\x14UpdateIncidentStatus\x120.command.incident.v1.UpdateIncidentStatusRequest\x1a1.command.incident.v1.UpdateIncidentStatusResponse\"-\x82\xd3\xe4\x93\x02':\x01*\x1a\"/v1/incidents/{incident_id}/status\x12\xb2\x01\n" +
-	"\x16UpdateIncidentPriority\x122.command.incident.v1.UpdateIncidentPriorityRequest\x1a3.command.incident.v1.UpdateIncidentPriorityResponse\"/\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/incidents/{incident_id}/priority\x12\xbe\x01\n" +
-	"\x19UpdateIncidentDescription\x125.command.incident.v1.UpdateIncidentDescriptionRequest\x1a6.command.incident.v1.UpdateIncidentDescriptionResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/incidents/{incident_id}/description\x12\x95\x01\n" +
-	"\x0eReopenIncident\x12*.command.incident.v1.ReopenIncidentRequest\x1a+.command.incident.v1.ReopenIncidentResponse\"*\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:reopenB\x83\x04\x92A\x9a\x02RI\n" +
+	"\x1aINCIDENT_PRIORITY_CRITICAL\x10\x042\x8b\"\n" +
+	"\x16IncidentCommandService\x12\xb3\a\n" +
+	"\x0eCreateIncident\x12*.command.incident.v1.CreateIncidentRequest\x1a+.command.incident.v1.CreateIncidentResponse\"\xc7\x06\x92A\xab\x06J\xc9\x02\n" +
+	"\x03400\x12\xc1\x02\n" +
+	"\xbb\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `incident_category_inactive` — the selected category is inactive.\n" +
+	"- `incident_type_inactive` — the selected type is inactive.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"d\n" +
+	"\x10application/json\x12P{\"code\":\"incident_category_inactive\",\"message\":\"Incident category is inactive.\"}J\xdc\x03\n" +
+	"\x03404\x12\xd4\x03\n" +
+	"\xd4\x02Not found. Error codes:\n" +
+	"- `incident_department_not_found` — department with the given ID does not exist.\n" +
+	"- `incident_category_not_found` — incident category with the given ID does not exist.\n" +
+	"- `incident_type_not_found` — incident type with the given ID does not exist.\n" +
+	"- `incident_employee_not_found` — registrar employee not found.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"^\n" +
+	"\x10application/json\x12J{\"code\":\"incident_department_not_found\",\"message\":\"Department not found.\"}\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/incidents\x12\x99\x05\n" +
+	"\x0eCancelIncident\x12*.command.incident.v1.CancelIncidentRequest\x1a+.command.incident.v1.CancelIncidentResponse\"\xad\x04\x92A\xff\x03J\xa2\x02\n" +
+	"\x03400\x12\x9a\x02\n" +
+	"\x81\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `incident_not_cancellable` — incident is not in a cancellable status.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"w\n" +
+	"\x10application/json\x12c{\"code\":\"incident_not_cancellable\",\"message\":\"Incident cannot be cancelled in its current status.\"}J\xd7\x01\n" +
+	"\x03404\x12\xcf\x01\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Q\n" +
+	"\x10application/json\x12={\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:cancel\x12\xf3\x05\n" +
+	"\x14UpdateIncidentStatus\x120.command.incident.v1.UpdateIncidentStatusRequest\x1a1.command.incident.v1.UpdateIncidentStatusResponse\"\xf5\x04\x92A\xc4\x04J\xe7\x02\n" +
+	"\x03400\x12\xdf\x02\n" +
+	"\xd5\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `incident_invalid_status_transition` — the requested status transition is not allowed.\n" +
+	"- `incident_frozen` — incident is frozen and cannot be modified.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"h\n" +
+	"\x10application/json\x12T{\"code\":\"incident_invalid_status_transition\",\"message\":\"Invalid status transition.\"}J\xd7\x01\n" +
+	"\x03404\x12\xcf\x01\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Q\n" +
+	"\x10application/json\x12={\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02':\x01*\x1a\"/v1/incidents/{incident_id}/status\x12\x85\x05\n" +
+	"\x16UpdateIncidentPriority\x122.command.incident.v1.UpdateIncidentPriorityRequest\x1a3.command.incident.v1.UpdateIncidentPriorityResponse\"\x81\x04\x92A\xce\x03J\xf1\x01\n" +
+	"\x03400\x12\xe9\x01\n" +
+	"zValidation failed or precondition not met. Error codes:\n" +
+	"- `incident_frozen` — incident is frozen and cannot be modified.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
+	"\x10application/json\x12:{\"code\":\"incident_frozen\",\"message\":\"Incident is frozen.\"}J\xd7\x01\n" +
+	"\x03404\x12\xcf\x01\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Q\n" +
+	"\x10application/json\x12={\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/incidents/{incident_id}/priority\x12\x91\x05\n" +
+	"\x19UpdateIncidentDescription\x125.command.incident.v1.UpdateIncidentDescriptionRequest\x1a6.command.incident.v1.UpdateIncidentDescriptionResponse\"\x84\x04\x92A\xce\x03J\xf1\x01\n" +
+	"\x03400\x12\xe9\x01\n" +
+	"zValidation failed or precondition not met. Error codes:\n" +
+	"- `incident_frozen` — incident is frozen and cannot be modified.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
+	"\x10application/json\x12:{\"code\":\"incident_frozen\",\"message\":\"Incident is frozen.\"}J\xd7\x01\n" +
+	"\x03404\x12\xcf\x01\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Q\n" +
+	"\x10application/json\x12={\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/incidents/{incident_id}/description\x12\x8c\x05\n" +
+	"\x0eReopenIncident\x12*.command.incident.v1.ReopenIncidentRequest\x1a+.command.incident.v1.ReopenIncidentResponse\"\xa0\x04\x92A\xf2\x03J\x95\x02\n" +
+	"\x03400\x12\x8d\x02\n" +
+	"\x8c\x01Validation failed or precondition not met. Error codes:\n" +
+	"- `incident_not_reopenable` — incident cannot be reopened from its current status.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"_\n" +
+	"\x10application/json\x12K{\"code\":\"incident_not_reopenable\",\"message\":\"Incident cannot be reopened.\"}J\xd7\x01\n" +
+	"\x03404\x12\xcf\x01\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"Q\n" +
+	"\x10application/json\x12={\"code\":\"incident_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:reopenB\x83\x04\x92A\x9a\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

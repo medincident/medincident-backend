@@ -1779,13 +1779,28 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x16PATIENT_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17PATIENT_STATUS_ACCEPTED\x10\x02\x12\x19\n" +
 	"\x15PATIENT_STATUS_CLOSED\x10\x03\x12\x1c\n" +
-	"\x18PATIENT_STATUS_CANCELLED\x10\x042\xd5\b\n" +
-	"\x14IncidentQueryService\x12~\n" +
-	"\vGetIncident\x12%.query.incident.v1.GetIncidentRequest\x1a&.query.incident.v1.GetIncidentResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents/{id}\x12\x9f\x01\n" +
+	"\x18PATIENT_STATUS_CANCELLED\x10\x042\xa3\x0e\n" +
+	"\x14IncidentQueryService\x12\xe9\x02\n" +
+	"\vGetIncident\x12%.query.incident.v1.GetIncidentRequest\x1a&.query.incident.v1.GetIncidentResponse\"\x8a\x02\x92A\xe6\x01J\xe3\x01\n" +
+	"\x03404\x12\xdb\x01\n" +
+	"cNot found. Error codes:\n" +
+	"- `incident_query_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
+	"\x10application/json\x12C{\"code\":\"incident_query_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents/{id}\x12\x9f\x01\n" +
 	"\rListIncidents\x12'.query.incident.v1.ListIncidentsRequest\x1a(.query.incident.v1.ListIncidentsResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/organizations/{organization_id}/incidents\x12\x8a\x01\n" +
-	"\x0fListMyIncidents\x12).query.incident.v1.ListMyIncidentsRequest\x1a*.query.incident.v1.ListMyIncidentsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents:mine\x12\xa4\x01\n" +
-	"\x12GetIncidentHistory\x12,.query.incident.v1.GetIncidentHistoryRequest\x1a-.query.incident.v1.GetIncidentHistoryResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/query/incidents/{incident_id}/history\x12\x8f\x01\n" +
-	"\x0eGetBufferEntry\x12(.query.incident.v1.GetBufferEntryRequest\x1a).query.incident.v1.GetBufferEntryResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xb3\x01\n" +
+	"\x0fListMyIncidents\x12).query.incident.v1.ListMyIncidentsRequest\x1a*.query.incident.v1.ListMyIncidentsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents:mine\x12\x8f\x03\n" +
+	"\x12GetIncidentHistory\x12,.query.incident.v1.GetIncidentHistoryRequest\x1a-.query.incident.v1.GetIncidentHistoryResponse\"\x9b\x02\x92A\xe6\x01J\xe3\x01\n" +
+	"\x03404\x12\xdb\x01\n" +
+	"cNot found. Error codes:\n" +
+	"- `incident_query_not_found` — incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"W\n" +
+	"\x10application/json\x12C{\"code\":\"incident_query_not_found\",\"message\":\"Incident not found.\"}\x82\xd3\xe4\x93\x02+\x12)/v1/query/incidents/{incident_id}/history\x12\x86\x03\n" +
+	"\x0eGetBufferEntry\x12(.query.incident.v1.GetBufferEntryRequest\x1a).query.incident.v1.GetBufferEntryResponse\"\x9e\x02\x92A\xf2\x01J\xef\x01\n" +
+	"\x03404\x12\xe7\x01\n" +
+	"iNot found. Error codes:\n" +
+	"- `buffer_query_not_found` — patient incident with the given ID does not exist.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"]\n" +
+	"\x10application/json\x12I{\"code\":\"buffer_query_not_found\",\"message\":\"Patient incident not found.\"}\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xb3\x01\n" +
 	"\x11ListBufferEntries\x12+.query.incident.v1.ListBufferEntriesRequest\x1a,.query.incident.v1.ListBufferEntriesResponse\"C\x82\xd3\xe4\x93\x02=\x12;/v1/query/organizations/{organization_id}/patient-incidents\x12\x9e\x01\n" +
 	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xf7\x03\x92A\x9a\x02RI\n" +
 	"\x03400\x12B\n" +

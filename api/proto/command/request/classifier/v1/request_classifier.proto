@@ -57,9 +57,13 @@ service RequestClassifierCommandService {
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `request_type_name_conflict` — a request type with this name already exists in the organization."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}"
           }
         }
       }
@@ -74,18 +78,26 @@ service RequestClassifierCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `request_type_name_conflict` — a request type with this name already exists in the organization."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}"
           }
         }
       }
@@ -97,9 +109,13 @@ service RequestClassifierCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}"
           }
         }
       }
@@ -111,18 +127,26 @@ service RequestClassifierCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}"
           }
         }
       }
       responses: {
         key: "409"
         value: {
-          description: "Conflict."
+          description: "Conflict. Error codes:\n- `request_type_name_conflict` — reactivation would create a name conflict with an active type."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"request_type_name_conflict\",\"message\":\"Request type name already exists.\"}"
           }
         }
       }
@@ -134,9 +158,13 @@ service RequestClassifierCommandService {
       responses: {
         key: "404"
         value: {
-          description: "Not found."
+          description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."
           schema: {
             json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+          examples: {
+            key: "application/json"
+            value: "{\"code\":\"request_type_not_found\",\"message\":\"Request type not found.\"}"
           }
         }
       }
