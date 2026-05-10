@@ -11140,15 +11140,6 @@
       ],
       "default": "INCIDENT_STATUS_UNSPECIFIED"
     },
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "@type": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": {}
-    },
     "queryAnnouncementV1AnnouncementPriority": {
       "type": "string",
       "enum": [
@@ -11222,25 +11213,6 @@
         },
         "changedAt": {
           "type": "string"
-        }
-      }
-    },
-    "rpcStatus": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/protobufAny"
-          }
         }
       }
     },

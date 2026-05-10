@@ -19,6 +19,8 @@ tasks:
             }
           } |
           del(.definitions["v1ErrorResponse"].properties.details) |
+          del(.definitions["rpcStatus"]) |
+          del(.definitions["protobufAny"]) |
           .paths |= with_entries(
             .value |= with_entries(
               .value.responses |= (

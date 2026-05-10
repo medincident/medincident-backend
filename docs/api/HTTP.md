@@ -11133,29 +11133,6 @@ Type mirrors projections.incident_types row.
 |*anonymous*|INCIDENT_STATUS_REJECTED|
 |*anonymous*|INCIDENT_STATUS_CANCELLED|
 
-<h2 id="tocS_protobufAny">protobufAny</h2>
-<!-- backwards compatibility -->
-<a id="schemaprotobufany"></a>
-<a id="schema_protobufAny"></a>
-<a id="tocSprotobufany"></a>
-<a id="tocsprotobufany"></a>
-
-```json
-{
-  "@type": "string",
-  "property1": null,
-  "property2": null
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|**additionalProperties**|any|false|none|none|
-|@type|string|false|none|none|
-
 <h2 id="tocS_queryAnnouncementV1AnnouncementPriority">queryAnnouncementV1AnnouncementPriority</h2>
 <!-- backwards compatibility -->
 <a id="schemaqueryannouncementv1announcementpriority"></a>
@@ -11299,36 +11276,6 @@ Type mirrors projections.incident_types row.
 |actorId|string|false|none|none|
 |actorName|string|false|none|none|
 |changedAt|string|false|none|none|
-
-<h2 id="tocS_rpcStatus">rpcStatus</h2>
-<!-- backwards compatibility -->
-<a id="schemarpcstatus"></a>
-<a id="schema_rpcStatus"></a>
-<a id="tocSrpcstatus"></a>
-<a id="tocsrpcstatus"></a>
-
-```json
-{
-  "code": 0,
-  "message": "string",
-  "details": [
-    {
-      "@type": "string",
-      "property1": null,
-      "property2": null
-    }
-  ]
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|code|integer(int32)|false|none|none|
-|message|string|false|none|none|
-|details|[[protobufAny](#schemaprotobufany)]|false|none|none|
 
 <h2 id="tocS_v1ActorView">v1ActorView</h2>
 <!-- backwards compatibility -->
