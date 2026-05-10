@@ -139,6 +139,22 @@ main.go wires constructors explicitly and drives teardown via `defer`.
     code so the handler can build a meaningful violation entry.
     Current usage: `ScheduleVacation` in
     `internal/service/command/membership/vacation_schedule.go`.
+18. **Every domain error must be declared in the proto contract and
+    documented.** When a service method can return a domain error (any
+    `oops.Code(...)` other than `validation_failed`), the
+    corresponding RPC in `api/proto/` must carry an
+    `openapiv2_operation` option listing every possible HTTP status
+    code via `responses` entries (each pointing to
+    `#/definitions/medincidenterrorv1ErrorResponse`). The standard
+    codes present on every method are `400` (validation_failed),
+    `401` (unauthenticated), and `500` (unexpected_error); domain
+    codes like `404` (not found) or `409` (conflict) are added per
+    method. The documentation file for the method in
+    `docs/services/` must include a section listing all errors the
+    method can return, with their `oops.Code` value and the HTTP
+    status code the error interceptor maps it to. A method that emits
+    a new error code without updating both the proto annotation and
+    the docs is considered incomplete.
 
 ## Directory layout
 
