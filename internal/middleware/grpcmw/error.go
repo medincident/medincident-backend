@@ -104,7 +104,8 @@ func buildValidationStatus(logger *zerolog.Logger, method string, leaf *oops.Oop
 			Message: v.Message,
 		}
 		if v.Param != "" {
-			fv.Param = &v.Param
+			p := v.Param
+			fv.Param = &p
 		}
 		fvs = append(fvs, fv)
 	}

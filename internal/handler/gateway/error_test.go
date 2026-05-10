@@ -183,6 +183,34 @@ func TestGatewayErrorHandler_UnprocessableCode_Returns422(t *testing.T) {
 	}
 }
 
+func TestGatewayErrorHandler_DeadlineExceeded_Returns504(t *testing.T) {
+	// DeadlineExceeded arrives as a plain status (no ErrorCode detail) from
+	// the error interceptor; the gateway must map it to 504 via st.Code().
+	rec := callHandler(t, grpcstatus.New(codes.DeadlineExceeded, "deadline exceeded").Err())
+
+	if rec.Code != http.StatusGatewayTimeout {
+		t.Errorf("expected 504, got %d", rec.Code)
+	}
+	body := decodeBody(t, rec)
+	if body["code"] != "deadline_exceeded" {
+		t.Errorf("expected code=deadline_exceeded, got %v", body["code"])
+	}
+}
+
+func TestGatewayErrorHandler_Canceled_Returns408(t *testing.T) {
+	// Canceled arrives as a plain status (no ErrorCode detail) from the error
+	// interceptor; the gateway must map it to 408 via st.Code().
+	rec := callHandler(t, grpcstatus.New(codes.Canceled, "request canceled").Err())
+
+	if rec.Code != http.StatusRequestTimeout {
+		t.Errorf("expected 408, got %d", rec.Code)
+	}
+	body := decodeBody(t, rec)
+	if body["code"] != "request_canceled" {
+		t.Errorf("expected code=request_canceled, got %v", body["code"])
+	}
+}
+
 func TestGatewayErrorHandler_ContentTypeHeader(t *testing.T) {
 	rec := callHandler(t, grpcstatus.New(codes.Internal, "internal error").Err())
 	if ct := rec.Header().Get("Content-Type"); ct != "application/json" {

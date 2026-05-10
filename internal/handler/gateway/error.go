@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/grpc/codes"
 	grpcstatus "google.golang.org/grpc/status"
 
 	errorv1 "github.com/medincident/medincident-backend/pkg/error/v1"
@@ -54,9 +55,24 @@ func GatewayErrorHandler(_ context.Context, _ *runtime.ServeMux, _ runtime.Marsh
 		}
 	}
 
-	httpStatus := codeToHTTPStatus(code)
+	// When no ErrorCode detail is present, fall back to the transport-level
+	// gRPC code. DeadlineExceeded and Canceled are sent as plain statuses by
+	// the error interceptor (no domain code exists for them).
+	var httpStatus int
 	if code == "" {
-		code = "unexpected_error"
+		switch st.Code() {
+		case codes.DeadlineExceeded:
+			code = "deadline_exceeded"
+			httpStatus = http.StatusGatewayTimeout
+		case codes.Canceled:
+			code = "request_canceled"
+			httpStatus = http.StatusRequestTimeout
+		default:
+			code = "unexpected_error"
+			httpStatus = http.StatusInternalServerError
+		}
+	} else {
+		httpStatus = codeToHTTPStatus(code)
 	}
 
 	msg := st.Message()
