@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package event.department.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// DepartmentCreated is emitted when a new department is persisted.
+// subject: medincident.event.department.v1.created
+message DepartmentCreated {
+  string clinic_id = 1;
+  string name = 2;
+  string description = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+// DepartmentDetailsChanged is emitted when name or description changes.
+// subject: medincident.event.department.v1.details_changed
+message DepartmentDetailsChanged {
+  string name = 1;
+  string description = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}

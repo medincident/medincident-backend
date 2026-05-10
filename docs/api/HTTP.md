@@ -61,14 +61,8 @@ curl -X POST /v1/announcements \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `announcement_organization_not_found` — organization with the given ID does not exist.
-- `announcement_clinic_not_found` — clinic with the given ID does not exist.
-- `announcement_department_not_found` — department with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="announcementcommandservice_createannouncement-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -124,14 +118,8 @@ curl -X PUT /v1/announcements/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `announcement_not_found` — announcement with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `announcement_archived` — announcement is archived and cannot be modified.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="announcementcommandservice_updateannouncement-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -184,14 +172,8 @@ curl -X PUT /v1/announcements/{id}/priority \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `announcement_not_found` — announcement with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `announcement_archived` — announcement is archived and cannot be modified.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="announcementcommandservice_updateannouncementpriority-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -234,12 +216,8 @@ curl -X POST /v1/announcements/{id}:archive \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `announcement_not_found` — announcement with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="announcementcommandservice_archiveannouncement-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -282,12 +260,8 @@ curl -X POST /v1/announcements/{id}:unarchive \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `announcement_not_found` — announcement with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="announcementcommandservice_unarchiveannouncement-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -344,20 +318,11 @@ curl -X POST /v1/patient-incidents \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SubmitPatientIncidentResponse](#schemav1submitpatientincidentresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
-- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date.|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `buffer_organization_not_found` — organization with the given ID does not exist.
-- `buffer_category_not_found` — category with the given ID does not exist.
-- `buffer_type_not_found` — incident type with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentbuffercommandservice_submitpatientincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -410,22 +375,11 @@ curl -X PUT /v1/patient-incidents/{bufferId} \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1UpdatePatientIncidentResponse](#schemav1updatepatientincidentresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
-- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date.|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
-- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.|Inline|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `buffer_not_found` — patient incident with the given ID does not exist.
-- `buffer_category_not_found` — category with the given ID does not exist.
-- `buffer_type_not_found` — incident type with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.
-- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.|Inline|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentbuffercommandservice_updatepatientincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -467,16 +421,9 @@ curl -X POST /v1/patient-incidents/{bufferId}:cancel \
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CancelPatientIncidentResponse](#schemav1cancelpatientincidentresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
-- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.|Inline|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `buffer_not_found` — patient incident with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `buffer_not_pending` — patient incident is not in pending status and cannot be cancelled.|Inline|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentbuffercommandservice_cancelpatientincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -534,18 +481,8 @@ curl -X POST /v1/patient-incidents/{bufferId}:publish \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `buffer_not_found` — patient incident with the given ID does not exist.
-- `buffer_department_not_found` — department with the given ID does not exist.
-- `buffer_category_not_found` — category with the given ID does not exist.
-- `buffer_type_not_found` — incident type with the given ID does not exist.
-- `buffer_dispatcher_not_found` — dispatcher employee not found.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `buffer_not_pending` — patient incident is not in pending status and cannot be published.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentbuffercommandservice_publishpatientincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -588,14 +525,8 @@ curl -X POST /v1/patient-incidents/{bufferId}:reject \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `buffer_not_found` — patient incident with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `buffer_not_pending` — patient incident is not in pending status and cannot be rejected.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentbuffercommandservice_rejectpatientincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -640,12 +571,8 @@ curl -X DELETE /v1/incident-categories/{categoryId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_category_not_found` — category with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_deleteincidentcategory-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -688,12 +615,8 @@ curl -X POST /v1/incident-categories/{categoryId}/deactivations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_category_not_found` — category with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_deactivateincidentcategory-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -747,14 +670,8 @@ curl -X PUT /v1/incident-categories/{categoryId}/details \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_category_not_found` — category with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `incident_category_name_conflict` — a category with this name already exists in the same scope.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_updateincidentcategorydetails-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -797,16 +714,8 @@ curl -X POST /v1/incident-categories/{categoryId}/reactivations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_category_not_found` — category with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `incident_category_reactivate_name_conflict` — reactivation would create a name conflict with an active category.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_category_reactivate_inactive_ancestor` — an ancestor category is inactive and must be reactivated first.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_reactivateincidentcategory-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -862,16 +771,8 @@ curl -X POST /v1/incident-categories/{categoryId}/types \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_category_not_found` — category with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `incident_type_name_conflict` — a type with this name already exists in the same category.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_category_inactive` — the category is inactive; new types cannot be created in an inactive category.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="----types-----responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -924,18 +825,8 @@ curl -X POST /v1/incident-categories/{categoryId}:move \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_category_not_found` — category with the given ID does not exist.
-- `incident_category_parent_not_found` — target parent category with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_category_move_organization_mismatch` — target parent belongs to a different organization.
-- `incident_category_move_would_create_cycle` — move would create a cycle in the category tree.
-- `incident_category_move_would_exceed_depth` — move would exceed the maximum category depth.
-- `incident_category_parent_inactive` — target parent category is inactive.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_moveincidentcategory-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -978,12 +869,8 @@ curl -X DELETE /v1/incident-types/{typeId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_type_not_found` — type with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_deleteincidenttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1026,12 +913,8 @@ curl -X POST /v1/incident-types/{typeId}/deactivations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_type_not_found` — type with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_deactivateincidenttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1085,14 +968,8 @@ curl -X PUT /v1/incident-types/{typeId}/details \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_type_not_found` — type with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `incident_type_name_conflict` — a type with this name already exists in the same category.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_updateincidenttypedetails-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1135,12 +1012,8 @@ curl -X DELETE /v1/incident-types/{typeId}/patient-allowances \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_type_not_found` — type with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_disallowincidenttypeforpatients-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1183,12 +1056,8 @@ curl -X POST /v1/incident-types/{typeId}/patient-allowances \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_type_not_found` — type with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_allowincidenttypeforpatients-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1231,16 +1100,8 @@ curl -X POST /v1/incident-types/{typeId}/reactivations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_type_not_found` — type with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `incident_type_reactivate_name_conflict` — reactivation would create a name conflict with an active type.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_type_reactivate_inactive_ancestor` — the parent category is inactive and must be reactivated first.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_reactivateincidenttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1293,17 +1154,8 @@ curl -X POST /v1/incident-types/{typeId}:move \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_type_not_found` — type with the given ID does not exist.
-- `incident_type_category_not_found` — target category with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_type_move_organization_mismatch` — target category belongs to a different organization.
-- `incident_type_category_inactive` — target category is inactive.
-- `incident_category_inactive` — target category is inactive.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifiercommandservice_moveincidenttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1360,18 +1212,8 @@ curl -X POST /v1/organizations/{organizationId}/incident-categories \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_category_parent_not_found` — parent category with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `incident_category_name_conflict` — a category with this name already exists in the same scope.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_category_parent_inactive` — parent category is inactive.
-- `incident_category_parent_organization_mismatch` — parent category belongs to a different organization.
-- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="----categories-----responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1431,19 +1273,8 @@ curl -X POST /v1/incidents \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_department_not_found` — department with the given ID does not exist.
-- `incident_category_not_found` — incident category with the given ID does not exist.
-- `incident_type_not_found` — incident type with the given ID does not exist.
-- `incident_employee_not_found` — registrar employee not found.
-- `incident_registrar_user_not_found` — registrar's user projection record not found.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_category_inactive` — the selected category is inactive.
-- `incident_type_inactive` — the selected type is inactive.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentcommandservice_createincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1496,14 +1327,8 @@ curl -X PUT /v1/incidents/{incidentId}/description \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_not_found` — incident with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_frozen` — incident is frozen and cannot be modified.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentcommandservice_updateincidentdescription-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1556,14 +1381,8 @@ curl -X PUT /v1/incidents/{incidentId}/priority \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_not_found` — incident with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_frozen` — incident is frozen and cannot be modified.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentcommandservice_updateincidentpriority-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1616,15 +1435,8 @@ curl -X PUT /v1/incidents/{incidentId}/status \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_not_found` — incident with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_invalid_status_transition` — the requested status transition is not allowed.
-- `incident_frozen` — incident is frozen and cannot be modified.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentcommandservice_updateincidentstatus-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1667,14 +1479,8 @@ curl -X POST /v1/incidents/{incidentId}:cancel \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_not_found` — incident with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_not_cancellable` — incident is not in a cancellable status.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentcommandservice_cancelincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1719,14 +1525,8 @@ curl -X POST /v1/incidents/{incidentId}:reopen \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_not_found` — incident with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `incident_not_reopenable` — incident cannot be reopened from its current status.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentcommandservice_reopenincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1781,15 +1581,8 @@ curl -X POST /v1/clinics/{clinicId}/heads \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `clinic_not_found` — clinic with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `clinic_head_already_assigned` — this clinic already has a head assigned.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="-------clinichead--------responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1833,12 +1626,8 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `clinic_head_not_found` — this employee is not the clinic head.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_revokeclinichead-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1882,12 +1671,8 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `clinic_not_found` — clinic with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_removeclinicheaddeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -1941,16 +1726,8 @@ curl -X POST /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `clinic_not_found` — clinic with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.
-- `deputy_not_found` — deputy employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `deputy_already_assigned` — this employee is already a deputy for this role.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_assignclinicheaddeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2003,15 +1780,8 @@ curl -X POST /v1/departments/{departmentId}/responsibles \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `department_not_found` — department with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `department_responsible_already_assigned` — this employee is already the department responsible.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="-------departmentresponsible--------responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2055,13 +1825,8 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `department_responsible_not_found` — this employee is not the department responsible.
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_revokedepartmentresponsible-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2105,12 +1870,8 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `department_not_found` — department with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_removedepartmentresponsibledeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2164,16 +1925,8 @@ curl -X POST /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `department_not_found` — department with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.
-- `deputy_not_found` — deputy employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `deputy_already_assigned` — this employee is already a deputy for this role.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_assigndepartmentresponsibledeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2229,17 +1982,8 @@ curl -X POST /v1/employees \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.
-- `department_not_found` — department with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `employee_already_hired` — this Zitadel user is already an active employee of this organization.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|503|[Service Unavailable](https://tools.ietf.org/html/rfc7231#section-6.6.4)|Service unavailable. Error codes:
-- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.|Inline|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="employee-lifecycle-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2282,12 +2026,8 @@ curl -X DELETE /v1/employees/{employeeId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_terminateemployee-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2340,13 +2080,8 @@ curl -X PUT /v1/employees/{employeeId}/department \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `employee_not_found` — employee with the given ID does not exist.
-- `department_not_found` — department with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_updateemployeedepartment-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2399,12 +2134,8 @@ curl -X PUT /v1/employees/{employeeId}/position \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_updateemployeeposition-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2460,12 +2191,8 @@ curl -X POST /v1/employees/{employeeId}/vacations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_schedulevacation-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2520,12 +2247,8 @@ curl -X POST /v1/employees/{employeeId}/vacations:start-now \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="vacation-lifecycle-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2578,15 +2301,8 @@ curl -X POST /v1/organizations/{organizationId}/admins \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `organization_admin_already_assigned` — this employee is already an organization admin.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="-------organizationadmin--------responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2630,12 +2346,8 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_admin_not_found` — this employee is not an organization admin.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_revokeorganizationadmin-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2679,12 +2391,8 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_removeorganizationadmindeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2738,16 +2446,8 @@ curl -X POST /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.
-- `deputy_not_found` — deputy employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `deputy_already_assigned` — this employee is already a deputy for this role.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_assignorganizationadmindeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2800,15 +2500,8 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `organization_dispatcher_already_assigned` — this employee is already an organization dispatcher.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="-------organizationdispatcher--------responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2852,12 +2545,8 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_dispatcher_not_found` — this employee is not an organization dispatcher.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_revokeorganizationdispatcher-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2901,12 +2590,8 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}/deput
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_removeorganizationdispatcherdeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -2960,16 +2645,8 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy 
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.
-- `deputy_not_found` — deputy employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `deputy_already_assigned` — this employee is already a deputy for this role.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_assignorganizationdispatcherdeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3022,15 +2699,8 @@ curl -X POST /v1/organizations/{organizationId}/heads \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `organization_head_already_assigned` — this organization already has a head assigned.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="-------organizationhead--------responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3074,12 +2744,8 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_head_not_found` — this employee is not the organization head.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_revokeorganizationhead-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3123,12 +2789,8 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_removeorganizationheaddeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3182,16 +2844,8 @@ curl -X POST /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.
-- `employee_not_found` — employee with the given ID does not exist.
-- `deputy_not_found` — deputy employee with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `deputy_already_assigned` — this employee is already a deputy for this role.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_assignorganizationheaddeputy-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3243,16 +2897,8 @@ curl -X POST /v1/system-admins \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `system_admin_already_granted` — this user is already a system admin.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|503|[Service Unavailable](https://tools.ietf.org/html/rfc7231#section-6.6.4)|Service unavailable. Error codes:
-- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.|Inline|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="-------systemadmin--------responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3295,12 +2941,8 @@ curl -X DELETE /v1/system-admins/{zitadelUserId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `system_admin_not_found` — this user is not a system admin.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_revokesystemadmin-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3343,12 +2985,8 @@ curl -X POST /v1/vacations/{vacationId}/cancellations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `vacation_not_found` — vacation with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_cancelscheduledvacation-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3401,12 +3039,8 @@ curl -X PUT /v1/vacations/{vacationId}/end-date \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `vacation_not_found` — vacation with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_updatevacationenddate-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3449,12 +3083,8 @@ curl -X POST /v1/vacations/{vacationId}/terminations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `vacation_not_found` — vacation with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipcommandservice_forceendvacation-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3512,12 +3142,8 @@ curl -X POST /v1/clinics/{clinicId}/departments \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `department_clinic_not_found` — clinic with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurecommandservice_createdepartment-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3571,12 +3197,8 @@ curl -X PUT /v1/clinics/{clinicId}/details \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `clinic_not_found` — clinic with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurecommandservice_updateclinicdetails-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3635,12 +3257,8 @@ curl -X PUT /v1/clinics/{clinicId}/physical-address \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `clinic_not_found` — clinic with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurecommandservice_updateclinicphysicaladdress-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3694,12 +3312,8 @@ curl -X PUT /v1/departments/{departmentId}/details \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `department_not_found` — department with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurecommandservice_updatedepartmentdetails-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3762,7 +3376,7 @@ curl -X POST /v1/organizations \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3825,12 +3439,8 @@ curl -X POST /v1/organizations/{organizationId}/clinics \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `clinic_organization_not_found` — organization with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurecommandservice_createclinic-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3884,12 +3494,8 @@ curl -X PUT /v1/organizations/{organizationId}/details \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurecommandservice_updateorganizationdetails-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -3948,12 +3554,8 @@ curl -X PUT /v1/organizations/{organizationId}/legal-address \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurecommandservice_updateorganizationlegaladdress-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4011,12 +3613,8 @@ curl -X POST /v1/organizations/{organizationId}/request-types \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `request_type_name_conflict` — a request type with this name already exists in the organization.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="requestclassifiercommandservice_createrequesttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4059,12 +3657,8 @@ curl -X DELETE /v1/request-types/{typeId} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `request_type_not_found` — request type with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="requestclassifiercommandservice_deleterequesttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4107,12 +3701,8 @@ curl -X POST /v1/request-types/{typeId}/deactivations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `request_type_not_found` — request type with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="requestclassifiercommandservice_deactivaterequesttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4166,14 +3756,8 @@ curl -X PUT /v1/request-types/{typeId}/details \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `request_type_not_found` — request type with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `request_type_name_conflict` — a request type with this name already exists in the organization.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="requestclassifiercommandservice_updaterequesttypedetails-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4216,14 +3800,8 @@ curl -X POST /v1/request-types/{typeId}/reactivations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `request_type_not_found` — request type with the given ID does not exist.|Inline|
-|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
-- `request_type_name_conflict` — reactivation would create a name conflict with an active type.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="requestclassifiercommandservice_reactivaterequesttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4285,21 +3863,8 @@ curl -X POST /v1/service-requests \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `service_request_department_not_found` — department with the given ID does not exist.
-- `service_request_clinic_not_found` — clinic linked to the department does not exist.
-- `service_request_type_not_found` — request type with the given ID does not exist.
-- `service_request_incident_not_found` — linked incident with the given ID does not exist.
-- `service_request_employee_not_found` — one of the executor employees was not found.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `service_request_type_inactive` — the request type is inactive.
-- `service_request_type_org_mismatch` — the request type belongs to a different organization.
-- `service_request_incident_org_mismatch` — the linked incident belongs to a different organization.
-- `service_request_employee_dept_mismatch` — an executor employee does not belong to the specified department.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="servicerequestcommandservice_createservicerequest-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4352,14 +3917,8 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/description \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `service_request_not_found` — service request with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `service_request_frozen` — service request is frozen and cannot be modified.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="servicerequestcommandservice_updateservicerequestdescription-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4414,16 +3973,8 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/executors \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `service_request_not_found` — service request with the given ID does not exist.
-- `service_request_employee_not_found` — one of the executor employees was not found.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `service_request_frozen` — service request is frozen and cannot be modified.
-- `service_request_employee_dept_mismatch` — an executor employee does not belong to the service request's department.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="servicerequestcommandservice_assignexecutors-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4476,15 +4027,8 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `service_request_not_found` — service request with the given ID does not exist.|Inline|
-|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Failed precondition. Error codes:
-- `service_request_invalid_status_transition` — the requested status transition is not allowed.
-- `service_request_frozen` — service request is frozen and cannot be modified.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="servicerequestcommandservice_updateservicerequeststatus-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4571,14 +4115,8 @@ curl -X GET /v1/analytics/snapshot \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `analytics_org_not_found` — organization with the given ID does not exist.
-- `analytics_clinic_not_found` — clinic with the given ID does not exist.
-- `analytics_dept_not_found` — department with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="analyticsqueryservice_getsnapshot-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4730,14 +4268,8 @@ curl -X GET /v1/analytics/summary \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `analytics_org_not_found` — organization with the given ID does not exist.
-- `analytics_clinic_not_found` — clinic with the given ID does not exist.
-- `analytics_dept_not_found` — department with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="analyticsqueryservice_getsummary-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4818,14 +4350,8 @@ curl -X GET /v1/analytics/timeseries \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `analytics_org_not_found` — organization with the given ID does not exist.
-- `analytics_clinic_not_found` — clinic with the given ID does not exist.
-- `analytics_dept_not_found` — department with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="analyticsqueryservice_gettimeseries-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4887,12 +4413,8 @@ curl -X GET /v1/query/announcements/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `announcement_query_not_found` — announcement with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="announcementqueryservice_getannouncement-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -4968,7 +4490,7 @@ curl -X GET /v1/query/clinics/{clinicId}/announcements \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5044,7 +4566,7 @@ curl -X GET /v1/query/departments/{departmentId}/announcements \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5120,7 +4642,7 @@ curl -X GET /v1/query/organizations/{organizationId}/announcements \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5182,7 +4704,7 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5236,12 +4758,8 @@ curl -X GET /v1/incident-categories/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_category_not_found` — category with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifierqueryservice_getcategory-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5298,7 +4816,7 @@ curl -X GET /v1/incident-categories/{rootCategoryId}:subtree \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5353,12 +4871,8 @@ curl -X GET /v1/incident-types/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_type_not_found` — type with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifierqueryservice_gettype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5417,7 +4931,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5476,7 +4990,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visib
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5535,7 +5049,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5595,7 +5109,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5661,7 +5175,7 @@ an-incident.-responses">Responses</h3>
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5734,12 +5248,8 @@ curl -X GET /v1/query/incidents/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_query_not_found` — incident with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentqueryservice_getincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5807,12 +5317,8 @@ curl -X GET /v1/query/incidents/{incidentId}/history \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `incident_query_not_found` — incident with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentqueryservice_getincidenthistory-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5887,7 +5393,7 @@ curl -X GET /v1/query/incidents:mine \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -5987,7 +5493,7 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6061,7 +5567,7 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6119,12 +5625,8 @@ curl -X GET /v1/query/patient-incidents/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `buffer_query_not_found` — patient incident with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="buffer-reads.-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6186,7 +5688,7 @@ curl -X GET /v1/query/patient-incidents:mine \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6269,7 +5771,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6329,7 +5831,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6412,7 +5914,7 @@ curl -X GET /v1/clinics/{clinicId}/head \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6493,7 +5995,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6553,7 +6055,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6636,7 +6138,7 @@ curl -X GET /v1/departments/{departmentId}/responsible \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6700,7 +6202,7 @@ Valid values: scheduled, active, ended, cancelled.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6752,7 +6254,7 @@ Valid values: scheduled, active, ended, cancelled.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6814,12 +6316,8 @@ curl -X GET /v1/employees/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `employee_card_not_found` — employee with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="membershipqueryservice_getemployee-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6906,7 +6404,7 @@ curl -X GET /v1/organizations/{organizationId}/admins \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -6993,7 +6491,7 @@ curl -X GET /v1/organizations/{organizationId}/dispatchers \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7074,7 +6572,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7134,7 +6632,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7223,7 +6721,7 @@ before comparison; all-whitespace is treated as unset.
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7310,7 +6808,7 @@ curl -X GET /v1/organizations/{organizationId}/heads \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7362,7 +6860,7 @@ curl -X GET /v1/system-admins \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7418,7 +6916,7 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7464,7 +6962,7 @@ curl -X GET /v1/clinics/{clinicId}/departments:count \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7523,12 +7021,8 @@ curl -X GET /v1/clinics/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `clinic_not_found` — clinic with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurequeryservice_getclinic-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7580,12 +7074,8 @@ curl -X GET /v1/departments/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `department_not_found` — department with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurequeryservice_getdepartment-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7637,7 +7127,7 @@ curl -X GET /v1/organizations \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7695,12 +7185,8 @@ curl -X GET /v1/organizations/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `organization_not_found` — organization with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="orgstructurequeryservice_getorganization-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7754,7 +7240,7 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7800,7 +7286,7 @@ curl -X GET /v1/organizations/{organizationId}/clinics:count \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7840,7 +7326,7 @@ curl -X GET /v1/organizations:count \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7893,7 +7379,7 @@ curl -X GET /v1/organizations:search \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -7953,7 +7439,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8011,7 +7497,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types:active \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8064,12 +7550,8 @@ curl -X GET /v1/request-types/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `request_type_not_found` — request type with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="requestclassifierqueryservice_getrequesttype-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8140,12 +7622,8 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `service_request_query_incident_not_found` — incident with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="servicerequestqueryservice_listservicerequestsbyincident-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8211,15 +7689,11 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListServiceRequestsResponse](#schemav1listservicerequestsresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
-- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.
-- `service_request_list_offset_out_of_range` — offset is out of the allowed range.|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="servicerequestqueryservice_listservicerequests-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8284,12 +7758,8 @@ curl -X GET /v1/service-requests/{id} \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `service_request_query_not_found` — service request with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="servicerequestqueryservice_getservicerequest-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8354,12 +7824,8 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `service_request_query_not_found` — service request with the given ID does not exist.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="servicerequestqueryservice_getservicerequesthistory-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8401,7 +7867,7 @@ curl -X GET /v1/me \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8452,14 +7918,8 @@ active-employee-of-that-clinic.-responses">Responses</h3>
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `self_clinic_role_not_found` — caller is not an active employee of the given clinic.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="getmyclinicrole-returns-whether-the-caller-is-the-clinic-head-of
-the-given-clinic.-returns-not_found-when-the-caller-is-not-an
-active-employee-of-that-clinic.-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8513,15 +7973,8 @@ department.-responses">Responses</h3>
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `self_dept_role_not_found` — caller is not an active employee of the given department.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="getmydepartmentrole-returns-whether-the-caller-holds-the
-department-responsible-role-for-the-given-department.-returns
-not_found-when-the-caller-is-not-an-active-employee-of-that
-department.-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8568,7 +8021,7 @@ has-an-active-(non-terminated)-employee-record.-responses">Responses</h3>
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8636,14 +8089,8 @@ employee-of-that-organization.-responses">Responses</h3>
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `self_employment_not_found` — caller is not an active employee of the given organization.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="getmyemployment-returns-the-caller's-employee-card-in-the-given
-organization.-returns-not_found-when-the-caller-is-not-an-active
-employee-of-that-organization.-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8696,14 +8143,8 @@ active-employee-of-that-organization.-responses">Responses</h3>
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
-- `self_org_role_not_found` — caller is not an active employee of the given organization.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="getmyorganizationrole-returns-the-caller's-named-roles-in-the
-given-organization.-returns-not_found-when-the-caller-is-not-an
-active-employee-of-that-organization.-responseschema">Response Schema</h3>
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8757,7 +8198,7 @@ curl -X GET /v1/clinics/{clinicId}/stats \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8809,7 +8250,7 @@ curl -X GET /v1/departments/{departmentId}/stats \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -8862,7 +8303,7 @@ curl -X GET /v1/organizations/{organizationId}/stats \
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
 
 <aside class="success">
 This operation does not require authentication
@@ -9887,6 +9328,115 @@ Type mirrors projections.incident_types row.
 |*anonymous*|INCIDENT_STATUS_REJECTED|
 |*anonymous*|INCIDENT_STATUS_CANCELLED|
 
+<h2 id="tocS_protobufAny">protobufAny</h2>
+<!-- backwards compatibility -->
+<a id="schemaprotobufany"></a>
+<a id="schema_protobufAny"></a>
+<a id="tocSprotobufany"></a>
+<a id="tocsprotobufany"></a>
+
+```json
+{
+  "@type": "string",
+  "property1": null,
+  "property2": null
+}
+
+```
+
+`Any` contains an arbitrary serialized protocol buffer message along with a
+URL that describes the type of the serialized message.
+
+Protobuf library provides support to pack/unpack Any values in the form
+of utility functions or additional generated methods of the Any type.
+
+Example 1: Pack and unpack a message in C++.
+
+    Foo foo = ...;
+    Any any;
+    any.PackFrom(foo);
+    ...
+    if (any.UnpackTo(&foo)) {
+      ...
+    }
+
+Example 2: Pack and unpack a message in Java.
+
+    Foo foo = ...;
+    Any any = Any.pack(foo);
+    ...
+    if (any.is(Foo.class)) {
+      foo = any.unpack(Foo.class);
+    }
+    // or ...
+    if (any.isSameTypeAs(Foo.getDefaultInstance())) {
+      foo = any.unpack(Foo.getDefaultInstance());
+    }
+
+ Example 3: Pack and unpack a message in Python.
+
+    foo = Foo(...)
+    any = Any()
+    any.Pack(foo)
+    ...
+    if any.Is(Foo.DESCRIPTOR):
+      any.Unpack(foo)
+      ...
+
+ Example 4: Pack and unpack a message in Go
+
+     foo := &pb.Foo{...}
+     any, err := anypb.New(foo)
+     if err != nil {
+       ...
+     }
+     ...
+     foo := &pb.Foo{}
+     if err := any.UnmarshalTo(foo); err != nil {
+       ...
+     }
+
+The pack methods provided by protobuf library will by default use
+'type.googleapis.com/full.type.name' as the type URL and the unpack
+methods only use the fully qualified type name after the last '/'
+in the type URL, for example "foo.bar.com/x/y.z" will yield type
+name "y.z".
+
+JSON
+====
+The JSON representation of an `Any` value uses the regular
+representation of the deserialized, embedded message, with an
+additional field `@type` which contains the type URL. Example:
+
+    package google.profile;
+    message Person {
+      string first_name = 1;
+      string last_name = 2;
+    }
+
+    {
+      "@type": "type.googleapis.com/google.profile.Person",
+      "firstName": <string>,
+      "lastName": <string>
+    }
+
+If the embedded message type is well-known and has a custom JSON
+representation, that representation will be embedded adding a field
+`value` which holds the custom JSON in addition to the `@type`
+field. Example (for message [google.protobuf.Duration][]):
+
+    {
+      "@type": "type.googleapis.com/google.protobuf.Duration",
+      "value": "1.212s"
+    }
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|**additionalProperties**|any|false|none|none|
+|@type|string|false|none|A URL/resource name that uniquely identifies the type of the serialized<br>protocol buffer message. This string must contain at least<br>one "/" character. The last segment of the URL's path must represent<br>the fully qualified name of the type (as in<br>`path/google.protobuf.Duration`). The name should be in a canonical form<br>(e.g., leading "." is not accepted).<br><br>In practice, teams usually precompile into the binary all types that they<br>expect it to use in the context of Any. However, for URLs which use the<br>scheme `http`, `https`, or no scheme, one can optionally set up a type<br>server that maps type URLs to message definitions as follows:<br><br>* If no scheme is provided, `https` is assumed.<br>* An HTTP GET on the URL must yield a [google.protobuf.Type][]<br>  value in binary format, or produce an error.<br>* Applications are allowed to cache lookup results based on the<br>  URL, or have them precompiled into a binary to avoid any<br>  lookup. Therefore, binary compatibility needs to be preserved<br>  on changes to types. (Use versioned type names to manage<br>  breaking changes.)<br><br>Note: this functionality is not currently available in the official<br>protobuf release, and it is not used for type URLs beginning with<br>type.googleapis.com. As of May 2023, there are no widely used type server<br>implementations and no plans to implement one.<br><br>Schemes other than `http`, `https` (or the empty scheme) might be<br>used with implementation specific semantics.|
+
 <h2 id="tocS_queryAnnouncementV1AnnouncementPriority">queryAnnouncementV1AnnouncementPriority</h2>
 <!-- backwards compatibility -->
 <a id="schemaqueryannouncementv1announcementpriority"></a>
@@ -10001,6 +9551,59 @@ Type mirrors projections.incident_types row.
 |actor|[v1ActorView](#schemav1actorview)|false|none|none|
 |changedAt|string|false|none|none|
 
+<h2 id="tocS_queryOrgstructureV1Address">queryOrgstructureV1Address</h2>
+<!-- backwards compatibility -->
+<a id="schemaqueryorgstructurev1address"></a>
+<a id="schema_queryOrgstructureV1Address"></a>
+<a id="tocSqueryorgstructurev1address"></a>
+<a id="tocsqueryorgstructurev1address"></a>
+
+```json
+{
+  "text": "string",
+  "point": {
+    "longitude": 0.1,
+    "latitude": 0.1
+  }
+}
+
+```
+
+Address is the read-side view of a stored postal address; Point is
+optional because the command-side allows text-only addresses.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|text|string|false|none|none|
+|point|[queryOrgstructureV1Point](#schemaqueryorgstructurev1point)|false|none|Point is the coordinate pair attached to an Address. Absent when the<br>projection row has neither longitude nor latitude.|
+
+<h2 id="tocS_queryOrgstructureV1Point">queryOrgstructureV1Point</h2>
+<!-- backwards compatibility -->
+<a id="schemaqueryorgstructurev1point"></a>
+<a id="schema_queryOrgstructureV1Point"></a>
+<a id="tocSqueryorgstructurev1point"></a>
+<a id="tocsqueryorgstructurev1point"></a>
+
+```json
+{
+  "longitude": 0.1,
+  "latitude": 0.1
+}
+
+```
+
+Point is the coordinate pair attached to an Address. Absent when the
+projection row has neither longitude nor latitude.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|longitude|number(double)|false|none|none|
+|latitude|number(double)|false|none|none|
+
 <h2 id="tocS_queryRequestV1StatusHistoryEntry">queryRequestV1StatusHistoryEntry</h2>
 <!-- backwards compatibility -->
 <a id="schemaqueryrequestv1statushistoryentry"></a>
@@ -10031,6 +9634,36 @@ Type mirrors projections.incident_types row.
 |actorName|string|false|none|none|
 |changedAt|string|false|none|none|
 
+<h2 id="tocS_rpcStatus">rpcStatus</h2>
+<!-- backwards compatibility -->
+<a id="schemarpcstatus"></a>
+<a id="schema_rpcStatus"></a>
+<a id="tocSrpcstatus"></a>
+<a id="tocsrpcstatus"></a>
+
+```json
+{
+  "code": 0,
+  "message": "string",
+  "details": [
+    {
+      "@type": "string",
+      "property1": null,
+      "property2": null
+    }
+  ]
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|code|integer(int32)|false|none|none|
+|message|string|false|none|none|
+|details|[[protobufAny](#schemaprotobufany)]|false|none|[`Any` contains an arbitrary serialized protocol buffer message along with a<br>URL that describes the type of the serialized message.<br><br>Protobuf library provides support to pack/unpack Any values in the form<br>of utility functions or additional generated methods of the Any type.<br><br>Example 1: Pack and unpack a message in C++.<br><br>    Foo foo = ...;<br>    Any any;<br>    any.PackFrom(foo);<br>    ...<br>    if (any.UnpackTo(&foo)) {<br>      ...<br>    }<br><br>Example 2: Pack and unpack a message in Java.<br><br>    Foo foo = ...;<br>    Any any = Any.pack(foo);<br>    ...<br>    if (any.is(Foo.class)) {<br>      foo = any.unpack(Foo.class);<br>    }<br>    // or ...<br>    if (any.isSameTypeAs(Foo.getDefaultInstance())) {<br>      foo = any.unpack(Foo.getDefaultInstance());<br>    }<br><br> Example 3: Pack and unpack a message in Python.<br><br>    foo = Foo(...)<br>    any = Any()<br>    any.Pack(foo)<br>    ...<br>    if any.Is(Foo.DESCRIPTOR):<br>      any.Unpack(foo)<br>      ...<br><br> Example 4: Pack and unpack a message in Go<br><br>     foo := &pb.Foo{...}<br>     any, err := anypb.New(foo)<br>     if err != nil {<br>       ...<br>     }<br>     ...<br>     foo := &pb.Foo{}<br>     if err := any.UnmarshalTo(foo); err != nil {<br>       ...<br>     }<br><br>The pack methods provided by protobuf library will by default use<br>'type.googleapis.com/full.type.name' as the type URL and the unpack<br>methods only use the fully qualified type name after the last '/'<br>in the type URL, for example "foo.bar.com/x/y.z" will yield type<br>name "y.z".<br><br>JSON<br>====<br>The JSON representation of an `Any` value uses the regular<br>representation of the deserialized, embedded message, with an<br>additional field `@type` which contains the type URL. Example:<br><br>    package google.profile;<br>    message Person {<br>      string first_name = 1;<br>      string last_name = 2;<br>    }<br><br>    {<br>      "@type": "type.googleapis.com/google.profile.Person",<br>      "firstName": <string>,<br>      "lastName": <string><br>    }<br><br>If the embedded message type is well-known and has a custom JSON<br>representation, that representation will be embedded adding a field<br>`value` which holds the custom JSON in addition to the `@type`<br>field. Example (for message [google.protobuf.Duration][]):<br><br>    {<br>      "@type": "type.googleapis.com/google.protobuf.Duration",<br>      "value": "1.212s"<br>    }]|
+
 <h2 id="tocS_v1ActorView">v1ActorView</h2>
 <!-- backwards compatibility -->
 <a id="schemav1actorview"></a>
@@ -10052,34 +9685,6 @@ Type mirrors projections.incident_types row.
 |---|---|---|---|---|
 |employeeId|string|false|none|none|
 |displayName|string|false|none|none|
-
-<h2 id="tocS_v1Address">v1Address</h2>
-<!-- backwards compatibility -->
-<a id="schemav1address"></a>
-<a id="schema_v1Address"></a>
-<a id="tocSv1address"></a>
-<a id="tocsv1address"></a>
-
-```json
-{
-  "text": "string",
-  "point": {
-    "longitude": 0.1,
-    "latitude": 0.1
-  }
-}
-
-```
-
-Address is the read-side view of a stored postal address; Point is
-optional because the command-side allows text-only addresses.
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|text|string|false|none|none|
-|point|[v1Point](#schemav1point)|false|none|Point is the coordinate pair attached to an Address. Absent when the<br>projection row has neither longitude nor latitude.|
 
 <h2 id="tocS_v1AddressInput">v1AddressInput</h2>
 <!-- backwards compatibility -->
@@ -10574,7 +10179,7 @@ Clinic mirrors the projections.clinics row returned by GetClinic.
 |organizationId|string|false|none|none|
 |name|string|false|none|none|
 |description|string|false|none|none|
-|physicalAddress|[v1Address](#schemav1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
+|physicalAddress|[queryOrgstructureV1Address](#schemaqueryorgstructurev1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
@@ -13917,7 +13522,7 @@ GetOrganization. Timestamps are RFC3339 strings.
 |id|string|false|none|none|
 |name|string|false|none|none|
 |description|string|false|none|none|
-|legalAddress|[v1Address](#schemav1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
+|legalAddress|[queryOrgstructureV1Address](#schemaqueryorgstructurev1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
@@ -14066,31 +13671,6 @@ PatientStatus is the simplified four-value status surfaced to patients.
 |*anonymous*|PATIENT_STATUS_ACCEPTED|
 |*anonymous*|PATIENT_STATUS_CLOSED|
 |*anonymous*|PATIENT_STATUS_CANCELLED|
-
-<h2 id="tocS_v1Point">v1Point</h2>
-<!-- backwards compatibility -->
-<a id="schemav1point"></a>
-<a id="schema_v1Point"></a>
-<a id="tocSv1point"></a>
-<a id="tocsv1point"></a>
-
-```json
-{
-  "longitude": 0.1,
-  "latitude": 0.1
-}
-
-```
-
-Point is the coordinate pair attached to an Address. Absent when the
-projection row has neither longitude nor latitude.
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|longitude|number(double)|false|none|none|
-|latitude|number(double)|false|none|none|
 
 <h2 id="tocS_v1PointInput">v1PointInput</h2>
 <!-- backwards compatibility -->

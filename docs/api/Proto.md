@@ -204,6 +204,27 @@
 
     - [ServiceRequestCommandService](#command-request-v1-ServiceRequestCommandService)
 
+- [event/clinic/v1/events.proto](#event_clinic_v1_events-proto)
+    - [Address](#event-clinic-v1-Address)
+    - [ClinicCreated](#event-clinic-v1-ClinicCreated)
+    - [ClinicDetailsChanged](#event-clinic-v1-ClinicDetailsChanged)
+    - [ClinicPhysicalAddressChanged](#event-clinic-v1-ClinicPhysicalAddressChanged)
+    - [Point](#event-clinic-v1-Point)
+
+- [event/department/v1/events.proto](#event_department_v1_events-proto)
+    - [DepartmentCreated](#event-department-v1-DepartmentCreated)
+    - [DepartmentDetailsChanged](#event-department-v1-DepartmentDetailsChanged)
+
+- [event/organization/v1/events.proto](#event_organization_v1_events-proto)
+    - [Address](#event-organization-v1-Address)
+    - [OrganizationCreated](#event-organization-v1-OrganizationCreated)
+    - [OrganizationDetailsChanged](#event-organization-v1-OrganizationDetailsChanged)
+    - [OrganizationLegalAddressChanged](#event-organization-v1-OrganizationLegalAddressChanged)
+    - [Point](#event-organization-v1-Point)
+
+- [event/v1/envelope.proto](#event_v1_envelope-proto)
+    - [Envelope](#event-v1-Envelope)
+
 - [query/analytics/v1/analytics.proto](#query_analytics_v1_analytics-proto)
     - [CategoryCount](#query-analytics-v1-CategoryCount)
     - [DepartmentCount](#query-analytics-v1-DepartmentCount)
@@ -3020,6 +3041,302 @@ generated under pkg/.
 | UpdateServiceRequestDescription | [UpdateServiceRequestDescriptionRequest](#command-request-v1-UpdateServiceRequestDescriptionRequest) | [UpdateServiceRequestDescriptionResponse](#command-request-v1-UpdateServiceRequestDescriptionResponse) |  |
 | UpdateServiceRequestStatus | [UpdateServiceRequestStatusRequest](#command-request-v1-UpdateServiceRequestStatusRequest) | [UpdateServiceRequestStatusResponse](#command-request-v1-UpdateServiceRequestStatusResponse) |  |
 | AssignExecutors | [AssignExecutorsRequest](#command-request-v1-AssignExecutorsRequest) | [AssignExecutorsResponse](#command-request-v1-AssignExecutorsResponse) |  |
+
+
+
+
+
+<a name="event_clinic_v1_events-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## event/clinic/v1/events.proto
+
+
+
+<a name="event-clinic-v1-Address"></a>
+
+### Address
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| text | [string](#string) |  |  |
+| point | [Point](#event-clinic-v1-Point) |  |  |
+
+
+
+
+
+
+<a name="event-clinic-v1-ClinicCreated"></a>
+
+### ClinicCreated
+ClinicCreated is emitted when a new clinic is persisted.
+subject: medincident.event.clinic.v1.created
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| name | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| physical_address | [Address](#event-clinic-v1-Address) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-clinic-v1-ClinicDetailsChanged"></a>
+
+### ClinicDetailsChanged
+ClinicDetailsChanged is emitted when name or description changes.
+subject: medincident.event.clinic.v1.details_changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-clinic-v1-ClinicPhysicalAddressChanged"></a>
+
+### ClinicPhysicalAddressChanged
+ClinicPhysicalAddressChanged is emitted when the physical address changes.
+subject: medincident.event.clinic.v1.physical_address_changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| physical_address | [Address](#event-clinic-v1-Address) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-clinic-v1-Point"></a>
+
+### Point
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| longitude | [double](#double) |  |  |
+| latitude | [double](#double) |  |  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a name="event_department_v1_events-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## event/department/v1/events.proto
+
+
+
+<a name="event-department-v1-DepartmentCreated"></a>
+
+### DepartmentCreated
+DepartmentCreated is emitted when a new department is persisted.
+subject: medincident.event.department.v1.created
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+| name | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-department-v1-DepartmentDetailsChanged"></a>
+
+### DepartmentDetailsChanged
+DepartmentDetailsChanged is emitted when name or description changes.
+subject: medincident.event.department.v1.details_changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a name="event_organization_v1_events-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## event/organization/v1/events.proto
+
+
+
+<a name="event-organization-v1-Address"></a>
+
+### Address
+Address is embedded in organization events that carry a legal address.
+Duplicated per-aggregate so aggregates can evolve independently.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| text | [string](#string) |  |  |
+| point | [Point](#event-organization-v1-Point) |  |  |
+
+
+
+
+
+
+<a name="event-organization-v1-OrganizationCreated"></a>
+
+### OrganizationCreated
+OrganizationCreated is emitted when a new organization is persisted.
+subject: medincident.event.organization.v1.created
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| description | [string](#string) |  | empty = absent |
+| legal_address | [Address](#event-organization-v1-Address) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-organization-v1-OrganizationDetailsChanged"></a>
+
+### OrganizationDetailsChanged
+OrganizationDetailsChanged is emitted when name or description changes.
+subject: medincident.event.organization.v1.details_changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| name | [string](#string) |  |  |
+| description | [string](#string) |  | empty = absent |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-organization-v1-OrganizationLegalAddressChanged"></a>
+
+### OrganizationLegalAddressChanged
+OrganizationLegalAddressChanged is emitted when the legal address changes.
+subject: medincident.event.organization.v1.legal_address_changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| legal_address | [Address](#event-organization-v1-Address) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-organization-v1-Point"></a>
+
+### Point
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| longitude | [double](#double) |  |  |
+| latitude | [double](#double) |  |  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a name="event_v1_envelope-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## event/v1/envelope.proto
+
+
+
+<a name="event-v1-Envelope"></a>
+
+### Envelope
+Envelope is the transport wrapper for every domain event published to
+NATS JetStream. The subject on the NATS message encodes the routing
+key (medincident.event.&lt;aggregate_type&gt;.v1.&lt;action&gt;); fields here
+carry the structured metadata and the typed payload.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| occurred_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  | occurred_at is the wall-clock time the domain mutation happened. |
+| aggregate_type | [string](#string) |  | aggregate_type identifies the aggregate family: &#34;organization&#34;, &#34;clinic&#34;, &#34;department&#34;, &#34;employee&#34;, &#34;vacation&#34;, &#34;system_admin&#34;, &#34;incident_category&#34;, &#34;incident_type&#34;, &#34;incident&#34;, &#34;incident_buffer&#34;, &#34;request_type&#34;, &#34;service_request&#34;. |
+| aggregate_id | [string](#string) |  | aggregate_id is the UUID (as a string) of the aggregate instance. For system_admin events it is the zitadel_user_id. |
+| payload | [google.protobuf.Any](#google-protobuf-Any) |  | payload holds the concrete event message serialised as Any. |
+
+
+
+
+
+
+
+
+
+
 
 
 
