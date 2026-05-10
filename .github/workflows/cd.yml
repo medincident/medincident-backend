@@ -1,10 +1,9 @@
 name: CD
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types: [completed]
-    branches: ["v*"]
+  push:
+    tags:
+      - "v*"
 
 permissions:
   contents: write
@@ -15,18 +14,25 @@ env:
   IMAGE_PREFIX: ghcr.io/medincident
 
 jobs:
-  # ── Gate: only proceed if CI succeeded on a tag push ───────────────────────
+  # ── Gate: only proceed if the tag points to a commit reachable from main ───
   gate:
-    name: Verify CI passed
+    name: Verify tag is on main
     runs-on: ubuntu-latest
-    if: >-
-      github.event.workflow_run.conclusion == 'success' &&
-      startsWith(github.event.workflow_run.head_branch, 'v')
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
     steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Ensure tag commit is on main
+        run: |
+          git fetch origin main
+          if ! git merge-base --is-ancestor "${{ github.sha }}" origin/main; then
+            echo "::error::Tag ${{ github.ref_name }} does not point to a commit on main" >&2
+            exit 1
+          fi
       - id: tag
-        run: echo "tag=${{ github.event.workflow_run.head_branch }}" >> "$GITHUB_OUTPUT"
+        run: echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
 
   # ── Cross-compile binaries ─────────────────────────────────────────────────
   binaries:
