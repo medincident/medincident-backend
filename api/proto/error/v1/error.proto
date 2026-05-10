@@ -39,6 +39,8 @@ message ErrorResponse {
 
   string code = 1;
   string message = 2;
+  reserved 3;
+  reserved "details";
 }
 
 // ValidationErrorResponse is the HTTP response body for validation failures

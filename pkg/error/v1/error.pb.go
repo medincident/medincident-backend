@@ -322,11 +322,11 @@ const file_error_v1_error_proto_rawDesc = "" +
 	"\x04rule\x18\x02 \x01(\tR\x04rule\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\x12\x19\n" +
 	"\x05param\x18\x04 \x01(\tH\x00R\x05param\x88\x01\x01B\b\n" +
-	"\x06_param\"\x9e\x01\n" +
+	"\x06_param\"\xad\x01\n" +
 	"\rErrorResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage:_\x92A\\\n" +
-	"Z*\rErrorResponse2IStandard error response body returned by the gateway for all HTTP errors.\"\xf4\x01\n" +
+	"Z*\rErrorResponse2IStandard error response body returned by the gateway for all HTTP errors.J\x04\b\x03\x10\x04R\adetails\"\xf4\x01\n" +
 	"\x17ValidationErrorResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x121\n" +
