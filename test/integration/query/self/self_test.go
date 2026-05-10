@@ -208,12 +208,12 @@ func TestSelfReader_ListMyOrganizations_TerminatedExcluded(t *testing.T) {
 	deptID := seedDept(t, ctx, clinicID, now)
 	empID := seedEmployee(t, ctx, "terminated-user", orgID, deptID, now)
 
-	// Terminate the employee.
-	var emp model.Employee
-	require.NoError(t, testDB.First(&emp, "id = ?", empID).Error)
+	// Terminate the employee. EmployeeTerminated only reads e.ID from the
+	// struct — the rest it loads from projections.employees — so we pass
+	// the struct without fetching from domain.employees.
 	terminatedAt := now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeTerminated(tx, &emp, terminatedAt)
+		return projector.EmployeeTerminated(tx, &model.Employee{ID: empID}, terminatedAt)
 	}))
 
 	reader := selfread.NewSelfReader(testDB, &logger)
@@ -321,6 +321,48 @@ func TestSelfReader_GetMyOrganizationRole_WithRoles(t *testing.T) {
 	assert.True(t, view.IsOrgAdmin)
 	assert.False(t, view.IsOrgHead)
 	assert.False(t, view.IsOrgDispatcher)
+}
+
+func TestSelfReader_GetMyOrganizationRole_RolesScopedToOrg(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+	now := time.Now().UTC().Truncate(time.Second)
+
+	// Org A: user is org admin.
+	orgAID := seedOrg(t, ctx, now)
+	clinicAID := seedClinic(t, ctx, orgAID, now)
+	deptAID := seedDept(t, ctx, clinicAID, now)
+	empAID := seedEmployee(t, ctx, "cross-org-user", orgAID, deptAID, now)
+
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		return projector.OrgAdminAssigned(tx, &model.OrgAdmin{
+			OrganizationID: orgAID,
+			EmployeeID:     empAID,
+			CreatedAt:      now,
+			UpdatedAt:      now,
+		})
+	}))
+
+	// Org B: user is a plain employee, no roles.
+	orgBID := seedOrg(t, ctx, now)
+	clinicBID := seedClinic(t, ctx, orgBID, now)
+	deptBID := seedDept(t, ctx, clinicBID, now)
+	seedEmployee(t, ctx, "cross-org-user", orgBID, deptBID, now)
+
+	reader := selfread.NewSelfReader(testDB, &logger)
+
+	// Role in org A is visible when querying org A.
+	viewA, err := reader.GetMyOrganizationRole(ctx, "cross-org-user", orgAID)
+	require.NoError(t, err)
+	assert.True(t, viewA.IsOrgAdmin, "expected is_org_admin for org A")
+
+	// Role must NOT bleed into org B.
+	viewB, err := reader.GetMyOrganizationRole(ctx, "cross-org-user", orgBID)
+	require.NoError(t, err)
+	assert.False(t, viewB.IsOrgAdmin, "is_org_admin must be false for org B")
+	assert.False(t, viewB.IsOrgHead)
+	assert.False(t, viewB.IsOrgDispatcher)
 }
 
 func TestSelfReader_GetMyOrganizationRole_NotFound(t *testing.T) {

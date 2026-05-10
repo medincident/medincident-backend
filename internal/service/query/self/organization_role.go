@@ -38,13 +38,19 @@ func (r *SelfReader) GetMyOrganizationRole(
 		       oh.employee_id IS NOT NULL AS is_org_head,
 		       od.employee_id IS NOT NULL AS is_org_dispatcher
 		  FROM projections.employee_cards ec
-		  LEFT JOIN projections.org_admins oa ON oa.employee_id = ec.employee_id
-		  LEFT JOIN projections.org_heads  oh ON oh.employee_id = ec.employee_id
-		  LEFT JOIN projections.org_dispatchers od ON od.employee_id = ec.employee_id
+		  LEFT JOIN projections.org_admins oa
+		         ON oa.employee_id = ec.employee_id
+		        AND oa.organization_id = ?
+		  LEFT JOIN projections.org_heads oh
+		         ON oh.employee_id = ec.employee_id
+		        AND oh.organization_id = ?
+		  LEFT JOIN projections.org_dispatchers od
+		         ON od.employee_id = ec.employee_id
+		        AND od.organization_id = ?
 		 WHERE ec.zitadel_user_id = ?
 		   AND ec.organization_id = ?
 		   AND ec.terminated_at IS NULL`,
-		callerID, organizationID,
+		organizationID, organizationID, organizationID, callerID, organizationID,
 	).Row().Scan(&out.IsOrgAdmin, &out.IsOrgHead, &out.IsOrgDispatcher)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
