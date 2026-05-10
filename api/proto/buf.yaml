@@ -9,6 +9,7 @@ breaking:
     - FILE
   ignore:
     - query/identity/v1/identity.proto
+    - error/v1/error.proto
 deps:
   - buf.build/protocolbuffers/wellknowntypes
   - buf.build/googleapis/googleapis
