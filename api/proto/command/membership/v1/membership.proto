@@ -45,6 +45,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 // MembershipService is the command-side contract for who-works-where
@@ -61,11 +70,31 @@ service MembershipCommandService {
       post: "/v1/employees"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `employee_already_hired` — this Zitadel user is already an active employee of this organization."}
+      }
+      responses: {
+        key: "503"
+        value: {description: "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable."}
+      }
+    };
   }
   rpc UpdateEmployeePosition(UpdateEmployeePositionRequest) returns (UpdateEmployeePositionResponse) {
     option (google.api.http) = {
       put: "/v1/employees/{employee_id}/position"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
     };
   }
   rpc UpdateEmployeeDepartment(UpdateEmployeeDepartmentRequest) returns (UpdateEmployeeDepartmentResponse) {
@@ -73,9 +102,21 @@ service MembershipCommandService {
       put: "/v1/employees/{employee_id}/department"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist.\n- `department_not_found` — department with the given ID does not exist."}
+      }
+    };
   }
   rpc TerminateEmployee(TerminateEmployeeRequest) returns (TerminateEmployeeResponse) {
     option (google.api.http) = {delete: "/v1/employees/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+    };
   }
 
   // Vacation lifecycle
@@ -84,11 +125,23 @@ service MembershipCommandService {
       post: "/v1/employees/{employee_id}/vacations:start-now"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+    };
   }
   rpc ScheduleVacation(ScheduleVacationRequest) returns (ScheduleVacationResponse) {
     option (google.api.http) = {
       post: "/v1/employees/{employee_id}/vacations"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
     };
   }
   rpc UpdateVacationEndDate(UpdateVacationEndDateRequest) returns (UpdateVacationEndDateResponse) {
@@ -96,12 +149,30 @@ service MembershipCommandService {
       put: "/v1/vacations/{vacation_id}/end-date"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."}
+      }
+    };
   }
   rpc ForceEndVacation(ForceEndVacationRequest) returns (ForceEndVacationResponse) {
     option (google.api.http) = {post: "/v1/vacations/{vacation_id}/terminations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."}
+      }
+    };
   }
   rpc CancelScheduledVacation(CancelScheduledVacationRequest) returns (CancelScheduledVacationResponse) {
     option (google.api.http) = {post: "/v1/vacations/{vacation_id}/cancellations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `vacation_not_found` — vacation with the given ID does not exist."}
+      }
+    };
   }
 
   // ------ DepartmentResponsible ------
@@ -110,18 +181,50 @@ service MembershipCommandService {
       post: "/v1/departments/{department_id}/responsibles"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `department_responsible_already_assigned` — this employee is already the department responsible."}
+      }
+    };
   }
   rpc RevokeDepartmentResponsible(RevokeDepartmentResponsibleRequest) returns (RevokeDepartmentResponsibleResponse) {
     option (google.api.http) = {delete: "/v1/departments/{department_id}/responsibles/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_responsible_not_found` — this employee is not the department responsible.\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+    };
   }
   rpc AssignDepartmentResponsibleDeputy(AssignDepartmentResponsibleDeputyRequest) returns (AssignDepartmentResponsibleDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/departments/{department_id}/responsibles/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
+      }
+    };
   }
   rpc RemoveDepartmentResponsibleDeputy(RemoveDepartmentResponsibleDeputyRequest) returns (RemoveDepartmentResponsibleDeputyResponse) {
     option (google.api.http) = {delete: "/v1/departments/{department_id}/responsibles/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."}
+      }
+    };
   }
 
   // ------ ClinicHead ------
@@ -130,18 +233,50 @@ service MembershipCommandService {
       post: "/v1/clinics/{clinic_id}/heads"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `clinic_head_already_assigned` — this clinic already has a head assigned."}
+      }
+    };
   }
   rpc RevokeClinicHead(RevokeClinicHeadRequest) returns (RevokeClinicHeadResponse) {
     option (google.api.http) = {delete: "/v1/clinics/{clinic_id}/heads/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_head_not_found` — this employee is not the clinic head."}
+      }
+    };
   }
   rpc AssignClinicHeadDeputy(AssignClinicHeadDeputyRequest) returns (AssignClinicHeadDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/clinics/{clinic_id}/heads/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
+      }
+    };
   }
   rpc RemoveClinicHeadDeputy(RemoveClinicHeadDeputyRequest) returns (RemoveClinicHeadDeputyResponse) {
     option (google.api.http) = {delete: "/v1/clinics/{clinic_id}/heads/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."}
+      }
+    };
   }
 
   // ------ OrganizationAdmin ------
@@ -150,18 +285,50 @@ service MembershipCommandService {
       post: "/v1/organizations/{organization_id}/admins"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `organization_admin_already_assigned` — this employee is already an organization admin."}
+      }
+    };
   }
   rpc RevokeOrganizationAdmin(RevokeOrganizationAdminRequest) returns (RevokeOrganizationAdminResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/admins/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_admin_not_found` — this employee is not an organization admin."}
+      }
+    };
   }
   rpc AssignOrganizationAdminDeputy(AssignOrganizationAdminDeputyRequest) returns (AssignOrganizationAdminDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/organizations/{organization_id}/admins/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
+      }
+    };
   }
   rpc RemoveOrganizationAdminDeputy(RemoveOrganizationAdminDeputyRequest) returns (RemoveOrganizationAdminDeputyResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/admins/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
+    };
   }
 
   // ------ OrganizationHead ------
@@ -170,18 +337,50 @@ service MembershipCommandService {
       post: "/v1/organizations/{organization_id}/heads"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `organization_head_already_assigned` — this organization already has a head assigned."}
+      }
+    };
   }
   rpc RevokeOrganizationHead(RevokeOrganizationHeadRequest) returns (RevokeOrganizationHeadResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/heads/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_head_not_found` — this employee is not the organization head."}
+      }
+    };
   }
   rpc AssignOrganizationHeadDeputy(AssignOrganizationHeadDeputyRequest) returns (AssignOrganizationHeadDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/organizations/{organization_id}/heads/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
+      }
+    };
   }
   rpc RemoveOrganizationHeadDeputy(RemoveOrganizationHeadDeputyRequest) returns (RemoveOrganizationHeadDeputyResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/heads/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
+    };
   }
 
   // ------ OrganizationDispatcher ------
@@ -190,18 +389,50 @@ service MembershipCommandService {
       post: "/v1/organizations/{organization_id}/dispatchers"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `organization_dispatcher_already_assigned` — this employee is already an organization dispatcher."}
+      }
+    };
   }
   rpc RevokeOrganizationDispatcher(RevokeOrganizationDispatcherRequest) returns (RevokeOrganizationDispatcherResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/dispatchers/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_dispatcher_not_found` — this employee is not an organization dispatcher."}
+      }
+    };
   }
   rpc AssignOrganizationDispatcherDeputy(AssignOrganizationDispatcherDeputyRequest) returns (AssignOrganizationDispatcherDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist.\n- `employee_not_found` — employee with the given ID does not exist.\n- `deputy_not_found` — deputy employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `deputy_already_assigned` — this employee is already a deputy for this role."}
+      }
+    };
   }
   rpc RemoveOrganizationDispatcherDeputy(RemoveOrganizationDispatcherDeputyRequest) returns (RemoveOrganizationDispatcherDeputyResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
+    };
   }
 
   // ------ SystemAdmin ------
@@ -210,9 +441,29 @@ service MembershipCommandService {
       post: "/v1/system-admins"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `zitadel_user_not_found` — Zitadel user with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `system_admin_already_granted` — this user is already a system admin."}
+      }
+      responses: {
+        key: "503"
+        value: {description: "Service unavailable. Error codes:\n- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable."}
+      }
+    };
   }
   rpc RevokeSystemAdmin(RevokeSystemAdminRequest) returns (RevokeSystemAdminResponse) {
     option (google.api.http) = {delete: "/v1/system-admins/{zitadel_user_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `system_admin_not_found` — this user is not a system admin."}
+      }
+    };
   }
 }
 

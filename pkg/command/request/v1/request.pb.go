@@ -435,12 +435,46 @@ const file_command_request_v1_request_proto_rawDesc = "" +
 	"\x16AssignExecutorsRequest\x121\n" +
 	"\x12service_request_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x10serviceRequestId\x127\n" +
 	"\x15executor_employee_ids\x18\x02 \x03(\tB\x03\xe0A\x02R\x13executorEmployeeIds\"\x19\n" +
-	"\x17AssignExecutorsResponse2\x92\x06\n" +
-	"\x1cServiceRequestCommandService\x12\x9a\x01\n" +
-	"\x14CreateServiceRequest\x12/.command.request.v1.CreateServiceRequestRequest\x1a0.command.request.v1.CreateServiceRequestResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/service-requests\x12\xdc\x01\n" +
-	"\x1fUpdateServiceRequestDescription\x12:.command.request.v1.UpdateServiceRequestDescriptionRequest\x1a;.command.request.v1.UpdateServiceRequestDescriptionResponse\"@\x82\xd3\xe4\x93\x02::\x01*\x1a5/v1/service-requests/{service_request_id}/description\x12\xc8\x01\n" +
-	"\x1aUpdateServiceRequestStatus\x125.command.request.v1.UpdateServiceRequestStatusRequest\x1a6.command.request.v1.UpdateServiceRequestStatusResponse\";\x82\xd3\xe4\x93\x025:\x01*\x1a0/v1/service-requests/{service_request_id}/status\x12\xaa\x01\n" +
-	"\x0fAssignExecutors\x12*.command.request.v1.AssignExecutorsRequest\x1a+.command.request.v1.AssignExecutorsResponse\">\x82\xd3\xe4\x93\x028:\x01*\x1a3/v1/service-requests/{service_request_id}/executorsB\xfb\x03\x92A\x9a\x02RI\n" +
+	"\x17AssignExecutorsResponse2\xc9\x15\n" +
+	"\x1cServiceRequestCommandService\x12\xad\b\n" +
+	"\x14CreateServiceRequest\x12/.command.request.v1.CreateServiceRequestRequest\x1a0.command.request.v1.CreateServiceRequestResponse\"\xb1\a\x92A\x8e\aJ\xe0\x03\n" +
+	"\x03404\x12\xd8\x03\n" +
+	"\xd5\x03Not found. Error codes:\n" +
+	"- `service_request_department_not_found` — department with the given ID does not exist.\n" +
+	"- `service_request_clinic_not_found` — clinic linked to the department does not exist.\n" +
+	"- `service_request_type_not_found` — request type with the given ID does not exist.\n" +
+	"- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n" +
+	"- `service_request_employee_not_found` — one of the executor employees was not found.J\xa8\x03\n" +
+	"\x03422\x12\xa0\x03\n" +
+	"\x9d\x03Failed precondition. Error codes:\n" +
+	"- `service_request_type_inactive` — the request type is inactive.\n" +
+	"- `service_request_type_org_mismatch` — the request type belongs to a different organization.\n" +
+	"- `service_request_incident_org_mismatch` — the linked incident belongs to a different organization.\n" +
+	"- `service_request_employee_dept_mismatch` — an executor employee does not belong to the specified department.\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/service-requests\x12\xd4\x03\n" +
+	"\x1fUpdateServiceRequestDescription\x12:.command.request.v1.UpdateServiceRequestDescriptionRequest\x1a;.command.request.v1.UpdateServiceRequestDescriptionResponse\"\xb7\x02\x92A\xf3\x01Jt\n" +
+	"\x03404\x12m\n" +
+	"kNot found. Error codes:\n" +
+	"- `service_request_not_found` — service request with the given ID does not exist.J{\n" +
+	"\x03422\x12t\n" +
+	"rFailed precondition. Error codes:\n" +
+	"- `service_request_frozen` — service request is frozen and cannot be modified.\x82\xd3\xe4\x93\x02::\x01*\x1a5/v1/service-requests/{service_request_id}/description\x12\xa5\x04\n" +
+	"\x1aUpdateServiceRequestStatus\x125.command.request.v1.UpdateServiceRequestStatusRequest\x1a6.command.request.v1.UpdateServiceRequestStatusResponse\"\x97\x03\x92A\xd8\x02Jt\n" +
+	"\x03404\x12m\n" +
+	"kNot found. Error codes:\n" +
+	"- `service_request_not_found` — service request with the given ID does not exist.J\xdf\x01\n" +
+	"\x03422\x12\xd7\x01\n" +
+	"\xd4\x01Failed precondition. Error codes:\n" +
+	"- `service_request_invalid_status_transition` — the requested status transition is not allowed.\n" +
+	"- `service_request_frozen` — service request is frozen and cannot be modified.\x82\xd3\xe4\x93\x025:\x01*\x1a0/v1/service-requests/{service_request_id}/status\x12\xf9\x04\n" +
+	"\x0fAssignExecutors\x12*.command.request.v1.AssignExecutorsRequest\x1a+.command.request.v1.AssignExecutorsResponse\"\x8c\x04\x92A\xca\x03J\xce\x01\n" +
+	"\x03404\x12\xc6\x01\n" +
+	"\xc3\x01Not found. Error codes:\n" +
+	"- `service_request_not_found` — service request with the given ID does not exist.\n" +
+	"- `service_request_employee_not_found` — one of the executor employees was not found.J\xf6\x01\n" +
+	"\x03422\x12\xee\x01\n" +
+	"\xeb\x01Failed precondition. Error codes:\n" +
+	"- `service_request_frozen` — service request is frozen and cannot be modified.\n" +
+	"- `service_request_employee_dept_mismatch` — an executor employee does not belong to the service request's department.\x82\xd3\xe4\x93\x028:\x01*\x1a3/v1/service-requests/{service_request_id}/executorsB\xc4\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -452,6 +486,9 @@ const file_command_request_v1_request_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x16com.command.request.v1B\fRequestProtoP\x01ZKgithub.com/medincident/medincident-backend/pkg/command/request/v1;requestv1\xa2\x02\x03CRX\xaa\x02\x12Command.Request.V1\xca\x02\x12Command\\Request\\V1\xe2\x02\x1eCommand\\Request\\V1\\GPBMetadata\xea\x02\x14Command::Request::V1b\x06proto3"
 

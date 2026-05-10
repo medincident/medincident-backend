@@ -71,16 +71,19 @@ created → in_work ←→ on_hold
 
 #### Ошибки
 
-| Код | Описание |
-|---|---|
-| `service_request_department_not_found` | Отдел не найден |
-| `service_request_type_not_found` | Тип заявки не найден |
-| `service_request_type_inactive` | Тип заявки деактивирован |
-| `service_request_type_org_mismatch` | Тип не принадлежит организации |
-| `service_request_incident_not_found` | Инцидент не найден |
-| `service_request_incident_org_mismatch` | Инцидент из другой организации |
-| `service_request_employee_not_found` | Сотрудник-исполнитель не найден |
-| `service_request_employee_dept_mismatch` | Исполнитель не из указанного отдела |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `service_request_type_inactive` | 422 | Тип заявки деактивирован |
+| `service_request_type_org_mismatch` | 422 | Тип не принадлежит организации |
+| `service_request_incident_org_mismatch` | 422 | Инцидент из другой организации |
+| `service_request_employee_dept_mismatch` | 422 | Исполнитель не из указанного отдела |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_department_not_found` | 404 | Отдел не найден |
+| `service_request_clinic_not_found` | 404 | Клиника, к которой относится отдел, не найдена |
+| `service_request_type_not_found` | 404 | Тип заявки не найден |
+| `service_request_incident_not_found` | 404 | Инцидент не найден |
+| `service_request_employee_not_found` | 404 | Сотрудник-исполнитель не найден |
 
 ---
 
@@ -96,6 +99,15 @@ created → in_work ←→ on_hold
 #### Инварианты
 
 - Нельзя изменять терминальные заявки (`completed`, `cancelled`).
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `service_request_frozen` | 422 | Заявка заморожена и не может быть изменена |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_not_found` | 404 | Заявка не найдена |
 
 ---
 
@@ -117,6 +129,16 @@ created → in_work ←→ on_hold
 - Переходы исполнителя не требуют дополнительной авторизации (caller проверяется как executor).
 - Переходы ответственных ролей требуют `privilegedActorPolicy`.
 - Нельзя переходить из терминальных статусов.
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `service_request_invalid_status_transition` | 422 | Недопустимый переход статуса |
+| `service_request_frozen` | 422 | Заявка заморожена и не может быть изменена |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_not_found` | 404 | Заявка не найдена |
 
 ---
 
@@ -143,6 +165,17 @@ created → in_work ←→ on_hold
 - Нельзя изменять терминальные заявки.
 - Изменения фиксируются в `projections.service_request_executor_history`.
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `service_request_frozen` | 422 | Заявка заморожена и не может быть изменена |
+| `service_request_employee_dept_mismatch` | 422 | Исполнитель не из отдела заявки |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_not_found` | 404 | Заявка не найдена |
+| `service_request_employee_not_found` | 404 | Сотрудник-исполнитель не найден |
+
 ---
 
 ## Query-методы
@@ -154,8 +187,36 @@ created → in_work ←→ on_hold
 | `ListServiceRequestsByIncident` | `GET /v1/incidents/{incident_id}/service-requests` | ReaderOf.Organization |
 | `GetServiceRequestHistory` | `GET /v1/service-requests/{service_request_id}/history` | ReaderOf.Organization |
 
+### GetServiceRequest
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_query_not_found` | 404 | Заявка не найдена |
+
+### ListServiceRequestsByIncident
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_query_incident_not_found` | 404 | Инцидент не найден |
+
 ### GetServiceRequestHistory
 
 Возвращает две временные линии:
 - **Статусы** — каждый переход с `old_status`, `new_status`, `actor_id`, `actor_name`, `changed_at`.
 - **Исполнители** — каждое назначение/снятие с `action` (`assigned`/`removed`), `employee_id`, `employee_name`, `actor_id`, `actor_name`, `changed_at`.
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_query_not_found` | 404 | Заявка не найдена |

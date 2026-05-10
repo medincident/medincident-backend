@@ -44,6 +44,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 // IncidentQueryService is the unified read-side. The same RPCs serve
@@ -52,6 +61,12 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service IncidentQueryService {
   rpc GetIncident(GetIncidentRequest) returns (GetIncidentResponse) {
     option (google.api.http) = {get: "/v1/query/incidents/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `incident_query_not_found` — incident with the given ID does not exist."}
+      }
+    };
   }
   rpc ListIncidents(ListIncidentsRequest) returns (ListIncidentsResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incidents"};
@@ -61,11 +76,23 @@ service IncidentQueryService {
   }
   rpc GetIncidentHistory(GetIncidentHistoryRequest) returns (GetIncidentHistoryResponse) {
     option (google.api.http) = {get: "/v1/query/incidents/{incident_id}/history"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `incident_query_not_found` — incident with the given ID does not exist."}
+      }
+    };
   }
 
   // Buffer reads.
   rpc GetBufferEntry(GetBufferEntryRequest) returns (GetBufferEntryResponse) {
     option (google.api.http) = {get: "/v1/query/patient-incidents/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `buffer_query_not_found` — patient incident with the given ID does not exist."}
+      }
+    };
   }
   rpc ListBufferEntries(ListBufferEntriesRequest) returns (ListBufferEntriesResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/patient-incidents"};

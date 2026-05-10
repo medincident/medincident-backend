@@ -118,9 +118,8 @@ func (x *ValidationFailedDetails) GetViolations() []*ValidationFailedDetails_Fie
 }
 
 // ErrorResponse is the HTTP response body written by the gateway error
-// handler. The openapiv2_schema option forces this message into the
-// generated OpenAPI definitions so that service-level $ref annotations
-// can reference it by name.
+// handler for all client-visible errors. The details field is present
+// only when code = "validation_failed".
 type ErrorResponse struct {
 	state         protoimpl.MessageState   `protogen:"open.v1"`
 	Code          string                   `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
@@ -265,12 +264,16 @@ const file_error_v1_error_proto_rawDesc = "" +
 	"\x04rule\x18\x02 \x01(\tR\x04rule\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\x12\x19\n" +
 	"\x05param\x18\x04 \x01(\tH\x00R\x05param\x88\x01\x01B\b\n" +
-	"\x06_param\"\xec\x01\n" +
+	"\x06_param\"\xb2\x03\n" +
 	"\rErrorResponse\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12@\n" +
-	"\adetails\x18\x03 \x01(\v2!.error.v1.ValidationFailedDetailsH\x00R\adetails\x88\x01\x01:_\x92A\\\n" +
-	"Z*\rErrorResponse2IStandard error response body returned by the gateway for all HTTP errors.B\n" +
+	"\adetails\x18\x03 \x01(\v2!.error.v1.ValidationFailedDetailsH\x00R\adetails\x88\x01\x01:\xa4\x02\x92A\xa0\x02\n" +
+	"\x9d\x02*\rErrorResponse2\x8b\x02Error response body returned by the gateway for all HTTP errors.\n" +
+	"\n" +
+	"`code` is always a machine-readable domain string (e.g. `employee_not_found`, `validation_failed`).\n" +
+	"\n" +
+	"`details` is present only when `code = validation_failed` and contains the list of field violations.B\n" +
 	"\n" +
 	"\b_detailsB\x9e\x01\n" +
 	"\fcom.error.v1B\n" +

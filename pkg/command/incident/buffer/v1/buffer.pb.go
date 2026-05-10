@@ -586,13 +586,64 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"incidentId\"@\n" +
 	"\x1cRejectPatientIncidentRequest\x12 \n" +
 	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\"\x1f\n" +
-	"\x1dRejectPatientIncidentResponse2\xd6\a\n" +
-	"\x1cIncidentBufferCommandService\x12\xae\x01\n" +
-	"\x15SubmitPatientIncident\x128.command.incident.buffer.v1.SubmitPatientIncidentRequest\x1a9.command.incident.buffer.v1.SubmitPatientIncidentResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/patient-incidents\x12\xba\x01\n" +
-	"\x15UpdatePatientIncident\x128.command.incident.buffer.v1.UpdatePatientIncidentRequest\x1a9.command.incident.buffer.v1.UpdatePatientIncidentResponse\",\x82\xd3\xe4\x93\x02&:\x01*\x1a!/v1/patient-incidents/{buffer_id}\x12\xbe\x01\n" +
-	"\x15CancelPatientIncident\x128.command.incident.buffer.v1.CancelPatientIncidentRequest\x1a9.command.incident.buffer.v1.CancelPatientIncidentResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:cancel\x12\xc5\x01\n" +
-	"\x16PublishPatientIncident\x129.command.incident.buffer.v1.PublishPatientIncidentRequest\x1a:.command.incident.buffer.v1.PublishPatientIncidentResponse\"4\x82\xd3\xe4\x93\x02.:\x01*\")/v1/patient-incidents/{buffer_id}:publish\x12\xbe\x01\n" +
-	"\x15RejectPatientIncident\x128.command.incident.buffer.v1.RejectPatientIncidentRequest\x1a9.command.incident.buffer.v1.RejectPatientIncidentResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:rejectB\xaa\x04\x92A\x9a\x02RI\n" +
+	"\x1dRejectPatientIncidentResponse2\xd3\x1b\n" +
+	"\x1cIncidentBufferCommandService\x12\xe9\x05\n" +
+	"\x15SubmitPatientIncident\x128.command.incident.buffer.v1.SubmitPatientIncidentRequest\x1a9.command.incident.buffer.v1.SubmitPatientIncidentResponse\"\xda\x04\x92A\xb6\x04J~\n" +
+	"\x03400\x12w\n" +
+	"uInvalid input. Error codes:\n" +
+	"- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date.J\x92\x02\n" +
+	"\x03404\x12\x8a\x02\n" +
+	"\x87\x02Not found. Error codes:\n" +
+	"- `buffer_organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `buffer_category_not_found` — category with the given ID does not exist.\n" +
+	"- `buffer_type_not_found` — incident type with the given ID does not exist.J\x9e\x01\n" +
+	"\x03422\x12\x96\x01\n" +
+	"\x93\x01Failed precondition. Error codes:\n" +
+	"- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/v1/patient-incidents\x12\xcb\a\n" +
+	"\x15UpdatePatientIncident\x128.command.incident.buffer.v1.UpdatePatientIncidentRequest\x1a9.command.incident.buffer.v1.UpdatePatientIncidentResponse\"\xbc\x06\x92A\x8c\x06J~\n" +
+	"\x03400\x12w\n" +
+	"uInvalid input. Error codes:\n" +
+	"- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date.J\x80\x01\n" +
+	"\x03403\x12y\n" +
+	"wPermission denied. Error codes:\n" +
+	"- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.J\x89\x02\n" +
+	"\x03404\x12\x81\x02\n" +
+	"\xfe\x01Not found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.\n" +
+	"- `buffer_category_not_found` — category with the given ID does not exist.\n" +
+	"- `buffer_type_not_found` — incident type with the given ID does not exist.J\xfa\x01\n" +
+	"\x03422\x12\xf2\x01\n" +
+	"\xef\x01Failed precondition. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\n" +
+	"- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\x82\xd3\xe4\x93\x02&:\x01*\x1a!/v1/patient-incidents/{buffer_id}\x12\xc0\x04\n" +
+	"\x15CancelPatientIncident\x128.command.incident.buffer.v1.CancelPatientIncidentRequest\x1a9.command.incident.buffer.v1.CancelPatientIncidentResponse\"\xb1\x03\x92A\xfd\x02J\x80\x01\n" +
+	"\x03403\x12y\n" +
+	"wPermission denied. Error codes:\n" +
+	"- `buffer_not_patient_owner` — caller is not the patient who submitted this incident.Jl\n" +
+	"\x03404\x12e\n" +
+	"cNot found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.J\x89\x01\n" +
+	"\x03422\x12\x81\x01\n" +
+	"\x7fFailed precondition. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be cancelled.\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:cancel\x12\xf6\x05\n" +
+	"\x16PublishPatientIncident\x129.command.incident.buffer.v1.PublishPatientIncidentRequest\x1a:.command.incident.buffer.v1.PublishPatientIncidentResponse\"\xe4\x04\x92A\xac\x04J\x9d\x03\n" +
+	"\x03404\x12\x95\x03\n" +
+	"\x92\x03Not found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.\n" +
+	"- `buffer_department_not_found` — department with the given ID does not exist.\n" +
+	"- `buffer_category_not_found` — category with the given ID does not exist.\n" +
+	"- `buffer_type_not_found` — incident type with the given ID does not exist.\n" +
+	"- `buffer_dispatcher_not_found` — dispatcher employee not found.J\x89\x01\n" +
+	"\x03422\x12\x81\x01\n" +
+	"\x7fFailed precondition. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be published.\x82\xd3\xe4\x93\x02.:\x01*\")/v1/patient-incidents/{buffer_id}:publish\x12\xbc\x03\n" +
+	"\x15RejectPatientIncident\x128.command.incident.buffer.v1.RejectPatientIncidentRequest\x1a9.command.incident.buffer.v1.RejectPatientIncidentResponse\"\xad\x02\x92A\xf9\x01Jl\n" +
+	"\x03404\x12e\n" +
+	"cNot found. Error codes:\n" +
+	"- `buffer_not_found` — patient incident with the given ID does not exist.J\x88\x01\n" +
+	"\x03422\x12\x80\x01\n" +
+	"~Failed precondition. Error codes:\n" +
+	"- `buffer_not_pending` — patient incident is not in pending status and cannot be rejected.\x82\xd3\xe4\x93\x02*\"(/v1/patient-incidents/{buffer_id}:rejectB\xf3\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -604,6 +655,9 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x1ecom.command.incident.buffer.v1B\vBufferProtoP\x01ZRgithub.com/medincident/medincident-backend/pkg/command/incident/buffer/v1;bufferv1\xa2\x02\x03CIB\xaa\x02\x1aCommand.Incident.Buffer.V1\xca\x02\x1aCommand\\Incident\\Buffer\\V1\xe2\x02&Command\\Incident\\Buffer\\V1\\GPBMetadata\xea\x02\x1dCommand::Incident::Buffer::V1b\x06proto3"
 

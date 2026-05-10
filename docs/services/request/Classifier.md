@@ -34,9 +34,11 @@
 
 #### Ошибки
 
-| Код | Описание |
-|---|---|
-| `request_type_name_conflict` | Активный тип с таким именем уже существует |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `request_type_name_conflict` | 409 | Активный тип с таким именем уже существует |
 
 ---
 
@@ -57,6 +59,15 @@
 | `name` | string | required, min=2, max=256 |
 | `description` | string | omitempty, min=8, max=2048 |
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `request_type_not_found` | 404 | Тип не найден |
+| `request_type_name_conflict` | 409 | Активный тип с таким именем уже существует |
+
 ---
 
 ### DeactivateRequestType
@@ -72,6 +83,14 @@
 
 - Идемпотентная операция: если тип уже неактивен, операция завершается без ошибки.
 - Деактивированный тип недоступен для выбора при создании новой заявки.
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `request_type_not_found` | 404 | Тип не найден |
 
 ---
 
@@ -89,6 +108,15 @@
 - Идемпотентная операция: если тип уже активен, операция завершается без ошибки.
 - Может вызвать `request_type_name_conflict`, если активный тип с таким именем уже существует.
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `request_type_not_found` | 404 | Тип не найден |
+| `request_type_name_conflict` | 409 | Активный тип с таким именем уже существует |
+
 ---
 
 ### DeleteRequestType
@@ -104,6 +132,14 @@
 
 - Удаление невозможно, если тип используется в существующих заявках (FK RESTRICT).
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `request_type_not_found` | 404 | Тип не найден |
+
 ---
 
 ## Query-методы
@@ -113,3 +149,13 @@
 | `GetRequestType` | `GET /v1/request-types/{id}` | ReaderOf.RequestType |
 | `ListRequestTypesByOrganization` | `GET /v1/organizations/{organization_id}/request-types` | ReaderOf.Organization |
 | `ListActiveRequestTypesByOrganization` | `GET /v1/organizations/{organization_id}/request-types:active` | ReaderOf.Organization |
+
+### GetRequestType
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `request_type_not_found` | 404 | Тип не найден |

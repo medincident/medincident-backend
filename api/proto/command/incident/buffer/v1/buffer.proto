@@ -45,6 +45,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 // IncidentBufferCommandService handles the patient submission flow:
@@ -57,24 +66,90 @@ service IncidentBufferCommandService {
       post: "/v1/patient-incidents"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `buffer_organization_not_found` — organization with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist."}
+      }
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions."}
+      }
+    };
   }
   rpc UpdatePatientIncident(UpdatePatientIncidentRequest) returns (UpdatePatientIncidentResponse) {
     option (google.api.http) = {
       put: "/v1/patient-incidents/{buffer_id}"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist."}
+      }
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions."}
+      }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `buffer_not_patient_owner` — caller is not the patient who submitted this incident."}
+      }
+    };
   }
   rpc CancelPatientIncident(CancelPatientIncidentRequest) returns (CancelPatientIncidentResponse) {
     option (google.api.http) = {post: "/v1/patient-incidents/{buffer_id}:cancel"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be cancelled."}
+      }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `buffer_not_patient_owner` — caller is not the patient who submitted this incident."}
+      }
+    };
   }
   rpc PublishPatientIncident(PublishPatientIncidentRequest) returns (PublishPatientIncidentResponse) {
     option (google.api.http) = {
       post: "/v1/patient-incidents/{buffer_id}:publish"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_department_not_found` — department with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist.\n- `buffer_dispatcher_not_found` — dispatcher employee not found."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be published."}
+      }
+    };
   }
   rpc RejectPatientIncident(RejectPatientIncidentRequest) returns (RejectPatientIncidentResponse) {
     option (google.api.http) = {post: "/v1/patient-incidents/{buffer_id}:reject"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be rejected."}
+      }
+    };
   }
 }
 

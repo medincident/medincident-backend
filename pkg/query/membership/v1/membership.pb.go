@@ -2372,9 +2372,12 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x02 \x01(\x05R\x06offset\"V\n" +
 	"\x18ListSystemAdminsResponse\x12:\n" +
-	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items2\xab\x16\n" +
-	"\x16MembershipQueryService\x12|\n" +
-	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x1a\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xbd\x01\n" +
+	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items2\x9d\x17\n" +
+	"\x16MembershipQueryService\x12\xed\x01\n" +
+	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x8a\x01\x92AmJk\n" +
+	"\x03404\x12d\n" +
+	"bNot found. Error codes:\n" +
+	"- `employee_card_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xbd\x01\n" +
 	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/departments/{department_id}/employees\x12\xa9\x01\n" +
 	"\x15ListEmployeesByClinic\x121.query.membership.v1.ListEmployeesByClinicRequest\x1a2.query.membership.v1.ListEmployeesByClinicResponse\")\x82\xd3\xe4\x93\x02#\x12!/v1/clinics/{clinic_id}/employees\x12\xc7\x01\n" +
 	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xc6\x01\n" +
@@ -2389,7 +2392,7 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v1/organizations/{organization_id}/admins\x12\xae\x01\n" +
 	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/organizations/{organization_id}/dispatchers\x12\x96\x01\n" +
 	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/heads\x12\x8a\x01\n" +
-	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\x87\x04\x92A\x9a\x02RI\n" +
+	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xd0\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -2401,6 +2404,9 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x17com.query.membership.v1B\x0fMembershipProtoP\x01ZOgithub.com/medincident/medincident-backend/pkg/query/membership/v1;membershipv1\xa2\x02\x03QMX\xaa\x02\x13Query.Membership.V1\xca\x02\x13Query\\Membership\\V1\xe2\x02\x1fQuery\\Membership\\V1\\GPBMetadata\xea\x02\x15Query::Membership::V1b\x06proto3"
 

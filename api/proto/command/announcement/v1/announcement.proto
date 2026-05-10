@@ -45,6 +45,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 // AnnouncementCommandService is the write-side contract for announcements.
@@ -54,11 +63,27 @@ service AnnouncementCommandService {
       post: "/v1/announcements"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `announcement_organization_not_found` — organization with the given ID does not exist.\n- `announcement_clinic_not_found` — clinic with the given ID does not exist.\n- `announcement_department_not_found` — department with the given ID does not exist."}
+      }
+    };
   }
   rpc UpdateAnnouncement(UpdateAnnouncementRequest) returns (UpdateAnnouncementResponse) {
     option (google.api.http) = {
       put: "/v1/announcements/{id}"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `announcement_not_found` — announcement with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `announcement_archived` — announcement is archived and cannot be modified."}
+      }
     };
   }
   rpc UpdateAnnouncementPriority(UpdateAnnouncementPriorityRequest) returns (UpdateAnnouncementPriorityResponse) {
@@ -66,12 +91,34 @@ service AnnouncementCommandService {
       put: "/v1/announcements/{id}/priority"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `announcement_not_found` — announcement with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `announcement_archived` — announcement is archived and cannot be modified."}
+      }
+    };
   }
   rpc ArchiveAnnouncement(ArchiveAnnouncementRequest) returns (ArchiveAnnouncementResponse) {
     option (google.api.http) = {post: "/v1/announcements/{id}:archive"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `announcement_not_found` — announcement with the given ID does not exist."}
+      }
+    };
   }
   rpc UnarchiveAnnouncement(UnarchiveAnnouncementRequest) returns (UnarchiveAnnouncementResponse) {
     option (google.api.http) = {post: "/v1/announcements/{id}:unarchive"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `announcement_not_found` — announcement with the given ID does not exist."}
+      }
+    };
   }
 }
 

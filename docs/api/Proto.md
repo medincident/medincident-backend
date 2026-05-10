@@ -462,9 +462,8 @@ errors. It carries the machine-readable domain error code.
 
 ### ErrorResponse
 ErrorResponse is the HTTP response body written by the gateway error
-handler. The openapiv2_schema option forces this message into the
-generated OpenAPI definitions so that service-level $ref annotations
-can reference it by name.
+handler for all client-visible errors. The details field is present
+only when code = &#34;validation_failed&#34;.
 
 
 | Field | Type | Label | Description |

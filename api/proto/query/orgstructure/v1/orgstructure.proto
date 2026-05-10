@@ -43,6 +43,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 // OrgStructureQueryService exposes read methods over the orgstructure
@@ -52,6 +61,12 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service OrgStructureQueryService {
   rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
+    };
   }
   rpc ListOrganizations(ListOrganizationsRequest) returns (ListOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations"};
@@ -65,6 +80,12 @@ service OrgStructureQueryService {
 
   rpc GetClinic(GetClinicRequest) returns (GetClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."}
+      }
+    };
   }
   rpc ListClinicsByOrganization(ListClinicsByOrganizationRequest) returns (ListClinicsByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics"};
@@ -75,6 +96,12 @@ service OrgStructureQueryService {
 
   rpc GetDepartment(GetDepartmentRequest) returns (GetDepartmentResponse) {
     option (google.api.http) = {get: "/v1/departments/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."}
+      }
+    };
   }
   rpc ListDepartmentsByClinic(ListDepartmentsByClinicRequest) returns (ListDepartmentsByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments"};

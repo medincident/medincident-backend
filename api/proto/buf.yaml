@@ -22,6 +22,7 @@ lint:
       - query/orgstructure/v1/orgstructure.proto
       - query/request/classifier/v1/classifier.proto
       - query/request/v1/request.proto
+      - query/self/v1/self.proto
       - query/stats/v1/stats.proto
 breaking:
   use:

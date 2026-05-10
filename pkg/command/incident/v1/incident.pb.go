@@ -747,14 +747,56 @@ const file_command_incident_v1_incident_proto_rawDesc = "" +
 	"\x15INCIDENT_PRIORITY_LOW\x10\x01\x12\x1c\n" +
 	"\x18INCIDENT_PRIORITY_NORMAL\x10\x02\x12\x1a\n" +
 	"\x16INCIDENT_PRIORITY_HIGH\x10\x03\x12\x1e\n" +
-	"\x1aINCIDENT_PRIORITY_CRITICAL\x10\x042\xf1\a\n" +
-	"\x16IncidentCommandService\x12\x83\x01\n" +
-	"\x0eCreateIncident\x12*.command.incident.v1.CreateIncidentRequest\x1a+.command.incident.v1.CreateIncidentResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/incidents\x12\x95\x01\n" +
-	"\x0eCancelIncident\x12*.command.incident.v1.CancelIncidentRequest\x1a+.command.incident.v1.CancelIncidentResponse\"*\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:cancel\x12\xaa\x01\n" +
-	"\x14UpdateIncidentStatus\x120.command.incident.v1.UpdateIncidentStatusRequest\x1a1.command.incident.v1.UpdateIncidentStatusResponse\"-\x82\xd3\xe4\x93\x02':\x01*\x1a\"/v1/incidents/{incident_id}/status\x12\xb2\x01\n" +
-	"\x16UpdateIncidentPriority\x122.command.incident.v1.UpdateIncidentPriorityRequest\x1a3.command.incident.v1.UpdateIncidentPriorityResponse\"/\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/incidents/{incident_id}/priority\x12\xbe\x01\n" +
-	"\x19UpdateIncidentDescription\x125.command.incident.v1.UpdateIncidentDescriptionRequest\x1a6.command.incident.v1.UpdateIncidentDescriptionResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/incidents/{incident_id}/description\x12\x95\x01\n" +
-	"\x0eReopenIncident\x12*.command.incident.v1.ReopenIncidentRequest\x1a+.command.incident.v1.ReopenIncidentResponse\"*\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:reopenB\x83\x04\x92A\x9a\x02RI\n" +
+	"\x1aINCIDENT_PRIORITY_CRITICAL\x10\x042\xa6\x16\n" +
+	"\x16IncidentCommandService\x12\xf5\x05\n" +
+	"\x0eCreateIncident\x12*.command.incident.v1.CreateIncidentRequest\x1a+.command.incident.v1.CreateIncidentResponse\"\x89\x05\x92A\xed\x04J\xb7\x03\n" +
+	"\x03404\x12\xaf\x03\n" +
+	"\xac\x03Not found. Error codes:\n" +
+	"- `incident_department_not_found` — department with the given ID does not exist.\n" +
+	"- `incident_category_not_found` — incident category with the given ID does not exist.\n" +
+	"- `incident_type_not_found` — incident type with the given ID does not exist.\n" +
+	"- `incident_employee_not_found` — registrar employee not found.\n" +
+	"- `incident_registrar_user_not_found` — registrar's user projection record not found.J\xb0\x01\n" +
+	"\x03422\x12\xa8\x01\n" +
+	"\xa5\x01Failed precondition. Error codes:\n" +
+	"- `incident_category_inactive` — the selected category is inactive.\n" +
+	"- `incident_type_inactive` — the selected type is inactive.\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/incidents\x12\xf8\x02\n" +
+	"\x0eCancelIncident\x12*.command.incident.v1.CancelIncidentRequest\x1a+.command.incident.v1.CancelIncidentResponse\"\x8c\x02\x92A\xde\x01Jf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.Jt\n" +
+	"\x03422\x12m\n" +
+	"kFailed precondition. Error codes:\n" +
+	"- `incident_not_cancellable` — incident is not in a cancellable status.\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:cancel\x12\xe4\x03\n" +
+	"\x14UpdateIncidentStatus\x120.command.incident.v1.UpdateIncidentStatusRequest\x1a1.command.incident.v1.UpdateIncidentStatusResponse\"\xe6\x02\x92A\xb5\x02Jf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.J\xca\x01\n" +
+	"\x03422\x12\xc2\x01\n" +
+	"\xbf\x01Failed precondition. Error codes:\n" +
+	"- `incident_invalid_status_transition` — the requested status transition is not allowed.\n" +
+	"- `incident_frozen` — incident is frozen and cannot be modified.\x82\xd3\xe4\x93\x02':\x01*\x1a\"/v1/incidents/{incident_id}/status\x12\x8e\x03\n" +
+	"\x16UpdateIncidentPriority\x122.command.incident.v1.UpdateIncidentPriorityRequest\x1a3.command.incident.v1.UpdateIncidentPriorityResponse\"\x8a\x02\x92A\xd7\x01Jf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.Jm\n" +
+	"\x03422\x12f\n" +
+	"dFailed precondition. Error codes:\n" +
+	"- `incident_frozen` — incident is frozen and cannot be modified.\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/incidents/{incident_id}/priority\x12\x9a\x03\n" +
+	"\x19UpdateIncidentDescription\x125.command.incident.v1.UpdateIncidentDescriptionRequest\x1a6.command.incident.v1.UpdateIncidentDescriptionResponse\"\x8d\x02\x92A\xd7\x01Jf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.Jm\n" +
+	"\x03422\x12f\n" +
+	"dFailed precondition. Error codes:\n" +
+	"- `incident_frozen` — incident is frozen and cannot be modified.\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/incidents/{incident_id}/description\x12\x83\x03\n" +
+	"\x0eReopenIncident\x12*.command.incident.v1.ReopenIncidentRequest\x1a+.command.incident.v1.ReopenIncidentResponse\"\x97\x02\x92A\xe9\x01Jf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `incident_not_found` — incident with the given ID does not exist.J\x7f\n" +
+	"\x03422\x12x\n" +
+	"vFailed precondition. Error codes:\n" +
+	"- `incident_not_reopenable` — incident cannot be reopened from its current status.\x82\xd3\xe4\x93\x02$\"\"/v1/incidents/{incident_id}:reopenB\xcc\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -766,6 +808,9 @@ const file_command_incident_v1_incident_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x17com.command.incident.v1B\rIncidentProtoP\x01ZMgithub.com/medincident/medincident-backend/pkg/command/incident/v1;incidentv1\xa2\x02\x03CIX\xaa\x02\x13Command.Incident.V1\xca\x02\x13Command\\Incident\\V1\xe2\x02\x1fCommand\\Incident\\V1\\GPBMetadata\xea\x02\x15Command::Incident::V1b\x06proto3"
 

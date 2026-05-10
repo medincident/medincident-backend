@@ -443,11 +443,14 @@ const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
 	"\x06offset\x18\x03 \x01(\x05R\x06offset\"n\n" +
 	",ListActiveRequestTypesByOrganizationResponse\x12>\n" +
-	"\x05items\x18\x01 \x03(\v2(.query.request.classifier.v1.RequestTypeR\x05items2\xa2\x05\n" +
-	"\x1dRequestClassifierQueryService\x12\x99\x01\n" +
-	"\x0eGetRequestType\x122.query.request.classifier.v1.GetRequestTypeRequest\x1a3.query.request.classifier.v1.GetRequestTypeResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/request-types/{id}\x12\xe4\x01\n" +
+	"\x05items\x18\x01 \x03(\v2(.query.request.classifier.v1.RequestTypeR\x05items2\x96\x06\n" +
+	"\x1dRequestClassifierQueryService\x12\x8d\x02\n" +
+	"\x0eGetRequestType\x122.query.request.classifier.v1.GetRequestTypeRequest\x1a3.query.request.classifier.v1.GetRequestTypeResponse\"\x91\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/request-types/{id}\x12\xe4\x01\n" +
 	"\x1eListRequestTypesByOrganization\x12B.query.request.classifier.v1.ListRequestTypesByOrganizationRequest\x1aC.query.request.classifier.v1.ListRequestTypesByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/request-types\x12\xfd\x01\n" +
-	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\xb8\x04\x92A\x9a\x02RI\n" +
+	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\x81\x05\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -459,6 +462,9 @@ const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x1fcom.query.request.classifier.v1B\x0fClassifierProtoP\x01ZWgithub.com/medincident/medincident-backend/pkg/query/request/classifier/v1;classifierv1\xa2\x02\x03QRC\xaa\x02\x1bQuery.Request.Classifier.V1\xca\x02\x1bQuery\\Request\\Classifier\\V1\xe2\x02'Query\\Request\\Classifier\\V1\\GPBMetadata\xea\x02\x1eQuery::Request::Classifier::V1b\x06proto3"
 

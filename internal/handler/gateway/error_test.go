@@ -30,7 +30,6 @@ func decodeBody(t *testing.T, rec *httptest.ResponseRecorder) map[string]any {
 }
 
 func TestGatewayErrorHandler_UnexpectedError_Returns500(t *testing.T) {
-	// No ErrorCode in details → unexpected_error.
 	grpcErr := grpcstatus.New(codes.Internal, "internal error").Err()
 	rec := callHandler(t, grpcErr)
 
@@ -142,12 +141,7 @@ func TestGatewayErrorHandler_Unauthenticated_Returns401(t *testing.T) {
 }
 
 func TestGatewayErrorHandler_ServerFaultCode_Returns500MaskedMessage(t *testing.T) {
-	// A server-fault code like employee_save_failed reaches the gateway
-	// with message "internal error" (masked by ErrorInterceptor) and no
-	// ErrorCode detail (server faults skip detail attachment).
-	// The gateway must return 500 "unexpected_error".
 	st := grpcstatus.New(codes.Internal, "internal error")
-	// No details — server fault path in ErrorInterceptor adds none.
 	rec := callHandler(t, st.Err())
 
 	if rec.Code != http.StatusInternalServerError {
@@ -184,8 +178,6 @@ func TestGatewayErrorHandler_UnprocessableCode_Returns422(t *testing.T) {
 }
 
 func TestGatewayErrorHandler_DeadlineExceeded_Returns504(t *testing.T) {
-	// DeadlineExceeded arrives as a plain status (no ErrorCode detail) from
-	// the error interceptor; the gateway must map it to 504 via st.Code().
 	rec := callHandler(t, grpcstatus.New(codes.DeadlineExceeded, "deadline exceeded").Err())
 
 	if rec.Code != http.StatusGatewayTimeout {
@@ -198,8 +190,6 @@ func TestGatewayErrorHandler_DeadlineExceeded_Returns504(t *testing.T) {
 }
 
 func TestGatewayErrorHandler_Canceled_Returns408(t *testing.T) {
-	// Canceled arrives as a plain status (no ErrorCode detail) from the error
-	// interceptor; the gateway must map it to 408 via st.Code().
 	rec := callHandler(t, grpcstatus.New(codes.Canceled, "request canceled").Err())
 
 	if rec.Code != http.StatusRequestTimeout {

@@ -12,7 +12,7 @@
 
 ## SubmitPatientIncident
 
-**HTTP:** `POST /v1/organizations/{organization_id}/patient-incidents`
+**HTTP:** `POST /v1/patient-incidents`
 **gRPC:** `IncidentBufferCommandService.SubmitPatientIncident`
 
 ### Права доступа
@@ -24,25 +24,32 @@
 | Поле | Тип | Правила |
 |---|---|---|
 | `organization_id` | string (UUID) | required, uuid |
-| `incident_type_id` | string (UUID) | required, uuid |
-| `description` | string | required, min=1, max=4096 |
+| `category_id` | string (UUID) | omitempty, uuid |
+| `type_id` | string (UUID) | omitempty, uuid |
+| `description` | string | omitempty, max=10000 |
+| `occurred_at` | string (RFC3339Nano) | omitempty |
 
 ### Инварианты
 
-- Тип инцидента должен быть активным и иметь флаг `is_allowed_for_patients=true`.
+- Тип инцидента должен иметь флаг `is_allowed_for_patients=true`.
 - Начальный статус заявки — `pending`.
 
 ### Ошибки
 
-| Код | Описание |
-|---|---|
-| `incident_type_not_found` | Тип не найден, не активен или не доступен для пациентов |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `buffer_occurred_at_invalid` | 400 | Некорректный формат даты occurred_at |
+| `buffer_type_not_allowed_for_patients` | 422 | Тип инцидента недоступен для пациентов |
+| `buffer_organization_not_found` | 404 | Организация не найдена |
+| `buffer_category_not_found` | 404 | Категория не найдена |
+| `buffer_type_not_found` | 404 | Тип инцидента не найден |
 
 ---
 
 ## UpdatePatientIncident
 
-**HTTP:** `PATCH /v1/patient-incidents/{patient_incident_id}`
+**HTTP:** `PUT /v1/patient-incidents/{buffer_id}`
 **gRPC:** `IncidentBufferCommandService.UpdatePatientIncident`
 
 ### Права доступа
@@ -53,19 +60,35 @@
 
 | Поле | Тип | Правила |
 |---|---|---|
-| `patient_incident_id` | string (UUID) | required, uuid |
-| `description` | string | omitempty, min=1, max=4096 |
-| `incident_type_id` | string (UUID) | omitempty, uuid |
+| `buffer_id` | string (UUID) | required, uuid |
+| `category_id` | string (UUID) | omitempty, uuid |
+| `type_id` | string (UUID) | omitempty, uuid |
+| `description` | string | omitempty, max=10000 |
+| `occurred_at` | string (RFC3339Nano) | omitempty |
 
 ### Инварианты
 
 - Доступно только для заявок в статусе `pending`.
+- Тип инцидента должен иметь флаг `is_allowed_for_patients=true`.
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `buffer_occurred_at_invalid` | 400 | Некорректный формат даты occurred_at |
+| `buffer_not_pending` | 422 | Заявка не в статусе pending |
+| `buffer_type_not_allowed_for_patients` | 422 | Тип инцидента недоступен для пациентов |
+| `permission_denied` / `buffer_not_patient_owner` | 403 | Нет прав доступа |
+| `buffer_not_found` | 404 | Заявка не найдена |
+| `buffer_category_not_found` | 404 | Категория не найдена |
+| `buffer_type_not_found` | 404 | Тип инцидента не найден |
 
 ---
 
 ## CancelPatientIncident
 
-**HTTP:** `POST /v1/patient-incidents/{patient_incident_id}/cancel`
+**HTTP:** `POST /v1/patient-incidents/{buffer_id}:cancel`
 **gRPC:** `IncidentBufferCommandService.CancelPatientIncident`
 
 ### Права доступа
@@ -76,11 +99,18 @@
 
 - Доступно только для заявок в статусе `pending`.
 
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+
 ---
 
 ## PublishPatientIncident
 
-**HTTP:** `POST /v1/patient-incidents/{patient_incident_id}/publish`
+**HTTP:** `POST /v1/patient-incidents/{buffer_id}:publish`
 **gRPC:** `IncidentBufferCommandService.PublishPatientIncident`
 
 ### Права доступа
@@ -91,19 +121,35 @@
 
 | Поле | Тип | Правила |
 |---|---|---|
-| `patient_incident_id` | string (UUID) | required, uuid |
-| `priority` | enum | required |
+| `buffer_id` | string (UUID) | required, uuid |
+| `department_id` | string (UUID) | required, uuid |
+| `category_id` | string (UUID) | required, uuid |
+| `type_id` | string (UUID) | required, uuid |
+| `description` | string | omitempty |
 
 ### Инварианты
 
 - Публикация атомарно переводит заявку в `published` и создаёт инцидент (`CreateIncident` с `source_buffer_id`).
 - `incident.source_buffer_id` ссылается на опубликованную заявку.
 
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `buffer_not_pending` | 422 | Заявка не в статусе pending |
+| `permission_denied` | 403 | Нет прав доступа |
+| `buffer_not_found` | 404 | Заявка не найдена |
+| `buffer_department_not_found` | 404 | Отдел не найден |
+| `buffer_category_not_found` | 404 | Категория не найдена |
+| `buffer_type_not_found` | 404 | Тип инцидента не найден |
+| `buffer_dispatcher_not_found` | 404 | Диспетчер не найден |
+
 ---
 
 ## RejectPatientIncident
 
-**HTTP:** `POST /v1/patient-incidents/{patient_incident_id}/reject`
+**HTTP:** `POST /v1/patient-incidents/{buffer_id}:reject`
 **gRPC:** `IncidentBufferCommandService.RejectPatientIncident`
 
 ### Права доступа
@@ -114,12 +160,18 @@
 
 | Поле | Тип | Правила |
 |---|---|---|
-| `patient_incident_id` | string (UUID) | required, uuid |
-| `reason` | string | required, min=1, max=1024 |
+| `buffer_id` | string (UUID) | required, uuid |
 
 ### Инварианты
 
 - Доступно только для заявок в статусе `pending`.
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
 
 ---
 
@@ -127,5 +179,17 @@
 
 | Метод | Права |
 |---|---|
-| `ListPatientIncidents` | OrgDispatcherOf или пациент-владелец |
-| `GetPatientIncident` | OrgDispatcherOf или пациент-владелец |
+| `ListBufferEntries` | OrgDispatcherOf или пациент-владелец |
+| `GetBufferEntry` | OrgDispatcherOf или пациент-владелец |
+| `ListMyBufferEntries` | Authenticated (только свои) |
+
+### GetBufferEntry
+
+**HTTP:** `GET /v1/query/patient-incidents/{id}`
+**gRPC:** `IncidentQueryService.GetBufferEntry`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `buffer_query_not_found` | 404 | Запись буфера не найдена |

@@ -31,16 +31,16 @@
 
 ### Ошибки
 
-| Код | Описание |
-|---|---|
-| `validation_failed` | Нарушение правил валидации |
-| `permission_denied` | Нет прав SystemAdmin |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
 
 ---
 
 ## UpdateOrganizationDetails
 
-**HTTP:** `PATCH /v1/organizations/{organization_id}`
+**HTTP:** `PUT /v1/organizations/{organization_id}/details`
 **gRPC:** `OrgStructureCommandService.UpdateOrganizationDetails`
 
 ### Права доступа
@@ -56,11 +56,11 @@
 
 ### Ошибки
 
-| Код | Описание |
-|---|---|
-| `validation_failed` | Нарушение правил валидации |
-| `permission_denied` | Нет прав |
-| `organization_not_found` | Организация не найдена |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `organization_not_found` | 404 | Организация не найдена |
 
 ---
 
@@ -79,6 +79,14 @@
 |---|---|---|
 | `organization_id` | string (UUID) | required, uuid |
 | `legal_address` | Address | required |
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `organization_not_found` | 404 | Организация не найдена |
 
 ---
 
@@ -99,16 +107,32 @@
 | `name` | string | required, min=4, max=256 |
 | `physical_address` | Address | required |
 
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `clinic_organization_not_found` | 404 | Организация не найдена |
+
 ---
 
 ## UpdateClinicDetails
 
-**HTTP:** `PATCH /v1/clinics/{clinic_id}`
+**HTTP:** `PUT /v1/clinics/{clinic_id}/details`
 **gRPC:** `OrgStructureCommandService.UpdateClinicDetails`
 
 ### Права доступа
 
 `AdminOf.Clinic(clinicID)`
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `clinic_not_found` | 404 | Клиника не найдена |
 
 ---
 
@@ -120,6 +144,14 @@
 ### Права доступа
 
 `AdminOf.Clinic(clinicID)`
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `clinic_not_found` | 404 | Клиника не найдена |
 
 ---
 
@@ -139,16 +171,32 @@
 | `clinic_id` | string (UUID) | required, uuid |
 | `name` | string | required, min=4, max=256 |
 
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `department_clinic_not_found` | 404 | Клиника не найдена |
+
 ---
 
 ## UpdateDepartmentDetails
 
-**HTTP:** `PATCH /v1/departments/{department_id}`
+**HTTP:** `PUT /v1/departments/{department_id}/details`
 **gRPC:** `OrgStructureCommandService.UpdateDepartmentDetails`
 
 ### Права доступа
 
 `AdminOf.Department(departmentID)`
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `department_not_found` | 404 | Отдел не найден |
 
 ---
 
@@ -160,7 +208,18 @@
 |---|---|
 | `ListOrganizations` | Authenticated |
 | `GetOrganization` | Authenticated |
-| `ListClinics` | ReaderOf.Organization |
+| `ListClinicsByOrganization` | ReaderOf.Organization |
+| `CountClinicsByOrganization` | ReaderOf.Organization |
 | `GetClinic` | ReaderOf.Clinic |
-| `ListDepartments` | ReaderOf.Clinic |
+| `ListDepartmentsByClinic` | ReaderOf.Clinic |
+| `CountDepartmentsByClinic` | ReaderOf.Clinic |
 | `GetDepartment` | ReaderOf.Department |
+
+### Ошибки
+
+| Метод | Код | HTTP | Описание |
+|---|---|---|---|
+| Все | `permission_denied` | 403 | Нет прав доступа |
+| `GetOrganization` | `organization_not_found` | 404 | Организация не найдена |
+| `GetClinic` | `clinic_not_found` | 404 | Клиника не найдена |
+| `GetDepartment` | `department_not_found` | 404 | Отдел не найден |

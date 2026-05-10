@@ -45,6 +45,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 // IncidentCommandService is the write-side contract for incidents
@@ -55,14 +64,44 @@ service IncidentCommandService {
       post: "/v1/incidents"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `incident_department_not_found` — department with the given ID does not exist.\n- `incident_category_not_found` — incident category with the given ID does not exist.\n- `incident_type_not_found` — incident type with the given ID does not exist.\n- `incident_employee_not_found` — registrar employee not found.\n- `incident_registrar_user_not_found` — registrar's user projection record not found."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_category_inactive` — the selected category is inactive.\n- `incident_type_inactive` — the selected type is inactive."}
+      }
+    };
   }
   rpc CancelIncident(CancelIncidentRequest) returns (CancelIncidentResponse) {
     option (google.api.http) = {post: "/v1/incidents/{incident_id}:cancel"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_not_cancellable` — incident is not in a cancellable status."}
+      }
+    };
   }
   rpc UpdateIncidentStatus(UpdateIncidentStatusRequest) returns (UpdateIncidentStatusResponse) {
     option (google.api.http) = {
       put: "/v1/incidents/{incident_id}/status"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_invalid_status_transition` — the requested status transition is not allowed.\n- `incident_frozen` — incident is frozen and cannot be modified."}
+      }
     };
   }
   rpc UpdateIncidentPriority(UpdateIncidentPriorityRequest) returns (UpdateIncidentPriorityResponse) {
@@ -70,15 +109,45 @@ service IncidentCommandService {
       put: "/v1/incidents/{incident_id}/priority"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified."}
+      }
+    };
   }
   rpc UpdateIncidentDescription(UpdateIncidentDescriptionRequest) returns (UpdateIncidentDescriptionResponse) {
     option (google.api.http) = {
       put: "/v1/incidents/{incident_id}/description"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified."}
+      }
+    };
   }
   rpc ReopenIncident(ReopenIncidentRequest) returns (ReopenIncidentResponse) {
     option (google.api.http) = {post: "/v1/incidents/{incident_id}:reopen"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_not_reopenable` — incident cannot be reopened from its current status."}
+      }
+    };
   }
 }
 

@@ -26,14 +26,13 @@ message ValidationFailedDetails {
 }
 
 // ErrorResponse is the HTTP response body written by the gateway error
-// handler. The openapiv2_schema option forces this message into the
-// generated OpenAPI definitions so that service-level $ref annotations
-// can reference it by name.
+// handler for all client-visible errors. The details field is present
+// only when code = "validation_failed".
 message ErrorResponse {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
       title: "ErrorResponse"
-      description: "Standard error response body returned by the gateway for all HTTP errors."
+      description: "Error response body returned by the gateway for all HTTP errors.\n\n`code` is always a machine-readable domain string (e.g. `employee_not_found`, `validation_failed`).\n\n`details` is present only when `code = validation_failed` and contains the list of field violations."
     }
   };
 

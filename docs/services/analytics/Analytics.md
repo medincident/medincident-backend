@@ -181,12 +181,16 @@
 
 ## Коды ошибок
 
-| Код | Описание |
-|---|---|
-| `analytics_org_not_found` | Некорректный или отсутствующий `organization_id` |
-| `analytics_invalid_scope` | `clinic_id` или `department_id` не является валидным UUID |
-| `analytics_clinic_not_found` | `clinic_id` не принадлежит организации |
-| `analytics_dept_not_found` | `department_id` не принадлежит организации |
-| `analytics_period_invalid` | Некорректный диапазон дат (`from >= to` или неверный формат RFC3339) |
-| `analytics_period_too_large` | Период превышает 366 дней (`GetSnapshot`) или 1000 бакетов (`GetTimeSeries`) |
-| `analytics_query_failed` | Ошибка выполнения SQL-запроса |
+Общие для всех трёх методов (`GetSnapshot`, `GetSummary`, `GetTimeSeries`):
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `analytics_org_not_found` | 404 | Некорректный или отсутствующий `organization_id` |
+| `analytics_clinic_not_found` | 404 | `clinic_id` не принадлежит организации |
+| `analytics_dept_not_found` | 404 | `department_id` не принадлежит организации |
+| `analytics_invalid_scope` | 400 | `clinic_id` или `department_id` не является валидным UUID |
+| `analytics_period_invalid` | 400 | Некорректный диапазон дат (`from >= to` или неверный формат RFC3339) |
+| `analytics_period_too_large` | 400 | Период превышает 366 дней (`GetSnapshot`) или 1000 бакетов (`GetTimeSeries`) |
+| `analytics_query_failed` | 500 | Ошибка выполнения SQL-запроса |

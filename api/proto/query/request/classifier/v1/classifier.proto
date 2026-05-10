@@ -44,11 +44,26 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 service RequestClassifierQueryService {
   rpc GetRequestType(GetRequestTypeRequest) returns (GetRequestTypeResponse) {
     option (google.api.http) = {get: "/v1/request-types/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `request_type_not_found` — request type with the given ID does not exist."}
+      }
+    };
   }
   rpc ListRequestTypesByOrganization(ListRequestTypesByOrganizationRequest) returns (ListRequestTypesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/request-types"};

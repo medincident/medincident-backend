@@ -490,13 +490,34 @@ const file_command_request_classifier_v1_request_classifier_proto_rawDesc = "" +
 	"\x1dReactivateRequestTypeResponse\"8\n" +
 	"\x18DeleteRequestTypeRequest\x12\x1c\n" +
 	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\"\x1b\n" +
-	"\x19DeleteRequestTypeResponse2\xf4\a\n" +
-	"\x1fRequestClassifierCommandService\x12\xc4\x01\n" +
-	"\x11CreateRequestType\x127.command.request.classifier.v1.CreateRequestTypeRequest\x1a8.command.request.classifier.v1.CreateRequestTypeResponse\"<\x82\xd3\xe4\x93\x026:\x01*\"1/v1/organizations/{organization_id}/request-types\x12\xcb\x01\n" +
-	"\x18UpdateRequestTypeDetails\x12>.command.request.classifier.v1.UpdateRequestTypeDetailsRequest\x1a?.command.request.classifier.v1.UpdateRequestTypeDetailsResponse\".\x82\xd3\xe4\x93\x02(:\x01*\x1a#/v1/request-types/{type_id}/details\x12\xc5\x01\n" +
-	"\x15DeactivateRequestType\x12;.command.request.classifier.v1.DeactivateRequestTypeRequest\x1a<.command.request.classifier.v1.DeactivateRequestTypeResponse\"1\x82\xd3\xe4\x93\x02+\")/v1/request-types/{type_id}/deactivations\x12\xc5\x01\n" +
-	"\x15ReactivateRequestType\x12;.command.request.classifier.v1.ReactivateRequestTypeRequest\x1a<.command.request.classifier.v1.ReactivateRequestTypeResponse\"1\x82\xd3\xe4\x93\x02+\")/v1/request-types/{type_id}/reactivations\x12\xab\x01\n" +
-	"\x11DeleteRequestType\x127.command.request.classifier.v1.DeleteRequestTypeRequest\x1a8.command.request.classifier.v1.DeleteRequestTypeResponse\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/request-types/{type_id}B\xcb\x04\x92A\x9a\x02RI\n" +
+	"\x19DeleteRequestTypeResponse2\xdd\x0e\n" +
+	"\x1fRequestClassifierCommandService\x12\xd0\x02\n" +
+	"\x11CreateRequestType\x127.command.request.classifier.v1.CreateRequestTypeRequest\x1a8.command.request.classifier.v1.CreateRequestTypeResponse\"\xc7\x01\x92A\x87\x01J\x84\x01\n" +
+	"\x03409\x12}\n" +
+	"{Conflict. Error codes:\n" +
+	"- `request_type_name_conflict` — a request type with this name already exists in the organization.\x82\xd3\xe4\x93\x026:\x01*\"1/v1/organizations/{organization_id}/request-types\x12\xc7\x03\n" +
+	"\x18UpdateRequestTypeDetails\x12>.command.request.classifier.v1.UpdateRequestTypeDetailsRequest\x1a?.command.request.classifier.v1.UpdateRequestTypeDetailsResponse\"\xa9\x02\x92A\xf7\x01Jn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.J\x84\x01\n" +
+	"\x03409\x12}\n" +
+	"{Conflict. Error codes:\n" +
+	"- `request_type_name_conflict` — a request type with this name already exists in the organization.\x82\xd3\xe4\x93\x02(:\x01*\x1a#/v1/request-types/{type_id}/details\x12\xb9\x02\n" +
+	"\x15DeactivateRequestType\x12;.command.request.classifier.v1.DeactivateRequestTypeRequest\x1a<.command.request.classifier.v1.DeactivateRequestTypeResponse\"\xa4\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02+\")/v1/request-types/{type_id}/deactivations\x12\xbe\x03\n" +
+	"\x15ReactivateRequestType\x12;.command.request.classifier.v1.ReactivateRequestTypeRequest\x1a<.command.request.classifier.v1.ReactivateRequestTypeResponse\"\xa9\x02\x92A\xf4\x01Jn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.J\x81\x01\n" +
+	"\x03409\x12z\n" +
+	"xConflict. Error codes:\n" +
+	"- `request_type_name_conflict` — reactivation would create a name conflict with an active type.\x82\xd3\xe4\x93\x02+\")/v1/request-types/{type_id}/reactivations\x12\x9f\x02\n" +
+	"\x11DeleteRequestType\x127.command.request.classifier.v1.DeleteRequestTypeRequest\x1a8.command.request.classifier.v1.DeleteRequestTypeResponse\"\x96\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/request-types/{type_id}B\x94\x05\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -508,6 +529,9 @@ const file_command_request_classifier_v1_request_classifier_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"!com.command.request.classifier.v1B\x16RequestClassifierProtoP\x01ZYgithub.com/medincident/medincident-backend/pkg/command/request/classifier/v1;classifierv1\xa2\x02\x03CRC\xaa\x02\x1dCommand.Request.Classifier.V1\xca\x02\x1dCommand\\Request\\Classifier\\V1\xe2\x02)Command\\Request\\Classifier\\V1\\GPBMetadata\xea\x02 Command::Request::Classifier::V1b\x06proto3"
 

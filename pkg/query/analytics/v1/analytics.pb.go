@@ -2206,12 +2206,27 @@ const file_query_analytics_v1_analytics_proto_rawDesc = "" +
 	"#TIME_SERIES_GRANULARITY_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bTIME_SERIES_GRANULARITY_DAY\x10\x01\x12 \n" +
 	"\x1cTIME_SERIES_GRANULARITY_WEEK\x10\x02\x12!\n" +
-	"\x1dTIME_SERIES_GRANULARITY_MONTH\x10\x032\x9c\x03\n" +
-	"\x15AnalyticsQueryService\x12~\n" +
-	"\vGetSnapshot\x12&.query.analytics.v1.GetSnapshotRequest\x1a'.query.analytics.v1.GetSnapshotResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/analytics/snapshot\x12z\n" +
+	"\x1dTIME_SERIES_GRANULARITY_MONTH\x10\x032\xd7\t\n" +
+	"\x15AnalyticsQueryService\x12\x91\x03\n" +
+	"\vGetSnapshot\x12&.query.analytics.v1.GetSnapshotRequest\x1a'.query.analytics.v1.GetSnapshotResponse\"\xb0\x02\x92A\x8e\x02J\x8b\x02\n" +
+	"\x03404\x12\x83\x02\n" +
+	"\x80\x02Not found. Error codes:\n" +
+	"- `analytics_org_not_found` — organization with the given ID does not exist.\n" +
+	"- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n" +
+	"- `analytics_dept_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/analytics/snapshot\x12\x8d\x03\n" +
 	"\n" +
-	"GetSummary\x12%.query.analytics.v1.GetSummaryRequest\x1a&.query.analytics.v1.GetSummaryResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/analytics/summary\x12\x86\x01\n" +
-	"\rGetTimeSeries\x12(.query.analytics.v1.GetTimeSeriesRequest\x1a).query.analytics.v1.GetTimeSeriesResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/analytics/timeseriesB\xff\x03\x92A\x9a\x02RI\n" +
+	"GetSummary\x12%.query.analytics.v1.GetSummaryRequest\x1a&.query.analytics.v1.GetSummaryResponse\"\xaf\x02\x92A\x8e\x02J\x8b\x02\n" +
+	"\x03404\x12\x83\x02\n" +
+	"\x80\x02Not found. Error codes:\n" +
+	"- `analytics_org_not_found` — organization with the given ID does not exist.\n" +
+	"- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n" +
+	"- `analytics_dept_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/analytics/summary\x12\x99\x03\n" +
+	"\rGetTimeSeries\x12(.query.analytics.v1.GetTimeSeriesRequest\x1a).query.analytics.v1.GetTimeSeriesResponse\"\xb2\x02\x92A\x8e\x02J\x8b\x02\n" +
+	"\x03404\x12\x83\x02\n" +
+	"\x80\x02Not found. Error codes:\n" +
+	"- `analytics_org_not_found` — organization with the given ID does not exist.\n" +
+	"- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n" +
+	"- `analytics_dept_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/analytics/timeseriesB\xc8\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -2223,6 +2238,9 @@ const file_query_analytics_v1_analytics_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x16com.query.analytics.v1B\x0eAnalyticsProtoP\x01ZMgithub.com/medincident/medincident-backend/pkg/query/analytics/v1;analyticsv1\xa2\x02\x03QAX\xaa\x02\x12Query.Analytics.V1\xca\x02\x12Query\\Analytics\\V1\xe2\x02\x1eQuery\\Analytics\\V1\\GPBMetadata\xea\x02\x14Query::Analytics::V1b\x06proto3"
 

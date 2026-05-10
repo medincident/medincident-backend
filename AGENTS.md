@@ -139,6 +139,29 @@ main.go wires constructors explicitly and drives teardown via `defer`.
     code so the handler can build a meaningful violation entry.
     Current usage: `ScheduleVacation` in
     `internal/service/command/membership/vacation_schedule.go`.
+18. **Every domain error must be declared in the proto contract and
+    documented.** The gateway uses a custom `GatewayErrorHandler`
+    (`internal/handler/gateway/error.go`) that produces clean JSON
+    without `@type` fields:
+    `{"code": "<domain-string>", "message": "...", "details": {...}}`.
+    HTTP status codes are determined by `codeToHTTPStatus` in that
+    file via exact-match overrides and suffix-based rules
+    (`_not_found`→404, `_frozen`→422, `_mismatch`→422,
+    `_invalid_status_transition`→422, `_name_conflict`→409, etc.).
+    The `ErrorResponse` message in `api/proto/error/v1/error.proto`
+    defines the shared schema; every service proto imports it and
+    declares the standard 400/401/403/500/default responses at the
+    service level via `openapiv2_swagger`. For every domain error code
+    (any `oops.Code(...)` other than `validation_failed`), add a
+    per-method `openapiv2_operation` → `responses` entry with a
+    `description` listing the relevant oops codes grouped by HTTP
+    status (no inline examples). The documentation file for the method
+    in `docs/services/` must include an error table listing every code
+    the method can return, with its `oops.Code` value and the
+    corresponding HTTP status. A method that emits a new error code
+    without updating both the proto annotation and the docs is
+    considered incomplete. When adding a new suffix-based or exact-code
+    HTTP mapping, update `codeToHTTPStatus` in `error.go`.
 
 ## Directory layout
 

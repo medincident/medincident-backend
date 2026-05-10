@@ -44,6 +44,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 // OrgStructureCommandService is the command-side contract for the three
@@ -66,11 +75,23 @@ service OrgStructureCommandService {
       put: "/v1/organizations/{organization_id}/details"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
+    };
   }
   rpc UpdateOrganizationLegalAddress(UpdateOrganizationLegalAddressRequest) returns (UpdateOrganizationLegalAddressResponse) {
     option (google.api.http) = {
       put: "/v1/organizations/{organization_id}/legal-address"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
     };
   }
 
@@ -79,17 +100,35 @@ service OrgStructureCommandService {
       post: "/v1/organizations/{organization_id}/clinics"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_organization_not_found` — organization with the given ID does not exist."}
+      }
+    };
   }
   rpc UpdateClinicDetails(UpdateClinicDetailsRequest) returns (UpdateClinicDetailsResponse) {
     option (google.api.http) = {
       put: "/v1/clinics/{clinic_id}/details"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."}
+      }
+    };
   }
   rpc UpdateClinicPhysicalAddress(UpdateClinicPhysicalAddressRequest) returns (UpdateClinicPhysicalAddressResponse) {
     option (google.api.http) = {
       put: "/v1/clinics/{clinic_id}/physical-address"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."}
+      }
     };
   }
 
@@ -98,11 +137,23 @@ service OrgStructureCommandService {
       post: "/v1/clinics/{clinic_id}/departments"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_clinic_not_found` — clinic with the given ID does not exist."}
+      }
+    };
   }
   rpc UpdateDepartmentDetails(UpdateDepartmentDetailsRequest) returns (UpdateDepartmentDetailsResponse) {
     option (google.api.http) = {
       put: "/v1/departments/{department_id}/details"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."}
+      }
     };
   }
 }

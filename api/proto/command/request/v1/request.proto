@@ -45,6 +45,15 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       }
     }
   }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
 };
 
 service ServiceRequestCommandService {
@@ -53,11 +62,31 @@ service ServiceRequestCommandService {
       post: "/v1/service-requests"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `service_request_department_not_found` — department with the given ID does not exist.\n- `service_request_clinic_not_found` — clinic linked to the department does not exist.\n- `service_request_type_not_found` — request type with the given ID does not exist.\n- `service_request_incident_not_found` — linked incident with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `service_request_type_inactive` — the request type is inactive.\n- `service_request_type_org_mismatch` — the request type belongs to a different organization.\n- `service_request_incident_org_mismatch` — the linked incident belongs to a different organization.\n- `service_request_employee_dept_mismatch` — an executor employee does not belong to the specified department."}
+      }
+    };
   }
   rpc UpdateServiceRequestDescription(UpdateServiceRequestDescriptionRequest) returns (UpdateServiceRequestDescriptionResponse) {
     option (google.api.http) = {
       put: "/v1/service-requests/{service_request_id}/description"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `service_request_frozen` — service request is frozen and cannot be modified."}
+      }
     };
   }
   rpc UpdateServiceRequestStatus(UpdateServiceRequestStatusRequest) returns (UpdateServiceRequestStatusResponse) {
@@ -65,11 +94,31 @@ service ServiceRequestCommandService {
       put: "/v1/service-requests/{service_request_id}/status"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `service_request_invalid_status_transition` — the requested status transition is not allowed.\n- `service_request_frozen` — service request is frozen and cannot be modified."}
+      }
+    };
   }
   rpc AssignExecutors(AssignExecutorsRequest) returns (AssignExecutorsResponse) {
     option (google.api.http) = {
       put: "/v1/service-requests/{service_request_id}/executors"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `service_request_not_found` — service request with the given ID does not exist.\n- `service_request_employee_not_found` — one of the executor employees was not found."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `service_request_frozen` — service request is frozen and cannot be modified.\n- `service_request_employee_dept_mismatch` — an executor employee does not belong to the service request's department."}
+      }
     };
   }
 }

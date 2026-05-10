@@ -866,12 +866,26 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x12service_request_id\x18\x01 \x01(\tR\x10serviceRequestId\"\xc2\x01\n" +
 	" GetServiceRequestHistoryResponse\x12K\n" +
 	"\x0estatus_history\x18\x01 \x03(\v2$.query.request.v1.StatusHistoryEntryR\rstatusHistory\x12Q\n" +
-	"\x10executor_history\x18\x02 \x03(\v2&.query.request.v1.ExecutorHistoryEntryR\x0fexecutorHistory2\xe9\x05\n" +
-	"\x1aServiceRequestQueryService\x12\x8f\x01\n" +
-	"\x11GetServiceRequest\x12*.query.request.v1.GetServiceRequestRequest\x1a+.query.request.v1.GetServiceRequestResponse\"!\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/service-requests/{id}\x12\xb0\x01\n" +
-	"\x13ListServiceRequests\x12,.query.request.v1.ListServiceRequestsRequest\x1a-.query.request.v1.ListServiceRequestsResponse\"<\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/service-requests\x12\xc6\x01\n" +
-	"\x1dListServiceRequestsByIncident\x126.query.request.v1.ListServiceRequestsByIncidentRequest\x1a7.query.request.v1.ListServiceRequestsByIncidentResponse\"4\x82\xd3\xe4\x93\x02.\x12,/v1/incidents/{incident_id}/service-requests\x12\xbc\x01\n" +
-	"\x18GetServiceRequestHistory\x121.query.request.v1.GetServiceRequestHistoryRequest\x1a2.query.request.v1.GetServiceRequestHistoryResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/service-requests/{service_request_id}/historyB\xef\x03\x92A\x9a\x02RI\n" +
+	"\x10executor_history\x18\x02 \x03(\v2&.query.request.v1.ExecutorHistoryEntryR\x0fexecutorHistory2\xc5\n" +
+	"\n" +
+	"\x1aServiceRequestQueryService\x12\x8f\x02\n" +
+	"\x11GetServiceRequest\x12*.query.request.v1.GetServiceRequestRequest\x1a+.query.request.v1.GetServiceRequestResponse\"\xa0\x01\x92A|Jz\n" +
+	"\x03404\x12s\n" +
+	"qNot found. Error codes:\n" +
+	"- `service_request_query_not_found` — service request with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/service-requests/{id}\x12\x8a\x03\n" +
+	"\x13ListServiceRequests\x12,.query.request.v1.ListServiceRequestsRequest\x1a-.query.request.v1.ListServiceRequestsResponse\"\x95\x02\x92A\xd5\x01J\xd2\x01\n" +
+	"\x03400\x12\xca\x01\n" +
+	"\xc7\x01Validation failed. Error codes:\n" +
+	"- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n" +
+	"- `service_request_list_offset_out_of_range` — offset is out of the allowed range.\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/service-requests\x12\xc8\x02\n" +
+	"\x1dListServiceRequestsByIncident\x126.query.request.v1.ListServiceRequestsByIncidentRequest\x1a7.query.request.v1.ListServiceRequestsByIncidentResponse\"\xb5\x01\x92A~J|\n" +
+	"\x03404\x12u\n" +
+	"sNot found. Error codes:\n" +
+	"- `service_request_query_incident_not_found` — incident with the given ID does not exist.\x82\xd3\xe4\x93\x02.\x12,/v1/incidents/{incident_id}/service-requests\x12\xbc\x02\n" +
+	"\x18GetServiceRequestHistory\x121.query.request.v1.GetServiceRequestHistoryRequest\x1a2.query.request.v1.GetServiceRequestHistoryResponse\"\xb8\x01\x92A|Jz\n" +
+	"\x03404\x12s\n" +
+	"qNot found. Error codes:\n" +
+	"- `service_request_query_not_found` — service request with the given ID does not exist.\x82\xd3\xe4\x93\x023\x121/v1/service-requests/{service_request_id}/historyB\xb8\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -883,6 +897,9 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x14com.query.request.v1B\fRequestProtoP\x01ZIgithub.com/medincident/medincident-backend/pkg/query/request/v1;requestv1\xa2\x02\x03QRX\xaa\x02\x10Query.Request.V1\xca\x02\x10Query\\Request\\V1\xe2\x02\x1cQuery\\Request\\V1\\GPBMetadata\xea\x02\x12Query::Request::V1b\x06proto3"
 

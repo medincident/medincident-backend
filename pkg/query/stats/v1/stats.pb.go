@@ -565,7 +565,7 @@ const file_query_stats_v1_stats_proto_rawDesc = "" +
 	"\x11StatsQueryService\x12\xa4\x01\n" +
 	"\x14GetOrganizationStats\x12+.query.stats.v1.GetOrganizationStatsRequest\x1a,.query.stats.v1.GetOrganizationStatsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/stats\x12\x86\x01\n" +
 	"\x0eGetClinicStats\x12%.query.stats.v1.GetClinicStatsRequest\x1a&.query.stats.v1.GetClinicStatsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/clinics/{clinic_id}/stats\x12\x9a\x01\n" +
-	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xdf\x03\x92A\x9a\x02RI\n" +
+	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xa8\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -577,6 +577,9 @@ const file_query_stats_v1_stats_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x12com.query.stats.v1B\n" +
 	"StatsProtoP\x01ZEgithub.com/medincident/medincident-backend/pkg/query/stats/v1;statsv1\xa2\x02\x03QSX\xaa\x02\x0eQuery.Stats.V1\xca\x02\x0eQuery\\Stats\\V1\xe2\x02\x1aQuery\\Stats\\V1\\GPBMetadata\xea\x02\x10Query::Stats::V1b\x06proto3"

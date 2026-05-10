@@ -972,16 +972,37 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"!\n" +
-	"\x1fUpdateDepartmentDetailsResponse2\xfb\v\n" +
+	"\x1fUpdateDepartmentDetailsResponse2\x91\x12\n" +
 	"\x1aOrgStructureCommandService\x12\x9b\x01\n" +
-	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xca\x01\n" +
-	"\x19UpdateOrganizationDetails\x129.command.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.command.orgstructure.v1.UpdateOrganizationDetailsResponse\"6\x82\xd3\xe4\x93\x020:\x01*\x1a+/v1/organizations/{organization_id}/details\x12\xdf\x01\n" +
-	"\x1eUpdateOrganizationLegalAddress\x12>.command.orgstructure.v1.UpdateOrganizationLegalAddressRequest\x1a?.command.orgstructure.v1.UpdateOrganizationLegalAddressResponse\"<\x82\xd3\xe4\x93\x026:\x01*\x1a1/v1/organizations/{organization_id}/legal-address\x12\xa3\x01\n" +
-	"\fCreateClinic\x12,.command.orgstructure.v1.CreateClinicRequest\x1a-.command.orgstructure.v1.CreateClinicResponse\"6\x82\xd3\xe4\x93\x020:\x01*\"+/v1/organizations/{organization_id}/clinics\x12\xac\x01\n" +
-	"\x13UpdateClinicDetails\x123.command.orgstructure.v1.UpdateClinicDetailsRequest\x1a4.command.orgstructure.v1.UpdateClinicDetailsResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/clinics/{clinic_id}/details\x12\xcd\x01\n" +
-	"\x1bUpdateClinicPhysicalAddress\x12;.command.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.command.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"3\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\xa7\x01\n" +
-	"\x10CreateDepartment\x120.command.orgstructure.v1.CreateDepartmentRequest\x1a1.command.orgstructure.v1.CreateDepartmentResponse\".\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/clinics/{clinic_id}/departments\x12\xc0\x01\n" +
-	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"2\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\xa3\x04\x92A\x9a\x02RI\n" +
+	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xbe\x02\n" +
+	"\x19UpdateOrganizationDetails\x129.command.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.command.orgstructure.v1.UpdateOrganizationDetailsResponse\"\xa9\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x020:\x01*\x1a+/v1/organizations/{organization_id}/details\x12\xd3\x02\n" +
+	"\x1eUpdateOrganizationLegalAddress\x12>.command.orgstructure.v1.UpdateOrganizationLegalAddressRequest\x1a?.command.orgstructure.v1.UpdateOrganizationLegalAddressResponse\"\xaf\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x026:\x01*\x1a1/v1/organizations/{organization_id}/legal-address\x12\x9e\x02\n" +
+	"\fCreateClinic\x12,.command.orgstructure.v1.CreateClinicRequest\x1a-.command.orgstructure.v1.CreateClinicResponse\"\xb0\x01\x92AwJu\n" +
+	"\x03404\x12n\n" +
+	"lNot found. Error codes:\n" +
+	"- `clinic_organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x020:\x01*\"+/v1/organizations/{organization_id}/clinics\x12\x94\x02\n" +
+	"\x13UpdateClinicDetails\x123.command.orgstructure.v1.UpdateClinicDetailsRequest\x1a4.command.orgstructure.v1.UpdateClinicDetailsResponse\"\x91\x01\x92AdJb\n" +
+	"\x03404\x12[\n" +
+	"YNot found. Error codes:\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/clinics/{clinic_id}/details\x12\xb5\x02\n" +
+	"\x1bUpdateClinicPhysicalAddress\x12;.command.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.command.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"\x9a\x01\x92AdJb\n" +
+	"\x03404\x12[\n" +
+	"YNot found. Error codes:\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\x9a\x02\n" +
+	"\x10CreateDepartment\x120.command.orgstructure.v1.CreateDepartmentRequest\x1a1.command.orgstructure.v1.CreateDepartmentResponse\"\xa0\x01\x92AoJm\n" +
+	"\x03404\x12f\n" +
+	"dNot found. Error codes:\n" +
+	"- `department_clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02(:\x01*\"#/v1/clinics/{clinic_id}/departments\x12\xb0\x02\n" +
+	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"\xa1\x01\x92AlJj\n" +
+	"\x03404\x12c\n" +
+	"aNot found. Error codes:\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\xec\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -993,6 +1014,9 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x1bcom.command.orgstructure.v1B\x11OrgstructureProtoP\x01ZUgithub.com/medincident/medincident-backend/pkg/command/orgstructure/v1;orgstructurev1\xa2\x02\x03COX\xaa\x02\x17Command.Orgstructure.V1\xca\x02\x17Command\\Orgstructure\\V1\xe2\x02#Command\\Orgstructure\\V1\\GPBMetadata\xea\x02\x19Command::Orgstructure::V1b\x06proto3"
 

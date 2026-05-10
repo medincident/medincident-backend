@@ -2963,39 +2963,192 @@ const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\x18GrantSystemAdminResponse\"G\n" +
 	"\x18RevokeSystemAdminRequest\x12+\n" +
 	"\x0fzitadel_user_id\x18\x01 \x01(\tB\x03\xe0A\x02R\rzitadelUserId\"\x1b\n" +
-	"\x19RevokeSystemAdminResponse2\xac0\n" +
-	"\x18MembershipCommandService\x12\x81\x01\n" +
-	"\fHireEmployee\x12*.command.membership.v1.HireEmployeeRequest\x1a+.command.membership.v1.HireEmployeeResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/employees\x12\xb6\x01\n" +
-	"\x16UpdateEmployeePosition\x124.command.membership.v1.UpdateEmployeePositionRequest\x1a5.command.membership.v1.UpdateEmployeePositionResponse\"/\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/employees/{employee_id}/position\x12\xbe\x01\n" +
-	"\x18UpdateEmployeeDepartment\x126.command.membership.v1.UpdateEmployeeDepartmentRequest\x1a7.command.membership.v1.UpdateEmployeeDepartmentResponse\"1\x82\xd3\xe4\x93\x02+:\x01*\x1a&/v1/employees/{employee_id}/department\x12\x9b\x01\n" +
-	"\x11TerminateEmployee\x12/.command.membership.v1.TerminateEmployeeRequest\x1a0.command.membership.v1.TerminateEmployeeResponse\"#\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/employees/{employee_id}\x12\xaf\x01\n" +
-	"\x10StartVacationNow\x12..command.membership.v1.StartVacationNowRequest\x1a/.command.membership.v1.StartVacationNowResponse\":\x82\xd3\xe4\x93\x024:\x01*\"//v1/employees/{employee_id}/vacations:start-now\x12\xa5\x01\n" +
-	"\x10ScheduleVacation\x12..command.membership.v1.ScheduleVacationRequest\x1a/.command.membership.v1.ScheduleVacationResponse\"0\x82\xd3\xe4\x93\x02*:\x01*\"%/v1/employees/{employee_id}/vacations\x12\xb3\x01\n" +
-	"\x15UpdateVacationEndDate\x123.command.membership.v1.UpdateVacationEndDateRequest\x1a4.command.membership.v1.UpdateVacationEndDateResponse\"/\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/vacations/{vacation_id}/end-date\x12\xa5\x01\n" +
-	"\x10ForceEndVacation\x12..command.membership.v1.ForceEndVacationRequest\x1a/.command.membership.v1.ForceEndVacationResponse\"0\x82\xd3\xe4\x93\x02*\"(/v1/vacations/{vacation_id}/terminations\x12\xbb\x01\n" +
-	"\x17CancelScheduledVacation\x125.command.membership.v1.CancelScheduledVacationRequest\x1a6.command.membership.v1.CancelScheduledVacationResponse\"1\x82\xd3\xe4\x93\x02+\")/v1/vacations/{vacation_id}/cancellations\x12\xcd\x01\n" +
-	"\x1bAssignDepartmentResponsible\x129.command.membership.v1.AssignDepartmentResponsibleRequest\x1a:.command.membership.v1.AssignDepartmentResponsibleResponse\"7\x82\xd3\xe4\x93\x021:\x01*\",/v1/departments/{department_id}/responsibles\x12\xd8\x01\n" +
-	"\x1bRevokeDepartmentResponsible\x129.command.membership.v1.RevokeDepartmentResponsibleRequest\x1a:.command.membership.v1.RevokeDepartmentResponsibleResponse\"B\x82\xd3\xe4\x93\x02<*:/v1/departments/{department_id}/responsibles/{employee_id}\x12\xf4\x01\n" +
-	"!AssignDepartmentResponsibleDeputy\x12?.command.membership.v1.AssignDepartmentResponsibleDeputyRequest\x1a@.command.membership.v1.AssignDepartmentResponsibleDeputyResponse\"L\x82\xd3\xe4\x93\x02F:\x01*\"A/v1/departments/{department_id}/responsibles/{employee_id}/deputy\x12\xf1\x01\n" +
-	"!RemoveDepartmentResponsibleDeputy\x12?.command.membership.v1.RemoveDepartmentResponsibleDeputyRequest\x1a@.command.membership.v1.RemoveDepartmentResponsibleDeputyResponse\"I\x82\xd3\xe4\x93\x02C*A/v1/departments/{department_id}/responsibles/{employee_id}/deputy\x12\x9d\x01\n" +
-	"\x10AssignClinicHead\x12..command.membership.v1.AssignClinicHeadRequest\x1a/.command.membership.v1.AssignClinicHeadResponse\"(\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/clinics/{clinic_id}/heads\x12\xa8\x01\n" +
-	"\x10RevokeClinicHead\x12..command.membership.v1.RevokeClinicHeadRequest\x1a/.command.membership.v1.RevokeClinicHeadResponse\"3\x82\xd3\xe4\x93\x02-*+/v1/clinics/{clinic_id}/heads/{employee_id}\x12\xc4\x01\n" +
-	"\x16AssignClinicHeadDeputy\x124.command.membership.v1.AssignClinicHeadDeputyRequest\x1a5.command.membership.v1.AssignClinicHeadDeputyResponse\"=\x82\xd3\xe4\x93\x027:\x01*\"2/v1/clinics/{clinic_id}/heads/{employee_id}/deputy\x12\xc1\x01\n" +
-	"\x16RemoveClinicHeadDeputy\x124.command.membership.v1.RemoveClinicHeadDeputyRequest\x1a5.command.membership.v1.RemoveClinicHeadDeputyResponse\":\x82\xd3\xe4\x93\x024*2/v1/clinics/{clinic_id}/heads/{employee_id}/deputy\x12\xbf\x01\n" +
-	"\x17AssignOrganizationAdmin\x125.command.membership.v1.AssignOrganizationAdminRequest\x1a6.command.membership.v1.AssignOrganizationAdminResponse\"5\x82\xd3\xe4\x93\x02/:\x01*\"*/v1/organizations/{organization_id}/admins\x12\xca\x01\n" +
-	"\x17RevokeOrganizationAdmin\x125.command.membership.v1.RevokeOrganizationAdminRequest\x1a6.command.membership.v1.RevokeOrganizationAdminResponse\"@\x82\xd3\xe4\x93\x02:*8/v1/organizations/{organization_id}/admins/{employee_id}\x12\xe6\x01\n" +
-	"\x1dAssignOrganizationAdminDeputy\x12;.command.membership.v1.AssignOrganizationAdminDeputyRequest\x1a<.command.membership.v1.AssignOrganizationAdminDeputyResponse\"J\x82\xd3\xe4\x93\x02D:\x01*\"?/v1/organizations/{organization_id}/admins/{employee_id}/deputy\x12\xe3\x01\n" +
-	"\x1dRemoveOrganizationAdminDeputy\x12;.command.membership.v1.RemoveOrganizationAdminDeputyRequest\x1a<.command.membership.v1.RemoveOrganizationAdminDeputyResponse\"G\x82\xd3\xe4\x93\x02A*?/v1/organizations/{organization_id}/admins/{employee_id}/deputy\x12\xbb\x01\n" +
-	"\x16AssignOrganizationHead\x124.command.membership.v1.AssignOrganizationHeadRequest\x1a5.command.membership.v1.AssignOrganizationHeadResponse\"4\x82\xd3\xe4\x93\x02.:\x01*\")/v1/organizations/{organization_id}/heads\x12\xc6\x01\n" +
-	"\x16RevokeOrganizationHead\x124.command.membership.v1.RevokeOrganizationHeadRequest\x1a5.command.membership.v1.RevokeOrganizationHeadResponse\"?\x82\xd3\xe4\x93\x029*7/v1/organizations/{organization_id}/heads/{employee_id}\x12\xe2\x01\n" +
-	"\x1cAssignOrganizationHeadDeputy\x12:.command.membership.v1.AssignOrganizationHeadDeputyRequest\x1a;.command.membership.v1.AssignOrganizationHeadDeputyResponse\"I\x82\xd3\xe4\x93\x02C:\x01*\">/v1/organizations/{organization_id}/heads/{employee_id}/deputy\x12\xdf\x01\n" +
-	"\x1cRemoveOrganizationHeadDeputy\x12:.command.membership.v1.RemoveOrganizationHeadDeputyRequest\x1a;.command.membership.v1.RemoveOrganizationHeadDeputyResponse\"F\x82\xd3\xe4\x93\x02@*>/v1/organizations/{organization_id}/heads/{employee_id}/deputy\x12\xd3\x01\n" +
-	"\x1cAssignOrganizationDispatcher\x12:.command.membership.v1.AssignOrganizationDispatcherRequest\x1a;.command.membership.v1.AssignOrganizationDispatcherResponse\":\x82\xd3\xe4\x93\x024:\x01*\"//v1/organizations/{organization_id}/dispatchers\x12\xde\x01\n" +
-	"\x1cRevokeOrganizationDispatcher\x12:.command.membership.v1.RevokeOrganizationDispatcherRequest\x1a;.command.membership.v1.RevokeOrganizationDispatcherResponse\"E\x82\xd3\xe4\x93\x02?*=/v1/organizations/{organization_id}/dispatchers/{employee_id}\x12\xfa\x01\n" +
-	"\"AssignOrganizationDispatcherDeputy\x12@.command.membership.v1.AssignOrganizationDispatcherDeputyRequest\x1aA.command.membership.v1.AssignOrganizationDispatcherDeputyResponse\"O\x82\xd3\xe4\x93\x02I:\x01*\"D/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy\x12\xf7\x01\n" +
-	"\"RemoveOrganizationDispatcherDeputy\x12@.command.membership.v1.RemoveOrganizationDispatcherDeputyRequest\x1aA.command.membership.v1.RemoveOrganizationDispatcherDeputyResponse\"L\x82\xd3\xe4\x93\x02F*D/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy\x12\x91\x01\n" +
-	"\x10GrantSystemAdmin\x12..command.membership.v1.GrantSystemAdminRequest\x1a/.command.membership.v1.GrantSystemAdminResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/system-admins\x12\xa3\x01\n" +
-	"\x11RevokeSystemAdmin\x12/.command.membership.v1.RevokeSystemAdminRequest\x1a0.command.membership.v1.RevokeSystemAdminResponse\"+\x82\xd3\xe4\x93\x02%*#/v1/system-admins/{zitadel_user_id}B\x93\x04\x92A\x9a\x02RI\n" +
+	"\x19RevokeSystemAdminResponse2\xb0c\n" +
+	"\x18MembershipCommandService\x12\xc9\x04\n" +
+	"\fHireEmployee\x12*.command.membership.v1.HireEmployeeRequest\x1a+.command.membership.v1.HireEmployeeResponse\"\xdf\x03\x92A\xc3\x03J\xba\x01\n" +
+	"\x03404\x12\xb2\x01\n" +
+	"\xaf\x01Not found. Error codes:\n" +
+	"- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.\n" +
+	"- `department_not_found` — department with the given ID does not exist.J\x84\x01\n" +
+	"\x03409\x12}\n" +
+	"{Conflict. Error codes:\n" +
+	"- `employee_already_hired` — this Zitadel user is already an active employee of this organization.J}\n" +
+	"\x03503\x12v\n" +
+	"tService unavailable. Error codes:\n" +
+	"- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/v1/employees\x12\xa2\x02\n" +
+	"\x16UpdateEmployeePosition\x124.command.membership.v1.UpdateEmployeePositionRequest\x1a5.command.membership.v1.UpdateEmployeePositionResponse\"\x9a\x01\x92AhJf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/employees/{employee_id}/position\x12\xf8\x02\n" +
+	"\x18UpdateEmployeeDepartment\x126.command.membership.v1.UpdateEmployeeDepartmentRequest\x1a7.command.membership.v1.UpdateEmployeeDepartmentResponse\"\xea\x01\x92A\xb5\x01J\xb2\x01\n" +
+	"\x03404\x12\xaa\x01\n" +
+	"\xa7\x01Not found. Error codes:\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02+:\x01*\x1a&/v1/employees/{employee_id}/department\x12\x87\x02\n" +
+	"\x11TerminateEmployee\x12/.command.membership.v1.TerminateEmployeeRequest\x1a0.command.membership.v1.TerminateEmployeeResponse\"\x8e\x01\x92AhJf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/employees/{employee_id}\x12\x9b\x02\n" +
+	"\x10StartVacationNow\x12..command.membership.v1.StartVacationNowRequest\x1a/.command.membership.v1.StartVacationNowResponse\"\xa5\x01\x92AhJf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x024:\x01*\"//v1/employees/{employee_id}/vacations:start-now\x12\x91\x02\n" +
+	"\x10ScheduleVacation\x12..command.membership.v1.ScheduleVacationRequest\x1a/.command.membership.v1.ScheduleVacationResponse\"\x9b\x01\x92AhJf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02*:\x01*\"%/v1/employees/{employee_id}/vacations\x12\x9f\x02\n" +
+	"\x15UpdateVacationEndDate\x123.command.membership.v1.UpdateVacationEndDateRequest\x1a4.command.membership.v1.UpdateVacationEndDateResponse\"\x9a\x01\x92AhJf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `vacation_not_found` — vacation with the given ID does not exist.\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/vacations/{vacation_id}/end-date\x12\x91\x02\n" +
+	"\x10ForceEndVacation\x12..command.membership.v1.ForceEndVacationRequest\x1a/.command.membership.v1.ForceEndVacationResponse\"\x9b\x01\x92AhJf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `vacation_not_found` — vacation with the given ID does not exist.\x82\xd3\xe4\x93\x02*\"(/v1/vacations/{vacation_id}/terminations\x12\xa7\x02\n" +
+	"\x17CancelScheduledVacation\x125.command.membership.v1.CancelScheduledVacationRequest\x1a6.command.membership.v1.CancelScheduledVacationResponse\"\x9c\x01\x92AhJf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `vacation_not_found` — vacation with the given ID does not exist.\x82\xd3\xe4\x93\x02+\")/v1/vacations/{vacation_id}/cancellations\x12\x8e\x04\n" +
+	"\x1bAssignDepartmentResponsible\x129.command.membership.v1.AssignDepartmentResponsibleRequest\x1a:.command.membership.v1.AssignDepartmentResponsibleResponse\"\xf7\x02\x92A\xbc\x02J\xb2\x01\n" +
+	"\x03404\x12\xaa\x01\n" +
+	"\xa7\x01Not found. Error codes:\n" +
+	"- `department_not_found` — department with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.J\x84\x01\n" +
+	"\x03409\x12}\n" +
+	"{Conflict. Error codes:\n" +
+	"- `department_responsible_already_assigned` — this employee is already the department responsible.\x82\xd3\xe4\x93\x021:\x01*\",/v1/departments/{department_id}/responsibles\x12\xa2\x03\n" +
+	"\x1bRevokeDepartmentResponsible\x129.command.membership.v1.RevokeDepartmentResponsibleRequest\x1a:.command.membership.v1.RevokeDepartmentResponsibleResponse\"\x8b\x02\x92A\xc5\x01J\xc2\x01\n" +
+	"\x03404\x12\xba\x01\n" +
+	"\xb7\x01Not found. Error codes:\n" +
+	"- `department_responsible_not_found` — this employee is not the department responsible.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02<*:/v1/departments/{department_id}/responsibles/{employee_id}\x12\xeb\x04\n" +
+	"!AssignDepartmentResponsibleDeputy\x12?.command.membership.v1.AssignDepartmentResponsibleDeputyRequest\x1a@.command.membership.v1.AssignDepartmentResponsibleDeputyResponse\"\xc2\x03\x92A\xf2\x02J\xfd\x01\n" +
+	"\x03404\x12\xf5\x01\n" +
+	"\xf2\x01Not found. Error codes:\n" +
+	"- `department_not_found` — department with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\n" +
+	"- `deputy_not_found` — deputy employee with the given ID does not exist.Jp\n" +
+	"\x03409\x12i\n" +
+	"gConflict. Error codes:\n" +
+	"- `deputy_already_assigned` — this employee is already a deputy for this role.\x82\xd3\xe4\x93\x02F:\x01*\"A/v1/departments/{department_id}/responsibles/{employee_id}/deputy\x12\xe1\x02\n" +
+	"!RemoveDepartmentResponsibleDeputy\x12?.command.membership.v1.RemoveDepartmentResponsibleDeputyRequest\x1a@.command.membership.v1.RemoveDepartmentResponsibleDeputyResponse\"\xb8\x01\x92AlJj\n" +
+	"\x03404\x12c\n" +
+	"aNot found. Error codes:\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02C*A/v1/departments/{department_id}/responsibles/{employee_id}/deputy\x12\xbe\x03\n" +
+	"\x10AssignClinicHead\x12..command.membership.v1.AssignClinicHeadRequest\x1a/.command.membership.v1.AssignClinicHeadResponse\"\xc8\x02\x92A\x9c\x02J\xaa\x01\n" +
+	"\x03404\x12\xa2\x01\n" +
+	"\x9f\x01Not found. Error codes:\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.Jm\n" +
+	"\x03409\x12f\n" +
+	"dConflict. Error codes:\n" +
+	"- `clinic_head_already_assigned` — this clinic already has a head assigned.\x82\xd3\xe4\x93\x02\":\x01*\"\x1d/v1/clinics/{clinic_id}/heads\x12\x92\x02\n" +
+	"\x10RevokeClinicHead\x12..command.membership.v1.RevokeClinicHeadRequest\x1a/.command.membership.v1.RevokeClinicHeadResponse\"\x9c\x01\x92AfJd\n" +
+	"\x03404\x12]\n" +
+	"[Not found. Error codes:\n" +
+	"- `clinic_head_not_found` — this employee is not the clinic head.\x82\xd3\xe4\x93\x02-*+/v1/clinics/{clinic_id}/heads/{employee_id}\x12\xb3\x04\n" +
+	"\x16AssignClinicHeadDeputy\x124.command.membership.v1.AssignClinicHeadDeputyRequest\x1a5.command.membership.v1.AssignClinicHeadDeputyResponse\"\xab\x03\x92A\xea\x02J\xf5\x01\n" +
+	"\x03404\x12\xed\x01\n" +
+	"\xea\x01Not found. Error codes:\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\n" +
+	"- `deputy_not_found` — deputy employee with the given ID does not exist.Jp\n" +
+	"\x03409\x12i\n" +
+	"gConflict. Error codes:\n" +
+	"- `deputy_already_assigned` — this employee is already a deputy for this role.\x82\xd3\xe4\x93\x027:\x01*\"2/v1/clinics/{clinic_id}/heads/{employee_id}/deputy\x12\xa9\x02\n" +
+	"\x16RemoveClinicHeadDeputy\x124.command.membership.v1.RemoveClinicHeadDeputyRequest\x1a5.command.membership.v1.RemoveClinicHeadDeputyResponse\"\xa1\x01\x92AdJb\n" +
+	"\x03404\x12[\n" +
+	"YNot found. Error codes:\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x024*2/v1/clinics/{clinic_id}/heads/{employee_id}/deputy\x12\xfa\x03\n" +
+	"\x17AssignOrganizationAdmin\x125.command.membership.v1.AssignOrganizationAdminRequest\x1a6.command.membership.v1.AssignOrganizationAdminResponse\"\xef\x02\x92A\xb6\x02J\xb6\x01\n" +
+	"\x03404\x12\xae\x01\n" +
+	"\xab\x01Not found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.J{\n" +
+	"\x03409\x12t\n" +
+	"rConflict. Error codes:\n" +
+	"- `organization_admin_already_assigned` — this employee is already an organization admin.\x82\xd3\xe4\x93\x02/:\x01*\"*/v1/organizations/{organization_id}/admins\x12\xc1\x02\n" +
+	"\x17RevokeOrganizationAdmin\x125.command.membership.v1.RevokeOrganizationAdminRequest\x1a6.command.membership.v1.RevokeOrganizationAdminResponse\"\xb6\x01\x92AsJq\n" +
+	"\x03404\x12j\n" +
+	"hNot found. Error codes:\n" +
+	"- `organization_admin_not_found` — this employee is not an organization admin.\x82\xd3\xe4\x93\x02:*8/v1/organizations/{organization_id}/admins/{employee_id}\x12\xe1\x04\n" +
+	"\x1dAssignOrganizationAdminDeputy\x12;.command.membership.v1.AssignOrganizationAdminDeputyRequest\x1a<.command.membership.v1.AssignOrganizationAdminDeputyResponse\"\xc4\x03\x92A\xf6\x02J\x81\x02\n" +
+	"\x03404\x12\xf9\x01\n" +
+	"\xf6\x01Not found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\n" +
+	"- `deputy_not_found` — deputy employee with the given ID does not exist.Jp\n" +
+	"\x03409\x12i\n" +
+	"gConflict. Error codes:\n" +
+	"- `deputy_already_assigned` — this employee is already a deputy for this role.\x82\xd3\xe4\x93\x02D:\x01*\"?/v1/organizations/{organization_id}/admins/{employee_id}/deputy\x12\xd7\x02\n" +
+	"\x1dRemoveOrganizationAdminDeputy\x12;.command.membership.v1.RemoveOrganizationAdminDeputyRequest\x1a<.command.membership.v1.RemoveOrganizationAdminDeputyResponse\"\xba\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x02A*?/v1/organizations/{organization_id}/admins/{employee_id}/deputy\x12\xf4\x03\n" +
+	"\x16AssignOrganizationHead\x124.command.membership.v1.AssignOrganizationHeadRequest\x1a5.command.membership.v1.AssignOrganizationHeadResponse\"\xec\x02\x92A\xb4\x02J\xb6\x01\n" +
+	"\x03404\x12\xae\x01\n" +
+	"\xab\x01Not found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.Jy\n" +
+	"\x03409\x12r\n" +
+	"pConflict. Error codes:\n" +
+	"- `organization_head_already_assigned` — this organization already has a head assigned.\x82\xd3\xe4\x93\x02.:\x01*\")/v1/organizations/{organization_id}/heads\x12\xbc\x02\n" +
+	"\x16RevokeOrganizationHead\x124.command.membership.v1.RevokeOrganizationHeadRequest\x1a5.command.membership.v1.RevokeOrganizationHeadResponse\"\xb4\x01\x92ArJp\n" +
+	"\x03404\x12i\n" +
+	"gNot found. Error codes:\n" +
+	"- `organization_head_not_found` — this employee is not the organization head.\x82\xd3\xe4\x93\x029*7/v1/organizations/{organization_id}/heads/{employee_id}\x12\xdd\x04\n" +
+	"\x1cAssignOrganizationHeadDeputy\x12:.command.membership.v1.AssignOrganizationHeadDeputyRequest\x1a;.command.membership.v1.AssignOrganizationHeadDeputyResponse\"\xc3\x03\x92A\xf6\x02J\x81\x02\n" +
+	"\x03404\x12\xf9\x01\n" +
+	"\xf6\x01Not found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\n" +
+	"- `deputy_not_found` — deputy employee with the given ID does not exist.Jp\n" +
+	"\x03409\x12i\n" +
+	"gConflict. Error codes:\n" +
+	"- `deputy_already_assigned` — this employee is already a deputy for this role.\x82\xd3\xe4\x93\x02C:\x01*\">/v1/organizations/{organization_id}/heads/{employee_id}/deputy\x12\xd3\x02\n" +
+	"\x1cRemoveOrganizationHeadDeputy\x12:.command.membership.v1.RemoveOrganizationHeadDeputyRequest\x1a;.command.membership.v1.RemoveOrganizationHeadDeputyResponse\"\xb9\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x02@*>/v1/organizations/{organization_id}/heads/{employee_id}/deputy\x12\x99\x04\n" +
+	"\x1cAssignOrganizationDispatcher\x12:.command.membership.v1.AssignOrganizationDispatcherRequest\x1a;.command.membership.v1.AssignOrganizationDispatcherResponse\"\xff\x02\x92A\xc1\x02J\xb6\x01\n" +
+	"\x03404\x12\xae\x01\n" +
+	"\xab\x01Not found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.J\x85\x01\n" +
+	"\x03409\x12~\n" +
+	"|Conflict. Error codes:\n" +
+	"- `organization_dispatcher_already_assigned` — this employee is already an organization dispatcher.\x82\xd3\xe4\x93\x024:\x01*\"//v1/organizations/{organization_id}/dispatchers\x12\xdf\x02\n" +
+	"\x1cRevokeOrganizationDispatcher\x12:.command.membership.v1.RevokeOrganizationDispatcherRequest\x1a;.command.membership.v1.RevokeOrganizationDispatcherResponse\"\xc5\x01\x92A}J{\n" +
+	"\x03404\x12t\n" +
+	"rNot found. Error codes:\n" +
+	"- `organization_dispatcher_not_found` — this employee is not an organization dispatcher.\x82\xd3\xe4\x93\x02?*=/v1/organizations/{organization_id}/dispatchers/{employee_id}\x12\xf5\x04\n" +
+	"\"AssignOrganizationDispatcherDeputy\x12@.command.membership.v1.AssignOrganizationDispatcherDeputyRequest\x1aA.command.membership.v1.AssignOrganizationDispatcherDeputyResponse\"\xc9\x03\x92A\xf6\x02J\x81\x02\n" +
+	"\x03404\x12\xf9\x01\n" +
+	"\xf6\x01Not found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\n" +
+	"- `deputy_not_found` — deputy employee with the given ID does not exist.Jp\n" +
+	"\x03409\x12i\n" +
+	"gConflict. Error codes:\n" +
+	"- `deputy_already_assigned` — this employee is already a deputy for this role.\x82\xd3\xe4\x93\x02I:\x01*\"D/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy\x12\xeb\x02\n" +
+	"\"RemoveOrganizationDispatcherDeputy\x12@.command.membership.v1.RemoveOrganizationDispatcherDeputyRequest\x1aA.command.membership.v1.RemoveOrganizationDispatcherDeputyResponse\"\xbf\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x02F*D/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy\x12\xf0\x03\n" +
+	"\x10GrantSystemAdmin\x12..command.membership.v1.GrantSystemAdminRequest\x1a/.command.membership.v1.GrantSystemAdminResponse\"\xfa\x02\x92A\xda\x02Jn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `zitadel_user_not_found` — Zitadel user with the given ID does not exist.Ji\n" +
+	"\x03409\x12b\n" +
+	"`Conflict. Error codes:\n" +
+	"- `system_admin_already_granted` — this user is already a system admin.J}\n" +
+	"\x03503\x12v\n" +
+	"tService unavailable. Error codes:\n" +
+	"- `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/system-admins\x12\x89\x02\n" +
+	"\x11RevokeSystemAdmin\x12/.command.membership.v1.RevokeSystemAdminRequest\x1a0.command.membership.v1.RevokeSystemAdminResponse\"\x90\x01\x92AbJ`\n" +
+	"\x03404\x12Y\n" +
+	"WNot found. Error codes:\n" +
+	"- `system_admin_not_found` — this user is not a system admin.\x82\xd3\xe4\x93\x02%*#/v1/system-admins/{zitadel_user_id}B\xdc\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -3007,6 +3160,9 @@ const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
 	"\x03500\x127\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x19com.command.membership.v1B\x0fMembershipProtoP\x01ZQgithub.com/medincident/medincident-backend/pkg/command/membership/v1;membershipv1\xa2\x02\x03CMX\xaa\x02\x15Command.Membership.V1\xca\x02\x15Command\\Membership\\V1\xe2\x02!Command\\Membership\\V1\\GPBMetadata\xea\x02\x17Command::Membership::V1b\x06proto3"
 
