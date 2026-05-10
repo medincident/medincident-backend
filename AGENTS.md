@@ -144,12 +144,14 @@ main.go wires constructors explicitly and drives teardown via `defer`.
     `oops.Code(...)` other than `validation_failed`), the
     corresponding RPC in `api/proto/` must carry an
     `openapiv2_operation` option listing every possible HTTP status
-    code via `responses` entries (each pointing to
-    `#/definitions/medincidenterrorv1ErrorResponse`). The standard
+    code via `responses` entries (each referencing the schema via
+    `json_schema: {ref: ".error.v1.ErrorResponse"}`). The standard
     codes present on every method are `400` (validation_failed),
-    `401` (unauthenticated), and `500` (unexpected_error); domain
-    codes like `404` (not found) or `409` (conflict) are added per
-    method. The documentation file for the method in
+    `401` (unauthenticated), `403` (permission_denied), and `500`
+    (unexpected_error) — these live at the service-level
+    `openapiv2_swagger` option and need not be repeated per-method;
+    domain codes like `404` (not found), `409` (conflict), or `503`
+    (external service unavailable) are added at the method level. The documentation file for the method in
     `docs/services/` must include a section listing all errors the
     method can return, with their `oops.Code` value and the HTTP
     status code the error interceptor maps it to. A method that emits
