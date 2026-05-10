@@ -1269,6 +1269,7 @@ curl -X POST /v1/organizations/{organizationId}/incident-categories \
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1CreateIncidentCategoryResponse](#schemav1createincidentcategoryresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or precondition not met. Error codes:
 - `incident_category_parent_inactive` — parent category is inactive.
+- `incident_category_parent_organization_mismatch` — parent category belongs to a different organization.
 - `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.|Inline|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
 - `incident_category_parent_not_found` — parent category with the given ID does not exist.|Inline|
@@ -7821,7 +7822,11 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetServiceRequestHistoryResponse](#schemav1getservicerequesthistoryresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `service_request_query_not_found` — service request with the given ID does not exist.|Inline|
 |default|Default|An unexpected error response.|[rpcStatus](#schemarpcstatus)|
+
+<h3 id="servicerequestqueryservice_getservicerequesthistory-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication

@@ -1319,12 +1319,13 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"$AllowIncidentTypeForPatientsResponse\"F\n" +
 	"&DisallowIncidentTypeForPatientsRequest\x12\x1c\n" +
 	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\")\n" +
-	"'DisallowIncidentTypeForPatientsResponse2\xf87\n" +
-	" IncidentClassifierCommandService\x12\xcf\x05\n" +
-	"\x16CreateIncidentCategory\x12=.command.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.command.incident.classifier.v1.CreateIncidentCategoryResponse\"\xb5\x04\x92A\xef\x03J\xe7\x01\n" +
-	"\x03400\x12\xdf\x01\n" +
-	"\xdc\x01Validation failed or precondition not met. Error codes:\n" +
+	"'DisallowIncidentTypeForPatientsResponse2\xe48\n" +
+	" IncidentClassifierCommandService\x12\xbb\x06\n" +
+	"\x16CreateIncidentCategory\x12=.command.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.command.incident.classifier.v1.CreateIncidentCategoryResponse\"\xa1\x05\x92A\xdb\x04J\xd3\x02\n" +
+	"\x03400\x12\xcb\x02\n" +
+	"\xc8\x02Validation failed or precondition not met. Error codes:\n" +
 	"- `incident_category_parent_inactive` — parent category is inactive.\n" +
+	"- `incident_category_parent_organization_mismatch` — parent category belongs to a different organization.\n" +
 	"- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.J}\n" +
 	"\x03404\x12v\n" +
 	"tNot found. Error codes:\n" +

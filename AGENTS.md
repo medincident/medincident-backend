@@ -140,23 +140,26 @@ main.go wires constructors explicitly and drives teardown via `defer`.
     Current usage: `ScheduleVacation` in
     `internal/service/command/membership/vacation_schedule.go`.
 18. **Every domain error must be declared in the proto contract and
-    documented.** When a service method can return a domain error (any
-    `oops.Code(...)` other than `validation_failed`), the
-    corresponding RPC in `api/proto/` must carry an
-    `openapiv2_operation` option listing every possible HTTP status
-    code via `responses` entries (each referencing the schema via
-    `json_schema: {ref: ".error.v1.ErrorResponse"}`). The standard
-    codes present on every method are `400` (validation_failed),
-    `401` (unauthenticated), `403` (permission_denied), and `500`
-    (unexpected_error) — these live at the service-level
-    `openapiv2_swagger` option and need not be repeated per-method;
-    domain codes like `404` (not found), `409` (conflict), or `503`
-    (external service unavailable) are added at the method level. The documentation file for the method in
-    `docs/services/` must include a section listing all errors the
-    method can return, with their `oops.Code` value and the HTTP
-    status code the error interceptor maps it to. A method that emits
-    a new error code without updating both the proto annotation and
-    the docs is considered incomplete.
+    documented.** HTTP is a transport layer: the gateway uses
+    standard grpc-gateway error serialisation (`google.rpc.Status`
+    JSON with `@type` detail fields). HTTP status codes are derived
+    from the gRPC status code assigned by the error interceptor
+    (`internal/middleware/grpcmw/error.go`): `InvalidArgument` → 400,
+    `NotFound` → 404, `AlreadyExists` → 409, `FailedPrecondition` →
+    400, `PermissionDenied` → 403, `Unauthenticated` → 401,
+    `Internal`/`Unavailable` → 500. The `default: rpcStatus` entry in
+    the generated OpenAPI covers the standard error envelope for every
+    method automatically. For every domain error code (any
+    `oops.Code(...)` other than `validation_failed`), add a
+    per-method `openapiv2_operation` → `responses` entry with only a
+    `description` field (no schema ref, no examples) listing the
+    relevant oops codes and what they mean. Group codes by the HTTP
+    status they produce (e.g. all 404 codes in one entry). The
+    documentation file for the method in `docs/services/` must include
+    an error table listing every code the method can return, with its
+    `oops.Code` value and the corresponding HTTP status. A method that
+    emits a new error code without updating both the proto annotation
+    and the docs is considered incomplete.
 
 ## Directory layout
 

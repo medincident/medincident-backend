@@ -213,3 +213,11 @@ created → in_work ←→ on_hold
 Возвращает две временные линии:
 - **Статусы** — каждый переход с `old_status`, `new_status`, `actor_id`, `actor_name`, `changed_at`.
 - **Исполнители** — каждое назначение/снятие с `action` (`assigned`/`removed`), `employee_id`, `employee_name`, `actor_id`, `actor_name`, `changed_at`.
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `service_request_query_not_found` | 404 | Заявка не найдена |

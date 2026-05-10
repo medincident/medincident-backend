@@ -30,7 +30,7 @@ service IncidentClassifierCommandService {
       }
       responses: {
         key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `incident_category_parent_inactive` — parent category is inactive.\n- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded."}
+        value: {description: "Validation failed or precondition not met. Error codes:\n- `incident_category_parent_inactive` — parent category is inactive.\n- `incident_category_parent_organization_mismatch` — parent category belongs to a different organization.\n- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded."}
       }
     };
   }

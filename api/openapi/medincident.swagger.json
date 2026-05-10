@@ -4144,7 +4144,7 @@
             }
           },
           "400": {
-            "description": "Validation failed or precondition not met. Error codes:\n- `incident_category_parent_inactive` — parent category is inactive.\n- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.",
+            "description": "Validation failed or precondition not met. Error codes:\n- `incident_category_parent_inactive` — parent category is inactive.\n- `incident_category_parent_organization_mismatch` — parent category belongs to a different organization.\n- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.",
             "schema": {}
           },
           "404": {
@@ -5825,6 +5825,10 @@
             "schema": {
               "$ref": "#/definitions/v1GetServiceRequestHistoryResponse"
             }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `service_request_query_not_found` — service request with the given ID does not exist.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",

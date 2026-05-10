@@ -37,6 +37,12 @@ service ServiceRequestQueryService {
   }
   rpc GetServiceRequestHistory(GetServiceRequestHistoryRequest) returns (GetServiceRequestHistoryResponse) {
     option (google.api.http) = {get: "/v1/service-requests/{service_request_id}/history"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `service_request_query_not_found` — service request with the given ID does not exist."}
+      }
+    };
   }
 }
 
