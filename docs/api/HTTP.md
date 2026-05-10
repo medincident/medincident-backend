@@ -53,6 +53,42 @@ curl -X POST /v1/announcements \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `announcement_organization_not_found` — organization with the given ID does not exist.
 - `announcement_clinic_not_found` — clinic with the given ID does not exist.
@@ -62,6 +98,24 @@ curl -X POST /v1/announcements \
 {
   "code": "announcement_organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -136,6 +190,24 @@ curl -X PUT /v1/announcements/{id} \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `announcement_not_found` — announcement with the given ID does not exist.
 
@@ -143,6 +215,24 @@ curl -X PUT /v1/announcements/{id} \
 {
   "code": "announcement_not_found",
   "message": "Announcement not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -213,6 +303,24 @@ curl -X PUT /v1/announcements/{id}/priority \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `announcement_not_found` — announcement with the given ID does not exist.
 
@@ -220,6 +328,24 @@ curl -X PUT /v1/announcements/{id}/priority \
 {
   "code": "announcement_not_found",
   "message": "Announcement not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -270,6 +396,42 @@ curl -X POST /v1/announcements/{id}:archive \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `announcement_not_found` — announcement with the given ID does not exist.
 
@@ -277,6 +439,24 @@ curl -X POST /v1/announcements/{id}:archive \
 {
   "code": "announcement_not_found",
   "message": "Announcement not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -326,6 +506,42 @@ curl -X POST /v1/announcements/{id}:unarchive \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `announcement_not_found` — announcement with the given ID does not exist.
 
@@ -333,6 +549,24 @@ curl -X POST /v1/announcements/{id}:unarchive \
 {
   "code": "announcement_not_found",
   "message": "Announcement not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -409,6 +643,24 @@ curl -X POST /v1/patient-incidents \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `buffer_organization_not_found` — organization with the given ID does not exist.
 
@@ -416,6 +668,24 @@ curl -X POST /v1/patient-incidents \
 {
   "code": "buffer_organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -489,6 +759,15 @@ curl -X PUT /v1/patient-incidents/{bufferId} \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
 > Permission denied. Error codes:
 - `buffer_not_patient_owner` — caller is not the patient who submitted this incident.
 
@@ -506,6 +785,24 @@ curl -X PUT /v1/patient-incidents/{bufferId} \
 {
   "code": "buffer_not_found",
   "message": "Patient incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -567,6 +864,15 @@ curl -X POST /v1/patient-incidents/{bufferId}:cancel \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
 > Permission denied. Error codes:
 - `buffer_not_patient_owner` — caller is not the patient who submitted this incident.
 
@@ -584,6 +890,24 @@ curl -X POST /v1/patient-incidents/{bufferId}:cancel \
 {
   "code": "buffer_not_found",
   "message": "Patient incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -660,6 +984,24 @@ curl -X POST /v1/patient-incidents/{bufferId}:publish \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `buffer_not_found` — patient incident with the given ID does not exist.
 - `buffer_department_not_found` — department with the given ID does not exist.
@@ -670,6 +1012,24 @@ curl -X POST /v1/patient-incidents/{bufferId}:publish \
 {
   "code": "buffer_not_found",
   "message": "Patient incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -733,6 +1093,24 @@ curl -X POST /v1/patient-incidents/{bufferId}:reject \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `buffer_not_found` — patient incident with the given ID does not exist.
 
@@ -740,6 +1118,24 @@ curl -X POST /v1/patient-incidents/{bufferId}:reject \
 {
   "code": "buffer_not_found",
   "message": "Patient incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -792,6 +1188,42 @@ curl -X DELETE /v1/incident-categories/{categoryId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.
 
@@ -799,6 +1231,24 @@ curl -X DELETE /v1/incident-categories/{categoryId} \
 {
   "code": "incident_category_not_found",
   "message": "Category not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -848,6 +1298,42 @@ curl -X POST /v1/incident-categories/{categoryId}/deactivations \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.
 
@@ -855,6 +1341,24 @@ curl -X POST /v1/incident-categories/{categoryId}/deactivations \
 {
   "code": "incident_category_not_found",
   "message": "Category not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -915,6 +1419,42 @@ curl -X PUT /v1/incident-categories/{categoryId}/details \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.
 
@@ -932,6 +1472,24 @@ curl -X PUT /v1/incident-categories/{categoryId}/details \
 {
   "code": "incident_category_name_conflict",
   "message": "Category name already exists."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -993,6 +1551,24 @@ curl -X POST /v1/incident-categories/{categoryId}/reactivations \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.
 
@@ -1010,6 +1586,24 @@ curl -X POST /v1/incident-categories/{categoryId}/reactivations \
 {
   "code": "incident_category_reactivate_name_conflict",
   "message": "Name conflict on reactivation."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1085,6 +1679,24 @@ curl -X POST /v1/incident-categories/{categoryId}/types \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.
 
@@ -1102,6 +1714,24 @@ curl -X POST /v1/incident-categories/{categoryId}/types \
 {
   "code": "incident_type_name_conflict",
   "message": "Type name already exists."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1177,6 +1807,24 @@ curl -X POST /v1/incident-categories/{categoryId}:move \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.
 - `incident_category_parent_not_found` — target parent category with the given ID does not exist.
@@ -1185,6 +1833,24 @@ curl -X POST /v1/incident-categories/{categoryId}:move \
 {
   "code": "incident_category_not_found",
   "message": "Category not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1239,6 +1905,42 @@ curl -X DELETE /v1/incident-types/{typeId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.
 
@@ -1246,6 +1948,24 @@ curl -X DELETE /v1/incident-types/{typeId} \
 {
   "code": "incident_type_not_found",
   "message": "Type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1295,6 +2015,42 @@ curl -X POST /v1/incident-types/{typeId}/deactivations \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.
 
@@ -1302,6 +2058,24 @@ curl -X POST /v1/incident-types/{typeId}/deactivations \
 {
   "code": "incident_type_not_found",
   "message": "Type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1362,6 +2136,42 @@ curl -X PUT /v1/incident-types/{typeId}/details \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.
 
@@ -1379,6 +2189,24 @@ curl -X PUT /v1/incident-types/{typeId}/details \
 {
   "code": "incident_type_name_conflict",
   "message": "Type name already exists."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1430,6 +2258,42 @@ curl -X DELETE /v1/incident-types/{typeId}/patient-allowances \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.
 
@@ -1437,6 +2301,24 @@ curl -X DELETE /v1/incident-types/{typeId}/patient-allowances \
 {
   "code": "incident_type_not_found",
   "message": "Type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1486,6 +2368,42 @@ curl -X POST /v1/incident-types/{typeId}/patient-allowances \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.
 
@@ -1493,6 +2411,24 @@ curl -X POST /v1/incident-types/{typeId}/patient-allowances \
 {
   "code": "incident_type_not_found",
   "message": "Type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1552,6 +2488,24 @@ curl -X POST /v1/incident-types/{typeId}/reactivations \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.
 
@@ -1569,6 +2523,24 @@ curl -X POST /v1/incident-types/{typeId}/reactivations \
 {
   "code": "incident_type_reactivate_name_conflict",
   "message": "Name conflict on reactivation."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1643,6 +2615,24 @@ curl -X POST /v1/incident-types/{typeId}:move \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.
 - `incident_type_category_not_found` — target category with the given ID does not exist.
@@ -1651,6 +2641,24 @@ curl -X POST /v1/incident-types/{typeId}:move \
 {
   "code": "incident_type_not_found",
   "message": "Type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1729,6 +2737,24 @@ curl -X POST /v1/organizations/{organizationId}/incident-categories \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_category_not_found` — parent category with the given ID does not exist.
 
@@ -1746,6 +2772,24 @@ curl -X POST /v1/organizations/{organizationId}/incident-categories \
 {
   "code": "incident_category_name_conflict",
   "message": "Category name already exists."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1827,6 +2871,24 @@ curl -X POST /v1/incidents \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_department_not_found` — department with the given ID does not exist.
 - `incident_category_not_found` — incident category with the given ID does not exist.
@@ -1837,6 +2899,24 @@ curl -X POST /v1/incidents \
 {
   "code": "incident_department_not_found",
   "message": "Department not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1911,6 +2991,24 @@ curl -X PUT /v1/incidents/{incidentId}/description \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.
 
@@ -1918,6 +3016,24 @@ curl -X PUT /v1/incidents/{incidentId}/description \
 {
   "code": "incident_not_found",
   "message": "Incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -1988,6 +3104,24 @@ curl -X PUT /v1/incidents/{incidentId}/priority \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.
 
@@ -1995,6 +3129,24 @@ curl -X PUT /v1/incidents/{incidentId}/priority \
 {
   "code": "incident_not_found",
   "message": "Incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2066,6 +3218,24 @@ curl -X PUT /v1/incidents/{incidentId}/status \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.
 
@@ -2073,6 +3243,24 @@ curl -X PUT /v1/incidents/{incidentId}/status \
 {
   "code": "incident_not_found",
   "message": "Incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2134,6 +3322,24 @@ curl -X POST /v1/incidents/{incidentId}:cancel \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.
 
@@ -2141,6 +3347,24 @@ curl -X POST /v1/incidents/{incidentId}:cancel \
 {
   "code": "incident_not_found",
   "message": "Incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2203,6 +3427,24 @@ curl -X POST /v1/incidents/{incidentId}:reopen \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_not_found` — incident with the given ID does not exist.
 
@@ -2210,6 +3452,24 @@ curl -X POST /v1/incidents/{incidentId}:reopen \
 {
   "code": "incident_not_found",
   "message": "Incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2272,6 +3532,42 @@ curl -X POST /v1/clinics/{clinicId}/heads \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -2290,6 +3586,24 @@ curl -X POST /v1/clinics/{clinicId}/heads \
 {
   "code": "clinic_head_already_assigned",
   "message": "Clinic head already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2343,6 +3657,42 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `clinic_head_not_found` — this employee is not the clinic head.
 
@@ -2350,6 +3700,24 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId} \
 {
   "code": "clinic_head_not_found",
   "message": "Clinic head not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2400,6 +3768,42 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.
 
@@ -2407,6 +3811,24 @@ curl -X DELETE /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 {
   "code": "clinic_not_found",
   "message": "Clinic not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2467,6 +3889,42 @@ curl -X POST /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -2486,6 +3944,24 @@ curl -X POST /v1/clinics/{clinicId}/heads/{employeeId}/deputy \
 {
   "code": "deputy_already_assigned",
   "message": "Deputy already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2549,6 +4025,42 @@ curl -X POST /v1/departments/{departmentId}/responsibles \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `department_not_found` — department with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -2567,6 +4079,24 @@ curl -X POST /v1/departments/{departmentId}/responsibles \
 {
   "code": "department_responsible_already_assigned",
   "message": "Department responsible already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2620,6 +4150,42 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `department_responsible_not_found` — this employee is not the department responsible.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -2628,6 +4194,24 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId} \
 {
   "code": "department_responsible_not_found",
   "message": "Department responsible not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2679,6 +4263,42 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `department_not_found` — department with the given ID does not exist.
 
@@ -2686,6 +4306,24 @@ curl -X DELETE /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 {
   "code": "department_not_found",
   "message": "Department not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2746,6 +4384,42 @@ curl -X POST /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `department_not_found` — department with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -2765,6 +4439,24 @@ curl -X POST /v1/departments/{departmentId}/responsibles/{employeeId}/deputy \
 {
   "code": "deputy_already_assigned",
   "message": "Deputy already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2831,6 +4523,42 @@ curl -X POST /v1/employees \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `zitadel_user_not_found` — Zitadel user with the given ID does not exist.
 - `department_not_found` — department with the given ID does not exist.
@@ -2852,6 +4580,15 @@ curl -X POST /v1/employees \
 }
 ```
 
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
 > Service unavailable. Error codes:
 - `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.
 
@@ -2859,6 +4596,15 @@ curl -X POST /v1/employees \
 {
   "code": "zitadel_verify_failed",
   "message": "Identity service unavailable."
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2913,6 +4659,42 @@ curl -X DELETE /v1/employees/{employeeId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.
 
@@ -2920,6 +4702,24 @@ curl -X DELETE /v1/employees/{employeeId} \
 {
   "code": "employee_not_found",
   "message": "Employee not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -2979,6 +4779,42 @@ curl -X PUT /v1/employees/{employeeId}/department \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.
 - `department_not_found` — department with the given ID does not exist.
@@ -2987,6 +4823,24 @@ curl -X PUT /v1/employees/{employeeId}/department \
 {
   "code": "employee_not_found",
   "message": "Employee not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3047,6 +4901,42 @@ curl -X PUT /v1/employees/{employeeId}/position \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.
 
@@ -3054,6 +4944,24 @@ curl -X PUT /v1/employees/{employeeId}/position \
 {
   "code": "employee_not_found",
   "message": "Employee not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3116,6 +5024,42 @@ curl -X POST /v1/employees/{employeeId}/vacations \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.
 
@@ -3123,6 +5067,24 @@ curl -X POST /v1/employees/{employeeId}/vacations \
 {
   "code": "employee_not_found",
   "message": "Employee not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3184,6 +5146,42 @@ curl -X POST /v1/employees/{employeeId}/vacations:start-now \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `employee_not_found` — employee with the given ID does not exist.
 
@@ -3191,6 +5189,24 @@ curl -X POST /v1/employees/{employeeId}/vacations:start-now \
 {
   "code": "employee_not_found",
   "message": "Employee not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3250,6 +5266,42 @@ curl -X POST /v1/organizations/{organizationId}/admins \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -3268,6 +5320,24 @@ curl -X POST /v1/organizations/{organizationId}/admins \
 {
   "code": "organization_admin_already_assigned",
   "message": "Organization admin already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3321,6 +5391,42 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_admin_not_found` — this employee is not an organization admin.
 
@@ -3328,6 +5434,24 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId} \
 {
   "code": "organization_admin_not_found",
   "message": "Organization admin not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3378,6 +5502,42 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 
@@ -3385,6 +5545,24 @@ curl -X DELETE /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 {
   "code": "organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3445,6 +5623,42 @@ curl -X POST /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -3464,6 +5678,24 @@ curl -X POST /v1/organizations/{organizationId}/admins/{employeeId}/deputy \
 {
   "code": "deputy_already_assigned",
   "message": "Deputy already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3527,6 +5759,42 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -3545,6 +5813,24 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers \
 {
   "code": "organization_dispatcher_already_assigned",
   "message": "Organization dispatcher already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3598,6 +5884,42 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_dispatcher_not_found` — this employee is not an organization dispatcher.
 
@@ -3605,6 +5927,24 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId} \
 {
   "code": "organization_dispatcher_not_found",
   "message": "Organization dispatcher not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3655,6 +5995,42 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}/deput
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 
@@ -3662,6 +6038,24 @@ curl -X DELETE /v1/organizations/{organizationId}/dispatchers/{employeeId}/deput
 {
   "code": "organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3722,6 +6116,42 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy 
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -3741,6 +6171,24 @@ curl -X POST /v1/organizations/{organizationId}/dispatchers/{employeeId}/deputy 
 {
   "code": "deputy_already_assigned",
   "message": "Deputy already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3804,6 +6252,42 @@ curl -X POST /v1/organizations/{organizationId}/heads \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -3822,6 +6306,24 @@ curl -X POST /v1/organizations/{organizationId}/heads \
 {
   "code": "organization_head_already_assigned",
   "message": "Organization head already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3875,6 +6377,42 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_head_not_found` — this employee is not the organization head.
 
@@ -3882,6 +6420,24 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId} \
 {
   "code": "organization_head_not_found",
   "message": "Organization head not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3932,6 +6488,42 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 
@@ -3939,6 +6531,24 @@ curl -X DELETE /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 {
   "code": "organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -3999,6 +6609,42 @@ curl -X POST /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 - `employee_not_found` — employee with the given ID does not exist.
@@ -4018,6 +6664,24 @@ curl -X POST /v1/organizations/{organizationId}/heads/{employeeId}/deputy \
 {
   "code": "deputy_already_assigned",
   "message": "Deputy already assigned."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4080,6 +6744,42 @@ curl -X POST /v1/system-admins \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `zitadel_user_not_found` — Zitadel user with the given ID does not exist.
 
@@ -4100,6 +6800,15 @@ curl -X POST /v1/system-admins \
 }
 ```
 
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
 > Service unavailable. Error codes:
 - `zitadel_verify_failed` — Zitadel identity service is temporarily unavailable.
 
@@ -4107,6 +6816,15 @@ curl -X POST /v1/system-admins \
 {
   "code": "zitadel_verify_failed",
   "message": "Identity service unavailable."
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4160,6 +6878,42 @@ curl -X DELETE /v1/system-admins/{zitadelUserId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `system_admin_not_found` — this user is not a system admin.
 
@@ -4167,6 +6921,24 @@ curl -X DELETE /v1/system-admins/{zitadelUserId} \
 {
   "code": "system_admin_not_found",
   "message": "System admin not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4216,6 +6988,42 @@ curl -X POST /v1/vacations/{vacationId}/cancellations \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `vacation_not_found` — vacation with the given ID does not exist.
 
@@ -4223,6 +7031,24 @@ curl -X POST /v1/vacations/{vacationId}/cancellations \
 {
   "code": "vacation_not_found",
   "message": "Vacation not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4282,6 +7108,42 @@ curl -X PUT /v1/vacations/{vacationId}/end-date \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `vacation_not_found` — vacation with the given ID does not exist.
 
@@ -4289,6 +7151,24 @@ curl -X PUT /v1/vacations/{vacationId}/end-date \
 {
   "code": "vacation_not_found",
   "message": "Vacation not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4338,6 +7218,42 @@ curl -X POST /v1/vacations/{vacationId}/terminations \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `vacation_not_found` — vacation with the given ID does not exist.
 
@@ -4345,6 +7261,24 @@ curl -X POST /v1/vacations/{vacationId}/terminations \
 {
   "code": "vacation_not_found",
   "message": "Vacation not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4409,6 +7343,42 @@ curl -X POST /v1/clinics/{clinicId}/departments \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `department_clinic_not_found` — clinic with the given ID does not exist.
 
@@ -4416,6 +7386,24 @@ curl -X POST /v1/clinics/{clinicId}/departments \
 {
   "code": "department_clinic_not_found",
   "message": "Clinic not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4476,6 +7464,42 @@ curl -X PUT /v1/clinics/{clinicId}/details \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.
 
@@ -4483,6 +7507,24 @@ curl -X PUT /v1/clinics/{clinicId}/details \
 {
   "code": "clinic_not_found",
   "message": "Clinic not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4548,6 +7590,42 @@ curl -X PUT /v1/clinics/{clinicId}/physical-address \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.
 
@@ -4555,6 +7633,24 @@ curl -X PUT /v1/clinics/{clinicId}/physical-address \
 {
   "code": "clinic_not_found",
   "message": "Clinic not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4615,6 +7711,42 @@ curl -X PUT /v1/departments/{departmentId}/details \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `department_not_found` — department with the given ID does not exist.
 
@@ -4622,6 +7754,24 @@ curl -X PUT /v1/departments/{departmentId}/details \
 {
   "code": "department_not_found",
   "message": "Department not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4690,6 +7840,60 @@ curl -X POST /v1/organizations \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="orgstructurecommandservice_createorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -4754,6 +7958,42 @@ curl -X POST /v1/organizations/{organizationId}/clinics \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `clinic_organization_not_found` — organization with the given ID does not exist.
 
@@ -4761,6 +8001,24 @@ curl -X POST /v1/organizations/{organizationId}/clinics \
 {
   "code": "clinic_organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4821,6 +8079,42 @@ curl -X PUT /v1/organizations/{organizationId}/details \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 
@@ -4828,6 +8122,24 @@ curl -X PUT /v1/organizations/{organizationId}/details \
 {
   "code": "organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4893,6 +8205,42 @@ curl -X PUT /v1/organizations/{organizationId}/legal-address \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 
@@ -4900,6 +8248,24 @@ curl -X PUT /v1/organizations/{organizationId}/legal-address \
 {
   "code": "organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -4964,6 +8330,42 @@ curl -X POST /v1/organizations/{organizationId}/request-types \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Conflict. Error codes:
 - `request_type_name_conflict` — a request type with this name already exists in the organization.
 
@@ -4971,6 +8373,24 @@ curl -X POST /v1/organizations/{organizationId}/request-types \
 {
   "code": "request_type_name_conflict",
   "message": "Request type name already exists."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5020,6 +8440,42 @@ curl -X DELETE /v1/request-types/{typeId} \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `request_type_not_found` — request type with the given ID does not exist.
 
@@ -5027,6 +8483,24 @@ curl -X DELETE /v1/request-types/{typeId} \
 {
   "code": "request_type_not_found",
   "message": "Request type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5076,6 +8550,42 @@ curl -X POST /v1/request-types/{typeId}/deactivations \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `request_type_not_found` — request type with the given ID does not exist.
 
@@ -5083,6 +8593,24 @@ curl -X POST /v1/request-types/{typeId}/deactivations \
 {
   "code": "request_type_not_found",
   "message": "Request type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5143,6 +8671,42 @@ curl -X PUT /v1/request-types/{typeId}/details \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `request_type_not_found` — request type with the given ID does not exist.
 
@@ -5160,6 +8724,24 @@ curl -X PUT /v1/request-types/{typeId}/details \
 {
   "code": "request_type_name_conflict",
   "message": "Request type name already exists."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5211,6 +8793,42 @@ curl -X POST /v1/request-types/{typeId}/reactivations \
 {}
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `request_type_not_found` — request type with the given ID does not exist.
 
@@ -5228,6 +8846,24 @@ curl -X POST /v1/request-types/{typeId}/reactivations \
 {
   "code": "request_type_name_conflict",
   "message": "Request type name already exists."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5311,6 +8947,24 @@ curl -X POST /v1/service-requests \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `service_request_department_not_found` — department with the given ID does not exist.
 - `service_request_type_not_found` — request type with the given ID does not exist.
@@ -5321,6 +8975,24 @@ curl -X POST /v1/service-requests \
 {
   "code": "service_request_department_not_found",
   "message": "Department not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5397,6 +9069,24 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/description \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `service_request_not_found` — service request with the given ID does not exist.
 
@@ -5404,6 +9094,24 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/description \
 {
   "code": "service_request_not_found",
   "message": "Service request not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5477,6 +9185,24 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/executors \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `service_request_not_found` — service request with the given ID does not exist.
 - `service_request_employee_not_found` — one of the executor employees was not found.
@@ -5485,6 +9211,24 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/executors \
 {
   "code": "service_request_not_found",
   "message": "Service request not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5558,6 +9302,24 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 }
 ```
 
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `service_request_not_found` — service request with the given ID does not exist.
 
@@ -5565,6 +9327,24 @@ curl -X PUT /v1/service-requests/{serviceRequestId}/status \
 {
   "code": "service_request_not_found",
   "message": "Service request not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5660,6 +9440,42 @@ curl -X GET /v1/analytics/snapshot \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `analytics_org_not_found` — organization with the given ID does not exist.
 - `analytics_clinic_not_found` — clinic with the given ID does not exist.
@@ -5669,6 +9485,24 @@ curl -X GET /v1/analytics/snapshot \
 {
   "code": "analytics_org_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5829,6 +9663,42 @@ curl -X GET /v1/analytics/summary \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `analytics_org_not_found` — organization with the given ID does not exist.
 - `analytics_clinic_not_found` — clinic with the given ID does not exist.
@@ -5838,6 +9708,24 @@ curl -X GET /v1/analytics/summary \
 {
   "code": "analytics_org_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -5927,6 +9815,42 @@ curl -X GET /v1/analytics/timeseries \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `analytics_org_not_found` — organization with the given ID does not exist.
 - `analytics_clinic_not_found` — clinic with the given ID does not exist.
@@ -5936,6 +9860,24 @@ curl -X GET /v1/analytics/timeseries \
 {
   "code": "analytics_org_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6006,6 +9948,42 @@ curl -X GET /v1/query/announcements/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `announcement_query_not_found` — announcement with the given ID does not exist.
 
@@ -6013,6 +9991,24 @@ curl -X GET /v1/query/announcements/{id} \
 {
   "code": "announcement_query_not_found",
   "message": "Announcement not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6094,6 +10090,60 @@ curl -X GET /v1/query/clinics/{clinicId}/announcements \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="announcementqueryservice_listannouncementsforclinic-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -6167,6 +10217,60 @@ curl -X GET /v1/query/departments/{departmentId}/announcements \
     }
   ],
   "nextCursor": "string"
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6246,6 +10350,60 @@ curl -X GET /v1/query/organizations/{organizationId}/announcements \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="announcementqueryservice_listannouncementsfororganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -6308,6 +10466,60 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="incidentclassifierqueryservice_listtypesbycategory-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -6363,6 +10575,42 @@ curl -X GET /v1/incident-categories/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_category_not_found` — category with the given ID does not exist.
 
@@ -6370,6 +10618,24 @@ curl -X GET /v1/incident-categories/{id} \
 {
   "code": "incident_category_not_found",
   "message": "Category not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6432,6 +10698,60 @@ curl -X GET /v1/incident-categories/{rootCategoryId}:subtree \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="incidentclassifierqueryservice_listcategorysubtree-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -6488,6 +10808,42 @@ curl -X GET /v1/incident-types/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_type_not_found` — type with the given ID does not exist.
 
@@ -6495,6 +10851,24 @@ curl -X GET /v1/incident-types/{id} \
 {
   "code": "incident_type_not_found",
   "message": "Type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6559,6 +10933,60 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="incidentclassifierqueryservice_listcategoriesbyorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -6615,6 +11043,60 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visib
       "updatedAt": "string"
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6677,6 +11159,60 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="incidentclassifierqueryservice_listactiverootcategories-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -6734,6 +11270,60 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
       "isAllowedForPatients": true
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6798,6 +11388,60 @@ an-incident.-parameters">Parameters</h3>
       "isAllowedForPatients": true
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6877,6 +11521,42 @@ curl -X GET /v1/query/incidents/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_query_not_found` — incident with the given ID does not exist.
 
@@ -6884,6 +11564,24 @@ curl -X GET /v1/query/incidents/{id} \
 {
   "code": "incident_query_not_found",
   "message": "Incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -6958,6 +11656,42 @@ curl -X GET /v1/query/incidents/{incidentId}/history \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `incident_query_not_found` — incident with the given ID does not exist.
 
@@ -6965,6 +11699,24 @@ curl -X GET /v1/query/incidents/{incidentId}/history \
 {
   "code": "incident_query_not_found",
   "message": "Incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -7042,6 +11794,60 @@ curl -X GET /v1/query/incidents:mine \
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -7145,6 +11951,60 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="incidentqueryservice_listincidents-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -7219,6 +12079,60 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="incidentqueryservice_listbufferentries-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -7278,6 +12192,42 @@ curl -X GET /v1/query/patient-incidents/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `buffer_query_not_found` — patient incident with the given ID does not exist.
 
@@ -7285,6 +12235,24 @@ curl -X GET /v1/query/patient-incidents/{id} \
 {
   "code": "buffer_query_not_found",
   "message": "Patient incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -7349,6 +12317,60 @@ curl -X GET /v1/query/patient-incidents:mine \
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -7435,6 +12457,60 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_listemployeesbyclinic-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -7492,6 +12568,60 @@ before comparison; all-whitespace is treated as unset.
 ```json
 {
   "total": "string"
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -7578,6 +12708,60 @@ curl -X GET /v1/clinics/{clinicId}/head \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_getclinichead-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -7659,6 +12843,60 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_listemployeesbydepartment-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -7716,6 +12954,60 @@ before comparison; all-whitespace is treated as unset.
 ```json
 {
   "total": "string"
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -7802,6 +13094,60 @@ curl -X GET /v1/departments/{departmentId}/responsible \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_getdepartmentresponsible-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -7866,6 +13212,60 @@ Valid values: scheduled, active, ended, cancelled.
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_listvacationsbyemployee-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -7915,6 +13315,60 @@ Valid values: scheduled, active, ended, cancelled.
 ```json
 {
   "total": "string"
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -7981,6 +13435,42 @@ curl -X GET /v1/employees/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `employee_card_not_found` — employee with the given ID does not exist.
 
@@ -7988,6 +13478,24 @@ curl -X GET /v1/employees/{id} \
 {
   "code": "employee_card_not_found",
   "message": "Employee not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -8080,6 +13588,60 @@ curl -X GET /v1/organizations/{organizationId}/admins \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_listorgadmins-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -8167,6 +13729,60 @@ curl -X GET /v1/organizations/{organizationId}/dispatchers \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_listorgdispatchers-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -8248,6 +13864,60 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_listemployeesbyorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -8305,6 +13975,60 @@ before comparison; all-whitespace is treated as unset.
 ```json
 {
   "total": "string"
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -8397,6 +14121,60 @@ before comparison; all-whitespace is treated as unset.
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_searchemployeesbyorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -8484,6 +14262,60 @@ curl -X GET /v1/organizations/{organizationId}/heads \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="membershipqueryservice_listorgheads-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -8533,6 +14365,60 @@ curl -X GET /v1/system-admins \
       "createdAt": "string"
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -8592,6 +14478,60 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="orgstructurequeryservice_listdepartmentsbyclinic-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -8635,6 +14575,60 @@ curl -X GET /v1/clinics/{clinicId}/departments:count \
 ```json
 {
   "total": "string"
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -8698,6 +14692,42 @@ curl -X GET /v1/clinics/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `clinic_not_found` — clinic with the given ID does not exist.
 
@@ -8705,6 +14735,24 @@ curl -X GET /v1/clinics/{id} \
 {
   "code": "clinic_not_found",
   "message": "Clinic not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -8763,6 +14811,42 @@ curl -X GET /v1/departments/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `department_not_found` — department with the given ID does not exist.
 
@@ -8770,6 +14854,24 @@ curl -X GET /v1/departments/{id} \
 {
   "code": "department_not_found",
   "message": "Department not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -8824,6 +14926,60 @@ curl -X GET /v1/organizations \
       "name": "string"
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -8886,6 +15042,42 @@ curl -X GET /v1/organizations/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `organization_not_found` — organization with the given ID does not exist.
 
@@ -8893,6 +15085,24 @@ curl -X GET /v1/organizations/{id} \
 {
   "code": "organization_not_found",
   "message": "Organization not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -8952,6 +15162,60 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="orgstructurequeryservice_listclinicsbyorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -8998,6 +15262,60 @@ curl -X GET /v1/organizations/{organizationId}/clinics:count \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="orgstructurequeryservice_countclinicsbyorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -9035,6 +15353,60 @@ curl -X GET /v1/organizations:count \
 ```json
 {
   "total": "string"
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9088,6 +15460,60 @@ curl -X GET /v1/organizations:search \
       "name": "string"
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9151,6 +15577,60 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="requestclassifierqueryservice_listrequesttypesbyorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -9209,6 +15689,60 @@ curl -X GET /v1/organizations/{organizationId}/request-types:active \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="requestclassifierqueryservice_listactiverequesttypesbyorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -9263,6 +15797,42 @@ curl -X GET /v1/request-types/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `request_type_not_found` — request type with the given ID does not exist.
 
@@ -9270,6 +15840,24 @@ curl -X GET /v1/request-types/{id} \
 {
   "code": "request_type_not_found",
   "message": "Request type not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9347,6 +15935,42 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `service_request_query_incident_not_found` — incident with the given ID does not exist.
 
@@ -9354,6 +15978,24 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
 {
   "code": "service_request_query_incident_not_found",
   "message": "Incident not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9429,6 +16071,60 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="servicerequestqueryservice_listservicerequests-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -9495,6 +16191,42 @@ curl -X GET /v1/service-requests/{id} \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `service_request_query_not_found` — service request with the given ID does not exist.
 
@@ -9502,6 +16234,24 @@ curl -X GET /v1/service-requests/{id} \
 {
   "code": "service_request_query_not_found",
   "message": "Service request not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9573,6 +16323,60 @@ curl -X GET /v1/service-requests/{serviceRequestId}/history \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="servicerequestqueryservice_getservicerequesthistory-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -9612,6 +16416,60 @@ curl -X GET /v1/me \
 ```json
 {
   "isSystemAdmin": true
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9665,6 +16523,42 @@ active-employee-of-that-clinic.-parameters">Parameters</h3>
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `self_clinic_role_not_found` — caller is not an active employee of the given clinic.
 
@@ -9672,6 +16566,24 @@ active-employee-of-that-clinic.-parameters">Parameters</h3>
 {
   "code": "self_clinic_role_not_found",
   "message": "Clinic role not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9731,6 +16643,42 @@ department.-parameters">Parameters</h3>
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `self_dept_role_not_found` — caller is not an active employee of the given department.
 
@@ -9738,6 +16686,24 @@ department.-parameters">Parameters</h3>
 {
   "code": "self_dept_role_not_found",
   "message": "Department role not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9789,6 +16755,60 @@ curl -X GET /v1/me/organizations \
       "name": "string"
     }
   ]
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9860,6 +16880,42 @@ employee-of-that-organization.-parameters">Parameters</h3>
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `self_employment_not_found` — caller is not an active employee of the given organization.
 
@@ -9867,6 +16923,24 @@ employee-of-that-organization.-parameters">Parameters</h3>
 {
   "code": "self_employment_not_found",
   "message": "Employment not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9926,6 +17000,42 @@ active-employee-of-that-organization.-parameters">Parameters</h3>
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
 > Not found. Error codes:
 - `self_org_role_not_found` — caller is not an active employee of the given organization.
 
@@ -9933,6 +17043,24 @@ active-employee-of-that-organization.-parameters">Parameters</h3>
 {
   "code": "self_org_role_not_found",
   "message": "Organization role not found."
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -9994,6 +17122,60 @@ curl -X GET /v1/clinics/{clinicId}/stats \
 }
 ```
 
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
+}
+```
+
 <h3 id="statsqueryservice_getclinicstats-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
@@ -10043,6 +17225,60 @@ curl -X GET /v1/departments/{departmentId}/stats \
     "employeesTotal": "string",
     "employeesOnVacation": "string"
   }
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
@@ -10096,6 +17332,60 @@ curl -X GET /v1/organizations/{organizationId}/stats \
     "employeesOnVacation": "string",
     "vacationsScheduled": "string"
   }
+}
+```
+
+> Validation failed or invalid input.
+
+```json
+{
+  "code": "validation_failed",
+  "message": "Validation failed.",
+  "details": {
+    "violations": [
+      {
+        "field": "field_name",
+        "rule": "required",
+        "message": "field is required"
+      }
+    ]
+  }
+}
+```
+
+> Unauthenticated — missing or invalid token.
+
+```json
+{
+  "code": "unauthenticated",
+  "message": "unauthenticated"
+}
+```
+
+> Permission denied.
+
+```json
+{
+  "code": "permission_denied",
+  "message": "permission denied"
+}
+```
+
+> Unexpected server error.
+
+```json
+{
+  "code": "unexpected_error",
+  "message": "internal error"
+}
+```
+
+> An unexpected error response.
+
+```json
+{
+  "code": "deadline_exceeded",
+  "message": "deadline exceeded"
 }
 ```
 
