@@ -24116,14 +24116,8 @@ domain-level leaf error from errors.Join.
   "code": "string",
   "message": "string",
   "details": {
-    "violations": [
-      {
-        "field": "string",
-        "rule": "string",
-        "message": "string",
-        "param": "string"
-      }
-    ]
+    "property1": null,
+    "property2": null
   }
 }
 
@@ -24137,4 +24131,5 @@ ValidationErrorResponse
 |---|---|---|---|---|
 |code|string|false|none|none|
 |message|string|false|none|none|
-|details|[v1ValidationFailedDetails](#schemav1validationfaileddetails)|false|none|ValidationFailedDetails is present only when code = "validation_failed".<br>Each violation corresponds to one struct-tag rule failure or one<br>domain-level leaf error from errors.Join.|
+|details|object|false|none|Additional error details. Shape depends on the error code. For code=validation_failed: a v1ValidationFailedDetails object containing a violations array.|
+|» **additionalProperties**|any|false|none|none|

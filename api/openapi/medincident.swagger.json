@@ -18881,7 +18881,9 @@
           "type": "string"
         },
         "details": {
-          "$ref": "#/definitions/v1ValidationFailedDetails"
+          "type": "object",
+          "description": "Additional error details. Shape depends on the error code. For code=validation_failed: a v1ValidationFailedDetails object containing a violations array.",
+          "additionalProperties": {}
         }
       }
     }

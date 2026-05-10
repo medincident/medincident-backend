@@ -2394,19 +2394,23 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v1/organizations/{organization_id}/admins\x12\xae\x01\n" +
 	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/organizations/{organization_id}/dispatchers\x12\x96\x01\n" +
 	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/heads\x12\x8a\x01\n" +
-	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\x87\x04\x92A\x9a\x02RI\n" +
-	"\x03400\x12B\n" +
+	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xac\a\x92A\xbf\x05R\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
-	"\x03401\x12L\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
+	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
+	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
-	"\x03403\x121\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
+	"\x10application/json\x126{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}R\x89\x01\n" +
+	"\x03403\x12\x81\x01\n" +
 	"\x12Permission denied.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
-	"\x03500\x127\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
+	"\x10application/json\x12:{\"code\":\"permission_denied\",\"message\":\"permission denied\"}R\x8b\x01\n" +
+	"\x03500\x12\x83\x01\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
+	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}\n" +
 	"\x17com.query.membership.v1B\x0fMembershipProtoP\x01ZOgithub.com/medincident/medincident-backend/pkg/query/membership/v1;membershipv1\xa2\x02\x03QMX\xaa\x02\x13Query.Membership.V1\xca\x02\x13Query\\Membership\\V1\xe2\x02\x1fQuery\\Membership\\V1\\GPBMetadata\xea\x02\x15Query::Membership::V1b\x06proto3"
 
 var (

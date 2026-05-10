@@ -15,7 +15,11 @@ tasks:
             "properties": {
               "code": {"type": "string"},
               "message": {"type": "string"},
-              "details": {"$ref": "#/definitions/v1ValidationFailedDetails"}
+              "details": {
+                "type": "object",
+                "description": "Additional error details. Shape depends on the error code. For code=validation_failed: a v1ValidationFailedDetails object containing a violations array.",
+                "additionalProperties": {}
+              }
             }
           } |
           del(.definitions["v1ErrorResponse"].properties.details) |
@@ -45,22 +49,8 @@ tasks:
           .paths |= with_entries(
             .value |= with_entries(
               .value.responses |= (
-                if . != null then
-                  (if has("400") and (."400".description == "Validation failed or invalid input.") and (."400".examples == null) then
-                    ."400".examples = {"application/json": {"code": "validation_failed", "message": "Validation failed.", "details": {"violations": [{"field": "field_name", "rule": "required", "message": "field is required"}]}}}
-                  else . end) |
-                  (if has("401") and (."401".examples == null) then
-                    ."401".examples = {"application/json": {"code": "unauthenticated", "message": "unauthenticated"}}
-                  else . end) |
-                  (if has("403") and (."403".examples == null) then
-                    ."403".examples = {"application/json": {"code": "permission_denied", "message": "permission denied"}}
-                  else . end) |
-                  (if has("500") and (."500".examples == null) then
-                    ."500".examples = {"application/json": {"code": "unexpected_error", "message": "internal error"}}
-                  else . end) |
-                  (if has("default") and (.default.examples == null) then
-                    .default.examples = {"application/json": {"code": "deadline_exceeded", "message": "deadline exceeded"}}
-                  else . end)
+                if . != null and has("default") and (.default.examples == null) then
+                  .default.examples = {"application/json": {"code": "deadline_exceeded", "message": "deadline exceeded"}}
                 else . end
               )
             )

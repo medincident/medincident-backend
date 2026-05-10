@@ -565,19 +565,23 @@ const file_query_stats_v1_stats_proto_rawDesc = "" +
 	"\x11StatsQueryService\x12\xa4\x01\n" +
 	"\x14GetOrganizationStats\x12+.query.stats.v1.GetOrganizationStatsRequest\x1a,.query.stats.v1.GetOrganizationStatsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/stats\x12\x86\x01\n" +
 	"\x0eGetClinicStats\x12%.query.stats.v1.GetClinicStatsRequest\x1a&.query.stats.v1.GetClinicStatsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/clinics/{clinic_id}/stats\x12\x9a\x01\n" +
-	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xdf\x03\x92A\x9a\x02RI\n" +
-	"\x03400\x12B\n" +
+	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\x84\a\x92A\xbf\x05R\xff\x01\n" +
+	"\x03400\x12\xf7\x01\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
-	"\x03401\x12L\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"\xb2\x01\n" +
+	"\x10application/json\x12\x9d\x01{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}R\xa0\x01\n" +
+	"\x03401\x12\x98\x01\n" +
 	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
-	"\x03403\x121\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
+	"\x10application/json\x126{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}R\x89\x01\n" +
+	"\x03403\x12\x81\x01\n" +
 	"\x12Permission denied.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
-	"\x03500\x127\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"N\n" +
+	"\x10application/json\x12:{\"code\":\"permission_denied\",\"message\":\"permission denied\"}R\x8b\x01\n" +
+	"\x03500\x12\x83\x01\n" +
 	"\x18Unexpected server error.\x12\x1b\n" +
-	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\"J\n" +
+	"\x10application/json\x126{\"code\":\"unexpected_error\",\"message\":\"internal error\"}\n" +
 	"\x12com.query.stats.v1B\n" +
 	"StatsProtoP\x01ZEgithub.com/medincident/medincident-backend/pkg/query/stats/v1;statsv1\xa2\x02\x03QSX\xaa\x02\x0eQuery.Stats.V1\xca\x02\x0eQuery\\Stats\\V1\xe2\x02\x1aQuery\\Stats\\V1\\GPBMetadata\xea\x02\x10Query::Stats::V1b\x06proto3"
 

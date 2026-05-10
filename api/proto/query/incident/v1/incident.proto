@@ -15,6 +15,10 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       schema: {
         json_schema: {ref: ".error.v1.ErrorResponse"}
       }
+      examples: {
+        key: "application/json"
+        value: "{\"code\":\"validation_failed\",\"message\":\"Validation failed.\",\"details\":{\"violations\":[{\"field\":\"field_name\",\"rule\":\"required\",\"message\":\"field is required\"}]}}"
+      }
     }
   }
   responses: {
@@ -23,6 +27,10 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       description: "Unauthenticated — missing or invalid token."
       schema: {
         json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+      examples: {
+        key: "application/json"
+        value: "{\"code\":\"unauthenticated\",\"message\":\"unauthenticated\"}"
       }
     }
   }
@@ -33,6 +41,10 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       schema: {
         json_schema: {ref: ".error.v1.ErrorResponse"}
       }
+      examples: {
+        key: "application/json"
+        value: "{\"code\":\"permission_denied\",\"message\":\"permission denied\"}"
+      }
     }
   }
   responses: {
@@ -41,6 +53,10 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
       description: "Unexpected server error."
       schema: {
         json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+      examples: {
+        key: "application/json"
+        value: "{\"code\":\"unexpected_error\",\"message\":\"internal error\"}"
       }
     }
   }
