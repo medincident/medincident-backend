@@ -1,7 +1,7 @@
 # Multi-stage build for the query-server binary. Mirrors
 # command-server.Dockerfile; differs only in the build target.
 
-ARG GO_VERSION=1.26.2
+ARG GO_VERSION=1.26.3
 
 FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine AS build
 ARG TARGETOS TARGETARCH

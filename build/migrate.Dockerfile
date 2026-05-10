@@ -5,7 +5,7 @@
 #
 # Runtime: set DATABASE_URL and run the container once before services start.
 
-ARG GO_VERSION=1.26.2
+ARG GO_VERSION=1.26.3
 
 FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine AS build
 ARG TARGETOS TARGETARCH

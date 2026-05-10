@@ -2,7 +2,7 @@
 # command-server.Dockerfile and query-server.Dockerfile; differs
 # only in the build target.
 
-ARG GO_VERSION=1.26.2
+ARG GO_VERSION=1.26.3
 
 FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine AS build
 ARG TARGETOS TARGETARCH
