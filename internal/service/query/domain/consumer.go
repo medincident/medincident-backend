@@ -7,6 +7,7 @@ package domain
 import (
 	"context"
 	"errors"
+	"strings"
 	"sync"
 	"time"
 
@@ -212,8 +213,11 @@ func isMalformed(err error) bool {
 	if !ok {
 		return false
 	}
-	code := oe.Code()
-	return code == ErrCodeEnvelopeUnmarshalFailed || code == ErrCodePayloadUnmarshalFailed
+	code, ok := oe.Code().(string)
+	if !ok {
+		return false
+	}
+	return strings.HasSuffix(code, "_malformed")
 }
 
 // consumerAckWait gives the projector a little more time than the nak
