@@ -3,8 +3,48 @@ syntax = "proto3";
 package query.self.v1;
 
 import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 import "query/membership/v1/membership.proto";
 import "query/orgstructure/v1/orgstructure.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  responses: {
+    key: "400"
+    value: {
+      description: "Validation failed or invalid input."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "401"
+    value: {
+      description: "Unauthenticated — missing or invalid token."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "403"
+    value: {
+      description: "Permission denied."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "500"
+    value: {
+      description: "Unexpected server error."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+};
 
 // SelfQueryService exposes read methods over the caller's own
 // memberships and roles. Every RPC is gated only by authentication
@@ -27,6 +67,17 @@ service SelfQueryService {
   // employee of that organization.
   rpc GetMyEmployment(GetMyEmploymentRequest) returns (GetMyEmploymentResponse) {
     option (google.api.http) = {get: "/v1/me/organizations/{organization_id}/employment"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // GetMyOrganizationRole returns the caller's named roles in the
@@ -34,6 +85,17 @@ service SelfQueryService {
   // active employee of that organization.
   rpc GetMyOrganizationRole(GetMyOrganizationRoleRequest) returns (GetMyOrganizationRoleResponse) {
     option (google.api.http) = {get: "/v1/me/organizations/{organization_id}/role"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // GetMyClinicRole returns whether the caller is the clinic head of
@@ -41,6 +103,17 @@ service SelfQueryService {
   // active employee of that clinic.
   rpc GetMyClinicRole(GetMyClinicRoleRequest) returns (GetMyClinicRoleResponse) {
     option (google.api.http) = {get: "/v1/me/clinics/{clinic_id}/role"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // GetMyDepartmentRole returns whether the caller holds the
@@ -49,6 +122,17 @@ service SelfQueryService {
   // department.
   rpc GetMyDepartmentRole(GetMyDepartmentRoleRequest) returns (GetMyDepartmentRoleResponse) {
     option (google.api.http) = {get: "/v1/me/departments/{department_id}/role"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 }
 

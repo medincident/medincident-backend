@@ -52,6 +52,17 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service IncidentClassifierQueryService {
   rpc GetCategory(GetCategoryRequest) returns (GetCategoryResponse) {
     option (google.api.http) = {get: "/v1/incident-categories/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ListCategoriesByOrganization(ListCategoriesByOrganizationRequest) returns (ListCategoriesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories"};
@@ -65,6 +76,17 @@ service IncidentClassifierQueryService {
 
   rpc GetType(GetTypeRequest) returns (GetTypeResponse) {
     option (google.api.http) = {get: "/v1/incident-types/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ListTypesByCategory(ListTypesByCategoryRequest) returns (ListTypesByCategoryResponse) {
     option (google.api.http) = {get: "/v1/incident-categories/{category_id}/types"};

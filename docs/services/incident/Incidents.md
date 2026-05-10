@@ -12,7 +12,7 @@
 
 ## CreateIncident
 
-**HTTP:** `POST /v1/organizations/{organization_id}/incidents`
+**HTTP:** `POST /v1/incidents`
 **gRPC:** `IncidentCommandService.CreateIncident`
 
 ### Права доступа
@@ -23,47 +23,51 @@
 
 | Поле | Тип | Правила |
 |---|---|---|
-| `organization_id` | string (UUID) | required, uuid |
-| `incident_type_id` | string (UUID) | required, uuid |
-| `description` | string | required, min=1, max=4096 |
-| `priority` | enum | required |
-| `source_buffer_id` | string (UUID) | omitempty, uuid |
+| `department_id` | string (UUID) | required, uuid |
+| `category_id` | string (UUID) | required, uuid |
+| `type_id` | string (UUID) | required, uuid |
+| `description` | string | omitempty, max=4096 |
+| `occurred_at` | string (RFC3339Nano) | required |
 
 ### Инварианты
 
 - Тип инцидента должен принадлежать той же организации и быть активным.
 - При создании из буфера (`source_buffer_id`) запись буфера переходит в статус `published`.
-- Начальный статус инцидента — `open`.
+- Начальный статус инцидента — `pending`.
 
 ### Ошибки
 
-| Код | Описание |
-|---|---|
-| `incident_type_not_found` | Тип инцидента не найден или не активен |
-| `patient_incident_not_found` | Запись буфера не найдена |
-| `patient_incident_invalid_status` | Запись буфера не в статусе `pending` |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_department_not_found` | 404 | Отдел не найден |
+| `incident_category_not_found` | 404 | Категория не найдена |
+| `incident_type_not_found` | 404 | Тип инцидента не найден |
 
 ---
 
-## UpdateIncidentDescription
+## CancelIncident
 
-**HTTP:** `PATCH /v1/incidents/{incident_id}/description`
-**gRPC:** `IncidentCommandService.UpdateIncidentDescription`
+**HTTP:** `POST /v1/incidents/{incident_id}:cancel`
+**gRPC:** `IncidentCommandService.CancelIncident`
 
 ### Права доступа
 
-`AdminOf.Organization(organizationID)` (через incident → organization)
-
-### Параметры
-
-| Поле | Тип | Правила |
-|---|---|---|
-| `incident_id` | string (UUID) | required, uuid |
-| `description` | string | required, min=1, max=4096 |
+`AdminOf.Organization(organizationID)`
 
 ### Инварианты
 
-- Доступно только для инцидентов в статусе `open`.
+- Доступно только для инцидентов в статусе `pending` или `in_progress`.
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `incident_not_cancellable` | 400 | Инцидент нельзя отменить в текущем статусе |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_not_found` | 404 | Инцидент не найден |
 
 ---
 
@@ -90,10 +94,12 @@
 
 ### Ошибки
 
-| Код | Описание |
-|---|---|
-| `incident_not_found` | Инцидент не найден |
-| `incident_invalid_status_flow` | Недопустимый переход статуса |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `incident_invalid_status_transition` | 400 | Недопустимый переход статуса |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_not_found` | 404 | Инцидент не найден |
 
 ---
 
@@ -120,31 +126,48 @@
 
 ### Ошибки
 
-| Код | Описание |
-|---|---|
-| `incident_not_found` | Инцидент не найден |
-| `incident_frozen` | Инцидент находится в терминальном статусе |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `incident_frozen` | 400 | Инцидент находится в терминальном статусе |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_not_found` | 404 | Инцидент не найден |
 
 ---
 
-## CancelIncident
+## UpdateIncidentDescription
 
-**HTTP:** `POST /v1/incidents/{incident_id}/cancel`
-**gRPC:** `IncidentCommandService.CancelIncident`
+**HTTP:** `PUT /v1/incidents/{incident_id}/description`
+**gRPC:** `IncidentCommandService.UpdateIncidentDescription`
 
 ### Права доступа
 
-`AdminOf.Organization(organizationID)`
+`AdminOf.Organization(organizationID)` (через incident → organization)
+
+### Параметры
+
+| Поле | Тип | Правила |
+|---|---|---|
+| `incident_id` | string (UUID) | required, uuid |
+| `description` | string | omitempty, max=4096 |
 
 ### Инварианты
 
-- Доступно только для инцидентов в статусе `open`.
+- Доступно только для инцидентов в статусе `pending` или `in_progress`.
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_not_found` | 404 | Инцидент не найден |
 
 ---
 
 ## ReopenIncident
 
-**HTTP:** `POST /v1/incidents/{incident_id}/reopen`
+**HTTP:** `POST /v1/incidents/{incident_id}:reopen`
 **gRPC:** `IncidentCommandService.ReopenIncident`
 
 ### Права доступа
@@ -153,7 +176,16 @@
 
 ### Инварианты
 
-- Доступно только для инцидентов в статусе `closed`.
+- Доступно только для инцидентов в терминальном статусе (`done`, `rejected`, `cancelled`).
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `incident_not_reopenable` | 400 | Инцидент нельзя переоткрыть в текущем статусе |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_not_found` | 404 | Инцидент не найден |
 
 ---
 
@@ -163,5 +195,16 @@
 |---|---|
 | `ListIncidents` | ReaderOf.Organization |
 | `GetIncident` | ReaderOf.Organization |
-| `ListIncidentStatusHistory` | ReaderOf.Organization |
-| `ListIncidentPriorityHistory` | ReaderOf.Organization |
+| `ListMyIncidents` | Authenticated (только свои) |
+| `GetIncidentHistory` | ReaderOf.Organization |
+
+### GetIncident
+
+**HTTP:** `GET /v1/query/incidents/{id}`
+**gRPC:** `IncidentQueryService.GetIncident`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_query_not_found` | 404 | Инцидент не найден |

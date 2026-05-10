@@ -52,6 +52,17 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service OrgStructureQueryService {
   rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Organization not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ListOrganizations(ListOrganizationsRequest) returns (ListOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations"};
@@ -65,6 +76,17 @@ service OrgStructureQueryService {
 
   rpc GetClinic(GetClinicRequest) returns (GetClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Clinic not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ListClinicsByOrganization(ListClinicsByOrganizationRequest) returns (ListClinicsByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics"};
@@ -75,6 +97,17 @@ service OrgStructureQueryService {
 
   rpc GetDepartment(GetDepartmentRequest) returns (GetDepartmentResponse) {
     option (google.api.http) = {get: "/v1/departments/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Department not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ListDepartmentsByClinic(ListDepartmentsByClinicRequest) returns (ListDepartmentsByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments"};

@@ -59,11 +59,51 @@ service IncidentClassifierCommandService {
       post: "/v1/organizations/{organization_id}/incident-categories"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc UpdateIncidentCategoryDetails(UpdateIncidentCategoryDetailsRequest) returns (UpdateIncidentCategoryDetailsResponse) {
     option (google.api.http) = {
       put: "/v1/incident-categories/{category_id}/details"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
     };
   }
   rpc MoveIncidentCategory(MoveIncidentCategoryRequest) returns (MoveIncidentCategoryResponse) {
@@ -71,15 +111,59 @@ service IncidentClassifierCommandService {
       post: "/v1/incident-categories/{category_id}:move"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc DeactivateIncidentCategory(DeactivateIncidentCategoryRequest) returns (DeactivateIncidentCategoryResponse) {
     option (google.api.http) = {post: "/v1/incident-categories/{category_id}/deactivations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ReactivateIncidentCategory(ReactivateIncidentCategoryRequest) returns (ReactivateIncidentCategoryResponse) {
     option (google.api.http) = {post: "/v1/incident-categories/{category_id}/reactivations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc DeleteIncidentCategory(DeleteIncidentCategoryRequest) returns (DeleteIncidentCategoryResponse) {
     option (google.api.http) = {delete: "/v1/incident-categories/{category_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // --- Types ---
@@ -88,11 +172,51 @@ service IncidentClassifierCommandService {
       post: "/v1/incident-categories/{category_id}/types"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc UpdateIncidentTypeDetails(UpdateIncidentTypeDetailsRequest) returns (UpdateIncidentTypeDetailsResponse) {
     option (google.api.http) = {
       put: "/v1/incident-types/{type_id}/details"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
     };
   }
   rpc MoveIncidentType(MoveIncidentTypeRequest) returns (MoveIncidentTypeResponse) {
@@ -100,21 +224,87 @@ service IncidentClassifierCommandService {
       post: "/v1/incident-types/{type_id}:move"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc DeactivateIncidentType(DeactivateIncidentTypeRequest) returns (DeactivateIncidentTypeResponse) {
     option (google.api.http) = {post: "/v1/incident-types/{type_id}/deactivations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ReactivateIncidentType(ReactivateIncidentTypeRequest) returns (ReactivateIncidentTypeResponse) {
     option (google.api.http) = {post: "/v1/incident-types/{type_id}/reactivations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc DeleteIncidentType(DeleteIncidentTypeRequest) returns (DeleteIncidentTypeResponse) {
     option (google.api.http) = {delete: "/v1/incident-types/{type_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc AllowIncidentTypeForPatients(AllowIncidentTypeForPatientsRequest) returns (AllowIncidentTypeForPatientsResponse) {
     option (google.api.http) = {post: "/v1/incident-types/{type_id}/patient-allowances"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc DisallowIncidentTypeForPatients(DisallowIncidentTypeForPatientsRequest) returns (DisallowIncidentTypeForPatientsResponse) {
     option (google.api.http) = {delete: "/v1/incident-types/{type_id}/patient-allowances"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 }
 

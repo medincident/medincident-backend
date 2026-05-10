@@ -132,6 +132,26 @@
 | `ArchiveAnnouncement` | `POST /v1/announcements/{id}:archive` | Архивировать (идемпотентно) |
 | `UnarchiveAnnouncement` | `POST /v1/announcements/{id}:unarchive` | Де-архивировать (идемпотентно) |
 
+#### Ошибки по методам
+
+**CreateAnnouncement:**
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `announcement_organization_not_found` | 404 | Организация не найдена |
+| `announcement_clinic_not_found` | 404 | Клиника не найдена |
+| `announcement_department_not_found` | 404 | Отдел не найден |
+
+**UpdateAnnouncement / UpdateAnnouncementPriority / ArchiveAnnouncement / UnarchiveAnnouncement:**
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `announcement_not_found` | 404 | Объявление не найдено |
+
 ### Query (`AnnouncementQueryService`)
 
 | Метод | HTTP | Описание |
@@ -140,6 +160,16 @@
 | `ListAnnouncementsForOrganization` | `GET /v1/query/organizations/{org_id}/announcements` | Список объявлений уровня организации |
 | `ListAnnouncementsForClinic` | `GET /v1/query/clinics/{clinic_id}/announcements` | Список объявлений уровня клиники (включая org-level) |
 | `ListAnnouncementsForDepartment` | `GET /v1/query/departments/{dept_id}/announcements` | Список объявлений уровня отдела (включая clinic- и org-level) |
+
+#### Ошибки по методам
+
+**GetAnnouncement:**
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Недостаточно прав |
+| `announcement_query_not_found` | 404 | Объявление не найдено |
 
 #### Фильтры List-методов
 

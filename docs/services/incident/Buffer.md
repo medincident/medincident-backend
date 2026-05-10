@@ -12,7 +12,7 @@
 
 ## SubmitPatientIncident
 
-**HTTP:** `POST /v1/organizations/{organization_id}/patient-incidents`
+**HTTP:** `POST /v1/patient-incidents`
 **gRPC:** `IncidentBufferCommandService.SubmitPatientIncident`
 
 ### Права доступа
@@ -34,15 +34,16 @@
 
 ### Ошибки
 
-| Код | Описание |
-|---|---|
-| `incident_type_not_found` | Тип не найден, не активен или не доступен для пациентов |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `buffer_organization_not_found` | 404 | Организация не найдена |
 
 ---
 
 ## UpdatePatientIncident
 
-**HTTP:** `PATCH /v1/patient-incidents/{patient_incident_id}`
+**HTTP:** `PUT /v1/patient-incidents/{buffer_id}`
 **gRPC:** `IncidentBufferCommandService.UpdatePatientIncident`
 
 ### Права доступа
@@ -53,7 +54,7 @@
 
 | Поле | Тип | Правила |
 |---|---|---|
-| `patient_incident_id` | string (UUID) | required, uuid |
+| `buffer_id` | string (UUID) | required, uuid |
 | `description` | string | omitempty, min=1, max=4096 |
 | `incident_type_id` | string (UUID) | omitempty, uuid |
 
@@ -61,11 +62,19 @@
 
 - Доступно только для заявок в статусе `pending`.
 
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `buffer_not_pending` | 400 | Заявка не в статусе pending |
+| `permission_denied` / `buffer_not_patient_owner` | 403 | Нет прав доступа |
+
 ---
 
 ## CancelPatientIncident
 
-**HTTP:** `POST /v1/patient-incidents/{patient_incident_id}/cancel`
+**HTTP:** `POST /v1/patient-incidents/{buffer_id}:cancel`
 **gRPC:** `IncidentBufferCommandService.CancelPatientIncident`
 
 ### Права доступа
@@ -76,11 +85,18 @@
 
 - Доступно только для заявок в статусе `pending`.
 
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+
 ---
 
 ## PublishPatientIncident
 
-**HTTP:** `POST /v1/patient-incidents/{patient_incident_id}/publish`
+**HTTP:** `POST /v1/patient-incidents/{buffer_id}:publish`
 **gRPC:** `IncidentBufferCommandService.PublishPatientIncident`
 
 ### Права доступа
@@ -91,19 +107,33 @@
 
 | Поле | Тип | Правила |
 |---|---|---|
-| `patient_incident_id` | string (UUID) | required, uuid |
-| `priority` | enum | required |
+| `buffer_id` | string (UUID) | required, uuid |
+| `department_id` | string (UUID) | required, uuid |
+| `category_id` | string (UUID) | required, uuid |
+| `type_id` | string (UUID) | required, uuid |
+| `description` | string | omitempty |
 
 ### Инварианты
 
 - Публикация атомарно переводит заявку в `published` и создаёт инцидент (`CreateIncident` с `source_buffer_id`).
 - `incident.source_buffer_id` ссылается на опубликованную заявку.
 
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `buffer_department_not_found` | 404 | Отдел не найден |
+| `buffer_category_not_found` | 404 | Категория не найдена |
+| `buffer_type_not_found` | 404 | Тип инцидента не найден |
+| `buffer_dispatcher_not_found` | 404 | Диспетчер не найден |
+
 ---
 
 ## RejectPatientIncident
 
-**HTTP:** `POST /v1/patient-incidents/{patient_incident_id}/reject`
+**HTTP:** `POST /v1/patient-incidents/{buffer_id}:reject`
 **gRPC:** `IncidentBufferCommandService.RejectPatientIncident`
 
 ### Права доступа
@@ -114,12 +144,18 @@
 
 | Поле | Тип | Правила |
 |---|---|---|
-| `patient_incident_id` | string (UUID) | required, uuid |
-| `reason` | string | required, min=1, max=1024 |
+| `buffer_id` | string (UUID) | required, uuid |
 
 ### Инварианты
 
 - Доступно только для заявок в статусе `pending`.
+
+### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
 
 ---
 
@@ -127,5 +163,17 @@
 
 | Метод | Права |
 |---|---|
-| `ListPatientIncidents` | OrgDispatcherOf или пациент-владелец |
-| `GetPatientIncident` | OrgDispatcherOf или пациент-владелец |
+| `ListBufferEntries` | OrgDispatcherOf или пациент-владелец |
+| `GetBufferEntry` | OrgDispatcherOf или пациент-владелец |
+| `ListMyBufferEntries` | Authenticated (только свои) |
+
+### GetBufferEntry
+
+**HTTP:** `GET /v1/query/patient-incidents/{id}`
+**gRPC:** `IncidentQueryService.GetBufferEntry`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `buffer_query_not_found` | 404 | Запись буфера не найдена |

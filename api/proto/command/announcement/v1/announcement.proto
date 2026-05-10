@@ -54,11 +54,33 @@ service AnnouncementCommandService {
       post: "/v1/announcements"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc UpdateAnnouncement(UpdateAnnouncementRequest) returns (UpdateAnnouncementResponse) {
     option (google.api.http) = {
       put: "/v1/announcements/{id}"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
     };
   }
   rpc UpdateAnnouncementPriority(UpdateAnnouncementPriorityRequest) returns (UpdateAnnouncementPriorityResponse) {
@@ -66,12 +88,45 @@ service AnnouncementCommandService {
       put: "/v1/announcements/{id}/priority"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ArchiveAnnouncement(ArchiveAnnouncementRequest) returns (ArchiveAnnouncementResponse) {
     option (google.api.http) = {post: "/v1/announcements/{id}:archive"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc UnarchiveAnnouncement(UnarchiveAnnouncementRequest) returns (UnarchiveAnnouncementResponse) {
     option (google.api.http) = {post: "/v1/announcements/{id}:unarchive"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 }
 

@@ -49,12 +49,34 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service ServiceRequestQueryService {
   rpc GetServiceRequest(GetServiceRequestRequest) returns (GetServiceRequestResponse) {
     option (google.api.http) = {get: "/v1/service-requests/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ListServiceRequests(ListServiceRequestsRequest) returns (ListServiceRequestsResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/service-requests"};
   }
   rpc ListServiceRequestsByIncident(ListServiceRequestsByIncidentRequest) returns (ListServiceRequestsByIncidentResponse) {
     option (google.api.http) = {get: "/v1/incidents/{incident_id}/service-requests"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc GetServiceRequestHistory(GetServiceRequestHistoryRequest) returns (GetServiceRequestHistoryResponse) {
     option (google.api.http) = {get: "/v1/service-requests/{service_request_id}/history"};

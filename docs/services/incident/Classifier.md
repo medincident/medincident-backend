@@ -36,27 +36,38 @@
 
 #### Ошибки
 
-| Код | Описание |
-|---|---|
-| `incident_category_not_found` | Родительская категория не найдена |
-| `incident_category_max_depth_exceeded` | Превышена максимальная глубина дерева |
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_category_parent_not_found` | 404 | Родительская категория не найдена |
+| `incident_category_name_conflict` | 409 | Категория с таким именем уже существует |
 
 ---
 
 ### UpdateIncidentCategoryDetails
 
-**HTTP:** `PATCH /v1/incident-categories/{category_id}`
+**HTTP:** `PUT /v1/incident-categories/{category_id}/details`
 **gRPC:** `IncidentClassifierCommandService.UpdateIncidentCategoryDetails`
 
 #### Права доступа
 
 `AdminOf.Category(categoryID)`
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_category_not_found` | 404 | Категория не найдена |
+| `incident_category_name_conflict` | 409 | Категория с таким именем уже существует |
+
 ---
 
 ### MoveIncidentCategory
 
-**HTTP:** `PUT /v1/incident-categories/{category_id}/parent`
+**HTTP:** `POST /v1/incident-categories/{category_id}:move`
 **gRPC:** `IncidentClassifierCommandService.MoveIncidentCategory`
 
 #### Права доступа
@@ -68,12 +79,21 @@
 - Нельзя переместить категорию в саму себя или в своего потомка (цикл).
 - Ограничение глубины применяется к новому положению.
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_category_not_found` | 404 | Категория не найдена |
+| `incident_category_parent_not_found` | 404 | Родительская категория не найдена |
+
 ---
 
-### DeactivateIncidentCategory / ReactivateIncidentCategory
+### DeactivateIncidentCategory
 
-**HTTP:** `POST /v1/incident-categories/{category_id}/deactivate` / `reactivate`
-**gRPC:** `IncidentClassifierCommandService.DeactivateIncidentCategory` / `ReactivateIncidentCategory`
+**HTTP:** `POST /v1/incident-categories/{category_id}/deactivations`
+**gRPC:** `IncidentClassifierCommandService.DeactivateIncidentCategory`
 
 #### Права доступа
 
@@ -83,6 +103,33 @@
 
 - Деактивация категории рекурсивно деактивирует все дочерние категории и типы.
 - Деактивированный тип недоступен для выбора при создании нового инцидента.
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_category_not_found` | 404 | Категория не найдена |
+
+---
+
+### ReactivateIncidentCategory
+
+**HTTP:** `POST /v1/incident-categories/{category_id}/reactivations`
+**gRPC:** `IncidentClassifierCommandService.ReactivateIncidentCategory`
+
+#### Права доступа
+
+`AdminOf.Category(categoryID)`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_category_not_found` | 404 | Категория не найдена |
 
 ---
 
@@ -99,13 +146,21 @@
 
 - Удаление невозможно, если к категории привязаны инциденты или дочерние типы с инцидентами (FK RESTRICT).
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_category_not_found` | 404 | Категория не найдена |
+
 ---
 
 ## Типы инцидентов
 
 ### CreateIncidentType
 
-**HTTP:** `POST /v1/incident-categories/{category_id}/incident-types`
+**HTTP:** `POST /v1/incident-categories/{category_id}/types`
 **gRPC:** `IncidentClassifierCommandService.CreateIncidentType`
 
 #### Права доступа
@@ -120,22 +175,40 @@
 | `name` | string | required, min=2, max=256 |
 | `description` | string | omitempty, max=2048 |
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_type_category_not_found` | 404 | Категория не найдена |
+| `incident_type_name_conflict` | 409 | Тип с таким именем уже существует в категории |
+
 ---
 
 ### UpdateIncidentTypeDetails
 
-**HTTP:** `PATCH /v1/incident-types/{type_id}`
+**HTTP:** `PUT /v1/incident-types/{type_id}/details`
 **gRPC:** `IncidentClassifierCommandService.UpdateIncidentTypeDetails`
 
 #### Права доступа
 
 `AdminOf.IncidentType(typeID)`
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_type_not_found` | 404 | Тип не найден |
+| `incident_type_name_conflict` | 409 | Тип с таким именем уже существует в категории |
+
 ---
 
 ### MoveIncidentType
 
-**HTTP:** `PUT /v1/incident-types/{type_id}/category`
+**HTTP:** `POST /v1/incident-types/{type_id}:move`
 **gRPC:** `IncidentClassifierCommandService.MoveIncidentType`
 
 #### Права доступа
@@ -146,17 +219,59 @@
 
 - Целевая категория должна принадлежать той же организации.
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_type_not_found` | 404 | Тип не найден |
+| `incident_type_category_not_found` | 404 | Целевая категория не найдена |
+
 ---
 
-### DeactivateIncidentType / ReactivateIncidentType
+### DeactivateIncidentType
+
+**HTTP:** `POST /v1/incident-types/{type_id}/deactivations`
+**gRPC:** `IncidentClassifierCommandService.DeactivateIncidentType`
 
 #### Права доступа
 
 `AdminOf.IncidentType(typeID)`
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_type_not_found` | 404 | Тип не найден |
+
+---
+
+### ReactivateIncidentType
+
+**HTTP:** `POST /v1/incident-types/{type_id}/reactivations`
+**gRPC:** `IncidentClassifierCommandService.ReactivateIncidentType`
+
+#### Права доступа
+
+`AdminOf.IncidentType(typeID)`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_type_not_found` | 404 | Тип не найден |
+
 ---
 
 ### DeleteIncidentType
+
+**HTTP:** `DELETE /v1/incident-types/{type_id}`
+**gRPC:** `IncidentClassifierCommandService.DeleteIncidentType`
 
 #### Права доступа
 
@@ -166,17 +281,53 @@
 
 - Удаление невозможно, если тип используется в существующих инцидентах (FK RESTRICT).
 
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_type_not_found` | 404 | Тип не найден |
+
 ---
 
-### AllowIncidentTypeForPatients / DisallowIncidentTypeForPatients
+### AllowIncidentTypeForPatients
+
+**HTTP:** `POST /v1/incident-types/{type_id}/patient-allowances`
+**gRPC:** `IncidentClassifierCommandService.AllowIncidentTypeForPatients`
 
 Управление флагом `is_allowed_for_patients` — доступность типа для выбора пациентом при подаче заявки через буфер.
-
-**gRPC:** `IncidentClassifierCommandService.AllowIncidentTypeForPatients` / `DisallowIncidentTypeForPatients`
 
 #### Права доступа
 
 `AdminOf.IncidentType(typeID)`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_type_not_found` | 404 | Тип не найден |
+
+---
+
+### DisallowIncidentTypeForPatients
+
+**HTTP:** `DELETE /v1/incident-types/{type_id}/patient-allowances`
+**gRPC:** `IncidentClassifierCommandService.DisallowIncidentTypeForPatients`
+
+#### Права доступа
+
+`AdminOf.IncidentType(typeID)`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибка валидации |
+| `permission_denied` | 403 | Нет прав доступа |
+| `incident_type_not_found` | 404 | Тип не найден |
 
 ---
 
@@ -184,9 +335,36 @@
 
 | Метод | Права |
 |---|---|
-| `ListIncidentCategories` | ReaderOf.Organization |
-| `GetIncidentCategory` | ReaderOf.Category |
-| `ListIncidentTypes` | ReaderOf.Organization |
-| `GetIncidentType` | ReaderOf.IncidentType |
+| `ListCategoriesByOrganization` | ReaderOf.Organization |
+| `ListActiveRootCategories` | ReaderOf.Organization |
+| `ListCategorySubtree` | ReaderOf.Organization |
+| `GetCategory` | ReaderOf.Category |
+| `ListTypesByCategory` | ReaderOf.Organization |
+| `ListActiveTypesByOrganization` | ReaderOf.Organization |
+| `GetType` | ReaderOf.IncidentType |
+| `ListPatientAllowedTypesByOrganization` | Authenticated |
+| `ListPatientVisibleCategoriesByOrganization` | Authenticated |
 
-Для пациентов (patient-facing): `ListIncidentCategories` и `ListIncidentTypes` — `Authenticated` (только `is_allowed_for_patients=true` типы).
+Для пациентов (patient-facing): `ListPatientAllowedTypesByOrganization` и `ListPatientVisibleCategoriesByOrganization` — `Authenticated` (только `is_allowed_for_patients=true` типы).
+
+### GetCategory
+
+**HTTP:** `GET /v1/incident-categories/{id}`
+**gRPC:** `IncidentClassifierQueryService.GetCategory`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_category_not_found` | 404 | Категория не найдена |
+
+### GetType
+
+**HTTP:** `GET /v1/incident-types/{id}`
+**gRPC:** `IncidentClassifierQueryService.GetType`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_type_not_found` | 404 | Тип не найден |

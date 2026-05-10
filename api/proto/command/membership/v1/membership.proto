@@ -61,11 +61,51 @@ service MembershipCommandService {
       post: "/v1/employees"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "503"
+        value: {
+          description: "External identity service unavailable."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc UpdateEmployeePosition(UpdateEmployeePositionRequest) returns (UpdateEmployeePositionResponse) {
     option (google.api.http) = {
       put: "/v1/employees/{employee_id}/position"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
     };
   }
   rpc UpdateEmployeeDepartment(UpdateEmployeeDepartmentRequest) returns (UpdateEmployeeDepartmentResponse) {
@@ -73,9 +113,31 @@ service MembershipCommandService {
       put: "/v1/employees/{employee_id}/department"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc TerminateEmployee(TerminateEmployeeRequest) returns (TerminateEmployeeResponse) {
     option (google.api.http) = {delete: "/v1/employees/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // Vacation lifecycle
@@ -83,6 +145,17 @@ service MembershipCommandService {
     option (google.api.http) = {
       post: "/v1/employees/{employee_id}/vacations:start-now"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
     };
   }
   rpc ScheduleVacation(ScheduleVacationRequest) returns (ScheduleVacationResponse) {
@@ -96,12 +169,45 @@ service MembershipCommandService {
       put: "/v1/vacations/{vacation_id}/end-date"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ForceEndVacation(ForceEndVacationRequest) returns (ForceEndVacationResponse) {
     option (google.api.http) = {post: "/v1/vacations/{vacation_id}/terminations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc CancelScheduledVacation(CancelScheduledVacationRequest) returns (CancelScheduledVacationResponse) {
     option (google.api.http) = {post: "/v1/vacations/{vacation_id}/cancellations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // ------ DepartmentResponsible ------
@@ -110,18 +216,80 @@ service MembershipCommandService {
       post: "/v1/departments/{department_id}/responsibles"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RevokeDepartmentResponsible(RevokeDepartmentResponsibleRequest) returns (RevokeDepartmentResponsibleResponse) {
     option (google.api.http) = {delete: "/v1/departments/{department_id}/responsibles/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc AssignDepartmentResponsibleDeputy(AssignDepartmentResponsibleDeputyRequest) returns (AssignDepartmentResponsibleDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/departments/{department_id}/responsibles/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RemoveDepartmentResponsibleDeputy(RemoveDepartmentResponsibleDeputyRequest) returns (RemoveDepartmentResponsibleDeputyResponse) {
     option (google.api.http) = {delete: "/v1/departments/{department_id}/responsibles/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // ------ ClinicHead ------
@@ -130,18 +298,80 @@ service MembershipCommandService {
       post: "/v1/clinics/{clinic_id}/heads"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RevokeClinicHead(RevokeClinicHeadRequest) returns (RevokeClinicHeadResponse) {
     option (google.api.http) = {delete: "/v1/clinics/{clinic_id}/heads/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc AssignClinicHeadDeputy(AssignClinicHeadDeputyRequest) returns (AssignClinicHeadDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/clinics/{clinic_id}/heads/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RemoveClinicHeadDeputy(RemoveClinicHeadDeputyRequest) returns (RemoveClinicHeadDeputyResponse) {
     option (google.api.http) = {delete: "/v1/clinics/{clinic_id}/heads/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // ------ OrganizationAdmin ------
@@ -150,18 +380,80 @@ service MembershipCommandService {
       post: "/v1/organizations/{organization_id}/admins"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RevokeOrganizationAdmin(RevokeOrganizationAdminRequest) returns (RevokeOrganizationAdminResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/admins/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc AssignOrganizationAdminDeputy(AssignOrganizationAdminDeputyRequest) returns (AssignOrganizationAdminDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/organizations/{organization_id}/admins/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RemoveOrganizationAdminDeputy(RemoveOrganizationAdminDeputyRequest) returns (RemoveOrganizationAdminDeputyResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/admins/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // ------ OrganizationHead ------
@@ -170,18 +462,80 @@ service MembershipCommandService {
       post: "/v1/organizations/{organization_id}/heads"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RevokeOrganizationHead(RevokeOrganizationHeadRequest) returns (RevokeOrganizationHeadResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/heads/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc AssignOrganizationHeadDeputy(AssignOrganizationHeadDeputyRequest) returns (AssignOrganizationHeadDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/organizations/{organization_id}/heads/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RemoveOrganizationHeadDeputy(RemoveOrganizationHeadDeputyRequest) returns (RemoveOrganizationHeadDeputyResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/heads/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // ------ OrganizationDispatcher ------
@@ -190,18 +544,80 @@ service MembershipCommandService {
       post: "/v1/organizations/{organization_id}/dispatchers"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RevokeOrganizationDispatcher(RevokeOrganizationDispatcherRequest) returns (RevokeOrganizationDispatcherResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/dispatchers/{employee_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc AssignOrganizationDispatcherDeputy(AssignOrganizationDispatcherDeputyRequest) returns (AssignOrganizationDispatcherDeputyResponse) {
     option (google.api.http) = {
       post: "/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RemoveOrganizationDispatcherDeputy(RemoveOrganizationDispatcherDeputyRequest) returns (RemoveOrganizationDispatcherDeputyResponse) {
     option (google.api.http) = {delete: "/v1/organizations/{organization_id}/dispatchers/{employee_id}/deputy"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 
   // ------ SystemAdmin ------
@@ -210,9 +626,49 @@ service MembershipCommandService {
       post: "/v1/system-admins"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "409"
+        value: {
+          description: "Conflict."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+      responses: {
+        key: "503"
+        value: {
+          description: "External identity service unavailable."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc RevokeSystemAdmin(RevokeSystemAdminRequest) returns (RevokeSystemAdminResponse) {
     option (google.api.http) = {delete: "/v1/system-admins/{zitadel_user_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 }
 

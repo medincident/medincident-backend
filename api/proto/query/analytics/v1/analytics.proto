@@ -49,12 +49,45 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service AnalyticsQueryService {
   rpc GetSnapshot(GetSnapshotRequest) returns (GetSnapshotResponse) {
     option (google.api.http) = {get: "/v1/analytics/snapshot"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc GetSummary(GetSummaryRequest) returns (GetSummaryResponse) {
     option (google.api.http) = {get: "/v1/analytics/summary"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc GetTimeSeries(GetTimeSeriesRequest) returns (GetTimeSeriesResponse) {
     option (google.api.http) = {get: "/v1/analytics/timeseries"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 }
 

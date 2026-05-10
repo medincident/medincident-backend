@@ -55,14 +55,47 @@ service IncidentCommandService {
       post: "/v1/incidents"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc CancelIncident(CancelIncidentRequest) returns (CancelIncidentResponse) {
     option (google.api.http) = {post: "/v1/incidents/{incident_id}:cancel"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc UpdateIncidentStatus(UpdateIncidentStatusRequest) returns (UpdateIncidentStatusResponse) {
     option (google.api.http) = {
       put: "/v1/incidents/{incident_id}/status"
       body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
     };
   }
   rpc UpdateIncidentPriority(UpdateIncidentPriorityRequest) returns (UpdateIncidentPriorityResponse) {
@@ -70,15 +103,48 @@ service IncidentCommandService {
       put: "/v1/incidents/{incident_id}/priority"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc UpdateIncidentDescription(UpdateIncidentDescriptionRequest) returns (UpdateIncidentDescriptionResponse) {
     option (google.api.http) = {
       put: "/v1/incidents/{incident_id}/description"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ReopenIncident(ReopenIncidentRequest) returns (ReopenIncidentResponse) {
     option (google.api.http) = {post: "/v1/incidents/{incident_id}:reopen"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
 }
 

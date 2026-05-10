@@ -52,6 +52,17 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service IncidentQueryService {
   rpc GetIncident(GetIncidentRequest) returns (GetIncidentResponse) {
     option (google.api.http) = {get: "/v1/query/incidents/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ListIncidents(ListIncidentsRequest) returns (ListIncidentsResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incidents"};
@@ -66,6 +77,17 @@ service IncidentQueryService {
   // Buffer reads.
   rpc GetBufferEntry(GetBufferEntryRequest) returns (GetBufferEntryResponse) {
     option (google.api.http) = {get: "/v1/query/patient-incidents/{id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {
+          description: "Resource not found."
+          schema: {
+            json_schema: {ref: ".error.v1.ErrorResponse"}
+          }
+        }
+      }
+    };
   }
   rpc ListBufferEntries(ListBufferEntriesRequest) returns (ListBufferEntriesResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/patient-incidents"};
