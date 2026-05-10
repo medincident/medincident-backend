@@ -39,8 +39,8 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `buffer_type_not_allowed_for_patients` | 400 | Тип инцидента недоступен для пациентов |
 | `buffer_occurred_at_invalid` | 400 | Некорректный формат даты occurred_at |
+| `buffer_type_not_allowed_for_patients` | 422 | Тип инцидента недоступен для пациентов |
 | `buffer_organization_not_found` | 404 | Организация не найдена |
 | `buffer_category_not_found` | 404 | Категория не найдена |
 | `buffer_type_not_found` | 404 | Тип инцидента не найден |
@@ -76,9 +76,9 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `buffer_not_pending` | 400 | Заявка не в статусе pending |
-| `buffer_type_not_allowed_for_patients` | 400 | Тип инцидента недоступен для пациентов |
 | `buffer_occurred_at_invalid` | 400 | Некорректный формат даты occurred_at |
+| `buffer_not_pending` | 422 | Заявка не в статусе pending |
+| `buffer_type_not_allowed_for_patients` | 422 | Тип инцидента недоступен для пациентов |
 | `permission_denied` / `buffer_not_patient_owner` | 403 | Нет прав доступа |
 | `buffer_not_found` | 404 | Заявка не найдена |
 | `buffer_category_not_found` | 404 | Категория не найдена |
@@ -137,7 +137,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `buffer_not_pending` | 400 | Заявка не в статусе pending |
+| `buffer_not_pending` | 422 | Заявка не в статусе pending |
 | `permission_denied` | 403 | Нет прав доступа |
 | `buffer_not_found` | 404 | Заявка не найдена |
 | `buffer_department_not_found` | 404 | Отдел не найден |

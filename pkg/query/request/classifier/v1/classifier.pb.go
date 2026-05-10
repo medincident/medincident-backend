@@ -8,6 +8,7 @@ package classifierv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -415,7 +416,7 @@ var File_query_request_classifier_v1_classifier_proto protoreflect.FileDescripto
 
 const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
 	"\n" +
-	",query/request/classifier/v1/classifier.proto\x12\x1bquery.request.classifier.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xec\x01\n" +
+	",query/request/classifier/v1/classifier.proto\x12\x1bquery.request.classifier.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xec\x01\n" +
 	"\vRequestType\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12\x12\n" +
@@ -449,7 +450,22 @@ const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
 	"eNot found. Error codes:\n" +
 	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/request-types/{id}\x12\xe4\x01\n" +
 	"\x1eListRequestTypesByOrganization\x12B.query.request.classifier.v1.ListRequestTypesByOrganizationRequest\x1aC.query.request.classifier.v1.ListRequestTypesByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/request-types\x12\xfd\x01\n" +
-	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\x9a\x02\n" +
+	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\x81\x05\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x1fcom.query.request.classifier.v1B\x0fClassifierProtoP\x01ZWgithub.com/medincident/medincident-backend/pkg/query/request/classifier/v1;classifierv1\xa2\x02\x03QRC\xaa\x02\x1bQuery.Request.Classifier.V1\xca\x02\x1bQuery\\Request\\Classifier\\V1\xe2\x02'Query\\Request\\Classifier\\V1\\GPBMetadata\xea\x02\x1eQuery::Request::Classifier::V1b\x06proto3"
 
 var (

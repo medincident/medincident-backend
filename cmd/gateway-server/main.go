@@ -187,6 +187,7 @@ func gatewayIncomingHeaderMatcher(key string) (string, bool) {
 func buildGatewayMux(ctx context.Context, commandConn, queryConn *grpc.ClientConn) (*runtime.ServeMux, error) {
 	mux := runtime.NewServeMux(
 		runtime.WithIncomingHeaderMatcher(gatewayIncomingHeaderMatcher),
+		runtime.WithErrorHandler(gwhandler.GatewayErrorHandler),
 	)
 	errs := []error{
 		// Command side.

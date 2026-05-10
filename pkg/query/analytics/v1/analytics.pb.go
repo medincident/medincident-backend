@@ -10,6 +10,7 @@ package analyticsv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -2005,7 +2006,7 @@ var File_query_analytics_v1_analytics_proto protoreflect.FileDescriptor
 
 const file_query_analytics_v1_analytics_proto_rawDesc = "" +
 	"\n" +
-	"\"query/analytics/v1/analytics.proto\x12\x12query.analytics.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x83\x02\n" +
+	"\"query/analytics/v1/analytics.proto\x12\x12query.analytics.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x83\x02\n" +
 	"\x12GetSnapshotRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x12\n" +
 	"\x04from\x18\x02 \x01(\tR\x04from\x12\x0e\n" +
@@ -2225,7 +2226,22 @@ const file_query_analytics_v1_analytics_proto_rawDesc = "" +
 	"\x80\x02Not found. Error codes:\n" +
 	"- `analytics_org_not_found` — organization with the given ID does not exist.\n" +
 	"- `analytics_clinic_not_found` — clinic with the given ID does not exist.\n" +
-	"- `analytics_dept_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/analytics/timeseriesB\xe1\x01\n" +
+	"- `analytics_dept_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/analytics/timeseriesB\xc8\x04\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x16com.query.analytics.v1B\x0eAnalyticsProtoP\x01ZMgithub.com/medincident/medincident-backend/pkg/query/analytics/v1;analyticsv1\xa2\x02\x03QAX\xaa\x02\x12Query.Analytics.V1\xca\x02\x12Query\\Analytics\\V1\xe2\x02\x1eQuery\\Analytics\\V1\\GPBMetadata\xea\x02\x14Query::Analytics::V1b\x06proto3"
 
 var (

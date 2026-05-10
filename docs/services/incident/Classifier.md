@@ -39,9 +39,9 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `incident_category_parent_inactive` | 400 | Родительская категория деактивирована |
-| `incident_category_parent_organization_mismatch` | 400 | Родительская категория принадлежит другой организации |
-| `incident_category_max_depth_exceeded` | 400 | Превышена максимальная глубина дерева категорий |
+| `incident_category_parent_inactive` | 422 | Родительская категория деактивирована |
+| `incident_category_parent_organization_mismatch` | 422 | Родительская категория принадлежит другой организации |
+| `incident_category_max_depth_exceeded` | 422 | Превышена максимальная глубина дерева категорий |
 | `permission_denied` | 403 | Нет прав доступа |
 | `incident_category_parent_not_found` | 404 | Родительская категория не найдена |
 | `incident_category_name_conflict` | 409 | Категория с таким именем уже существует |

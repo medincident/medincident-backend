@@ -8,6 +8,7 @@ package requestv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -795,7 +796,7 @@ var File_query_request_v1_request_proto protoreflect.FileDescriptor
 
 const file_query_request_v1_request_proto_rawDesc = "" +
 	"\n" +
-	"\x1equery/request/v1/request.proto\x12\x10query.request.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"r\n" +
+	"\x1equery/request/v1/request.proto\x12\x10query.request.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"r\n" +
 	"\bExecutor\x12\x1f\n" +
 	"\vemployee_id\x18\x01 \x01(\tR\n" +
 	"employeeId\x12\x1f\n" +
@@ -884,7 +885,22 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x18GetServiceRequestHistory\x121.query.request.v1.GetServiceRequestHistoryRequest\x1a2.query.request.v1.GetServiceRequestHistoryResponse\"\xb8\x01\x92A|Jz\n" +
 	"\x03404\x12s\n" +
 	"qNot found. Error codes:\n" +
-	"- `service_request_query_not_found` — service request with the given ID does not exist.\x82\xd3\xe4\x93\x023\x121/v1/service-requests/{service_request_id}/historyB\xd1\x01\n" +
+	"- `service_request_query_not_found` — service request with the given ID does not exist.\x82\xd3\xe4\x93\x023\x121/v1/service-requests/{service_request_id}/historyB\xb8\x04\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x14com.query.request.v1B\fRequestProtoP\x01ZIgithub.com/medincident/medincident-backend/pkg/query/request/v1;requestv1\xa2\x02\x03QRX\xaa\x02\x10Query.Request.V1\xca\x02\x10Query\\Request\\V1\xe2\x02\x1cQuery\\Request\\V1\\GPBMetadata\xea\x02\x12Query::Request::V1b\x06proto3"
 
 var (

@@ -48,3 +48,4 @@ plugins:
     opt:
       - allow_merge=true
       - merge_file_name=medincident
+      - disable_default_errors=true

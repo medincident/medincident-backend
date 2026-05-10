@@ -2,11 +2,59 @@ syntax = "proto3";
 
 package command.incident.v1;
 
+import "error/v1/error.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/command/incident/v1;incidentv1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  responses: {
+    key: "400"
+    value: {
+      description: "Validation failed or invalid input."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "401"
+    value: {
+      description: "Unauthenticated — missing or invalid token."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "403"
+    value: {
+      description: "Permission denied."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "500"
+    value: {
+      description: "Unexpected server error."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+};
 
 // IncidentCommandService is the write-side contract for incidents
 // created directly by employees (not the patient buffer).
@@ -22,8 +70,8 @@ service IncidentCommandService {
         value: {description: "Not found. Error codes:\n- `incident_department_not_found` — department with the given ID does not exist.\n- `incident_category_not_found` — incident category with the given ID does not exist.\n- `incident_type_not_found` — incident type with the given ID does not exist.\n- `incident_employee_not_found` — registrar employee not found.\n- `incident_registrar_user_not_found` — registrar's user projection record not found."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `incident_category_inactive` — the selected category is inactive.\n- `incident_type_inactive` — the selected type is inactive."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_category_inactive` — the selected category is inactive.\n- `incident_type_inactive` — the selected type is inactive."}
       }
     };
   }
@@ -35,8 +83,8 @@ service IncidentCommandService {
         value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `incident_not_cancellable` — incident is not in a cancellable status."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_not_cancellable` — incident is not in a cancellable status."}
       }
     };
   }
@@ -51,8 +99,8 @@ service IncidentCommandService {
         value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `incident_invalid_status_transition` — the requested status transition is not allowed.\n- `incident_frozen` — incident is frozen and cannot be modified."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_invalid_status_transition` — the requested status transition is not allowed.\n- `incident_frozen` — incident is frozen and cannot be modified."}
       }
     };
   }
@@ -67,8 +115,8 @@ service IncidentCommandService {
         value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified."}
       }
     };
   }
@@ -83,8 +131,8 @@ service IncidentCommandService {
         value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_frozen` — incident is frozen and cannot be modified."}
       }
     };
   }
@@ -96,8 +144,8 @@ service IncidentCommandService {
         value: {description: "Not found. Error codes:\n- `incident_not_found` — incident with the given ID does not exist."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `incident_not_reopenable` — incident cannot be reopened from its current status."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `incident_not_reopenable` — incident cannot be reopened from its current status."}
       }
     };
   }

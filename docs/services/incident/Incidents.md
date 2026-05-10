@@ -40,8 +40,8 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `incident_category_inactive` | 400 | Категория деактивирована |
-| `incident_type_inactive` | 400 | Тип инцидента деактивирован |
+| `incident_category_inactive` | 422 | Категория деактивирована |
+| `incident_type_inactive` | 422 | Тип инцидента деактивирован |
 | `permission_denied` | 403 | Нет прав доступа |
 | `incident_department_not_found` | 404 | Отдел не найден |
 | `incident_category_not_found` | 404 | Категория не найдена |
@@ -69,7 +69,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `incident_not_cancellable` | 400 | Инцидент нельзя отменить в текущем статусе |
+| `incident_not_cancellable` | 422 | Инцидент нельзя отменить в текущем статусе |
 | `permission_denied` | 403 | Нет прав доступа |
 | `incident_not_found` | 404 | Инцидент не найден |
 
@@ -101,7 +101,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `incident_invalid_status_transition` | 400 | Недопустимый переход статуса |
+| `incident_invalid_status_transition` | 422 | Недопустимый переход статуса |
 | `permission_denied` | 403 | Нет прав доступа |
 | `incident_not_found` | 404 | Инцидент не найден |
 
@@ -133,7 +133,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `incident_frozen` | 400 | Инцидент находится в терминальном статусе |
+| `incident_frozen` | 422 | Инцидент находится в терминальном статусе |
 | `permission_denied` | 403 | Нет прав доступа |
 | `incident_not_found` | 404 | Инцидент не найден |
 
@@ -187,7 +187,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `incident_not_reopenable` | 400 | Инцидент нельзя переоткрыть в текущем статусе |
+| `incident_not_reopenable` | 422 | Инцидент нельзя переоткрыть в текущем статусе |
 | `permission_denied` | 403 | Нет прав доступа |
 | `incident_not_found` | 404 | Инцидент не найден |
 

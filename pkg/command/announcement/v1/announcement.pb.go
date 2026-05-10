@@ -8,6 +8,7 @@ package announcementv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -580,7 +581,7 @@ var File_command_announcement_v1_announcement_proto protoreflect.FileDescriptor
 
 const file_command_announcement_v1_announcement_proto_rawDesc = "" +
 	"\n" +
-	"*command/announcement/v1/announcement.proto\x12\x17command.announcement.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x99\x03\n" +
+	"*command/announcement/v1/announcement.proto\x12\x17command.announcement.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x99\x03\n" +
 	"\x19CreateAnnouncementRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12 \n" +
 	"\tclinic_id\x18\x02 \x01(\tH\x00R\bclinicId\x88\x01\x01\x12(\n" +
@@ -631,20 +632,20 @@ const file_command_announcement_v1_announcement_proto_rawDesc = "" +
 	"- `announcement_organization_not_found` — organization with the given ID does not exist.\n" +
 	"- `announcement_clinic_not_found` — clinic with the given ID does not exist.\n" +
 	"- `announcement_department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/announcements\x12\x90\x03\n" +
-	"\x12UpdateAnnouncement\x122.command.announcement.v1.UpdateAnnouncementRequest\x1a3.command.announcement.v1.UpdateAnnouncementResponse\"\x90\x02\x92A\xeb\x01Jy\n" +
-	"\x03400\x12r\n" +
-	"pFailed precondition. Error codes:\n" +
-	"- `announcement_archived` — announcement is archived and cannot be modified.Jn\n" +
+	"\x12UpdateAnnouncement\x122.command.announcement.v1.UpdateAnnouncementRequest\x1a3.command.announcement.v1.UpdateAnnouncementResponse\"\x90\x02\x92A\xeb\x01Jn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `announcement_not_found` — announcement with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1b:\x01*\x1a\x16/v1/announcements/{id}\x12\xb1\x03\n" +
-	"\x1aUpdateAnnouncementPriority\x12:.command.announcement.v1.UpdateAnnouncementPriorityRequest\x1a;.command.announcement.v1.UpdateAnnouncementPriorityResponse\"\x99\x02\x92A\xeb\x01Jy\n" +
-	"\x03400\x12r\n" +
+	"- `announcement_not_found` — announcement with the given ID does not exist.Jy\n" +
+	"\x03422\x12r\n" +
 	"pFailed precondition. Error codes:\n" +
-	"- `announcement_archived` — announcement is archived and cannot be modified.Jn\n" +
+	"- `announcement_archived` — announcement is archived and cannot be modified.\x82\xd3\xe4\x93\x02\x1b:\x01*\x1a\x16/v1/announcements/{id}\x12\xb1\x03\n" +
+	"\x1aUpdateAnnouncementPriority\x12:.command.announcement.v1.UpdateAnnouncementPriorityRequest\x1a;.command.announcement.v1.UpdateAnnouncementPriorityResponse\"\x99\x02\x92A\xeb\x01Jn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `announcement_not_found` — announcement with the given ID does not exist.\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/announcements/{id}/priority\x12\x9c\x02\n" +
+	"- `announcement_not_found` — announcement with the given ID does not exist.Jy\n" +
+	"\x03422\x12r\n" +
+	"pFailed precondition. Error codes:\n" +
+	"- `announcement_archived` — announcement is archived and cannot be modified.\x82\xd3\xe4\x93\x02$:\x01*\x1a\x1f/v1/announcements/{id}/priority\x12\x9c\x02\n" +
 	"\x13ArchiveAnnouncement\x123.command.announcement.v1.ArchiveAnnouncementRequest\x1a4.command.announcement.v1.ArchiveAnnouncementResponse\"\x99\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
@@ -652,7 +653,22 @@ const file_command_announcement_v1_announcement_proto_rawDesc = "" +
 	"\x15UnarchiveAnnouncement\x125.command.announcement.v1.UnarchiveAnnouncementRequest\x1a6.command.announcement.v1.UnarchiveAnnouncementResponse\"\x9b\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `announcement_not_found` — announcement with the given ID does not exist.\x82\xd3\xe4\x93\x02\"\" /v1/announcements/{id}:unarchiveB\x85\x02\n" +
+	"- `announcement_not_found` — announcement with the given ID does not exist.\x82\xd3\xe4\x93\x02\"\" /v1/announcements/{id}:unarchiveB\xec\x04\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x1bcom.command.announcement.v1B\x11AnnouncementProtoP\x01ZUgithub.com/medincident/medincident-backend/pkg/command/announcement/v1;announcementv1\xa2\x02\x03CAX\xaa\x02\x17Command.Announcement.V1\xca\x02\x17Command\\Announcement\\V1\xe2\x02#Command\\Announcement\\V1\\GPBMetadata\xea\x02\x19Command::Announcement::V1b\x06proto3"
 
 var (

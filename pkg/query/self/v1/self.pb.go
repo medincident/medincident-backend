@@ -8,6 +8,7 @@ package selfv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	v11 "github.com/medincident/medincident-backend/pkg/query/membership/v1"
 	v1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
@@ -557,7 +558,7 @@ var File_query_self_v1_self_proto protoreflect.FileDescriptor
 
 const file_query_self_v1_self_proto_rawDesc = "" +
 	"\n" +
-	"\x18query/self/v1/self.proto\x12\rquery.self.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a$query/membership/v1/membership.proto\x1a(query/orgstructure/v1/orgstructure.proto\"\x16\n" +
+	"\x18query/self/v1/self.proto\x12\rquery.self.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a$query/membership/v1/membership.proto\x1a(query/orgstructure/v1/orgstructure.proto\"\x16\n" +
 	"\x14GetMyIdentityRequest\"?\n" +
 	"\x15GetMyIdentityResponse\x12&\n" +
 	"\x0fis_system_admin\x18\x01 \x01(\bR\risSystemAdmin\"\x1c\n" +
@@ -601,7 +602,22 @@ const file_query_self_v1_self_proto_rawDesc = "" +
 	"\x13GetMyDepartmentRole\x12).query.self.v1.GetMyDepartmentRoleRequest\x1a*.query.self.v1.GetMyDepartmentRoleResponse\"\xaf\x01\x92A}J{\n" +
 	"\x03404\x12t\n" +
 	"rNot found. Error codes:\n" +
-	"- `self_dept_role_not_found` — caller is not an active employee of the given department.\x82\xd3\xe4\x93\x02)\x12'/v1/me/departments/{department_id}/roleB\xb9\x01\n" +
+	"- `self_dept_role_not_found` — caller is not an active employee of the given department.\x82\xd3\xe4\x93\x02)\x12'/v1/me/departments/{department_id}/roleB\xa0\x04\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x11com.query.self.v1B\tSelfProtoP\x01ZCgithub.com/medincident/medincident-backend/pkg/query/self/v1;selfv1\xa2\x02\x03QSX\xaa\x02\rQuery.Self.V1\xca\x02\rQuery\\Self\\V1\xe2\x02\x19Query\\Self\\V1\\GPBMetadata\xea\x02\x0fQuery::Self::V1b\x06proto3"
 
 var (

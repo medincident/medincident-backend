@@ -2,11 +2,59 @@ syntax = "proto3";
 
 package command.incident.buffer.v1;
 
+import "error/v1/error.proto";
 import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/medincident/medincident-backend/pkg/command/incident/buffer/v1;bufferv1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  responses: {
+    key: "400"
+    value: {
+      description: "Validation failed or invalid input."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "401"
+    value: {
+      description: "Unauthenticated — missing or invalid token."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "403"
+    value: {
+      description: "Permission denied."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "500"
+    value: {
+      description: "Unexpected server error."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+  responses: {
+    key: "default"
+    value: {
+      description: "An unexpected error response."
+      schema: {
+        json_schema: {ref: ".error.v1.ErrorResponse"}
+      }
+    }
+  }
+};
 
 // IncidentBufferCommandService handles the patient submission flow:
 // patients SubmitPatientIncident, may UpdatePatientIncident or
@@ -25,7 +73,11 @@ service IncidentBufferCommandService {
       }
       responses: {
         key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date."}
+        value: {description: "Invalid input. Error codes:\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions."}
       }
     };
   }
@@ -41,7 +93,11 @@ service IncidentBufferCommandService {
       }
       responses: {
         key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions.\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date."}
+        value: {description: "Invalid input. Error codes:\n- `buffer_occurred_at_invalid` — the occurred_at timestamp is not a valid RFC3339 date."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be updated.\n- `buffer_type_not_allowed_for_patients` — the selected incident type is not available for patient submissions."}
       }
       responses: {
         key: "403"
@@ -57,8 +113,8 @@ service IncidentBufferCommandService {
         value: {description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be cancelled."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be cancelled."}
       }
       responses: {
         key: "403"
@@ -77,8 +133,8 @@ service IncidentBufferCommandService {
         value: {description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist.\n- `buffer_department_not_found` — department with the given ID does not exist.\n- `buffer_category_not_found` — category with the given ID does not exist.\n- `buffer_type_not_found` — incident type with the given ID does not exist.\n- `buffer_dispatcher_not_found` — dispatcher employee not found."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be published."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be published."}
       }
     };
   }
@@ -90,8 +146,8 @@ service IncidentBufferCommandService {
         value: {description: "Not found. Error codes:\n- `buffer_not_found` — patient incident with the given ID does not exist."}
       }
       responses: {
-        key: "400"
-        value: {description: "Validation failed or precondition not met. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be rejected."}
+        key: "422"
+        value: {description: "Failed precondition. Error codes:\n- `buffer_not_pending` — patient incident is not in pending status and cannot be rejected."}
       }
     };
   }

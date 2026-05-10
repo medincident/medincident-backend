@@ -8,6 +8,7 @@ package classifierv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -467,7 +468,7 @@ var File_command_request_classifier_v1_request_classifier_proto protoreflect.Fil
 
 const file_command_request_classifier_v1_request_classifier_proto_rawDesc = "" +
 	"\n" +
-	"6command/request/classifier/v1/request_classifier.proto\x12\x1dcommand.request.classifier.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x98\x01\n" +
+	"6command/request/classifier/v1/request_classifier.proto\x12\x1dcommand.request.classifier.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x98\x01\n" +
 	"\x18CreateRequestTypeRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12%\n" +
@@ -516,7 +517,22 @@ const file_command_request_classifier_v1_request_classifier_proto_rawDesc = "" +
 	"\x11DeleteRequestType\x127.command.request.classifier.v1.DeleteRequestTypeRequest\x1a8.command.request.classifier.v1.DeleteRequestTypeResponse\"\x96\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/request-types/{type_id}B\xad\x02\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/request-types/{type_id}B\x94\x05\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"!com.command.request.classifier.v1B\x16RequestClassifierProtoP\x01ZYgithub.com/medincident/medincident-backend/pkg/command/request/classifier/v1;classifierv1\xa2\x02\x03CRC\xaa\x02\x1dCommand.Request.Classifier.V1\xca\x02\x1dCommand\\Request\\Classifier\\V1\xe2\x02)Command\\Request\\Classifier\\V1\\GPBMetadata\xea\x02 Command::Request::Classifier::V1b\x06proto3"
 
 var (

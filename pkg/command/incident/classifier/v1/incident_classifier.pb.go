@@ -8,6 +8,7 @@ package classifierv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -1251,7 +1252,7 @@ var File_command_incident_classifier_v1_incident_classifier_proto protoreflect.F
 
 const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = "" +
 	"\n" +
-	"8command/incident/classifier/v1/incident_classifier.proto\x12\x1ecommand.incident.classifier.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xe7\x01\n" +
+	"8command/incident/classifier/v1/incident_classifier.proto\x12\x1ecommand.incident.classifier.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xe7\x01\n" +
 	"\x1dCreateIncidentCategoryRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x121\n" +
 	"\x12parent_category_id\x18\x02 \x01(\tH\x00R\x10parentCategoryId\x88\x01\x01\x12\x17\n" +
@@ -1319,97 +1320,97 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"$AllowIncidentTypeForPatientsResponse\"F\n" +
 	"&DisallowIncidentTypeForPatientsRequest\x12\x1c\n" +
 	"\atype_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x06typeId\")\n" +
-	"'DisallowIncidentTypeForPatientsResponse2\xe48\n" +
-	" IncidentClassifierCommandService\x12\xbb\x06\n" +
-	"\x16CreateIncidentCategory\x12=.command.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.command.incident.classifier.v1.CreateIncidentCategoryResponse\"\xa1\x05\x92A\xdb\x04J\xd3\x02\n" +
-	"\x03400\x12\xcb\x02\n" +
-	"\xc8\x02Validation failed or precondition not met. Error codes:\n" +
-	"- `incident_category_parent_inactive` — parent category is inactive.\n" +
-	"- `incident_category_parent_organization_mismatch` — parent category belongs to a different organization.\n" +
-	"- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.J}\n" +
+	"'DisallowIncidentTypeForPatientsResponse2\xe07\n" +
+	" IncidentClassifierCommandService\x12\xa5\x06\n" +
+	"\x16CreateIncidentCategory\x12=.command.incident.classifier.v1.CreateIncidentCategoryRequest\x1a>.command.incident.classifier.v1.CreateIncidentCategoryResponse\"\x8b\x05\x92A\xc5\x04J}\n" +
 	"\x03404\x12v\n" +
 	"tNot found. Error codes:\n" +
 	"- `incident_category_parent_not_found` — parent category with the given ID does not exist.J\x83\x01\n" +
 	"\x03409\x12|\n" +
 	"zConflict. Error codes:\n" +
-	"- `incident_category_name_conflict` — a category with this name already exists in the same scope.\x82\xd3\xe4\x93\x02<:\x01*\"7/v1/organizations/{organization_id}/incident-categories\x12\xe2\x03\n" +
+	"- `incident_category_name_conflict` — a category with this name already exists in the same scope.J\xbd\x02\n" +
+	"\x03422\x12\xb5\x02\n" +
+	"\xb2\x02Failed precondition. Error codes:\n" +
+	"- `incident_category_parent_inactive` — parent category is inactive.\n" +
+	"- `incident_category_parent_organization_mismatch` — parent category belongs to a different organization.\n" +
+	"- `incident_category_max_depth_exceeded` — category tree depth limit (5) would be exceeded.\x82\xd3\xe4\x93\x02<:\x01*\"7/v1/organizations/{organization_id}/incident-categories\x12\xe2\x03\n" +
 	"\x1dUpdateIncidentCategoryDetails\x12D.command.incident.classifier.v1.UpdateIncidentCategoryDetailsRequest\x1aE.command.incident.classifier.v1.UpdateIncidentCategoryDetailsResponse\"\xb3\x02\x92A\xf7\x01Jo\n" +
 	"\x03404\x12h\n" +
 	"fNot found. Error codes:\n" +
 	"- `incident_category_not_found` — category with the given ID does not exist.J\x83\x01\n" +
 	"\x03409\x12|\n" +
 	"zConflict. Error codes:\n" +
-	"- `incident_category_name_conflict` — a category with this name already exists in the same scope.\x82\xd3\xe4\x93\x022:\x01*\x1a-/v1/incident-categories/{category_id}/details\x12\xe2\x06\n" +
-	"\x14MoveIncidentCategory\x12;.command.incident.classifier.v1.MoveIncidentCategoryRequest\x1a<.command.incident.classifier.v1.MoveIncidentCategoryResponse\"\xce\x05\x92A\x95\x05J\xba\x03\n" +
-	"\x03400\x12\xb2\x03\n" +
-	"\xaf\x03Validation failed or precondition not met. Error codes:\n" +
-	"- `incident_category_move_organization_mismatch` — target parent belongs to a different organization.\n" +
-	"- `incident_category_move_would_create_cycle` — move would create a cycle in the category tree.\n" +
-	"- `incident_category_move_would_exceed_depth` — move would exceed the maximum category depth.\n" +
-	"- `incident_category_parent_inactive` — target parent category is inactive.J\xd5\x01\n" +
+	"- `incident_category_name_conflict` — a category with this name already exists in the same scope.\x82\xd3\xe4\x93\x022:\x01*\x1a-/v1/incident-categories/{category_id}/details\x12\xcc\x06\n" +
+	"\x14MoveIncidentCategory\x12;.command.incident.classifier.v1.MoveIncidentCategoryRequest\x1a<.command.incident.classifier.v1.MoveIncidentCategoryResponse\"\xb8\x05\x92A\xff\x04J\xd5\x01\n" +
 	"\x03404\x12\xcd\x01\n" +
 	"\xca\x01Not found. Error codes:\n" +
 	"- `incident_category_not_found` — category with the given ID does not exist.\n" +
-	"- `incident_category_parent_not_found` — target parent category with the given ID does not exist.\x82\xd3\xe4\x93\x02/:\x01*\"*/v1/incident-categories/{category_id}:move\x12\xd5\x02\n" +
+	"- `incident_category_parent_not_found` — target parent category with the given ID does not exist.J\xa4\x03\n" +
+	"\x03422\x12\x9c\x03\n" +
+	"\x99\x03Failed precondition. Error codes:\n" +
+	"- `incident_category_move_organization_mismatch` — target parent belongs to a different organization.\n" +
+	"- `incident_category_move_would_create_cycle` — move would create a cycle in the category tree.\n" +
+	"- `incident_category_move_would_exceed_depth` — move would exceed the maximum category depth.\n" +
+	"- `incident_category_parent_inactive` — target parent category is inactive.\x82\xd3\xe4\x93\x02/:\x01*\"*/v1/incident-categories/{category_id}:move\x12\xd5\x02\n" +
 	"\x1aDeactivateIncidentCategory\x12A.command.incident.classifier.v1.DeactivateIncidentCategoryRequest\x1aB.command.incident.classifier.v1.DeactivateIncidentCategoryResponse\"\xaf\x01\x92AqJo\n" +
 	"\x03404\x12h\n" +
 	"fNot found. Error codes:\n" +
-	"- `incident_category_not_found` — category with the given ID does not exist.\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/deactivations\x12\xac\x05\n" +
-	"\x1aReactivateIncidentCategory\x12A.command.incident.classifier.v1.ReactivateIncidentCategoryRequest\x1aB.command.incident.classifier.v1.ReactivateIncidentCategoryResponse\"\x86\x04\x92A\xc7\x03J\xb9\x01\n" +
-	"\x03400\x12\xb1\x01\n" +
-	"\xae\x01Validation failed or precondition not met. Error codes:\n" +
-	"- `incident_category_reactivate_inactive_ancestor` — an ancestor category is inactive and must be reactivated first.Jo\n" +
+	"- `incident_category_not_found` — category with the given ID does not exist.\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/deactivations\x12\x96\x05\n" +
+	"\x1aReactivateIncidentCategory\x12A.command.incident.classifier.v1.ReactivateIncidentCategoryRequest\x1aB.command.incident.classifier.v1.ReactivateIncidentCategoryResponse\"\xf0\x03\x92A\xb1\x03Jo\n" +
 	"\x03404\x12h\n" +
 	"fNot found. Error codes:\n" +
 	"- `incident_category_not_found` — category with the given ID does not exist.J\x97\x01\n" +
 	"\x03409\x12\x8f\x01\n" +
 	"\x8c\x01Conflict. Error codes:\n" +
-	"- `incident_category_reactivate_name_conflict` — reactivation would create a name conflict with an active category.\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/reactivations\x12\xbb\x02\n" +
+	"- `incident_category_reactivate_name_conflict` — reactivation would create a name conflict with an active category.J\xa3\x01\n" +
+	"\x03422\x12\x9b\x01\n" +
+	"\x98\x01Failed precondition. Error codes:\n" +
+	"- `incident_category_reactivate_inactive_ancestor` — an ancestor category is inactive and must be reactivated first.\x82\xd3\xe4\x93\x025\"3/v1/incident-categories/{category_id}/reactivations\x12\xbb\x02\n" +
 	"\x16DeleteIncidentCategory\x12=.command.incident.classifier.v1.DeleteIncidentCategoryRequest\x1a>.command.incident.classifier.v1.DeleteIncidentCategoryResponse\"\xa1\x01\x92AqJo\n" +
 	"\x03404\x12h\n" +
 	"fNot found. Error codes:\n" +
-	"- `incident_category_not_found` — category with the given ID does not exist.\x82\xd3\xe4\x93\x02'*%/v1/incident-categories/{category_id}\x12\xf0\x04\n" +
-	"\x12CreateIncidentType\x129.command.incident.classifier.v1.CreateIncidentTypeRequest\x1a:.command.incident.classifier.v1.CreateIncidentTypeResponse\"\xe2\x03\x92A\xa8\x03J\xb4\x01\n" +
-	"\x03400\x12\xac\x01\n" +
-	"\xa9\x01Validation failed or precondition not met. Error codes:\n" +
-	"- `incident_category_inactive` — the category is inactive; new types cannot be created in an inactive category.Jo\n" +
+	"- `incident_category_not_found` — category with the given ID does not exist.\x82\xd3\xe4\x93\x02'*%/v1/incident-categories/{category_id}\x12\xda\x04\n" +
+	"\x12CreateIncidentType\x129.command.incident.classifier.v1.CreateIncidentTypeRequest\x1a:.command.incident.classifier.v1.CreateIncidentTypeResponse\"\xcc\x03\x92A\x92\x03Jo\n" +
 	"\x03404\x12h\n" +
 	"fNot found. Error codes:\n" +
 	"- `incident_category_not_found` — category with the given ID does not exist.J~\n" +
 	"\x03409\x12w\n" +
 	"uConflict. Error codes:\n" +
-	"- `incident_type_name_conflict` — a type with this name already exists in the same category.\x82\xd3\xe4\x93\x020:\x01*\"+/v1/incident-categories/{category_id}/types\x12\xbf\x03\n" +
+	"- `incident_type_name_conflict` — a type with this name already exists in the same category.J\x9e\x01\n" +
+	"\x03422\x12\x96\x01\n" +
+	"\x93\x01Failed precondition. Error codes:\n" +
+	"- `incident_category_inactive` — the category is inactive; new types cannot be created in an inactive category.\x82\xd3\xe4\x93\x020:\x01*\"+/v1/incident-categories/{category_id}/types\x12\xbf\x03\n" +
 	"\x19UpdateIncidentTypeDetails\x12@.command.incident.classifier.v1.UpdateIncidentTypeDetailsRequest\x1aA.command.incident.classifier.v1.UpdateIncidentTypeDetailsResponse\"\x9c\x02\x92A\xe9\x01Jg\n" +
 	"\x03404\x12`\n" +
 	"^Not found. Error codes:\n" +
 	"- `incident_type_not_found` — type with the given ID does not exist.J~\n" +
 	"\x03409\x12w\n" +
 	"uConflict. Error codes:\n" +
-	"- `incident_type_name_conflict` — a type with this name already exists in the same category.\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/incident-types/{type_id}/details\x12\xaf\x05\n" +
-	"\x10MoveIncidentType\x127.command.incident.classifier.v1.MoveIncidentTypeRequest\x1a8.command.incident.classifier.v1.MoveIncidentTypeResponse\"\xa7\x04\x92A\xf7\x03J\xad\x02\n" +
-	"\x03400\x12\xa5\x02\n" +
-	"\xa2\x02Validation failed or precondition not met. Error codes:\n" +
-	"- `incident_type_move_organization_mismatch` — target category belongs to a different organization.\n" +
-	"- `incident_type_category_inactive` — target category is inactive.\n" +
-	"- `incident_category_inactive` — target category is inactive.J\xc4\x01\n" +
+	"- `incident_type_name_conflict` — a type with this name already exists in the same category.\x82\xd3\xe4\x93\x02):\x01*\x1a$/v1/incident-types/{type_id}/details\x12\x99\x05\n" +
+	"\x10MoveIncidentType\x127.command.incident.classifier.v1.MoveIncidentTypeRequest\x1a8.command.incident.classifier.v1.MoveIncidentTypeResponse\"\x91\x04\x92A\xe1\x03J\xc4\x01\n" +
 	"\x03404\x12\xbc\x01\n" +
 	"\xb9\x01Not found. Error codes:\n" +
 	"- `incident_type_not_found` — type with the given ID does not exist.\n" +
-	"- `incident_type_category_not_found` — target category with the given ID does not exist.\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/incident-types/{type_id}:move\x12\xb8\x02\n" +
+	"- `incident_type_category_not_found` — target category with the given ID does not exist.J\x97\x02\n" +
+	"\x03422\x12\x8f\x02\n" +
+	"\x8c\x02Failed precondition. Error codes:\n" +
+	"- `incident_type_move_organization_mismatch` — target category belongs to a different organization.\n" +
+	"- `incident_type_category_inactive` — target category is inactive.\n" +
+	"- `incident_category_inactive` — target category is inactive.\x82\xd3\xe4\x93\x02&:\x01*\"!/v1/incident-types/{type_id}:move\x12\xb8\x02\n" +
 	"\x16DeactivateIncidentType\x12=.command.incident.classifier.v1.DeactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.DeactivateIncidentTypeResponse\"\x9e\x01\x92AiJg\n" +
 	"\x03404\x12`\n" +
 	"^Not found. Error codes:\n" +
-	"- `incident_type_not_found` — type with the given ID does not exist.\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/deactivations\x12\x82\x05\n" +
-	"\x16ReactivateIncidentType\x12=.command.incident.classifier.v1.ReactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.ReactivateIncidentTypeResponse\"\xe8\x03\x92A\xb2\x03J\xb4\x01\n" +
-	"\x03400\x12\xac\x01\n" +
-	"\xa9\x01Validation failed or precondition not met. Error codes:\n" +
-	"- `incident_type_reactivate_inactive_ancestor` — the parent category is inactive and must be reactivated first.Jg\n" +
+	"- `incident_type_not_found` — type with the given ID does not exist.\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/deactivations\x12\xec\x04\n" +
+	"\x16ReactivateIncidentType\x12=.command.incident.classifier.v1.ReactivateIncidentTypeRequest\x1a>.command.incident.classifier.v1.ReactivateIncidentTypeResponse\"\xd2\x03\x92A\x9c\x03Jg\n" +
 	"\x03404\x12`\n" +
 	"^Not found. Error codes:\n" +
 	"- `incident_type_not_found` — type with the given ID does not exist.J\x8f\x01\n" +
 	"\x03409\x12\x87\x01\n" +
 	"\x84\x01Conflict. Error codes:\n" +
-	"- `incident_type_reactivate_name_conflict` — reactivation would create a name conflict with an active type.\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/reactivations\x12\x9e\x02\n" +
+	"- `incident_type_reactivate_name_conflict` — reactivation would create a name conflict with an active type.J\x9e\x01\n" +
+	"\x03422\x12\x96\x01\n" +
+	"\x93\x01Failed precondition. Error codes:\n" +
+	"- `incident_type_reactivate_inactive_ancestor` — the parent category is inactive and must be reactivated first.\x82\xd3\xe4\x93\x02,\"*/v1/incident-types/{type_id}/reactivations\x12\x9e\x02\n" +
 	"\x12DeleteIncidentType\x129.command.incident.classifier.v1.DeleteIncidentTypeRequest\x1a:.command.incident.classifier.v1.DeleteIncidentTypeResponse\"\x90\x01\x92AiJg\n" +
 	"\x03404\x12`\n" +
 	"^Not found. Error codes:\n" +
@@ -1421,7 +1422,22 @@ const file_command_incident_classifier_v1_incident_classifier_proto_rawDesc = ""
 	"\x1fDisallowIncidentTypeForPatients\x12F.command.incident.classifier.v1.DisallowIncidentTypeForPatientsRequest\x1aG.command.incident.classifier.v1.DisallowIncidentTypeForPatientsResponse\"\xa3\x01\x92AiJg\n" +
 	"\x03404\x12`\n" +
 	"^Not found. Error codes:\n" +
-	"- `incident_type_not_found` — type with the given ID does not exist.\x82\xd3\xe4\x93\x021*//v1/incident-types/{type_id}/patient-allowancesB\xb4\x02\n" +
+	"- `incident_type_not_found` — type with the given ID does not exist.\x82\xd3\xe4\x93\x021*//v1/incident-types/{type_id}/patient-allowancesB\x9b\x05\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\"com.command.incident.classifier.v1B\x17IncidentClassifierProtoP\x01ZZgithub.com/medincident/medincident-backend/pkg/command/incident/classifier/v1;classifierv1\xa2\x02\x03CIC\xaa\x02\x1eCommand.Incident.Classifier.V1\xca\x02\x1eCommand\\Incident\\Classifier\\V1\xe2\x02*Command\\Incident\\Classifier\\V1\\GPBMetadata\xea\x02!Command::Incident::Classifier::V1b\x06proto3"
 
 var (

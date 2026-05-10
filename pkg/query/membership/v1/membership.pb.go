@@ -8,6 +8,7 @@ package membershipv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -2187,7 +2188,7 @@ var File_query_membership_v1_membership_proto protoreflect.FileDescriptor
 
 const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\n" +
-	"$query/membership/v1/membership.proto\x12\x13query.membership.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xf7\x06\n" +
+	"$query/membership/v1/membership.proto\x12\x13query.membership.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xf7\x06\n" +
 	"\x10EmployeeCardView\x12\x1f\n" +
 	"\vemployee_id\x18\x01 \x01(\tR\n" +
 	"employeeId\x12&\n" +
@@ -2391,7 +2392,22 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v1/organizations/{organization_id}/admins\x12\xae\x01\n" +
 	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/organizations/{organization_id}/dispatchers\x12\x96\x01\n" +
 	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/heads\x12\x8a\x01\n" +
-	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xe9\x01\n" +
+	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xd0\x04\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x17com.query.membership.v1B\x0fMembershipProtoP\x01ZOgithub.com/medincident/medincident-backend/pkg/query/membership/v1;membershipv1\xa2\x02\x03QMX\xaa\x02\x13Query.Membership.V1\xca\x02\x13Query\\Membership\\V1\xe2\x02\x1fQuery\\Membership\\V1\\GPBMetadata\xea\x02\x15Query::Membership::V1b\x06proto3"
 
 var (

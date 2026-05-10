@@ -8,6 +8,7 @@ package membershipv1
 
 import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -2796,7 +2797,7 @@ var File_command_membership_v1_membership_proto protoreflect.FileDescriptor
 
 const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\n" +
-	"&command/membership/v1/membership.proto\x12\x15command.membership.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x9a\x01\n" +
+	"&command/membership/v1/membership.proto\x12\x15command.membership.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x9a\x01\n" +
 	"\x13HireEmployeeRequest\x12+\n" +
 	"\x0fzitadel_user_id\x18\x01 \x01(\tB\x03\xe0A\x02R\rzitadelUserId\x12(\n" +
 	"\rdepartment_id\x18\x02 \x01(\tB\x03\xe0A\x02R\fdepartmentId\x12\x1f\n" +
@@ -3147,7 +3148,22 @@ const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\x11RevokeSystemAdmin\x12/.command.membership.v1.RevokeSystemAdminRequest\x1a0.command.membership.v1.RevokeSystemAdminResponse\"\x90\x01\x92AbJ`\n" +
 	"\x03404\x12Y\n" +
 	"WNot found. Error codes:\n" +
-	"- `system_admin_not_found` — this user is not a system admin.\x82\xd3\xe4\x93\x02%*#/v1/system-admins/{zitadel_user_id}B\xf5\x01\n" +
+	"- `system_admin_not_found` — this user is not a system admin.\x82\xd3\xe4\x93\x02%*#/v1/system-admins/{zitadel_user_id}B\xdc\x04\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x19com.command.membership.v1B\x0fMembershipProtoP\x01ZQgithub.com/medincident/medincident-backend/pkg/command/membership/v1;membershipv1\xa2\x02\x03CMX\xaa\x02\x15Command.Membership.V1\xca\x02\x15Command\\Membership\\V1\xe2\x02!Command\\Membership\\V1\\GPBMetadata\xea\x02\x17Command::Membership::V1b\x06proto3"
 
 var (

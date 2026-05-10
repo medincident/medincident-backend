@@ -7,6 +7,8 @@
 package statsv1
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
+	_ "github.com/medincident/medincident-backend/pkg/error/v1"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -526,7 +528,7 @@ var File_query_stats_v1_stats_proto protoreflect.FileDescriptor
 
 const file_query_stats_v1_stats_proto_rawDesc = "" +
 	"\n" +
-	"\x1aquery/stats/v1/stats.proto\x12\x0equery.stats.v1\x1a\x1cgoogle/api/annotations.proto\"\x9c\x02\n" +
+	"\x1aquery/stats/v1/stats.proto\x12\x0equery.stats.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x9c\x02\n" +
 	"\x11OrganizationStats\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12'\n" +
 	"\x0femployees_total\x18\x02 \x01(\x03R\x0eemployeesTotal\x12#\n" +
@@ -563,7 +565,22 @@ const file_query_stats_v1_stats_proto_rawDesc = "" +
 	"\x11StatsQueryService\x12\xa4\x01\n" +
 	"\x14GetOrganizationStats\x12+.query.stats.v1.GetOrganizationStatsRequest\x1a,.query.stats.v1.GetOrganizationStatsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/stats\x12\x86\x01\n" +
 	"\x0eGetClinicStats\x12%.query.stats.v1.GetClinicStatsRequest\x1a&.query.stats.v1.GetClinicStatsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/clinics/{clinic_id}/stats\x12\x9a\x01\n" +
-	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xc1\x01\n" +
+	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xa8\x04\x92A\xe3\x02RI\n" +
+	"\x03400\x12B\n" +
+	"#Validation failed or invalid input.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
+	"\x03401\x12L\n" +
+	"-Unauthenticated — missing or invalid token.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR8\n" +
+	"\x03403\x121\n" +
+	"\x12Permission denied.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseR>\n" +
+	"\x03500\x127\n" +
+	"\x18Unexpected server error.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponseRG\n" +
+	"\adefault\x12<\n" +
+	"\x1dAn unexpected error response.\x12\x1b\n" +
+	"\x19\x1a\x17.error.v1.ErrorResponse\n" +
 	"\x12com.query.stats.v1B\n" +
 	"StatsProtoP\x01ZEgithub.com/medincident/medincident-backend/pkg/query/stats/v1;statsv1\xa2\x02\x03QSX\xaa\x02\x0eQuery.Stats.V1\xca\x02\x0eQuery\\Stats\\V1\xe2\x02\x1aQuery\\Stats\\V1\\GPBMetadata\xea\x02\x10Query::Stats::V1b\x06proto3"
 
