@@ -150,3 +150,15 @@ func ClinicPhysicalAddressChanged(
 	}
 	return nil
 }
+
+func (p *Projectors) ClinicCreated(tx *gorm.DB, id string, t time.Time, ev *clinicv1.ClinicCreated) error {
+	return ClinicCreated(tx, id, t, ev)
+}
+
+func (p *Projectors) ClinicDetailsChanged(tx *gorm.DB, id string, t time.Time, ev *clinicv1.ClinicDetailsChanged) error {
+	return ClinicDetailsChanged(tx, id, t, ev)
+}
+
+func (p *Projectors) ClinicPhysicalAddressChanged(tx *gorm.DB, id string, t time.Time, ev *clinicv1.ClinicPhysicalAddressChanged) error {
+	return ClinicPhysicalAddressChanged(tx, id, t, ev)
+}

@@ -137,3 +137,15 @@ func OrganizationLegalAddressChanged(
 	}
 	return nil
 }
+
+func (p *Projectors) OrganizationCreated(tx *gorm.DB, id string, t time.Time, ev *orgv1.OrganizationCreated) error {
+	return OrganizationCreated(tx, id, t, ev)
+}
+
+func (p *Projectors) OrganizationDetailsChanged(tx *gorm.DB, id string, t time.Time, ev *orgv1.OrganizationDetailsChanged) error {
+	return OrganizationDetailsChanged(tx, id, t, ev)
+}
+
+func (p *Projectors) OrganizationLegalAddressChanged(tx *gorm.DB, id string, t time.Time, ev *orgv1.OrganizationLegalAddressChanged) error {
+	return OrganizationLegalAddressChanged(tx, id, t, ev)
+}

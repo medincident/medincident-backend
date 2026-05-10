@@ -129,3 +129,11 @@ func DepartmentDetailsChanged(
 	}
 	return nil
 }
+
+func (p *Projectors) DepartmentCreated(tx *gorm.DB, id string, t time.Time, ev *deptv1.DepartmentCreated) error {
+	return DepartmentCreated(tx, id, t, ev)
+}
+
+func (p *Projectors) DepartmentDetailsChanged(tx *gorm.DB, id string, t time.Time, ev *deptv1.DepartmentDetailsChanged) error {
+	return DepartmentDetailsChanged(tx, id, t, ev)
+}

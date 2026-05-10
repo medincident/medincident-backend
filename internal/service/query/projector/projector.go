@@ -26,3 +26,13 @@ const (
 	ErrCodeRequestTypeProjectionFailed    = "request_type_projection_failed"
 	ErrCodeServiceRequestProjectionFailed = "service_request_projection_failed"
 )
+
+// Projectors is a value-receiver grouping of all projection functions,
+// used to pass the full projector set to the domain consumer dispatcher
+// without listing every function as a separate dependency.
+// All methods are simple forwarders to the package-level functions.
+type Projectors struct{}
+
+// NewProjectors returns a Projectors instance. No state — projector
+// functions are stateless.
+func NewProjectors() *Projectors { return &Projectors{} }
