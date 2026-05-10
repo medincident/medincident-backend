@@ -34,7 +34,7 @@ type RoleAssignmentView struct {
 
 // employeeCardColumns returns the ordered SELECT list for one
 // employee_cards row, with every column qualified by the given table
-// alias. The column order matches scanEmployeeCard / scanEmployeeCardPtrs.
+// alias. The column order matches ScanEmployeeCard / scanEmployeeCardPtrs.
 func employeeCardColumns(alias string) string {
 	return alias + `.employee_id, ` + alias + `.zitadel_user_id, ` +
 		alias + `.first_name, ` + alias + `.last_name, ` +

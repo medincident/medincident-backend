@@ -32,6 +32,7 @@ import (
 	orghandler "github.com/medincident/medincident-backend/internal/handler/query/orgstructure"
 	requestqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/request"
 	requestclassifierqueryhandler "github.com/medincident/medincident-backend/internal/handler/query/request/classifier"
+	selfhandler "github.com/medincident/medincident-backend/internal/handler/query/self"
 	statshandler "github.com/medincident/medincident-backend/internal/handler/query/stats"
 	"github.com/medincident/medincident-backend/internal/middleware/grpcmw"
 	"github.com/medincident/medincident-backend/internal/service/authz"
@@ -45,6 +46,7 @@ import (
 	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
 	requestread "github.com/medincident/medincident-backend/internal/service/query/request"
 	requestclassifierread "github.com/medincident/medincident-backend/internal/service/query/request/classifier"
+	selfread "github.com/medincident/medincident-backend/internal/service/query/self"
 	statsread "github.com/medincident/medincident-backend/internal/service/query/stats"
 	"github.com/medincident/medincident-backend/internal/util/urlutil"
 	analyticsqueryv1 "github.com/medincident/medincident-backend/pkg/query/analytics/v1"
@@ -55,6 +57,7 @@ import (
 	orgqueryv1 "github.com/medincident/medincident-backend/pkg/query/orgstructure/v1"
 	requestclassifierqueryv1 "github.com/medincident/medincident-backend/pkg/query/request/classifier/v1"
 	requestqueryv1 "github.com/medincident/medincident-backend/pkg/query/request/v1"
+	selfqueryv1 "github.com/medincident/medincident-backend/pkg/query/self/v1"
 	statsqueryv1 "github.com/medincident/medincident-backend/pkg/query/stats/v1"
 )
 
@@ -150,6 +153,7 @@ func main() {
 	reqClassifierReader := requestclassifierread.NewReader(db, az, logger)
 	reqReader := requestread.NewReader(db, az, logger)
 	announcementReader := announcementread.NewReader(db, logger)
+	selfReader := selfread.NewSelfReader(db, logger)
 
 	projector := identityread.NewProjector(db, logger)
 	consumer := identityread.NewConsumer(js, &cfg.NATS, projector, logger)
@@ -165,6 +169,7 @@ func main() {
 	reqClassifierQH := requestclassifierqueryhandler.NewRequestClassifierQueryHandler(reqClassifierReader)
 	reqQH := requestqueryhandler.NewServiceRequestQueryHandler(reqReader)
 	announcementQH := announcementqueryhandler.NewAnnouncementQueryHandler(announcementReader)
+	selfH := selfhandler.NewSelfQueryHandler(selfReader)
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
@@ -187,6 +192,7 @@ func main() {
 	requestclassifierqueryv1.RegisterRequestClassifierQueryServiceServer(grpcServer, reqClassifierQH)
 	requestqueryv1.RegisterServiceRequestQueryServiceServer(grpcServer, reqQH)
 	announcementqueryv1.RegisterAnnouncementQueryServiceServer(grpcServer, announcementQH)
+	selfqueryv1.RegisterSelfQueryServiceServer(grpcServer, selfH)
 
 	lc := &net.ListenConfig{}
 	listener, err := lc.Listen(ctx, "tcp", cfg.Server.GRPC.Address)
