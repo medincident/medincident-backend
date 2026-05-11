@@ -2390,10 +2390,12 @@ func (x *ListCandidatesForHireResponse) GetNextCursor() string {
 }
 
 type ListCandidatesForSystemAdminRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
-	After         string                 `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
-	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Optional substring search (ILIKE %query%) on first_name, last_name,
+	// display_name, email. Trimmed at the handler boundary. Max 256 chars.
+	Query         string `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	After         string `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
+	Limit         int32  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2504,11 +2506,13 @@ func (x *ListCandidatesForSystemAdminResponse) GetNextCursor() string {
 type ListCandidatesForOrgAdminRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Query          string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	Limit          int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Optional substring search (ILIKE %query%) on first_name, last_name,
+	// display_name, email. Trimmed at the handler boundary. Max 256 chars.
+	Query         string `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	After         string `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	Limit         int32  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListCandidatesForOrgAdminRequest) Reset() {
@@ -2624,11 +2628,13 @@ func (x *ListCandidatesForOrgAdminResponse) GetNextCursor() string {
 type ListCandidatesForOrgHeadRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Query          string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	Limit          int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Optional substring search (ILIKE %query%) on first_name, last_name,
+	// display_name, email. Trimmed at the handler boundary. Max 256 chars.
+	Query         string `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	After         string `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	Limit         int32  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListCandidatesForOrgHeadRequest) Reset() {
@@ -2744,11 +2750,13 @@ func (x *ListCandidatesForOrgHeadResponse) GetNextCursor() string {
 type ListCandidatesForOrgDispatcherRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Query          string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	Limit          int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// Optional substring search (ILIKE %query%) on first_name, last_name,
+	// display_name, email. Trimmed at the handler boundary. Max 256 chars.
+	Query         string `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	After         string `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	Limit         int32  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListCandidatesForOrgDispatcherRequest) Reset() {
@@ -2862,11 +2870,13 @@ func (x *ListCandidatesForOrgDispatcherResponse) GetNextCursor() string {
 }
 
 type ListCandidatesForClinicHeadRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
-	Query         string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
-	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	Limit         int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	state    protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	// Optional substring search (ILIKE %query%) on first_name, last_name,
+	// display_name, email. Trimmed at the handler boundary. Max 256 chars.
+	Query         string `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	After         string `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	Limit         int32  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2982,11 +2992,13 @@ func (x *ListCandidatesForClinicHeadResponse) GetNextCursor() string {
 }
 
 type ListCandidatesForDeptResponsibleRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	DepartmentId  string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
-	Query         string                 `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
-	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	Limit         int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	DepartmentId string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
+	// Optional substring search (ILIKE %query%) on first_name, last_name,
+	// display_name, email. Trimmed at the handler boundary. Max 256 chars.
+	Query         string `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	After         string `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	Limit         int32  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }

@@ -6442,7 +6442,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | clinic_id | [string](#string) |  |  |
-| query | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
 | after | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 
@@ -6476,7 +6476,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | department_id | [string](#string) |  |  |
-| query | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
 | after | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 
@@ -6544,7 +6544,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
-| query | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
 | after | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 
@@ -6578,7 +6578,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
-| query | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
 | after | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 
@@ -6612,7 +6612,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
-| query | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
 | after | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 
@@ -6645,7 +6645,7 @@ when the backing column is NULL.
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| query | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
 | after | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 

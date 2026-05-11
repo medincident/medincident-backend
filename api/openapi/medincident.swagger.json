@@ -696,6 +696,7 @@
           },
           {
             "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -1688,6 +1689,7 @@
           },
           {
             "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -5468,6 +5470,7 @@
           },
           {
             "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -5539,6 +5542,7 @@
           },
           {
             "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -5610,6 +5614,7 @@
           },
           {
             "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
             "in": "query",
             "required": false,
             "type": "string"
@@ -9762,6 +9767,7 @@
         "parameters": [
           {
             "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
             "in": "query",
             "required": false,
             "type": "string"

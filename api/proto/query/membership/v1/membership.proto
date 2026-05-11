@@ -464,6 +464,8 @@ message ListCandidatesForHireResponse {
 }
 
 message ListCandidatesForSystemAdminRequest {
+  // Optional substring search (ILIKE %query%) on first_name, last_name,
+  // display_name, email. Trimmed at the handler boundary. Max 256 chars.
   string query = 1;
   string after = 2;
   int32 limit = 3;
@@ -475,6 +477,8 @@ message ListCandidatesForSystemAdminResponse {
 
 message ListCandidatesForOrgAdminRequest {
   string organization_id = 1;
+  // Optional substring search (ILIKE %query%) on first_name, last_name,
+  // display_name, email. Trimmed at the handler boundary. Max 256 chars.
   string query = 2;
   string after = 3;
   int32 limit = 4;
@@ -486,6 +490,8 @@ message ListCandidatesForOrgAdminResponse {
 
 message ListCandidatesForOrgHeadRequest {
   string organization_id = 1;
+  // Optional substring search (ILIKE %query%) on first_name, last_name,
+  // display_name, email. Trimmed at the handler boundary. Max 256 chars.
   string query = 2;
   string after = 3;
   int32 limit = 4;
@@ -497,6 +503,8 @@ message ListCandidatesForOrgHeadResponse {
 
 message ListCandidatesForOrgDispatcherRequest {
   string organization_id = 1;
+  // Optional substring search (ILIKE %query%) on first_name, last_name,
+  // display_name, email. Trimmed at the handler boundary. Max 256 chars.
   string query = 2;
   string after = 3;
   int32 limit = 4;
@@ -508,6 +516,8 @@ message ListCandidatesForOrgDispatcherResponse {
 
 message ListCandidatesForClinicHeadRequest {
   string clinic_id = 1;
+  // Optional substring search (ILIKE %query%) on first_name, last_name,
+  // display_name, email. Trimmed at the handler boundary. Max 256 chars.
   string query = 2;
   string after = 3;
   int32 limit = 4;
@@ -519,6 +529,8 @@ message ListCandidatesForClinicHeadResponse {
 
 message ListCandidatesForDeptResponsibleRequest {
   string department_id = 1;
+  // Optional substring search (ILIKE %query%) on first_name, last_name,
+  // display_name, email. Trimmed at the handler boundary. Max 256 chars.
   string query = 2;
   string after = 3;
   int32 limit = 4;

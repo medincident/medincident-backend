@@ -6214,9 +6214,14 @@ curl -X GET /v1/clinics/{clinicId}/candidates:clinic-head \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |clinicId|path|string|true|none|
-|query|query|string|false|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
 |after|query|string|false|none|
 |limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
 
 > Example responses
 
@@ -6512,9 +6517,14 @@ curl -X GET /v1/departments/{departmentId}/candidates:dept-responsible \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |departmentId|path|string|true|none|
-|query|query|string|false|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
 |after|query|string|false|none|
 |limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
 
 > Example responses
 
@@ -7148,9 +7158,14 @@ curl -X GET /v1/organizations/{organizationId}/candidates:org-admin \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
-|query|query|string|false|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
 |after|query|string|false|none|
 |limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
 
 > Example responses
 
@@ -7222,9 +7237,14 @@ curl -X GET /v1/organizations/{organizationId}/candidates:org-dispatcher \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
-|query|query|string|false|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
 |after|query|string|false|none|
 |limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
 
 > Example responses
 
@@ -7296,9 +7316,14 @@ curl -X GET /v1/organizations/{organizationId}/candidates:org-head \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
-|query|query|string|false|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
 |after|query|string|false|none|
 |limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
 
 > Example responses
 
@@ -7825,9 +7850,14 @@ curl -X GET /v1/system-admins/candidates \
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|query|query|string|false|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
 |after|query|string|false|none|
 |limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
 
 > Example responses
 
