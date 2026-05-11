@@ -12,6 +12,8 @@ import (
 
 // ListCandidatesForHire returns Zitadel users not yet active employees
 // of the given organization.
+//
+// See: docs/services/Membership.md
 func (h *MembershipQueryHandler) ListCandidatesForHire(
 	ctx context.Context,
 	req *membershipqueryv1.ListCandidatesForHireRequest,
@@ -24,9 +26,10 @@ func (h *MembershipQueryHandler) ListCandidatesForHire(
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	items, next, err := h.candidateReader.ForHire(
 		ctx,
-		authz.Caller{ZitadelUserID: callerID},
+		caller,
 		orgID,
 		strings.TrimSpace(req.GetQuery()),
 		req.GetAfter(),
@@ -42,6 +45,8 @@ func (h *MembershipQueryHandler) ListCandidatesForHire(
 }
 
 // ListCandidatesForSystemAdmin returns Zitadel users not yet system admins.
+//
+// See: docs/services/Membership.md
 func (h *MembershipQueryHandler) ListCandidatesForSystemAdmin(
 	ctx context.Context,
 	req *membershipqueryv1.ListCandidatesForSystemAdminRequest,
@@ -50,9 +55,10 @@ func (h *MembershipQueryHandler) ListCandidatesForSystemAdmin(
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	items, next, err := h.candidateReader.ForSystemAdmin(
 		ctx,
-		authz.Caller{ZitadelUserID: callerID},
+		caller,
 		strings.TrimSpace(req.GetQuery()),
 		req.GetAfter(),
 		int(req.GetLimit()),
@@ -68,6 +74,8 @@ func (h *MembershipQueryHandler) ListCandidatesForSystemAdmin(
 
 // ListCandidatesForOrgAdmin returns active org employees not yet assigned
 // as org admin.
+//
+// See: docs/services/Membership.md
 func (h *MembershipQueryHandler) ListCandidatesForOrgAdmin(
 	ctx context.Context,
 	req *membershipqueryv1.ListCandidatesForOrgAdminRequest,
@@ -80,9 +88,10 @@ func (h *MembershipQueryHandler) ListCandidatesForOrgAdmin(
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	items, next, err := h.candidateReader.ForOrgAdmin(
 		ctx,
-		authz.Caller{ZitadelUserID: callerID},
+		caller,
 		orgID,
 		strings.TrimSpace(req.GetQuery()),
 		req.GetAfter(),
@@ -99,6 +108,8 @@ func (h *MembershipQueryHandler) ListCandidatesForOrgAdmin(
 
 // ListCandidatesForOrgHead returns active org employees not yet assigned
 // as org head.
+//
+// See: docs/services/Membership.md
 func (h *MembershipQueryHandler) ListCandidatesForOrgHead(
 	ctx context.Context,
 	req *membershipqueryv1.ListCandidatesForOrgHeadRequest,
@@ -111,9 +122,10 @@ func (h *MembershipQueryHandler) ListCandidatesForOrgHead(
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	items, next, err := h.candidateReader.ForOrgHead(
 		ctx,
-		authz.Caller{ZitadelUserID: callerID},
+		caller,
 		orgID,
 		strings.TrimSpace(req.GetQuery()),
 		req.GetAfter(),
@@ -130,6 +142,8 @@ func (h *MembershipQueryHandler) ListCandidatesForOrgHead(
 
 // ListCandidatesForOrgDispatcher returns active org employees not yet
 // assigned as org dispatcher.
+//
+// See: docs/services/Membership.md
 func (h *MembershipQueryHandler) ListCandidatesForOrgDispatcher(
 	ctx context.Context,
 	req *membershipqueryv1.ListCandidatesForOrgDispatcherRequest,
@@ -142,9 +156,10 @@ func (h *MembershipQueryHandler) ListCandidatesForOrgDispatcher(
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	items, next, err := h.candidateReader.ForOrgDispatcher(
 		ctx,
-		authz.Caller{ZitadelUserID: callerID},
+		caller,
 		orgID,
 		strings.TrimSpace(req.GetQuery()),
 		req.GetAfter(),
@@ -161,6 +176,8 @@ func (h *MembershipQueryHandler) ListCandidatesForOrgDispatcher(
 
 // ListCandidatesForClinicHead returns active clinic employees not yet
 // assigned as clinic head.
+//
+// See: docs/services/Membership.md
 func (h *MembershipQueryHandler) ListCandidatesForClinicHead(
 	ctx context.Context,
 	req *membershipqueryv1.ListCandidatesForClinicHeadRequest,
@@ -173,9 +190,10 @@ func (h *MembershipQueryHandler) ListCandidatesForClinicHead(
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	items, next, err := h.candidateReader.ForClinicHead(
 		ctx,
-		authz.Caller{ZitadelUserID: callerID},
+		caller,
 		clinicID,
 		strings.TrimSpace(req.GetQuery()),
 		req.GetAfter(),
@@ -192,6 +210,8 @@ func (h *MembershipQueryHandler) ListCandidatesForClinicHead(
 
 // ListCandidatesForDeptResponsible returns active department employees
 // not yet assigned as department responsible.
+//
+// See: docs/services/Membership.md
 func (h *MembershipQueryHandler) ListCandidatesForDeptResponsible(
 	ctx context.Context,
 	req *membershipqueryv1.ListCandidatesForDeptResponsibleRequest,
@@ -204,9 +224,10 @@ func (h *MembershipQueryHandler) ListCandidatesForDeptResponsible(
 	if err != nil {
 		return nil, err
 	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	items, next, err := h.candidateReader.ForDeptResponsible(
 		ctx,
-		authz.Caller{ZitadelUserID: callerID},
+		caller,
 		deptID,
 		strings.TrimSpace(req.GetQuery()),
 		req.GetAfter(),
