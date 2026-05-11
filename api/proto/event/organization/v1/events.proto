@@ -39,3 +39,65 @@ message OrganizationLegalAddressChanged {
   Address legal_address = 1;
   google.protobuf.Timestamp updated_at = 2;
 }
+
+// ── Org-level role events ─────────────────────────────────────────────
+
+// OrgAdminAssigned — subject: medincident.event.organization.v1.org_admin_assigned
+message OrgAdminAssigned {
+  string employee_id = 1;
+  google.protobuf.Timestamp assigned_at = 2;
+}
+
+// OrgAdminDeputyAssigned — subject: medincident.event.organization.v1.org_admin_deputy_assigned
+message OrgAdminDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+// OrgAdminDeputyRemoved — subject: medincident.event.organization.v1.org_admin_deputy_removed
+message OrgAdminDeputyRemoved {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// OrgAdminRevoked — subject: medincident.event.organization.v1.org_admin_revoked
+message OrgAdminRevoked {
+  string employee_id = 1;
+}
+
+// OrgHeadAssigned — subject: medincident.event.organization.v1.org_head_assigned
+message OrgHeadAssigned {
+  string employee_id = 1;
+  google.protobuf.Timestamp assigned_at = 2;
+}
+message OrgHeadDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+message OrgHeadDeputyRemoved {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+message OrgHeadRevoked {
+  string employee_id = 1;
+}
+
+// OrgDispatcherAssigned — subject: medincident.event.organization.v1.org_dispatcher_assigned
+message OrgDispatcherAssigned {
+  string employee_id = 1;
+  google.protobuf.Timestamp assigned_at = 2;
+}
+message OrgDispatcherDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+message OrgDispatcherDeputyRemoved {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+message OrgDispatcherRevoked {
+  string employee_id = 1;
+}

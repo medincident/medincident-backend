@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package event.system_admin.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// aggregate_id for system_admin events = zitadel_user_id (string, NOT a UUID).
+
+// SystemAdminGranted — subject: medincident.event.system_admin.v1.granted
+message SystemAdminGranted {
+  google.protobuf.Timestamp granted_at = 1;
+}
+
+// SystemAdminRevoked — subject: medincident.event.system_admin.v1.revoked
+message SystemAdminRevoked {
+  google.protobuf.Timestamp revoked_at = 1;
+}

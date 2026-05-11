@@ -314,6 +314,636 @@ func (x *OrganizationLegalAddressChanged) GetUpdatedAt() *timestamppb.Timestamp 
 	return nil
 }
 
+// OrgAdminAssigned — subject: medincident.event.organization.v1.org_admin_assigned
+type OrgAdminAssigned struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	AssignedAt    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=assigned_at,json=assignedAt,proto3" json:"assigned_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgAdminAssigned) Reset() {
+	*x = OrgAdminAssigned{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgAdminAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgAdminAssigned) ProtoMessage() {}
+
+func (x *OrgAdminAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgAdminAssigned.ProtoReflect.Descriptor instead.
+func (*OrgAdminAssigned) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *OrgAdminAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgAdminAssigned) GetAssignedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AssignedAt
+	}
+	return nil
+}
+
+// OrgAdminDeputyAssigned — subject: medincident.event.organization.v1.org_admin_deputy_assigned
+type OrgAdminDeputyAssigned struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	DeputyEmployeeId string                 `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3" json:"deputy_employee_id,omitempty"`
+	UpdatedAt        *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *OrgAdminDeputyAssigned) Reset() {
+	*x = OrgAdminDeputyAssigned{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgAdminDeputyAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgAdminDeputyAssigned) ProtoMessage() {}
+
+func (x *OrgAdminDeputyAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgAdminDeputyAssigned.ProtoReflect.Descriptor instead.
+func (*OrgAdminDeputyAssigned) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *OrgAdminDeputyAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgAdminDeputyAssigned) GetDeputyEmployeeId() string {
+	if x != nil {
+		return x.DeputyEmployeeId
+	}
+	return ""
+}
+
+func (x *OrgAdminDeputyAssigned) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+// OrgAdminDeputyRemoved — subject: medincident.event.organization.v1.org_admin_deputy_removed
+type OrgAdminDeputyRemoved struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgAdminDeputyRemoved) Reset() {
+	*x = OrgAdminDeputyRemoved{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgAdminDeputyRemoved) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgAdminDeputyRemoved) ProtoMessage() {}
+
+func (x *OrgAdminDeputyRemoved) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgAdminDeputyRemoved.ProtoReflect.Descriptor instead.
+func (*OrgAdminDeputyRemoved) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *OrgAdminDeputyRemoved) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgAdminDeputyRemoved) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+// OrgAdminRevoked — subject: medincident.event.organization.v1.org_admin_revoked
+type OrgAdminRevoked struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgAdminRevoked) Reset() {
+	*x = OrgAdminRevoked{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgAdminRevoked) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgAdminRevoked) ProtoMessage() {}
+
+func (x *OrgAdminRevoked) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgAdminRevoked.ProtoReflect.Descriptor instead.
+func (*OrgAdminRevoked) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *OrgAdminRevoked) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+// OrgHeadAssigned — subject: medincident.event.organization.v1.org_head_assigned
+type OrgHeadAssigned struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	AssignedAt    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=assigned_at,json=assignedAt,proto3" json:"assigned_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgHeadAssigned) Reset() {
+	*x = OrgHeadAssigned{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgHeadAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgHeadAssigned) ProtoMessage() {}
+
+func (x *OrgHeadAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgHeadAssigned.ProtoReflect.Descriptor instead.
+func (*OrgHeadAssigned) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *OrgHeadAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgHeadAssigned) GetAssignedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AssignedAt
+	}
+	return nil
+}
+
+type OrgHeadDeputyAssigned struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	DeputyEmployeeId string                 `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3" json:"deputy_employee_id,omitempty"`
+	UpdatedAt        *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *OrgHeadDeputyAssigned) Reset() {
+	*x = OrgHeadDeputyAssigned{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgHeadDeputyAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgHeadDeputyAssigned) ProtoMessage() {}
+
+func (x *OrgHeadDeputyAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgHeadDeputyAssigned.ProtoReflect.Descriptor instead.
+func (*OrgHeadDeputyAssigned) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *OrgHeadDeputyAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgHeadDeputyAssigned) GetDeputyEmployeeId() string {
+	if x != nil {
+		return x.DeputyEmployeeId
+	}
+	return ""
+}
+
+func (x *OrgHeadDeputyAssigned) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+type OrgHeadDeputyRemoved struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgHeadDeputyRemoved) Reset() {
+	*x = OrgHeadDeputyRemoved{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgHeadDeputyRemoved) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgHeadDeputyRemoved) ProtoMessage() {}
+
+func (x *OrgHeadDeputyRemoved) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgHeadDeputyRemoved.ProtoReflect.Descriptor instead.
+func (*OrgHeadDeputyRemoved) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *OrgHeadDeputyRemoved) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgHeadDeputyRemoved) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+type OrgHeadRevoked struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgHeadRevoked) Reset() {
+	*x = OrgHeadRevoked{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgHeadRevoked) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgHeadRevoked) ProtoMessage() {}
+
+func (x *OrgHeadRevoked) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgHeadRevoked.ProtoReflect.Descriptor instead.
+func (*OrgHeadRevoked) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *OrgHeadRevoked) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+// OrgDispatcherAssigned — subject: medincident.event.organization.v1.org_dispatcher_assigned
+type OrgDispatcherAssigned struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	AssignedAt    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=assigned_at,json=assignedAt,proto3" json:"assigned_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgDispatcherAssigned) Reset() {
+	*x = OrgDispatcherAssigned{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgDispatcherAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgDispatcherAssigned) ProtoMessage() {}
+
+func (x *OrgDispatcherAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgDispatcherAssigned.ProtoReflect.Descriptor instead.
+func (*OrgDispatcherAssigned) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *OrgDispatcherAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgDispatcherAssigned) GetAssignedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.AssignedAt
+	}
+	return nil
+}
+
+type OrgDispatcherDeputyAssigned struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId       string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	DeputyEmployeeId string                 `protobuf:"bytes,2,opt,name=deputy_employee_id,json=deputyEmployeeId,proto3" json:"deputy_employee_id,omitempty"`
+	UpdatedAt        *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *OrgDispatcherDeputyAssigned) Reset() {
+	*x = OrgDispatcherDeputyAssigned{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgDispatcherDeputyAssigned) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgDispatcherDeputyAssigned) ProtoMessage() {}
+
+func (x *OrgDispatcherDeputyAssigned) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgDispatcherDeputyAssigned.ProtoReflect.Descriptor instead.
+func (*OrgDispatcherDeputyAssigned) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *OrgDispatcherDeputyAssigned) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgDispatcherDeputyAssigned) GetDeputyEmployeeId() string {
+	if x != nil {
+		return x.DeputyEmployeeId
+	}
+	return ""
+}
+
+func (x *OrgDispatcherDeputyAssigned) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+type OrgDispatcherDeputyRemoved struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgDispatcherDeputyRemoved) Reset() {
+	*x = OrgDispatcherDeputyRemoved{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgDispatcherDeputyRemoved) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgDispatcherDeputyRemoved) ProtoMessage() {}
+
+func (x *OrgDispatcherDeputyRemoved) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgDispatcherDeputyRemoved.ProtoReflect.Descriptor instead.
+func (*OrgDispatcherDeputyRemoved) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *OrgDispatcherDeputyRemoved) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *OrgDispatcherDeputyRemoved) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+type OrgDispatcherRevoked struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OrgDispatcherRevoked) Reset() {
+	*x = OrgDispatcherRevoked{}
+	mi := &file_event_organization_v1_events_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OrgDispatcherRevoked) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OrgDispatcherRevoked) ProtoMessage() {}
+
+func (x *OrgDispatcherRevoked) ProtoReflect() protoreflect.Message {
+	mi := &file_event_organization_v1_events_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OrgDispatcherRevoked.ProtoReflect.Descriptor instead.
+func (*OrgDispatcherRevoked) Descriptor() ([]byte, []int) {
+	return file_event_organization_v1_events_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *OrgDispatcherRevoked) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
 var File_event_organization_v1_events_proto protoreflect.FileDescriptor
 
 const file_event_organization_v1_events_proto_rawDesc = "" +
@@ -339,7 +969,64 @@ const file_event_organization_v1_events_proto_rawDesc = "" +
 	"\x1fOrganizationLegalAddressChanged\x12C\n" +
 	"\rlegal_address\x18\x01 \x01(\v2\x1e.event.organization.v1.AddressR\flegalAddress\x129\n" +
 	"\n" +
-	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\xf3\x01\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"p\n" +
+	"\x10OrgAdminAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12;\n" +
+	"\vassigned_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"assignedAt\"\xa2\x01\n" +
+	"\x16OrgAdminDeputyAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12,\n" +
+	"\x12deputy_employee_id\x18\x02 \x01(\tR\x10deputyEmployeeId\x129\n" +
+	"\n" +
+	"updated_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"s\n" +
+	"\x15OrgAdminDeputyRemoved\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x129\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"2\n" +
+	"\x0fOrgAdminRevoked\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"o\n" +
+	"\x0fOrgHeadAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12;\n" +
+	"\vassigned_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"assignedAt\"\xa1\x01\n" +
+	"\x15OrgHeadDeputyAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12,\n" +
+	"\x12deputy_employee_id\x18\x02 \x01(\tR\x10deputyEmployeeId\x129\n" +
+	"\n" +
+	"updated_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"r\n" +
+	"\x14OrgHeadDeputyRemoved\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x129\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"1\n" +
+	"\x0eOrgHeadRevoked\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\"u\n" +
+	"\x15OrgDispatcherAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12;\n" +
+	"\vassigned_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"assignedAt\"\xa7\x01\n" +
+	"\x1bOrgDispatcherDeputyAssigned\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x12,\n" +
+	"\x12deputy_employee_id\x18\x02 \x01(\tR\x10deputyEmployeeId\x129\n" +
+	"\n" +
+	"updated_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"x\n" +
+	"\x1aOrgDispatcherDeputyRemoved\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x129\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"7\n" +
+	"\x14OrgDispatcherRevoked\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeIdB\xf3\x01\n" +
 	"\x19com.event.organization.v1B\vEventsProtoP\x01ZSgithub.com/medincident/medincident-backend/pkg/event/organization/v1;organizationv1\xa2\x02\x03EOX\xaa\x02\x15Event.Organization.V1\xca\x02\x15Event\\Organization\\V1\xe2\x02!Event\\Organization\\V1\\GPBMetadata\xea\x02\x17Event::Organization::V1b\x06proto3"
 
 var (
@@ -354,27 +1041,48 @@ func file_event_organization_v1_events_proto_rawDescGZIP() []byte {
 	return file_event_organization_v1_events_proto_rawDescData
 }
 
-var file_event_organization_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_event_organization_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_event_organization_v1_events_proto_goTypes = []any{
 	(*Address)(nil),                         // 0: event.organization.v1.Address
 	(*Point)(nil),                           // 1: event.organization.v1.Point
 	(*OrganizationCreated)(nil),             // 2: event.organization.v1.OrganizationCreated
 	(*OrganizationDetailsChanged)(nil),      // 3: event.organization.v1.OrganizationDetailsChanged
 	(*OrganizationLegalAddressChanged)(nil), // 4: event.organization.v1.OrganizationLegalAddressChanged
-	(*timestamppb.Timestamp)(nil),           // 5: google.protobuf.Timestamp
+	(*OrgAdminAssigned)(nil),                // 5: event.organization.v1.OrgAdminAssigned
+	(*OrgAdminDeputyAssigned)(nil),          // 6: event.organization.v1.OrgAdminDeputyAssigned
+	(*OrgAdminDeputyRemoved)(nil),           // 7: event.organization.v1.OrgAdminDeputyRemoved
+	(*OrgAdminRevoked)(nil),                 // 8: event.organization.v1.OrgAdminRevoked
+	(*OrgHeadAssigned)(nil),                 // 9: event.organization.v1.OrgHeadAssigned
+	(*OrgHeadDeputyAssigned)(nil),           // 10: event.organization.v1.OrgHeadDeputyAssigned
+	(*OrgHeadDeputyRemoved)(nil),            // 11: event.organization.v1.OrgHeadDeputyRemoved
+	(*OrgHeadRevoked)(nil),                  // 12: event.organization.v1.OrgHeadRevoked
+	(*OrgDispatcherAssigned)(nil),           // 13: event.organization.v1.OrgDispatcherAssigned
+	(*OrgDispatcherDeputyAssigned)(nil),     // 14: event.organization.v1.OrgDispatcherDeputyAssigned
+	(*OrgDispatcherDeputyRemoved)(nil),      // 15: event.organization.v1.OrgDispatcherDeputyRemoved
+	(*OrgDispatcherRevoked)(nil),            // 16: event.organization.v1.OrgDispatcherRevoked
+	(*timestamppb.Timestamp)(nil),           // 17: google.protobuf.Timestamp
 }
 var file_event_organization_v1_events_proto_depIdxs = []int32{
-	1, // 0: event.organization.v1.Address.point:type_name -> event.organization.v1.Point
-	0, // 1: event.organization.v1.OrganizationCreated.legal_address:type_name -> event.organization.v1.Address
-	5, // 2: event.organization.v1.OrganizationCreated.created_at:type_name -> google.protobuf.Timestamp
-	5, // 3: event.organization.v1.OrganizationDetailsChanged.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 4: event.organization.v1.OrganizationLegalAddressChanged.legal_address:type_name -> event.organization.v1.Address
-	5, // 5: event.organization.v1.OrganizationLegalAddressChanged.updated_at:type_name -> google.protobuf.Timestamp
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	1,  // 0: event.organization.v1.Address.point:type_name -> event.organization.v1.Point
+	0,  // 1: event.organization.v1.OrganizationCreated.legal_address:type_name -> event.organization.v1.Address
+	17, // 2: event.organization.v1.OrganizationCreated.created_at:type_name -> google.protobuf.Timestamp
+	17, // 3: event.organization.v1.OrganizationDetailsChanged.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 4: event.organization.v1.OrganizationLegalAddressChanged.legal_address:type_name -> event.organization.v1.Address
+	17, // 5: event.organization.v1.OrganizationLegalAddressChanged.updated_at:type_name -> google.protobuf.Timestamp
+	17, // 6: event.organization.v1.OrgAdminAssigned.assigned_at:type_name -> google.protobuf.Timestamp
+	17, // 7: event.organization.v1.OrgAdminDeputyAssigned.updated_at:type_name -> google.protobuf.Timestamp
+	17, // 8: event.organization.v1.OrgAdminDeputyRemoved.updated_at:type_name -> google.protobuf.Timestamp
+	17, // 9: event.organization.v1.OrgHeadAssigned.assigned_at:type_name -> google.protobuf.Timestamp
+	17, // 10: event.organization.v1.OrgHeadDeputyAssigned.updated_at:type_name -> google.protobuf.Timestamp
+	17, // 11: event.organization.v1.OrgHeadDeputyRemoved.updated_at:type_name -> google.protobuf.Timestamp
+	17, // 12: event.organization.v1.OrgDispatcherAssigned.assigned_at:type_name -> google.protobuf.Timestamp
+	17, // 13: event.organization.v1.OrgDispatcherDeputyAssigned.updated_at:type_name -> google.protobuf.Timestamp
+	17, // 14: event.organization.v1.OrgDispatcherDeputyRemoved.updated_at:type_name -> google.protobuf.Timestamp
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_event_organization_v1_events_proto_init() }
@@ -388,7 +1096,7 @@ func file_event_organization_v1_events_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_event_organization_v1_events_proto_rawDesc), len(file_event_organization_v1_events_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

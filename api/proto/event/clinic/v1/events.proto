@@ -38,3 +38,23 @@ message ClinicPhysicalAddressChanged {
   Address physical_address = 1;
   google.protobuf.Timestamp updated_at = 2;
 }
+
+// ── Clinic-level role events ──────────────────────────────────────────
+
+// ClinicHeadAssigned — subject: medincident.event.clinic.v1.clinic_head_assigned
+message ClinicHeadAssigned {
+  string employee_id = 1;
+  google.protobuf.Timestamp assigned_at = 2;
+}
+message ClinicHeadDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+message ClinicHeadDeputyRemoved {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+message ClinicHeadRevoked {
+  string employee_id = 1;
+}
