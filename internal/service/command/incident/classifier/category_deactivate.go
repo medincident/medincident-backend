@@ -7,13 +7,17 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // DeactivateIncidentCategoryPayload identifies the incident category
@@ -145,9 +149,21 @@ func deactivateTypesInSubtree(tx *gorm.DB, root uuid.UUID) ([]uuid.UUID, error) 
 }
 
 func appendCategoryDeactivatedEvent(tx *gorm.DB, categoryID uuid.UUID, now time.Time) error {
-	return projector.CategoryDeactivate(tx, categoryID, now)
+	msg := &classifierv1.IncidentCategoryDeactivated{CategoryId: categoryID.String(), UpdatedAt: timestamppb.New(now)}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return oops.In("services.incident.classifier.category").Code(ErrCodeIncidentCategorySaveFailed).Wrap(err)
+	}
+	env := &eventv1.Envelope{OccurredAt: timestamppb.New(now), AggregateType: "incident_category", AggregateId: categoryID.String(), Payload: payload}
+	return outbox.Append(tx, "medincident.event.incident_category.v1.deactivated", env)
 }
 
 func appendTypeDeactivatedEvent(tx *gorm.DB, typeID uuid.UUID, now time.Time) error {
-	return projector.TypeDeactivate(tx, typeID, now)
+	msg := &classifierv1.IncidentTypeDeactivated{TypeId: typeID.String(), UpdatedAt: timestamppb.New(now)}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return oops.In("services.incident.classifier.type").Code(ErrCodeIncidentTypeSaveFailed).Wrap(err)
+	}
+	env := &eventv1.Envelope{OccurredAt: timestamppb.New(now), AggregateType: "incident_type", AggregateId: typeID.String(), Payload: payload}
+	return outbox.Append(tx, "medincident.event.incident_type.v1.deactivated", env)
 }

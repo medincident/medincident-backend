@@ -8,13 +8,18 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateIncidentCategoryDetailsPayload carries the new name and
@@ -97,7 +102,30 @@ func (s *IncidentCategoryService) UpdateDetails(
 				Wrap(err)
 		}
 
-		return projector.CategoryUpdateDetails(tx, &cat)
+		env, err := buildIncidentCategoryDetailsUpdatedEnvelope(&cat)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.incident_category.v1.details_updated", env)
 	})
 	return UpdateIncidentCategoryDetailsResult{}, err
+}
+
+func buildIncidentCategoryDetailsUpdatedEnvelope(cat *model.IncidentCategory) (*eventv1.Envelope, error) {
+	msg := &classifierv1.IncidentCategoryDetailsUpdated{
+		CategoryId: cat.ID.String(),
+		Name:       cat.Name,
+		UpdatedAt:  timestamppb.New(cat.UpdatedAt),
+	}
+	if cat.Description.Valid {
+		msg.Description = wrapperspb.String(cat.Description.String)
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.incident.classifier.category").Code(ErrCodeIncidentCategorySaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt: timestamppb.New(cat.UpdatedAt), AggregateType: "incident_category",
+		AggregateId: cat.ID.String(), Payload: payload,
+	}, nil
 }

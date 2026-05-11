@@ -8,12 +8,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 const (
@@ -127,11 +132,35 @@ func (s *IncidentTypeService) Create(
 				Wrap(err)
 		}
 
-		if err := projector.TypeCreated(tx, &row); err != nil {
+		env, err := buildIncidentTypeCreatedEnvelope(&row)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.incident_type.v1.created", env); err != nil {
 			return err
 		}
 		result.ID = id
 		return nil
 	})
 	return result, err
+}
+
+func buildIncidentTypeCreatedEnvelope(t *model.IncidentType) (*eventv1.Envelope, error) {
+	msg := &classifierv1.IncidentTypeCreated{
+		TypeId:               t.ID.String(),
+		OrganizationId:       t.OrganizationID.String(),
+		CategoryId:           t.CategoryID.String(),
+		Name:                 t.Name,
+		IsActive:             t.IsActive,
+		IsAllowedForPatients: t.IsAllowedForPatients,
+		CreatedAt:            timestamppb.New(t.CreatedAt),
+	}
+	if t.Description.Valid {
+		msg.Description = wrapperspb.String(t.Description.String)
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.incident.classifier.type").Code(ErrCodeIncidentTypeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{OccurredAt: timestamppb.New(t.CreatedAt), AggregateType: "incident_type", AggregateId: t.ID.String(), Payload: payload}, nil
 }

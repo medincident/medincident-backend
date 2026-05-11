@@ -9,13 +9,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 const (
@@ -147,7 +151,20 @@ func (s *IncidentTypeService) Reactivate(
 				Wrap(err)
 		}
 
-		return projector.TypeReactivate(tx, row.ID, updatedAt)
+		env, err := buildIncidentTypeReactivatedEnvelope(row.ID, updatedAt)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.incident_type.v1.reactivated", env)
 	})
 	return ReactivateIncidentTypeResult{}, err
+}
+
+func buildIncidentTypeReactivatedEnvelope(typeID uuid.UUID, updatedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &classifierv1.IncidentTypeReactivated{TypeId: typeID.String(), UpdatedAt: timestamppb.New(updatedAt)}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.incident.classifier.type").Code(ErrCodeIncidentTypeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{OccurredAt: timestamppb.New(updatedAt), AggregateType: "incident_type", AggregateId: typeID.String(), Payload: payload}, nil
 }

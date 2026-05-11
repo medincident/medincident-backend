@@ -13,6 +13,7 @@ import (
 	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
 	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
 	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
 	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
 	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
 	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
@@ -161,6 +162,38 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 			return d.proj.DeptResponsibleDeputyRemoved(tx, aggregateID, occurredAt, m)
 		case *deptv1.DeptResponsibleRevoked:
 			return d.proj.DeptResponsibleRevoked(tx, aggregateID, occurredAt, m)
+
+		// ── Incident Category ─────────────────────────────────────────────────
+		case *classifierv1.IncidentCategoryCreated:
+			return d.proj.CategoryCreated(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentCategoryDetailsUpdated:
+			return d.proj.CategoryDetailsUpdated(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentCategoryMoved:
+			return d.proj.CategoryMoved(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentCategoryDeactivated:
+			return d.proj.CategoryDeactivated(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentCategoryReactivated:
+			return d.proj.CategoryReactivated(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentCategoryDeleted:
+			return d.proj.CategoryDeleted(tx, aggregateID, occurredAt, m)
+
+		// ── Incident Type ─────────────────────────────────────────────────────
+		case *classifierv1.IncidentTypeCreated:
+			return d.proj.TypeCreated(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentTypeDetailsUpdated:
+			return d.proj.TypeDetailsUpdated(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentTypeMoved:
+			return d.proj.TypeMoved(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentTypeDeactivated:
+			return d.proj.TypeDeactivated(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentTypeReactivated:
+			return d.proj.TypeReactivated(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentTypeAllowedForPatients:
+			return d.proj.TypeAllowedForPatients(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentTypeDisallowedForPatients:
+			return d.proj.TypeDisallowedForPatients(tx, aggregateID, occurredAt, m)
+		case *classifierv1.IncidentTypeDeleted:
+			return d.proj.TypeDeleted(tx, aggregateID, occurredAt, m)
 
 		default:
 			d.log.Warn().

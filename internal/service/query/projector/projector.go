@@ -16,15 +16,16 @@ package projector
 // Error codes — _failed suffix maps to codes.Internal via the gRPC
 // error interceptor's existing suffix rules.
 const (
-	ErrCodeOrganizationProjectionFailed   = "organization_projection_failed"
-	ErrCodeClinicProjectionFailed         = "clinic_projection_failed"
-	ErrCodeDepartmentProjectionFailed     = "department_projection_failed"
-	ErrCodeEmployeeProjectionFailed       = "employee_projection_failed"
-	ErrCodeVacationProjectionFailed       = "vacation_projection_failed"
-	ErrCodeRoleProjectionFailed           = "role_projection_failed"
-	ErrCodeIncidentProjectionFailed       = "incident_projection_failed"
-	ErrCodeRequestTypeProjectionFailed    = "request_type_projection_failed"
-	ErrCodeServiceRequestProjectionFailed = "service_request_projection_failed"
+	ErrCodeOrganizationProjectionFailed       = "organization_projection_failed"
+	ErrCodeClinicProjectionFailed             = "clinic_projection_failed"
+	ErrCodeDepartmentProjectionFailed         = "department_projection_failed"
+	ErrCodeEmployeeProjectionFailed           = "employee_projection_failed"
+	ErrCodeVacationProjectionFailed           = "vacation_projection_failed"
+	ErrCodeRoleProjectionFailed               = "role_projection_failed"
+	ErrCodeIncidentProjectionFailed           = "incident_projection_failed"
+	ErrCodeIncidentClassifierProjectionFailed = "incident_classifier_projection_failed"
+	ErrCodeRequestTypeProjectionFailed        = "request_type_projection_failed"
+	ErrCodeServiceRequestProjectionFailed     = "service_request_projection_failed"
 )
 
 // Projectors is a value-receiver grouping of all projection functions,

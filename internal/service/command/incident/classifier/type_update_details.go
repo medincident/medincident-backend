@@ -8,13 +8,18 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateIncidentTypeDetailsPayload carries the new name and (optional)
@@ -95,7 +100,23 @@ func (s *IncidentTypeService) UpdateDetails(
 				Wrap(err)
 		}
 
-		return projector.TypeUpdateDetails(tx, &row)
+		env, err := buildIncidentTypeDetailsUpdatedEnvelope(&row)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.incident_type.v1.details_updated", env)
 	})
 	return UpdateIncidentTypeDetailsResult{}, err
+}
+
+func buildIncidentTypeDetailsUpdatedEnvelope(t *model.IncidentType) (*eventv1.Envelope, error) {
+	msg := &classifierv1.IncidentTypeDetailsUpdated{TypeId: t.ID.String(), Name: t.Name, UpdatedAt: timestamppb.New(t.UpdatedAt)}
+	if t.Description.Valid {
+		msg.Description = wrapperspb.String(t.Description.String)
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.incident.classifier.type").Code(ErrCodeIncidentTypeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{OccurredAt: timestamppb.New(t.UpdatedAt), AggregateType: "incident_type", AggregateId: t.ID.String(), Payload: payload}, nil
 }
