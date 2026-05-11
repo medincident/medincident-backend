@@ -43,6 +43,14 @@ func TestDecode_InvalidJSON_ReturnsInvalidCursor(t *testing.T) {
 	assert.Equal(t, cursor.ErrCodeInvalidCursor, oe.Code())
 }
 
+func TestDecode_EmptyString_ReturnsInvalidCursor(t *testing.T) {
+	_, err := cursor.Decode("")
+	require.Error(t, err)
+	oe, ok := oops.AsOops(err)
+	require.True(t, ok)
+	assert.Equal(t, cursor.ErrCodeInvalidCursor, oe.Code())
+}
+
 func TestEncode_SameTimeDifferentID_DifferentCursors(t *testing.T) {
 	ts := time.Now().UTC()
 	assert.NotEqual(t, cursor.Encode(ts, "id-a"), cursor.Encode(ts, "id-b"))

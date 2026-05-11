@@ -29,6 +29,12 @@ func Encode(updatedAt time.Time, id string) string {
 // after != "" before calling Decode — an empty string is never valid.
 // Returns an oops error with code ErrCodeInvalidCursor on any failure.
 func Decode(s string) (Cursor, error) {
+	if s == "" {
+		return Cursor{}, oops.In("cursor").
+			Code(ErrCodeInvalidCursor).
+			Public("Invalid pagination cursor.").
+			Errorf("empty cursor")
+	}
 	b, err := base64.RawURLEncoding.DecodeString(s)
 	if err != nil {
 		return Cursor{}, oops.In("cursor").
