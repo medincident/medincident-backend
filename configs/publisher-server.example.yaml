@@ -1,0 +1,12 @@
+# Publisher server configuration
+# Reads un-published outbox events from Postgres and publishes them to NATS.
+
+postgres:
+  dsn: "postgres://medincident:secret@localhost:5432/medincident?sslmode=disable"
+
+nats:
+  url: "nats://localhost:4222"
+
+log:
+  level: "info"   # trace | debug | info | warn | error
+  format: "json"  # json | pretty
