@@ -21,8 +21,14 @@ const (
 )
 
 func VacationScheduled(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.VacationScheduled) error {
-	empID := uuid.MustParse(aggregateID)
-	vacID := uuid.MustParse(ev.GetVacationId())
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
+	vacID, err := parseUUID(ev.GetVacationId(), "vacation_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 	var endsAt null.Time
 	if ts := ev.GetEndsAt(); ts != nil && ts.IsValid() {
@@ -37,8 +43,14 @@ func VacationScheduled(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.V
 }
 
 func VacationStarted(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.VacationStarted) error {
-	empID := uuid.MustParse(aggregateID)
-	vacID := uuid.MustParse(ev.GetVacationId())
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
+	vacID, err := parseUUID(ev.GetVacationId(), "vacation_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 	var endsAt null.Time
 	if ts := ev.GetEndsAt(); ts != nil && ts.IsValid() {
@@ -53,8 +65,14 @@ func VacationStarted(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.Vac
 }
 
 func VacationEnded(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.VacationEnded) error {
-	empID := uuid.MustParse(aggregateID)
-	vacID := uuid.MustParse(ev.GetVacationId())
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
+	vacID, err := parseUUID(ev.GetVacationId(), "vacation_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
 	endsAt := ev.GetEndsAt().AsTime()
 
 	if err := tx.Exec(`UPDATE projections.employee_vacations SET state = ?, ends_at = ?, updated_at = ? WHERE id = ?`,
@@ -65,8 +83,14 @@ func VacationEnded(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.Vacat
 }
 
 func VacationCancelled(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.VacationCancelled) error {
-	empID := uuid.MustParse(aggregateID)
-	vacID := uuid.MustParse(ev.GetVacationId())
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
+	vacID, err := parseUUID(ev.GetVacationId(), "vacation_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
 	cancelledAt := ev.GetCancelledAt().AsTime()
 
 	if err := tx.Exec(`UPDATE projections.employee_vacations SET state = ?, updated_at = ? WHERE id = ?`,
@@ -77,8 +101,14 @@ func VacationCancelled(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.V
 }
 
 func VacationEndDateChanged(tx *gorm.DB, aggregateID string, _ time.Time, ev *vacv1.VacationEndDateChanged) error {
-	empID := uuid.MustParse(aggregateID)
-	vacID := uuid.MustParse(ev.GetVacationId())
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
+	vacID, err := parseUUID(ev.GetVacationId(), "vacation_id", "projector.vacation", ErrCodeVacationProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 	var endsAt null.Time
 	if ts := ev.GetEndsAt(); ts != nil && ts.IsValid() {

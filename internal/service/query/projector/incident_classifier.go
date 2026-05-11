@@ -21,13 +21,22 @@ func CategoryCreated(
 	_ time.Time,
 	ev *classifierv1.IncidentCategoryCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 
 	var parentID *uuid.UUID
 	if sv := ev.GetParentCategoryId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "parent_category_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		parentID = &p
 	}
 	var desc *string
@@ -59,7 +68,10 @@ func CategoryDetailsUpdated(
 	_ time.Time,
 	ev *classifierv1.IncidentCategoryDetailsUpdated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	var desc *string
@@ -88,12 +100,18 @@ func CategoryMoved(
 	_ time.Time,
 	ev *classifierv1.IncidentCategoryMoved,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	var parentID *uuid.UUID
 	if sv := ev.GetNewParentCategoryId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "new_parent_category_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		parentID = &p
 	}
 
@@ -117,7 +135,10 @@ func CategoryDeactivated(
 	_ time.Time,
 	ev *classifierv1.IncidentCategoryDeactivated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -140,7 +161,10 @@ func CategoryReactivated(
 	_ time.Time,
 	ev *classifierv1.IncidentCategoryReactivated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -163,7 +187,10 @@ func CategoryDeleted(
 	_ time.Time,
 	_ *classifierv1.IncidentCategoryDeleted,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 
 	if err := tx.Exec(
 		`DELETE FROM projections.incident_categories WHERE id = ?`, id,
@@ -184,9 +211,18 @@ func TypeCreated(
 	_ time.Time,
 	ev *classifierv1.IncidentTypeCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
-	catID := uuid.MustParse(ev.GetCategoryId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
+	catID, err := parseUUID(ev.GetCategoryId(), "category_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 
 	var desc *string
@@ -218,7 +254,10 @@ func TypeDetailsUpdated(
 	_ time.Time,
 	ev *classifierv1.IncidentTypeDetailsUpdated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	var desc *string
@@ -247,8 +286,14 @@ func TypeMoved(
 	_ time.Time,
 	ev *classifierv1.IncidentTypeMoved,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	catID := uuid.MustParse(ev.GetNewCategoryId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
+	catID, err := parseUUID(ev.GetNewCategoryId(), "new_category_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -271,7 +316,10 @@ func TypeDeactivated(
 	_ time.Time,
 	ev *classifierv1.IncidentTypeDeactivated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -294,7 +342,10 @@ func TypeReactivated(
 	_ time.Time,
 	ev *classifierv1.IncidentTypeReactivated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -317,7 +368,10 @@ func TypeAllowedForPatients(
 	_ time.Time,
 	ev *classifierv1.IncidentTypeAllowedForPatients,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -340,7 +394,10 @@ func TypeDisallowedForPatients(
 	_ time.Time,
 	ev *classifierv1.IncidentTypeDisallowedForPatients,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -363,7 +420,10 @@ func TypeDeleted(
 	_ time.Time,
 	_ *classifierv1.IncidentTypeDeleted,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_classifier", ErrCodeIncidentClassifierProjectionFailed)
+	if err != nil {
+		return err
+	}
 
 	if err := tx.Exec(
 		`DELETE FROM projections.incident_types WHERE id = ?`, id,

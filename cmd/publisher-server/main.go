@@ -199,8 +199,9 @@ func (p *publisher) run(ctx context.Context) {
 				if ctx.Err() != nil {
 					return
 				}
-				p.logger.Warn().Err(err).Msg("LISTEN notification error; relying on poll fallback")
-				return
+				p.logger.Warn().Err(err).Msg("LISTEN error; retrying in 5s")
+				time.Sleep(5 * time.Second)
+				continue
 			}
 			select {
 			case notifyCh <- struct{}{}:

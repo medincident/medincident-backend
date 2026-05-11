@@ -3,7 +3,6 @@ package projector
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -20,7 +19,10 @@ func OrganizationCreated(
 	_ time.Time,
 	ev *orgv1.OrganizationCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.organization", ErrCodeOrganizationProjectionFailed)
+	if err != nil {
+		return err
+	}
 	var lon, lat *float64
 	if p := ev.GetLegalAddress().GetPoint(); p != nil {
 		lo, la := p.GetLongitude(), p.GetLatitude()
@@ -72,7 +74,10 @@ func OrganizationDetailsChanged(
 	_ time.Time,
 	ev *orgv1.OrganizationDetailsChanged,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.organization", ErrCodeOrganizationProjectionFailed)
+	if err != nil {
+		return err
+	}
 	var desc null.String
 	if ev.GetDescription() != "" {
 		desc = null.StringFrom(ev.GetDescription())
@@ -113,7 +118,10 @@ func OrganizationLegalAddressChanged(
 	_ time.Time,
 	ev *orgv1.OrganizationLegalAddressChanged,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.organization", ErrCodeOrganizationProjectionFailed)
+	if err != nil {
+		return err
+	}
 	var lon, lat *float64
 	if p := ev.GetLegalAddress().GetPoint(); p != nil {
 		lo, la := p.GetLongitude(), p.GetLatitude()

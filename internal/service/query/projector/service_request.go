@@ -23,18 +23,36 @@ func ServiceRequestCreated(
 	_ time.Time,
 	ev *servicerequestv1.ServiceRequestCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
-	clinicID := uuid.MustParse(ev.GetClinicId())
-	deptID := uuid.MustParse(ev.GetDepartmentId())
-	typeID := uuid.MustParse(ev.GetTypeId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
+	clinicID, err := parseUUID(ev.GetClinicId(), "clinic_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
+	deptID, err := parseUUID(ev.GetDepartmentId(), "department_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
+	typeID, err := parseUUID(ev.GetTypeId(), "type_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 
 	authorDisplayName := lookupUserDisplayName(tx, ev.GetAuthorId())
 
 	var incidentID *uuid.UUID
 	if sv := ev.GetIncidentId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "incident_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		incidentID = &p
 	}
 
@@ -76,7 +94,10 @@ func ServiceRequestStatusChanged(
 	_ time.Time,
 	ev *servicerequestv1.ServiceRequestStatusChanged,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
 	changedAt := ev.GetChangedAt().AsTime()
 
 	actorDisplayName := lookupUserDisplayName(tx, ev.GetActorId())
@@ -115,7 +136,10 @@ func ServiceRequestDescriptionUpdated(
 	_ time.Time,
 	ev *servicerequestv1.ServiceRequestDescriptionUpdated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
 	if err := tx.Exec(`
 		UPDATE projections.service_requests
 		   SET description = ?, updated_at = ?
@@ -136,8 +160,14 @@ func ServiceRequestExecutorAssigned(
 	_ time.Time,
 	ev *servicerequestv1.ServiceRequestExecutorAssigned,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
 	changedAt := ev.GetChangedAt().AsTime()
 
 	actorDisplayName := lookupUserDisplayName(tx, ev.GetActorId())
@@ -168,8 +198,14 @@ func ServiceRequestExecutorRemoved(
 	_ time.Time,
 	ev *servicerequestv1.ServiceRequestExecutorRemoved,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.service_request", ErrCodeServiceRequestProjectionFailed)
+	if err != nil {
+		return err
+	}
 	changedAt := ev.GetChangedAt().AsTime()
 
 	actorDisplayName := lookupUserDisplayName(tx, ev.GetActorId())

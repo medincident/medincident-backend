@@ -197,15 +197,7 @@ func resetDBs(t *testing.T) {
 
 	rawQry, _ := queryDB.DB()
 	for _, q := range []string{
-		`TRUNCATE TABLE projections.organization_counters,
-		                 projections.clinic_counters,
-		                 projections.department_counters,
-		                 projections.employee_cards,
-		                 projections.employees,
-		                 projections.departments,
-		                 projections.clinics,
-		                 projections.organizations
-		         CASCADE`,
+		`TRUNCATE SCHEMA projections CASCADE`,
 	} {
 		if _, err := rawQry.Exec(q); err != nil {
 			t.Fatalf("truncate query: %v", err)

@@ -3,7 +3,6 @@ package projector
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -21,8 +20,14 @@ func ClinicCreated(
 	_ time.Time,
 	ev *clinicv1.ClinicCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.clinic", ErrCodeClinicProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.clinic", ErrCodeClinicProjectionFailed)
+	if err != nil {
+		return err
+	}
 	var lon, lat *float64
 	if p := ev.GetPhysicalAddress().GetPoint(); p != nil {
 		lo, la := p.GetLongitude(), p.GetLatitude()
@@ -64,9 +69,10 @@ func ClinicCreated(
 	}
 	if err := tx.Exec(`
 		UPDATE projections.organization_counters
-		   SET clinics_total = clinics_total + 1, updated_at = ?
+		   SET clinics_total = (SELECT count(*) FROM projections.clinics WHERE organization_id = ?),
+		       updated_at = ?
 		 WHERE organization_id = ?`,
-		createdAt, orgID,
+		orgID, createdAt, orgID,
 	).Error; err != nil {
 		return oops.In("projector.clinic").
 			Code(ErrCodeClinicProjectionFailed).
@@ -85,7 +91,10 @@ func ClinicDetailsChanged(
 	_ time.Time,
 	ev *clinicv1.ClinicDetailsChanged,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.clinic", ErrCodeClinicProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 	var desc null.String
 	if ev.GetDescription() != "" {
@@ -126,7 +135,10 @@ func ClinicPhysicalAddressChanged(
 	_ time.Time,
 	ev *clinicv1.ClinicPhysicalAddressChanged,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.clinic", ErrCodeClinicProjectionFailed)
+	if err != nil {
+		return err
+	}
 	var lon, lat *float64
 	if p := ev.GetPhysicalAddress().GetPoint(); p != nil {
 		lo, la := p.GetLongitude(), p.GetLatitude()

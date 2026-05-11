@@ -52,7 +52,7 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 			Wrap(err)
 	}
 	aggregateID := env.GetAggregateId()
-	occurredAt := envelopeTime(env)
+	occurredAt := d.envelopeTime(env)
 
 	payload := env.GetPayload()
 	if payload == nil {
@@ -251,9 +251,13 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 
 // envelopeTime converts the envelope's occurred_at timestamp to time.Time,
 // defaulting to time.Now().UTC() when the publisher forgot to set one.
-func envelopeTime(env *eventv1.Envelope) time.Time {
+func (d *Dispatcher) envelopeTime(env *eventv1.Envelope) time.Time {
 	ts := env.GetOccurredAt()
 	if ts == nil || !ts.IsValid() {
+		d.log.Warn().
+			Str("aggregate_id", env.GetAggregateId()).
+			Str("aggregate_type", env.GetAggregateType()).
+			Msg("envelope missing occurred_at; using receive time")
 		return time.Now().UTC()
 	}
 	return ts.AsTime().UTC()

@@ -21,9 +21,18 @@ func EmployeeHired(
 	_ time.Time,
 	ev *empv1.EmployeeHired,
 ) error {
-	empID := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
-	deptID := uuid.MustParse(ev.GetDepartmentId())
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
+	deptID, err := parseUUID(ev.GetDepartmentId(), "department_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
 	hiredAt := ev.GetHiredAt().AsTime()
 
 	clinicID, err := lookupClinicID(tx, deptID)
@@ -85,15 +94,15 @@ func EmployeeHired(
 			Wrap(err)
 	}
 
-	if err := bumpOrgEmployees(tx, orgID, +1, hiredAt); err != nil {
+	if err := bumpOrgEmployees(tx, orgID, hiredAt); err != nil {
 		return err
 	}
 	if clinicID != nil {
-		if err := bumpClinicEmployees(tx, *clinicID, +1, hiredAt); err != nil {
+		if err := bumpClinicEmployees(tx, *clinicID, hiredAt); err != nil {
 			return err
 		}
 	}
-	return bumpDepartmentEmployees(tx, deptID, +1, hiredAt)
+	return bumpDepartmentEmployees(tx, deptID, hiredAt)
 }
 
 // EmployeeTerminated sets terminated_at and decrements counters.
@@ -105,9 +114,18 @@ func EmployeeTerminated(
 	_ time.Time,
 	ev *empv1.EmployeeTerminated,
 ) error {
-	empID := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
-	deptID := uuid.MustParse(ev.GetDepartmentId())
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
+	deptID, err := parseUUID(ev.GetDepartmentId(), "department_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
 	terminatedAt := ev.GetTerminatedAt().AsTime()
 
 	// Read current clinic_id from projection to decrement the correct counter.
@@ -124,15 +142,15 @@ func EmployeeTerminated(
 		return oops.In("projector.employee").Code(ErrCodeEmployeeProjectionFailed).With("employee_id", aggregateID).Wrap(err)
 	}
 
-	if err := bumpOrgEmployees(tx, orgID, -1, terminatedAt); err != nil {
+	if err := bumpOrgEmployees(tx, orgID, terminatedAt); err != nil {
 		return err
 	}
 	if clinicID != nil {
-		if err := bumpClinicEmployees(tx, *clinicID, -1, terminatedAt); err != nil {
+		if err := bumpClinicEmployees(tx, *clinicID, terminatedAt); err != nil {
 			return err
 		}
 	}
-	return bumpDepartmentEmployees(tx, deptID, -1, terminatedAt)
+	return bumpDepartmentEmployees(tx, deptID, terminatedAt)
 }
 
 // EmployeeDepartmentChanged moves employee to new department and adjusts counters.
@@ -144,8 +162,14 @@ func EmployeeDepartmentChanged(
 	_ time.Time,
 	ev *empv1.EmployeeDepartmentChanged,
 ) error {
-	empID := uuid.MustParse(aggregateID)
-	newDeptID := uuid.MustParse(ev.GetNewDepartmentId())
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
+	newDeptID, err := parseUUID(ev.GetNewDepartmentId(), "new_department_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	type prior struct {
@@ -182,10 +206,10 @@ func EmployeeDepartmentChanged(
 	}
 
 	if pre.DepartmentID != newDeptID {
-		if err := bumpDepartmentEmployees(tx, pre.DepartmentID, -1, updatedAt); err != nil {
+		if err := bumpDepartmentEmployees(tx, pre.DepartmentID, updatedAt); err != nil {
 			return err
 		}
-		if err := bumpDepartmentEmployees(tx, newDeptID, +1, updatedAt); err != nil {
+		if err := bumpDepartmentEmployees(tx, newDeptID, updatedAt); err != nil {
 			return err
 		}
 	}
@@ -195,12 +219,12 @@ func EmployeeDepartmentChanged(
 	case oldPtr != nil && newPtr != nil && *oldPtr == *newPtr:
 	default:
 		if oldPtr != nil {
-			if err := bumpClinicEmployees(tx, *oldPtr, -1, updatedAt); err != nil {
+			if err := bumpClinicEmployees(tx, *oldPtr, updatedAt); err != nil {
 				return err
 			}
 		}
 		if newPtr != nil {
-			if err := bumpClinicEmployees(tx, *newPtr, +1, updatedAt); err != nil {
+			if err := bumpClinicEmployees(tx, *newPtr, updatedAt); err != nil {
 				return err
 			}
 		}
@@ -217,7 +241,10 @@ func EmployeePositionChanged(
 	_ time.Time,
 	ev *empv1.EmployeePositionChanged,
 ) error {
-	empID := uuid.MustParse(aggregateID)
+	empID, err := parseUUID(aggregateID, "aggregate_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 	var pos null.String
 	if ev.GetPosition() != "" {
@@ -235,25 +262,34 @@ func EmployeePositionChanged(
 	return nil
 }
 
-func bumpOrgEmployees(tx *gorm.DB, orgID uuid.UUID, delta int, now time.Time) error {
-	if err := tx.Exec(`UPDATE projections.organization_counters SET employees_total = employees_total + ?, updated_at = ? WHERE organization_id = ?`,
-		delta, now, orgID).Error; err != nil {
+func bumpOrgEmployees(tx *gorm.DB, orgID uuid.UUID, now time.Time) error {
+	if err := tx.Exec(`UPDATE projections.organization_counters
+		   SET employees_total = (SELECT count(*) FROM projections.employees WHERE organization_id = ? AND terminated_at IS NULL),
+		       updated_at = ?
+		 WHERE organization_id = ?`,
+		orgID, now, orgID).Error; err != nil {
 		return oops.In("projector.employee").Code(ErrCodeEmployeeProjectionFailed).With("organization_id", orgID).Wrap(err)
 	}
 	return nil
 }
 
-func bumpClinicEmployees(tx *gorm.DB, clinicID uuid.UUID, delta int, now time.Time) error {
-	if err := tx.Exec(`UPDATE projections.clinic_counters SET employees_total = employees_total + ?, updated_at = ? WHERE clinic_id = ?`,
-		delta, now, clinicID).Error; err != nil {
+func bumpClinicEmployees(tx *gorm.DB, clinicID uuid.UUID, now time.Time) error {
+	if err := tx.Exec(`UPDATE projections.clinic_counters
+		   SET employees_total = (SELECT count(*) FROM projections.employees WHERE clinic_id = ? AND terminated_at IS NULL),
+		       updated_at = ?
+		 WHERE clinic_id = ?`,
+		clinicID, now, clinicID).Error; err != nil {
 		return oops.In("projector.employee").Code(ErrCodeEmployeeProjectionFailed).With("clinic_id", clinicID).Wrap(err)
 	}
 	return nil
 }
 
-func bumpDepartmentEmployees(tx *gorm.DB, deptID uuid.UUID, delta int, now time.Time) error {
-	if err := tx.Exec(`UPDATE projections.department_counters SET employees_total = employees_total + ?, updated_at = ? WHERE department_id = ?`,
-		delta, now, deptID).Error; err != nil {
+func bumpDepartmentEmployees(tx *gorm.DB, deptID uuid.UUID, now time.Time) error {
+	if err := tx.Exec(`UPDATE projections.department_counters
+		   SET employees_total = (SELECT count(*) FROM projections.employees WHERE department_id = ? AND terminated_at IS NULL),
+		       updated_at = ?
+		 WHERE department_id = ?`,
+		deptID, now, deptID).Error; err != nil {
 		return oops.In("projector.employee").Code(ErrCodeEmployeeProjectionFailed).With("department_id", deptID).Wrap(err)
 	}
 	return nil

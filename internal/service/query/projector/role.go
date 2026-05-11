@@ -16,8 +16,14 @@ import (
 // ── Clinic Head ───────────────────────────────────────────────────────────
 
 func ClinicHeadAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *clinicv1.ClinicHeadAssigned) error {
-	clinicID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	clinicID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	assignedAt := ev.GetAssignedAt().AsTime()
 	if err := tx.Exec(`INSERT INTO projections.clinic_heads (clinic_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (clinic_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
 		clinicID, empID, assignedAt, assignedAt).Error; err != nil {
@@ -27,9 +33,18 @@ func ClinicHeadAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *clinic
 }
 
 func ClinicHeadDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *clinicv1.ClinicHeadDeputyAssigned) error {
-	clinicID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
-	deputyID := uuid.MustParse(ev.GetDeputyEmployeeId())
+	clinicID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	deputyID, err := parseUUID(ev.GetDeputyEmployeeId(), "deputy_employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.clinic_heads SET deputy_employee_id = ?, updated_at = ? WHERE clinic_id = ? AND employee_id = ?`,
 		deputyID, updatedAt, clinicID, empID).Error; err != nil {
@@ -39,8 +54,14 @@ func ClinicHeadDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *
 }
 
 func ClinicHeadDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev *clinicv1.ClinicHeadDeputyRemoved) error {
-	clinicID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	clinicID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.clinic_heads SET deputy_employee_id = NULL, updated_at = ? WHERE clinic_id = ? AND employee_id = ?`,
 		updatedAt, clinicID, empID).Error; err != nil {
@@ -50,8 +71,14 @@ func ClinicHeadDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev *c
 }
 
 func ClinicHeadRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *clinicv1.ClinicHeadRevoked) error {
-	clinicID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	clinicID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	if err := tx.Exec(`DELETE FROM projections.clinic_heads WHERE clinic_id = ? AND employee_id = ?`,
 		clinicID, empID).Error; err != nil {
 		return wrapRole(err, "clinic_head", empID)
@@ -62,8 +89,14 @@ func ClinicHeadRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *clinicv
 // ── Department Responsible ────────────────────────────────────────────────
 
 func DeptResponsibleAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *deptv1.DeptResponsibleAssigned) error {
-	deptID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	deptID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetAssignedAt().AsTime()
 	if err := tx.Exec(`INSERT INTO projections.department_responsibles (department_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (department_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
 		deptID, empID, at, at).Error; err != nil {
@@ -73,9 +106,18 @@ func DeptResponsibleAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *d
 }
 
 func DeptResponsibleDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *deptv1.DeptResponsibleDeputyAssigned) error {
-	deptID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
-	depID := uuid.MustParse(ev.GetDeputyEmployeeId())
+	deptID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	depID, err := parseUUID(ev.GetDeputyEmployeeId(), "deputy_employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.department_responsibles SET deputy_employee_id = ?, updated_at = ? WHERE department_id = ? AND employee_id = ?`,
 		depID, at, deptID, empID).Error; err != nil {
@@ -85,8 +127,14 @@ func DeptResponsibleDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time,
 }
 
 func DeptResponsibleDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev *deptv1.DeptResponsibleDeputyRemoved) error {
-	deptID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	deptID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.department_responsibles SET deputy_employee_id = NULL, updated_at = ? WHERE department_id = ? AND employee_id = ?`,
 		at, deptID, empID).Error; err != nil {
@@ -96,8 +144,14 @@ func DeptResponsibleDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, 
 }
 
 func DeptResponsibleRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *deptv1.DeptResponsibleRevoked) error {
-	deptID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	deptID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	if err := tx.Exec(`DELETE FROM projections.department_responsibles WHERE department_id = ? AND employee_id = ?`,
 		deptID, empID).Error; err != nil {
 		return wrapRole(err, "dept_responsible", empID)
@@ -108,8 +162,14 @@ func DeptResponsibleRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *de
 // ── Org Admin ─────────────────────────────────────────────────────────────
 
 func OrgAdminAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgAdminAssigned) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetAssignedAt().AsTime()
 	if err := tx.Exec(`INSERT INTO projections.org_admins (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
 		orgID, empID, at, at).Error; err != nil {
@@ -119,9 +179,18 @@ func OrgAdminAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.Or
 }
 
 func OrgAdminDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgAdminDeputyAssigned) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
-	depID := uuid.MustParse(ev.GetDeputyEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	depID, err := parseUUID(ev.GetDeputyEmployeeId(), "deputy_employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.org_admins SET deputy_employee_id = ?, updated_at = ? WHERE organization_id = ? AND employee_id = ?`,
 		depID, at, orgID, empID).Error; err != nil {
@@ -131,8 +200,14 @@ func OrgAdminDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *or
 }
 
 func OrgAdminDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgAdminDeputyRemoved) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.org_admins SET deputy_employee_id = NULL, updated_at = ? WHERE organization_id = ? AND employee_id = ?`,
 		at, orgID, empID).Error; err != nil {
@@ -142,8 +217,14 @@ func OrgAdminDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev *org
 }
 
 func OrgAdminRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgAdminRevoked) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	if err := tx.Exec(`DELETE FROM projections.org_admins WHERE organization_id = ? AND employee_id = ?`,
 		orgID, empID).Error; err != nil {
 		return wrapRole(err, "org_admin", empID)
@@ -154,8 +235,14 @@ func OrgAdminRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.Org
 // ── Org Head ──────────────────────────────────────────────────────────────
 
 func OrgHeadAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgHeadAssigned) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetAssignedAt().AsTime()
 	if err := tx.Exec(`INSERT INTO projections.org_heads (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
 		orgID, empID, at, at).Error; err != nil {
@@ -165,9 +252,18 @@ func OrgHeadAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.Org
 }
 
 func OrgHeadDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgHeadDeputyAssigned) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
-	depID := uuid.MustParse(ev.GetDeputyEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	depID, err := parseUUID(ev.GetDeputyEmployeeId(), "deputy_employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.org_heads SET deputy_employee_id = ?, updated_at = ? WHERE organization_id = ? AND employee_id = ?`,
 		depID, at, orgID, empID).Error; err != nil {
@@ -177,8 +273,14 @@ func OrgHeadDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *org
 }
 
 func OrgHeadDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgHeadDeputyRemoved) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.org_heads SET deputy_employee_id = NULL, updated_at = ? WHERE organization_id = ? AND employee_id = ?`,
 		at, orgID, empID).Error; err != nil {
@@ -188,8 +290,14 @@ func OrgHeadDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv
 }
 
 func OrgHeadRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgHeadRevoked) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	if err := tx.Exec(`DELETE FROM projections.org_heads WHERE organization_id = ? AND employee_id = ?`,
 		orgID, empID).Error; err != nil {
 		return wrapRole(err, "org_head", empID)
@@ -200,8 +308,14 @@ func OrgHeadRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgH
 // ── Org Dispatcher ────────────────────────────────────────────────────────
 
 func OrgDispatcherAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgDispatcherAssigned) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetAssignedAt().AsTime()
 	if err := tx.Exec(`INSERT INTO projections.org_dispatchers (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
 		orgID, empID, at, at).Error; err != nil {
@@ -211,9 +325,18 @@ func OrgDispatcherAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *org
 }
 
 func OrgDispatcherDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgDispatcherDeputyAssigned) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
-	depID := uuid.MustParse(ev.GetDeputyEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	depID, err := parseUUID(ev.GetDeputyEmployeeId(), "deputy_employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.org_dispatchers SET deputy_employee_id = ?, updated_at = ? WHERE organization_id = ? AND employee_id = ?`,
 		depID, at, orgID, empID).Error; err != nil {
@@ -223,8 +346,14 @@ func OrgDispatcherDeputyAssigned(tx *gorm.DB, aggregateID string, _ time.Time, e
 }
 
 func OrgDispatcherDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgDispatcherDeputyRemoved) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	at := ev.GetUpdatedAt().AsTime()
 	if err := tx.Exec(`UPDATE projections.org_dispatchers SET deputy_employee_id = NULL, updated_at = ? WHERE organization_id = ? AND employee_id = ?`,
 		at, orgID, empID).Error; err != nil {
@@ -234,8 +363,14 @@ func OrgDispatcherDeputyRemoved(tx *gorm.DB, aggregateID string, _ time.Time, ev
 }
 
 func OrgDispatcherRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.OrgDispatcherRevoked) error {
-	orgID := uuid.MustParse(aggregateID)
-	empID := uuid.MustParse(ev.GetEmployeeId())
+	orgID, err := parseUUID(aggregateID, "aggregate_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	empID, err := parseUUID(ev.GetEmployeeId(), "employee_id", "projector.role", ErrCodeRoleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	if err := tx.Exec(`DELETE FROM projections.org_dispatchers WHERE organization_id = ? AND employee_id = ?`,
 		orgID, empID).Error; err != nil {
 		return wrapRole(err, "org_dispatcher", empID)

@@ -20,19 +20,31 @@ func PatientIncidentBufferCreated(
 	_ time.Time,
 	ev *bufferv1.PatientIncidentBufferCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_buffer", ErrCodeIncidentBufferProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.incident_buffer", ErrCodeIncidentBufferProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 	occAt := ev.GetOccurredAt().AsTime()
 
 	var catID *uuid.UUID
 	if sv := ev.GetCategoryId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "category_id", "projector.incident_buffer", ErrCodeIncidentBufferProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		catID = &p
 	}
 	var typeID *uuid.UUID
 	if sv := ev.GetTypeId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "type_id", "projector.incident_buffer", ErrCodeIncidentBufferProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		typeID = &p
 	}
 
@@ -61,18 +73,27 @@ func PatientIncidentBufferUpdated(
 	_ time.Time,
 	ev *bufferv1.PatientIncidentBufferUpdated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_buffer", ErrCodeIncidentBufferProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 	occAt := ev.GetOccurredAt().AsTime()
 
 	var catID *uuid.UUID
 	if sv := ev.GetCategoryId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "category_id", "projector.incident_buffer", ErrCodeIncidentBufferProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		catID = &p
 	}
 	var typeID *uuid.UUID
 	if sv := ev.GetTypeId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "type_id", "projector.incident_buffer", ErrCodeIncidentBufferProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		typeID = &p
 	}
 	var pubIncID null.String

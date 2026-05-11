@@ -3,7 +3,6 @@ package projector
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -21,8 +20,14 @@ func DepartmentCreated(
 	_ time.Time,
 	ev *deptv1.DepartmentCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	clinicID := uuid.MustParse(ev.GetClinicId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.department", ErrCodeDepartmentProjectionFailed)
+	if err != nil {
+		return err
+	}
+	clinicID, err := parseUUID(ev.GetClinicId(), "clinic_id", "projector.department", ErrCodeDepartmentProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 
 	orgID, err := lookupOrgIDForClinic(tx, clinicID)
@@ -66,9 +71,10 @@ func DepartmentCreated(
 	}
 	if err := tx.Exec(`
 		UPDATE projections.clinic_counters
-		   SET departments_total = departments_total + 1, updated_at = ?
+		   SET departments_total = (SELECT count(*) FROM projections.departments WHERE clinic_id = ?),
+		       updated_at = ?
 		 WHERE clinic_id = ?`,
-		createdAt, clinicID,
+		clinicID, createdAt, clinicID,
 	).Error; err != nil {
 		return oops.In("projector.department").
 			Code(ErrCodeDepartmentProjectionFailed).
@@ -77,9 +83,10 @@ func DepartmentCreated(
 	}
 	if err := tx.Exec(`
 		UPDATE projections.organization_counters
-		   SET departments_total = departments_total + 1, updated_at = ?
+		   SET departments_total = (SELECT count(*) FROM projections.department_counters WHERE organization_id = ?),
+		       updated_at = ?
 		 WHERE organization_id = ?`,
-		createdAt, orgID,
+		orgID, createdAt, orgID,
 	).Error; err != nil {
 		return oops.In("projector.department").
 			Code(ErrCodeDepartmentProjectionFailed).
@@ -98,7 +105,10 @@ func DepartmentDetailsChanged(
 	_ time.Time,
 	ev *deptv1.DepartmentDetailsChanged,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.department", ErrCodeDepartmentProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 	var desc null.String
 	if ev.GetDescription() != "" {

@@ -84,3 +84,16 @@ func lookupOrgIDForClinic(tx *gorm.DB, clinicID uuid.UUID) (uuid.UUID, error) {
 	}
 	return orgID, nil
 }
+
+// parseUUID parses s as a UUID and returns a permanent (_malformed) error on
+// failure so the dispatcher calls Term() instead of NakWithDelay.
+func parseUUID(s, fieldName, oopsIn, oopsCode string) (uuid.UUID, error) {
+	id, err := uuid.Parse(s)
+	if err != nil {
+		return uuid.Nil, oops.In(oopsIn).
+			Code(oopsCode+"_malformed").
+			With(fieldName, s).
+			Wrap(err)
+	}
+	return id, nil
+}

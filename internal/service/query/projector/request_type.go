@@ -19,8 +19,14 @@ func RequestTypeCreated(
 	_ time.Time,
 	ev *requesttypev1.RequestTypeCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.request_type", ErrCodeRequestTypeProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.request_type", ErrCodeRequestTypeProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 
 	var desc *string
@@ -50,7 +56,10 @@ func RequestTypeDetailsUpdated(
 	_ time.Time,
 	ev *requesttypev1.RequestTypeDetailsUpdated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.request_type", ErrCodeRequestTypeProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	var desc *string
@@ -79,7 +88,10 @@ func RequestTypeDeactivated(
 	_ time.Time,
 	ev *requesttypev1.RequestTypeDeactivated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.request_type", ErrCodeRequestTypeProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -102,7 +114,10 @@ func RequestTypeReactivated(
 	_ time.Time,
 	ev *requesttypev1.RequestTypeReactivated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.request_type", ErrCodeRequestTypeProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	if err := tx.Exec(`
@@ -125,7 +140,10 @@ func RequestTypeDeleted(
 	_ time.Time,
 	_ *requesttypev1.RequestTypeDeleted,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.request_type", ErrCodeRequestTypeProjectionFailed)
+	if err != nil {
+		return err
+	}
 
 	if err := tx.Exec(
 		`DELETE FROM projections.request_types WHERE id = ?`, id,

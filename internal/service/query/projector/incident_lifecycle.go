@@ -21,13 +21,34 @@ func IncidentCreated(
 	_ time.Time,
 	ev *incidentv1.IncidentCreated,
 ) error {
-	id := uuid.MustParse(aggregateID)
-	orgID := uuid.MustParse(ev.GetOrganizationId())
-	clinicID := uuid.MustParse(ev.GetClinicId())
-	deptID := uuid.MustParse(ev.GetDepartmentId())
-	catID := uuid.MustParse(ev.GetCategoryId())
-	typeID := uuid.MustParse(ev.GetTypeId())
-	registrarEmpID := uuid.MustParse(ev.GetRegistrarEmployeeId())
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	orgID, err := parseUUID(ev.GetOrganizationId(), "organization_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	clinicID, err := parseUUID(ev.GetClinicId(), "clinic_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	deptID, err := parseUUID(ev.GetDepartmentId(), "department_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	catID, err := parseUUID(ev.GetCategoryId(), "category_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	typeID, err := parseUUID(ev.GetTypeId(), "type_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	registrarEmpID, err := parseUUID(ev.GetRegistrarEmployeeId(), "registrar_employee_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 	occAt := ev.GetOccurredAt().AsTime()
 
@@ -48,12 +69,18 @@ func IncidentCreated(
 	}
 	var srcBufID *uuid.UUID
 	if sv := ev.GetSourceBufferId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "source_buffer_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		srcBufID = &p
 	}
 	var reopenedFromID *uuid.UUID
 	if sv := ev.GetReopenedFromIncidentId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "reopened_from_incident_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		reopenedFromID = &p
 	}
 
@@ -103,14 +130,20 @@ func IncidentStatusChanged(
 	_ time.Time,
 	ev *incidentv1.IncidentStatusChanged,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	changedAt := ev.GetChangedAt().AsTime()
 
 	actorDisplayName := lookupUserDisplayName(tx, ev.GetActorZitadelUserId())
 
 	var actorEmpID *uuid.UUID
 	if sv := ev.GetActorEmployeeId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "actor_employee_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		actorEmpID = &p
 	}
 
@@ -150,14 +183,20 @@ func IncidentPriorityChanged(
 	_ time.Time,
 	ev *incidentv1.IncidentPriorityChanged,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	changedAt := ev.GetChangedAt().AsTime()
 
 	actorDisplayName := lookupUserDisplayName(tx, ev.GetActorZitadelUserId())
 
 	var actorEmpID *uuid.UUID
 	if sv := ev.GetActorEmployeeId(); sv != nil {
-		p := uuid.MustParse(sv.GetValue())
+		p, parseErr := parseUUID(sv.GetValue(), "actor_employee_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+		if parseErr != nil {
+			return parseErr
+		}
 		actorEmpID = &p
 	}
 
@@ -196,7 +235,10 @@ func IncidentDescriptionUpdated(
 	_ time.Time,
 	ev *incidentv1.IncidentDescriptionUpdated,
 ) error {
-	id := uuid.MustParse(aggregateID)
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	updatedAt := ev.GetUpdatedAt().AsTime()
 
 	var desc null.String
