@@ -223,3 +223,30 @@
 | `GetOrganization` | `organization_not_found` | 404 | Организация не найдена |
 | `GetClinic` | `clinic_not_found` | 404 | Клиника не найдена |
 | `GetDepartment` | `department_not_found` | 404 | Отдел не найден |
+
+### ListOrganizations
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `orgstructure_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |
+
+### ListClinicsByOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `orgstructure_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |
+
+### ListDepartmentsByClinic
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `orgstructure_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |

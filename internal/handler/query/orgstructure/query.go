@@ -36,6 +36,15 @@ func NewOrgStructureQueryHandler(
 	}
 }
 
+// afterPtr converts an empty proto string to nil, treating empty as
+// "start from the beginning".
+func afterPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
 // GetOrganization returns the full card for one organization.
 func (h *OrgStructureQueryHandler) GetOrganization(
 	ctx context.Context,
@@ -59,21 +68,24 @@ func (h *OrgStructureQueryHandler) ListOrganizations(
 	ctx context.Context,
 	req *orgqueryv1.ListOrganizationsRequest,
 ) (*orgqueryv1.ListOrganizationsResponse, error) {
-	items, err := h.orgReader.List(ctx, orgread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.orgReader.List(ctx, orgread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	out := make([]*orgqueryv1.OrganizationListItem, 0, len(items))
-	for _, item := range items {
+	out := make([]*orgqueryv1.OrganizationListItem, 0, len(result.Items))
+	for _, item := range result.Items {
 		out = append(out, &orgqueryv1.OrganizationListItem{
 			Id:   item.ID.String(),
 			Name: item.Name,
 		})
 	}
-	return &orgqueryv1.ListOrganizationsResponse{Items: out}, nil
+	return &orgqueryv1.ListOrganizationsResponse{
+		Items:      out,
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // SearchOrganizations returns organizations whose name matches the
@@ -85,21 +97,24 @@ func (h *OrgStructureQueryHandler) SearchOrganizations(
 	ctx context.Context,
 	req *orgqueryv1.SearchOrganizationsRequest,
 ) (*orgqueryv1.SearchOrganizationsResponse, error) {
-	items, err := h.orgReader.Search(ctx, strings.TrimSpace(req.GetQuery()), orgread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.orgReader.Search(ctx, strings.TrimSpace(req.GetQuery()), orgread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	out := make([]*orgqueryv1.OrganizationListItem, 0, len(items))
-	for _, item := range items {
+	out := make([]*orgqueryv1.OrganizationListItem, 0, len(result.Items))
+	for _, item := range result.Items {
 		out = append(out, &orgqueryv1.OrganizationListItem{
 			Id:   item.ID.String(),
 			Name: item.Name,
 		})
 	}
-	return &orgqueryv1.SearchOrganizationsResponse{Items: out}, nil
+	return &orgqueryv1.SearchOrganizationsResponse{
+		Items:      out,
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // CountOrganizations returns the total organizations count.
@@ -149,22 +164,25 @@ func (h *OrgStructureQueryHandler) ListClinicsByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.clinReader.ListByOrganization(ctx, caller, orgID, orgread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.clinReader.ListByOrganization(ctx, caller, orgID, orgread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	out := make([]*orgqueryv1.ClinicListItem, 0, len(items))
-	for _, item := range items {
+	out := make([]*orgqueryv1.ClinicListItem, 0, len(result.Items))
+	for _, item := range result.Items {
 		out = append(out, &orgqueryv1.ClinicListItem{
 			Id:             item.ID.String(),
 			OrganizationId: item.OrganizationID.String(),
 			Name:           item.Name,
 		})
 	}
-	return &orgqueryv1.ListClinicsByOrganizationResponse{Items: out}, nil
+	return &orgqueryv1.ListClinicsByOrganizationResponse{
+		Items:      out,
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // CountClinicsByOrganization returns the total clinics count for one
@@ -224,22 +242,25 @@ func (h *OrgStructureQueryHandler) ListDepartmentsByClinic(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.deptReader.ListByClinic(ctx, caller, clinicID, orgread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.deptReader.ListByClinic(ctx, caller, clinicID, orgread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	out := make([]*orgqueryv1.DepartmentListItem, 0, len(items))
-	for _, item := range items {
+	out := make([]*orgqueryv1.DepartmentListItem, 0, len(result.Items))
+	for _, item := range result.Items {
 		out = append(out, &orgqueryv1.DepartmentListItem{
 			Id:       item.ID.String(),
 			ClinicId: item.ClinicID.String(),
 			Name:     item.Name,
 		})
 	}
-	return &orgqueryv1.ListDepartmentsByClinicResponse{Items: out}, nil
+	return &orgqueryv1.ListDepartmentsByClinicResponse{
+		Items:      out,
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // CountDepartmentsByClinic returns the total departments count for one

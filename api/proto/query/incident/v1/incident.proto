@@ -70,9 +70,21 @@ service IncidentQueryService {
   }
   rpc ListIncidents(ListIncidentsRequest) returns (ListIncidentsResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incidents"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListMyIncidents(ListMyIncidentsRequest) returns (ListMyIncidentsResponse) {
     option (google.api.http) = {get: "/v1/query/incidents:mine"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc GetIncidentHistory(GetIncidentHistoryRequest) returns (GetIncidentHistoryResponse) {
     option (google.api.http) = {get: "/v1/query/incidents/{incident_id}/history"};
@@ -96,9 +108,21 @@ service IncidentQueryService {
   }
   rpc ListBufferEntries(ListBufferEntriesRequest) returns (ListBufferEntriesResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/patient-incidents"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListMyBufferEntries(ListMyBufferEntriesRequest) returns (ListMyBufferEntriesResponse) {
     option (google.api.http) = {get: "/v1/query/patient-incidents:mine"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 }
 
@@ -224,18 +248,20 @@ message ListIncidentsRequest {
   optional string occurred_from = 8; // RFC3339Nano
   optional string occurred_to = 9;
   int32 limit = 10;
-  int32 offset = 11;
+  string after = 11;
 }
 message ListIncidentsResponse {
   repeated IncidentView items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListMyIncidentsRequest {
   int32 limit = 1;
-  int32 offset = 2;
+  string after = 2;
 }
 message ListMyIncidentsResponse {
   repeated IncidentView items = 1;
+  optional string next_cursor = 2;
 }
 
 message GetIncidentHistoryRequest {
@@ -257,16 +283,18 @@ message ListBufferEntriesRequest {
   string organization_id = 1;
   repeated BufferStatus statuses = 2;
   int32 limit = 3;
-  int32 offset = 4;
+  string after = 4;
 }
 message ListBufferEntriesResponse {
   repeated BufferEntryView items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListMyBufferEntriesRequest {
   int32 limit = 1;
-  int32 offset = 2;
+  string after = 2;
 }
 message ListMyBufferEntriesResponse {
   repeated BufferEntryView items = 1;
+  optional string next_cursor = 2;
 }

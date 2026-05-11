@@ -208,7 +208,7 @@ type ListRequestTypesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -257,16 +257,17 @@ func (x *ListRequestTypesByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListRequestTypesByOrganizationRequest) GetOffset() int32 {
+func (x *ListRequestTypesByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListRequestTypesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*RequestType         `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -308,11 +309,18 @@ func (x *ListRequestTypesByOrganizationResponse) GetItems() []*RequestType {
 	return nil
 }
 
+func (x *ListRequestTypesByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListActiveRequestTypesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -361,16 +369,17 @@ func (x *ListActiveRequestTypesByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListActiveRequestTypesByOrganizationRequest) GetOffset() int32 {
+func (x *ListActiveRequestTypesByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListActiveRequestTypesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*RequestType         `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -412,6 +421,13 @@ func (x *ListActiveRequestTypesByOrganizationResponse) GetItems() []*RequestType
 	return nil
 }
 
+func (x *ListActiveRequestTypesByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 var File_query_request_classifier_v1_classifier_proto protoreflect.FileDescriptor
 
 const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
@@ -431,26 +447,38 @@ const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x15GetRequestTypeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"e\n" +
 	"\x16GetRequestTypeResponse\x12K\n" +
-	"\frequest_type\x18\x01 \x01(\v2(.query.request.classifier.v1.RequestTypeR\vrequestType\"~\n" +
+	"\frequest_type\x18\x01 \x01(\v2(.query.request.classifier.v1.RequestTypeR\vrequestType\"|\n" +
 	"%ListRequestTypesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"h\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x9e\x01\n" +
 	"&ListRequestTypesByOrganizationResponse\x12>\n" +
-	"\x05items\x18\x01 \x03(\v2(.query.request.classifier.v1.RequestTypeR\x05items\"\x84\x01\n" +
+	"\x05items\x18\x01 \x03(\v2(.query.request.classifier.v1.RequestTypeR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\x82\x01\n" +
 	"+ListActiveRequestTypesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"n\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\xa4\x01\n" +
 	",ListActiveRequestTypesByOrganizationResponse\x12>\n" +
-	"\x05items\x18\x01 \x03(\v2(.query.request.classifier.v1.RequestTypeR\x05items2\x96\x06\n" +
+	"\x05items\x18\x01 \x03(\v2(.query.request.classifier.v1.RequestTypeR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor2\x94\b\n" +
 	"\x1dRequestClassifierQueryService\x12\x8d\x02\n" +
 	"\x0eGetRequestType\x122.query.request.classifier.v1.GetRequestTypeRequest\x1a3.query.request.classifier.v1.GetRequestTypeResponse\"\x91\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/request-types/{id}\x12\xe4\x01\n" +
-	"\x1eListRequestTypesByOrganization\x12B.query.request.classifier.v1.ListRequestTypesByOrganizationRequest\x1aC.query.request.classifier.v1.ListRequestTypesByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/request-types\x12\xfd\x01\n" +
-	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\x81\x05\x92A\xe3\x02RI\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/request-types/{id}\x12\xe3\x02\n" +
+	"\x1eListRequestTypesByOrganization\x12B.query.request.classifier.v1.ListRequestTypesByOrganizationRequest\x1aC.query.request.classifier.v1.ListRequestTypesByOrganizationResponse\"\xb7\x01\x92A{Jy\n" +
+	"\x03400\x12r\n" +
+	"pValidation failed. Error codes:\n" +
+	"- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/request-types\x12\xfc\x02\n" +
+	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"\xbe\x01\x92A{Jy\n" +
+	"\x03400\x12r\n" +
+	"pValidation failed. Error codes:\n" +
+	"- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\x81\x05\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -513,6 +541,8 @@ func file_query_request_classifier_v1_classifier_proto_init() {
 		return
 	}
 	file_query_request_classifier_v1_classifier_proto_msgTypes[0].OneofWrappers = []any{}
+	file_query_request_classifier_v1_classifier_proto_msgTypes[4].OneofWrappers = []any{}
+	file_query_request_classifier_v1_classifier_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

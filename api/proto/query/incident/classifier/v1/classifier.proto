@@ -70,9 +70,21 @@ service IncidentClassifierQueryService {
   }
   rpc ListCategoriesByOrganization(ListCategoriesByOrganizationRequest) returns (ListCategoriesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListActiveRootCategories(ListActiveRootCategoriesRequest) returns (ListActiveRootCategoriesResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories:roots"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListCategorySubtree(ListCategorySubtreeRequest) returns (ListCategorySubtreeResponse) {
     option (google.api.http) = {get: "/v1/incident-categories/{root_category_id}:subtree"};
@@ -89,9 +101,21 @@ service IncidentClassifierQueryService {
   }
   rpc ListTypesByCategory(ListTypesByCategoryRequest) returns (ListTypesByCategoryResponse) {
     option (google.api.http) = {get: "/v1/incident-categories/{category_id}/types"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListActiveTypesByOrganization(ListActiveTypesByOrganizationRequest) returns (ListActiveTypesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-types:active"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 
   // Patient-facing reads. These are scoped to one organisation and return
@@ -99,9 +123,21 @@ service IncidentClassifierQueryService {
   // an incident.
   rpc ListPatientAllowedTypesByOrganization(ListPatientAllowedTypesByOrganizationRequest) returns (ListPatientAllowedTypesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-types:patient-allowed"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListPatientVisibleCategoriesByOrganization(ListPatientVisibleCategoriesByOrganizationRequest) returns (ListPatientVisibleCategoriesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories:patient-visible"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 }
 
@@ -140,24 +176,30 @@ message GetCategoryResponse {
 message ListCategoriesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListCategoriesByOrganizationResponse {
   repeated Category items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListActiveRootCategoriesRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListActiveRootCategoriesResponse {
   repeated Category items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListCategorySubtreeRequest {
   string root_category_id = 1;
 }
+
+// ListCategorySubtreeResponse returns the full subtree rooted at the
+// requested category. No pagination — the subtree depth is bounded and
+// the full result is always returned.
 message ListCategorySubtreeResponse {
   repeated Category items = 1;
 }
@@ -172,35 +214,39 @@ message GetTypeResponse {
 message ListTypesByCategoryRequest {
   string category_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListTypesByCategoryResponse {
   repeated Type items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListActiveTypesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListActiveTypesByOrganizationResponse {
   repeated Type items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListPatientAllowedTypesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListPatientAllowedTypesByOrganizationResponse {
   repeated Type items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListPatientVisibleCategoriesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListPatientVisibleCategoriesByOrganizationResponse {
   repeated Category items = 1;
+  optional string next_cursor = 2;
 }

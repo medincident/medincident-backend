@@ -157,6 +157,7 @@ var httpCodeSuffixes = []struct {
 	{suffix: "_invalid_time_range", status: http.StatusBadRequest},
 	{suffix: "_empty", status: http.StatusBadRequest},
 	{suffix: "_invalid", status: http.StatusBadRequest},
+	{suffix: "_bad_cursor", status: http.StatusBadRequest},
 	// 404
 	{suffix: "_not_found", status: http.StatusNotFound},
 	// 409 — uniqueness / already-exists

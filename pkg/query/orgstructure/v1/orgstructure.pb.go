@@ -661,9 +661,12 @@ func (x *GetOrganizationResponse) GetOrganization() *Organization {
 }
 
 type ListOrganizationsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Limit int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	// Opaque pagination cursor returned as next_cursor from a previous
+	// response. Omit or leave empty to start from the first page. An
+	// invalid cursor is rejected with a domain error.
+	After         string `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -705,16 +708,17 @@ func (x *ListOrganizationsRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListOrganizationsRequest) GetOffset() int32 {
+func (x *ListOrganizationsRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListOrganizationsResponse struct {
 	state         protoimpl.MessageState  `protogen:"open.v1"`
 	Items         []*OrganizationListItem `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -754,6 +758,13 @@ func (x *ListOrganizationsResponse) GetItems() []*OrganizationListItem {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListOrganizationsResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type CountOrganizationsRequest struct {
@@ -840,7 +851,7 @@ type SearchOrganizationsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -889,16 +900,17 @@ func (x *SearchOrganizationsRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *SearchOrganizationsRequest) GetOffset() int32 {
+func (x *SearchOrganizationsRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type SearchOrganizationsResponse struct {
 	state         protoimpl.MessageState  `protogen:"open.v1"`
 	Items         []*OrganizationListItem `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -938,6 +950,13 @@ func (x *SearchOrganizationsResponse) GetItems() []*OrganizationListItem {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *SearchOrganizationsResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type GetClinicRequest struct {
@@ -1032,7 +1051,7 @@ type ListClinicsByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1081,16 +1100,17 @@ func (x *ListClinicsByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListClinicsByOrganizationRequest) GetOffset() int32 {
+func (x *ListClinicsByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListClinicsByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*ClinicListItem      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1130,6 +1150,13 @@ func (x *ListClinicsByOrganizationResponse) GetItems() []*ClinicListItem {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListClinicsByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type CountClinicsByOrganizationRequest struct {
@@ -1312,7 +1339,7 @@ type ListDepartmentsByClinicRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1361,16 +1388,17 @@ func (x *ListDepartmentsByClinicRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListDepartmentsByClinicRequest) GetOffset() int32 {
+func (x *ListDepartmentsByClinicRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListDepartmentsByClinicResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*DepartmentListItem  `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1410,6 +1438,13 @@ func (x *ListDepartmentsByClinicResponse) GetItems() []*DepartmentListItem {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListDepartmentsByClinicResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type CountDepartmentsByClinicRequest struct {
@@ -1558,31 +1593,40 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x16GetOrganizationRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"b\n" +
 	"\x17GetOrganizationResponse\x12G\n" +
-	"\forganization\x18\x01 \x01(\v2#.query.orgstructure.v1.OrganizationR\forganization\"H\n" +
+	"\forganization\x18\x01 \x01(\v2#.query.orgstructure.v1.OrganizationR\forganization\"F\n" +
 	"\x18ListOrganizationsRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x05R\x06offset\"^\n" +
+	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x02 \x01(\tR\x05after\"\x94\x01\n" +
 	"\x19ListOrganizationsResponse\x12A\n" +
-	"\x05items\x18\x01 \x03(\v2+.query.orgstructure.v1.OrganizationListItemR\x05items\"\x1b\n" +
+	"\x05items\x18\x01 \x03(\v2+.query.orgstructure.v1.OrganizationListItemR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\x1b\n" +
 	"\x19CountOrganizationsRequest\"2\n" +
 	"\x1aCountOrganizationsResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total\"`\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\"^\n" +
 	"\x1aSearchOrganizationsRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"`\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x96\x01\n" +
 	"\x1bSearchOrganizationsResponse\x12A\n" +
-	"\x05items\x18\x01 \x03(\v2+.query.orgstructure.v1.OrganizationListItemR\x05items\"\"\n" +
+	"\x05items\x18\x01 \x03(\v2+.query.orgstructure.v1.OrganizationListItemR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\"\n" +
 	"\x10GetClinicRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"J\n" +
 	"\x11GetClinicResponse\x125\n" +
-	"\x06clinic\x18\x01 \x01(\v2\x1d.query.orgstructure.v1.ClinicR\x06clinic\"y\n" +
+	"\x06clinic\x18\x01 \x01(\v2\x1d.query.orgstructure.v1.ClinicR\x06clinic\"w\n" +
 	" ListClinicsByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"`\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x96\x01\n" +
 	"!ListClinicsByOrganizationResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.orgstructure.v1.ClinicListItemR\x05items\"L\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.orgstructure.v1.ClinicListItemR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"L\n" +
 	"!CountClinicsByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\":\n" +
 	"\"CountClinicsByOrganizationResponse\x12\x14\n" +
@@ -1592,36 +1636,51 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x15GetDepartmentResponse\x12A\n" +
 	"\n" +
 	"department\x18\x01 \x01(\v2!.query.orgstructure.v1.DepartmentR\n" +
-	"department\"k\n" +
+	"department\"i\n" +
 	"\x1eListDepartmentsByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"b\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x98\x01\n" +
 	"\x1fListDepartmentsByClinicResponse\x12?\n" +
-	"\x05items\x18\x01 \x03(\v2).query.orgstructure.v1.DepartmentListItemR\x05items\">\n" +
+	"\x05items\x18\x01 \x03(\v2).query.orgstructure.v1.DepartmentListItemR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\">\n" +
 	"\x1fCountDepartmentsByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\"8\n" +
 	" CountDepartmentsByClinicResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total2\xde\x0f\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total2\xc2\x13\n" +
 	"\x18OrgStructureQueryService\x12\x84\x02\n" +
 	"\x0fGetOrganization\x12-.query.orgstructure.v1.GetOrganizationRequest\x1a..query.orgstructure.v1.GetOrganizationResponse\"\x91\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/organizations/{id}\x12\x91\x01\n" +
-	"\x11ListOrganizations\x12/.query.orgstructure.v1.ListOrganizationsRequest\x1a0.query.orgstructure.v1.ListOrganizationsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/organizations\x12\x9a\x01\n" +
-	"\x12CountOrganizations\x120.query.orgstructure.v1.CountOrganizationsRequest\x1a1.query.orgstructure.v1.CountOrganizationsResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/organizations:count\x12\x9e\x01\n" +
-	"\x13SearchOrganizations\x121.query.orgstructure.v1.SearchOrganizationsRequest\x1a2.query.orgstructure.v1.SearchOrganizationsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/organizations:search\x12\xdf\x01\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/organizations/{id}\x12\x8a\x02\n" +
+	"\x11ListOrganizations\x12/.query.orgstructure.v1.ListOrganizationsRequest\x1a0.query.orgstructure.v1.ListOrganizationsResponse\"\x91\x01\x92AuJs\n" +
+	"\x03400\x12l\n" +
+	"jValidation failed. Error codes:\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/organizations\x12\x9a\x01\n" +
+	"\x12CountOrganizations\x120.query.orgstructure.v1.CountOrganizationsRequest\x1a1.query.orgstructure.v1.CountOrganizationsResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/organizations:count\x12\x97\x02\n" +
+	"\x13SearchOrganizations\x121.query.orgstructure.v1.SearchOrganizationsRequest\x1a2.query.orgstructure.v1.SearchOrganizationsResponse\"\x98\x01\x92AuJs\n" +
+	"\x03400\x12l\n" +
+	"jValidation failed. Error codes:\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/organizations:search\x12\xdf\x01\n" +
 	"\tGetClinic\x12'.query.orgstructure.v1.GetClinicRequest\x1a(.query.orgstructure.v1.GetClinicResponse\"\x7f\x92AdJb\n" +
 	"\x03404\x12[\n" +
 	"YNot found. Error codes:\n" +
-	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/clinics/{id}\x12\xc3\x01\n" +
-	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/organizations/{organization_id}/clinics\x12\xcc\x01\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/clinics/{id}\x12\xbc\x02\n" +
+	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"\xab\x01\x92AuJs\n" +
+	"\x03400\x12l\n" +
+	"jValidation failed. Error codes:\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02-\x12+/v1/organizations/{organization_id}/clinics\x12\xcc\x01\n" +
 	"\x1aCountClinicsByOrganization\x128.query.orgstructure.v1.CountClinicsByOrganizationRequest\x1a9.query.orgstructure.v1.CountClinicsByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/clinics:count\x12\xf8\x01\n" +
 	"\rGetDepartment\x12+.query.orgstructure.v1.GetDepartmentRequest\x1a,.query.orgstructure.v1.GetDepartmentResponse\"\x8b\x01\x92AlJj\n" +
 	"\x03404\x12c\n" +
 	"aNot found. Error codes:\n" +
-	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/departments/{id}\x12\xb5\x01\n" +
-	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"+\x82\xd3\xe4\x93\x02%\x12#/v1/clinics/{clinic_id}/departments\x12\xbe\x01\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/departments/{id}\x12\xae\x02\n" +
+	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"\xa3\x01\x92AuJs\n" +
+	"\x03400\x12l\n" +
+	"jValidation failed. Error codes:\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02%\x12#/v1/clinics/{clinic_id}/departments\x12\xbe\x01\n" +
 	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/clinics/{clinic_id}/departments:countB\xe0\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
@@ -1730,6 +1789,10 @@ func file_query_orgstructure_v1_orgstructure_proto_init() {
 	file_query_orgstructure_v1_orgstructure_proto_msgTypes[2].OneofWrappers = []any{}
 	file_query_orgstructure_v1_orgstructure_proto_msgTypes[4].OneofWrappers = []any{}
 	file_query_orgstructure_v1_orgstructure_proto_msgTypes[6].OneofWrappers = []any{}
+	file_query_orgstructure_v1_orgstructure_proto_msgTypes[11].OneofWrappers = []any{}
+	file_query_orgstructure_v1_orgstructure_proto_msgTypes[15].OneofWrappers = []any{}
+	file_query_orgstructure_v1_orgstructure_proto_msgTypes[19].OneofWrappers = []any{}
+	file_query_orgstructure_v1_orgstructure_proto_msgTypes[25].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

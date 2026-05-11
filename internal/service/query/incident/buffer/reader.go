@@ -16,6 +16,7 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	queryincident "github.com/medincident/medincident-backend/internal/service/query/incident"
@@ -24,7 +25,14 @@ import (
 const (
 	ErrCodeBufferReadFailed = "buffer_query_read_failed"
 	ErrCodeBufferNotFound   = "buffer_query_not_found"
+	ErrCodeListBadCursor    = "incident_bad_cursor"
 )
+
+// BufferListResult is returned by paginated buffer list methods.
+type BufferListResult struct {
+	Items      []BufferEntryView
+	NextCursor *string
+}
 
 const scope = "services.query.incident.buffer"
 
@@ -101,7 +109,7 @@ func (r *Reader) GetBufferEntry(
 type ListBufferFilters struct {
 	Statuses []model.BufferStatus
 	Limit    int
-	Offset   int
+	After    *string
 }
 
 // ListBufferEntries returns buffer entries in an org. Visible only to
@@ -111,13 +119,13 @@ type ListBufferFilters struct {
 // See: docs/services/incident/Buffer.md
 func (r *Reader) ListBufferEntries(
 	ctx context.Context, callerID string, orgID uuid.UUID, f *ListBufferFilters,
-) ([]BufferEntryView, error) {
+) (BufferListResult, error) {
 	cc, err := r.incidentRdr.ResolveCaller(ctx, callerID)
 	if err != nil {
-		return nil, err
+		return BufferListResult{}, err
 	}
 	if !cc.CanSeeBufferForOrg(orgID) {
-		return nil, oops.In(scope).Code(authz.ErrCodePermissionDenied).
+		return BufferListResult{}, oops.In(scope).Code(authz.ErrCodePermissionDenied).
 			Public("Not authorized to view this organization's patient buffer.").
 			With("organization_id", orgID).Errorf("denied")
 	}
@@ -130,32 +138,50 @@ func (r *Reader) ListBufferEntries(
 			args = append(args, s)
 		}
 	}
-	limit, offset := paginationDefaults(0, 0)
+	limit := normLimit(0)
 	if f != nil {
-		limit, offset = paginationDefaults(f.Limit, f.Offset)
+		limit = normLimit(f.Limit)
+		if f.After != nil {
+			c, err := cursor.Decode(*f.After)
+			if err != nil {
+				return BufferListResult{}, oops.In(scope).
+					Code(ErrCodeListBadCursor).
+					Public("Invalid pagination cursor.").
+					Wrap(err)
+			}
+			conds = append(conds, "(updated_at, id) < (?, ?)")
+			args = append(args, c.Time(), c.I)
+		}
 	}
-	args = append(args, limit, offset)
+	args = append(args, limit+1)
 	q := `SELECT ` + bufferSelect + ` FROM projections.patient_incident_buffer WHERE ` +
-		strings.Join(conds, " AND ") + ` ORDER BY created_at DESC LIMIT ? OFFSET ?`
+		strings.Join(conds, " AND ") + ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 
 	rows, err := r.db.WithContext(ctx).Raw(q, args...).Rows()
 	if err != nil {
-		return nil, wrapRead(err, "list buffer")
+		return BufferListResult{}, wrapRead(err, "list buffer")
 	}
 	defer func() { _ = rows.Close() }()
-	out := []BufferEntryView{}
+	out := make([]BufferEntryView, 0, limit+1)
 	for rows.Next() {
 		var v BufferEntryView
 		if err := scanBuffer(rows, &v); err != nil {
-			return nil, wrapRead(err, "scan buffer row")
+			return BufferListResult{}, wrapRead(err, "scan buffer row")
 		}
 		v.PatientPerspective = false
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, wrapRead(err, "iterate buffer rows")
+		return BufferListResult{}, wrapRead(err, "iterate buffer rows")
 	}
-	return out, nil
+	var nextCursor *string
+	if len(out) > limit {
+		out = out[:limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return BufferListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // ListMyBufferEntries returns buffer entries the caller submitted as
@@ -164,33 +190,55 @@ func (r *Reader) ListBufferEntries(
 //
 // See: docs/services/incident/Buffer.md
 func (r *Reader) ListMyBufferEntries(
-	ctx context.Context, callerID string, limit, offset int,
-) ([]BufferEntryView, error) {
+	ctx context.Context, callerID string, limit int, after *string,
+) (BufferListResult, error) {
 	cc, err := r.incidentRdr.ResolveCaller(ctx, callerID)
 	if err != nil {
-		return nil, err
+		return BufferListResult{}, err
 	}
-	limit, offset = paginationDefaults(limit, offset)
+	limit = normLimit(limit)
+	args := []any{callerID}
+	cursorCond := ""
+	if after != nil {
+		c, err := cursor.Decode(*after)
+		if err != nil {
+			return BufferListResult{}, oops.In(scope).
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		cursorCond = ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	args = append(args, limit+1)
 	q := `SELECT ` + bufferSelect + ` FROM projections.patient_incident_buffer
-		WHERE patient_zitadel_user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?`
-	rows, err := r.db.WithContext(ctx).Raw(q, callerID, limit, offset).Rows()
+		WHERE patient_zitadel_user_id = ?` + cursorCond +
+		` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	rows, err := r.db.WithContext(ctx).Raw(q, args...).Rows()
 	if err != nil {
-		return nil, wrapRead(err, "list my buffer")
+		return BufferListResult{}, wrapRead(err, "list my buffer")
 	}
 	defer func() { _ = rows.Close() }()
-	out := []BufferEntryView{}
+	out := make([]BufferEntryView, 0, limit+1)
 	for rows.Next() {
 		var v BufferEntryView
 		if err := scanBuffer(rows, &v); err != nil {
-			return nil, wrapRead(err, "scan my buffer row")
+			return BufferListResult{}, wrapRead(err, "scan my buffer row")
 		}
 		v.PatientPerspective = cc.IsPatient()
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, wrapRead(err, "iterate my buffer rows")
+		return BufferListResult{}, wrapRead(err, "iterate my buffer rows")
 	}
-	return out, nil
+	var nextCursor *string
+	if len(out) > limit {
+		out = out[:limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return BufferListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // canSeeBuffer encapsulates the per-row visibility test for GetBufferEntry.
@@ -204,11 +252,9 @@ func canSeeBuffer(cc *queryincident.CallerContext, b *BufferEntryView) bool {
 	return b.PatientZitadelUserID == cc.ZitadelID()
 }
 
-// paginationDefaults delegates to the incident reader's exported helper
+// normLimit delegates to the incident reader's exported helper
 // so the two readers don't drift.
-func paginationDefaults(limit, offset int) (outLimit, outOffset int) {
-	return queryincident.PaginationDefaults(limit, offset)
-}
+func normLimit(limit int) int { return queryincident.NormLimit(limit) }
 
 func wrapRead(err error, action string) error {
 	return oops.In(scope).Code(ErrCodeBufferReadFailed).

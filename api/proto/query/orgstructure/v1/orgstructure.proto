@@ -55,9 +55,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 // OrgStructureQueryService exposes read methods over the orgstructure
-// projections. Pagination is offset/limit; backed by COUNT(*) queries
-// via dedicated CountX RPCs — clients drive pagination controls with
-// both values.
+// projections. List endpoints use cursor-based keyset pagination.
 service OrgStructureQueryService {
   rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{id}"};
@@ -70,12 +68,24 @@ service OrgStructureQueryService {
   }
   rpc ListOrganizations(ListOrganizationsRequest) returns (ListOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountOrganizations(CountOrganizationsRequest) returns (CountOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations:count"};
   }
   rpc SearchOrganizations(SearchOrganizationsRequest) returns (SearchOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations:search"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 
   rpc GetClinic(GetClinicRequest) returns (GetClinicResponse) {
@@ -89,6 +99,12 @@ service OrgStructureQueryService {
   }
   rpc ListClinicsByOrganization(ListClinicsByOrganizationRequest) returns (ListClinicsByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountClinicsByOrganization(CountClinicsByOrganizationRequest) returns (CountClinicsByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics:count"};
@@ -105,6 +121,12 @@ service OrgStructureQueryService {
   }
   rpc ListDepartmentsByClinic(ListDepartmentsByClinicRequest) returns (ListDepartmentsByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountDepartmentsByClinic(CountDepartmentsByClinicRequest) returns (CountDepartmentsByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments:count"};
@@ -187,10 +209,14 @@ message GetOrganizationResponse {
 
 message ListOrganizationsRequest {
   int32 limit = 1;
-  int32 offset = 2;
+  // Opaque pagination cursor returned as next_cursor from a previous
+  // response. Omit or leave empty to start from the first page. An
+  // invalid cursor is rejected with a domain error.
+  string after = 2;
 }
 message ListOrganizationsResponse {
   repeated OrganizationListItem items = 1;
+  optional string next_cursor = 2;
 }
 
 message CountOrganizationsRequest {}
@@ -201,10 +227,11 @@ message CountOrganizationsResponse {
 message SearchOrganizationsRequest {
   string query = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message SearchOrganizationsResponse {
   repeated OrganizationListItem items = 1;
+  optional string next_cursor = 2;
 }
 
 message GetClinicRequest {
@@ -217,10 +244,11 @@ message GetClinicResponse {
 message ListClinicsByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListClinicsByOrganizationResponse {
   repeated ClinicListItem items = 1;
+  optional string next_cursor = 2;
 }
 
 message CountClinicsByOrganizationRequest {
@@ -240,10 +268,11 @@ message GetDepartmentResponse {
 message ListDepartmentsByClinicRequest {
   string clinic_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListDepartmentsByClinicResponse {
   repeated DepartmentListItem items = 1;
+  optional string next_cursor = 2;
 }
 
 message CountDepartmentsByClinicRequest {

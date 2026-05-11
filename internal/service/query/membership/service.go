@@ -28,26 +28,18 @@ import (
 
 // Error codes emitted by pagination validators.
 const (
-	ErrCodeListLimitOutOfRange  = "list_limit_out_of_range"
-	ErrCodeListOffsetOutOfRange = "list_offset_out_of_range"
+	ErrCodeListLimitOutOfRange = "list_limit_out_of_range"
+	ErrCodeListBadCursor       = "membership_bad_cursor"
 )
 
 // ListQuery is the input shared by every List method.
 type ListQuery struct {
-	Limit  int
-	Offset int
+	Limit int
+	After *string
 }
 
 // normalize validates and normalizes the pagination fields.
 func (q *ListQuery) normalize() error {
-	if q.Offset < 0 {
-		return oops.In("reader.membership").
-			Code(ErrCodeListOffsetOutOfRange).
-			Public("List offset must be non-negative.").
-			With("field", "offset").
-			With("actual_value", q.Offset).
-			Errorf("offset out of range")
-	}
 	if q.Limit == 0 {
 		q.Limit = query.DefaultLimit
 		return nil

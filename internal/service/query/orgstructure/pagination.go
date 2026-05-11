@@ -6,33 +6,23 @@ import (
 	"github.com/medincident/medincident-backend/internal/service/query"
 )
 
-// Error codes emitted by pagination validators. Readers reuse the same
-// constants so callers can match on a single code no matter which list
-// endpoint rejected the request.
+// Error codes emitted by pagination validators.
 const (
-	ErrCodeListLimitOutOfRange  = "list_limit_out_of_range"
-	ErrCodeListOffsetOutOfRange = "list_offset_out_of_range"
+	ErrCodeListLimitOutOfRange = "list_limit_out_of_range"
+	ErrCodeListBadCursor       = "orgstructure_bad_cursor"
 )
 
 // ListQuery is the input shared by every List method. Zero Limit maps
 // to query.DefaultLimit. Non-zero Limit outside [query.MinLimit,
-// query.MaxLimit] is rejected with list_limit_out_of_range. Offset must
-// be non-negative.
+// query.MaxLimit] is rejected with list_limit_out_of_range. After is
+// the opaque cursor from a previous response's next_cursor field.
 type ListQuery struct {
-	Limit  int
-	Offset int
+	Limit int
+	After *string
 }
 
 // normalize validates and normalizes the pagination fields in place.
 func (q *ListQuery) normalize() error {
-	if q.Offset < 0 {
-		return oops.In("reader.orgstructure").
-			Code(ErrCodeListOffsetOutOfRange).
-			Public("List offset must be non-negative.").
-			With("field", "offset").
-			With("actual_value", q.Offset).
-			Errorf("offset out of range")
-	}
 	if q.Limit == 0 {
 		q.Limit = query.DefaultLimit
 		return nil

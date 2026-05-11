@@ -86,8 +86,8 @@
 ## Пагинация
 
 Все List-методы используют cursor-based (keyset) пагинацию:
-- Параметры: `limit` (int32, default=50, max=500) + `cursor` (optional string).
-- Курсор — base64(JSON{`created_at`, `id`}), сортировка `created_at DESC, id DESC`.
+- Параметры: `limit` (int32, default=50, max=500) + `after` (optional string).
+- Курсор — непрозрачная строка из поля `next_cursor` предыдущего ответа, сортировка `created_at DESC, id DESC`.
 - Ответ содержит `next_cursor` (absent, если страниц больше нет).
 
 ---
@@ -187,7 +187,7 @@
 | `include_archived` | bool | Включить архивные (только для администраторов scope) |
 | `priority` | enum | Фильтр по приоритету (UNSPECIFIED = все) |
 | `limit` | int32 | Количество на странице (default=50, max=500) |
-| `cursor` | optional string | Курсор для следующей страницы |
+| `after` | optional string | Непрозрачный курсор из поля `next_cursor` предыдущего ответа. Если не указан или пустой — возвращается первая страница. |
 
 ---
 

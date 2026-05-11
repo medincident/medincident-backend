@@ -70,13 +70,17 @@ service ServiceRequestQueryService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "400"
-        value: {description: "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `service_request_list_offset_out_of_range` — offset is out of the allowed range."}
+        value: {description: "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `request_bad_cursor` — pagination cursor is invalid or malformed."}
       }
     };
   }
   rpc ListServiceRequestsByIncident(ListServiceRequestsByIncidentRequest) returns (ListServiceRequestsByIncidentResponse) {
     option (google.api.http) = {get: "/v1/incidents/{incident_id}/service-requests"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `request_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
       responses: {
         key: "404"
         value: {description: "Not found. Error codes:\n- `service_request_query_incident_not_found` — incident with the given ID does not exist."}
@@ -126,19 +130,21 @@ message GetServiceRequestResponse {
 message ListServiceRequestsRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListServiceRequestsResponse {
   repeated ServiceRequest items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListServiceRequestsByIncidentRequest {
   string incident_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListServiceRequestsByIncidentResponse {
   repeated ServiceRequest items = 1;
+  optional string next_cursor = 2;
 }
 
 message StatusHistoryEntry {

@@ -69,12 +69,30 @@ service MembershipQueryService {
   }
   rpc ListEmployeesByDepartment(ListEmployeesByDepartmentRequest) returns (ListEmployeesByDepartmentResponse) {
     option (google.api.http) = {get: "/v1/departments/{department_id}/employees"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListEmployeesByClinic(ListEmployeesByClinicRequest) returns (ListEmployeesByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/employees"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListEmployeesByOrganization(ListEmployeesByOrganizationRequest) returns (ListEmployeesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountEmployeesByDepartment(CountEmployeesByDepartmentRequest) returns (CountEmployeesByDepartmentResponse) {
     option (google.api.http) = {get: "/v1/departments/{department_id}/employees:count"};
@@ -87,10 +105,22 @@ service MembershipQueryService {
   }
   rpc SearchEmployeesByOrganization(SearchEmployeesByOrganizationRequest) returns (SearchEmployeesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees:search"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 
   rpc ListVacationsByEmployee(ListVacationsByEmployeeRequest) returns (ListVacationsByEmployeeResponse) {
     option (google.api.http) = {get: "/v1/employees/{employee_id}/vacations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountVacationsByEmployee(CountVacationsByEmployeeRequest) returns (CountVacationsByEmployeeResponse) {
     option (google.api.http) = {get: "/v1/employees/{employee_id}/vacations:count"};
@@ -104,15 +134,39 @@ service MembershipQueryService {
   }
   rpc ListOrgAdmins(ListOrgAdminsRequest) returns (ListOrgAdminsResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/admins"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListOrgDispatchers(ListOrgDispatchersRequest) returns (ListOrgDispatchersResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/dispatchers"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListOrgHeads(ListOrgHeadsRequest) returns (ListOrgHeadsResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/heads"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListSystemAdmins(ListSystemAdminsRequest) returns (ListSystemAdminsResponse) {
     option (google.api.http) = {get: "/v1/system-admins"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListCandidatesForHire(ListCandidatesForHireRequest) returns (ListCandidatesForHireResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/candidates:hire"};
@@ -268,7 +322,7 @@ message GetEmployeeResponse {
 message ListEmployeesByDepartmentRequest {
   string department_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
   // When false (default), rows with terminated_at IS NOT NULL are
   // hidden. Set true to include offboarded employees.
   bool include_terminated = 4;
@@ -281,12 +335,13 @@ message ListEmployeesByDepartmentRequest {
 }
 message ListEmployeesByDepartmentResponse {
   repeated EmployeeCardView items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListEmployeesByClinicRequest {
   string clinic_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
   // When false (default), rows with terminated_at IS NOT NULL are
   // hidden. Set true to include offboarded employees.
   bool include_terminated = 4;
@@ -299,12 +354,13 @@ message ListEmployeesByClinicRequest {
 }
 message ListEmployeesByClinicResponse {
   repeated EmployeeCardView items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListEmployeesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
   // When false (default), rows with terminated_at IS NOT NULL are
   // hidden. Set true to include offboarded employees.
   bool include_terminated = 4;
@@ -317,6 +373,7 @@ message ListEmployeesByOrganizationRequest {
 }
 message ListEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;
+  optional string next_cursor = 2;
 }
 
 message CountEmployeesByDepartmentRequest {
@@ -377,7 +434,7 @@ message SearchEmployeesByOrganizationRequest {
   // authz round-trip.
   string query = 2;
   int32 limit = 3;
-  int32 offset = 4;
+  string after = 4;
   // When false (default), rows with terminated_at IS NOT NULL are
   // hidden. Set true to include offboarded employees.
   bool include_terminated = 5;
@@ -390,6 +447,7 @@ message SearchEmployeesByOrganizationRequest {
 }
 message SearchEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListVacationsByEmployeeRequest {
@@ -398,10 +456,11 @@ message ListVacationsByEmployeeRequest {
   // Valid values: scheduled, active, ended, cancelled.
   string state = 2;
   int32 limit = 3;
-  int32 offset = 4;
+  string after = 4;
 }
 message ListVacationsByEmployeeResponse {
   repeated VacationView items = 1;
+  optional string next_cursor = 2;
 }
 
 message CountVacationsByEmployeeRequest {
@@ -431,36 +490,40 @@ message GetDepartmentResponsibleResponse {
 message ListOrgAdminsRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListOrgAdminsResponse {
   repeated RoleAssignment items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListOrgDispatchersRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListOrgDispatchersResponse {
   repeated RoleAssignment items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListOrgHeadsRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListOrgHeadsResponse {
   repeated RoleAssignment items = 1;
+  optional string next_cursor = 2;
 }
 
 message ListSystemAdminsRequest {
   int32 limit = 1;
-  int32 offset = 2;
+  string after = 2;
 }
 message ListSystemAdminsResponse {
   repeated SystemAdminView items = 1;
+  optional string next_cursor = 2;
 }
 
 // ZitadelUserView is a lightweight projection of projections.users used

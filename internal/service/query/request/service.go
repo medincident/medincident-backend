@@ -18,7 +18,7 @@ const (
 	ErrCodeServiceRequestNotFound   = "service_request_query_not_found"
 	ErrCodeIncidentNotFound         = "service_request_query_incident_not_found"
 	ErrCodeListLimitOutOfRange      = "service_request_list_limit_out_of_range"
-	ErrCodeListOffsetOutOfRange     = "service_request_list_offset_out_of_range"
+	ErrCodeListBadCursor            = "request_bad_cursor"
 )
 
 const scope = "services.query.request"
@@ -37,19 +37,11 @@ func NewReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *Reader {
 
 // ListQuery captures pagination parameters.
 type ListQuery struct {
-	Limit  int
-	Offset int
+	Limit int
+	After *string
 }
 
 func (q *ListQuery) normalize() error {
-	if q.Offset < 0 {
-		return oops.In(scope).
-			Code(ErrCodeListOffsetOutOfRange).
-			Public("List offset must be non-negative.").
-			With("field", "offset").
-			With("actual_value", q.Offset).
-			Errorf("offset out of range")
-	}
 	if q.Limit == 0 {
 		q.Limit = query.DefaultLimit
 		return nil
@@ -65,6 +57,12 @@ func (q *ListQuery) normalize() error {
 			Errorf("limit out of range")
 	}
 	return nil
+}
+
+// ServiceRequestListResult is returned by paginated list methods.
+type ServiceRequestListResult struct {
+	Items      []ServiceRequestView
+	NextCursor *string
 }
 
 func wrapRead(err error, action string) error {

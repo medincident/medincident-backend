@@ -108,10 +108,10 @@ func TestOrganizationReader_List_And_Count(t *testing.T) {
 	reader := orgread.NewOrganizationReader(testDB, &logger)
 	items, err := reader.List(ctx, orgread.ListQuery{Limit: 10})
 	require.NoError(t, err)
-	require.Len(t, items, 3)
+	require.Len(t, items.Items, 3)
 	// Most-recently created first: reverse of insertion order.
-	require.Equal(t, ids[2], items[0].ID)
-	require.Equal(t, ids[0], items[2].ID)
+	require.Equal(t, ids[2], items.Items[0].ID)
+	require.Equal(t, ids[0], items.Items[2].ID)
 
 	total, err := reader.Count(ctx)
 	require.NoError(t, err)
@@ -149,8 +149,8 @@ func TestOrganizationReader_Search_FiltersByNameSubstring(t *testing.T) {
 	reader := orgread.NewOrganizationReader(testDB, &logger)
 	items, err := reader.Search(ctx, "acme", orgread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, items, 2)
-	got := map[uuid.UUID]string{items[0].ID: items[0].Name, items[1].ID: items[1].Name}
+	require.Len(t, items.Items, 2)
+	got := map[uuid.UUID]string{items.Items[0].ID: items.Items[0].Name, items.Items[1].ID: items.Items[1].Name}
 	require.Contains(t, got, ids[0])
 	require.Contains(t, got, ids[2])
 }
@@ -201,8 +201,8 @@ func TestClinicReader_Get_And_ListByOrganization(t *testing.T) {
 
 	list, err := reader.ListByOrganization(ctx, sysadminCaller, orgID, orgread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, list, 1)
-	require.Equal(t, clinicID, list[0].ID)
+	require.Len(t, list.Items, 1)
+	require.Equal(t, clinicID, list.Items[0].ID)
 }
 
 // TestDepartmentReader_Get_And_ListByClinic covers the department reader.
@@ -251,5 +251,5 @@ func TestDepartmentReader_Get_And_ListByClinic(t *testing.T) {
 
 	list, err := reader.ListByClinic(ctx, sysadminCaller, clinicID, orgread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, list, 1)
+	require.Len(t, list.Items, 1)
 }

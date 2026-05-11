@@ -952,7 +952,7 @@ type ListIncidentsRequest struct {
 	OccurredFrom   *string                `protobuf:"bytes,8,opt,name=occurred_from,json=occurredFrom,proto3,oneof" json:"occurred_from,omitempty"` // RFC3339Nano
 	OccurredTo     *string                `protobuf:"bytes,9,opt,name=occurred_to,json=occurredTo,proto3,oneof" json:"occurred_to,omitempty"`
 	Limit          int32                  `protobuf:"varint,10,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,11,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,11,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1057,16 +1057,17 @@ func (x *ListIncidentsRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListIncidentsRequest) GetOffset() int32 {
+func (x *ListIncidentsRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListIncidentsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*IncidentView        `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1108,10 +1109,17 @@ func (x *ListIncidentsResponse) GetItems() []*IncidentView {
 	return nil
 }
 
+func (x *ListIncidentsResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListMyIncidentsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	After         string                 `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1153,16 +1161,17 @@ func (x *ListMyIncidentsRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListMyIncidentsRequest) GetOffset() int32 {
+func (x *ListMyIncidentsRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListMyIncidentsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*IncidentView        `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1202,6 +1211,13 @@ func (x *ListMyIncidentsResponse) GetItems() []*IncidentView {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListMyIncidentsResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type GetIncidentHistoryRequest struct {
@@ -1393,7 +1409,7 @@ type ListBufferEntriesRequest struct {
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Statuses       []BufferStatus         `protobuf:"varint,2,rep,packed,name=statuses,proto3,enum=query.incident.v1.BufferStatus" json:"statuses,omitempty"`
 	Limit          int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,4,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1449,16 +1465,17 @@ func (x *ListBufferEntriesRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListBufferEntriesRequest) GetOffset() int32 {
+func (x *ListBufferEntriesRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListBufferEntriesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*BufferEntryView     `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1500,10 +1517,17 @@ func (x *ListBufferEntriesResponse) GetItems() []*BufferEntryView {
 	return nil
 }
 
+func (x *ListBufferEntriesResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListMyBufferEntriesRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	After         string                 `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1545,16 +1569,17 @@ func (x *ListMyBufferEntriesRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListMyBufferEntriesRequest) GetOffset() int32 {
+func (x *ListMyBufferEntriesRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListMyBufferEntriesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*BufferEntryView     `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1594,6 +1619,13 @@ func (x *ListMyBufferEntriesResponse) GetItems() []*BufferEntryView {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListMyBufferEntriesResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 var File_query_incident_v1_incident_proto protoreflect.FileDescriptor
@@ -1700,7 +1732,7 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x12GetIncidentRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"R\n" +
 	"\x13GetIncidentResponse\x12;\n" +
-	"\bincident\x18\x01 \x01(\v2\x1f.query.incident.v1.IncidentViewR\bincident\"\xaf\x04\n" +
+	"\bincident\x18\x01 \x01(\v2\x1f.query.incident.v1.IncidentViewR\bincident\"\xad\x04\n" +
 	"\x14ListIncidentsRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12=\n" +
 	"\bstatuses\x18\x02 \x03(\x0e2!.query.incident.v1.IncidentStatusR\bstatuses\x12C\n" +
@@ -1716,8 +1748,8 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\voccurred_to\x18\t \x01(\tH\x05R\n" +
 	"occurredTo\x88\x01\x01\x12\x14\n" +
 	"\x05limit\x18\n" +
-	" \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\v \x01(\x05R\x06offsetB\f\n" +
+	" \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\v \x01(\tR\x05afterB\f\n" +
 	"\n" +
 	"_clinic_idB\x10\n" +
 	"\x0e_department_idB\x0e\n" +
@@ -1725,14 +1757,20 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\n" +
 	"\b_type_idB\x10\n" +
 	"\x0e_occurred_fromB\x0e\n" +
-	"\f_occurred_to\"N\n" +
+	"\f_occurred_to\"\x84\x01\n" +
 	"\x15ListIncidentsResponse\x125\n" +
-	"\x05items\x18\x01 \x03(\v2\x1f.query.incident.v1.IncidentViewR\x05items\"F\n" +
+	"\x05items\x18\x01 \x03(\v2\x1f.query.incident.v1.IncidentViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"D\n" +
 	"\x16ListMyIncidentsRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x05R\x06offset\"P\n" +
+	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x02 \x01(\tR\x05after\"\x86\x01\n" +
 	"\x17ListMyIncidentsResponse\x125\n" +
-	"\x05items\x18\x01 \x03(\v2\x1f.query.incident.v1.IncidentViewR\x05items\"<\n" +
+	"\x05items\x18\x01 \x03(\v2\x1f.query.incident.v1.IncidentViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"<\n" +
 	"\x19GetIncidentHistoryRequest\x12\x1f\n" +
 	"\vincident_id\x18\x01 \x01(\tR\n" +
 	"incidentId\"\xbe\x01\n" +
@@ -1742,19 +1780,25 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x15GetBufferEntryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"R\n" +
 	"\x16GetBufferEntryResponse\x128\n" +
-	"\x05entry\x18\x01 \x01(\v2\".query.incident.v1.BufferEntryViewR\x05entry\"\xae\x01\n" +
+	"\x05entry\x18\x01 \x01(\v2\".query.incident.v1.BufferEntryViewR\x05entry\"\xac\x01\n" +
 	"\x18ListBufferEntriesRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12;\n" +
 	"\bstatuses\x18\x02 \x03(\x0e2\x1f.query.incident.v1.BufferStatusR\bstatuses\x12\x14\n" +
-	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x04 \x01(\x05R\x06offset\"U\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x04 \x01(\tR\x05after\"\x8b\x01\n" +
 	"\x19ListBufferEntriesResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.v1.BufferEntryViewR\x05items\"J\n" +
+	"\x05items\x18\x01 \x03(\v2\".query.incident.v1.BufferEntryViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"H\n" +
 	"\x1aListMyBufferEntriesRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x05R\x06offset\"W\n" +
+	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x02 \x01(\tR\x05after\"\x8d\x01\n" +
 	"\x1bListMyBufferEntriesResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.v1.BufferEntryViewR\x05items*\xc6\x01\n" +
+	"\x05items\x18\x01 \x03(\v2\".query.incident.v1.BufferEntryViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor*\xc6\x01\n" +
 	"\x0eIncidentStatus\x12\x1f\n" +
 	"\x1bINCIDENT_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
 	"\x17INCIDENT_STATUS_PENDING\x10\x01\x12\x1f\n" +
@@ -1779,14 +1823,20 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x16PATIENT_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17PATIENT_STATUS_ACCEPTED\x10\x02\x12\x19\n" +
 	"\x15PATIENT_STATUS_CLOSED\x10\x03\x12\x1c\n" +
-	"\x18PATIENT_STATUS_CANCELLED\x10\x042\xb2\v\n" +
+	"\x18PATIENT_STATUS_CANCELLED\x10\x042\x86\x0f\n" +
 	"\x14IncidentQueryService\x12\xf0\x01\n" +
 	"\vGetIncident\x12%.query.incident.v1.GetIncidentRequest\x1a&.query.incident.v1.GetIncidentResponse\"\x91\x01\x92AnJl\n" +
 	"\x03404\x12e\n" +
 	"cNot found. Error codes:\n" +
-	"- `incident_query_not_found` — incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents/{id}\x12\x9f\x01\n" +
-	"\rListIncidents\x12'.query.incident.v1.ListIncidentsRequest\x1a(.query.incident.v1.ListIncidentsResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/organizations/{organization_id}/incidents\x12\x8a\x01\n" +
-	"\x0fListMyIncidents\x12).query.incident.v1.ListMyIncidentsRequest\x1a*.query.incident.v1.ListMyIncidentsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents:mine\x12\x96\x02\n" +
+	"- `incident_query_not_found` — incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents/{id}\x12\x94\x02\n" +
+	"\rListIncidents\x12'.query.incident.v1.ListIncidentsRequest\x1a(.query.incident.v1.ListIncidentsResponse\"\xaf\x01\x92AqJo\n" +
+	"\x03400\x12h\n" +
+	"fValidation failed. Error codes:\n" +
+	"- `incident_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x025\x123/v1/query/organizations/{organization_id}/incidents\x12\xff\x01\n" +
+	"\x0fListMyIncidents\x12).query.incident.v1.ListMyIncidentsRequest\x1a*.query.incident.v1.ListMyIncidentsResponse\"\x94\x01\x92AqJo\n" +
+	"\x03400\x12h\n" +
+	"fValidation failed. Error codes:\n" +
+	"- `incident_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents:mine\x12\x96\x02\n" +
 	"\x12GetIncidentHistory\x12,.query.incident.v1.GetIncidentHistoryRequest\x1a-.query.incident.v1.GetIncidentHistoryResponse\"\xa2\x01\x92AnJl\n" +
 	"\x03404\x12e\n" +
 	"cNot found. Error codes:\n" +
@@ -1794,9 +1844,15 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x0eGetBufferEntry\x12(.query.incident.v1.GetBufferEntryRequest\x1a).query.incident.v1.GetBufferEntryResponse\"\x9f\x01\x92AtJr\n" +
 	"\x03404\x12k\n" +
 	"iNot found. Error codes:\n" +
-	"- `buffer_query_not_found` — patient incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xb3\x01\n" +
-	"\x11ListBufferEntries\x12+.query.incident.v1.ListBufferEntriesRequest\x1a,.query.incident.v1.ListBufferEntriesResponse\"C\x82\xd3\xe4\x93\x02=\x12;/v1/query/organizations/{organization_id}/patient-incidents\x12\x9e\x01\n" +
-	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xc0\x04\x92A\xe3\x02RI\n" +
+	"- `buffer_query_not_found` — patient incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xa8\x02\n" +
+	"\x11ListBufferEntries\x12+.query.incident.v1.ListBufferEntriesRequest\x1a,.query.incident.v1.ListBufferEntriesResponse\"\xb7\x01\x92AqJo\n" +
+	"\x03400\x12h\n" +
+	"fValidation failed. Error codes:\n" +
+	"- `incident_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02=\x12;/v1/query/organizations/{organization_id}/patient-incidents\x12\x93\x02\n" +
+	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"\x9c\x01\x92AqJo\n" +
+	"\x03400\x12h\n" +
+	"fValidation failed. Error codes:\n" +
+	"- `incident_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xc0\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -1909,6 +1965,10 @@ func file_query_incident_v1_incident_proto_init() {
 	file_query_incident_v1_incident_proto_msgTypes[2].OneofWrappers = []any{}
 	file_query_incident_v1_incident_proto_msgTypes[3].OneofWrappers = []any{}
 	file_query_incident_v1_incident_proto_msgTypes[8].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[9].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[11].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[17].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[19].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

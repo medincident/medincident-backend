@@ -316,7 +316,7 @@ type ListServiceRequestsRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -365,16 +365,17 @@ func (x *ListServiceRequestsRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListServiceRequestsRequest) GetOffset() int32 {
+func (x *ListServiceRequestsRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListServiceRequestsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*ServiceRequest      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -416,11 +417,18 @@ func (x *ListServiceRequestsResponse) GetItems() []*ServiceRequest {
 	return nil
 }
 
+func (x *ListServiceRequestsResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListServiceRequestsByIncidentRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	IncidentId    string                 `protobuf:"bytes,1,opt,name=incident_id,json=incidentId,proto3" json:"incident_id,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -469,16 +477,17 @@ func (x *ListServiceRequestsByIncidentRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListServiceRequestsByIncidentRequest) GetOffset() int32 {
+func (x *ListServiceRequestsByIncidentRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListServiceRequestsByIncidentResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*ServiceRequest      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -518,6 +527,13 @@ func (x *ListServiceRequestsByIncidentResponse) GetItems() []*ServiceRequest {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListServiceRequestsByIncidentResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type StatusHistoryEntry struct {
@@ -825,20 +841,26 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x18GetServiceRequestRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"f\n" +
 	"\x19GetServiceRequestResponse\x12I\n" +
-	"\x0fservice_request\x18\x01 \x01(\v2 .query.request.v1.ServiceRequestR\x0eserviceRequest\"s\n" +
+	"\x0fservice_request\x18\x01 \x01(\v2 .query.request.v1.ServiceRequestR\x0eserviceRequest\"q\n" +
 	"\x1aListServiceRequestsRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"U\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x8b\x01\n" +
 	"\x1bListServiceRequestsResponse\x126\n" +
-	"\x05items\x18\x01 \x03(\v2 .query.request.v1.ServiceRequestR\x05items\"u\n" +
+	"\x05items\x18\x01 \x03(\v2 .query.request.v1.ServiceRequestR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"s\n" +
 	"$ListServiceRequestsByIncidentRequest\x12\x1f\n" +
 	"\vincident_id\x18\x01 \x01(\tR\n" +
 	"incidentId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"_\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x95\x01\n" +
 	"%ListServiceRequestsByIncidentResponse\x126\n" +
-	"\x05items\x18\x01 \x03(\v2 .query.request.v1.ServiceRequestR\x05items\"\xcf\x01\n" +
+	"\x05items\x18\x01 \x03(\v2 .query.request.v1.ServiceRequestR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\xcf\x01\n" +
 	"\x12StatusHistoryEntry\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\"\n" +
 	"\n" +
@@ -866,19 +888,22 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x12service_request_id\x18\x01 \x01(\tR\x10serviceRequestId\"\xc2\x01\n" +
 	" GetServiceRequestHistoryResponse\x12K\n" +
 	"\x0estatus_history\x18\x01 \x03(\v2$.query.request.v1.StatusHistoryEntryR\rstatusHistory\x12Q\n" +
-	"\x10executor_history\x18\x02 \x03(\v2&.query.request.v1.ExecutorHistoryEntryR\x0fexecutorHistory2\xc5\n" +
-	"\n" +
+	"\x10executor_history\x18\x02 \x03(\v2&.query.request.v1.ExecutorHistoryEntryR\x0fexecutorHistory2\xfd\v\n" +
 	"\x1aServiceRequestQueryService\x12\x8f\x02\n" +
 	"\x11GetServiceRequest\x12*.query.request.v1.GetServiceRequestRequest\x1a+.query.request.v1.GetServiceRequestResponse\"\xa0\x01\x92A|Jz\n" +
 	"\x03404\x12s\n" +
 	"qNot found. Error codes:\n" +
-	"- `service_request_query_not_found` — service request with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/service-requests/{id}\x12\x8a\x03\n" +
-	"\x13ListServiceRequests\x12,.query.request.v1.ListServiceRequestsRequest\x1a-.query.request.v1.ListServiceRequestsResponse\"\x95\x02\x92A\xd5\x01J\xd2\x01\n" +
-	"\x03400\x12\xca\x01\n" +
-	"\xc7\x01Validation failed. Error codes:\n" +
+	"- `service_request_query_not_found` — service request with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1b\x12\x19/v1/service-requests/{id}\x12\xfb\x02\n" +
+	"\x13ListServiceRequests\x12,.query.request.v1.ListServiceRequestsRequest\x1a-.query.request.v1.ListServiceRequestsResponse\"\x86\x02\x92A\xc6\x01J\xc3\x01\n" +
+	"\x03400\x12\xbb\x01\n" +
+	"\xb8\x01Validation failed. Error codes:\n" +
 	"- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n" +
-	"- `service_request_list_offset_out_of_range` — offset is out of the allowed range.\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/service-requests\x12\xc8\x02\n" +
-	"\x1dListServiceRequestsByIncident\x126.query.request.v1.ListServiceRequestsByIncidentRequest\x1a7.query.request.v1.ListServiceRequestsByIncidentResponse\"\xb5\x01\x92A~J|\n" +
+	"- `request_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/service-requests\x12\x8f\x04\n" +
+	"\x1dListServiceRequestsByIncident\x126.query.request.v1.ListServiceRequestsByIncidentRequest\x1a7.query.request.v1.ListServiceRequestsByIncidentResponse\"\xfc\x02\x92A\xc4\x02J\xc3\x01\n" +
+	"\x03400\x12\xbb\x01\n" +
+	"\xb8\x01Validation failed. Error codes:\n" +
+	"- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n" +
+	"- `request_bad_cursor` — pagination cursor is invalid or malformed.J|\n" +
 	"\x03404\x12u\n" +
 	"sNot found. Error codes:\n" +
 	"- `service_request_query_incident_not_found` — incident with the given ID does not exist.\x82\xd3\xe4\x93\x02.\x12,/v1/incidents/{incident_id}/service-requests\x12\xbc\x02\n" +
@@ -958,6 +983,8 @@ func file_query_request_v1_request_proto_init() {
 		return
 	}
 	file_query_request_v1_request_proto_msgTypes[1].OneofWrappers = []any{}
+	file_query_request_v1_request_proto_msgTypes[5].OneofWrappers = []any{}
+	file_query_request_v1_request_proto_msgTypes[7].OneofWrappers = []any{}
 	file_query_request_v1_request_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

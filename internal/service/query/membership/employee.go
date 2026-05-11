@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/util/like"
 )
@@ -48,6 +49,9 @@ type EmployeeCardView struct {
 	TerminatedAt          *time.Time
 	CurrentVacationEndsAt *time.Time
 	NextVacationStartsAt  *time.Time
+	// UpdatedAt is used for cursor pagination; not exposed in the proto
+	// response but fetched so the next-page cursor can be computed.
+	UpdatedAt time.Time
 }
 
 // SelectEmployeeCard is the reusable SELECT list matching the scan
@@ -59,7 +63,8 @@ const SelectEmployeeCard = `
 	       clinic_id, clinic_name,
 	       department_id, department_name,
 	       position, terminated_at,
-	       current_vacation_ends_at, next_vacation_starts_at
+	       current_vacation_ends_at, next_vacation_starts_at,
+	       updated_at
 	  FROM projections.employee_cards`
 
 // ScanEmployeeCard reads one row from a *sql.Rows cursor into a view.
@@ -75,7 +80,15 @@ func ScanEmployeeCard(scanner interface {
 		&out.DepartmentID, &out.DepartmentName,
 		&out.Position, &out.TerminatedAt,
 		&out.CurrentVacationEndsAt, &out.NextVacationStartsAt,
+		&out.UpdatedAt,
 	)
+}
+
+// EmployeeListResult is returned by all paginated employee list methods.
+// NextCursor is nil when no more pages remain.
+type EmployeeListResult struct {
+	Items      []EmployeeCardView
+	NextCursor *string
 }
 
 // Get returns the employee_card row for the given id. Authorization:
@@ -151,32 +164,43 @@ func (r *EmployeeReader) listByField(
 	value uuid.UUID,
 	q ListQuery,
 	filter EmployeeFilter,
-) ([]EmployeeCardView, error) {
+) (EmployeeListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return EmployeeListResult{}, err
 	}
 	filterClause, filterArgs := filter.buildFilterClause()
 	args := make([]any, 0, 3+len(filterArgs))
 	args = append(args, value)
 	args = append(args, filterArgs...)
-	args = append(args, q.Limit, q.Offset)
-	rows, err := r.db.WithContext(ctx).Raw(SelectEmployeeCard+
-		` WHERE `+field+` = ?`+filterClause+
-		` ORDER BY updated_at DESC, employee_id DESC
-		 LIMIT ? OFFSET ?`, args...,
-	).Rows()
+
+	sqlBuf := SelectEmployeeCard + ` WHERE ` + field + ` = ?` + filterClause
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return EmployeeListResult{}, oops.In("reader.membership.employee").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, employee_id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.membership.employee").
+		return EmployeeListResult{}, oops.In("reader.membership.employee").
 			Code(ErrCodeEmployeeLoadFailed).
 			With(field, value).
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]EmployeeCardView, 0, q.Limit)
+	out := make([]EmployeeCardView, 0, q.Limit+1)
 	for rows.Next() {
 		var v EmployeeCardView
 		if err := ScanEmployeeCard(rows, &v); err != nil {
-			return nil, oops.In("reader.membership.employee").
+			return EmployeeListResult{}, oops.In("reader.membership.employee").
 				Code(ErrCodeEmployeeLoadFailed).
 				With(field, value).
 				Wrap(err)
@@ -184,12 +208,20 @@ func (r *EmployeeReader) listByField(
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.membership.employee").
+		return EmployeeListResult{}, oops.In("reader.membership.employee").
 			Code(ErrCodeEmployeeLoadFailed).
 			With(field, value).
 			Wrap(err)
 	}
-	return out, nil
+
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.EmployeeID.String())
+		nextCursor = &s
+	}
+	return EmployeeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // ListByDepartment returns cards under a department. Authorization:
@@ -202,9 +234,9 @@ func (r *EmployeeReader) ListByDepartment(
 	deptID uuid.UUID,
 	q ListQuery,
 	filter EmployeeFilter,
-) ([]EmployeeCardView, error) {
+) (EmployeeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(deptID)); err != nil {
-		return nil, err
+		return EmployeeListResult{}, err
 	}
 	return r.listByField(ctx, "department_id", deptID, q, filter)
 }
@@ -219,9 +251,9 @@ func (r *EmployeeReader) ListByClinic(
 	clinicID uuid.UUID,
 	q ListQuery,
 	filter EmployeeFilter,
-) ([]EmployeeCardView, error) {
+) (EmployeeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
-		return nil, err
+		return EmployeeListResult{}, err
 	}
 	return r.listByField(ctx, "clinic_id", clinicID, q, filter)
 }
@@ -236,9 +268,9 @@ func (r *EmployeeReader) ListByOrganization(
 	orgID uuid.UUID,
 	q ListQuery,
 	filter EmployeeFilter,
-) ([]EmployeeCardView, error) {
+) (EmployeeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return EmployeeListResult{}, err
 	}
 	return r.listByField(ctx, "organization_id", orgID, q, filter)
 }
@@ -260,9 +292,9 @@ func (r *EmployeeReader) SearchByOrganization(
 	query string,
 	q ListQuery,
 	filter EmployeeFilter,
-) ([]EmployeeCardView, error) {
+) (EmployeeListResult, error) {
 	if len(query) > employeeSearchMaxQueryLength {
-		return nil, oops.In("reader.membership.employee").
+		return EmployeeListResult{}, oops.In("reader.membership.employee").
 			Code(ErrCodeEmployeeSearchQueryTooLong).
 			Public("Search query is too long.").
 			With("max_length", employeeSearchMaxQueryLength).
@@ -270,10 +302,10 @@ func (r *EmployeeReader) SearchByOrganization(
 			Errorf("search query too long")
 	}
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return EmployeeListResult{}, err
 	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return EmployeeListResult{}, err
 	}
 	filterClause, filterArgs := filter.buildFilterClause()
 	sqlBuf := SelectEmployeeCard + ` WHERE organization_id = ?` + filterClause
@@ -290,22 +322,32 @@ func (r *EmployeeReader) SearchByOrganization(
 		pattern := "%" + like.EscapePattern(query) + "%"
 		args = append(args, pattern, pattern, pattern, pattern)
 	}
-	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC
-		LIMIT ? OFFSET ?`
-	args = append(args, q.Limit, q.Offset)
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return EmployeeListResult{}, oops.In("reader.membership.employee").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, employee_id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.membership.employee").
+		return EmployeeListResult{}, oops.In("reader.membership.employee").
 			Code(ErrCodeEmployeeLoadFailed).
 			With("organization_id", orgID).
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]EmployeeCardView, 0, q.Limit)
+	out := make([]EmployeeCardView, 0, q.Limit+1)
 	for rows.Next() {
 		var v EmployeeCardView
 		if err := ScanEmployeeCard(rows, &v); err != nil {
-			return nil, oops.In("reader.membership.employee").
+			return EmployeeListResult{}, oops.In("reader.membership.employee").
 				Code(ErrCodeEmployeeLoadFailed).
 				With("organization_id", orgID).
 				Wrap(err)
@@ -313,12 +355,20 @@ func (r *EmployeeReader) SearchByOrganization(
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.membership.employee").
+		return EmployeeListResult{}, oops.In("reader.membership.employee").
 			Code(ErrCodeEmployeeLoadFailed).
 			With("organization_id", orgID).
 			Wrap(err)
 	}
-	return out, nil
+
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.EmployeeID.String())
+		nextCursor = &s
+	}
+	return EmployeeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // countByField is shared by the three CountEmployeesByX methods.
@@ -404,6 +454,13 @@ type VacationView struct {
 	UpdatedAt  time.Time
 }
 
+// VacationListResult is returned by ListVacationsByEmployee. NextCursor
+// is nil when no more pages remain.
+type VacationListResult struct {
+	Items      []VacationView
+	NextCursor *string
+}
+
 // vacationAuthzPolicy composes the "system admin OR org admin of the
 // employee OR the employee themselves" gate shared by read and count
 // over employee vacations.
@@ -472,36 +529,39 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 	employeeID uuid.UUID,
 	state string,
 	q ListQuery,
-) ([]VacationView, error) {
+) (VacationListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return VacationListResult{}, err
 	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, vacationAuthzPolicy(employeeID)); err != nil {
-		return nil, err
+		return VacationListResult{}, err
 	}
-	var (
-		rows *sql.Rows
-		err  error
-	)
-	if state == "" {
-		rows, err = r.db.WithContext(ctx).Raw(`
-			SELECT id, employee_id, state, starts_at, ends_at, created_at, updated_at
-			  FROM projections.employee_vacations
-			 WHERE employee_id = ?
-			 ORDER BY starts_at DESC, id DESC
-			 LIMIT ? OFFSET ?`, employeeID, q.Limit, q.Offset,
-		).Rows()
-	} else {
-		rows, err = r.db.WithContext(ctx).Raw(`
-			SELECT id, employee_id, state, starts_at, ends_at, created_at, updated_at
-			  FROM projections.employee_vacations
-			 WHERE employee_id = ? AND state = ?
-			 ORDER BY starts_at DESC, id DESC
-			 LIMIT ? OFFSET ?`, employeeID, state, q.Limit, q.Offset,
-		).Rows()
+	sqlBuf := `SELECT id, employee_id, state, starts_at, ends_at, created_at, updated_at
+		  FROM projections.employee_vacations
+		 WHERE employee_id = ?`
+	args := make([]any, 0, 5)
+	args = append(args, employeeID)
+	if state != "" {
+		sqlBuf += ` AND state = ?`
+		args = append(args, state)
 	}
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return VacationListResult{}, oops.In("reader.membership.vacation").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.membership.vacation").
+		return VacationListResult{}, oops.In("reader.membership.vacation").
 			Code(ErrCodeVacationLoadFailed).
 			With("employee_id", employeeID).
 			With("state", state).
@@ -509,11 +569,11 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 	}
 	defer func() { _ = rows.Close() }()
 
-	out := make([]VacationView, 0, q.Limit)
+	out := make([]VacationView, 0, q.Limit+1)
 	for rows.Next() {
 		var v VacationView
 		if err := rows.Scan(&v.ID, &v.EmployeeID, &v.State, &v.StartsAt, &v.EndsAt, &v.CreatedAt, &v.UpdatedAt); err != nil {
-			return nil, oops.In("reader.membership.vacation").
+			return VacationListResult{}, oops.In("reader.membership.vacation").
 				Code(ErrCodeVacationLoadFailed).
 				With("employee_id", employeeID).
 				Wrap(err)
@@ -521,10 +581,18 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.membership.vacation").
+		return VacationListResult{}, oops.In("reader.membership.vacation").
 			Code(ErrCodeVacationLoadFailed).
 			With("employee_id", employeeID).
 			Wrap(err)
 	}
-	return out, nil
+
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return VacationListResult{Items: out, NextCursor: nextCursor}, nil
 }

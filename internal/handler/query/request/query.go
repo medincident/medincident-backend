@@ -60,6 +60,15 @@ func (h *ServiceRequestQueryHandler) GetServiceRequest(
 	return &requestqueryv1.GetServiceRequestResponse{ServiceRequest: serviceRequestToProto(v)}, nil
 }
 
+// afterPtr converts an empty proto string to nil, treating empty as
+// "start from the beginning".
+func afterPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
 func (h *ServiceRequestQueryHandler) ListServiceRequests(
 	ctx context.Context, req *requestqueryv1.ListServiceRequestsRequest,
 ) (*requestqueryv1.ListServiceRequestsResponse, error) {
@@ -71,14 +80,17 @@ func (h *ServiceRequestQueryHandler) ListServiceRequests(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListServiceRequests(ctx, authz.Caller{ZitadelUserID: callerID}, orgID, queryrequest.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListServiceRequests(ctx, authz.Caller{ZitadelUserID: callerID}, orgID, queryrequest.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &requestqueryv1.ListServiceRequestsResponse{Items: serviceRequestsToProto(items)}, nil
+	return &requestqueryv1.ListServiceRequestsResponse{
+		Items:      serviceRequestsToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 func (h *ServiceRequestQueryHandler) ListServiceRequestsByIncident(
@@ -92,14 +104,17 @@ func (h *ServiceRequestQueryHandler) ListServiceRequestsByIncident(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListServiceRequestsByIncident(ctx, authz.Caller{ZitadelUserID: callerID}, incidentID, queryrequest.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListServiceRequestsByIncident(ctx, authz.Caller{ZitadelUserID: callerID}, incidentID, queryrequest.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &requestqueryv1.ListServiceRequestsByIncidentResponse{Items: serviceRequestsToProto(items)}, nil
+	return &requestqueryv1.ListServiceRequestsByIncidentResponse{
+		Items:      serviceRequestsToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 func (h *ServiceRequestQueryHandler) GetServiceRequestHistory(

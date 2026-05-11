@@ -35,6 +35,15 @@ func NewMembershipQueryHandler(
 	}
 }
 
+// afterPtr converts an empty proto string to nil, treating empty as
+// "start from the beginning".
+func afterPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
 // GetEmployee returns the denormalised employee card.
 func (h *MembershipQueryHandler) GetEmployee(
 	ctx context.Context,
@@ -70,9 +79,9 @@ func (h *MembershipQueryHandler) ListEmployeesByDepartment(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.empReader.ListByDepartment(ctx, caller, id, memberread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.empReader.ListByDepartment(ctx, caller, id, memberread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	}, memberread.EmployeeFilter{
 		IncludeTerminated: req.GetIncludeTerminated(),
 		OnVacation:        req.GetOnVacation(),
@@ -82,7 +91,8 @@ func (h *MembershipQueryHandler) ListEmployeesByDepartment(
 		return nil, err
 	}
 	return &membershipqueryv1.ListEmployeesByDepartmentResponse{
-		Items: employeeCardsToProto(items),
+		Items:      employeeCardsToProto(result.Items),
+		NextCursor: result.NextCursor,
 	}, nil
 }
 
@@ -100,9 +110,9 @@ func (h *MembershipQueryHandler) ListEmployeesByClinic(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.empReader.ListByClinic(ctx, caller, id, memberread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.empReader.ListByClinic(ctx, caller, id, memberread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	}, memberread.EmployeeFilter{
 		IncludeTerminated: req.GetIncludeTerminated(),
 		OnVacation:        req.GetOnVacation(),
@@ -112,7 +122,8 @@ func (h *MembershipQueryHandler) ListEmployeesByClinic(
 		return nil, err
 	}
 	return &membershipqueryv1.ListEmployeesByClinicResponse{
-		Items: employeeCardsToProto(items),
+		Items:      employeeCardsToProto(result.Items),
+		NextCursor: result.NextCursor,
 	}, nil
 }
 
@@ -130,9 +141,9 @@ func (h *MembershipQueryHandler) ListEmployeesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.empReader.ListByOrganization(ctx, caller, id, memberread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.empReader.ListByOrganization(ctx, caller, id, memberread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	}, memberread.EmployeeFilter{
 		IncludeTerminated: req.GetIncludeTerminated(),
 		OnVacation:        req.GetOnVacation(),
@@ -142,7 +153,8 @@ func (h *MembershipQueryHandler) ListEmployeesByOrganization(
 		return nil, err
 	}
 	return &membershipqueryv1.ListEmployeesByOrganizationResponse{
-		Items: employeeCardsToProto(items),
+		Items:      employeeCardsToProto(result.Items),
+		NextCursor: result.NextCursor,
 	}, nil
 }
 
@@ -162,11 +174,11 @@ func (h *MembershipQueryHandler) SearchEmployeesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.empReader.SearchByOrganization(ctx, caller, id,
+	result, err := h.empReader.SearchByOrganization(ctx, caller, id,
 		strings.TrimSpace(req.GetQuery()),
 		memberread.ListQuery{
-			Limit:  int(req.GetLimit()),
-			Offset: int(req.GetOffset()),
+			Limit: int(req.GetLimit()),
+			After: afterPtr(req.GetAfter()),
 		},
 		memberread.EmployeeFilter{
 			IncludeTerminated: req.GetIncludeTerminated(),
@@ -177,7 +189,8 @@ func (h *MembershipQueryHandler) SearchEmployeesByOrganization(
 		return nil, err
 	}
 	return &membershipqueryv1.SearchEmployeesByOrganizationResponse{
-		Items: employeeCardsToProto(items),
+		Items:      employeeCardsToProto(result.Items),
+		NextCursor: result.NextCursor,
 	}, nil
 }
 
@@ -291,16 +304,16 @@ func (h *MembershipQueryHandler) ListVacationsByEmployee(
 	if err != nil {
 		return nil, err
 	}
-	vacs, err := h.empReader.ListVacationsByEmployee(ctx, caller, id, req.GetState(), memberread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.empReader.ListVacationsByEmployee(ctx, caller, id, req.GetState(), memberread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	out := make([]*membershipqueryv1.VacationView, 0, len(vacs))
-	for i := range vacs {
-		v := &vacs[i]
+	out := make([]*membershipqueryv1.VacationView, 0, len(result.Items))
+	for i := range result.Items {
+		v := &result.Items[i]
 		vi := &membershipqueryv1.VacationView{
 			Id:         v.ID.String(),
 			EmployeeId: v.EmployeeID.String(),
@@ -315,7 +328,10 @@ func (h *MembershipQueryHandler) ListVacationsByEmployee(
 		}
 		out = append(out, vi)
 	}
-	return &membershipqueryv1.ListVacationsByEmployeeResponse{Items: out}, nil
+	return &membershipqueryv1.ListVacationsByEmployeeResponse{
+		Items:      out,
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // GetClinicHead returns the clinic head assignment or a nil holder.
@@ -380,14 +396,17 @@ func (h *MembershipQueryHandler) ListOrgAdmins(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgAdmins(ctx, caller, id, memberread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.roleReader.ListOrgAdmins(ctx, caller, id, memberread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &membershipqueryv1.ListOrgAdminsResponse{Items: roleAssignmentsToProto(items)}, nil
+	return &membershipqueryv1.ListOrgAdminsResponse{
+		Items:      roleAssignmentsToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListOrgDispatchers returns every org-dispatcher holder.
@@ -404,14 +423,17 @@ func (h *MembershipQueryHandler) ListOrgDispatchers(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgDispatchers(ctx, caller, id, memberread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.roleReader.ListOrgDispatchers(ctx, caller, id, memberread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &membershipqueryv1.ListOrgDispatchersResponse{Items: roleAssignmentsToProto(items)}, nil
+	return &membershipqueryv1.ListOrgDispatchersResponse{
+		Items:      roleAssignmentsToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListOrgHeads returns every org-head holder.
@@ -428,14 +450,17 @@ func (h *MembershipQueryHandler) ListOrgHeads(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.roleReader.ListOrgHeads(ctx, caller, id, memberread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.roleReader.ListOrgHeads(ctx, caller, id, memberread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &membershipqueryv1.ListOrgHeadsResponse{Items: roleAssignmentsToProto(items)}, nil
+	return &membershipqueryv1.ListOrgHeadsResponse{
+		Items:      roleAssignmentsToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListSystemAdmins returns every system-admin row.
@@ -448,21 +473,24 @@ func (h *MembershipQueryHandler) ListSystemAdmins(
 		return nil, err
 	}
 	caller := authz.Caller{ZitadelUserID: callerID}
-	items, err := h.roleReader.ListSystemAdmins(ctx, caller, memberread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.roleReader.ListSystemAdmins(ctx, caller, memberread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	out := make([]*membershipqueryv1.SystemAdminView, 0, len(items))
-	for _, item := range items {
+	out := make([]*membershipqueryv1.SystemAdminView, 0, len(result.Items))
+	for _, item := range result.Items {
 		out = append(out, &membershipqueryv1.SystemAdminView{
 			ZitadelUserId: item.ZitadelUserID,
 			CreatedAt:     item.CreatedAt.UTC().Format(time.RFC3339Nano),
 		})
 	}
-	return &membershipqueryv1.ListSystemAdminsResponse{Items: out}, nil
+	return &membershipqueryv1.ListSystemAdminsResponse{
+		Items:      out,
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // employeeCardToProto adapts one card.

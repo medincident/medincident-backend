@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 )
@@ -144,34 +145,53 @@ func (r *Reader) ListServiceRequests(
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]ServiceRequestView, error) {
+) (ServiceRequestListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return ServiceRequestListResult{}, err
 	}
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return ServiceRequestListResult{}, err
 	}
-	rows, err := r.db.WithContext(ctx).Raw(selectServiceRequest+`
-		 WHERE organization_id = ?
-		 ORDER BY created_at DESC, id DESC
-		 LIMIT ? OFFSET ?`, orgID, q.Limit, q.Offset,
-	).Rows()
+	sqlBuf := selectServiceRequest + ` WHERE organization_id = ?`
+	args := make([]any, 0, 4)
+	args = append(args, orgID)
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return ServiceRequestListResult{}, oops.In(scope).
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, wrapRead(err, "list service requests")
+		return ServiceRequestListResult{}, wrapRead(err, "list service requests")
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]ServiceRequestView, 0, q.Limit)
+	out := make([]ServiceRequestView, 0, q.Limit+1)
 	for rows.Next() {
 		var v ServiceRequestView
 		if err := scanServiceRequest(rows, &v); err != nil {
-			return nil, wrapRead(err, "scan service request row")
+			return ServiceRequestListResult{}, wrapRead(err, "scan service request row")
 		}
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, wrapRead(err, "iterate service request rows")
+		return ServiceRequestListResult{}, wrapRead(err, "iterate service request rows")
 	}
-	return out, nil
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return ServiceRequestListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // ListServiceRequestsByIncident returns service requests linked to an incident.
@@ -183,9 +203,9 @@ func (r *Reader) ListServiceRequestsByIncident(
 	caller authz.Caller,
 	incidentID uuid.UUID,
 	q ListQuery,
-) ([]ServiceRequestView, error) {
+) (ServiceRequestListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return ServiceRequestListResult{}, err
 	}
 	var orgID uuid.UUID
 	err := r.db.WithContext(ctx).Raw(
@@ -194,39 +214,58 @@ func (r *Reader) ListServiceRequestsByIncident(
 	).Row().Scan(&orgID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, oops.In(scope).
+			return ServiceRequestListResult{}, oops.In(scope).
 				Code(ErrCodeIncidentNotFound).
 				Public("Incident not found.").
 				With("incident_id", incidentID).
 				Errorf("incident not found")
 		}
-		return nil, wrapRead(err, "resolve incident org")
+		return ServiceRequestListResult{}, wrapRead(err, "resolve incident org")
 	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return ServiceRequestListResult{}, err
 	}
 
-	rows, err := r.db.WithContext(ctx).Raw(selectServiceRequest+`
-		 WHERE incident_id = ?
-		 ORDER BY created_at DESC, id DESC
-		 LIMIT ? OFFSET ?`, incidentID, q.Limit, q.Offset,
-	).Rows()
+	sqlBuf := selectServiceRequest + ` WHERE incident_id = ?`
+	args := make([]any, 0, 4)
+	args = append(args, incidentID)
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return ServiceRequestListResult{}, oops.In(scope).
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, wrapRead(err, "list service requests by incident")
+		return ServiceRequestListResult{}, wrapRead(err, "list service requests by incident")
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]ServiceRequestView, 0, q.Limit)
+	out := make([]ServiceRequestView, 0, q.Limit+1)
 	for rows.Next() {
 		var v ServiceRequestView
 		if err := scanServiceRequest(rows, &v); err != nil {
-			return nil, wrapRead(err, "scan service request row")
+			return ServiceRequestListResult{}, wrapRead(err, "scan service request row")
 		}
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, wrapRead(err, "iterate service request rows")
+		return ServiceRequestListResult{}, wrapRead(err, "iterate service request rows")
 	}
-	return out, nil
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return ServiceRequestListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // GetServiceRequestHistory returns both timelines for one service request.

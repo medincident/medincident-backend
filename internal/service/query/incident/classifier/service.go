@@ -25,26 +25,18 @@ import (
 
 // Error codes emitted by pagination validators.
 const (
-	ErrCodeListLimitOutOfRange  = "list_limit_out_of_range"
-	ErrCodeListOffsetOutOfRange = "list_offset_out_of_range"
+	ErrCodeListLimitOutOfRange = "list_limit_out_of_range"
+	ErrCodeListBadCursor       = "incident_classifier_bad_cursor"
 )
 
 // ListQuery is the input shared by paginated list endpoints.
 type ListQuery struct {
-	Limit  int
-	Offset int
+	Limit int
+	After *string
 }
 
 // normalize validates and normalizes the pagination fields.
 func (q *ListQuery) normalize() error {
-	if q.Offset < 0 {
-		return oops.In("reader.incident.classifier").
-			Code(ErrCodeListOffsetOutOfRange).
-			Public("List offset must be non-negative.").
-			With("field", "offset").
-			With("actual_value", q.Offset).
-			Errorf("offset out of range")
-	}
 	if q.Limit == 0 {
 		q.Limit = query.DefaultLimit
 		return nil
@@ -60,6 +52,18 @@ func (q *ListQuery) normalize() error {
 			Errorf("limit out of range")
 	}
 	return nil
+}
+
+// CategoryListResult is returned by paginated category list methods.
+type CategoryListResult struct {
+	Items      []CategoryView
+	NextCursor *string
+}
+
+// TypeListResult is returned by paginated type list methods.
+type TypeListResult struct {
+	Items      []TypeView
+	NextCursor *string
 }
 
 // Reader exposes read methods for both aggregates in this domain.

@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
@@ -84,41 +85,60 @@ func (r *Reader) ListRequestTypesByOrganization(
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]RequestTypeView, error) {
+) (RequestTypeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return RequestTypeListResult{}, err
 	}
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return RequestTypeListResult{}, err
 	}
-	rows, err := r.db.WithContext(ctx).Raw(selectRequestType+`
-		 WHERE organization_id = ?
-		 ORDER BY created_at DESC, id DESC
-		 LIMIT ? OFFSET ?`, orgID, q.Limit, q.Offset,
-	).Rows()
+	sqlBuf := selectRequestType + ` WHERE organization_id = ?`
+	args := make([]any, 0, 4)
+	args = append(args, orgID)
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return RequestTypeListResult{}, oops.In("reader.request.classifier").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.request.classifier").
+		return RequestTypeListResult{}, oops.In("reader.request.classifier").
 			Code(ErrCodeRequestTypeLoadFailed).
 			With("organization_id", orgID).
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]RequestTypeView, 0, q.Limit)
+	out := make([]RequestTypeView, 0, q.Limit+1)
 	for rows.Next() {
 		var v RequestTypeView
 		if err := scanRequestType(rows, &v); err != nil {
-			return nil, oops.In("reader.request.classifier").
+			return RequestTypeListResult{}, oops.In("reader.request.classifier").
 				Code(ErrCodeRequestTypeLoadFailed).
 				Wrap(err)
 		}
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.request.classifier").
+		return RequestTypeListResult{}, oops.In("reader.request.classifier").
 			Code(ErrCodeRequestTypeLoadFailed).
 			Wrap(err)
 	}
-	return out, nil
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return RequestTypeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // ListActiveRequestTypesByOrganization returns every active request
@@ -130,39 +150,58 @@ func (r *Reader) ListActiveRequestTypesByOrganization(
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]RequestTypeView, error) {
+) (RequestTypeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return RequestTypeListResult{}, err
 	}
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return RequestTypeListResult{}, err
 	}
-	rows, err := r.db.WithContext(ctx).Raw(selectRequestType+`
-		 WHERE organization_id = ? AND is_active = TRUE
-		 ORDER BY name ASC, id ASC
-		 LIMIT ? OFFSET ?`, orgID, q.Limit, q.Offset,
-	).Rows()
+	sqlBuf := selectRequestType + ` WHERE organization_id = ? AND is_active = TRUE`
+	args := make([]any, 0, 4)
+	args = append(args, orgID)
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return RequestTypeListResult{}, oops.In("reader.request.classifier").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.request.classifier").
+		return RequestTypeListResult{}, oops.In("reader.request.classifier").
 			Code(ErrCodeRequestTypeLoadFailed).
 			With("organization_id", orgID).
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]RequestTypeView, 0, q.Limit)
+	out := make([]RequestTypeView, 0, q.Limit+1)
 	for rows.Next() {
 		var v RequestTypeView
 		if err := scanRequestType(rows, &v); err != nil {
-			return nil, oops.In("reader.request.classifier").
+			return RequestTypeListResult{}, oops.In("reader.request.classifier").
 				Code(ErrCodeRequestTypeLoadFailed).
 				Wrap(err)
 		}
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.request.classifier").
+		return RequestTypeListResult{}, oops.In("reader.request.classifier").
 			Code(ErrCodeRequestTypeLoadFailed).
 			Wrap(err)
 	}
-	return out, nil
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return RequestTypeListResult{Items: out, NextCursor: nextCursor}, nil
 }

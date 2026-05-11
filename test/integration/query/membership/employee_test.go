@@ -101,8 +101,8 @@ func TestEmployeeReader_Get_AndListByDepartment(t *testing.T) {
 
 	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{})
 	require.NoError(t, err)
-	require.Len(t, list, 1)
-	require.Equal(t, empID, list[0].EmployeeID)
+	require.Len(t, list.Items, 1)
+	require.Equal(t, empID, list.Items[0].EmployeeID)
 }
 
 // TestEmployeeReader_Get_NotFound surfaces the expected code.
@@ -172,8 +172,8 @@ func TestEmployeeReader_EmployeeFilters(t *testing.T) {
 	// Default: terminated hidden → only the active employee.
 	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{})
 	require.NoError(t, err)
-	require.Len(t, list, 1)
-	require.Equal(t, activeID, list[0].EmployeeID)
+	require.Len(t, list.Items, 1)
+	require.Equal(t, activeID, list.Items[0].EmployeeID)
 	total, err := reader.CountByDepartment(ctx, sysadminCaller, deptID, memberread.EmployeeFilter{})
 	require.NoError(t, err)
 	require.Equal(t, int64(1), total)
@@ -186,8 +186,8 @@ func TestEmployeeReader_EmployeeFilters(t *testing.T) {
 	// OnVacation=true → only the active employee (term has no active vacation).
 	list, err = reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{OnVacation: true})
 	require.NoError(t, err)
-	require.Len(t, list, 1)
-	require.Equal(t, activeID, list[0].EmployeeID)
+	require.Len(t, list.Items, 1)
+	require.Equal(t, activeID, list.Items[0].EmployeeID)
 
 	// Position filter: exact match.
 	total, err = reader.CountByDepartment(ctx, sysadminCaller, deptID, memberread.EmployeeFilter{Position: "Nurse"})
@@ -238,9 +238,9 @@ func TestEmployeeReader_SearchByOrganization(t *testing.T) {
 	carolID := mkEmp("zit-carol")
 
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
-	ids := func(list []memberread.EmployeeCardView) map[uuid.UUID]bool {
-		m := make(map[uuid.UUID]bool, len(list))
-		for _, v := range list {
+	ids := func(r memberread.EmployeeListResult) map[uuid.UUID]bool {
+		m := make(map[uuid.UUID]bool, len(r.Items))
+		for _, v := range r.Items {
 			m[v.EmployeeID] = true
 		}
 		return m
@@ -303,14 +303,14 @@ func TestEmployeeReader_ListVacationsByEmployee(t *testing.T) {
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
 	all, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "", memberread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, all, 1)
-	require.Equal(t, "scheduled", all[0].State)
+	require.Len(t, all.Items, 1)
+	require.Equal(t, "scheduled", all.Items[0].State)
 
 	scheduled, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "scheduled", memberread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, scheduled, 1)
+	require.Len(t, scheduled.Items, 1)
 
 	none, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "active", memberread.ListQuery{})
 	require.NoError(t, err)
-	require.Empty(t, none)
+	require.Empty(t, none.Items)
 }

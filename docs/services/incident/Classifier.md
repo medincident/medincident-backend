@@ -350,6 +350,26 @@
 
 Для пациентов (patient-facing): `ListPatientAllowedTypesByOrganization` и `ListPatientVisibleCategoriesByOrganization` — `Authenticated` (только `is_allowed_for_patients=true` типы).
 
+### ListCategoriesByOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |
+
+### ListActiveRootCategories
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |
+
+### ListCategorySubtree
+
 ### GetCategory
 
 **HTTP:** `GET /v1/incident-categories/{id}`
@@ -361,6 +381,24 @@
 |---|---|---|
 | `incident_category_not_found` | 404 | Категория не найдена |
 
+### ListTypesByCategory
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |
+
+### ListActiveTypesByOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |
+
 ### GetType
 
 **HTTP:** `GET /v1/incident-types/{id}`
@@ -371,3 +409,19 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_type_not_found` | 404 | Тип не найден |
+
+### ListPatientAllowedTypesByOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+
+### ListPatientVisibleCategoriesByOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
