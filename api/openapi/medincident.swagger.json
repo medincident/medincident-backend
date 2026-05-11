@@ -648,6 +648,76 @@
         ]
       }
     },
+    "/v1/clinics/{clinicId}/candidates:clinic-head": {
+      "get": {
+        "operationId": "MembershipQueryService_ListCandidatesForClinicHead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCandidatesForClinicHeadResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500].",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "clinicId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
     "/v1/clinics/{clinicId}/departments": {
       "get": {
         "operationId": "OrgStructureQueryService_ListDepartmentsByClinic",
@@ -1566,6 +1636,76 @@
         ],
         "tags": [
           "OrgStructureQueryService"
+        ]
+      }
+    },
+    "/v1/departments/{departmentId}/candidates:dept-responsible": {
+      "get": {
+        "operationId": "MembershipQueryService_ListCandidatesForDeptResponsible",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCandidatesForDeptResponsibleResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500].",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
         ]
       }
     },
@@ -5201,6 +5341,288 @@
         ],
         "tags": [
           "MembershipCommandService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/candidates:hire": {
+      "get": {
+        "operationId": "MembershipQueryService_ListCandidatesForHire",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCandidatesForHireResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500].",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "after",
+            "description": "Opaque cursor from next_cursor of a previous response. Empty = first page.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "description": "Page size. 0 → default 50. Range [1, 500].",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/candidates:org-admin": {
+      "get": {
+        "operationId": "MembershipQueryService_ListCandidatesForOrgAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCandidatesForOrgAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500].",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/candidates:org-dispatcher": {
+      "get": {
+        "operationId": "MembershipQueryService_ListCandidatesForOrgDispatcher",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCandidatesForOrgDispatcherResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500].",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/candidates:org-head": {
+      "get": {
+        "operationId": "MembershipQueryService_ListCandidatesForOrgHead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCandidatesForOrgHeadResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500].",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
         ]
       }
     },
@@ -9291,6 +9713,70 @@
         ]
       }
     },
+    "/v1/system-admins/candidates": {
+      "get": {
+        "operationId": "MembershipQueryService_ListCandidatesForSystemAdmin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListCandidatesForSystemAdminResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500].",
+            "schema": {}
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "query",
+            "description": "Optional substring search (ILIKE %query%) on first_name, last_name,\ndisplay_name, email. Trimmed at the handler boundary. Max 256 chars.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
     "/v1/system-admins/{zitadelUserId}": {
       "delete": {
         "operationId": "MembershipCommandService_RevokeSystemAdmin",
@@ -11540,6 +12026,112 @@
         }
       }
     },
+    "v1ListCandidatesForClinicHeadResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmployeeCardView"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListCandidatesForDeptResponsibleResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmployeeCardView"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListCandidatesForHireResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ZitadelUserView"
+          }
+        },
+        "nextCursor": {
+          "type": "string",
+          "description": "Opaque cursor for the next page. Empty when this is the last page."
+        }
+      }
+    },
+    "v1ListCandidatesForOrgAdminResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmployeeCardView"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListCandidatesForOrgDispatcherResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmployeeCardView"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListCandidatesForOrgHeadResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1EmployeeCardView"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListCandidatesForSystemAdminResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1ZitadelUserView"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
     "v1ListCategoriesByOrganizationResponse": {
       "type": "object",
       "properties": {
@@ -12635,6 +13227,27 @@
         }
       },
       "description": "ValidationFailedDetails is present only when code = \"validation_failed\".\nEach violation corresponds to one struct-tag rule failure or one\ndomain-level leaf error from errors.Join."
+    },
+    "v1ZitadelUserView": {
+      "type": "object",
+      "properties": {
+        "zitadelUserId": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      },
+      "description": "ZitadelUserView is a lightweight projection of projections.users used\nby candidate-listing endpoints that operate on raw Zitadel identities\n(ForHire, ForSystemAdmin). Fields mirror the NOT NULL columns of the\nusers table."
     }
   }
 }

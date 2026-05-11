@@ -17,18 +17,21 @@ import (
 type MembershipQueryHandler struct {
 	membershipqueryv1.UnimplementedMembershipQueryServiceServer
 
-	empReader  *memberread.EmployeeReader
-	roleReader *memberread.RoleReader
+	empReader       *memberread.EmployeeReader
+	roleReader      *memberread.RoleReader
+	candidateReader *memberread.CandidateReader
 }
 
 // NewMembershipQueryHandler wires the handler with the readers.
 func NewMembershipQueryHandler(
 	empReader *memberread.EmployeeReader,
 	roleReader *memberread.RoleReader,
+	candidateReader *memberread.CandidateReader,
 ) *MembershipQueryHandler {
 	return &MembershipQueryHandler{
-		empReader:  empReader,
-		roleReader: roleReader,
+		empReader:       empReader,
+		roleReader:      roleReader,
+		candidateReader: candidateReader,
 	}
 }
 

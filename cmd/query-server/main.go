@@ -176,6 +176,7 @@ func main() {
 	deptReader := orgread.NewDepartmentReader(db, az, logger)
 	empReader := membershipread.NewEmployeeReader(db, az, logger)
 	roleReader := membershipread.NewRoleReader(db, az, logger)
+	candidateReader := membershipread.NewCandidateReader(db, az, logger)
 	classReader := classifierread.NewReader(db, az, logger)
 	statsReader := statsread.NewReader(db, az, logger)
 	analyticsReader := analyticsread.NewReader(db, az, logger)
@@ -193,7 +194,7 @@ func main() {
 	domainConsumer := domainread.NewConsumer(jsDomain, &cfg.NATSDomain, db, proj, logger)
 
 	orgH := orghandler.NewOrgStructureQueryHandler(orgReader, clinReader, deptReader)
-	memH := membershiphandler.NewMembershipQueryHandler(empReader, roleReader)
+	memH := membershiphandler.NewMembershipQueryHandler(empReader, roleReader, candidateReader)
 	clsH := classifierhandler.NewIncidentClassifierQueryHandler(classReader)
 	statsH := statshandler.NewStatsQueryHandler(statsReader)
 	analyticsH := analyticshandler.NewAnalyticsQueryHandler(analyticsReader)
