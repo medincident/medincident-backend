@@ -46,6 +46,10 @@ const (
 	// shutdown.
 	natsDrainTimeout = 15 * time.Second
 
+	// listenRetryDelay is how long the LISTEN goroutine waits before
+	// reconnecting after a connection error.
+	listenRetryDelay = 5 * time.Second
+
 	// ErrCodeJetStreamInitFailed is emitted when the JetStream context
 	// cannot be initialised from the NATS connection.
 	ErrCodeJetStreamInitFailed = "jetstream_init_failed"
@@ -163,28 +167,6 @@ func (p *publisher) run(ctx context.Context) {
 	}
 	p.logger.Info().Msg("advisory lock acquired — this replica is the active publisher")
 
-	// Acquire a second connection for LISTEN/NOTIFY.
-	listenConn, err := p.pool.Acquire(ctx)
-	if err != nil {
-		if ctx.Err() != nil {
-			return
-		}
-		p.logger.Fatal().Err(err).Msg("failed to acquire listen connection")
-		return
-	}
-	defer listenConn.Release()
-
-	if _, err := listenConn.Exec(ctx, "LISTEN outbox_events"); err != nil {
-		if ctx.Err() != nil {
-			return
-		}
-		p.logger.Fatal().
-			Err(oops.In("publisher").Code(ErrCodeListenFailed).Wrap(err)).
-			Msg("failed to LISTEN on outbox_events")
-		return
-	}
-	p.logger.Info().Msg("LISTEN outbox_events active")
-
 	ticker := time.NewTicker(pollInterval)
 	defer ticker.Stop()
 
@@ -192,23 +174,7 @@ func (p *publisher) run(ctx context.Context) {
 	p.publishCycle(ctx)
 
 	notifyCh := make(chan struct{}, 1)
-	go func() {
-		for {
-			_, err := listenConn.Conn().WaitForNotification(ctx)
-			if err != nil {
-				if ctx.Err() != nil {
-					return
-				}
-				p.logger.Warn().Err(err).Msg("LISTEN error; retrying in 5s")
-				time.Sleep(5 * time.Second)
-				continue
-			}
-			select {
-			case notifyCh <- struct{}{}:
-			default:
-			}
-		}
-	}()
+	go p.listenForNotifications(ctx, notifyCh)
 
 	for {
 		select {
@@ -224,6 +190,7 @@ func (p *publisher) run(ctx context.Context) {
 
 type outboxRow struct {
 	Seq     int64
+	ID      string
 	Subject string
 	Payload []byte
 }
@@ -257,7 +224,7 @@ func (p *publisher) publishCycle(ctx context.Context) {
 
 func (p *publisher) fetchUnpublished(ctx context.Context) ([]outboxRow, error) {
 	const q = `
-		SELECT seq, subject, payload
+		SELECT seq, id, subject, payload
 		  FROM outbox.events
 		 WHERE published_at IS NULL
 		 ORDER BY seq
@@ -271,7 +238,7 @@ func (p *publisher) fetchUnpublished(ctx context.Context) ([]outboxRow, error) {
 	var out []outboxRow
 	for pgRows.Next() {
 		var r outboxRow
-		if err := pgRows.Scan(&r.Seq, &r.Subject, &r.Payload); err != nil {
+		if err := pgRows.Scan(&r.Seq, &r.ID, &r.Subject, &r.Payload); err != nil {
 			return nil, oops.In("publisher").Code(ErrCodeOutboxFetchFailed).Wrap(err)
 		}
 		out = append(out, r)
@@ -280,9 +247,14 @@ func (p *publisher) fetchUnpublished(ctx context.Context) ([]outboxRow, error) {
 }
 
 func (p *publisher) publishRow(ctx context.Context, row outboxRow) error {
-	// js.Publish waits for server ack by default — safe to mark as published
-	// immediately after this returns nil.
-	if _, err := p.js.Publish(ctx, row.Subject, row.Payload); err != nil {
+	msg := &nats.Msg{
+		Subject: row.Subject,
+		Data:    row.Payload,
+		Header:  nats.Header{},
+	}
+	msg.Header.Set(nats.MsgIdHdr, row.ID)
+
+	if _, err := p.js.PublishMsg(ctx, msg); err != nil {
 		return oops.In("publisher").
 			Code(ErrCodeOutboxPublishFailed).
 			With("seq", row.Seq).
@@ -292,12 +264,73 @@ func (p *publisher) publishRow(ctx context.Context, row outboxRow) error {
 	if _, err := p.pool.Exec(ctx,
 		`UPDATE outbox.events SET published_at = now() WHERE seq = $1`, row.Seq,
 	); err != nil {
-		// The message is in NATS but we failed to mark it. Log and continue;
-		// the duplicate will be deduplicated by the consumer (at-least-once).
 		p.logger.Error().
 			Err(oops.In("publisher").Code(ErrCodeOutboxMarkFailed).Wrap(err)).
 			Int64("seq", row.Seq).
 			Msg("failed to mark outbox row published; possible duplicate delivery")
 	}
 	return nil
+}
+
+// listenForNotifications owns the LISTEN connection lifecycle. On any
+// connection error it releases the old connection, acquires a fresh one,
+// re-issues LISTEN, and retries. Sends to notifyCh (non-blocking) on
+// each notification. Returns when ctx is cancelled.
+func (p *publisher) listenForNotifications(ctx context.Context, notifyCh chan<- struct{}) {
+	for {
+		if ctx.Err() != nil {
+			return
+		}
+
+		conn, err := p.pool.Acquire(ctx)
+		if err != nil {
+			if ctx.Err() != nil {
+				return
+			}
+			p.logger.Warn().Err(err).Msg("LISTEN: failed to acquire connection; retrying")
+			select {
+			case <-time.After(listenRetryDelay):
+			case <-ctx.Done():
+				return
+			}
+			continue
+		}
+
+		if _, err := conn.Exec(ctx, "LISTEN outbox_events"); err != nil {
+			conn.Release()
+			if ctx.Err() != nil {
+				return
+			}
+			p.logger.Warn().Err(err).Msg("LISTEN: failed to issue LISTEN; retrying")
+			select {
+			case <-time.After(listenRetryDelay):
+			case <-ctx.Done():
+				return
+			}
+			continue
+		}
+
+		p.logger.Debug().Msg("LISTEN outbox_events active")
+
+		for {
+			_, err := conn.Conn().WaitForNotification(ctx)
+			if err != nil {
+				conn.Release()
+				if ctx.Err() != nil {
+					return
+				}
+				p.logger.Warn().Err(err).Msg("LISTEN error; reconnecting")
+				select {
+				case <-time.After(listenRetryDelay):
+				case <-ctx.Done():
+					return
+				}
+				break
+			}
+			select {
+			case notifyCh <- struct{}{}:
+			default:
+			}
+		}
+	}
 }
