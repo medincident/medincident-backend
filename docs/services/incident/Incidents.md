@@ -202,6 +202,23 @@
 | `ListMyIncidents` | Authenticated (только свои) |
 | `GetIncidentHistory` | ReaderOf.Organization |
 
+### ListIncidents
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |
+
+### ListMyIncidents
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+
 ### GetIncident
 
 **HTTP:** `GET /v1/query/incidents/{id}`

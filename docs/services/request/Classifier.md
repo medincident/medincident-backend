@@ -159,3 +159,21 @@
 | `validation_failed` | 400 | Ошибка валидации |
 | `permission_denied` | 403 | Недостаточно прав |
 | `request_type_not_found` | 404 | Тип не найден |
+
+### ListRequestTypesByOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `request_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Недостаточно прав |
+
+### ListActiveRequestTypesByOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `request_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Недостаточно прав |

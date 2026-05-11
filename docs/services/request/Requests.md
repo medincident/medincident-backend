@@ -197,12 +197,22 @@ created → in_work ←→ on_hold
 | `permission_denied` | 403 | Недостаточно прав |
 | `service_request_query_not_found` | 404 | Заявка не найдена |
 
+### ListServiceRequests
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `request_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Недостаточно прав |
+
 ### ListServiceRequestsByIncident
 
 #### Ошибки
 
 | Код | HTTP | Описание |
 |---|---|---|
+| `request_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
 | `validation_failed` | 400 | Ошибка валидации |
 | `permission_denied` | 403 | Недостаточно прав |
 | `service_request_query_incident_not_found` | 404 | Инцидент не найден |
