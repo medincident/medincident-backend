@@ -70,9 +70,21 @@ service IncidentQueryService {
   }
   rpc ListIncidents(ListIncidentsRequest) returns (ListIncidentsResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/incidents"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListMyIncidents(ListMyIncidentsRequest) returns (ListMyIncidentsResponse) {
     option (google.api.http) = {get: "/v1/query/incidents:mine"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc GetIncidentHistory(GetIncidentHistoryRequest) returns (GetIncidentHistoryResponse) {
     option (google.api.http) = {get: "/v1/query/incidents/{incident_id}/history"};
@@ -96,9 +108,21 @@ service IncidentQueryService {
   }
   rpc ListBufferEntries(ListBufferEntriesRequest) returns (ListBufferEntriesResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/patient-incidents"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListMyBufferEntries(ListMyBufferEntriesRequest) returns (ListMyBufferEntriesResponse) {
     option (google.api.http) = {get: "/v1/query/patient-incidents:mine"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 }
 

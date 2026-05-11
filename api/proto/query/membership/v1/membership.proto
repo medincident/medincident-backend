@@ -69,12 +69,30 @@ service MembershipQueryService {
   }
   rpc ListEmployeesByDepartment(ListEmployeesByDepartmentRequest) returns (ListEmployeesByDepartmentResponse) {
     option (google.api.http) = {get: "/v1/departments/{department_id}/employees"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListEmployeesByClinic(ListEmployeesByClinicRequest) returns (ListEmployeesByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/employees"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListEmployeesByOrganization(ListEmployeesByOrganizationRequest) returns (ListEmployeesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountEmployeesByDepartment(CountEmployeesByDepartmentRequest) returns (CountEmployeesByDepartmentResponse) {
     option (google.api.http) = {get: "/v1/departments/{department_id}/employees:count"};
@@ -87,10 +105,22 @@ service MembershipQueryService {
   }
   rpc SearchEmployeesByOrganization(SearchEmployeesByOrganizationRequest) returns (SearchEmployeesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees:search"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 
   rpc ListVacationsByEmployee(ListVacationsByEmployeeRequest) returns (ListVacationsByEmployeeResponse) {
     option (google.api.http) = {get: "/v1/employees/{employee_id}/vacations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountVacationsByEmployee(CountVacationsByEmployeeRequest) returns (CountVacationsByEmployeeResponse) {
     option (google.api.http) = {get: "/v1/employees/{employee_id}/vacations:count"};
@@ -104,15 +134,39 @@ service MembershipQueryService {
   }
   rpc ListOrgAdmins(ListOrgAdminsRequest) returns (ListOrgAdminsResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/admins"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListOrgDispatchers(ListOrgDispatchersRequest) returns (ListOrgDispatchersResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/dispatchers"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListOrgHeads(ListOrgHeadsRequest) returns (ListOrgHeadsResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/heads"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListSystemAdmins(ListSystemAdminsRequest) returns (ListSystemAdminsResponse) {
     option (google.api.http) = {get: "/v1/system-admins"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 }
 

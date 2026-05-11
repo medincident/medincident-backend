@@ -67,9 +67,21 @@ service RequestClassifierQueryService {
   }
   rpc ListRequestTypesByOrganization(ListRequestTypesByOrganizationRequest) returns (ListRequestTypesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/request-types"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListActiveRequestTypesByOrganization(ListActiveRequestTypesByOrganizationRequest) returns (ListActiveRequestTypesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/request-types:active"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 }
 

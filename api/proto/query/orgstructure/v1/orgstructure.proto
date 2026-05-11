@@ -68,12 +68,24 @@ service OrgStructureQueryService {
   }
   rpc ListOrganizations(ListOrganizationsRequest) returns (ListOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountOrganizations(CountOrganizationsRequest) returns (CountOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations:count"};
   }
   rpc SearchOrganizations(SearchOrganizationsRequest) returns (SearchOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations:search"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 
   rpc GetClinic(GetClinicRequest) returns (GetClinicResponse) {
@@ -87,6 +99,12 @@ service OrgStructureQueryService {
   }
   rpc ListClinicsByOrganization(ListClinicsByOrganizationRequest) returns (ListClinicsByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountClinicsByOrganization(CountClinicsByOrganizationRequest) returns (CountClinicsByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics:count"};
@@ -103,6 +121,12 @@ service OrgStructureQueryService {
   }
   rpc ListDepartmentsByClinic(ListDepartmentsByClinicRequest) returns (ListDepartmentsByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc CountDepartmentsByClinic(CountDepartmentsByClinicRequest) returns (CountDepartmentsByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments:count"};
