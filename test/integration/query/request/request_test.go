@@ -59,7 +59,7 @@ func TestListServiceRequests_HappyPath(t *testing.T) {
 
 	list, err := requestReader.ListServiceRequests(ctx, sysadminCaller, orgID, requestread.ListQuery{Limit: 10})
 	require.NoError(t, err)
-	assert.Len(t, list, 2)
+	assert.Len(t, list.Items, 2)
 }
 
 func TestListServiceRequestsByIncident_HappyPath(t *testing.T) {

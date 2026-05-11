@@ -251,5 +251,5 @@ func TestDepartmentReader_Get_And_ListByClinic(t *testing.T) {
 
 	list, err := reader.ListByClinic(ctx, sysadminCaller, clinicID, orgread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, list, 1)
+	require.Len(t, list.Items, 1)
 }
