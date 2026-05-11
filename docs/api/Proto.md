@@ -229,6 +229,10 @@
     - [EmployeePositionChanged](#event-employee-v1-EmployeePositionChanged)
     - [EmployeeTerminated](#event-employee-v1-EmployeeTerminated)
 
+- [event/incident/buffer/v1/events.proto](#event_incident_buffer_v1_events-proto)
+    - [PatientIncidentBufferCreated](#event-incident-buffer-v1-PatientIncidentBufferCreated)
+    - [PatientIncidentBufferUpdated](#event-incident-buffer-v1-PatientIncidentBufferUpdated)
+
 - [event/incident/classifier/v1/events.proto](#event_incident_classifier_v1_events-proto)
     - [IncidentCategoryCreated](#event-incident-classifier-v1-IncidentCategoryCreated)
     - [IncidentCategoryDeactivated](#event-incident-classifier-v1-IncidentCategoryDeactivated)
@@ -244,6 +248,12 @@
     - [IncidentTypeDisallowedForPatients](#event-incident-classifier-v1-IncidentTypeDisallowedForPatients)
     - [IncidentTypeMoved](#event-incident-classifier-v1-IncidentTypeMoved)
     - [IncidentTypeReactivated](#event-incident-classifier-v1-IncidentTypeReactivated)
+
+- [event/incident/v1/events.proto](#event_incident_v1_events-proto)
+    - [IncidentCreated](#event-incident-v1-IncidentCreated)
+    - [IncidentDescriptionUpdated](#event-incident-v1-IncidentDescriptionUpdated)
+    - [IncidentPriorityChanged](#event-incident-v1-IncidentPriorityChanged)
+    - [IncidentStatusChanged](#event-incident-v1-IncidentStatusChanged)
 
 - [event/organization/v1/events.proto](#event_organization_v1_events-proto)
     - [Address](#event-organization-v1-Address)
@@ -263,6 +273,20 @@
     - [OrganizationDetailsChanged](#event-organization-v1-OrganizationDetailsChanged)
     - [OrganizationLegalAddressChanged](#event-organization-v1-OrganizationLegalAddressChanged)
     - [Point](#event-organization-v1-Point)
+
+- [event/request_type/v1/events.proto](#event_request_type_v1_events-proto)
+    - [RequestTypeCreated](#event-request_type-v1-RequestTypeCreated)
+    - [RequestTypeDeactivated](#event-request_type-v1-RequestTypeDeactivated)
+    - [RequestTypeDeleted](#event-request_type-v1-RequestTypeDeleted)
+    - [RequestTypeDetailsUpdated](#event-request_type-v1-RequestTypeDetailsUpdated)
+    - [RequestTypeReactivated](#event-request_type-v1-RequestTypeReactivated)
+
+- [event/service_request/v1/events.proto](#event_service_request_v1_events-proto)
+    - [ServiceRequestCreated](#event-service_request-v1-ServiceRequestCreated)
+    - [ServiceRequestDescriptionUpdated](#event-service_request-v1-ServiceRequestDescriptionUpdated)
+    - [ServiceRequestExecutorAssigned](#event-service_request-v1-ServiceRequestExecutorAssigned)
+    - [ServiceRequestExecutorRemoved](#event-service_request-v1-ServiceRequestExecutorRemoved)
+    - [ServiceRequestStatusChanged](#event-service_request-v1-ServiceRequestStatusChanged)
 
 - [event/system_admin/v1/events.proto](#event_system_admin_v1_events-proto)
     - [SystemAdminGranted](#event-system_admin-v1-SystemAdminGranted)
@@ -3468,6 +3492,68 @@ EmployeeTerminated — subject: medincident.event.employee.v1.terminated
 
 
 
+<a name="event_incident_buffer_v1_events-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## event/incident/buffer/v1/events.proto
+
+
+
+<a name="event-incident-buffer-v1-PatientIncidentBufferCreated"></a>
+
+### PatientIncidentBufferCreated
+PatientIncidentBufferCreated — subject: medincident.event.patient_incident_buffer.v1.created
+aggregate_id = buffer UUID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buffer_id | [string](#string) |  |  |
+| organization_id | [string](#string) |  |  |
+| patient_zitadel_user_id | [string](#string) |  |  |
+| category_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| type_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| description | [string](#string) |  |  |
+| occurred_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| status | [string](#string) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-incident-buffer-v1-PatientIncidentBufferUpdated"></a>
+
+### PatientIncidentBufferUpdated
+PatientIncidentBufferUpdated — subject: medincident.event.patient_incident_buffer.v1.updated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buffer_id | [string](#string) |  |  |
+| category_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| type_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| description | [string](#string) |  |  |
+| occurred_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| status | [string](#string) |  |  |
+| published_incident_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <a name="event_incident_classifier_v1_events-proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
@@ -3712,6 +3798,111 @@ IncidentTypeReactivated — subject: medincident.event.incident_type.v1.reactiva
 | ----- | ---- | ----- | ----------- |
 | type_id | [string](#string) |  |  |
 | updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a name="event_incident_v1_events-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## event/incident/v1/events.proto
+
+
+
+<a name="event-incident-v1-IncidentCreated"></a>
+
+### IncidentCreated
+IncidentCreated — subject: medincident.event.incident.v1.created
+aggregate_id = incident UUID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+| organization_id | [string](#string) |  |  |
+| clinic_id | [string](#string) |  |  |
+| department_id | [string](#string) |  |  |
+| category_id | [string](#string) |  |  |
+| type_id | [string](#string) |  |  |
+| status | [string](#string) |  |  |
+| priority | [string](#string) |  |  |
+| description | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| patient_original_description | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| occurred_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| registrar_zitadel_user_id | [string](#string) |  |  |
+| registrar_employee_id | [string](#string) |  |  |
+| source_patient_zitadel_user_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| source_buffer_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| reopened_from_incident_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-incident-v1-IncidentDescriptionUpdated"></a>
+
+### IncidentDescriptionUpdated
+IncidentDescriptionUpdated — subject: medincident.event.incident.v1.description_updated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+| description | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-incident-v1-IncidentPriorityChanged"></a>
+
+### IncidentPriorityChanged
+IncidentPriorityChanged — subject: medincident.event.incident.v1.priority_changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+| old_priority | [string](#string) |  |  |
+| new_priority | [string](#string) |  |  |
+| actor_employee_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| actor_zitadel_user_id | [string](#string) |  |  |
+| changed_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-incident-v1-IncidentStatusChanged"></a>
+
+### IncidentStatusChanged
+IncidentStatusChanged — subject: medincident.event.incident.v1.status_changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| incident_id | [string](#string) |  |  |
+| old_status | [string](#string) |  |  |
+| new_status | [string](#string) |  |  |
+| actor_employee_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| actor_zitadel_user_id | [string](#string) |  |  |
+| changed_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 
 
 
@@ -4007,6 +4198,223 @@ subject: medincident.event.organization.v1.legal_address_changed
 | ----- | ---- | ----- | ----------- |
 | longitude | [double](#double) |  |  |
 | latitude | [double](#double) |  |  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a name="event_request_type_v1_events-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## event/request_type/v1/events.proto
+
+
+
+<a name="event-request_type-v1-RequestTypeCreated"></a>
+
+### RequestTypeCreated
+RequestTypeCreated — subject: medincident.event.request_type.v1.created
+aggregate_id = request_type UUID
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| type_id | [string](#string) |  |  |
+| organization_id | [string](#string) |  |  |
+| name | [string](#string) |  |  |
+| description | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| is_active | [bool](#bool) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-request_type-v1-RequestTypeDeactivated"></a>
+
+### RequestTypeDeactivated
+RequestTypeDeactivated — subject: medincident.event.request_type.v1.deactivated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| type_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-request_type-v1-RequestTypeDeleted"></a>
+
+### RequestTypeDeleted
+RequestTypeDeleted — subject: medincident.event.request_type.v1.deleted
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| type_id | [string](#string) |  |  |
+| deleted_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-request_type-v1-RequestTypeDetailsUpdated"></a>
+
+### RequestTypeDetailsUpdated
+RequestTypeDetailsUpdated — subject: medincident.event.request_type.v1.details_updated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| type_id | [string](#string) |  |  |
+| name | [string](#string) |  |  |
+| description | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-request_type-v1-RequestTypeReactivated"></a>
+
+### RequestTypeReactivated
+RequestTypeReactivated — subject: medincident.event.request_type.v1.reactivated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| type_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a name="event_service_request_v1_events-proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## event/service_request/v1/events.proto
+
+
+
+<a name="event-service_request-v1-ServiceRequestCreated"></a>
+
+### ServiceRequestCreated
+ServiceRequestCreated — subject: medincident.event.service_request.v1.created
+aggregate_id = service_request UUID
+author_display_name is NOT included — query-side projector calls lookupUserDisplayName(tx, author_id).
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| request_id | [string](#string) |  |  |
+| organization_id | [string](#string) |  |  |
+| clinic_id | [string](#string) |  |  |
+| department_id | [string](#string) |  |  |
+| type_id | [string](#string) |  |  |
+| incident_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| description | [string](#string) |  |  |
+| status | [string](#string) |  |  |
+| author_id | [string](#string) |  |  |
+| created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-service_request-v1-ServiceRequestDescriptionUpdated"></a>
+
+### ServiceRequestDescriptionUpdated
+ServiceRequestDescriptionUpdated — subject: medincident.event.service_request.v1.description_updated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| request_id | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-service_request-v1-ServiceRequestExecutorAssigned"></a>
+
+### ServiceRequestExecutorAssigned
+ServiceRequestExecutorAssigned — subject: medincident.event.service_request.v1.executor_assigned
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| request_id | [string](#string) |  |  |
+| employee_id | [string](#string) |  |  |
+| actor_id | [string](#string) |  |  |
+| changed_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-service_request-v1-ServiceRequestExecutorRemoved"></a>
+
+### ServiceRequestExecutorRemoved
+ServiceRequestExecutorRemoved — subject: medincident.event.service_request.v1.executor_removed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| request_id | [string](#string) |  |  |
+| employee_id | [string](#string) |  |  |
+| actor_id | [string](#string) |  |  |
+| changed_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-service_request-v1-ServiceRequestStatusChanged"></a>
+
+### ServiceRequestStatusChanged
+ServiceRequestStatusChanged — subject: medincident.event.service_request.v1.status_changed
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| request_id | [string](#string) |  |  |
+| old_status | [string](#string) |  |  |
+| new_status | [string](#string) |  |  |
+| actor_id | [string](#string) |  |  |
+| changed_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 
 
 
