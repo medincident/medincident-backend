@@ -12,8 +12,11 @@ import (
 
 	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
 	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
 	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
 	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
+	vacv1 "github.com/medincident/medincident-backend/pkg/event/vacation/v1"
 
 	"github.com/medincident/medincident-backend/internal/service/query/projector"
 )
@@ -84,6 +87,80 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 			return d.proj.DepartmentCreated(tx, aggregateID, occurredAt, m)
 		case *deptv1.DepartmentDetailsChanged:
 			return d.proj.DepartmentDetailsChanged(tx, aggregateID, occurredAt, m)
+
+		// ── Employee ──────────────────────────────────────────────────────
+		case *empv1.EmployeeHired:
+			return d.proj.EmployeeHired(tx, aggregateID, occurredAt, m)
+		case *empv1.EmployeeTerminated:
+			return d.proj.EmployeeTerminated(tx, aggregateID, occurredAt, m)
+		case *empv1.EmployeeDepartmentChanged:
+			return d.proj.EmployeeDepartmentChanged(tx, aggregateID, occurredAt, m)
+		case *empv1.EmployeePositionChanged:
+			return d.proj.EmployeePositionChanged(tx, aggregateID, occurredAt, m)
+
+		// ── Vacation ──────────────────────────────────────────────────────
+		case *vacv1.VacationScheduled:
+			return d.proj.VacationScheduled(tx, aggregateID, occurredAt, m)
+		case *vacv1.VacationStarted:
+			return d.proj.VacationStarted(tx, aggregateID, occurredAt, m)
+		case *vacv1.VacationEnded:
+			return d.proj.VacationEnded(tx, aggregateID, occurredAt, m)
+		case *vacv1.VacationCancelled:
+			return d.proj.VacationCancelled(tx, aggregateID, occurredAt, m)
+		case *vacv1.VacationEndDateChanged:
+			return d.proj.VacationEndDateChanged(tx, aggregateID, occurredAt, m)
+
+		// ── System Admin ──────────────────────────────────────────────────
+		case *sav1.SystemAdminGranted:
+			return d.proj.SystemAdminGranted(tx, aggregateID, occurredAt, m)
+		case *sav1.SystemAdminRevoked:
+			return d.proj.SystemAdminRevoked(tx, aggregateID, occurredAt, m)
+
+		// ── Org roles ─────────────────────────────────────────────────────
+		case *orgv1.OrgAdminAssigned:
+			return d.proj.OrgAdminAssigned(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgAdminDeputyAssigned:
+			return d.proj.OrgAdminDeputyAssigned(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgAdminDeputyRemoved:
+			return d.proj.OrgAdminDeputyRemoved(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgAdminRevoked:
+			return d.proj.OrgAdminRevoked(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgHeadAssigned:
+			return d.proj.OrgHeadAssigned(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgHeadDeputyAssigned:
+			return d.proj.OrgHeadDeputyAssigned(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgHeadDeputyRemoved:
+			return d.proj.OrgHeadDeputyRemoved(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgHeadRevoked:
+			return d.proj.OrgHeadRevoked(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgDispatcherAssigned:
+			return d.proj.OrgDispatcherAssigned(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgDispatcherDeputyAssigned:
+			return d.proj.OrgDispatcherDeputyAssigned(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgDispatcherDeputyRemoved:
+			return d.proj.OrgDispatcherDeputyRemoved(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrgDispatcherRevoked:
+			return d.proj.OrgDispatcherRevoked(tx, aggregateID, occurredAt, m)
+
+		// ── Clinic Head ───────────────────────────────────────────────────
+		case *clinicv1.ClinicHeadAssigned:
+			return d.proj.ClinicHeadAssigned(tx, aggregateID, occurredAt, m)
+		case *clinicv1.ClinicHeadDeputyAssigned:
+			return d.proj.ClinicHeadDeputyAssigned(tx, aggregateID, occurredAt, m)
+		case *clinicv1.ClinicHeadDeputyRemoved:
+			return d.proj.ClinicHeadDeputyRemoved(tx, aggregateID, occurredAt, m)
+		case *clinicv1.ClinicHeadRevoked:
+			return d.proj.ClinicHeadRevoked(tx, aggregateID, occurredAt, m)
+
+		// ── Dept Responsible ──────────────────────────────────────────────
+		case *deptv1.DeptResponsibleAssigned:
+			return d.proj.DeptResponsibleAssigned(tx, aggregateID, occurredAt, m)
+		case *deptv1.DeptResponsibleDeputyAssigned:
+			return d.proj.DeptResponsibleDeputyAssigned(tx, aggregateID, occurredAt, m)
+		case *deptv1.DeptResponsibleDeputyRemoved:
+			return d.proj.DeptResponsibleDeputyRemoved(tx, aggregateID, occurredAt, m)
+		case *deptv1.DeptResponsibleRevoked:
+			return d.proj.DeptResponsibleRevoked(tx, aggregateID, occurredAt, m)
 
 		default:
 			d.log.Warn().

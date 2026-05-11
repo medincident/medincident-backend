@@ -9,11 +9,16 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
 	"github.com/medincident/medincident-backend/internal/service/zitadel"
+	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // GrantSystemAdminPayload carries the Zitadel user ID to promote to system admin.
@@ -68,6 +73,25 @@ func (s *EmployeeService) GrantSystemAdmin(ctx context.Context, cmd GrantSystemA
 			return oops.In(scopeSystemAdmin).Code(ErrCodeSystemAdminSaveFailed).Wrap(err)
 		}
 
-		return projector.SystemAdminGranted(tx, id, time.Now().UTC())
+		now := time.Now().UTC()
+		env, err := buildSystemAdminGrantedEnvelope(id, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.system_admin.v1.granted", env)
 	})
+}
+
+func buildSystemAdminGrantedEnvelope(zitadelID string, grantedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &sav1.SystemAdminGranted{GrantedAt: timestamppb.New(grantedAt)}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeSystemAdmin).Code(ErrCodeSystemAdminSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(grantedAt),
+		AggregateType: "system_admin",
+		AggregateId:   zitadelID,
+		Payload:       payload,
+	}, nil
 }

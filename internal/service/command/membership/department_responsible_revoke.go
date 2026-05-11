@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // RevokeDepartmentResponsiblePayload carries the identifiers needed to
@@ -81,15 +86,50 @@ func (s *EmployeeService) RevokeDepartmentResponsible(ctx context.Context, cmd R
 
 // publishDepartmentResponsibleRevoked is a shared helper for Revoke,
 // cascade-on-transfer, and cascade-on-terminate. It does NOT delete
-// the domain row; the caller owns that. The projector call removes
-// the projection row so explicit and cascaded revokes stay in sync.
-func publishDepartmentResponsibleRevoked(tx *gorm.DB, departmentID, employeeID uuid.UUID, _ time.Time) error {
-	return projector.DepartmentResponsibleRevoked(tx, departmentID, employeeID)
+// the domain row; the caller owns that.
+func publishDepartmentResponsibleRevoked(tx *gorm.DB, departmentID, employeeID uuid.UUID, now time.Time) error {
+	env, err := buildDeptResponsibleRevokedEnvelope(departmentID, employeeID, now)
+	if err != nil {
+		return err
+	}
+	return outbox.Append(tx, "medincident.event.department.v1.dept_responsible_revoked", env)
 }
 
 // publishDepartmentResponsibleDeputyRemoved is a shared helper; it
 // clears the projection's deputy slot. The caller owns the domain-
 // row update.
 func publishDepartmentResponsibleDeputyRemoved(tx *gorm.DB, departmentID, employeeID uuid.UUID, now time.Time) error {
-	return projector.DepartmentResponsibleDeputyRemoved(tx, departmentID, employeeID, now)
+	env, err := buildDeptResponsibleDeputyRemovedEnvelope(departmentID, employeeID, now)
+	if err != nil {
+		return err
+	}
+	return outbox.Append(tx, "medincident.event.department.v1.dept_responsible_deputy_removed", env)
+}
+
+func buildDeptResponsibleRevokedEnvelope(departmentID, employeeID uuid.UUID, now time.Time) (*eventv1.Envelope, error) {
+	msg := &deptv1.DeptResponsibleRevoked{EmployeeId: employeeID.String()}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleDeleteFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(now),
+		AggregateType: "department",
+		AggregateId:   departmentID.String(),
+		Payload:       payload,
+	}, nil
+}
+
+func buildDeptResponsibleDeputyRemovedEnvelope(departmentID, employeeID uuid.UUID, now time.Time) (*eventv1.Envelope, error) {
+	msg := &deptv1.DeptResponsibleDeputyRemoved{EmployeeId: employeeID.String(), UpdatedAt: timestamppb.New(now)}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeDepartmentResponsible).Code(ErrCodeDepartmentResponsibleSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(now),
+		AggregateType: "department",
+		AggregateId:   departmentID.String(),
+		Payload:       payload,
+	}, nil
 }

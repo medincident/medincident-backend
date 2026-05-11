@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // RevokeOrganizationHeadPayload carries the identifiers needed to
@@ -81,14 +86,49 @@ func (s *EmployeeService) RevokeOrganizationHead(ctx context.Context, cmd Revoke
 
 // publishOrgHeadRevoked is a shared helper for Revoke and
 // cascade-on-terminate. It does NOT delete the domain row; the caller
-// owns that. The projector call removes the projection row so
-// explicit and cascaded revokes stay in sync.
-func publishOrgHeadRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, _ time.Time) error {
-	return projector.OrgHeadRevoked(tx, organizationID, employeeID)
+// owns that.
+func publishOrgHeadRevoked(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
+	env, err := buildOrgHeadRevokedEnvelope(organizationID, employeeID, now)
+	if err != nil {
+		return err
+	}
+	return outbox.Append(tx, "medincident.event.organization.v1.org_head_revoked", env)
 }
 
 // publishOrgHeadDeputyRemoved is a shared helper; it clears the
 // projection's deputy slot. Caller owns the domain-row update.
 func publishOrgHeadDeputyRemoved(tx *gorm.DB, organizationID, employeeID uuid.UUID, now time.Time) error {
-	return projector.OrgHeadDeputyRemoved(tx, organizationID, employeeID, now)
+	env, err := buildOrgHeadDeputyRemovedEnvelope(organizationID, employeeID, now)
+	if err != nil {
+		return err
+	}
+	return outbox.Append(tx, "medincident.event.organization.v1.org_head_deputy_removed", env)
+}
+
+func buildOrgHeadRevokedEnvelope(organizationID, employeeID uuid.UUID, now time.Time) (*eventv1.Envelope, error) {
+	msg := &orgv1.OrgHeadRevoked{EmployeeId: employeeID.String()}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadDeleteFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(now),
+		AggregateType: "organization",
+		AggregateId:   organizationID.String(),
+		Payload:       payload,
+	}, nil
+}
+
+func buildOrgHeadDeputyRemovedEnvelope(organizationID, employeeID uuid.UUID, now time.Time) (*eventv1.Envelope, error) {
+	msg := &orgv1.OrgHeadDeputyRemoved{EmployeeId: employeeID.String(), UpdatedAt: timestamppb.New(now)}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(now),
+		AggregateType: "organization",
+		AggregateId:   organizationID.String(),
+		Payload:       payload,
+	}, nil
 }

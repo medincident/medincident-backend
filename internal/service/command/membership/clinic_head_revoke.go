@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // RevokeClinicHeadPayload carries the identifiers needed to remove an
@@ -81,16 +86,50 @@ func (s *EmployeeService) RevokeClinicHead(ctx context.Context, cmd RevokeClinic
 
 // publishClinicHeadRevoked is a shared helper for Revoke,
 // cascade-on-transfer, and cascade-on-terminate. It does NOT delete
-// the domain row; the caller owns that. The projector call here
-// deletes the matching projection row so explicit and cascaded
-// revokes stay in sync.
-func publishClinicHeadRevoked(tx *gorm.DB, clinicID, employeeID uuid.UUID, _ time.Time) error {
-	return projector.ClinicHeadRevoked(tx, clinicID, employeeID)
+// the domain row; the caller owns that.
+func publishClinicHeadRevoked(tx *gorm.DB, clinicID, employeeID uuid.UUID, now time.Time) error {
+	env, err := buildClinicHeadRevokedEnvelope(clinicID, employeeID, now)
+	if err != nil {
+		return err
+	}
+	return outbox.Append(tx, "medincident.event.clinic.v1.clinic_head_revoked", env)
 }
 
 // publishClinicHeadDeputyRemoved is a shared helper; it clears the
 // deputy slot on the projection row. The caller owns the domain-row
 // update.
 func publishClinicHeadDeputyRemoved(tx *gorm.DB, clinicID, employeeID uuid.UUID, now time.Time) error {
-	return projector.ClinicHeadDeputyRemoved(tx, clinicID, employeeID, now)
+	env, err := buildClinicHeadDeputyRemovedEnvelope(clinicID, employeeID, now)
+	if err != nil {
+		return err
+	}
+	return outbox.Append(tx, "medincident.event.clinic.v1.clinic_head_deputy_removed", env)
+}
+
+func buildClinicHeadRevokedEnvelope(clinicID, employeeID uuid.UUID, now time.Time) (*eventv1.Envelope, error) {
+	msg := &clinicv1.ClinicHeadRevoked{EmployeeId: employeeID.String()}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeClinicHead).Code(ErrCodeClinicHeadDeleteFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(now),
+		AggregateType: "clinic",
+		AggregateId:   clinicID.String(),
+		Payload:       payload,
+	}, nil
+}
+
+func buildClinicHeadDeputyRemovedEnvelope(clinicID, employeeID uuid.UUID, now time.Time) (*eventv1.Envelope, error) {
+	msg := &clinicv1.ClinicHeadDeputyRemoved{EmployeeId: employeeID.String(), UpdatedAt: timestamppb.New(now)}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(now),
+		AggregateType: "clinic",
+		AggregateId:   clinicID.String(),
+		Payload:       payload,
+	}, nil
 }

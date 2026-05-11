@@ -8,10 +8,15 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // AssignOrganizationHeadPayload carries the identifiers needed to link
@@ -70,6 +75,27 @@ func (s *EmployeeService) AssignOrganizationHead(ctx context.Context, cmd Assign
 			return oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadSaveFailed).Wrap(err)
 		}
 
-		return projector.OrgHeadAssigned(tx, &row)
+		env, err := buildOrgHeadAssignedEnvelope(&row)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.organization.v1.org_head_assigned", env)
 	})
+}
+
+func buildOrgHeadAssignedEnvelope(row *model.OrgHead) (*eventv1.Envelope, error) {
+	msg := &orgv1.OrgHeadAssigned{
+		EmployeeId: row.EmployeeID.String(),
+		AssignedAt: timestamppb.New(row.CreatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeOrgHead).Code(ErrCodeOrganizationHeadSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(row.CreatedAt),
+		AggregateType: "organization",
+		AggregateId:   row.OrganizationID.String(),
+		Payload:       payload,
+	}, nil
 }

@@ -8,10 +8,15 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // AssignClinicHeadPayload carries the identifiers needed to link an
@@ -70,6 +75,27 @@ func (s *EmployeeService) AssignClinicHead(ctx context.Context, cmd AssignClinic
 			return oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
 		}
 
-		return projector.ClinicHeadAssigned(tx, &row)
+		env, err := buildClinicHeadAssignedEnvelope(&row)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.clinic.v1.clinic_head_assigned", env)
 	})
+}
+
+func buildClinicHeadAssignedEnvelope(row *model.ClinicHead) (*eventv1.Envelope, error) {
+	msg := &clinicv1.ClinicHeadAssigned{
+		EmployeeId: row.EmployeeID.String(),
+		AssignedAt: timestamppb.New(row.CreatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeClinicHead).Code(ErrCodeClinicHeadSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(row.CreatedAt),
+		AggregateType: "clinic",
+		AggregateId:   row.ClinicID.String(),
+		Payload:       payload,
+	}, nil
 }

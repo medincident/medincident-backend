@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // TerminateEmployeePayload carries the ID of the employee to remove.
@@ -99,6 +104,28 @@ func (s *EmployeeService) Terminate(ctx context.Context, cmd TerminateEmployeeCo
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
 		}
 
-		return projector.EmployeeTerminated(tx, &emp, now)
+		env, err := buildEmployeeTerminatedEnvelope(&emp, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.employee.v1.terminated", env)
 	})
+}
+
+func buildEmployeeTerminatedEnvelope(emp *model.Employee, terminatedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &empv1.EmployeeTerminated{
+		OrganizationId: emp.OrganizationID.String(),
+		DepartmentId:   emp.DepartmentID.String(),
+		TerminatedAt:   timestamppb.New(terminatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeEmployee).Code(ErrCodeEmployeeDeleteFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(terminatedAt),
+		AggregateType: "employee",
+		AggregateId:   emp.ID.String(),
+		Payload:       payload,
+	}, nil
 }

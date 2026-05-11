@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // AssignOrganizationAdminDeputyPayload carries the identifiers needed
@@ -106,6 +111,28 @@ func (s *EmployeeService) AssignOrganizationAdminDeputy(ctx context.Context, cmd
 			return oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminSaveFailed).Wrap(err)
 		}
 
-		return projector.OrgAdminDeputyAssigned(tx, &row)
+		env, err := buildOrgAdminDeputyAssignedEnvelope(&row)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.organization.v1.org_admin_deputy_assigned", env)
 	})
+}
+
+func buildOrgAdminDeputyAssignedEnvelope(row *model.OrgAdmin) (*eventv1.Envelope, error) {
+	msg := &orgv1.OrgAdminDeputyAssigned{
+		EmployeeId:       row.EmployeeID.String(),
+		DeputyEmployeeId: row.DeputyEmployeeID.V.String(),
+		UpdatedAt:        timestamppb.New(row.UpdatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeOrgAdmin).Code(ErrCodeOrganizationAdminSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(row.UpdatedAt),
+		AggregateType: "organization",
+		AggregateId:   row.OrganizationID.String(),
+		Payload:       payload,
+	}, nil
 }

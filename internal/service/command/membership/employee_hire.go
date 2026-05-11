@@ -11,11 +11,16 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
 	"github.com/medincident/medincident-backend/internal/service/zitadel"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // HireEmployeePayload carries everything the service needs to create
@@ -122,11 +127,39 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 				Wrap(err)
 		}
 
-		if err := projector.EmployeeHired(tx, &emp); err != nil {
+		env, err := buildEmployeeHiredEnvelope(&emp)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.employee.v1.hired", env); err != nil {
 			return err
 		}
 		result.ID = id
 		return nil
 	})
 	return result, err
+}
+
+func buildEmployeeHiredEnvelope(emp *model.Employee) (*eventv1.Envelope, error) {
+	var pos string
+	if emp.Position.Valid {
+		pos = emp.Position.String
+	}
+	msg := &empv1.EmployeeHired{
+		ZitadelUserId:  emp.ZitadelUserID,
+		OrganizationId: emp.OrganizationID.String(),
+		DepartmentId:   emp.DepartmentID.String(),
+		Position:       pos,
+		HiredAt:        timestamppb.New(emp.CreatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(emp.CreatedAt),
+		AggregateType: "employee",
+		AggregateId:   emp.ID.String(),
+		Payload:       payload,
+	}, nil
 }
