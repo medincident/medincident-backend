@@ -10,6 +10,7 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"syscall"
 	"time"
 
@@ -66,8 +67,8 @@ var authnSkip = map[string]struct{}{
 
 func panicRecoveryHandler(logger *zerolog.Logger) recovery.RecoveryHandlerFunc {
 	return func(p any) error {
-		logger.Error().Interface("panic", p).Msg("grpc handler panic recovered")
-		return status.Errorf(codes.Internal, "internal server error")
+		logger.Error().Interface("panic", p).Bytes("stack", debug.Stack()).Msg("grpc handler panic recovered")
+		return status.Errorf(codes.Internal, "internal error")
 	}
 }
 
@@ -155,6 +156,9 @@ func main() {
 			grpcmw.ErrorInterceptor(logger),
 			grpcmw.TimeoutInterceptor(handlerTimeout),
 			grpcmw.AuthnInterceptor(authorizer, authnSkip),
+		),
+		grpc.ChainStreamInterceptor(
+			recovery.StreamServerInterceptor(recovery.WithRecoveryHandler(panicRecoveryHandler(logger))),
 		),
 	)
 	healthSrv := health.NewServer()
