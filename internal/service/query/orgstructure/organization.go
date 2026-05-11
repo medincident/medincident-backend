@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/util/like"
 )
 
@@ -55,7 +56,7 @@ type OrganizationDetails struct {
 type OrganizationListItem struct {
 	ID        uuid.UUID
 	Name      string
-	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 // OrganizationListResult is returned by List and Search. NextCursor is
@@ -106,27 +107,28 @@ func (r *OrganizationReader) Get(ctx context.Context, id uuid.UUID) (*Organizati
 	return &out, nil
 }
 
-// List returns up to q.Limit organizations, ordered most-recently-created first.
+// List returns up to q.Limit organizations, ordered most-recently-updated first.
 //
 // See: docs/services/OrgStructure.md
 func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (OrganizationListResult, error) {
 	if err := q.normalize(); err != nil {
 		return OrganizationListResult{}, err
 	}
-	sqlBuf := `SELECT id, name, created_at FROM projections.organizations`
+	sqlBuf := `SELECT id, name, updated_at FROM projections.organizations`
 	args := make([]any, 0, 3)
 	if q.After != nil {
-		c, err := decodeCursor(*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` WHERE (created_at, id) < (?, ?)`
-		args = append(args, c.CreatedAt, c.ID)
+		id, _ := uuid.Parse(idStr)
+		sqlBuf += ` WHERE (updated_at, id) < (?, ?)`
+		args = append(args, t, id)
 	}
-	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -139,7 +141,7 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (Organizatio
 	out := make([]OrganizationListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v OrganizationListItem
-		if err := rows.Scan(&v.ID, &v.Name, &v.CreatedAt); err != nil {
+		if err := rows.Scan(&v.ID, &v.Name, &v.UpdatedAt); err != nil {
 			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeOrganizationLoadFailed).
 				Wrap(err)
@@ -181,17 +183,18 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 		args = append(args, "%"+like.EscapePattern(query)+"%")
 	}
 	if q.After != nil {
-		c, err := decodeCursor(*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		clauses = append(clauses, `(created_at, id) < (?, ?)`)
-		args = append(args, c.CreatedAt, c.ID)
+		id, _ := uuid.Parse(idStr)
+		clauses = append(clauses, `(updated_at, id) < (?, ?)`)
+		args = append(args, t, id)
 	}
-	sqlBuf := `SELECT id, name, created_at FROM projections.organizations`
+	sqlBuf := `SELECT id, name, updated_at FROM projections.organizations`
 	for i, c := range clauses {
 		if i == 0 {
 			sqlBuf += ` WHERE ` + c
@@ -199,7 +202,7 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 			sqlBuf += ` AND ` + c
 		}
 	}
-	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -212,7 +215,7 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 	out := make([]OrganizationListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v OrganizationListItem
-		if err := rows.Scan(&v.ID, &v.Name, &v.CreatedAt); err != nil {
+		if err := rows.Scan(&v.ID, &v.Name, &v.UpdatedAt); err != nil {
 			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeOrganizationLoadFailed).
 				Wrap(err)
@@ -234,7 +237,7 @@ func buildListResult(rows []OrganizationListItem, limit int) OrganizationListRes
 	if len(rows) > limit {
 		rows = rows[:limit]
 		last := rows[len(rows)-1]
-		s := encodeCursor(cursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return OrganizationListResult{Items: rows, NextCursor: nextCursor}

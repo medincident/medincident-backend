@@ -18,11 +18,6 @@
 package membership
 
 import (
-	"encoding/base64"
-	"encoding/json"
-	"time"
-
-	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -34,53 +29,8 @@ import (
 // Error codes emitted by pagination validators.
 const (
 	ErrCodeListLimitOutOfRange = "list_limit_out_of_range"
-	ErrCodeListBadCursor       = "list_bad_cursor"
+	ErrCodeListBadCursor       = "membership_bad_cursor"
 )
-
-// employeeCursor is the keyset pagination token for employee_cards
-// lists ordered by (updated_at DESC, employee_id DESC).
-type employeeCursor struct {
-	UpdatedAt  time.Time `json:"updated_at"`
-	EmployeeID uuid.UUID `json:"employee_id"`
-}
-
-// vacationCursor is the keyset pagination token for vacation lists
-// ordered by (starts_at DESC, id DESC).
-type vacationCursor struct {
-	StartsAt time.Time `json:"starts_at"`
-	ID       uuid.UUID `json:"id"`
-}
-
-// roleCursor is the keyset pagination token for role-assignment lists
-// ordered by (employee_id ASC).
-type roleCursor struct {
-	EmployeeID uuid.UUID `json:"employee_id"`
-}
-
-// systemAdminCursor is the keyset pagination token for system-admin
-// lists ordered by (created_at DESC, zitadel_user_id DESC).
-type systemAdminCursor struct {
-	CreatedAt     time.Time `json:"created_at"`
-	ZitadelUserID string    `json:"zitadel_user_id"`
-}
-
-func encodeCursor[T any](c T) string {
-	b, _ := json.Marshal(c)
-	return base64.StdEncoding.EncodeToString(b)
-}
-
-func decodeCursor[T any](s string) (T, error) {
-	b, err := base64.StdEncoding.DecodeString(s)
-	var zero T
-	if err != nil {
-		return zero, err
-	}
-	var c T
-	if err := json.Unmarshal(b, &c); err != nil {
-		return zero, err
-	}
-	return c, nil
-}
 
 // ListQuery is the input shared by every List method.
 type ListQuery struct {

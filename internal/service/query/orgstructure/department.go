@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
@@ -35,7 +36,7 @@ type DepartmentListItem struct {
 	ID        uuid.UUID
 	ClinicID  uuid.UUID
 	Name      string
-	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 // DepartmentListResult is returned by ListByClinic. NextCursor is nil
@@ -108,7 +109,7 @@ func (r *DepartmentReader) CountByClinic(
 }
 
 // ListByClinic returns up to q.Limit departments belonging to the
-// given clinic, ordered most-recently-created first. Authorization:
+// given clinic, ordered most-recently-updated first. Authorization:
 // authz.ReaderOf.Clinic(clinicID). Pagination bounds are normalized
 // first so a malformed Limit cannot trigger a gratuitous authz
 // DB round-trip — matching the validate→authorize order used on the
@@ -129,23 +130,24 @@ func (r *DepartmentReader) ListByClinic(
 	); err != nil {
 		return DepartmentListResult{}, err
 	}
-	sqlBuf := `SELECT id, clinic_id, name, created_at
+	sqlBuf := `SELECT id, clinic_id, name, updated_at
 		  FROM projections.departments
 		 WHERE clinic_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, clinicID)
 	if q.After != nil {
-		c, err := decodeCursor(*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return DepartmentListResult{}, oops.In("reader.orgstructure.department").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (created_at, id) < (?, ?)`
-		args = append(args, c.CreatedAt, c.ID)
+		id, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, id)
 	}
-	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -159,7 +161,7 @@ func (r *DepartmentReader) ListByClinic(
 	out := make([]DepartmentListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v DepartmentListItem
-		if err := rows.Scan(&v.ID, &v.ClinicID, &v.Name, &v.CreatedAt); err != nil {
+		if err := rows.Scan(&v.ID, &v.ClinicID, &v.Name, &v.UpdatedAt); err != nil {
 			return DepartmentListResult{}, oops.In("reader.orgstructure.department").
 				Code(ErrCodeDepartmentLoadFailed).
 				With("clinic_id", clinicID).
@@ -178,7 +180,7 @@ func (r *DepartmentReader) ListByClinic(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(cursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return DepartmentListResult{Items: out, NextCursor: nextCursor}, nil

@@ -5,11 +5,6 @@
 package request
 
 import (
-	"encoding/base64"
-	"encoding/json"
-	"time"
-
-	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -23,7 +18,7 @@ const (
 	ErrCodeServiceRequestNotFound   = "service_request_query_not_found"
 	ErrCodeIncidentNotFound         = "service_request_query_incident_not_found"
 	ErrCodeListLimitOutOfRange      = "service_request_list_limit_out_of_range"
-	ErrCodeListBadCursor            = "service_request_list_bad_cursor"
+	ErrCodeListBadCursor            = "request_bad_cursor"
 )
 
 const scope = "services.query.request"
@@ -38,31 +33,6 @@ type Reader struct {
 // NewReader returns a Reader bound to the given db, authz, and logger.
 func NewReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *Reader {
 	return &Reader{db: db, authz: az, logger: logger}
-}
-
-// createdAtCursor is the keyset pagination token for lists ordered by
-// (created_at DESC, id DESC).
-type createdAtCursor struct {
-	CreatedAt time.Time `json:"created_at"`
-	ID        uuid.UUID `json:"id"`
-}
-
-func encodeCursor[T any](c T) string {
-	b, _ := json.Marshal(c)
-	return base64.StdEncoding.EncodeToString(b)
-}
-
-func decodeCursor[T any](s string) (T, error) {
-	b, err := base64.StdEncoding.DecodeString(s)
-	var zero T
-	if err != nil {
-		return zero, err
-	}
-	var c T
-	if err := json.Unmarshal(b, &c); err != nil {
-		return zero, err
-	}
-	return c, nil
 }
 
 // ListQuery captures pagination parameters.

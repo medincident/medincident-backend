@@ -7,8 +7,6 @@ package announcement
 
 import (
 	"context"
-	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"time"
@@ -19,6 +17,7 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/service/query"
 )
 
@@ -193,29 +192,6 @@ type ListFilter struct {
 	IncludeArchived bool
 	Limit           int
 	Cursor          *string
-}
-
-// cursor is the keyset pagination token.
-type cursor struct {
-	CreatedAt time.Time `json:"created_at"`
-	ID        uuid.UUID `json:"id"`
-}
-
-func encodeCursor(c cursor) string {
-	b, _ := json.Marshal(c)
-	return base64.StdEncoding.EncodeToString(b)
-}
-
-func decodeCursor(s string) (cursor, error) {
-	b, err := base64.StdEncoding.DecodeString(s)
-	if err != nil {
-		return cursor{}, err
-	}
-	var c cursor
-	if err := json.Unmarshal(b, &c); err != nil {
-		return cursor{}, err
-	}
-	return c, nil
 }
 
 func normalizeLimit(l int) int {
@@ -435,15 +411,16 @@ func (r *Reader) listAnnouncements(
 	}
 
 	if f.Cursor != nil {
-		c, err := decodeCursor(*f.Cursor)
+		t, idStr, err := cursor.Decode(*f.Cursor)
 		if err != nil {
 			return ListResult{}, oops.In(readerScope).
 				Code(ErrCodeAnnouncementBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
+		annID, _ := uuid.Parse(idStr)
 		clauses = append(clauses, "(a.created_at, a.id) < (?, ?)")
-		args = append(args, c.CreatedAt, c.ID)
+		args = append(args, t, annID)
 	}
 
 	whereSQL := ""
@@ -474,7 +451,7 @@ func (r *Reader) listAnnouncements(
 	if len(rows) > limit {
 		rows = rows[:limit]
 		last := rows[len(rows)-1]
-		s := encodeCursor(cursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		s := cursor.Encode(last.CreatedAt, last.ID.String())
 		nextCursor = &s
 	}
 

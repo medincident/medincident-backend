@@ -15,11 +15,6 @@
 package classifier
 
 import (
-	"encoding/base64"
-	"encoding/json"
-	"time"
-
-	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -31,40 +26,8 @@ import (
 // Error codes emitted by pagination validators.
 const (
 	ErrCodeListLimitOutOfRange = "list_limit_out_of_range"
-	ErrCodeListBadCursor       = "list_bad_cursor"
+	ErrCodeListBadCursor       = "incident_classifier_bad_cursor"
 )
-
-// createdAtCursor is the keyset pagination token for lists ordered by
-// (created_at DESC, id DESC).
-type createdAtCursor struct {
-	CreatedAt time.Time `json:"created_at"`
-	ID        uuid.UUID `json:"id"`
-}
-
-// nameCursor is the keyset pagination token for lists ordered by
-// (name ASC, id ASC).
-type nameCursor struct {
-	Name string    `json:"name"`
-	ID   uuid.UUID `json:"id"`
-}
-
-func encodeCursor[T any](c T) string {
-	b, _ := json.Marshal(c)
-	return base64.StdEncoding.EncodeToString(b)
-}
-
-func decodeCursor[T any](s string) (T, error) {
-	b, err := base64.StdEncoding.DecodeString(s)
-	var zero T
-	if err != nil {
-		return zero, err
-	}
-	var c T
-	if err := json.Unmarshal(b, &c); err != nil {
-		return zero, err
-	}
-	return c, nil
-}
 
 // ListQuery is the input shared by paginated list endpoints.
 type ListQuery struct {

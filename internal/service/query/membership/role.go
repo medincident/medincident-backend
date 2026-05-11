@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
@@ -28,8 +29,9 @@ var ErrRoleVacant = errors.New("role vacant")
 // as the role table so downstream callers can render a role without
 // an N+1 GetEmployee follow-up.
 type RoleAssignmentView struct {
-	Holder EmployeeCardView
-	Deputy *EmployeeCardView
+	UpdatedAt time.Time
+	Holder    EmployeeCardView
+	Deputy    *EmployeeCardView
 }
 
 // RoleListResult is returned by all paginated role list methods.
@@ -146,17 +148,18 @@ func (d *deputyCardScan) toView() *EmployeeCardView {
 	return out
 }
 
-// scanAssignment reads one joined row into Holder + (optional) Deputy.
-// Holder columns scan directly into the non-pointer view (INNER JOIN
-// guarantees presence); deputy columns scan via deputyCardScan so
-// NULL-on-LEFT-JOIN stays nil rather than erroring.
+// scanAssignment reads one joined row into UpdatedAt + Holder + (optional) Deputy.
+// role.updated_at is scanned first, then holder columns (INNER JOIN guarantees
+// presence), then deputy columns via deputyCardScan so NULL-on-LEFT-JOIN stays
+// nil rather than erroring.
 func scanAssignment(scanner interface {
 	Scan(dest ...any) error
 }, out *RoleAssignmentView,
 ) error {
 	var dep deputyCardScan
-	dests := make([]any, 0, 34)
+	dests := make([]any, 0, 35)
 	dests = append(dests,
+		&out.UpdatedAt,
 		&out.Holder.EmployeeID, &out.Holder.ZitadelUserID,
 		&out.Holder.FirstName, &out.Holder.LastName, &out.Holder.DisplayName, &out.Holder.Email,
 		&out.Holder.OrganizationID, &out.Holder.OrganizationName,
@@ -174,11 +177,11 @@ func scanAssignment(scanner interface {
 	return nil
 }
 
-// selectRoleAssignment composes the SELECT list: every holder card
-// column followed by every deputy card column, in the same order
-// scanAssignment expects.
+// selectRoleAssignment composes the SELECT list: role.updated_at first,
+// then every holder card column followed by every deputy card column,
+// in the same order scanAssignment expects.
 var selectRoleAssignment = `
-	SELECT ` + employeeCardColumns("holder") + `,
+	SELECT role.updated_at, ` + employeeCardColumns("holder") + `,
 	       ` + employeeCardColumns("deputy")
 
 // GetClinicHead returns the clinic-head assignment for the clinic, or
@@ -291,7 +294,7 @@ func (r *RoleReader) ListSystemAdmins(
 		 WHERE 1=1`
 	args := make([]any, 0, 3)
 	if q.After != nil {
-		c, err := decodeCursor[systemAdminCursor](*q.After)
+		t, zitadelID, err := cursor.Decode(*q.After)
 		if err != nil {
 			return SystemAdminListResult{}, oops.In("reader.membership.role").
 				Code(ErrCodeListBadCursor).
@@ -299,7 +302,7 @@ func (r *RoleReader) ListSystemAdmins(
 				Wrap(err)
 		}
 		sqlBuf += ` AND (created_at, zitadel_user_id) < (?, ?)`
-		args = append(args, c.CreatedAt, c.ZitadelUserID)
+		args = append(args, t, zitadelID)
 	}
 	sqlBuf += ` ORDER BY created_at DESC, zitadel_user_id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -333,7 +336,7 @@ func (r *RoleReader) ListSystemAdmins(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(systemAdminCursor{CreatedAt: last.CreatedAt, ZitadelUserID: last.ZitadelUserID})
+		s := cursor.Encode(last.CreatedAt, last.ZitadelUserID)
 		nextCursor = &s
 	}
 	return SystemAdminListResult{Items: out, NextCursor: nextCursor}, nil
@@ -380,7 +383,7 @@ func (r *RoleReader) oneRoleByParent(ctx context.Context, table, parentField str
 // multiple holders). Callers must have already called q.normalize().
 // The SELECT joins projections.employee_cards for holder (INNER) and
 // deputy (LEFT) so each returned view carries the full card.
-// Ordered by role.employee_id ASC for stable keyset pagination.
+// Ordered by role.updated_at DESC, role.employee_id DESC for stable keyset pagination.
 func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField string, parentID uuid.UUID, q ListQuery) (RoleListResult, error) {
 	sqlBuf := selectRoleAssignment + `
 		   FROM ` + table + ` role
@@ -389,20 +392,21 @@ func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField s
 		   LEFT JOIN projections.employee_cards deputy
 		     ON deputy.employee_id = role.deputy_employee_id
 		  WHERE role.` + parentField + ` = ?`
-	args := make([]any, 0, 3)
+	args := make([]any, 0, 4)
 	args = append(args, parentID)
 	if q.After != nil {
-		c, err := decodeCursor[roleCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return RoleListResult{}, oops.In("reader.membership.role").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND role.employee_id > ?`
-		args = append(args, c.EmployeeID)
+		empID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (role.updated_at, role.employee_id) < (?, ?)`
+		args = append(args, t, empID)
 	}
-	sqlBuf += ` ORDER BY role.employee_id ASC LIMIT ?`
+	sqlBuf += ` ORDER BY role.updated_at DESC, role.employee_id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
@@ -436,7 +440,7 @@ func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField s
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(roleCursor{EmployeeID: last.Holder.EmployeeID})
+		s := cursor.Encode(last.UpdatedAt, last.Holder.EmployeeID.String())
 		nextCursor = &s
 	}
 	return RoleListResult{Items: out, NextCursor: nextCursor}, nil

@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
@@ -127,17 +128,18 @@ func (r *Reader) ListCategoriesByOrganization(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		c, err := decodeCursor[createdAtCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return CategoryListResult{}, oops.In("reader.incident.classifier.category").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (created_at, id) < (?, ?)`
-		args = append(args, c.CreatedAt, c.ID)
+		catID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, catID)
 	}
-	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -166,7 +168,7 @@ func (r *Reader) ListCategoriesByOrganization(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(createdAtCursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil
@@ -196,17 +198,18 @@ func (r *Reader) ListActiveRootCategories(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		c, err := decodeCursor[nameCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return CategoryListResult{}, oops.In("reader.incident.classifier.category").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (name, id) > (?, ?)`
-		args = append(args, c.Name, c.ID)
+		catID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, catID)
 	}
-	sqlBuf += ` ORDER BY name ASC, id ASC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -235,7 +238,7 @@ func (r *Reader) ListActiveRootCategories(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(nameCursor{Name: last.Name, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil
@@ -347,17 +350,18 @@ func (r *Reader) ListTypesByCategory(
 	args := make([]any, 0, 4)
 	args = append(args, categoryID)
 	if q.After != nil {
-		c, err := decodeCursor[nameCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return TypeListResult{}, oops.In("reader.incident.classifier.type").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (name, id) > (?, ?)`
-		args = append(args, c.Name, c.ID)
+		typeID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, typeID)
 	}
-	sqlBuf += ` ORDER BY name ASC, id ASC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -386,7 +390,7 @@ func (r *Reader) ListTypesByCategory(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(nameCursor{Name: last.Name, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
@@ -412,17 +416,18 @@ func (r *Reader) ListActiveTypesByOrganization(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		c, err := decodeCursor[nameCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return TypeListResult{}, oops.In("reader.incident.classifier.type").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (name, id) > (?, ?)`
-		args = append(args, c.Name, c.ID)
+		typeID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, typeID)
 	}
-	sqlBuf += ` ORDER BY name ASC, id ASC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -451,7 +456,7 @@ func (r *Reader) ListActiveTypesByOrganization(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(nameCursor{Name: last.Name, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
@@ -483,17 +488,18 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		c, err := decodeCursor[nameCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return TypeListResult{}, oops.In("reader.incident.classifier.type").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (name, id) > (?, ?)`
-		args = append(args, c.Name, c.ID)
+		typeID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, typeID)
 	}
-	sqlBuf += ` ORDER BY name ASC, id ASC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -522,7 +528,7 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(nameCursor{Name: last.Name, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
@@ -557,15 +563,16 @@ func (r *Reader) ListPatientVisibleCategoriesByOrganization(
 	cursorClause := ""
 	args := []any{orgID, orgID, orgID, orgID}
 	if q.After != nil {
-		c, err := decodeCursor[nameCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return CategoryListResult{}, oops.In("reader.incident.classifier.category").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		cursorClause = ` AND (name, id) > (?, ?)`
-		args = append(args, c.Name, c.ID)
+		catID, _ := uuid.Parse(idStr)
+		cursorClause = ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, catID)
 	}
 	args = append(args, q.Limit+1)
 	query := `
@@ -597,7 +604,7 @@ func (r *Reader) ListPatientVisibleCategoriesByOrganization(
 		 WHERE id IN (SELECT id FROM visible)
 		   AND organization_id = ?` +
 		cursorClause +
-		` ORDER BY name ASC, id ASC
+		` ORDER BY updated_at DESC, id DESC
 		 LIMIT ?`
 	rows, err := r.db.WithContext(ctx).Raw(query, args...).Rows()
 	if err != nil {
@@ -626,7 +633,7 @@ func (r *Reader) ListPatientVisibleCategoriesByOrganization(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(nameCursor{Name: last.Name, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil

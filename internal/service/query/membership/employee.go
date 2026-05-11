@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/util/like"
 )
@@ -174,15 +175,16 @@ func (r *EmployeeReader) listByField(
 
 	sqlBuf := SelectEmployeeCard + ` WHERE ` + field + ` = ?` + filterClause
 	if q.After != nil {
-		c, err := decodeCursor[employeeCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return EmployeeListResult{}, oops.In("reader.membership.employee").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
+		empID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, employee_id) < (?, ?)`
-		args = append(args, c.UpdatedAt, c.EmployeeID)
+		args = append(args, t, empID)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -217,7 +219,7 @@ func (r *EmployeeReader) listByField(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(employeeCursor{UpdatedAt: last.UpdatedAt, EmployeeID: last.EmployeeID})
+		s := cursor.Encode(last.UpdatedAt, last.EmployeeID.String())
 		nextCursor = &s
 	}
 	return EmployeeListResult{Items: out, NextCursor: nextCursor}, nil
@@ -322,15 +324,16 @@ func (r *EmployeeReader) SearchByOrganization(
 		args = append(args, pattern, pattern, pattern, pattern)
 	}
 	if q.After != nil {
-		c, err := decodeCursor[employeeCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return EmployeeListResult{}, oops.In("reader.membership.employee").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
+		empID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, employee_id) < (?, ?)`
-		args = append(args, c.UpdatedAt, c.EmployeeID)
+		args = append(args, t, empID)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -364,7 +367,7 @@ func (r *EmployeeReader) SearchByOrganization(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(employeeCursor{UpdatedAt: last.UpdatedAt, EmployeeID: last.EmployeeID})
+		s := cursor.Encode(last.UpdatedAt, last.EmployeeID.String())
 		nextCursor = &s
 	}
 	return EmployeeListResult{Items: out, NextCursor: nextCursor}, nil
@@ -545,17 +548,18 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 		args = append(args, state)
 	}
 	if q.After != nil {
-		c, err := decodeCursor[vacationCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return VacationListResult{}, oops.In("reader.membership.vacation").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (starts_at, id) < (?, ?)`
-		args = append(args, c.StartsAt, c.ID)
+		vacID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, vacID)
 	}
-	sqlBuf += ` ORDER BY starts_at DESC, id DESC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
@@ -590,7 +594,7 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(vacationCursor{StartsAt: last.StartsAt, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return VacationListResult{Items: out, NextCursor: nextCursor}, nil

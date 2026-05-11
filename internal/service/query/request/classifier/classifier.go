@@ -9,6 +9,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/oops"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 )
 
@@ -95,17 +96,18 @@ func (r *Reader) ListRequestTypesByOrganization(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		c, err := decodeCursor[createdAtCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return RequestTypeListResult{}, oops.In("reader.request.classifier").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (created_at, id) < (?, ?)`
-		args = append(args, c.CreatedAt, c.ID)
+		typeID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, typeID)
 	}
-	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -134,7 +136,7 @@ func (r *Reader) ListRequestTypesByOrganization(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(createdAtCursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return RequestTypeListResult{Items: out, NextCursor: nextCursor}, nil
@@ -160,17 +162,18 @@ func (r *Reader) ListActiveRequestTypesByOrganization(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		c, err := decodeCursor[nameCursor](*q.After)
+		t, idStr, err := cursor.Decode(*q.After)
 		if err != nil {
 			return RequestTypeListResult{}, oops.In("reader.request.classifier").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` AND (name, id) > (?, ?)`
-		args = append(args, c.Name, c.ID)
+		typeID, _ := uuid.Parse(idStr)
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, typeID)
 	}
-	sqlBuf += ` ORDER BY name ASC, id ASC LIMIT ?`
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
@@ -199,7 +202,7 @@ func (r *Reader) ListActiveRequestTypesByOrganization(
 	if len(out) > q.Limit {
 		out = out[:q.Limit]
 		last := out[len(out)-1]
-		s := encodeCursor(nameCursor{Name: last.Name, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return RequestTypeListResult{Items: out, NextCursor: nextCursor}, nil

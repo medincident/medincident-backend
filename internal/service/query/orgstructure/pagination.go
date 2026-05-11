@@ -1,11 +1,6 @@
 package orgstructure
 
 import (
-	"encoding/base64"
-	"encoding/json"
-	"time"
-
-	"github.com/google/uuid"
 	"github.com/samber/oops"
 
 	"github.com/medincident/medincident-backend/internal/service/query"
@@ -14,32 +9,8 @@ import (
 // Error codes emitted by pagination validators.
 const (
 	ErrCodeListLimitOutOfRange = "list_limit_out_of_range"
-	ErrCodeListBadCursor       = "list_bad_cursor"
+	ErrCodeListBadCursor       = "orgstructure_bad_cursor"
 )
-
-// cursor is the keyset pagination token shared by all list endpoints
-// in this package. Entries are ordered by (created_at DESC, id DESC).
-type cursor struct {
-	CreatedAt time.Time `json:"created_at"`
-	ID        uuid.UUID `json:"id"`
-}
-
-func encodeCursor(c cursor) string {
-	b, _ := json.Marshal(c)
-	return base64.StdEncoding.EncodeToString(b)
-}
-
-func decodeCursor(s string) (cursor, error) {
-	b, err := base64.StdEncoding.DecodeString(s)
-	if err != nil {
-		return cursor{}, err
-	}
-	var c cursor
-	if err := json.Unmarshal(b, &c); err != nil {
-		return cursor{}, err
-	}
-	return c, nil
-}
 
 // ListQuery is the input shared by every List method. Zero Limit maps
 // to query.DefaultLimit. Non-zero Limit outside [query.MinLimit,

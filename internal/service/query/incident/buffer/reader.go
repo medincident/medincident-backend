@@ -6,8 +6,6 @@ package buffer
 import (
 	"context"
 	"database/sql"
-	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"strings"
 	"time"
@@ -18,6 +16,7 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
+	"github.com/medincident/medincident-backend/internal/cursor"
 	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	queryincident "github.com/medincident/medincident-backend/internal/service/query/incident"
@@ -26,33 +25,8 @@ import (
 const (
 	ErrCodeBufferReadFailed = "buffer_query_read_failed"
 	ErrCodeBufferNotFound   = "buffer_query_not_found"
-	ErrCodeListBadCursor    = "buffer_list_bad_cursor"
+	ErrCodeListBadCursor    = "incident_bad_cursor"
 )
-
-// bufferCursor is the keyset pagination token for lists ordered by
-// (created_at DESC, id DESC).
-type bufferCursor struct {
-	CreatedAt time.Time `json:"created_at"`
-	ID        uuid.UUID `json:"id"`
-}
-
-func encodeCursor[T any](c T) string {
-	b, _ := json.Marshal(c)
-	return base64.StdEncoding.EncodeToString(b)
-}
-
-func decodeCursor[T any](s string) (T, error) {
-	b, err := base64.StdEncoding.DecodeString(s)
-	var zero T
-	if err != nil {
-		return zero, err
-	}
-	var c T
-	if err := json.Unmarshal(b, &c); err != nil {
-		return zero, err
-	}
-	return c, nil
-}
 
 // BufferListResult is returned by paginated buffer list methods.
 type BufferListResult struct {
@@ -168,20 +142,21 @@ func (r *Reader) ListBufferEntries(
 	if f != nil {
 		limit = normLimit(f.Limit)
 		if f.After != nil {
-			c, err := decodeCursor[bufferCursor](*f.After)
+			t, idStr, err := cursor.Decode(*f.After)
 			if err != nil {
 				return BufferListResult{}, oops.In(scope).
 					Code(ErrCodeListBadCursor).
 					Public("Invalid pagination cursor.").
 					Wrap(err)
 			}
-			conds = append(conds, "(created_at, id) < (?, ?)")
-			args = append(args, c.CreatedAt, c.ID)
+			bufID, _ := uuid.Parse(idStr)
+			conds = append(conds, "(updated_at, id) < (?, ?)")
+			args = append(args, t, bufID)
 		}
 	}
 	args = append(args, limit+1)
 	q := `SELECT ` + bufferSelect + ` FROM projections.patient_incident_buffer WHERE ` +
-		strings.Join(conds, " AND ") + ` ORDER BY created_at DESC, id DESC LIMIT ?`
+		strings.Join(conds, " AND ") + ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 
 	rows, err := r.db.WithContext(ctx).Raw(q, args...).Rows()
 	if err != nil {
@@ -204,7 +179,7 @@ func (r *Reader) ListBufferEntries(
 	if len(out) > limit {
 		out = out[:limit]
 		last := out[len(out)-1]
-		s := encodeCursor(bufferCursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return BufferListResult{Items: out, NextCursor: nextCursor}, nil
@@ -226,20 +201,21 @@ func (r *Reader) ListMyBufferEntries(
 	args := []any{callerID}
 	cursorCond := ""
 	if after != nil {
-		c, err := decodeCursor[bufferCursor](*after)
+		t, idStr, err := cursor.Decode(*after)
 		if err != nil {
 			return BufferListResult{}, oops.In(scope).
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		cursorCond = ` AND (created_at, id) < (?, ?)`
-		args = append(args, c.CreatedAt, c.ID)
+		bufID, _ := uuid.Parse(idStr)
+		cursorCond = ` AND (updated_at, id) < (?, ?)`
+		args = append(args, t, bufID)
 	}
 	args = append(args, limit+1)
 	q := `SELECT ` + bufferSelect + ` FROM projections.patient_incident_buffer
 		WHERE patient_zitadel_user_id = ?` + cursorCond +
-		` ORDER BY created_at DESC, id DESC LIMIT ?`
+		` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	rows, err := r.db.WithContext(ctx).Raw(q, args...).Rows()
 	if err != nil {
 		return BufferListResult{}, wrapRead(err, "list my buffer")
@@ -261,7 +237,7 @@ func (r *Reader) ListMyBufferEntries(
 	if len(out) > limit {
 		out = out[:limit]
 		last := out[len(out)-1]
-		s := encodeCursor(bufferCursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
 		nextCursor = &s
 	}
 	return BufferListResult{Items: out, NextCursor: nextCursor}, nil
