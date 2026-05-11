@@ -15,8 +15,6 @@ import (
 // (directly under the org). Returns an error when the department row is
 // absent — callers must ensure parent projections are applied before
 // children, which the strict-seq delivery guarantees.
-//
-//nolint:unused // used by membership projectors added in a later task
 func lookupClinicID(tx *gorm.DB, deptID uuid.UUID) (*uuid.UUID, error) {
 	var clinicID *uuid.UUID
 	err := tx.Raw(
@@ -36,8 +34,6 @@ func lookupClinicID(tx *gorm.DB, deptID uuid.UUID) (*uuid.UUID, error) {
 
 // lookupUserName reads the four user-display columns from projections.users.
 // Missing rows return zero-valued null.Strings — lazily back-filled later.
-//
-//nolint:unused // used by membership projectors added in a later task
 func lookupUserName(tx *gorm.DB, zitadelID string) (first, last, display, email null.String) {
 	_ = tx.Raw(
 		`SELECT first_name, last_name, display_name, email FROM projections.users WHERE id = ?`,
@@ -49,7 +45,7 @@ func lookupUserName(tx *gorm.DB, zitadelID string) (first, last, display, email 
 // lookupUserDisplayName returns projections.users.display_name, or empty
 // string when the row is absent.
 //
-//nolint:unused // used by membership projectors added in a later task
+//nolint:unused // reserved for future membership projectors
 func lookupUserDisplayName(tx *gorm.DB, zitadelID string) string {
 	var name string
 	_ = tx.Raw(`SELECT display_name FROM projections.users WHERE id = ?`, zitadelID).
@@ -57,7 +53,6 @@ func lookupUserDisplayName(tx *gorm.DB, zitadelID string) string {
 	return name
 }
 
-//nolint:unused // used by membership projectors added in a later task
 func lookupOrgName(tx *gorm.DB, orgID uuid.UUID) null.String {
 	var name null.String
 	_ = tx.Raw(`SELECT name FROM projections.organizations WHERE id = ?`, orgID).
@@ -65,7 +60,6 @@ func lookupOrgName(tx *gorm.DB, orgID uuid.UUID) null.String {
 	return name
 }
 
-//nolint:unused // used by membership projectors added in a later task
 func lookupClinicName(tx *gorm.DB, clinicID uuid.UUID) null.String {
 	var name null.String
 	_ = tx.Raw(`SELECT name FROM projections.clinics WHERE id = ?`, clinicID).
@@ -73,7 +67,6 @@ func lookupClinicName(tx *gorm.DB, clinicID uuid.UUID) null.String {
 	return name
 }
 
-//nolint:unused // used by membership projectors added in a later task
 func lookupDepartmentName(tx *gorm.DB, deptID uuid.UUID) null.String {
 	var name null.String
 	_ = tx.Raw(`SELECT name FROM projections.departments WHERE id = ?`, deptID).
