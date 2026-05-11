@@ -149,6 +149,7 @@ func main() {
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
+		grpc.MaxConcurrentStreams(cfg.Server.GRPC.MaxConcurrentStreams),
 		grpc.ChainUnaryInterceptor(
 			recovery.UnaryServerInterceptor(recovery.WithRecoveryHandler(panicRecoveryHandler(logger))),
 			grpcmw.ErrorInterceptor(logger),

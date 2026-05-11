@@ -27,8 +27,9 @@ func defaultConfig() Config {
 	return Config{
 		Server: serverConfig{
 			GRPC: config.GRPCServerConfig{
-				Address:        ":8080",
-				MaxRecvMsgSize: 4 * 1024 * 1024,
+				Address:              ":8080",
+				MaxRecvMsgSize:       4 * 1024 * 1024,
+				MaxConcurrentStreams: 500,
 			},
 		},
 		Zerolog: config.ZerologConfig{
