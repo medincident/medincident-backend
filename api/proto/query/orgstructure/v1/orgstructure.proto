@@ -55,9 +55,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 // OrgStructureQueryService exposes read methods over the orgstructure
-// projections. Pagination is offset/limit; backed by COUNT(*) queries
-// via dedicated CountX RPCs — clients drive pagination controls with
-// both values.
+// projections. List endpoints use cursor-based keyset pagination.
 service OrgStructureQueryService {
   rpc GetOrganization(GetOrganizationRequest) returns (GetOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{id}"};
@@ -187,10 +185,11 @@ message GetOrganizationResponse {
 
 message ListOrganizationsRequest {
   int32 limit = 1;
-  int32 offset = 2;
+  string after = 2;
 }
 message ListOrganizationsResponse {
   repeated OrganizationListItem items = 1;
+  string next_cursor = 2;
 }
 
 message CountOrganizationsRequest {}
@@ -201,10 +200,11 @@ message CountOrganizationsResponse {
 message SearchOrganizationsRequest {
   string query = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message SearchOrganizationsResponse {
   repeated OrganizationListItem items = 1;
+  string next_cursor = 2;
 }
 
 message GetClinicRequest {
@@ -217,10 +217,11 @@ message GetClinicResponse {
 message ListClinicsByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListClinicsByOrganizationResponse {
   repeated ClinicListItem items = 1;
+  string next_cursor = 2;
 }
 
 message CountClinicsByOrganizationRequest {
@@ -240,10 +241,11 @@ message GetDepartmentResponse {
 message ListDepartmentsByClinicRequest {
   string clinic_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListDepartmentsByClinicResponse {
   repeated DepartmentListItem items = 1;
+  string next_cursor = 2;
 }
 
 message CountDepartmentsByClinicRequest {

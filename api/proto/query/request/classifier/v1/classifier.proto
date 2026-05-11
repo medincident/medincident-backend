@@ -93,17 +93,19 @@ message GetRequestTypeResponse {
 message ListRequestTypesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListRequestTypesByOrganizationResponse {
   repeated RequestType items = 1;
+  string next_cursor = 2;
 }
 
 message ListActiveRequestTypesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListActiveRequestTypesByOrganizationResponse {
   repeated RequestType items = 1;
+  string next_cursor = 2;
 }

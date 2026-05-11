@@ -177,7 +177,7 @@ message GetEmployeeResponse {
 message ListEmployeesByDepartmentRequest {
   string department_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
   // When false (default), rows with terminated_at IS NOT NULL are
   // hidden. Set true to include offboarded employees.
   bool include_terminated = 4;
@@ -190,12 +190,13 @@ message ListEmployeesByDepartmentRequest {
 }
 message ListEmployeesByDepartmentResponse {
   repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
 }
 
 message ListEmployeesByClinicRequest {
   string clinic_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
   // When false (default), rows with terminated_at IS NOT NULL are
   // hidden. Set true to include offboarded employees.
   bool include_terminated = 4;
@@ -208,12 +209,13 @@ message ListEmployeesByClinicRequest {
 }
 message ListEmployeesByClinicResponse {
   repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
 }
 
 message ListEmployeesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
   // When false (default), rows with terminated_at IS NOT NULL are
   // hidden. Set true to include offboarded employees.
   bool include_terminated = 4;
@@ -226,6 +228,7 @@ message ListEmployeesByOrganizationRequest {
 }
 message ListEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
 }
 
 message CountEmployeesByDepartmentRequest {
@@ -286,7 +289,7 @@ message SearchEmployeesByOrganizationRequest {
   // authz round-trip.
   string query = 2;
   int32 limit = 3;
-  int32 offset = 4;
+  string after = 4;
   // When false (default), rows with terminated_at IS NOT NULL are
   // hidden. Set true to include offboarded employees.
   bool include_terminated = 5;
@@ -299,6 +302,7 @@ message SearchEmployeesByOrganizationRequest {
 }
 message SearchEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
 }
 
 message ListVacationsByEmployeeRequest {
@@ -307,10 +311,11 @@ message ListVacationsByEmployeeRequest {
   // Valid values: scheduled, active, ended, cancelled.
   string state = 2;
   int32 limit = 3;
-  int32 offset = 4;
+  string after = 4;
 }
 message ListVacationsByEmployeeResponse {
   repeated VacationView items = 1;
+  string next_cursor = 2;
 }
 
 message CountVacationsByEmployeeRequest {
@@ -340,34 +345,38 @@ message GetDepartmentResponsibleResponse {
 message ListOrgAdminsRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListOrgAdminsResponse {
   repeated RoleAssignment items = 1;
+  string next_cursor = 2;
 }
 
 message ListOrgDispatchersRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListOrgDispatchersResponse {
   repeated RoleAssignment items = 1;
+  string next_cursor = 2;
 }
 
 message ListOrgHeadsRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListOrgHeadsResponse {
   repeated RoleAssignment items = 1;
+  string next_cursor = 2;
 }
 
 message ListSystemAdminsRequest {
   int32 limit = 1;
-  int32 offset = 2;
+  string after = 2;
 }
 message ListSystemAdminsResponse {
   repeated SystemAdminView items = 1;
+  string next_cursor = 2;
 }

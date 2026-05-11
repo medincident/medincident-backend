@@ -140,19 +140,21 @@ message GetCategoryResponse {
 message ListCategoriesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListCategoriesByOrganizationResponse {
   repeated Category items = 1;
+  string next_cursor = 2;
 }
 
 message ListActiveRootCategoriesRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListActiveRootCategoriesResponse {
   repeated Category items = 1;
+  string next_cursor = 2;
 }
 
 message ListCategorySubtreeRequest {
@@ -172,35 +174,39 @@ message GetTypeResponse {
 message ListTypesByCategoryRequest {
   string category_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListTypesByCategoryResponse {
   repeated Type items = 1;
+  string next_cursor = 2;
 }
 
 message ListActiveTypesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListActiveTypesByOrganizationResponse {
   repeated Type items = 1;
+  string next_cursor = 2;
 }
 
 message ListPatientAllowedTypesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListPatientAllowedTypesByOrganizationResponse {
   repeated Type items = 1;
+  string next_cursor = 2;
 }
 
 message ListPatientVisibleCategoriesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListPatientVisibleCategoriesByOrganizationResponse {
   repeated Category items = 1;
+  string next_cursor = 2;
 }

@@ -126,19 +126,21 @@ message GetServiceRequestResponse {
 message ListServiceRequestsRequest {
   string organization_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListServiceRequestsResponse {
   repeated ServiceRequest items = 1;
+  string next_cursor = 2;
 }
 
 message ListServiceRequestsByIncidentRequest {
   string incident_id = 1;
   int32 limit = 2;
-  int32 offset = 3;
+  string after = 3;
 }
 message ListServiceRequestsByIncidentResponse {
   repeated ServiceRequest items = 1;
+  string next_cursor = 2;
 }
 
 message StatusHistoryEntry {
