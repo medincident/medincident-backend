@@ -8,12 +8,17 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	servicerequestv1 "github.com/medincident/medincident-backend/pkg/event/service_request/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // CreateServiceRequestPayload is the validated client-facing payload.
@@ -135,11 +140,6 @@ func (s *ServiceRequestService) Create(
 			}
 		}
 
-		authorDisplayName, err := s.resolveActorDisplayName(tx, cmd.Caller.ZitadelUserID)
-		if err != nil {
-			return err
-		}
-
 		now := time.Now()
 		sr := model.ServiceRequest{
 			ID:             id,
@@ -176,24 +176,70 @@ func (s *ServiceRequestService) Create(
 					With("service_request_id", id).With("employee_id", empID).Wrap(err)
 			}
 
-			empName, err := s.resolveEmployeeName(tx, empID)
+			env, err := buildServiceRequestExecutorAssignedEnvelope(id, empID, cmd.Caller.ZitadelUserID, now)
 			if err != nil {
 				return err
 			}
-			if err := projector.ServiceRequestExecutorAssigned(
-				tx, id, empID, empName, cmd.Caller.ZitadelUserID, authorDisplayName, now,
-			); err != nil {
+			if err := outbox.Append(tx, "medincident.event.service_request.v1.executor_assigned", env); err != nil {
 				return err
 			}
 		}
 
-		if err := projector.ServiceRequestCreated(tx, &sr, &projector.ServiceRequestAuthorSnapshot{
-			DisplayName: authorDisplayName,
-		}); err != nil {
+		env, err := buildServiceRequestCreatedEnvelope(&sr, cmd.Caller.ZitadelUserID)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.service_request.v1.created", env); err != nil {
 			return err
 		}
 		result.ID = id
 		return nil
 	})
 	return result, err
+}
+
+func buildServiceRequestCreatedEnvelope(sr *model.ServiceRequest, authorZitadelUserID string) (*eventv1.Envelope, error) {
+	msg := &servicerequestv1.ServiceRequestCreated{
+		RequestId:      sr.ID.String(),
+		OrganizationId: sr.OrganizationID.String(),
+		ClinicId:       sr.ClinicID.String(),
+		DepartmentId:   sr.DepartmentID.String(),
+		TypeId:         sr.TypeID.String(),
+		Description:    sr.Description,
+		Status:         string(sr.Status),
+		AuthorId:       authorZitadelUserID,
+		CreatedAt:      timestamppb.New(sr.CreatedAt),
+	}
+	if sr.IncidentID.Valid {
+		msg.IncidentId = wrapperspb.String(sr.IncidentID.UUID.String())
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(sr.CreatedAt),
+		AggregateType: "service_request",
+		AggregateId:   sr.ID.String(),
+		Payload:       payload,
+	}, nil
+}
+
+func buildServiceRequestExecutorAssignedEnvelope(requestID, employeeID uuid.UUID, actorZitadelUserID string, changedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &servicerequestv1.ServiceRequestExecutorAssigned{
+		RequestId:  requestID.String(),
+		EmployeeId: employeeID.String(),
+		ActorId:    actorZitadelUserID,
+		ChangedAt:  timestamppb.New(changedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(changedAt),
+		AggregateType: "service_request",
+		AggregateId:   requestID.String(),
+		Payload:       payload,
+	}, nil
 }

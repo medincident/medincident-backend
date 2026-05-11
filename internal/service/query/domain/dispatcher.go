@@ -17,6 +17,8 @@ import (
 	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
 	incidentv1 "github.com/medincident/medincident-backend/pkg/event/incident/v1"
 	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	requesttypev1 "github.com/medincident/medincident-backend/pkg/event/request_type/v1"
+	servicerequestv1 "github.com/medincident/medincident-backend/pkg/event/service_request/v1"
 	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
 	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 	vacv1 "github.com/medincident/medincident-backend/pkg/event/vacation/v1"
@@ -212,6 +214,30 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 			return d.proj.PatientIncidentBufferCreated(tx, aggregateID, occurredAt, m)
 		case *bufferv1.PatientIncidentBufferUpdated:
 			return d.proj.PatientIncidentBufferUpdated(tx, aggregateID, occurredAt, m)
+
+		// ── Request Type ──────────────────────────────────────────────────────
+		case *requesttypev1.RequestTypeCreated:
+			return d.proj.RequestTypeCreated(tx, aggregateID, occurredAt, m)
+		case *requesttypev1.RequestTypeDetailsUpdated:
+			return d.proj.RequestTypeDetailsUpdated(tx, aggregateID, occurredAt, m)
+		case *requesttypev1.RequestTypeDeactivated:
+			return d.proj.RequestTypeDeactivated(tx, aggregateID, occurredAt, m)
+		case *requesttypev1.RequestTypeReactivated:
+			return d.proj.RequestTypeReactivated(tx, aggregateID, occurredAt, m)
+		case *requesttypev1.RequestTypeDeleted:
+			return d.proj.RequestTypeDeleted(tx, aggregateID, occurredAt, m)
+
+		// ── Service Request ───────────────────────────────────────────────────
+		case *servicerequestv1.ServiceRequestCreated:
+			return d.proj.ServiceRequestCreated(tx, aggregateID, occurredAt, m)
+		case *servicerequestv1.ServiceRequestStatusChanged:
+			return d.proj.ServiceRequestStatusChanged(tx, aggregateID, occurredAt, m)
+		case *servicerequestv1.ServiceRequestDescriptionUpdated:
+			return d.proj.ServiceRequestDescriptionUpdated(tx, aggregateID, occurredAt, m)
+		case *servicerequestv1.ServiceRequestExecutorAssigned:
+			return d.proj.ServiceRequestExecutorAssigned(tx, aggregateID, occurredAt, m)
+		case *servicerequestv1.ServiceRequestExecutorRemoved:
+			return d.proj.ServiceRequestExecutorRemoved(tx, aggregateID, occurredAt, m)
 
 		default:
 			d.log.Warn().

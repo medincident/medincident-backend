@@ -7,13 +7,17 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	requesttypev1 "github.com/medincident/medincident-backend/pkg/event/request_type/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // DeactivateRequestTypePayload identifies the request type to deactivate.
@@ -66,7 +70,28 @@ func (s *RequestTypeService) Deactivate(
 			return oops.In(scope).Code(ErrCodeRequestTypeSaveFailed).
 				With("request_type_id", row.ID).Wrap(err)
 		}
-		return projector.RequestTypeDeactivated(tx, row.ID, now)
+		env, err := buildRequestTypeDeactivatedEnvelope(row.ID, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.request_type.v1.deactivated", env)
 	})
 	return DeactivateRequestTypeResult{}, err
+}
+
+func buildRequestTypeDeactivatedEnvelope(typeID uuid.UUID, updatedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &requesttypev1.RequestTypeDeactivated{
+		TypeId:    typeID.String(),
+		UpdatedAt: timestamppb.New(updatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeRequestTypeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(updatedAt),
+		AggregateType: "request_type",
+		AggregateId:   typeID.String(),
+		Payload:       payload,
+	}, nil
 }

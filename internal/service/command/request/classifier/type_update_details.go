@@ -9,13 +9,18 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	requesttypev1 "github.com/medincident/medincident-backend/pkg/event/request_type/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateRequestTypeDetailsPayload carries the new name and (optional)
@@ -89,7 +94,32 @@ func (s *RequestTypeService) UpdateDetails(
 			return oops.In(scope).Code(ErrCodeRequestTypeSaveFailed).
 				With("request_type_id", row.ID).Wrap(err)
 		}
-		return projector.RequestTypeDetailsUpdated(tx, &row)
+		env, err := buildRequestTypeDetailsUpdatedEnvelope(&row)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.request_type.v1.details_updated", env)
 	})
 	return UpdateRequestTypeDetailsResult{}, err
+}
+
+func buildRequestTypeDetailsUpdatedEnvelope(rt *model.RequestType) (*eventv1.Envelope, error) {
+	msg := &requesttypev1.RequestTypeDetailsUpdated{
+		TypeId:    rt.ID.String(),
+		Name:      rt.Name,
+		UpdatedAt: timestamppb.New(rt.UpdatedAt),
+	}
+	if rt.Description.Valid {
+		msg.Description = wrapperspb.String(rt.Description.String)
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeRequestTypeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(rt.UpdatedAt),
+		AggregateType: "request_type",
+		AggregateId:   rt.ID.String(),
+		Payload:       payload,
+	}, nil
 }

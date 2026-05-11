@@ -8,12 +8,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	requesttypev1 "github.com/medincident/medincident-backend/pkg/event/request_type/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // CreateRequestTypePayload is the validated client-facing payload.
@@ -83,11 +88,38 @@ func (s *RequestTypeService) Create(
 				With("request_type_id", id).
 				Wrap(err)
 		}
-		if err := projector.RequestTypeCreated(tx, &row); err != nil {
+		env, err := buildRequestTypeCreatedEnvelope(&row)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.request_type.v1.created", env); err != nil {
 			return err
 		}
 		result.ID = id
 		return nil
 	})
 	return result, err
+}
+
+func buildRequestTypeCreatedEnvelope(rt *model.RequestType) (*eventv1.Envelope, error) {
+	msg := &requesttypev1.RequestTypeCreated{
+		TypeId:         rt.ID.String(),
+		OrganizationId: rt.OrganizationID.String(),
+		Name:           rt.Name,
+		IsActive:       rt.IsActive,
+		CreatedAt:      timestamppb.New(rt.CreatedAt),
+	}
+	if rt.Description.Valid {
+		msg.Description = wrapperspb.String(rt.Description.String)
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeRequestTypeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(rt.CreatedAt),
+		AggregateType: "request_type",
+		AggregateId:   rt.ID.String(),
+		Payload:       payload,
+	}, nil
 }
