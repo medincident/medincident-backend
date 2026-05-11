@@ -6,12 +6,16 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	servicerequestv1 "github.com/medincident/medincident-backend/pkg/event/service_request/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateServiceRequestStatusPayload carries the new status.
@@ -60,19 +64,17 @@ func (s *ServiceRequestService) UpdateStatus(
 			return err
 		}
 
-		actorDisplayName, err := s.resolveActorDisplayName(tx, cmd.Caller.ZitadelUserID)
-		if err != nil {
-			return err
-		}
-
 		old := sr.Status
 		sr.Status = newStatus
 		sr.UpdatedAt = now
 		if err := tx.Save(sr).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
 		}
-		return projector.ServiceRequestStatusChanged(
-			tx, sr.ID, old, sr.Status, cmd.Caller.ZitadelUserID, actorDisplayName, now)
+		env, err := buildServiceRequestStatusChangedEnvelope(sr.ID, old, sr.Status, cmd.Caller.ZitadelUserID, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.service_request.v1.status_changed", env)
 	})
 }
 
@@ -117,4 +119,24 @@ func (s *ServiceRequestService) validateStatusTransition(
 		Public("This status transition is not allowed.").
 		With("from", from).With("to", to).
 		Errorf("invalid transition")
+}
+
+func buildServiceRequestStatusChangedEnvelope(requestID uuid.UUID, oldStatus, newStatus model.ServiceRequestStatus, actorZitadelUserID string, changedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &servicerequestv1.ServiceRequestStatusChanged{
+		RequestId: requestID.String(),
+		OldStatus: string(oldStatus),
+		NewStatus: string(newStatus),
+		ActorId:   actorZitadelUserID,
+		ChangedAt: timestamppb.New(changedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(changedAt),
+		AggregateType: "service_request",
+		AggregateId:   requestID.String(),
+		Payload:       payload,
+	}, nil
 }

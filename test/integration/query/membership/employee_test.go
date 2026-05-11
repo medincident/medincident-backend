@@ -11,11 +11,17 @@ import (
 	"github.com/guregu/null/v6"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	memberread "github.com/medincident/medincident-backend/internal/service/query/membership"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	vacv1 "github.com/medincident/medincident-backend/pkg/event/vacation/v1"
 )
 
 // seedOrgClinicDept inserts an organization + clinic + department
@@ -30,13 +36,26 @@ func seedOrgClinicDept(t *testing.T, ctx context.Context, now time.Time) (uuid.U
 	dept := &model.Department{ID: deptID, ClinicID: clinicID, Name: "D", CreatedAt: now, UpdatedAt: now}
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.OrganizationCreated(tx, org); err != nil {
+		if err := qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+			Name:         org.Name,
+			LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+			CreatedAt:    timestamppb.New(org.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		if err := projector.ClinicCreated(tx, clinic); err != nil {
+		if err := qprojector.ClinicCreated(tx, clinic.ID.String(), clinic.CreatedAt, &clinicv1.ClinicCreated{
+			OrganizationId:  clinic.OrganizationID.String(),
+			Name:            clinic.Name,
+			PhysicalAddress: &clinicv1.Address{Text: clinic.PhysicalAddress.Text},
+			CreatedAt:       timestamppb.New(clinic.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		return projector.DepartmentCreated(tx, dept)
+		return qprojector.DepartmentCreated(tx, dept.ID.String(), dept.CreatedAt, &deptv1.DepartmentCreated{
+			ClinicId:  dept.ClinicID.String(),
+			Name:      dept.Name,
+			CreatedAt: timestamppb.New(dept.CreatedAt),
+		})
 	}))
 	return orgID, clinicID, deptID
 }
@@ -62,7 +81,13 @@ func TestEmployeeReader_Get_AndListByDepartment(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeHired(tx, emp)
+		return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			Position:       emp.Position.String,
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+		})
 	}))
 
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
@@ -109,16 +134,37 @@ func TestEmployeeReader_EmployeeFilters(t *testing.T) {
 		CreatedAt: now, UpdatedAt: now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.EmployeeHired(tx, active); err != nil {
+		if err := qprojector.EmployeeHired(tx, active.ID.String(), active.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  active.ZitadelUserID,
+			OrganizationId: active.OrganizationID.String(),
+			DepartmentId:   active.DepartmentID.String(),
+			Position:       active.Position.String,
+			HiredAt:        timestamppb.New(active.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		if err := projector.EmployeeHired(tx, term); err != nil {
+		if err := qprojector.EmployeeHired(tx, term.ID.String(), term.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  term.ZitadelUserID,
+			OrganizationId: term.OrganizationID.String(),
+			DepartmentId:   term.DepartmentID.String(),
+			Position:       term.Position.String,
+			HiredAt:        timestamppb.New(term.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		if err := projector.EmployeeTerminated(tx, term, now); err != nil {
+		if err := qprojector.EmployeeTerminated(tx, term.ID.String(), now, &empv1.EmployeeTerminated{
+			OrganizationId: term.OrganizationID.String(),
+			DepartmentId:   term.DepartmentID.String(),
+			TerminatedAt:   timestamppb.New(now),
+		}); err != nil {
 			return err
 		}
-		return projector.VacationStarted(tx, vac)
+		return qprojector.VacationStarted(tx, vac.EmployeeID.String(), vac.CreatedAt, &vacv1.VacationStarted{
+			VacationId: vac.ID.String(),
+			StartsAt:   timestamppb.New(vac.StartsAt),
+			EndsAt:     timestamppb.New(vac.EndsAt.Time),
+			CreatedAt:  timestamppb.New(vac.CreatedAt),
+		})
 	}))
 
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
@@ -178,7 +224,12 @@ func TestEmployeeReader_SearchByOrganization(t *testing.T) {
 		id := uuid.Must(uuid.NewV7())
 		emp := &model.Employee{ID: id, ZitadelUserID: zit, OrganizationID: orgID, DepartmentID: deptID, CreatedAt: now, UpdatedAt: now}
 		require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-			return projector.EmployeeHired(tx, emp)
+			return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+				ZitadelUserId:  emp.ZitadelUserID,
+				OrganizationId: emp.OrganizationID.String(),
+				DepartmentId:   emp.DepartmentID.String(),
+				HiredAt:        timestamppb.New(emp.CreatedAt),
+			})
 		}))
 		return id
 	}
@@ -233,10 +284,20 @@ func TestEmployeeReader_ListVacationsByEmployee(t *testing.T) {
 		CreatedAt: now, UpdatedAt: now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.EmployeeHired(tx, emp); err != nil {
+		if err := qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		return projector.VacationScheduled(tx, vac)
+		return qprojector.VacationScheduled(tx, vac.EmployeeID.String(), vac.CreatedAt, &vacv1.VacationScheduled{
+			VacationId: vac.ID.String(),
+			StartsAt:   timestamppb.New(vac.StartsAt),
+			EndsAt:     timestamppb.New(vac.EndsAt.Time),
+			CreatedAt:  timestamppb.New(vac.CreatedAt),
+		})
 	}))
 
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)

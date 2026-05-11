@@ -11,11 +11,16 @@ import (
 	"github.com/guregu/null/v6"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	memberread "github.com/medincident/medincident-backend/internal/service/query/membership"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
+	vacv1 "github.com/medincident/medincident-backend/pkg/event/vacation/v1"
 )
 
 // TestRoleReader_GetClinicHead returns ErrRoleVacant when the clinic
@@ -48,10 +53,18 @@ func TestRoleReader_GetClinicHead(t *testing.T) {
 		CreatedAt: now, UpdatedAt: now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.EmployeeHired(tx, emp); err != nil {
+		if err := qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		return projector.ClinicHeadAssigned(tx, head)
+		return qprojector.ClinicHeadAssigned(tx, head.ClinicID.String(), head.CreatedAt, &clinicv1.ClinicHeadAssigned{
+			EmployeeId: head.EmployeeID.String(),
+			AssignedAt: timestamppb.New(head.CreatedAt),
+		})
 	}))
 
 	view, err = reader.GetClinicHead(ctx, sysadminCaller, clinicID)
@@ -97,16 +110,41 @@ func TestRoleReader_GetClinicHead_WithDeputy(t *testing.T) {
 		CreatedAt:        now, UpdatedAt: now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.EmployeeHired(tx, holder); err != nil {
+		if err := qprojector.EmployeeHired(tx, holder.ID.String(), holder.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  holder.ZitadelUserID,
+			OrganizationId: holder.OrganizationID.String(),
+			DepartmentId:   holder.DepartmentID.String(),
+			HiredAt:        timestamppb.New(holder.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		if err := projector.EmployeeHired(tx, deputy); err != nil {
+		if err := qprojector.EmployeeHired(tx, deputy.ID.String(), deputy.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  deputy.ZitadelUserID,
+			OrganizationId: deputy.OrganizationID.String(),
+			DepartmentId:   deputy.DepartmentID.String(),
+			HiredAt:        timestamppb.New(deputy.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		if err := projector.VacationStarted(tx, vac); err != nil {
+		if err := qprojector.VacationStarted(tx, vac.EmployeeID.String(), vac.CreatedAt, &vacv1.VacationStarted{
+			VacationId: vac.ID.String(),
+			StartsAt:   timestamppb.New(vac.StartsAt),
+			EndsAt:     timestamppb.New(vac.EndsAt.Time),
+			CreatedAt:  timestamppb.New(vac.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		return projector.ClinicHeadAssigned(tx, head)
+		if err := qprojector.ClinicHeadAssigned(tx, head.ClinicID.String(), head.CreatedAt, &clinicv1.ClinicHeadAssigned{
+			EmployeeId: head.EmployeeID.String(),
+			AssignedAt: timestamppb.New(head.CreatedAt),
+		}); err != nil {
+			return err
+		}
+		return qprojector.ClinicHeadDeputyAssigned(tx, head.ClinicID.String(), head.UpdatedAt, &clinicv1.ClinicHeadDeputyAssigned{
+			EmployeeId:       head.EmployeeID.String(),
+			DeputyEmployeeId: head.DeputyEmployeeID.V.String(),
+			UpdatedAt:        timestamppb.New(head.UpdatedAt),
+		})
 	}))
 
 	reader := memberread.NewRoleReader(testDB, authzSvc, &logger)
@@ -132,10 +170,14 @@ func TestRoleReader_ListSystemAdmins(t *testing.T) {
 
 	now := time.Now().UTC().Truncate(time.Second)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.SystemAdminGranted(tx, "zit-a", now); err != nil {
+		if err := qprojector.SystemAdminGranted(tx, "zit-a", now, &sav1.SystemAdminGranted{
+			GrantedAt: timestamppb.New(now),
+		}); err != nil {
 			return err
 		}
-		return projector.SystemAdminGranted(tx, "zit-b", now.Add(time.Second))
+		return qprojector.SystemAdminGranted(tx, "zit-b", now.Add(time.Second), &sav1.SystemAdminGranted{
+			GrantedAt: timestamppb.New(now.Add(time.Second)),
+		})
 	}))
 
 	reader := memberread.NewRoleReader(testDB, authzSvc, &logger)

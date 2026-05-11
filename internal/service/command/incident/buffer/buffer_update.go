@@ -8,12 +8,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	bufferv1 "github.com/medincident/medincident-backend/pkg/event/incident/buffer/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 type UpdatePayload struct {
@@ -95,6 +100,41 @@ func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 		if err := tx.Save(b).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
 		}
-		return projector.BufferUpdated(tx, b)
+		env, err := buildPatientIncidentBufferUpdatedEnvelope(b)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.patient_incident_buffer.v1.updated", env)
 	})
+}
+
+func buildPatientIncidentBufferUpdatedEnvelope(b *model.PatientIncidentBuffer) (*eventv1.Envelope, error) {
+	msg := &bufferv1.PatientIncidentBufferUpdated{
+		BufferId:    b.ID.String(),
+		Description: b.Description.ValueOrZero(),
+		Status:      string(b.Status),
+		UpdatedAt:   timestamppb.New(b.UpdatedAt),
+	}
+	if b.OccurredAt.Valid {
+		msg.OccurredAt = timestamppb.New(b.OccurredAt.Time)
+	}
+	if b.CategoryID.Valid {
+		msg.CategoryId = wrapperspb.String(b.CategoryID.UUID.String())
+	}
+	if b.TypeID.Valid {
+		msg.TypeId = wrapperspb.String(b.TypeID.UUID.String())
+	}
+	if b.PublishedIncidentID.Valid {
+		msg.PublishedIncidentId = wrapperspb.String(b.PublishedIncidentID.UUID.String())
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(b.UpdatedAt),
+		AggregateType: "patient_incident_buffer",
+		AggregateId:   b.ID.String(),
+		Payload:       payload,
+	}, nil
 }

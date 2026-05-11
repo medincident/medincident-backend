@@ -8,13 +8,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateOrganizationLegalAddressPayload carries the new legal address.
@@ -27,6 +31,24 @@ type UpdateOrganizationLegalAddressPayload struct {
 type UpdateOrganizationLegalAddressCommand struct {
 	Caller  authz.Caller
 	Payload UpdateOrganizationLegalAddressPayload
+}
+
+func buildOrganizationLegalAddressChangedEnvelope(org *model.Organization) (*eventv1.Envelope, error) {
+	msg := &orgv1.OrganizationLegalAddressChanged{
+		LegalAddress: buildOrgAddressProto(org.LegalAddress),
+		UpdatedAt:    timestamppb.New(org.UpdatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.orgstructure.organization").
+			Code(ErrCodeOrganizationSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(org.UpdatedAt),
+		AggregateType: "organization",
+		AggregateId:   org.ID.String(),
+		Payload:       payload,
+	}, nil
 }
 
 // UpdateLegalAddress replaces the organization's legal address. Returns
@@ -82,6 +104,10 @@ func (s *OrganizationService) UpdateLegalAddress(
 				Wrap(err)
 		}
 
-		return projector.OrganizationLegalAddressChanged(tx, &org)
+		env, err := buildOrganizationLegalAddressChangedEnvelope(&org)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.organization.v1.legal_address_changed", env)
 	})
 }

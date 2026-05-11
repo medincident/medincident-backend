@@ -2,7 +2,7 @@ DIST   := ./dist
 GOOS   ?= $(shell go env GOOS)
 GOARCH ?= $(shell go env GOARCH)
 
-BINARIES := command-server query-server gateway-server
+BINARIES := command-server query-server gateway-server publisher-server
 
 # ── Platforms ────────────────────────────────────────────────────────────────
 # Edit the list below to add or remove build targets.

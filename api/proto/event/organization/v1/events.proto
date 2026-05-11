@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package event.organization.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Address is embedded in organization events that carry a legal address.
+// Duplicated per-aggregate so aggregates can evolve independently.
+message Address {
+  string text = 1;
+  Point point = 2;
+}
+
+message Point {
+  double longitude = 1;
+  double latitude = 2;
+}
+
+// OrganizationCreated is emitted when a new organization is persisted.
+// subject: medincident.event.organization.v1.created
+message OrganizationCreated {
+  string name = 1;
+  string description = 2; // empty = absent
+  Address legal_address = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+// OrganizationDetailsChanged is emitted when name or description changes.
+// subject: medincident.event.organization.v1.details_changed
+message OrganizationDetailsChanged {
+  string name = 1;
+  string description = 2; // empty = absent
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+// OrganizationLegalAddressChanged is emitted when the legal address changes.
+// subject: medincident.event.organization.v1.legal_address_changed
+message OrganizationLegalAddressChanged {
+  Address legal_address = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// ── Org-level role events ─────────────────────────────────────────────
+
+// OrgAdminAssigned — subject: medincident.event.organization.v1.org_admin_assigned
+message OrgAdminAssigned {
+  string employee_id = 1;
+  google.protobuf.Timestamp assigned_at = 2;
+}
+
+// OrgAdminDeputyAssigned — subject: medincident.event.organization.v1.org_admin_deputy_assigned
+message OrgAdminDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+// OrgAdminDeputyRemoved — subject: medincident.event.organization.v1.org_admin_deputy_removed
+message OrgAdminDeputyRemoved {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// OrgAdminRevoked — subject: medincident.event.organization.v1.org_admin_revoked
+message OrgAdminRevoked {
+  string employee_id = 1;
+}
+
+// OrgHeadAssigned — subject: medincident.event.organization.v1.org_head_assigned
+message OrgHeadAssigned {
+  string employee_id = 1;
+  google.protobuf.Timestamp assigned_at = 2;
+}
+message OrgHeadDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+message OrgHeadDeputyRemoved {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+message OrgHeadRevoked {
+  string employee_id = 1;
+}
+
+// OrgDispatcherAssigned — subject: medincident.event.organization.v1.org_dispatcher_assigned
+message OrgDispatcherAssigned {
+  string employee_id = 1;
+  google.protobuf.Timestamp assigned_at = 2;
+}
+message OrgDispatcherDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+message OrgDispatcherDeputyRemoved {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+message OrgDispatcherRevoked {
+  string employee_id = 1;
+}

@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
+	vacv1 "github.com/medincident/medincident-backend/pkg/event/vacation/v1"
 )
 
 // CancelScheduledVacationPayload identifies the future vacation to remove.
@@ -71,6 +76,27 @@ func (s *EmployeeService) CancelScheduledVacation(ctx context.Context, cmd Cance
 			return oops.In(scopeVacation).Code(ErrCodeVacationDeleteFailed).Wrap(err)
 		}
 
-		return projector.VacationCancelled(tx, &vac, now)
+		env, err := buildVacationCancelledEnvelope(&vac, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.vacation.v1.cancelled", env)
 	})
+}
+
+func buildVacationCancelledEnvelope(v *model.EmployeeVacation, cancelledAt time.Time) (*eventv1.Envelope, error) {
+	msg := &vacv1.VacationCancelled{
+		VacationId:  v.ID.String(),
+		CancelledAt: timestamppb.New(cancelledAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(cancelledAt),
+		AggregateType: "vacation",
+		AggregateId:   v.EmployeeID.String(),
+		Payload:       payload,
+	}, nil
 }

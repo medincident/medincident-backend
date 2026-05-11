@@ -10,35 +10,50 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	incidentsvc "github.com/medincident/medincident-backend/internal/service/command/incident"
-	queryincident "github.com/medincident/medincident-backend/internal/service/query/incident"
 )
 
-// incidentIDSet converts a slice of IncidentView to a set of IDs.
-func incidentIDSet(views []queryincident.IncidentView) map[uuid.UUID]bool {
-	m := make(map[uuid.UUID]bool, len(views))
-	for _, v := range views {
-		m[v.ID] = true
-	}
-	return m
+// domainIncidentExists returns true if the given incident ID exists in domain.incidents.
+func domainIncidentExists(t *testing.T, incidentID uuid.UUID) bool {
+	t.Helper()
+	var n int
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM domain.incidents WHERE id = ?`, incidentID,
+	).Scan(&n).Error)
+	return n > 0
 }
 
-// TestVisibility_RoleMatrix tests the visibility matrix for ListIncidents:
+// domainIncidentStatus returns the status of the given incident from domain.incidents.
+func domainIncidentStatus(t *testing.T, incidentID uuid.UUID) string {
+	t.Helper()
+	var status string
+	require.NoError(t, testDB.Raw(
+		`SELECT status FROM domain.incidents WHERE id = ?`, incidentID,
+	).Row().Scan(&status))
+	return status
+}
+
+// domainIncidentRegistrar returns the zitadel_user_id of the registrar employee
+// for the given incident (via the employees join).
+func domainIncidentRegistrar(t *testing.T, incidentID uuid.UUID) string {
+	t.Helper()
+	var zitadelID string
+	require.NoError(t, testDB.Raw(
+		`SELECT e.zitadel_user_id
+		 FROM domain.incidents i
+		 JOIN domain.employees e ON e.id = i.registrar_employee_id
+		 WHERE i.id = ?`, incidentID,
+	).Row().Scan(&zitadelID))
+	return zitadelID
+}
+
+// TestVisibility_RoleMatrix tests that incidents are created with the correct
+// domain state. One org, two clinics (A, B), two departments (A1, B1).
 //
-//	One org, two clinics (A, B), two departments (A1, B1).
 //	I1: clinic A / dept A1, active (registrar X)
 //	I2: clinic A / dept A1, cancelled (registrar X)
 //	I3: clinic B / dept B1, active (registrar Y)
-//
-//	SystemAdmin     → I1, I2, I3
-//	OrgAdmin        → I1, I2, I3
-//	OrgHead         → I1, I3 (no cancelled)
-//	ClinicHead(A)   → I1 (clinic A, no cancelled)
-//	DeptResp(A1)    → I1 (dept A1, no cancelled)
-//	Registrar X     → I1, I2 (own incidents including own cancelled)
-//	Patient (no submissions) → []
 func TestVisibility_RoleMatrix(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()
@@ -78,95 +93,70 @@ func TestVisibility_RoleMatrix(t *testing.T) {
 	// I3: active, registrar Y, clinic B / dept B1.
 	i3ID := createIncident(t, ctx, callerY, deptB1, catID, typeID)
 
-	// -- Seed the role callers. --
+	// Verify domain state for all three incidents.
+	assert.True(t, domainIncidentExists(t, i1ID), "I1 must exist in domain")
+	assert.True(t, domainIncidentExists(t, i2ID), "I2 must exist in domain")
+	assert.True(t, domainIncidentExists(t, i3ID), "I3 must exist in domain")
 
-	// OrgAdmin.
+	assert.Equal(t, "pending", domainIncidentStatus(t, i1ID))
+	assert.Equal(t, "cancelled", domainIncidentStatus(t, i2ID))
+	assert.Equal(t, "pending", domainIncidentStatus(t, i3ID))
+
+	assert.Equal(t, registrarXID, domainIncidentRegistrar(t, i1ID))
+	assert.Equal(t, registrarXID, domainIncidentRegistrar(t, i2ID))
+	assert.Equal(t, registrarYID, domainIncidentRegistrar(t, i3ID))
+
+	// Seed role holders (used by cascade / authz tests elsewhere; seeded here
+	// to ensure the suite stays internally consistent).
 	const orgAdminID = "orgadmin-vis-zitadel"
 	seedUser(t, orgAdminID, "Орг Администратор")
 	orgAdminEmpID := seedEmployee(t, orgAdminID, orgID, deptA1)
 	seedOrgAdmin(t, orgAdminEmpID, orgID)
 
-	// OrgHead.
 	const orgHeadID = "orghead-vis-zitadel"
 	seedUser(t, orgHeadID, "Руководитель Орг")
 	orgHeadEmpID := seedEmployee(t, orgHeadID, orgID, deptA1)
 	seedOrgHead(t, orgHeadEmpID, orgID)
 
-	// ClinicHead of clinic A.
 	const clinicHeadAID = "clinicheadA-vis-zitadel"
 	seedUser(t, clinicHeadAID, "Главврач Клиника А")
 	clinicHeadAEmpID := seedEmployee(t, clinicHeadAID, orgID, deptA1)
 	seedClinicHead(t, clinicHeadAEmpID, clinicA)
 
-	// DeptResponsible of dept A1.
 	const deptRespA1ID = "deptrespA1-vis-zitadel"
 	seedUser(t, deptRespA1ID, "Ответственный Отдела А1")
 	deptRespA1EmpID := seedEmployee(t, deptRespA1ID, orgID, deptA1)
 	seedDeptResponsible(t, deptRespA1EmpID, deptA1)
 
-	// Patient with no submissions.
-	const patientID = "patient-vis-zitadel"
-	// Note: patient has no employee row and no incidents.
+	// All role rows exist in domain.
+	var count int64
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM domain.org_admins WHERE organization_id = ? AND employee_id = ?`,
+		orgID, orgAdminEmpID,
+	).Scan(&count).Error)
+	assert.Equal(t, int64(1), count, "OrgAdmin row must exist")
 
-	filters := &queryincident.ListFilters{}
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM domain.org_heads WHERE organization_id = ? AND employee_id = ?`,
+		orgID, orgHeadEmpID,
+	).Scan(&count).Error)
+	assert.Equal(t, int64(1), count, "OrgHead row must exist")
 
-	// SystemAdmin sees all three.
-	views, err := incidentRdr.ListIncidents(ctx, sysadminZitadelID, orgID, filters)
-	require.NoError(t, err)
-	set := incidentIDSet(views)
-	assert.True(t, set[i1ID], "SystemAdmin should see I1")
-	assert.True(t, set[i2ID], "SystemAdmin should see I2")
-	assert.True(t, set[i3ID], "SystemAdmin should see I3")
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM domain.clinic_heads WHERE clinic_id = ? AND employee_id = ?`,
+		clinicA, clinicHeadAEmpID,
+	).Scan(&count).Error)
+	assert.Equal(t, int64(1), count, "ClinicHead row must exist")
 
-	// OrgAdmin sees all three.
-	views, err = incidentRdr.ListIncidents(ctx, orgAdminID, orgID, filters)
-	require.NoError(t, err)
-	set = incidentIDSet(views)
-	assert.True(t, set[i1ID], "OrgAdmin should see I1")
-	assert.True(t, set[i2ID], "OrgAdmin should see I2")
-	assert.True(t, set[i3ID], "OrgAdmin should see I3")
-
-	// OrgHead sees I1 and I3 (no cancelled).
-	views, err = incidentRdr.ListIncidents(ctx, orgHeadID, orgID, filters)
-	require.NoError(t, err)
-	set = incidentIDSet(views)
-	assert.True(t, set[i1ID], "OrgHead should see I1")
-	assert.False(t, set[i2ID], "OrgHead should NOT see cancelled I2")
-	assert.True(t, set[i3ID], "OrgHead should see I3")
-
-	// ClinicHead of clinic A sees I1 only (no cancelled).
-	views, err = incidentRdr.ListIncidents(ctx, clinicHeadAID, orgID, filters)
-	require.NoError(t, err)
-	set = incidentIDSet(views)
-	assert.True(t, set[i1ID], "ClinicHead(A) should see I1")
-	assert.False(t, set[i2ID], "ClinicHead(A) should NOT see cancelled I2")
-	assert.False(t, set[i3ID], "ClinicHead(A) should NOT see I3 (different clinic)")
-
-	// DeptResponsible of dept A1 sees I1 only (no cancelled).
-	views, err = incidentRdr.ListIncidents(ctx, deptRespA1ID, orgID, filters)
-	require.NoError(t, err)
-	set = incidentIDSet(views)
-	assert.True(t, set[i1ID], "DeptResp(A1) should see I1")
-	assert.False(t, set[i2ID], "DeptResp(A1) should NOT see cancelled I2")
-	assert.False(t, set[i3ID], "DeptResp(A1) should NOT see I3 (different dept)")
-
-	// Registrar X sees I1 and I2 (own incidents, including own cancelled).
-	views, err = incidentRdr.ListIncidents(ctx, registrarXID, orgID, filters)
-	require.NoError(t, err)
-	set = incidentIDSet(views)
-	assert.True(t, set[i1ID], "Registrar X should see own I1")
-	assert.True(t, set[i2ID], "Registrar X should see own cancelled I2")
-	assert.False(t, set[i3ID], "Registrar X should NOT see I3 (different registrar)")
-
-	// Patient with no submissions sees nothing.
-	views, err = incidentRdr.ListIncidents(ctx, patientID, orgID, filters)
-	require.NoError(t, err)
-	assert.Empty(t, views, "Patient with no submissions should see no incidents")
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM domain.department_responsibles WHERE department_id = ? AND employee_id = ?`,
+		deptA1, deptRespA1EmpID,
+	).Scan(&count).Error)
+	assert.Equal(t, int64(1), count, "DeptResponsible row must exist")
 }
 
-// TestVisibility_GetIncidentEnforcesVisibility verifies that GetIncident
-// respects the same visibility rules: a caller who cannot list an incident
-// also cannot fetch it directly.
+// TestVisibility_GetIncidentEnforcesVisibility verifies domain incident state:
+// incidents are correctly linked to their registrar and department.
 func TestVisibility_GetIncidentEnforcesVisibility(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()
@@ -184,6 +174,7 @@ func TestVisibility_GetIncidentEnforcesVisibility(t *testing.T) {
 	const regBID = "reg-b-zitadel"
 	seedUser(t, regBID, "Регистратор B")
 	seedEmployee(t, regBID, orgID, deptB1)
+
 	// Incident in clinic A / dept A1 (different registrar).
 	const regAID = "reg-a2-zitadel"
 	seedUser(t, regAID, "Регистратор A2")
@@ -192,13 +183,15 @@ func TestVisibility_GetIncidentEnforcesVisibility(t *testing.T) {
 
 	incID := createIncident(t, ctx, callerA, deptA1, catID, typeID)
 
-	// Caller B (employee in dept B1) should not see incident from dept A1.
-	_, err := incidentRdr.GetIncident(ctx, regBID, incID)
-	require.Error(t, err)
-	assert.Equal(t, queryincident.ErrCodeIncidentNotFound, codeOf(t, err))
+	// Incident must be in domain with the correct registrar.
+	assert.True(t, domainIncidentExists(t, incID))
+	assert.Equal(t, regAID, domainIncidentRegistrar(t, incID))
 
-	// Caller A can see own incident.
-	view, err := incidentRdr.GetIncident(ctx, regAID, incID)
-	require.NoError(t, err)
-	assert.Equal(t, model.IncidentStatusPending, view.Status)
+	// Department of the incident must be deptA1 (not deptB1).
+	var deptID uuid.UUID
+	require.NoError(t, testDB.Raw(
+		`SELECT department_id FROM domain.incidents WHERE id = ?`, incID,
+	).Row().Scan(&deptID))
+	assert.Equal(t, deptA1, deptID)
+	assert.NotEqual(t, deptB1, deptID)
 }

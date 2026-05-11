@@ -3,16 +3,21 @@ package classifier
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // DeleteIncidentCategoryPayload identifies the incident category to
@@ -132,16 +137,31 @@ func (s *IncidentCategoryService) Delete(
 				Wrap(err)
 		}
 
-		// Delete projection rows children-first (types first, then
-		// categories in depth-DESC order) so no row is removed while
-		// its descendants still exist on the read side.
+		now := time.Now().UTC()
+
+		// Append outbox events children-first (types first, then
+		// categories in depth-DESC order) before the actual SQL DELETEs
+		// so downstream projections never see a parent removed before
+		// its descendants.
 		for _, id := range typeIDs {
-			if err := projector.TypeDeleted(tx, id); err != nil {
+			msg := &classifierv1.IncidentTypeDeleted{TypeId: id.String(), DeletedAt: timestamppb.New(now)}
+			payload, err := anypb.New(msg)
+			if err != nil {
+				return oops.In("services.incident.classifier.type").Code(ErrCodeIncidentTypeSaveFailed).Wrap(err)
+			}
+			if err := outbox.Append(tx, "medincident.event.incident_type.v1.deleted",
+				&eventv1.Envelope{OccurredAt: timestamppb.New(now), AggregateType: "incident_type", AggregateId: id.String(), Payload: payload}); err != nil {
 				return err
 			}
 		}
 		for _, id := range categoryIDs {
-			if err := projector.CategoryDeleted(tx, id); err != nil {
+			msg := &classifierv1.IncidentCategoryDeleted{CategoryId: id.String(), DeletedAt: timestamppb.New(now)}
+			payload, err := anypb.New(msg)
+			if err != nil {
+				return oops.In("services.incident.classifier.category").Code(ErrCodeIncidentCategorySaveFailed).Wrap(err)
+			}
+			if err := outbox.Append(tx, "medincident.event.incident_category.v1.deleted",
+				&eventv1.Envelope{OccurredAt: timestamppb.New(now), AggregateType: "incident_category", AggregateId: id.String(), Payload: payload}); err != nil {
 				return err
 			}
 		}

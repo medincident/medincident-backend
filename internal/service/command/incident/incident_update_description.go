@@ -8,11 +8,16 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	incidentv1 "github.com/medincident/medincident-backend/pkg/event/incident/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateIncidentDescriptionPayload requires a non-nil Description.
@@ -73,6 +78,30 @@ func (s *IncidentService) UpdateDescription(
 		if err := tx.Save(inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-		return projector.IncidentDescriptionUpdated(tx, inc.ID, &trimmed, now)
+		env, err := buildIncidentDescriptionUpdatedEnvelope(inc.ID, &trimmed, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.incident.v1.description_updated", env)
 	})
+}
+
+func buildIncidentDescriptionUpdatedEnvelope(incidentID uuid.UUID, description *string, updatedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &incidentv1.IncidentDescriptionUpdated{
+		IncidentId: incidentID.String(),
+		UpdatedAt:  timestamppb.New(updatedAt),
+	}
+	if description != nil {
+		msg.Description = wrapperspb.String(*description)
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(updatedAt),
+		AggregateType: "incident",
+		AggregateId:   incidentID.String(),
+		Payload:       payload,
+	}, nil
 }

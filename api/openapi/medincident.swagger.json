@@ -10177,6 +10177,32 @@
         }
       }
     },
+    "queryOrgstructureV1Address": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "point": {
+          "$ref": "#/definitions/queryOrgstructureV1Point"
+        }
+      },
+      "description": "Address is the read-side view of a stored postal address; Point is\noptional because the command-side allows text-only addresses."
+    },
+    "queryOrgstructureV1Point": {
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "format": "double"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "description": "Point is the coordinate pair attached to an Address. Absent when the\nprojection row has neither longitude nor latitude."
+    },
     "queryRequestV1StatusHistoryEntry": {
       "type": "object",
       "properties": {
@@ -10210,18 +10236,6 @@
           "type": "string"
         }
       }
-    },
-    "v1Address": {
-      "type": "object",
-      "properties": {
-        "text": {
-          "type": "string"
-        },
-        "point": {
-          "$ref": "#/definitions/v1Point"
-        }
-      },
-      "description": "Address is the read-side view of a stored postal address; Point is\noptional because the command-side allows text-only addresses."
     },
     "v1AddressInput": {
       "type": "object",
@@ -10451,7 +10465,7 @@
           "type": "string"
         },
         "physicalAddress": {
-          "$ref": "#/definitions/v1Address"
+          "$ref": "#/definitions/queryOrgstructureV1Address"
         },
         "createdAt": {
           "type": "string"
@@ -11821,7 +11835,7 @@
           "type": "string"
         },
         "legalAddress": {
-          "$ref": "#/definitions/v1Address"
+          "$ref": "#/definitions/queryOrgstructureV1Address"
         },
         "createdAt": {
           "type": "string"
@@ -11924,20 +11938,6 @@
       ],
       "default": "PATIENT_STATUS_UNSPECIFIED",
       "description": "PatientStatus is the simplified four-value status surfaced to patients.\n\n - PATIENT_STATUS_PENDING: buffer pending\n - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress\n - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected\n - PATIENT_STATUS_CANCELLED: patient cancelled"
-    },
-    "v1Point": {
-      "type": "object",
-      "properties": {
-        "longitude": {
-          "type": "number",
-          "format": "double"
-        },
-        "latitude": {
-          "type": "number",
-          "format": "double"
-        }
-      },
-      "description": "Point is the coordinate pair attached to an Address. Absent when the\nprojection row has neither longitude nor latitude."
     },
     "v1PointInput": {
       "type": "object",

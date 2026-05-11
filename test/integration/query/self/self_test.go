@@ -13,11 +13,16 @@ import (
 	"github.com/samber/oops"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
-	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
 	selfread "github.com/medincident/medincident-backend/internal/service/query/self"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
 )
 
 // codeOf extracts the oops Code string from any error in a joined error tree.
@@ -38,15 +43,12 @@ func codeOf(t *testing.T, err error) string {
 func seedOrg(t *testing.T, ctx context.Context, now time.Time) uuid.UUID {
 	t.Helper()
 	id := uuid.Must(uuid.NewV7())
-	org := &model.Organization{
-		ID:           id,
-		Name:         "Org " + id.String()[:8],
-		LegalAddress: model.Address{Text: "ул. Тестовая, д. 1"},
-		CreatedAt:    now,
-		UpdatedAt:    now,
-	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationCreated(tx, org)
+		return qprojector.OrganizationCreated(tx, id.String(), now, &orgv1.OrganizationCreated{
+			Name:         "Org " + id.String()[:8],
+			LegalAddress: &orgv1.Address{Text: "ул. Тестовая, д. 1"},
+			CreatedAt:    timestamppb.New(now),
+		})
 	}))
 	return id
 }
@@ -55,16 +57,13 @@ func seedOrg(t *testing.T, ctx context.Context, now time.Time) uuid.UUID {
 func seedClinic(t *testing.T, ctx context.Context, orgID uuid.UUID, now time.Time) uuid.UUID {
 	t.Helper()
 	id := uuid.Must(uuid.NewV7())
-	clinic := &model.Clinic{
-		ID:              id,
-		OrganizationID:  orgID,
-		Name:            "Clinic " + id.String()[:8],
-		PhysicalAddress: model.Address{Text: "ул. Клиническая, д. 2"},
-		CreatedAt:       now,
-		UpdatedAt:       now,
-	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicCreated(tx, clinic)
+		return qprojector.ClinicCreated(tx, id.String(), now, &clinicv1.ClinicCreated{
+			OrganizationId:  orgID.String(),
+			Name:            "Clinic " + id.String()[:8],
+			PhysicalAddress: &clinicv1.Address{Text: "ул. Клиническая, д. 2"},
+			CreatedAt:       timestamppb.New(now),
+		})
 	}))
 	return id
 }
@@ -73,15 +72,12 @@ func seedClinic(t *testing.T, ctx context.Context, orgID uuid.UUID, now time.Tim
 func seedDept(t *testing.T, ctx context.Context, clinicID uuid.UUID, now time.Time) uuid.UUID {
 	t.Helper()
 	id := uuid.Must(uuid.NewV7())
-	dept := &model.Department{
-		ID:        id,
-		ClinicID:  clinicID,
-		Name:      "Dept " + id.String()[:8],
-		CreatedAt: now,
-		UpdatedAt: now,
-	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentCreated(tx, dept)
+		return qprojector.DepartmentCreated(tx, id.String(), now, &deptv1.DepartmentCreated{
+			ClinicId:  clinicID.String(),
+			Name:      "Dept " + id.String()[:8],
+			CreatedAt: timestamppb.New(now),
+		})
 	}))
 	return id
 }
@@ -90,16 +86,13 @@ func seedDept(t *testing.T, ctx context.Context, clinicID uuid.UUID, now time.Ti
 func seedEmployee(t *testing.T, ctx context.Context, zitadelUserID string, orgID, deptID uuid.UUID, now time.Time) uuid.UUID {
 	t.Helper()
 	empID := uuid.Must(uuid.NewV7())
-	emp := &model.Employee{
-		ID:             empID,
-		ZitadelUserID:  zitadelUserID,
-		OrganizationID: orgID,
-		DepartmentID:   deptID,
-		CreatedAt:      now,
-		UpdatedAt:      now,
-	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeHired(tx, emp)
+		return qprojector.EmployeeHired(tx, empID.String(), now, &empv1.EmployeeHired{
+			ZitadelUserId:  zitadelUserID,
+			OrganizationId: orgID.String(),
+			DepartmentId:   deptID.String(),
+			HiredAt:        timestamppb.New(now),
+		})
 	}))
 	return empID
 }
@@ -108,7 +101,9 @@ func seedEmployee(t *testing.T, ctx context.Context, zitadelUserID string, orgID
 func seedSystemAdmin(t *testing.T, ctx context.Context, zitadelUserID string, now time.Time) {
 	t.Helper()
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.SystemAdminGranted(tx, zitadelUserID, now)
+		return qprojector.SystemAdminGranted(tx, zitadelUserID, now, &sav1.SystemAdminGranted{
+			GrantedAt: timestamppb.New(now),
+		})
 	}))
 }
 
@@ -208,12 +203,13 @@ func TestSelfReader_ListMyOrganizations_TerminatedExcluded(t *testing.T) {
 	deptID := seedDept(t, ctx, clinicID, now)
 	empID := seedEmployee(t, ctx, "terminated-user", orgID, deptID, now)
 
-	// Terminate the employee. EmployeeTerminated only reads e.ID from the
-	// struct — the rest it loads from projections.employees — so we pass
-	// the struct without fetching from domain.employees.
 	terminatedAt := now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeTerminated(tx, &model.Employee{ID: empID}, terminatedAt)
+		return qprojector.EmployeeTerminated(tx, empID.String(), terminatedAt, &empv1.EmployeeTerminated{
+			OrganizationId: orgID.String(),
+			DepartmentId:   deptID.String(),
+			TerminatedAt:   timestamppb.New(terminatedAt),
+		})
 	}))
 
 	reader := selfread.NewSelfReader(testDB, &logger)
@@ -307,11 +303,9 @@ func TestSelfReader_GetMyOrganizationRole_WithRoles(t *testing.T) {
 	empID := seedEmployee(t, ctx, "admin-user", orgID, deptID, now)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgAdminAssigned(tx, &model.OrgAdmin{
-			OrganizationID: orgID,
-			EmployeeID:     empID,
-			CreatedAt:      now,
-			UpdatedAt:      now,
+		return qprojector.OrgAdminAssigned(tx, orgID.String(), now, &orgv1.OrgAdminAssigned{
+			EmployeeId: empID.String(),
+			AssignedAt: timestamppb.New(now),
 		})
 	}))
 
@@ -336,11 +330,9 @@ func TestSelfReader_GetMyOrganizationRole_RolesScopedToOrg(t *testing.T) {
 	empAID := seedEmployee(t, ctx, "cross-org-user", orgAID, deptAID, now)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgAdminAssigned(tx, &model.OrgAdmin{
-			OrganizationID: orgAID,
-			EmployeeID:     empAID,
-			CreatedAt:      now,
-			UpdatedAt:      now,
+		return qprojector.OrgAdminAssigned(tx, orgAID.String(), now, &orgv1.OrgAdminAssigned{
+			EmployeeId: empAID.String(),
+			AssignedAt: timestamppb.New(now),
 		})
 	}))
 
@@ -407,11 +399,9 @@ func TestSelfReader_GetMyClinicRole_IsHead(t *testing.T) {
 	empID := seedEmployee(t, ctx, "head-user", orgID, deptID, now)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicHeadAssigned(tx, &model.ClinicHead{
-			ClinicID:   clinicID,
-			EmployeeID: empID,
-			CreatedAt:  now,
-			UpdatedAt:  now,
+		return qprojector.ClinicHeadAssigned(tx, clinicID.String(), now, &clinicv1.ClinicHeadAssigned{
+			EmployeeId: empID.String(),
+			AssignedAt: timestamppb.New(now),
 		})
 	}))
 
@@ -463,11 +453,9 @@ func TestSelfReader_GetMyDepartmentRole_IsResponsible(t *testing.T) {
 	empID := seedEmployee(t, ctx, "responsible-user", orgID, deptID, now)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentResponsibleAssigned(tx, &model.DepartmentResponsible{
-			DepartmentID: deptID,
-			EmployeeID:   empID,
-			CreatedAt:    now,
-			UpdatedAt:    now,
+		return qprojector.DeptResponsibleAssigned(tx, deptID.String(), now, &deptv1.DeptResponsibleAssigned{
+			EmployeeId: empID.String(),
+			AssignedAt: timestamppb.New(now),
 		})
 	}))
 

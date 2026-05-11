@@ -7,15 +7,16 @@ import (
 )
 
 // Config is the YAML-backed runtime configuration for the query-server
-// binary. Identical in shape to command-server except for the NATS
-// block, which query-server uses to drive the identity projector's
-// JetStream consumer.
+// binary. It carries two NATS blocks: nats_zitadel drives the identity
+// projector's JetStream consumer, nats_domain drives the domain event
+// consumer.
 type Config struct {
-	Server   serverConfig          `yaml:"server"   validate:"required"`
-	Postgres config.PostgresConfig `yaml:"postgres" validate:"required"`
-	Zerolog  config.ZerologConfig  `yaml:"zerolog"  validate:"required"`
-	NATS     config.NATSConfig     `yaml:"nats"     validate:"required"`
-	Zitadel  config.ZitadelConfig  `yaml:"zitadel"  validate:"required"`
+	Server      serverConfig          `yaml:"server"       validate:"required"`
+	Postgres    config.PostgresConfig `yaml:"postgres"     validate:"required"`
+	Zerolog     config.ZerologConfig  `yaml:"zerolog"      validate:"required"`
+	NATSZitadel config.NATSConfig     `yaml:"nats_zitadel" validate:"required"`
+	NATSDomain  config.NATSConfig     `yaml:"nats_domain"  validate:"required"`
+	Zitadel     config.ZitadelConfig  `yaml:"zitadel"      validate:"required"`
 }
 
 type serverConfig struct {

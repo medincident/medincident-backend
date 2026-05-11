@@ -10001,6 +10001,59 @@ Type mirrors projections.incident_types row.
 |actor|[v1ActorView](#schemav1actorview)|false|none|none|
 |changedAt|string|false|none|none|
 
+<h2 id="tocS_queryOrgstructureV1Address">queryOrgstructureV1Address</h2>
+<!-- backwards compatibility -->
+<a id="schemaqueryorgstructurev1address"></a>
+<a id="schema_queryOrgstructureV1Address"></a>
+<a id="tocSqueryorgstructurev1address"></a>
+<a id="tocsqueryorgstructurev1address"></a>
+
+```json
+{
+  "text": "string",
+  "point": {
+    "longitude": 0.1,
+    "latitude": 0.1
+  }
+}
+
+```
+
+Address is the read-side view of a stored postal address; Point is
+optional because the command-side allows text-only addresses.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|text|string|false|none|none|
+|point|[queryOrgstructureV1Point](#schemaqueryorgstructurev1point)|false|none|Point is the coordinate pair attached to an Address. Absent when the<br>projection row has neither longitude nor latitude.|
+
+<h2 id="tocS_queryOrgstructureV1Point">queryOrgstructureV1Point</h2>
+<!-- backwards compatibility -->
+<a id="schemaqueryorgstructurev1point"></a>
+<a id="schema_queryOrgstructureV1Point"></a>
+<a id="tocSqueryorgstructurev1point"></a>
+<a id="tocsqueryorgstructurev1point"></a>
+
+```json
+{
+  "longitude": 0.1,
+  "latitude": 0.1
+}
+
+```
+
+Point is the coordinate pair attached to an Address. Absent when the
+projection row has neither longitude nor latitude.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|longitude|number(double)|false|none|none|
+|latitude|number(double)|false|none|none|
+
 <h2 id="tocS_queryRequestV1StatusHistoryEntry">queryRequestV1StatusHistoryEntry</h2>
 <!-- backwards compatibility -->
 <a id="schemaqueryrequestv1statushistoryentry"></a>
@@ -10052,34 +10105,6 @@ Type mirrors projections.incident_types row.
 |---|---|---|---|---|
 |employeeId|string|false|none|none|
 |displayName|string|false|none|none|
-
-<h2 id="tocS_v1Address">v1Address</h2>
-<!-- backwards compatibility -->
-<a id="schemav1address"></a>
-<a id="schema_v1Address"></a>
-<a id="tocSv1address"></a>
-<a id="tocsv1address"></a>
-
-```json
-{
-  "text": "string",
-  "point": {
-    "longitude": 0.1,
-    "latitude": 0.1
-  }
-}
-
-```
-
-Address is the read-side view of a stored postal address; Point is
-optional because the command-side allows text-only addresses.
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|text|string|false|none|none|
-|point|[v1Point](#schemav1point)|false|none|Point is the coordinate pair attached to an Address. Absent when the<br>projection row has neither longitude nor latitude.|
 
 <h2 id="tocS_v1AddressInput">v1AddressInput</h2>
 <!-- backwards compatibility -->
@@ -10574,7 +10599,7 @@ Clinic mirrors the projections.clinics row returned by GetClinic.
 |organizationId|string|false|none|none|
 |name|string|false|none|none|
 |description|string|false|none|none|
-|physicalAddress|[v1Address](#schemav1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
+|physicalAddress|[queryOrgstructureV1Address](#schemaqueryorgstructurev1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
@@ -13917,7 +13942,7 @@ GetOrganization. Timestamps are RFC3339 strings.
 |id|string|false|none|none|
 |name|string|false|none|none|
 |description|string|false|none|none|
-|legalAddress|[v1Address](#schemav1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
+|legalAddress|[queryOrgstructureV1Address](#schemaqueryorgstructurev1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
@@ -14066,31 +14091,6 @@ PatientStatus is the simplified four-value status surfaced to patients.
 |*anonymous*|PATIENT_STATUS_ACCEPTED|
 |*anonymous*|PATIENT_STATUS_CLOSED|
 |*anonymous*|PATIENT_STATUS_CANCELLED|
-
-<h2 id="tocS_v1Point">v1Point</h2>
-<!-- backwards compatibility -->
-<a id="schemav1point"></a>
-<a id="schema_v1Point"></a>
-<a id="tocSv1point"></a>
-<a id="tocsv1point"></a>
-
-```json
-{
-  "longitude": 0.1,
-  "latitude": 0.1
-}
-
-```
-
-Point is the coordinate pair attached to an Address. Absent when the
-projection row has neither longitude nor latitude.
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|longitude|number(double)|false|none|none|
-|latitude|number(double)|false|none|none|
 
 <h2 id="tocS_v1PointInput">v1PointInput</h2>
 <!-- backwards compatibility -->

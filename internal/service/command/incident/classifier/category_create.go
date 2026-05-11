@@ -8,12 +8,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // Error codes emitted by CreateIncidentCategory and shared with other
@@ -196,11 +201,39 @@ func (s *IncidentCategoryService) Create(
 				Wrap(err)
 		}
 
-		if err := projector.CategoryCreated(tx, &cat); err != nil {
+		env, err := buildIncidentCategoryCreatedEnvelope(&cat)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.incident_category.v1.created", env); err != nil {
 			return err
 		}
 		result.ID = id
 		return nil
 	})
 	return result, err
+}
+
+func buildIncidentCategoryCreatedEnvelope(cat *model.IncidentCategory) (*eventv1.Envelope, error) {
+	msg := &classifierv1.IncidentCategoryCreated{
+		CategoryId:     cat.ID.String(),
+		OrganizationId: cat.OrganizationID.String(),
+		Name:           cat.Name,
+		IsActive:       cat.IsActive,
+		CreatedAt:      timestamppb.New(cat.CreatedAt),
+	}
+	if cat.ParentCategoryID.Valid {
+		msg.ParentCategoryId = wrapperspb.String(cat.ParentCategoryID.UUID.String())
+	}
+	if cat.Description.Valid {
+		msg.Description = wrapperspb.String(cat.Description.String)
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.incident.classifier.category").Code(ErrCodeIncidentCategorySaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt: timestamppb.New(cat.CreatedAt), AggregateType: "incident_category",
+		AggregateId: cat.ID.String(), Payload: payload,
+	}, nil
 }

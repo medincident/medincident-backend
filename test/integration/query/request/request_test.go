@@ -5,15 +5,19 @@ package request_query_integration_test
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	requestsvc "github.com/medincident/medincident-backend/internal/service/command/request"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
 	requestread "github.com/medincident/medincident-backend/internal/service/query/request"
+	servicerequestv1 "github.com/medincident/medincident-backend/pkg/event/service_request/v1"
 )
 
 func TestGetServiceRequest_HappyPath(t *testing.T) {
@@ -25,7 +29,7 @@ func TestGetServiceRequest_HappyPath(t *testing.T) {
 	typeID := seedRequestType(t, orgID)
 	seedUser(t, executorZitadelID, "Executor")
 	empID := seedEmployee(t, executorZitadelID, orgID, deptID)
-	reqID := createRequest(t, ctx, deptID, typeID, empID)
+	reqID := createRequest(t, ctx, orgID, clinicID, deptID, typeID, empID)
 
 	got, err := requestReader.GetServiceRequest(ctx, sysadminCaller, reqID)
 	require.NoError(t, err)
@@ -50,8 +54,8 @@ func TestListServiceRequests_HappyPath(t *testing.T) {
 	typeID := seedRequestType(t, orgID)
 	seedUser(t, executorZitadelID, "Executor")
 	empID := seedEmployee(t, executorZitadelID, orgID, deptID)
-	createRequest(t, ctx, deptID, typeID, empID)
-	createRequest(t, ctx, deptID, typeID, empID)
+	createRequest(t, ctx, orgID, clinicID, deptID, typeID, empID)
+	createRequest(t, ctx, orgID, clinicID, deptID, typeID, empID)
 
 	list, err := requestReader.ListServiceRequests(ctx, sysadminCaller, orgID, requestread.ListQuery{Limit: 10})
 	require.NoError(t, err)
@@ -112,7 +116,7 @@ func TestGetServiceRequestHistory_HappyPath(t *testing.T) {
 	typeID := seedRequestType(t, orgID)
 	seedUser(t, executorZitadelID, "Executor")
 	empID := seedEmployee(t, executorZitadelID, orgID, deptID)
-	reqID := createRequest(t, ctx, deptID, typeID, empID)
+	reqID := createRequest(t, ctx, orgID, clinicID, deptID, typeID, empID)
 
 	require.NoError(t, requestSvc.UpdateStatus(ctx, requestsvc.UpdateServiceRequestStatusCommand{
 		Caller: authz.Caller{ZitadelUserID: executorZitadelID},
@@ -121,6 +125,19 @@ func TestGetServiceRequestHistory_HappyPath(t *testing.T) {
 			NewStatus:        string(model.ServiceRequestStatusInWork),
 		},
 	}))
+	// Project the status change synchronously — no NATS pipeline in this suite.
+	changedAt := time.Now()
+	require.NoError(t, qprojector.ServiceRequestStatusChanged(
+		testDB.WithContext(ctx),
+		reqID.String(), changedAt,
+		&servicerequestv1.ServiceRequestStatusChanged{
+			RequestId: reqID.String(),
+			OldStatus: string(model.ServiceRequestStatusCreated),
+			NewStatus: string(model.ServiceRequestStatusInWork),
+			ActorId:   executorZitadelID,
+			ChangedAt: timestamppb.New(changedAt),
+		},
+	))
 
 	history, err := requestReader.GetServiceRequestHistory(ctx, sysadminCaller, reqID)
 	require.NoError(t, err)

@@ -7,11 +7,15 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	servicerequestv1 "github.com/medincident/medincident-backend/pkg/event/service_request/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateServiceRequestDescriptionPayload carries the new description.
@@ -58,6 +62,28 @@ func (s *ServiceRequestService) UpdateDescription(
 		if err := tx.Save(sr).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
 		}
-		return projector.ServiceRequestDescriptionUpdated(tx, sr.ID, sr.Description, now)
+		env, err := buildServiceRequestDescriptionUpdatedEnvelope(sr.ID, sr.Description, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.service_request.v1.description_updated", env)
 	})
+}
+
+func buildServiceRequestDescriptionUpdatedEnvelope(requestID uuid.UUID, description string, updatedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &servicerequestv1.ServiceRequestDescriptionUpdated{
+		RequestId:   requestID.String(),
+		Description: description,
+		UpdatedAt:   timestamppb.New(updatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(updatedAt),
+		AggregateType: "service_request",
+		AggregateId:   requestID.String(),
+		Payload:       payload,
+	}, nil
 }

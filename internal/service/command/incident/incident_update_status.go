@@ -7,12 +7,17 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	incidentv1 "github.com/medincident/medincident-backend/pkg/event/incident/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 type UpdateIncidentStatusPayload struct {
@@ -57,7 +62,7 @@ func (s *IncidentService) UpdateStatus(
 			privilegedActorPolicy(inc.OrganizationID, inc.ClinicID, inc.DepartmentID)); err != nil {
 			return err
 		}
-		actorEmpID, displayName, err := s.resolveActor(tx, cmd.Caller.ZitadelUserID)
+		actorEmpID, err := s.resolveActorEmployeeID(tx, cmd.Caller.ZitadelUserID)
 		if err != nil {
 			return err
 		}
@@ -68,8 +73,11 @@ func (s *IncidentService) UpdateStatus(
 		if err := tx.Save(inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-		return projector.IncidentStatusChanged(tx, inc.ID, old, inc.Status,
-			actorEmpID, displayName, now)
+		env, err := buildIncidentStatusChangedEnvelope(inc.ID, old, inc.Status, actorEmpID, cmd.Caller.ZitadelUserID, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.incident.v1.status_changed", env)
 	})
 }
 
@@ -85,43 +93,51 @@ func validStatusTransition(from, to model.IncidentStatus) bool {
 	}
 }
 
-// resolveActor returns the caller's employee_id (in any org) and the
-// display_name from projections.users. Used for history rows. The
-// returned NullUUID is invalid when the caller has no employee row
+// resolveActorEmployeeID returns the caller's employee_id (in any org).
+// The returned NullUUID is invalid when the caller has no employee row
 // (e.g. SystemAdmin acting outside any org) so history tables get a
-// proper SQL NULL rather than the zero UUID.
-func (s *IncidentService) resolveActor(tx *gorm.DB, callerID string) (uuid.NullUUID, string, error) {
-	// Caller may be a SystemAdmin without a domain.employees row; that
-	// is not an error here — we treat the actor's employee link as
-	// optional. Any error other than "not found" is propagated below.
+// proper SQL NULL rather than the zero UUID. Display name is resolved
+// query-side from the event's actor_zitadel_user_id field.
+func (s *IncidentService) resolveActorEmployeeID(tx *gorm.DB, callerID string) (uuid.NullUUID, error) {
 	var emp model.Employee
 	empID := uuid.NullUUID{}
 	if err := tx.Where("zitadel_user_id = ?", callerID).Limit(1).First(&emp).Error; err != nil {
 		if !errors.Is(err, gorm.ErrRecordNotFound) {
-			return uuid.NullUUID{}, "", oops.In(scope).
+			return uuid.NullUUID{}, oops.In(scope).
 				Code(ErrCodeIncidentEmployeeNotFound).
 				With("zitadel_user_id", callerID).Wrap(err)
 		}
 	} else {
 		empID = uuid.NullUUID{UUID: emp.ID, Valid: true}
 	}
+	return empID, nil
+}
 
-	var displayName string
-	if err := tx.Raw(
-		`SELECT display_name FROM projections.users WHERE id = ?`,
-		callerID,
-	).Scan(&displayName).Error; err != nil {
-		return uuid.NullUUID{}, "", oops.In(scope).
-			Code(ErrCodeIncidentRegistrarLookupFailed).
-			With("zitadel_user_id", callerID).
-			Wrap(err)
+func buildIncidentStatusChangedEnvelope(
+	incidentID uuid.UUID,
+	oldStatus, newStatus model.IncidentStatus,
+	actorEmployeeID uuid.NullUUID,
+	actorZitadelUserID string,
+	changedAt time.Time,
+) (*eventv1.Envelope, error) {
+	msg := &incidentv1.IncidentStatusChanged{
+		IncidentId:         incidentID.String(),
+		OldStatus:          string(oldStatus),
+		NewStatus:          string(newStatus),
+		ActorZitadelUserId: actorZitadelUserID,
+		ChangedAt:          timestamppb.New(changedAt),
 	}
-	if displayName == "" {
-		return uuid.NullUUID{}, "", oops.In(scope).
-			Code(ErrCodeIncidentRegistrarUserNotFound).
-			Public("Actor user record is missing.").
-			With("zitadel_user_id", callerID).
-			Errorf("user not found")
+	if actorEmployeeID.Valid {
+		msg.ActorEmployeeId = wrapperspb.String(actorEmployeeID.UUID.String())
 	}
-	return empID, displayName, nil
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(changedAt),
+		AggregateType: "incident",
+		AggregateId:   incidentID.String(),
+		Payload:       payload,
+	}, nil
 }

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package event.vacation.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// aggregate_id for all vacation events = employee_id (UUID string).
+// vacation_id is carried in the payload.
+
+// VacationScheduled — subject: medincident.event.vacation.v1.scheduled
+message VacationScheduled {
+  string vacation_id = 1;
+  google.protobuf.Timestamp starts_at = 2;
+  google.protobuf.Timestamp ends_at = 3; // absent = open-ended
+  google.protobuf.Timestamp created_at = 4;
+}
+
+// VacationStarted — subject: medincident.event.vacation.v1.started
+message VacationStarted {
+  string vacation_id = 1;
+  google.protobuf.Timestamp starts_at = 2;
+  google.protobuf.Timestamp ends_at = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+// VacationEnded — subject: medincident.event.vacation.v1.ended
+message VacationEnded {
+  string vacation_id = 1;
+  google.protobuf.Timestamp ends_at = 2; // final ends_at stamp
+}
+
+// VacationCancelled — subject: medincident.event.vacation.v1.cancelled
+message VacationCancelled {
+  string vacation_id = 1;
+  google.protobuf.Timestamp cancelled_at = 2;
+}
+
+// VacationEndDateChanged — subject: medincident.event.vacation.v1.end_date_changed
+message VacationEndDateChanged {
+  string vacation_id = 1;
+  google.protobuf.Timestamp ends_at = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}

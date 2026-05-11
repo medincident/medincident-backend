@@ -6,12 +6,17 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	incidentv1 "github.com/medincident/medincident-backend/pkg/event/incident/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 type UpdateIncidentPriorityPayload struct {
@@ -56,7 +61,7 @@ func (s *IncidentService) UpdatePriority(
 		if inc.Priority == priority {
 			return nil
 		}
-		actorEmpID, displayName, err := s.resolveActor(tx, cmd.Caller.ZitadelUserID)
+		actorEmpID, err := s.resolveActorEmployeeID(tx, cmd.Caller.ZitadelUserID)
 		if err != nil {
 			return err
 		}
@@ -66,7 +71,39 @@ func (s *IncidentService) UpdatePriority(
 		if err := tx.Save(inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-		return projector.IncidentPriorityChanged(tx, inc.ID, old, inc.Priority,
-			actorEmpID, displayName, now)
+		env, err := buildIncidentPriorityChangedEnvelope(inc.ID, old, inc.Priority, actorEmpID, cmd.Caller.ZitadelUserID, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.incident.v1.priority_changed", env)
 	})
+}
+
+func buildIncidentPriorityChangedEnvelope(
+	incidentID uuid.UUID,
+	oldPriority, newPriority model.IncidentPriority,
+	actorEmployeeID uuid.NullUUID,
+	actorZitadelUserID string,
+	changedAt time.Time,
+) (*eventv1.Envelope, error) {
+	msg := &incidentv1.IncidentPriorityChanged{
+		IncidentId:         incidentID.String(),
+		OldPriority:        string(oldPriority),
+		NewPriority:        string(newPriority),
+		ActorZitadelUserId: actorZitadelUserID,
+		ChangedAt:          timestamppb.New(changedAt),
+	}
+	if actorEmployeeID.Valid {
+		msg.ActorEmployeeId = wrapperspb.String(actorEmployeeID.UUID.String())
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(changedAt),
+		AggregateType: "incident",
+		AggregateId:   incidentID.String(),
+		Payload:       payload,
+	}, nil
 }

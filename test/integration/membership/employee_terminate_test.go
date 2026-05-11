@@ -25,11 +25,6 @@ func TestTerminateEmployee_Success_NoVacations(t *testing.T) {
 	var count int64
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.employees WHERE id = ?`, id).Scan(&count).Error)
 	assert.Equal(t, int64(0), count)
-
-	// Projection keeps the row but stamps terminated_at.
-	var terminatedAt *time.Time
-	require.NoError(t, testDB.Raw(`SELECT terminated_at FROM projections.employees WHERE id = ?`, id).Row().Scan(&terminatedAt))
-	require.NotNil(t, terminatedAt)
 }
 
 func TestTerminateEmployee_Success_WithVacations_CascadeDeletesAll(t *testing.T) {

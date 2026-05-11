@@ -11,10 +11,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateEmployeePositionPayload carries the inputs required to change an
@@ -74,6 +79,31 @@ func (s *EmployeeService) UpdatePosition(ctx context.Context, cmd UpdateEmployee
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
 		}
 
-		return projector.EmployeePositionChanged(tx, &emp)
+		env, err := buildEmployeePosChangedEnvelope(&emp)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.employee.v1.position_changed", env)
 	})
+}
+
+func buildEmployeePosChangedEnvelope(emp *model.Employee) (*eventv1.Envelope, error) {
+	var pos string
+	if emp.Position.Valid {
+		pos = emp.Position.String
+	}
+	msg := &empv1.EmployeePositionChanged{
+		Position:  pos,
+		UpdatedAt: timestamppb.New(emp.UpdatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(emp.UpdatedAt),
+		AggregateType: "employee",
+		AggregateId:   emp.ID.String(),
+		Payload:       payload,
+	}, nil
 }

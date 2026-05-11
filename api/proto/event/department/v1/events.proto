@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package event.department.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// DepartmentCreated is emitted when a new department is persisted.
+// subject: medincident.event.department.v1.created
+message DepartmentCreated {
+  string clinic_id = 1;
+  string name = 2;
+  string description = 3;
+  google.protobuf.Timestamp created_at = 4;
+}
+
+// DepartmentDetailsChanged is emitted when name or description changes.
+// subject: medincident.event.department.v1.details_changed
+message DepartmentDetailsChanged {
+  string name = 1;
+  string description = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+// ── Department-level role events ──────────────────────────────────────
+
+// DeptResponsibleAssigned — subject: medincident.event.department.v1.dept_responsible_assigned
+message DeptResponsibleAssigned {
+  string employee_id = 1;
+  google.protobuf.Timestamp assigned_at = 2;
+}
+message DeptResponsibleDeputyAssigned {
+  string employee_id = 1;
+  string deputy_employee_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+message DeptResponsibleDeputyRemoved {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+message DeptResponsibleRevoked {
+  string employee_id = 1;
+}

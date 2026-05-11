@@ -11,10 +11,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
+	vacv1 "github.com/medincident/medincident-backend/pkg/event/vacation/v1"
 )
 
 // ForceEndVacationPayload identifies the running vacation to close.
@@ -79,6 +84,27 @@ func (s *EmployeeService) ForceEndVacation(ctx context.Context, cmd ForceEndVaca
 			return oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).With("vacation_id", vac.ID).Wrap(err)
 		}
 
-		return projector.VacationEnded(tx, &vac, now)
+		env, err := buildVacationEndedEnvelope(&vac, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.vacation.v1.ended", env)
 	})
+}
+
+func buildVacationEndedEnvelope(v *model.EmployeeVacation, endsAt time.Time) (*eventv1.Envelope, error) {
+	msg := &vacv1.VacationEnded{
+		VacationId: v.ID.String(),
+		EndsAt:     timestamppb.New(endsAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(endsAt),
+		AggregateType: "vacation",
+		AggregateId:   v.EmployeeID.String(),
+		Payload:       payload,
+	}, nil
 }

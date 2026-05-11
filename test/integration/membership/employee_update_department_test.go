@@ -37,9 +37,9 @@ func TestUpdateEmployeeDepartment_Success_DifferentClinic_SameOrg(t *testing.T) 
 		},
 	}))
 
-	var projDeptID uuid.UUID
-	require.NoError(t, testDB.Raw(`SELECT department_id FROM projections.employees WHERE id = ?`, id).Row().Scan(&projDeptID))
-	assert.Equal(t, f.DeptA2a, projDeptID)
+	var domainDeptID uuid.UUID
+	require.NoError(t, testDB.Raw(`SELECT department_id FROM domain.employees WHERE id = ?`, id).Row().Scan(&domainDeptID))
+	assert.Equal(t, f.DeptA2a, domainDeptID)
 }
 
 func TestUpdateEmployeeDepartment_DifferentOrganization(t *testing.T) {
@@ -68,10 +68,10 @@ func TestUpdateEmployeeDepartment_NoOp(t *testing.T) {
 			DepartmentID: f.DeptA1a.String(), // same as current
 		},
 	}))
-	// No-op means projection still shows the original department.
-	var projDeptID uuid.UUID
-	require.NoError(t, testDB.Raw(`SELECT department_id FROM projections.employees WHERE id = ?`, id).Row().Scan(&projDeptID))
-	assert.Equal(t, f.DeptA1a, projDeptID)
+	// No-op means domain still shows the original department.
+	var domainDeptID uuid.UUID
+	require.NoError(t, testDB.Raw(`SELECT department_id FROM domain.employees WHERE id = ?`, id).Row().Scan(&domainDeptID))
+	assert.Equal(t, f.DeptA1a, domainDeptID)
 }
 
 func TestUpdateEmployeeDepartment_DepartmentNotFound(t *testing.T) {

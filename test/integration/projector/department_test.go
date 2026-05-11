@@ -10,10 +10,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
 )
 
 // seedClinic is a test helper that creates an organization + clinic via
@@ -30,7 +33,12 @@ func seedClinic(t *testing.T, ctx context.Context, now time.Time) (*model.Organi
 		UpdatedAt:       now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicCreated(tx, clinic)
+		return qprojector.ClinicCreated(tx, clinic.ID.String(), clinic.CreatedAt, &clinicv1.ClinicCreated{
+			OrganizationId:  clinic.OrganizationID.String(),
+			Name:            clinic.Name,
+			PhysicalAddress: &clinicv1.Address{Text: clinic.PhysicalAddress.Text},
+			CreatedAt:       timestamppb.New(clinic.CreatedAt),
+		})
 	}))
 	return org, clinic
 }
@@ -54,7 +62,12 @@ func TestDepartmentCreated_WritesRowCountersAndBumpsParents(t *testing.T) {
 		UpdatedAt:   now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentCreated(tx, dept)
+		return qprojector.DepartmentCreated(tx, dept.ID.String(), dept.CreatedAt, &deptv1.DepartmentCreated{
+			ClinicId:    dept.ClinicID.String(),
+			Name:        dept.Name,
+			Description: dept.Description.String,
+			CreatedAt:   timestamppb.New(dept.CreatedAt),
+		})
 	}))
 
 	var name string
@@ -104,7 +117,12 @@ func TestDepartmentDetailsChanged_UpdatesRowAndEmployeeCards(t *testing.T) {
 		UpdatedAt:   now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentCreated(tx, dept)
+		return qprojector.DepartmentCreated(tx, dept.ID.String(), dept.CreatedAt, &deptv1.DepartmentCreated{
+			ClinicId:    dept.ClinicID.String(),
+			Name:        dept.Name,
+			Description: dept.Description.String,
+			CreatedAt:   timestamppb.New(dept.CreatedAt),
+		})
 	}))
 
 	// Seed an employee_card pointing at this dept.
@@ -121,7 +139,11 @@ func TestDepartmentDetailsChanged_UpdatesRowAndEmployeeCards(t *testing.T) {
 	dept.UpdatedAt = now.Add(time.Hour)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentDetailsChanged(tx, dept)
+		return qprojector.DepartmentDetailsChanged(tx, dept.ID.String(), dept.UpdatedAt, &deptv1.DepartmentDetailsChanged{
+			Name:        dept.Name,
+			Description: dept.Description.String,
+			UpdatedAt:   timestamppb.New(dept.UpdatedAt),
+		})
 	}))
 
 	var name string

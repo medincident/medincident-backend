@@ -10,10 +10,15 @@ import (
 	"github.com/samber/oops"
 	"gorm.io/gorm"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
+	vacv1 "github.com/medincident/medincident-backend/pkg/event/vacation/v1"
 )
 
 // ScheduleVacationPayload carries everything the service needs to
@@ -85,11 +90,36 @@ func (s *EmployeeService) ScheduleVacation(ctx context.Context, cmd ScheduleVaca
 			return mapped
 		}
 
-		if err := projector.VacationScheduled(tx, &vac); err != nil {
+		env, err := buildVacationScheduledEnvelope(&vac)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.vacation.v1.scheduled", env); err != nil {
 			return err
 		}
 		result.ID = id
 		return nil
 	})
 	return result, err
+}
+
+func buildVacationScheduledEnvelope(v *model.EmployeeVacation) (*eventv1.Envelope, error) {
+	msg := &vacv1.VacationScheduled{
+		VacationId: v.ID.String(),
+		StartsAt:   timestamppb.New(v.StartsAt),
+		CreatedAt:  timestamppb.New(v.CreatedAt),
+	}
+	if v.EndsAt.Valid {
+		msg.EndsAt = timestamppb.New(v.EndsAt.Time)
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeVacation).Code(ErrCodeVacationSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(v.CreatedAt),
+		AggregateType: "vacation",
+		AggregateId:   v.EmployeeID.String(),
+		Payload:       payload,
+	}, nil
 }

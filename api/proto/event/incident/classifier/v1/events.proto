@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package event.incident.classifier.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+// ── Incident Category events ──────────────────────────────────────────────────
+
+// IncidentCategoryCreated — subject: medincident.event.incident_category.v1.created
+// aggregate_id = category UUID
+message IncidentCategoryCreated {
+  string category_id = 1;
+  string organization_id = 2;
+  google.protobuf.StringValue parent_category_id = 3; // absent = root category
+  string name = 4;
+  google.protobuf.StringValue description = 5; // absent = no description
+  bool is_active = 6;
+  google.protobuf.Timestamp created_at = 7;
+}
+
+// IncidentCategoryDetailsUpdated — subject: medincident.event.incident_category.v1.details_updated
+message IncidentCategoryDetailsUpdated {
+  string category_id = 1;
+  string name = 2;
+  google.protobuf.StringValue description = 3; // absent = description cleared
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+// IncidentCategoryMoved — subject: medincident.event.incident_category.v1.moved
+message IncidentCategoryMoved {
+  string category_id = 1;
+  google.protobuf.StringValue new_parent_category_id = 2; // absent = moved to root
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+// IncidentCategoryDeactivated — subject: medincident.event.incident_category.v1.deactivated
+message IncidentCategoryDeactivated {
+  string category_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// IncidentCategoryReactivated — subject: medincident.event.incident_category.v1.reactivated
+message IncidentCategoryReactivated {
+  string category_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// IncidentCategoryDeleted — subject: medincident.event.incident_category.v1.deleted
+message IncidentCategoryDeleted {
+  string category_id = 1;
+  google.protobuf.Timestamp deleted_at = 2;
+}
+
+// ── Incident Type events ──────────────────────────────────────────────────────
+
+// IncidentTypeCreated — subject: medincident.event.incident_type.v1.created
+// aggregate_id = type UUID
+message IncidentTypeCreated {
+  string type_id = 1;
+  string organization_id = 2;
+  string category_id = 3;
+  string name = 4;
+  google.protobuf.StringValue description = 5; // absent = no description
+  bool is_active = 6;
+  bool is_allowed_for_patients = 7;
+  google.protobuf.Timestamp created_at = 8;
+}
+
+// IncidentTypeDetailsUpdated — subject: medincident.event.incident_type.v1.details_updated
+message IncidentTypeDetailsUpdated {
+  string type_id = 1;
+  string name = 2;
+  google.protobuf.StringValue description = 3; // absent = description cleared
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+// IncidentTypeMoved — subject: medincident.event.incident_type.v1.moved
+message IncidentTypeMoved {
+  string type_id = 1;
+  string new_category_id = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+// IncidentTypeDeactivated — subject: medincident.event.incident_type.v1.deactivated
+message IncidentTypeDeactivated {
+  string type_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// IncidentTypeReactivated — subject: medincident.event.incident_type.v1.reactivated
+message IncidentTypeReactivated {
+  string type_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// IncidentTypeAllowedForPatients — subject: medincident.event.incident_type.v1.allowed_for_patients
+message IncidentTypeAllowedForPatients {
+  string type_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// IncidentTypeDisallowedForPatients — subject: medincident.event.incident_type.v1.disallowed_for_patients
+message IncidentTypeDisallowedForPatients {
+  string type_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// IncidentTypeDeleted — subject: medincident.event.incident_type.v1.deleted
+message IncidentTypeDeleted {
+  string type_id = 1;
+  google.protobuf.Timestamp deleted_at = 2;
+}

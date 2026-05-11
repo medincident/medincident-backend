@@ -10,10 +10,15 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateEmployeeDepartmentPayload carries the inputs required to move
@@ -111,7 +116,11 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 			return oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
 		}
 
-		if err := projector.EmployeeDepartmentChanged(tx, &emp); err != nil {
+		env, err := buildEmployeeDeptChangedEnvelope(&emp)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.employee.v1.department_changed", env); err != nil {
 			return err
 		}
 
@@ -142,4 +151,21 @@ func (s *EmployeeService) UpdateDepartment(ctx context.Context, cmd UpdateEmploy
 		}
 		return nil
 	})
+}
+
+func buildEmployeeDeptChangedEnvelope(emp *model.Employee) (*eventv1.Envelope, error) {
+	msg := &empv1.EmployeeDepartmentChanged{
+		NewDepartmentId: emp.DepartmentID.String(),
+		UpdatedAt:       timestamppb.New(emp.UpdatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeEmployee).Code(ErrCodeEmployeeSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(emp.UpdatedAt),
+		AggregateType: "employee",
+		AggregateId:   emp.ID.String(),
+		Payload:       payload,
+	}, nil
 }

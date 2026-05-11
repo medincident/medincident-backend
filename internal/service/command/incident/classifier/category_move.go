@@ -7,13 +7,18 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 const (
@@ -204,7 +209,29 @@ func (s *IncidentCategoryService) Move(
 				Wrap(err)
 		}
 
-		return projector.CategoryMove(tx, moving.ID, newParent, updatedAt)
+		env, err := buildIncidentCategoryMovedEnvelope(moving.ID, newParent, updatedAt)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.incident_category.v1.moved", env)
 	})
 	return MoveIncidentCategoryResult{}, err
+}
+
+func buildIncidentCategoryMovedEnvelope(categoryID uuid.UUID, newParent uuid.NullUUID, updatedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &classifierv1.IncidentCategoryMoved{
+		CategoryId: categoryID.String(),
+		UpdatedAt:  timestamppb.New(updatedAt),
+	}
+	if newParent.Valid {
+		msg.NewParentCategoryId = wrapperspb.String(newParent.UUID.String())
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.incident.classifier.category").Code(ErrCodeIncidentCategorySaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt: timestamppb.New(updatedAt), AggregateType: "incident_category",
+		AggregateId: categoryID.String(), Payload: payload,
+	}, nil
 }

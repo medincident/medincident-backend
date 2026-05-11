@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package event.request_type.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+// RequestTypeCreated — subject: medincident.event.request_type.v1.created
+// aggregate_id = request_type UUID
+message RequestTypeCreated {
+  string type_id = 1;
+  string organization_id = 2;
+  string name = 3;
+  google.protobuf.StringValue description = 4;
+  bool is_active = 5;
+  google.protobuf.Timestamp created_at = 6;
+}
+
+// RequestTypeDetailsUpdated — subject: medincident.event.request_type.v1.details_updated
+message RequestTypeDetailsUpdated {
+  string type_id = 1;
+  string name = 2;
+  google.protobuf.StringValue description = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+// RequestTypeDeactivated — subject: medincident.event.request_type.v1.deactivated
+message RequestTypeDeactivated {
+  string type_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// RequestTypeReactivated — subject: medincident.event.request_type.v1.reactivated
+message RequestTypeReactivated {
+  string type_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// RequestTypeDeleted — subject: medincident.event.request_type.v1.deleted
+message RequestTypeDeleted {
+  string type_id = 1;
+  google.protobuf.Timestamp deleted_at = 2;
+}

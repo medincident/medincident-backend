@@ -10,10 +10,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	vacv1 "github.com/medincident/medincident-backend/pkg/event/vacation/v1"
 )
 
 // seedEmployee creates an org+clinic+dept+employee chain via the
@@ -30,7 +33,12 @@ func seedEmployee(t *testing.T, ctx context.Context, now time.Time) *model.Emplo
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeHired(tx, emp)
+		return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+		})
 	}))
 	return emp
 }
@@ -56,7 +64,12 @@ func TestVacationScheduled_InsertsRowAndRefreshesCard(t *testing.T) {
 		UpdatedAt:  now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.VacationScheduled(tx, vac)
+		return qprojector.VacationScheduled(tx, vac.EmployeeID.String(), vac.CreatedAt, &vacv1.VacationScheduled{
+			VacationId: vac.ID.String(),
+			StartsAt:   timestamppb.New(vac.StartsAt),
+			EndsAt:     timestamppb.New(vac.EndsAt.Time),
+			CreatedAt:  timestamppb.New(vac.CreatedAt),
+		})
 	}))
 
 	var state string
@@ -93,7 +106,12 @@ func TestVacationStarted_InsertsActiveRow(t *testing.T) {
 		UpdatedAt:  now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.VacationStarted(tx, vac)
+		return qprojector.VacationStarted(tx, vac.EmployeeID.String(), vac.CreatedAt, &vacv1.VacationStarted{
+			VacationId: vac.ID.String(),
+			StartsAt:   timestamppb.New(vac.StartsAt),
+			EndsAt:     timestamppb.New(vac.EndsAt.Time),
+			CreatedAt:  timestamppb.New(vac.CreatedAt),
+		})
 	}))
 
 	var state string
@@ -127,12 +145,19 @@ func TestVacationEnded_StampsEndsAtAndClearsCard(t *testing.T) {
 		UpdatedAt:  now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.VacationStarted(tx, vac)
+		return qprojector.VacationStarted(tx, vac.EmployeeID.String(), vac.CreatedAt, &vacv1.VacationStarted{
+			VacationId: vac.ID.String(),
+			StartsAt:   timestamppb.New(vac.StartsAt),
+			CreatedAt:  timestamppb.New(vac.CreatedAt),
+		})
 	}))
 
 	endedAt := now.Add(4 * time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.VacationEnded(tx, vac, endedAt)
+		return qprojector.VacationEnded(tx, vac.EmployeeID.String(), endedAt, &vacv1.VacationEnded{
+			VacationId: vac.ID.String(),
+			EndsAt:     timestamppb.New(endedAt),
+		})
 	}))
 
 	var state string
@@ -168,12 +193,19 @@ func TestVacationCancelled_SetsStateAndClearsCard(t *testing.T) {
 		UpdatedAt:  now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.VacationScheduled(tx, vac)
+		return qprojector.VacationScheduled(tx, vac.EmployeeID.String(), vac.CreatedAt, &vacv1.VacationScheduled{
+			VacationId: vac.ID.String(),
+			StartsAt:   timestamppb.New(vac.StartsAt),
+			CreatedAt:  timestamppb.New(vac.CreatedAt),
+		})
 	}))
 
 	cancelledAt := now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.VacationCancelled(tx, vac, cancelledAt)
+		return qprojector.VacationCancelled(tx, vac.EmployeeID.String(), cancelledAt, &vacv1.VacationCancelled{
+			VacationId:  vac.ID.String(),
+			CancelledAt: timestamppb.New(cancelledAt),
+		})
 	}))
 
 	var state string
@@ -208,14 +240,23 @@ func TestVacationEndDateChanged_UpdatesEndsAt(t *testing.T) {
 		UpdatedAt:  now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.VacationStarted(tx, vac)
+		return qprojector.VacationStarted(tx, vac.EmployeeID.String(), vac.CreatedAt, &vacv1.VacationStarted{
+			VacationId: vac.ID.String(),
+			StartsAt:   timestamppb.New(vac.StartsAt),
+			EndsAt:     timestamppb.New(vac.EndsAt.Time),
+			CreatedAt:  timestamppb.New(vac.CreatedAt),
+		})
 	}))
 
 	newEnd := ends.Add(24 * time.Hour)
 	vac.EndsAt = null.TimeFrom(newEnd)
 	vac.UpdatedAt = now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.VacationEndDateChanged(tx, vac)
+		return qprojector.VacationEndDateChanged(tx, vac.EmployeeID.String(), vac.UpdatedAt, &vacv1.VacationEndDateChanged{
+			VacationId: vac.ID.String(),
+			EndsAt:     timestamppb.New(vac.EndsAt.Time),
+			UpdatedAt:  timestamppb.New(vac.UpdatedAt),
+		})
 	}))
 
 	var gotEnd time.Time

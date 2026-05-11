@@ -8,13 +8,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // UpdateOrganizationDetailsPayload carries the new name and (optional)
@@ -29,6 +33,29 @@ type UpdateOrganizationDetailsPayload struct {
 type UpdateOrganizationDetailsCommand struct {
 	Caller  authz.Caller
 	Payload UpdateOrganizationDetailsPayload
+}
+
+func buildOrganizationDetailsChangedEnvelope(org *model.Organization) (*eventv1.Envelope, error) {
+	var desc string
+	if org.Description.Valid {
+		desc = org.Description.String
+	}
+	msg := &orgv1.OrganizationDetailsChanged{
+		Name:        org.Name,
+		Description: desc,
+		UpdatedAt:   timestamppb.New(org.UpdatedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In("services.orgstructure.organization").
+			Code(ErrCodeOrganizationSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(org.UpdatedAt),
+		AggregateType: "organization",
+		AggregateId:   org.ID.String(),
+		Payload:       payload,
+	}, nil
 }
 
 // UpdateDetails changes an organization's name and description. If
@@ -82,6 +109,10 @@ func (s *OrganizationService) UpdateDetails(
 				Wrap(err)
 		}
 
-		return projector.OrganizationDetailsChanged(tx, &org)
+		env, err := buildOrganizationDetailsChangedEnvelope(&org)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.organization.v1.details_changed", env)
 	})
 }

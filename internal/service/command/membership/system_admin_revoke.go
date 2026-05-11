@@ -3,14 +3,19 @@ package membership
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // RevokeSystemAdminPayload carries the Zitadel user ID to remove from system admin.
@@ -51,6 +56,25 @@ func (s *EmployeeService) RevokeSystemAdmin(ctx context.Context, cmd RevokeSyste
 				Errorf("not found")
 		}
 
-		return projector.SystemAdminRevoked(tx, id)
+		now := time.Now().UTC()
+		env, err := buildSystemAdminRevokedEnvelope(id, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.system_admin.v1.revoked", env)
 	})
+}
+
+func buildSystemAdminRevokedEnvelope(zitadelID string, revokedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &sav1.SystemAdminRevoked{RevokedAt: timestamppb.New(revokedAt)}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scopeSystemAdmin).Code(ErrCodeSystemAdminDeleteFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(revokedAt),
+		AggregateType: "system_admin",
+		AggregateId:   zitadelID,
+		Payload:       payload,
+	}, nil
 }

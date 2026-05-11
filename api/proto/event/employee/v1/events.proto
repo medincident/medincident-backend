@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package event.employee.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// EmployeeHired — subject: medincident.event.employee.v1.hired
+// aggregate_id = employee UUID
+message EmployeeHired {
+  string zitadel_user_id = 1;
+  string organization_id = 2;
+  string department_id = 3;
+  string position = 4; // empty = not set
+  google.protobuf.Timestamp hired_at = 5;
+}
+
+// EmployeePositionChanged — subject: medincident.event.employee.v1.position_changed
+message EmployeePositionChanged {
+  string position = 1; // empty = cleared
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// EmployeeDepartmentChanged — subject: medincident.event.employee.v1.department_changed
+message EmployeeDepartmentChanged {
+  string new_department_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// EmployeeTerminated — subject: medincident.event.employee.v1.terminated
+message EmployeeTerminated {
+  string organization_id = 1; // needed for counter decrement
+  string department_id = 2;
+  google.protobuf.Timestamp terminated_at = 3;
+}

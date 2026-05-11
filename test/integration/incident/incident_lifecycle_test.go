@@ -78,15 +78,6 @@ func TestIncidentLifecycle_CreateHappyPath(t *testing.T) {
 		`SELECT status FROM domain.incidents WHERE id = ?`, incID,
 	).Row().Scan(&status))
 	assert.Equal(t, "pending", status)
-
-	// One initial status history row with old_status NULL.
-	assert.Equal(t, 1, countStatusHistory(t, incID))
-
-	var projStatus string
-	require.NoError(t, testDB.Raw(
-		`SELECT status FROM projections.incidents WHERE id = ?`, incID,
-	).Row().Scan(&projStatus))
-	assert.Equal(t, "pending", projStatus)
 }
 
 // TestIncidentLifecycle_ToInProgress: DeptResponsible moves to in_progress →
@@ -111,14 +102,6 @@ func TestIncidentLifecycle_ToInProgress(t *testing.T) {
 			NewStatus:  string(model.IncidentStatusInProgress),
 		},
 	}))
-
-	assert.Equal(t, 2, countStatusHistory(t, incID))
-
-	var projStatus string
-	require.NoError(t, testDB.Raw(
-		`SELECT status FROM projections.incidents WHERE id = ?`, incID,
-	).Row().Scan(&projStatus))
-	assert.Equal(t, "in_progress", projStatus)
 }
 
 // TestIncidentLifecycle_PriorityChange: ClinicHead changes priority normal→high
@@ -142,15 +125,6 @@ func TestIncidentLifecycle_PriorityChange(t *testing.T) {
 			Priority:   string(model.IncidentPriorityHigh),
 		},
 	}))
-
-	assert.Equal(t, 1, countPriorityHistory(t, incID))
-	assert.Equal(t, 1, countStatusHistory(t, incID)) // unchanged
-
-	var projPriority string
-	require.NoError(t, testDB.Raw(
-		`SELECT priority FROM projections.incidents WHERE id = ?`, incID,
-	).Row().Scan(&projPriority))
-	assert.Equal(t, "high", projPriority)
 }
 
 // TestIncidentLifecycle_DescriptionEdit: registrar edits description at
@@ -180,15 +154,11 @@ func TestIncidentLifecycle_DescriptionEdit(t *testing.T) {
 		},
 	}))
 
-	// No new status or priority history rows.
-	assert.Equal(t, 2, countStatusHistory(t, incID))
-	assert.Equal(t, 0, countPriorityHistory(t, incID))
-
-	var projDesc string
+	var domainDesc string
 	require.NoError(t, testDB.Raw(
-		`SELECT COALESCE(description, '') FROM projections.incidents WHERE id = ?`, incID,
-	).Row().Scan(&projDesc))
-	assert.Equal(t, newDesc, projDesc)
+		`SELECT COALESCE(description, '') FROM domain.incidents WHERE id = ?`, incID,
+	).Row().Scan(&domainDesc))
+	assert.Equal(t, newDesc, domainDesc)
 }
 
 // TestIncidentLifecycle_DoneIsTerminal: status moves to done → terminal.
@@ -278,9 +248,6 @@ func TestIncidentLifecycle_Reopen(t *testing.T) {
 		`SELECT status FROM domain.incidents WHERE id = ?`, newID,
 	).Row().Scan(&newStatus))
 	assert.Equal(t, "pending", newStatus)
-
-	// New incident has its own initial history row only.
-	assert.Equal(t, 1, countStatusHistory(t, newID))
 }
 
 // TestIncidentLifecycle_CancelByRegistrar: registrar cancels pending
@@ -314,7 +281,4 @@ func TestIncidentLifecycle_CancelByRegistrar(t *testing.T) {
 		`SELECT status FROM domain.incidents WHERE id = ?`, incID,
 	).Row().Scan(&status))
 	assert.Equal(t, "cancelled", status)
-
-	// Two history rows: initial + cancelled.
-	assert.Equal(t, 2, countStatusHistory(t, incID))
 }

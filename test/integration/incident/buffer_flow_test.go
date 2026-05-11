@@ -54,7 +54,7 @@ func setupBufferWorld(t *testing.T) bufferWorld {
 	}
 }
 
-// TestBufferFlow_SubmitAndRead: patient submits buffer entry → reader returns it.
+// TestBufferFlow_SubmitAndRead: patient submits buffer entry → domain row exists.
 func TestBufferFlow_SubmitAndRead(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()
@@ -75,15 +75,15 @@ func TestBufferFlow_SubmitAndRead(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEqual(t, uuid.Nil, res.ID)
 
-	// Reader returns it.
-	view, err := bufferRdr.GetBufferEntry(ctx, patientID, res.ID)
-	require.NoError(t, err)
-	assert.Equal(t, model.BufferStatusPending, view.Status)
-	assert.True(t, view.Description.Valid)
-	assert.Equal(t, "Болит голова", view.Description.String)
+	// Domain row exists with pending status.
+	var status string
+	require.NoError(t, testDB.Raw(
+		`SELECT status FROM domain.patient_incident_buffer WHERE id = ?`, res.ID,
+	).Row().Scan(&status))
+	assert.Equal(t, string(model.BufferStatusPending), status)
 }
 
-// TestBufferFlow_UpdateDescription: patient updates description → projection updated.
+// TestBufferFlow_UpdateDescription: patient updates description → domain row updated.
 func TestBufferFlow_UpdateDescription(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()
@@ -109,9 +109,11 @@ func TestBufferFlow_UpdateDescription(t *testing.T) {
 		},
 	}))
 
-	view, err := bufferRdr.GetBufferEntry(ctx, patientID, res.ID)
-	require.NoError(t, err)
-	assert.Equal(t, updatedDesc, view.Description.String)
+	var dbDesc string
+	require.NoError(t, testDB.Raw(
+		`SELECT COALESCE(description, '') FROM domain.patient_incident_buffer WHERE id = ?`, res.ID,
+	).Row().Scan(&dbDesc))
+	assert.Equal(t, updatedDesc, dbDesc)
 }
 
 // TestBufferFlow_PatientCancel: patient cancels → status flips to cancelled.
@@ -135,15 +137,16 @@ func TestBufferFlow_PatientCancel(t *testing.T) {
 		Payload: buffercmd.CancelPayload{BufferID: res.ID.String()},
 	}))
 
-	view, err := bufferRdr.GetBufferEntry(ctx, patientID, res.ID)
-	require.NoError(t, err)
-	assert.Equal(t, model.BufferStatusCancelled, view.Status)
+	var status string
+	require.NoError(t, testDB.Raw(
+		`SELECT status FROM domain.patient_incident_buffer WHERE id = ?`, res.ID,
+	).Row().Scan(&status))
+	assert.Equal(t, string(model.BufferStatusCancelled), status)
 }
 
 // TestBufferFlow_PublishCreatesIncident: dispatcher publishes buffer entry →
 // incident created with source_buffer_id and source_patient_zitadel_user_id.
 // Buffer row goes to published with published_incident_id set.
-// Patient GetBufferEntry shows PatientPerspective.
 func TestBufferFlow_PublishCreatesIncident(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()
@@ -177,12 +180,15 @@ func TestBufferFlow_PublishCreatesIncident(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEqual(t, uuid.Nil, publishRes.IncidentID)
 
-	// Buffer row is published with published_incident_id.
-	bufView, err := bufferRdr.GetBufferEntry(ctx, patientID, res.ID)
-	require.NoError(t, err)
-	assert.Equal(t, model.BufferStatusPublished, bufView.Status)
-	require.True(t, bufView.PublishedIncidentID.Valid)
-	assert.Equal(t, publishRes.IncidentID, bufView.PublishedIncidentID.UUID)
+	// Buffer domain row is published with published_incident_id set.
+	var bufStatus string
+	var publishedIncidentID uuid.NullUUID
+	require.NoError(t, testDB.Raw(
+		`SELECT status, published_incident_id FROM domain.patient_incident_buffer WHERE id = ?`, res.ID,
+	).Row().Scan(&bufStatus, &publishedIncidentID))
+	assert.Equal(t, string(model.BufferStatusPublished), bufStatus)
+	require.True(t, publishedIncidentID.Valid)
+	assert.Equal(t, publishRes.IncidentID, publishedIncidentID.UUID)
 
 	// Incident has source_buffer_id and source_patient_zitadel_user_id.
 	var sourceBufferID uuid.NullUUID
@@ -196,10 +202,9 @@ func TestBufferFlow_PublishCreatesIncident(t *testing.T) {
 	assert.Equal(t, patientID, sourcePatient)
 }
 
-// TestBufferFlow_PublishThenCloseIsVisibleToPatient: when dispatcher closes
-// the incident as done, the patient's view of the incident should show
-// status done (via projection).
-func TestBufferFlow_PublishThenCloseIsVisibleToPatient(t *testing.T) {
+// TestBufferFlow_PublishThenCloseUpdatesIncidentStatus: when dispatcher closes
+// the incident as done, the domain incident row reflects status done.
+func TestBufferFlow_PublishThenCloseUpdatesIncidentStatus(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()
 	bw := setupBufferWorld(t)
@@ -241,15 +246,16 @@ func TestBufferFlow_PublishThenCloseIsVisibleToPatient(t *testing.T) {
 		},
 	}))
 
-	// Patient can read the incident via its source_patient_zitadel_user_id link.
-	incView, err := incidentRdr.GetIncident(ctx, patientID, publishRes.IncidentID)
-	require.NoError(t, err)
-	assert.Equal(t, model.IncidentStatusDone, incView.Status)
-	assert.True(t, incView.PatientPerspective)
+	// Verify domain incident row is now done.
+	var incStatus string
+	require.NoError(t, testDB.Raw(
+		`SELECT status FROM domain.incidents WHERE id = ?`, publishRes.IncidentID,
+	).Row().Scan(&incStatus))
+	assert.Equal(t, string(model.IncidentStatusDone), incStatus)
 }
 
 // TestBufferFlow_RejectSetsStatusRejected: dispatcher rejects submission →
-// buffer status is rejected; patient can still read it.
+// buffer status is rejected.
 func TestBufferFlow_RejectSetsStatusRejected(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()
@@ -270,9 +276,12 @@ func TestBufferFlow_RejectSetsStatusRejected(t *testing.T) {
 		Payload: buffercmd.RejectPayload{BufferID: res.ID.String()},
 	}))
 
-	view, err := bufferRdr.GetBufferEntry(ctx, patientID, res.ID)
-	require.NoError(t, err)
-	assert.Equal(t, model.BufferStatusRejected, view.Status)
+	var status string
+	var publishedIncidentID uuid.NullUUID
+	require.NoError(t, testDB.Raw(
+		`SELECT status, published_incident_id FROM domain.patient_incident_buffer WHERE id = ?`, res.ID,
+	).Row().Scan(&status, &publishedIncidentID))
+	assert.Equal(t, string(model.BufferStatusRejected), status)
 	// No incident created.
-	assert.False(t, view.PublishedIncidentID.Valid)
+	assert.False(t, publishedIncidentID.Valid)
 }

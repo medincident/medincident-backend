@@ -6,12 +6,16 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/samber/oops"
+	anypb "google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	servicerequestv1 "github.com/medincident/medincident-backend/pkg/event/service_request/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // AssignExecutorsPayload carries the new executor set.
@@ -73,11 +77,6 @@ func (s *ServiceRequestService) AssignExecutors(
 			}
 		}
 
-		actorDisplayName, err := s.resolveActorDisplayName(tx, cmd.Caller.ZitadelUserID)
-		if err != nil {
-			return err
-		}
-
 		var existing []model.ServiceRequestExecutor
 		if err := tx.Where("request_id = ?", sr.ID).Find(&existing).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeServiceRequestLoadFailed).Wrap(err)
@@ -98,14 +97,11 @@ func (s *ServiceRequestService) AssignExecutors(
 				if err := tx.Delete(&model.ServiceRequestExecutor{}, "id = ?", e.ID).Error; err != nil {
 					return oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
 				}
-				empName, err := s.resolveEmployeeName(tx, e.EmployeeID)
+				env, err := buildServiceRequestExecutorRemovedEnvelope(sr.ID, e.EmployeeID, cmd.Caller.ZitadelUserID, now)
 				if err != nil {
 					return err
 				}
-				if err := projector.ServiceRequestExecutorRemoved(
-					tx, sr.ID, e.EmployeeID, empName,
-					cmd.Caller.ZitadelUserID, actorDisplayName, now,
-				); err != nil {
+				if err := outbox.Append(tx, "medincident.event.service_request.v1.executor_removed", env); err != nil {
 					return err
 				}
 			}
@@ -130,14 +126,11 @@ func (s *ServiceRequestService) AssignExecutors(
 			if err := tx.Create(&exec).Error; err != nil {
 				return oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
 			}
-			empName, err := s.resolveEmployeeName(tx, empID)
+			env, err := buildServiceRequestExecutorAssignedEnvelope(sr.ID, empID, cmd.Caller.ZitadelUserID, now)
 			if err != nil {
 				return err
 			}
-			if err := projector.ServiceRequestExecutorAssigned(
-				tx, sr.ID, empID, empName,
-				cmd.Caller.ZitadelUserID, actorDisplayName, now,
-			); err != nil {
+			if err := outbox.Append(tx, "medincident.event.service_request.v1.executor_assigned", env); err != nil {
 				return err
 			}
 		}
@@ -148,4 +141,23 @@ func (s *ServiceRequestService) AssignExecutors(
 		}
 		return nil
 	})
+}
+
+func buildServiceRequestExecutorRemovedEnvelope(requestID, employeeID uuid.UUID, actorZitadelUserID string, changedAt time.Time) (*eventv1.Envelope, error) {
+	msg := &servicerequestv1.ServiceRequestExecutorRemoved{
+		RequestId:  requestID.String(),
+		EmployeeId: employeeID.String(),
+		ActorId:    actorZitadelUserID,
+		ChangedAt:  timestamppb.New(changedAt),
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeServiceRequestSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(changedAt),
+		AggregateType: "service_request",
+		AggregateId:   requestID.String(),
+		Payload:       payload,
+	}, nil
 }
