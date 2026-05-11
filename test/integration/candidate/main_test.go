@@ -94,32 +94,28 @@ func resetAll(t *testing.T) {
 	if err != nil {
 		t.Fatalf("get raw db: %v", err)
 	}
-	stmts := []string{
-		// domain tables (authz checks)
-		`TRUNCATE TABLE domain.system_admins CASCADE`,
-		`TRUNCATE TABLE domain.org_admins CASCADE`,
-		`TRUNCATE TABLE domain.org_heads CASCADE`,
-		`TRUNCATE TABLE domain.org_dispatchers CASCADE`,
-		`TRUNCATE TABLE domain.clinic_heads CASCADE`,
-		`TRUNCATE TABLE domain.department_responsibles CASCADE`,
-		`TRUNCATE TABLE domain.employee_vacations CASCADE`,
-		`TRUNCATE TABLE domain.employees CASCADE`,
-		`TRUNCATE TABLE domain.departments CASCADE`,
-		`TRUNCATE TABLE domain.clinics CASCADE`,
-		`TRUNCATE TABLE domain.organizations CASCADE`,
-		// projections tables (query results)
-		`TRUNCATE TABLE projections.employee_cards CASCADE`,
-		`TRUNCATE TABLE projections.org_admins CASCADE`,
-		`TRUNCATE TABLE projections.org_heads CASCADE`,
-		`TRUNCATE TABLE projections.org_dispatchers CASCADE`,
-		`TRUNCATE TABLE projections.clinic_heads CASCADE`,
-		`TRUNCATE TABLE projections.department_responsibles CASCADE`,
-		`TRUNCATE TABLE projections.system_admins CASCADE`,
-		`TRUNCATE TABLE projections.users CASCADE`,
-	}
-	for _, q := range stmts {
-		if _, err := raw.Exec(q); err != nil {
-			t.Fatalf("truncate %q: %v", q, err)
-		}
+	_, err = raw.Exec(`TRUNCATE TABLE
+		domain.system_admins,
+		domain.org_admins,
+		domain.org_heads,
+		domain.org_dispatchers,
+		domain.clinic_heads,
+		domain.department_responsibles,
+		domain.employee_vacations,
+		domain.employees,
+		domain.departments,
+		domain.clinics,
+		domain.organizations,
+		projections.employee_cards,
+		projections.org_admins,
+		projections.org_heads,
+		projections.org_dispatchers,
+		projections.clinic_heads,
+		projections.department_responsibles,
+		projections.system_admins,
+		projections.users
+	CASCADE`)
+	if err != nil {
+		t.Fatalf("truncate: %v", err)
 	}
 }

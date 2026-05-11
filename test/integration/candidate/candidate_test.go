@@ -59,6 +59,46 @@ func seedOrgAdmin(t *testing.T, employeeID, orgID string) {
 	require.NoError(t, err)
 }
 
+// seedOrgHead inserts into projections.org_heads.
+func seedOrgHead(t *testing.T, employeeID, orgID string) {
+	t.Helper()
+	err := testDB.Exec(
+		`INSERT INTO projections.org_heads (organization_id, employee_id) VALUES (?, ?)`,
+		orgID, employeeID,
+	).Error
+	require.NoError(t, err)
+}
+
+// seedOrgDispatcher inserts into projections.org_dispatchers.
+func seedOrgDispatcher(t *testing.T, employeeID, orgID string) {
+	t.Helper()
+	err := testDB.Exec(
+		`INSERT INTO projections.org_dispatchers (organization_id, employee_id) VALUES (?, ?)`,
+		orgID, employeeID,
+	).Error
+	require.NoError(t, err)
+}
+
+// seedClinicHead inserts into projections.clinic_heads.
+func seedClinicHead(t *testing.T, employeeID, clinicID string) {
+	t.Helper()
+	err := testDB.Exec(
+		`INSERT INTO projections.clinic_heads (clinic_id, employee_id) VALUES (?, ?)`,
+		clinicID, employeeID,
+	).Error
+	require.NoError(t, err)
+}
+
+// seedDeptResponsible inserts into projections.department_responsibles.
+func seedDeptResponsible(t *testing.T, employeeID, deptID string) {
+	t.Helper()
+	err := testDB.Exec(
+		`INSERT INTO projections.department_responsibles (department_id, employee_id) VALUES (?, ?)`,
+		deptID, employeeID,
+	).Error
+	require.NoError(t, err)
+}
+
 // ---------------------------------------------------------------------------
 // Domain fixtures for authz
 // ---------------------------------------------------------------------------
@@ -137,8 +177,7 @@ func systemAdminCaller(t *testing.T, userID string) authz.Caller {
 
 // orgAdminCaller creates a Caller who passes AdminOf.Organization checks.
 // It inserts domain fixtures so the authz check succeeds:
-//   - a minimal org (orgID), clinic, dept
-//   - an employee record for the caller
+//   - an employee record for the caller (in orgID/deptID)
 //   - an org_admin row
 func orgAdminCaller(t *testing.T, callerZitadelID string, orgID, clinicID, deptID uuid.UUID) authz.Caller {
 	t.Helper()
@@ -175,6 +214,14 @@ func containsEmployeeID(views []membership.EmployeeCardView, id uuid.UUID) bool 
 	return false
 }
 
+// ctxT returns a context tied to the test deadline (10s).
+func ctxT(t *testing.T) context.Context {
+	t.Helper()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	t.Cleanup(cancel)
+	return ctx
+}
+
 // ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
@@ -184,7 +231,7 @@ func containsEmployeeID(views []membership.EmployeeCardView, id uuid.UUID) bool 
 // user who has no employment is returned.
 func TestForHire_ExcludesActiveEmployeeOfSameOrg(t *testing.T) {
 	resetAll(t)
-	ctx := context.Background()
+	ctx := ctxT(t)
 	now := time.Now().UTC().Truncate(time.Second)
 
 	orgID := uuid.Must(uuid.NewV7())
@@ -219,7 +266,7 @@ func TestForHire_ExcludesActiveEmployeeOfSameOrg(t *testing.T) {
 // active employee of orgB appears as a hire candidate for orgA.
 func TestForHire_IncludesEmployeeOfDifferentOrg(t *testing.T) {
 	resetAll(t)
-	ctx := context.Background()
+	ctx := ctxT(t)
 	now := time.Now().UTC().Truncate(time.Second)
 
 	orgA := uuid.Must(uuid.NewV7())
@@ -255,7 +302,7 @@ func TestForHire_IncludesEmployeeOfDifferentOrg(t *testing.T) {
 // only the matching user and not others.
 func TestForHire_SearchFilters(t *testing.T) {
 	resetAll(t)
-	ctx := context.Background()
+	ctx := ctxT(t)
 	now := time.Now().UTC().Truncate(time.Second)
 
 	orgID := uuid.Must(uuid.NewV7())
@@ -285,7 +332,7 @@ func TestForHire_SearchFilters(t *testing.T) {
 // pagination.
 func TestForHire_CursorPagination(t *testing.T) {
 	resetAll(t)
-	ctx := context.Background()
+	ctx := ctxT(t)
 	now := time.Now().UTC().Truncate(time.Second)
 
 	orgID := uuid.Must(uuid.NewV7())
@@ -330,7 +377,7 @@ func TestForHire_CursorPagination(t *testing.T) {
 // already a system admin is excluded from ForSystemAdmin results.
 func TestForSystemAdmin_ExcludesExistingSystemAdmin(t *testing.T) {
 	resetAll(t)
-	ctx := context.Background()
+	ctx := ctxT(t)
 	now := time.Now().UTC().Truncate(time.Second)
 
 	// Caller is a system admin.
@@ -360,7 +407,7 @@ func TestForSystemAdmin_ExcludesExistingSystemAdmin(t *testing.T) {
 // already an org admin is excluded from ForOrgAdmin results.
 func TestForOrgAdmin_ExcludesAlreadyAssigned(t *testing.T) {
 	resetAll(t)
-	ctx := context.Background()
+	ctx := ctxT(t)
 	now := time.Now().UTC().Truncate(time.Second)
 
 	orgID := uuid.Must(uuid.NewV7())
@@ -393,7 +440,7 @@ func TestForOrgAdmin_ExcludesAlreadyAssigned(t *testing.T) {
 // employees belonging to the target clinic are returned.
 func TestForClinicHead_OnlyReturnsEmployeesOfThatClinic(t *testing.T) {
 	resetAll(t)
-	ctx := context.Background()
+	ctx := ctxT(t)
 	now := time.Now().UTC().Truncate(time.Second)
 
 	orgID := uuid.Must(uuid.NewV7())
@@ -422,19 +469,25 @@ func TestForClinicHead_OnlyReturnsEmployeesOfThatClinic(t *testing.T) {
 	emp2ID := uuid.Must(uuid.NewV7())
 	seedEmployee(t, emp2ID.String(), "emp2-clinic-zid", orgID.String(), deptB.String(), &clinicBStr, now.Add(-time.Second))
 
+	// emp3 belongs to clinicA but is already a clinic head.
+	emp3ID := uuid.Must(uuid.NewV7())
+	seedEmployee(t, emp3ID.String(), "emp3-clinic-zid", orgID.String(), deptA.String(), &clinicAStr, now.Add(-2*time.Second))
+	seedClinicHead(t, emp3ID.String(), clinicA.String())
+
 	r := newReader()
 	results, _, err := r.ForClinicHead(ctx, caller, clinicA, "", "", 50)
 	require.NoError(t, err)
 
 	assert.True(t, containsEmployeeID(results, emp1ID), "emp1 (in clinicA) must be included")
 	assert.False(t, containsEmployeeID(results, emp2ID), "emp2 (in clinicB) must be excluded")
+	assert.False(t, containsEmployeeID(results, emp3ID), "emp3 (already clinic head) must be excluded")
 }
 
 // TestForDeptResponsible_OnlyReturnsEmployeesOfThatDept verifies that only
 // employees belonging to the target department are returned.
 func TestForDeptResponsible_OnlyReturnsEmployeesOfThatDept(t *testing.T) {
 	resetAll(t)
-	ctx := context.Background()
+	ctx := ctxT(t)
 	now := time.Now().UTC().Truncate(time.Second)
 
 	orgID := uuid.Must(uuid.NewV7())
@@ -460,10 +513,82 @@ func TestForDeptResponsible_OnlyReturnsEmployeesOfThatDept(t *testing.T) {
 	emp2ID := uuid.Must(uuid.NewV7())
 	seedEmployee(t, emp2ID.String(), "emp2-dept-zid", orgID.String(), deptB.String(), &clinicStr, now.Add(-time.Second))
 
+	// emp3 belongs to deptA but is already a dept responsible.
+	emp3ID := uuid.Must(uuid.NewV7())
+	seedEmployee(t, emp3ID.String(), "emp3-dept-zid", orgID.String(), deptA.String(), &clinicStr, now.Add(-2*time.Second))
+	seedDeptResponsible(t, emp3ID.String(), deptA.String())
+
 	r := newReader()
 	results, _, err := r.ForDeptResponsible(ctx, caller, deptA, "", "", 50)
 	require.NoError(t, err)
 
 	assert.True(t, containsEmployeeID(results, emp1ID), "emp1 (in deptA) must be included")
 	assert.False(t, containsEmployeeID(results, emp2ID), "emp2 (in deptB) must be excluded")
+	assert.False(t, containsEmployeeID(results, emp3ID), "emp3 (already dept responsible) must be excluded")
+}
+
+// TestForOrgHead_ExcludesAlreadyAssigned verifies that an employee who is
+// already an org head is excluded from ForOrgHead results.
+func TestForOrgHead_ExcludesAlreadyAssigned(t *testing.T) {
+	resetAll(t)
+	ctx := ctxT(t)
+	now := time.Now().UTC().Truncate(time.Second)
+
+	orgID := uuid.Must(uuid.NewV7())
+	clinicID := uuid.Must(uuid.NewV7())
+	deptID := uuid.Must(uuid.NewV7())
+	domainOrg(t, orgID)
+	domainClinic(t, clinicID, orgID)
+	domainDepartment(t, deptID, clinicID)
+
+	caller := orgAdminCaller(t, "admin-orghead", orgID, clinicID, deptID)
+
+	// emp1 is already an org head (in projections).
+	emp1ID := uuid.Must(uuid.NewV7())
+	seedEmployee(t, emp1ID.String(), "emp1-orghead-zid", orgID.String(), deptID.String(), nil, now)
+	seedOrgHead(t, emp1ID.String(), orgID.String())
+
+	// emp2 is a regular employee, not yet an org head.
+	emp2ID := uuid.Must(uuid.NewV7())
+	seedEmployee(t, emp2ID.String(), "emp2-orghead-zid", orgID.String(), deptID.String(), nil, now.Add(-time.Second))
+
+	r := newReader()
+	results, _, err := r.ForOrgHead(ctx, caller, orgID, "", "", 50)
+	require.NoError(t, err)
+
+	assert.False(t, containsEmployeeID(results, emp1ID), "emp1 (already org head) must be excluded")
+	assert.True(t, containsEmployeeID(results, emp2ID), "emp2 (not org head) must be included")
+}
+
+// TestForOrgDispatcher_ExcludesAlreadyAssigned verifies that an employee who is
+// already an org dispatcher is excluded from ForOrgDispatcher results.
+func TestForOrgDispatcher_ExcludesAlreadyAssigned(t *testing.T) {
+	resetAll(t)
+	ctx := ctxT(t)
+	now := time.Now().UTC().Truncate(time.Second)
+
+	orgID := uuid.Must(uuid.NewV7())
+	clinicID := uuid.Must(uuid.NewV7())
+	deptID := uuid.Must(uuid.NewV7())
+	domainOrg(t, orgID)
+	domainClinic(t, clinicID, orgID)
+	domainDepartment(t, deptID, clinicID)
+
+	caller := orgAdminCaller(t, "admin-orgdisp", orgID, clinicID, deptID)
+
+	// emp1 is already an org dispatcher (in projections).
+	emp1ID := uuid.Must(uuid.NewV7())
+	seedEmployee(t, emp1ID.String(), "emp1-orgdisp-zid", orgID.String(), deptID.String(), nil, now)
+	seedOrgDispatcher(t, emp1ID.String(), orgID.String())
+
+	// emp2 is a regular employee, not yet an org dispatcher.
+	emp2ID := uuid.Must(uuid.NewV7())
+	seedEmployee(t, emp2ID.String(), "emp2-orgdisp-zid", orgID.String(), deptID.String(), nil, now.Add(-time.Second))
+
+	r := newReader()
+	results, _, err := r.ForOrgDispatcher(ctx, caller, orgID, "", "", 50)
+	require.NoError(t, err)
+
+	assert.False(t, containsEmployeeID(results, emp1ID), "emp1 (already org dispatcher) must be excluded")
+	assert.True(t, containsEmployeeID(results, emp2ID), "emp2 (not org dispatcher) must be included")
 }
