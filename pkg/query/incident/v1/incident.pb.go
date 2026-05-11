@@ -1823,14 +1823,20 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x16PATIENT_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17PATIENT_STATUS_ACCEPTED\x10\x02\x12\x19\n" +
 	"\x15PATIENT_STATUS_CLOSED\x10\x03\x12\x1c\n" +
-	"\x18PATIENT_STATUS_CANCELLED\x10\x042\xb2\v\n" +
+	"\x18PATIENT_STATUS_CANCELLED\x10\x042\x86\x0f\n" +
 	"\x14IncidentQueryService\x12\xf0\x01\n" +
 	"\vGetIncident\x12%.query.incident.v1.GetIncidentRequest\x1a&.query.incident.v1.GetIncidentResponse\"\x91\x01\x92AnJl\n" +
 	"\x03404\x12e\n" +
 	"cNot found. Error codes:\n" +
-	"- `incident_query_not_found` — incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents/{id}\x12\x9f\x01\n" +
-	"\rListIncidents\x12'.query.incident.v1.ListIncidentsRequest\x1a(.query.incident.v1.ListIncidentsResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/organizations/{organization_id}/incidents\x12\x8a\x01\n" +
-	"\x0fListMyIncidents\x12).query.incident.v1.ListMyIncidentsRequest\x1a*.query.incident.v1.ListMyIncidentsResponse\" \x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents:mine\x12\x96\x02\n" +
+	"- `incident_query_not_found` — incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents/{id}\x12\x94\x02\n" +
+	"\rListIncidents\x12'.query.incident.v1.ListIncidentsRequest\x1a(.query.incident.v1.ListIncidentsResponse\"\xaf\x01\x92AqJo\n" +
+	"\x03400\x12h\n" +
+	"fValidation failed. Error codes:\n" +
+	"- `incident_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x025\x123/v1/query/organizations/{organization_id}/incidents\x12\xff\x01\n" +
+	"\x0fListMyIncidents\x12).query.incident.v1.ListMyIncidentsRequest\x1a*.query.incident.v1.ListMyIncidentsResponse\"\x94\x01\x92AqJo\n" +
+	"\x03400\x12h\n" +
+	"fValidation failed. Error codes:\n" +
+	"- `incident_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/query/incidents:mine\x12\x96\x02\n" +
 	"\x12GetIncidentHistory\x12,.query.incident.v1.GetIncidentHistoryRequest\x1a-.query.incident.v1.GetIncidentHistoryResponse\"\xa2\x01\x92AnJl\n" +
 	"\x03404\x12e\n" +
 	"cNot found. Error codes:\n" +
@@ -1838,9 +1844,15 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x0eGetBufferEntry\x12(.query.incident.v1.GetBufferEntryRequest\x1a).query.incident.v1.GetBufferEntryResponse\"\x9f\x01\x92AtJr\n" +
 	"\x03404\x12k\n" +
 	"iNot found. Error codes:\n" +
-	"- `buffer_query_not_found` — patient incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xb3\x01\n" +
-	"\x11ListBufferEntries\x12+.query.incident.v1.ListBufferEntriesRequest\x1a,.query.incident.v1.ListBufferEntriesResponse\"C\x82\xd3\xe4\x93\x02=\x12;/v1/query/organizations/{organization_id}/patient-incidents\x12\x9e\x01\n" +
-	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xc0\x04\x92A\xe3\x02RI\n" +
+	"- `buffer_query_not_found` — patient incident with the given ID does not exist.\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents/{id}\x12\xa8\x02\n" +
+	"\x11ListBufferEntries\x12+.query.incident.v1.ListBufferEntriesRequest\x1a,.query.incident.v1.ListBufferEntriesResponse\"\xb7\x01\x92AqJo\n" +
+	"\x03400\x12h\n" +
+	"fValidation failed. Error codes:\n" +
+	"- `incident_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02=\x12;/v1/query/organizations/{organization_id}/patient-incidents\x12\x93\x02\n" +
+	"\x13ListMyBufferEntries\x12-.query.incident.v1.ListMyBufferEntriesRequest\x1a..query.incident.v1.ListMyBufferEntriesResponse\"\x9c\x01\x92AqJo\n" +
+	"\x03400\x12h\n" +
+	"fValidation failed. Error codes:\n" +
+	"- `incident_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\"\x12 /v1/query/patient-incidents:mineB\xc0\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

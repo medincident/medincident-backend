@@ -465,14 +465,20 @@ const file_query_request_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x05items\x18\x01 \x03(\v2(.query.request.classifier.v1.RequestTypeR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor2\x96\x06\n" +
+	"\f_next_cursor2\x94\b\n" +
 	"\x1dRequestClassifierQueryService\x12\x8d\x02\n" +
 	"\x0eGetRequestType\x122.query.request.classifier.v1.GetRequestTypeRequest\x1a3.query.request.classifier.v1.GetRequestTypeResponse\"\x91\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/request-types/{id}\x12\xe4\x01\n" +
-	"\x1eListRequestTypesByOrganization\x12B.query.request.classifier.v1.ListRequestTypesByOrganizationRequest\x1aC.query.request.classifier.v1.ListRequestTypesByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/request-types\x12\xfd\x01\n" +
-	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"@\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\x81\x05\x92A\xe3\x02RI\n" +
+	"- `request_type_not_found` — request type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/request-types/{id}\x12\xe3\x02\n" +
+	"\x1eListRequestTypesByOrganization\x12B.query.request.classifier.v1.ListRequestTypesByOrganizationRequest\x1aC.query.request.classifier.v1.ListRequestTypesByOrganizationResponse\"\xb7\x01\x92A{Jy\n" +
+	"\x03400\x12r\n" +
+	"pValidation failed. Error codes:\n" +
+	"- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/request-types\x12\xfc\x02\n" +
+	"$ListActiveRequestTypesByOrganization\x12H.query.request.classifier.v1.ListActiveRequestTypesByOrganizationRequest\x1aI.query.request.classifier.v1.ListActiveRequestTypesByOrganizationResponse\"\xbe\x01\x92A{Jy\n" +
+	"\x03400\x12r\n" +
+	"pValidation failed. Error codes:\n" +
+	"- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/request-types:activeB\x81\x05\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

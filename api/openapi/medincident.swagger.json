@@ -659,10 +659,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -910,10 +908,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -1644,10 +1640,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -2505,10 +2499,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -3081,10 +3073,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -4101,10 +4091,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `request_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -4696,10 +4684,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -4870,10 +4856,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -5208,10 +5192,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -5459,10 +5441,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -5797,10 +5777,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -5960,10 +5938,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -6055,10 +6031,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -6393,10 +6367,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -6533,10 +6505,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -6600,10 +6570,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -6667,10 +6635,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -6735,10 +6701,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -6868,10 +6832,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -6999,10 +6961,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -7066,7 +7026,7 @@
             }
           },
           "400": {
-            "description": "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.",
+            "description": "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `request_bad_cursor` — pagination cursor is invalid or malformed.",
             "schema": {}
           },
           "401": {
@@ -7231,10 +7191,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -7962,10 +7920,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -8109,10 +8065,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -8248,10 +8202,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -8391,10 +8343,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `incident_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -9148,10 +9098,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",

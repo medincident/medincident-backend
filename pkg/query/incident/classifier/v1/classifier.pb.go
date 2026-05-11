@@ -1271,23 +1271,41 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor2\x9e\x11\n" +
+	"\f_next_cursor2\x9e\x17\n" +
 	"\x1eIncidentClassifierQueryService\x12\x8d\x02\n" +
 	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"\x98\x01\x92AqJo\n" +
 	"\x03404\x12h\n" +
 	"fNot found. Error codes:\n" +
-	"- `incident_category_not_found` — category with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/incident-categories/{id}\x12\xe6\x01\n" +
-	"\x1cListCategoriesByOrganization\x12A.query.incident.classifier.v1.ListCategoriesByOrganizationRequest\x1aB.query.incident.classifier.v1.ListCategoriesByOrganizationResponse\"?\x82\xd3\xe4\x93\x029\x127/v1/organizations/{organization_id}/incident-categories\x12\xe0\x01\n" +
-	"\x18ListActiveRootCategories\x12=.query.incident.classifier.v1.ListActiveRootCategoriesRequest\x1a>.query.incident.classifier.v1.ListActiveRootCategoriesResponse\"E\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/incident-categories:roots\x12\xc6\x01\n" +
+	"- `incident_category_not_found` — category with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/incident-categories/{id}\x12\xe6\x02\n" +
+	"\x1cListCategoriesByOrganization\x12A.query.incident.classifier.v1.ListCategoriesByOrganizationRequest\x1aB.query.incident.classifier.v1.ListCategoriesByOrganizationResponse\"\xbe\x01\x92A|Jz\n" +
+	"\x03400\x12s\n" +
+	"qValidation failed. Error codes:\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x029\x127/v1/organizations/{organization_id}/incident-categories\x12\xe0\x02\n" +
+	"\x18ListActiveRootCategories\x12=.query.incident.classifier.v1.ListActiveRootCategoriesRequest\x1a>.query.incident.classifier.v1.ListActiveRootCategoriesResponse\"\xc4\x01\x92A|Jz\n" +
+	"\x03400\x12s\n" +
+	"qValidation failed. Error codes:\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/incident-categories:roots\x12\xc6\x01\n" +
 	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\":\x82\xd3\xe4\x93\x024\x122/v1/incident-categories/{root_category_id}:subtree\x12\xf4\x01\n" +
 	"\aGetType\x12,.query.incident.classifier.v1.GetTypeRequest\x1a-.query.incident.classifier.v1.GetTypeResponse\"\x8b\x01\x92AiJg\n" +
 	"\x03404\x12`\n" +
 	"^Not found. Error codes:\n" +
-	"- `incident_type_not_found` — type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/incident-types/{id}\x12\xbf\x01\n" +
-	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/incident-categories/{category_id}/types\x12\xeb\x01\n" +
-	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"A\x82\xd3\xe4\x93\x02;\x129/v1/organizations/{organization_id}/incident-types:active\x12\x8c\x02\n" +
-	"%ListPatientAllowedTypesByOrganization\x12J.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest\x1aK.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse\"J\x82\xd3\xe4\x93\x02D\x12B/v1/organizations/{organization_id}/incident-types:patient-allowed\x12\xa0\x02\n" +
-	"*ListPatientVisibleCategoriesByOrganization\x12O.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest\x1aP.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse\"O\x82\xd3\xe4\x93\x02I\x12G/v1/organizations/{organization_id}/incident-categories:patient-visibleB\x87\x05\x92A\xe3\x02RI\n" +
+	"- `incident_type_not_found` — type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/incident-types/{id}\x12\xbf\x02\n" +
+	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"\xb2\x01\x92A|Jz\n" +
+	"\x03400\x12s\n" +
+	"qValidation failed. Error codes:\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02-\x12+/v1/incident-categories/{category_id}/types\x12\xeb\x02\n" +
+	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"\xc0\x01\x92A|Jz\n" +
+	"\x03400\x12s\n" +
+	"qValidation failed. Error codes:\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02;\x129/v1/organizations/{organization_id}/incident-types:active\x12\x8c\x03\n" +
+	"%ListPatientAllowedTypesByOrganization\x12J.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest\x1aK.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse\"\xc9\x01\x92A|Jz\n" +
+	"\x03400\x12s\n" +
+	"qValidation failed. Error codes:\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02D\x12B/v1/organizations/{organization_id}/incident-types:patient-allowed\x12\xa0\x03\n" +
+	"*ListPatientVisibleCategoriesByOrganization\x12O.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest\x1aP.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse\"\xce\x01\x92A|Jz\n" +
+	"\x03400\x12s\n" +
+	"qValidation failed. Error codes:\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02I\x12G/v1/organizations/{organization_id}/incident-categories:patient-visibleB\x87\x05\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

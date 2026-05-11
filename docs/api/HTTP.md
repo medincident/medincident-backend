@@ -5179,11 +5179,14 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListTypesByCategoryResponse](#schemav1listtypesbycategoryresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentclassifierqueryservice_listtypesbycategory-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5415,11 +5418,14 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCategoriesByOrganizationResponse](#schemav1listcategoriesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentclassifierqueryservice_listcategoriesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5475,11 +5481,14 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visib
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListPatientVisibleCategoriesByOrganizationResponse](#schemav1listpatientvisiblecategoriesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentclassifierqueryservice_listpatientvisiblecategoriesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5535,11 +5544,14 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveRootCategoriesResponse](#schemav1listactiverootcategoriesresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentclassifierqueryservice_listactiverootcategories-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5596,11 +5608,14 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveTypesByOrganizationResponse](#schemav1listactivetypesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentclassifierqueryservice_listactivetypesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5663,11 +5678,16 @@ an-incident.-responses">Responses</h3>
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListPatientAllowedTypesByOrganizationResponse](#schemav1listpatientallowedtypesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="patient-facing-reads.-these-are-scoped-to-one-organisation-and-return
+only-the-slice-of-the-classifier-that-a-patient-may-see-when-filing
+an-incident.-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5890,11 +5910,14 @@ curl -X GET /v1/query/incidents:mine \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListMyIncidentsResponse](#schemav1listmyincidentsresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentqueryservice_listmyincidents-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5991,11 +6014,14 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListIncidentsResponse](#schemav1listincidentsresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentqueryservice_listincidents-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -6066,11 +6092,14 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListBufferEntriesResponse](#schemav1listbufferentriesresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentqueryservice_listbufferentries-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -6192,11 +6221,14 @@ curl -X GET /v1/query/patient-incidents:mine \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListMyBufferEntriesResponse](#schemav1listmybufferentriesresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentqueryservice_listmybufferentries-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -6276,11 +6308,14 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByClinicResponse](#schemav1listemployeesbyclinicresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listemployeesbyclinic-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -6501,11 +6536,14 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByDepartmentResponse](#schemav1listemployeesbydepartmentresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listemployeesbydepartment-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -6709,11 +6747,14 @@ Valid values: scheduled, active, ended, cancelled.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListVacationsByEmployeeResponse](#schemav1listvacationsbyemployeeresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listvacationsbyemployee-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -6916,11 +6957,14 @@ curl -X GET /v1/organizations/{organizationId}/admins \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgAdminsResponse](#schemav1listorgadminsresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listorgadmins-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7004,11 +7048,14 @@ curl -X GET /v1/organizations/{organizationId}/dispatchers \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgDispatchersResponse](#schemav1listorgdispatchersresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listorgdispatchers-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7086,11 +7133,14 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListEmployeesByOrganizationResponse](#schemav1listemployeesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listemployeesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7236,11 +7286,14 @@ before comparison; all-whitespace is treated as unset.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SearchEmployeesByOrganizationResponse](#schemav1searchemployeesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_searchemployeesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7324,11 +7377,14 @@ curl -X GET /v1/organizations/{organizationId}/heads \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrgHeadsResponse](#schemav1listorgheadsresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listorgheads-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7377,11 +7433,14 @@ curl -X GET /v1/system-admins \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListSystemAdminsResponse](#schemav1listsystemadminsresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listsystemadmins-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7434,11 +7493,14 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListDepartmentsByClinicResponse](#schemav1listdepartmentsbyclinicresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurequeryservice_listdepartmentsbyclinic-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7660,11 +7722,14 @@ invalid cursor is rejected with a domain error.
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListOrganizationsResponse](#schemav1listorganizationsresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurequeryservice_listorganizations-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7778,11 +7843,14 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListClinicsByOrganizationResponse](#schemav1listclinicsbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurequeryservice_listclinicsbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7918,11 +7986,14 @@ curl -X GET /v1/organizations:search \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1SearchOrganizationsResponse](#schemav1searchorganizationsresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurequeryservice_searchorganizations-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7979,11 +8050,14 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListRequestTypesByOrganizationResponse](#schemav1listrequesttypesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="requestclassifierqueryservice_listrequesttypesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -8038,11 +8112,14 @@ curl -X GET /v1/organizations/{organizationId}/request-types:active \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveRequestTypesByOrganizationResponse](#schemav1listactiverequesttypesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="requestclassifierqueryservice_listactiverequesttypesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -8169,7 +8246,8 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListServiceRequestsByIncidentResponse](#schemav1listservicerequestsbyincidentresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `request_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
@@ -8245,7 +8323,8 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListServiceRequestsResponse](#schemav1listservicerequestsresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
-- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.|Inline|
+- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.
+- `request_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|

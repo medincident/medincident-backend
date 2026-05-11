@@ -2471,27 +2471,54 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor2\x9d\x17\n" +
+	"\f_next_cursor2\xcc\x1f\n" +
 	"\x16MembershipQueryService\x12\xed\x01\n" +
 	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x8a\x01\x92AmJk\n" +
 	"\x03404\x12d\n" +
 	"bNot found. Error codes:\n" +
-	"- `employee_card_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xbd\x01\n" +
-	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/departments/{department_id}/employees\x12\xa9\x01\n" +
-	"\x15ListEmployeesByClinic\x121.query.membership.v1.ListEmployeesByClinicRequest\x1a2.query.membership.v1.ListEmployeesByClinicResponse\")\x82\xd3\xe4\x93\x02#\x12!/v1/clinics/{clinic_id}/employees\x12\xc7\x01\n" +
-	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\"5\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xc6\x01\n" +
+	"- `employee_card_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xb4\x02\n" +
+	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"\xa7\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02+\x12)/v1/departments/{department_id}/employees\x12\xa0\x02\n" +
+	"\x15ListEmployeesByClinic\x121.query.membership.v1.ListEmployeesByClinicRequest\x1a2.query.membership.v1.ListEmployeesByClinicResponse\"\x9f\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02#\x12!/v1/clinics/{clinic_id}/employees\x12\xbe\x02\n" +
+	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\"\xab\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xc6\x01\n" +
 	"\x1aCountEmployeesByDepartment\x126.query.membership.v1.CountEmployeesByDepartmentRequest\x1a7.query.membership.v1.CountEmployeesByDepartmentResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/departments/{department_id}/employees:count\x12\xb2\x01\n" +
 	"\x16CountEmployeesByClinic\x122.query.membership.v1.CountEmployeesByClinicRequest\x1a3.query.membership.v1.CountEmployeesByClinicResponse\"/\x82\xd3\xe4\x93\x02)\x12'/v1/clinics/{clinic_id}/employees:count\x12\xd0\x01\n" +
-	"\x1cCountEmployeesByOrganization\x128.query.membership.v1.CountEmployeesByOrganizationRequest\x1a9.query.membership.v1.CountEmployeesByOrganizationResponse\";\x82\xd3\xe4\x93\x025\x123/v1/organizations/{organization_id}/employees:count\x12\xd4\x01\n" +
-	"\x1dSearchEmployeesByOrganization\x129.query.membership.v1.SearchEmployeesByOrganizationRequest\x1a:.query.membership.v1.SearchEmployeesByOrganizationResponse\"<\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/employees:search\x12\xb3\x01\n" +
-	"\x17ListVacationsByEmployee\x123.query.membership.v1.ListVacationsByEmployeeRequest\x1a4.query.membership.v1.ListVacationsByEmployeeResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/employees/{employee_id}/vacations\x12\xbc\x01\n" +
+	"\x1cCountEmployeesByOrganization\x128.query.membership.v1.CountEmployeesByOrganizationRequest\x1a9.query.membership.v1.CountEmployeesByOrganizationResponse\";\x82\xd3\xe4\x93\x025\x123/v1/organizations/{organization_id}/employees:count\x12\xcb\x02\n" +
+	"\x1dSearchEmployeesByOrganization\x129.query.membership.v1.SearchEmployeesByOrganizationRequest\x1a:.query.membership.v1.SearchEmployeesByOrganizationResponse\"\xb2\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/employees:search\x12\xaa\x02\n" +
+	"\x17ListVacationsByEmployee\x123.query.membership.v1.ListVacationsByEmployeeRequest\x1a4.query.membership.v1.ListVacationsByEmployeeResponse\"\xa3\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02'\x12%/v1/employees/{employee_id}/vacations\x12\xbc\x01\n" +
 	"\x18CountVacationsByEmployee\x124.query.membership.v1.CountVacationsByEmployeeRequest\x1a5.query.membership.v1.CountVacationsByEmployeeResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/employees/{employee_id}/vacations:count\x12\x8c\x01\n" +
 	"\rGetClinicHead\x12).query.membership.v1.GetClinicHeadRequest\x1a*.query.membership.v1.GetClinicHeadResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/clinics/{clinic_id}/head\x12\xbc\x01\n" +
-	"\x18GetDepartmentResponsible\x124.query.membership.v1.GetDepartmentResponsibleRequest\x1a5.query.membership.v1.GetDepartmentResponsibleResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/departments/{department_id}/responsible\x12\x9a\x01\n" +
-	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v1/organizations/{organization_id}/admins\x12\xae\x01\n" +
-	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/organizations/{organization_id}/dispatchers\x12\x96\x01\n" +
-	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/heads\x12\x8a\x01\n" +
-	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xd0\x04\x92A\xe3\x02RI\n" +
+	"\x18GetDepartmentResponsible\x124.query.membership.v1.GetDepartmentResponsibleRequest\x1a5.query.membership.v1.GetDepartmentResponsibleResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/departments/{department_id}/responsible\x12\x91\x02\n" +
+	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"\xa8\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02,\x12*/v1/organizations/{organization_id}/admins\x12\xa5\x02\n" +
+	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"\xad\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x021\x12//v1/organizations/{organization_id}/dispatchers\x12\x8d\x02\n" +
+	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"\xa7\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/heads\x12\x81\x02\n" +
+	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x8f\x01\x92AsJq\n" +
+	"\x03400\x12j\n" +
+	"hValidation failed. Error codes:\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-adminsB\xd0\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
