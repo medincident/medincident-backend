@@ -12,6 +12,9 @@ import (
 
 // ── Category projectors ───────────────────────────────────────────────────────
 
+// CategoryCreated inserts a row into projections.incident_categories.
+//
+// See: docs/services/incident/Classifier.md
 func CategoryCreated(
 	tx *gorm.DB,
 	aggregateID string,
@@ -47,6 +50,9 @@ func CategoryCreated(
 	return nil
 }
 
+// CategoryDetailsUpdated updates name and description in projections.incident_categories.
+//
+// See: docs/services/incident/Classifier.md
 func CategoryDetailsUpdated(
 	tx *gorm.DB,
 	aggregateID string,
@@ -73,6 +79,9 @@ func CategoryDetailsUpdated(
 	return nil
 }
 
+// CategoryMoved updates parent_category_id in projections.incident_categories.
+//
+// See: docs/services/incident/Classifier.md
 func CategoryMoved(
 	tx *gorm.DB,
 	aggregateID string,
@@ -99,6 +108,9 @@ func CategoryMoved(
 	return nil
 }
 
+// CategoryDeactivated sets is_active=false in projections.incident_categories.
+//
+// See: docs/services/incident/Classifier.md
 func CategoryDeactivated(
 	tx *gorm.DB,
 	aggregateID string,
@@ -119,6 +131,9 @@ func CategoryDeactivated(
 	return nil
 }
 
+// CategoryReactivated sets is_active=true in projections.incident_categories.
+//
+// See: docs/services/incident/Classifier.md
 func CategoryReactivated(
 	tx *gorm.DB,
 	aggregateID string,
@@ -139,6 +154,9 @@ func CategoryReactivated(
 	return nil
 }
 
+// CategoryDeleted removes a row from projections.incident_categories.
+//
+// See: docs/services/incident/Classifier.md
 func CategoryDeleted(
 	tx *gorm.DB,
 	aggregateID string,
@@ -157,6 +175,9 @@ func CategoryDeleted(
 
 // ── Type projectors ───────────────────────────────────────────────────────────
 
+// TypeCreated inserts a row into projections.incident_types.
+//
+// See: docs/services/incident/Classifier.md
 func TypeCreated(
 	tx *gorm.DB,
 	aggregateID string,
@@ -188,6 +209,9 @@ func TypeCreated(
 	return nil
 }
 
+// TypeDetailsUpdated updates name and description in projections.incident_types.
+//
+// See: docs/services/incident/Classifier.md
 func TypeDetailsUpdated(
 	tx *gorm.DB,
 	aggregateID string,
@@ -214,6 +238,9 @@ func TypeDetailsUpdated(
 	return nil
 }
 
+// TypeMoved updates category_id in projections.incident_types.
+//
+// See: docs/services/incident/Classifier.md
 func TypeMoved(
 	tx *gorm.DB,
 	aggregateID string,
@@ -235,6 +262,9 @@ func TypeMoved(
 	return nil
 }
 
+// TypeDeactivated sets is_active=false in projections.incident_types.
+//
+// See: docs/services/incident/Classifier.md
 func TypeDeactivated(
 	tx *gorm.DB,
 	aggregateID string,
@@ -255,6 +285,9 @@ func TypeDeactivated(
 	return nil
 }
 
+// TypeReactivated sets is_active=true in projections.incident_types.
+//
+// See: docs/services/incident/Classifier.md
 func TypeReactivated(
 	tx *gorm.DB,
 	aggregateID string,
@@ -275,6 +308,9 @@ func TypeReactivated(
 	return nil
 }
 
+// TypeAllowedForPatients sets is_allowed_for_patients=true in projections.incident_types.
+//
+// See: docs/services/incident/Classifier.md
 func TypeAllowedForPatients(
 	tx *gorm.DB,
 	aggregateID string,
@@ -295,6 +331,9 @@ func TypeAllowedForPatients(
 	return nil
 }
 
+// TypeDisallowedForPatients sets is_allowed_for_patients=false in projections.incident_types.
+//
+// See: docs/services/incident/Classifier.md
 func TypeDisallowedForPatients(
 	tx *gorm.DB,
 	aggregateID string,
@@ -315,6 +354,9 @@ func TypeDisallowedForPatients(
 	return nil
 }
 
+// TypeDeleted removes a row from projections.incident_types.
+//
+// See: docs/services/incident/Classifier.md
 func TypeDeleted(
 	tx *gorm.DB,
 	aggregateID string,
