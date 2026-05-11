@@ -33,8 +33,9 @@ var validate = validator.New(validator.WithRequiredStructEnabled())
 
 // GRPCServerConfig describes a gRPC listener. Used by both binaries.
 type GRPCServerConfig struct {
-	Address        string `yaml:"address"           validate:"required,hostname_port"`
-	MaxRecvMsgSize int    `yaml:"max_recv_msg_size" validate:"required,min=1024,max=104857600"`
+	Address              string `yaml:"address"                validate:"required,hostname_port"`
+	MaxRecvMsgSize       int    `yaml:"max_recv_msg_size"      validate:"required,min=1024,max=104857600"`
+	MaxConcurrentStreams uint32 `yaml:"max_concurrent_streams" validate:"min=1"`
 }
 
 // PostgresConfig is the database connection config. Pool tuning is

@@ -69,6 +69,8 @@ jobs:
             dockerfile: build/gateway-server.Dockerfile
           - image: migrate
             dockerfile: build/migrate.Dockerfile
+          - image: publisher-server
+            dockerfile: build/publisher-server.Dockerfile
     steps:
       - uses: actions/checkout@v6
         with:
