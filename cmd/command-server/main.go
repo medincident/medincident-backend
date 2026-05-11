@@ -10,13 +10,17 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"runtime/debug"
 	"syscall"
 	"time"
 
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/recovery"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/health"
 	healthv1 "google.golang.org/grpc/health/grpc_health_v1"
+	"google.golang.org/grpc/status"
 
 	"github.com/medincident/medincident-backend/internal/bootstrap"
 	announcementhandler "github.com/medincident/medincident-backend/internal/handler/command/announcement"
@@ -59,6 +63,13 @@ var authnSkip = map[string]struct{}{
 	"/grpc.health.v1.Health/Watch":                                   {},
 	"/grpc.reflection.v1.ServerReflection/ServerReflectionInfo":      {},
 	"/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo": {},
+}
+
+func panicRecoveryHandler(logger *zerolog.Logger) recovery.RecoveryHandlerFunc {
+	return func(p any) error {
+		logger.Error().Interface("panic", p).Bytes("stack", debug.Stack()).Msg("grpc handler panic recovered")
+		return status.Errorf(codes.Internal, "internal error")
+	}
 }
 
 func main() {
@@ -139,10 +150,15 @@ func main() {
 
 	grpcServer := grpc.NewServer(
 		grpc.MaxRecvMsgSize(cfg.Server.GRPC.MaxRecvMsgSize),
+		grpc.MaxConcurrentStreams(cfg.Server.GRPC.MaxConcurrentStreams),
 		grpc.ChainUnaryInterceptor(
+			recovery.UnaryServerInterceptor(recovery.WithRecoveryHandler(panicRecoveryHandler(logger))),
 			grpcmw.ErrorInterceptor(logger),
 			grpcmw.TimeoutInterceptor(handlerTimeout),
 			grpcmw.AuthnInterceptor(authorizer, authnSkip),
+		),
+		grpc.ChainStreamInterceptor(
+			recovery.StreamServerInterceptor(recovery.WithRecoveryHandler(panicRecoveryHandler(logger))),
 		),
 	)
 	healthSrv := health.NewServer()

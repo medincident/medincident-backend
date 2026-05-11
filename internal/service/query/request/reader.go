@@ -156,16 +156,15 @@ func (r *Reader) ListServiceRequests(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return ServiceRequestListResult{}, oops.In(scope).
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		reqID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, id) < (?, ?)`
-		args = append(args, t, reqID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -231,16 +230,15 @@ func (r *Reader) ListServiceRequestsByIncident(
 	args := make([]any, 0, 4)
 	args = append(args, incidentID)
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return ServiceRequestListResult{}, oops.In(scope).
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		reqID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, id) < (?, ?)`
-		args = append(args, t, reqID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)

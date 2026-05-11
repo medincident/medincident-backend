@@ -48,6 +48,8 @@ import (
 const (
 	shutdownTimeout   = 15 * time.Second
 	readHeaderTimeout = 5 * time.Second
+	readTimeout       = 60 * time.Second
+	writeTimeout      = 120 * time.Second
 )
 
 const ErrCodeGatewayRegisterFailed = "gateway_register_failed"
@@ -140,6 +142,8 @@ func main() {
 		Addr:              cfg.Server.HTTP.Address,
 		Handler:           handler,
 		ReadHeaderTimeout: readHeaderTimeout,
+		ReadTimeout:       readTimeout,
+		WriteTimeout:      writeTimeout,
 	}
 
 	serveErr := make(chan error, 1)

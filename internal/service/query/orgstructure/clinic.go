@@ -152,16 +152,15 @@ func (r *ClinicReader) ListByOrganization(
 	args := make([]any, 0, 4)
 	args = append(args, organizationID)
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return ClinicListResult{}, oops.In("reader.orgstructure.clinic").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		id, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, id) < (?, ?)`
-		args = append(args, t, id)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)

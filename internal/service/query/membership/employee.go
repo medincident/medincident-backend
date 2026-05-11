@@ -175,16 +175,15 @@ func (r *EmployeeReader) listByField(
 
 	sqlBuf := SelectEmployeeCard + ` WHERE ` + field + ` = ?` + filterClause
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return EmployeeListResult{}, oops.In("reader.membership.employee").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		empID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, employee_id) < (?, ?)`
-		args = append(args, t, empID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -324,16 +323,15 @@ func (r *EmployeeReader) SearchByOrganization(
 		args = append(args, pattern, pattern, pattern, pattern)
 	}
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return EmployeeListResult{}, oops.In("reader.membership.employee").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		empID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, employee_id) < (?, ?)`
-		args = append(args, t, empID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, employee_id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -548,16 +546,15 @@ func (r *EmployeeReader) ListVacationsByEmployee(
 		args = append(args, state)
 	}
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return VacationListResult{}, oops.In("reader.membership.vacation").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		vacID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, id) < (?, ?)`
-		args = append(args, t, vacID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)

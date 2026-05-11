@@ -117,16 +117,15 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (Organizatio
 	sqlBuf := `SELECT id, name, updated_at FROM projections.organizations`
 	args := make([]any, 0, 3)
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		id, _ := uuid.Parse(idStr)
 		sqlBuf += ` WHERE (updated_at, id) < (?, ?)`
-		args = append(args, t, id)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -183,16 +182,15 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 		args = append(args, "%"+like.EscapePattern(query)+"%")
 	}
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		id, _ := uuid.Parse(idStr)
 		clauses = append(clauses, `(updated_at, id) < (?, ?)`)
-		args = append(args, t, id)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf := `SELECT id, name, updated_at FROM projections.organizations`
 	for i, c := range clauses {

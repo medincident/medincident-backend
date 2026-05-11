@@ -6236,6 +6236,86 @@ This operation does not require authentication
 
 <h1 id="command-announcement-v1-announcement-proto-membershipqueryservice">MembershipQueryService</h1>
 
+## MembershipQueryService_ListCandidatesForClinicHead
+
+<a id="opIdMembershipQueryService_ListCandidatesForClinicHead"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/clinics/{clinicId}/candidates:clinic-head \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/clinics/{clinicId}/candidates:clinic-head`
+
+<h3 id="membershipqueryservice_listcandidatesforclinichead-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
+|after|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="membershipqueryservice_listcandidatesforclinichead-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCandidatesForClinicHeadResponse](#schemav1listcandidatesforclinicheadresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
+- `candidate_search_query_too_long` — search query exceeds 256 characters.
+- `invalid_cursor` — cursor is malformed.
+- `list_limit_out_of_range` — limit outside [1, 500].|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listcandidatesforclinichead-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 ## MembershipQueryService_ListEmployeesByClinic
 
 <a id="opIdMembershipQueryService_ListEmployeesByClinic"></a>
@@ -6459,6 +6539,86 @@ curl -X GET /v1/clinics/{clinicId}/head \
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListCandidatesForDeptResponsible
+
+<a id="opIdMembershipQueryService_ListCandidatesForDeptResponsible"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/departments/{departmentId}/candidates:dept-responsible \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/departments/{departmentId}/candidates:dept-responsible`
+
+<h3 id="membershipqueryservice_listcandidatesfordeptresponsible-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
+|after|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="membershipqueryservice_listcandidatesfordeptresponsible-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCandidatesForDeptResponsibleResponse](#schemav1listcandidatesfordeptresponsibleresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
+- `candidate_search_query_too_long` — search query exceeds 256 characters.
+- `invalid_cursor` — cursor is malformed.
+- `list_limit_out_of_range` — limit outside [1, 500].|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listcandidatesfordeptresponsible-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -6970,6 +7130,315 @@ curl -X GET /v1/organizations/{organizationId}/admins \
 This operation does not require authentication
 </aside>
 
+## MembershipQueryService_ListCandidatesForHire
+
+<a id="opIdMembershipQueryService_ListCandidatesForHire"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/candidates:hire \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/candidates:hire`
+
+<h3 id="membershipqueryservice_listcandidatesforhire-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
+|after|query|string|false|Opaque cursor from next_cursor of a previous response. Empty = first page.|
+|limit|query|integer(int32)|false|Page size. 0 → default 50. Range [1, 500].|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="membershipqueryservice_listcandidatesforhire-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCandidatesForHireResponse](#schemav1listcandidatesforhireresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
+- `candidate_search_query_too_long` — search query exceeds 256 characters.
+- `invalid_cursor` — cursor is malformed.
+- `list_limit_out_of_range` — limit outside [1, 500].|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listcandidatesforhire-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListCandidatesForOrgAdmin
+
+<a id="opIdMembershipQueryService_ListCandidatesForOrgAdmin"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/candidates:org-admin \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/candidates:org-admin`
+
+<h3 id="membershipqueryservice_listcandidatesfororgadmin-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
+|after|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="membershipqueryservice_listcandidatesfororgadmin-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCandidatesForOrgAdminResponse](#schemav1listcandidatesfororgadminresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
+- `candidate_search_query_too_long` — search query exceeds 256 characters.
+- `invalid_cursor` — cursor is malformed.
+- `list_limit_out_of_range` — limit outside [1, 500].|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listcandidatesfororgadmin-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListCandidatesForOrgDispatcher
+
+<a id="opIdMembershipQueryService_ListCandidatesForOrgDispatcher"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/candidates:org-dispatcher \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/candidates:org-dispatcher`
+
+<h3 id="membershipqueryservice_listcandidatesfororgdispatcher-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
+|after|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="membershipqueryservice_listcandidatesfororgdispatcher-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCandidatesForOrgDispatcherResponse](#schemav1listcandidatesfororgdispatcherresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
+- `candidate_search_query_too_long` — search query exceeds 256 characters.
+- `invalid_cursor` — cursor is malformed.
+- `list_limit_out_of_range` — limit outside [1, 500].|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listcandidatesfororgdispatcher-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListCandidatesForOrgHead
+
+<a id="opIdMembershipQueryService_ListCandidatesForOrgHead"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/candidates:org-head \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/candidates:org-head`
+
+<h3 id="membershipqueryservice_listcandidatesfororghead-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
+|after|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="membershipqueryservice_listcandidatesfororghead-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCandidatesForOrgHeadResponse](#schemav1listcandidatesfororgheadresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
+- `candidate_search_query_too_long` — search query exceeds 256 characters.
+- `invalid_cursor` — cursor is malformed.
+- `list_limit_out_of_range` — limit outside [1, 500].|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listcandidatesfororghead-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 ## MembershipQueryService_ListOrgDispatchers
 
 <a id="opIdMembershipQueryService_ListOrgDispatchers"></a>
@@ -7441,6 +7910,74 @@ curl -X GET /v1/system-admins \
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="membershipqueryservice_listsystemadmins-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipQueryService_ListCandidatesForSystemAdmin
+
+<a id="opIdMembershipQueryService_ListCandidatesForSystemAdmin"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/system-admins/candidates \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/system-admins/candidates`
+
+<h3 id="membershipqueryservice_listcandidatesforsystemadmin-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|query|query|string|false|Optional substring search (ILIKE %query%) on first_name, last_name,|
+|after|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+
+#### Detailed descriptions
+
+**query**: Optional substring search (ILIKE %query%) on first_name, last_name,
+display_name, email. Trimmed at the handler boundary. Max 256 chars.
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="membershipqueryservice_listcandidatesforsystemadmin-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListCandidatesForSystemAdminResponse](#schemav1listcandidatesforsystemadminresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Invalid input. Error codes:
+- `candidate_search_query_too_long` — search query exceeds 256 characters.
+- `invalid_cursor` — cursor is malformed.
+- `list_limit_out_of_range` — limit outside [1, 500].|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_listcandidatesforsystemadmin-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -13141,6 +13678,271 @@ patient_status, description and timestamps are populated.
 |items|[[v1BufferEntryView](#schemav1bufferentryview)]|false|none|none|
 |nextCursor|string|false|none|none|
 
+<h2 id="tocS_v1ListCandidatesForClinicHeadResponse">v1ListCandidatesForClinicHeadResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcandidatesforclinicheadresponse"></a>
+<a id="schema_v1ListCandidatesForClinicHeadResponse"></a>
+<a id="tocSv1listcandidatesforclinicheadresponse"></a>
+<a id="tocsv1listcandidatesforclinicheadresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
+
+<h2 id="tocS_v1ListCandidatesForDeptResponsibleResponse">v1ListCandidatesForDeptResponsibleResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcandidatesfordeptresponsibleresponse"></a>
+<a id="schema_v1ListCandidatesForDeptResponsibleResponse"></a>
+<a id="tocSv1listcandidatesfordeptresponsibleresponse"></a>
+<a id="tocsv1listcandidatesfordeptresponsibleresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
+
+<h2 id="tocS_v1ListCandidatesForHireResponse">v1ListCandidatesForHireResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcandidatesforhireresponse"></a>
+<a id="schema_v1ListCandidatesForHireResponse"></a>
+<a id="tocSv1listcandidatesforhireresponse"></a>
+<a id="tocsv1listcandidatesforhireresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1ZitadelUserView](#schemav1zitadeluserview)]|false|none|[ZitadelUserView is a lightweight projection of projections.users used<br>by candidate-listing endpoints that operate on raw Zitadel identities<br>(ForHire, ForSystemAdmin). Fields mirror the NOT NULL columns of the<br>users table.]|
+|nextCursor|string|false|none|Opaque cursor for the next page. Empty when this is the last page.|
+
+<h2 id="tocS_v1ListCandidatesForOrgAdminResponse">v1ListCandidatesForOrgAdminResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcandidatesfororgadminresponse"></a>
+<a id="schema_v1ListCandidatesForOrgAdminResponse"></a>
+<a id="tocSv1listcandidatesfororgadminresponse"></a>
+<a id="tocsv1listcandidatesfororgadminresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
+
+<h2 id="tocS_v1ListCandidatesForOrgDispatcherResponse">v1ListCandidatesForOrgDispatcherResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcandidatesfororgdispatcherresponse"></a>
+<a id="schema_v1ListCandidatesForOrgDispatcherResponse"></a>
+<a id="tocSv1listcandidatesfororgdispatcherresponse"></a>
+<a id="tocsv1listcandidatesfororgdispatcherresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
+
+<h2 id="tocS_v1ListCandidatesForOrgHeadResponse">v1ListCandidatesForOrgHeadResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcandidatesfororgheadresponse"></a>
+<a id="schema_v1ListCandidatesForOrgHeadResponse"></a>
+<a id="tocSv1listcandidatesfororgheadresponse"></a>
+<a id="tocsv1listcandidatesfororgheadresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "employeeId": "string",
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string",
+      "organizationId": "string",
+      "organizationName": "string",
+      "clinicId": "string",
+      "clinicName": "string",
+      "departmentId": "string",
+      "departmentName": "string",
+      "position": "string",
+      "terminatedAt": "string",
+      "currentVacationEndsAt": "string",
+      "nextVacationStartsAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
+
+<h2 id="tocS_v1ListCandidatesForSystemAdminResponse">v1ListCandidatesForSystemAdminResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listcandidatesforsystemadminresponse"></a>
+<a id="schema_v1ListCandidatesForSystemAdminResponse"></a>
+<a id="tocSv1listcandidatesforsystemadminresponse"></a>
+<a id="tocsv1listcandidatesforsystemadminresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "zitadelUserId": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "displayName": "string",
+      "email": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1ZitadelUserView](#schemav1zitadeluserview)]|false|none|[ZitadelUserView is a lightweight projection of projections.users used<br>by candidate-listing endpoints that operate on raw Zitadel identities<br>(ForHire, ForSystemAdmin). Fields mirror the NOT NULL columns of the<br>users table.]|
+|nextCursor|string|false|none|none|
+
 <h2 id="tocS_v1ListCategoriesByOrganizationResponse">v1ListCategoriesByOrganizationResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1listcategoriesbyorganizationresponse"></a>
@@ -15747,3 +16549,36 @@ domain-level leaf error from errors.Join.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |violations|[[ValidationFailedDetailsFieldViolation](#schemavalidationfaileddetailsfieldviolation)]|false|none|none|
+
+<h2 id="tocS_v1ZitadelUserView">v1ZitadelUserView</h2>
+<!-- backwards compatibility -->
+<a id="schemav1zitadeluserview"></a>
+<a id="schema_v1ZitadelUserView"></a>
+<a id="tocSv1zitadeluserview"></a>
+<a id="tocsv1zitadeluserview"></a>
+
+```json
+{
+  "zitadelUserId": "string",
+  "firstName": "string",
+  "lastName": "string",
+  "displayName": "string",
+  "email": "string"
+}
+
+```
+
+ZitadelUserView is a lightweight projection of projections.users used
+by candidate-listing endpoints that operate on raw Zitadel identities
+(ForHire, ForSystemAdmin). Fields mirror the NOT NULL columns of the
+users table.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|zitadelUserId|string|false|none|none|
+|firstName|string|false|none|none|
+|lastName|string|false|none|none|
+|displayName|string|false|none|none|
+|email|string|false|none|none|

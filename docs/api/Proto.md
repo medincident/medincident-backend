@@ -417,6 +417,20 @@
     - [GetDepartmentResponsibleResponse](#query-membership-v1-GetDepartmentResponsibleResponse)
     - [GetEmployeeRequest](#query-membership-v1-GetEmployeeRequest)
     - [GetEmployeeResponse](#query-membership-v1-GetEmployeeResponse)
+    - [ListCandidatesForClinicHeadRequest](#query-membership-v1-ListCandidatesForClinicHeadRequest)
+    - [ListCandidatesForClinicHeadResponse](#query-membership-v1-ListCandidatesForClinicHeadResponse)
+    - [ListCandidatesForDeptResponsibleRequest](#query-membership-v1-ListCandidatesForDeptResponsibleRequest)
+    - [ListCandidatesForDeptResponsibleResponse](#query-membership-v1-ListCandidatesForDeptResponsibleResponse)
+    - [ListCandidatesForHireRequest](#query-membership-v1-ListCandidatesForHireRequest)
+    - [ListCandidatesForHireResponse](#query-membership-v1-ListCandidatesForHireResponse)
+    - [ListCandidatesForOrgAdminRequest](#query-membership-v1-ListCandidatesForOrgAdminRequest)
+    - [ListCandidatesForOrgAdminResponse](#query-membership-v1-ListCandidatesForOrgAdminResponse)
+    - [ListCandidatesForOrgDispatcherRequest](#query-membership-v1-ListCandidatesForOrgDispatcherRequest)
+    - [ListCandidatesForOrgDispatcherResponse](#query-membership-v1-ListCandidatesForOrgDispatcherResponse)
+    - [ListCandidatesForOrgHeadRequest](#query-membership-v1-ListCandidatesForOrgHeadRequest)
+    - [ListCandidatesForOrgHeadResponse](#query-membership-v1-ListCandidatesForOrgHeadResponse)
+    - [ListCandidatesForSystemAdminRequest](#query-membership-v1-ListCandidatesForSystemAdminRequest)
+    - [ListCandidatesForSystemAdminResponse](#query-membership-v1-ListCandidatesForSystemAdminResponse)
     - [ListEmployeesByClinicRequest](#query-membership-v1-ListEmployeesByClinicRequest)
     - [ListEmployeesByClinicResponse](#query-membership-v1-ListEmployeesByClinicResponse)
     - [ListEmployeesByDepartmentRequest](#query-membership-v1-ListEmployeesByDepartmentRequest)
@@ -438,6 +452,7 @@
     - [SearchEmployeesByOrganizationResponse](#query-membership-v1-SearchEmployeesByOrganizationResponse)
     - [SystemAdminView](#query-membership-v1-SystemAdminView)
     - [VacationView](#query-membership-v1-VacationView)
+    - [ZitadelUserView](#query-membership-v1-ZitadelUserView)
 
     - [MembershipQueryService](#query-membership-v1-MembershipQueryService)
 
@@ -6430,6 +6445,243 @@ when the backing column is NULL.
 
 
 
+<a name="query-membership-v1-ListCandidatesForClinicHeadRequest"></a>
+
+### ListCandidatesForClinicHeadRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
+| after | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForClinicHeadResponse"></a>
+
+### ListCandidatesForClinicHeadResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForDeptResponsibleRequest"></a>
+
+### ListCandidatesForDeptResponsibleRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
+| after | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForDeptResponsibleResponse"></a>
+
+### ListCandidatesForDeptResponsibleResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForHireRequest"></a>
+
+### ListCandidatesForHireRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
+| after | [string](#string) |  | Opaque cursor from next_cursor of a previous response. Empty = first page. |
+| limit | [int32](#int32) |  | Page size. 0 → default 50. Range [1, 500]. |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForHireResponse"></a>
+
+### ListCandidatesForHireResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [ZitadelUserView](#query-membership-v1-ZitadelUserView) | repeated |  |
+| next_cursor | [string](#string) |  | Opaque cursor for the next page. Empty when this is the last page. |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForOrgAdminRequest"></a>
+
+### ListCandidatesForOrgAdminRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
+| after | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForOrgAdminResponse"></a>
+
+### ListCandidatesForOrgAdminResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForOrgDispatcherRequest"></a>
+
+### ListCandidatesForOrgDispatcherRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
+| after | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForOrgDispatcherResponse"></a>
+
+### ListCandidatesForOrgDispatcherResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForOrgHeadRequest"></a>
+
+### ListCandidatesForOrgHeadRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
+| after | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForOrgHeadResponse"></a>
+
+### ListCandidatesForOrgHeadResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForSystemAdminRequest"></a>
+
+### ListCandidatesForSystemAdminRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| query | [string](#string) |  | Optional substring search (ILIKE %query%) on first_name, last_name, display_name, email. Trimmed at the handler boundary. Max 256 chars. |
+| after | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+
+
+
+
+
+
+<a name="query-membership-v1-ListCandidatesForSystemAdminResponse"></a>
+
+### ListCandidatesForSystemAdminResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [ZitadelUserView](#query-membership-v1-ZitadelUserView) | repeated |  |
+| next_cursor | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="query-membership-v1-ListEmployeesByClinicRequest"></a>
 
 ### ListEmployeesByClinicRequest
@@ -6798,6 +7050,28 @@ VacationView mirrors projections.employee_vacations. state is one of
 
 
 
+<a name="query-membership-v1-ZitadelUserView"></a>
+
+### ZitadelUserView
+ZitadelUserView is a lightweight projection of projections.users used
+by candidate-listing endpoints that operate on raw Zitadel identities
+(ForHire, ForSystemAdmin). Fields mirror the NOT NULL columns of the
+users table.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| zitadel_user_id | [string](#string) |  |  |
+| first_name | [string](#string) |  |  |
+| last_name | [string](#string) |  |  |
+| display_name | [string](#string) |  |  |
+| email | [string](#string) |  |  |
+
+
+
+
+
+
 
 
 
@@ -6829,6 +7103,13 @@ department responsibles, org admins/heads/dispatchers, system admins).
 | ListOrgDispatchers | [ListOrgDispatchersRequest](#query-membership-v1-ListOrgDispatchersRequest) | [ListOrgDispatchersResponse](#query-membership-v1-ListOrgDispatchersResponse) |  |
 | ListOrgHeads | [ListOrgHeadsRequest](#query-membership-v1-ListOrgHeadsRequest) | [ListOrgHeadsResponse](#query-membership-v1-ListOrgHeadsResponse) |  |
 | ListSystemAdmins | [ListSystemAdminsRequest](#query-membership-v1-ListSystemAdminsRequest) | [ListSystemAdminsResponse](#query-membership-v1-ListSystemAdminsResponse) |  |
+| ListCandidatesForHire | [ListCandidatesForHireRequest](#query-membership-v1-ListCandidatesForHireRequest) | [ListCandidatesForHireResponse](#query-membership-v1-ListCandidatesForHireResponse) |  |
+| ListCandidatesForSystemAdmin | [ListCandidatesForSystemAdminRequest](#query-membership-v1-ListCandidatesForSystemAdminRequest) | [ListCandidatesForSystemAdminResponse](#query-membership-v1-ListCandidatesForSystemAdminResponse) |  |
+| ListCandidatesForOrgAdmin | [ListCandidatesForOrgAdminRequest](#query-membership-v1-ListCandidatesForOrgAdminRequest) | [ListCandidatesForOrgAdminResponse](#query-membership-v1-ListCandidatesForOrgAdminResponse) |  |
+| ListCandidatesForOrgHead | [ListCandidatesForOrgHeadRequest](#query-membership-v1-ListCandidatesForOrgHeadRequest) | [ListCandidatesForOrgHeadResponse](#query-membership-v1-ListCandidatesForOrgHeadResponse) |  |
+| ListCandidatesForOrgDispatcher | [ListCandidatesForOrgDispatcherRequest](#query-membership-v1-ListCandidatesForOrgDispatcherRequest) | [ListCandidatesForOrgDispatcherResponse](#query-membership-v1-ListCandidatesForOrgDispatcherResponse) |  |
+| ListCandidatesForClinicHead | [ListCandidatesForClinicHeadRequest](#query-membership-v1-ListCandidatesForClinicHeadRequest) | [ListCandidatesForClinicHeadResponse](#query-membership-v1-ListCandidatesForClinicHeadResponse) |  |
+| ListCandidatesForDeptResponsible | [ListCandidatesForDeptResponsibleRequest](#query-membership-v1-ListCandidatesForDeptResponsibleRequest) | [ListCandidatesForDeptResponsibleResponse](#query-membership-v1-ListCandidatesForDeptResponsibleResponse) |  |
 
 
 

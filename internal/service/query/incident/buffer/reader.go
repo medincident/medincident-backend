@@ -142,16 +142,15 @@ func (r *Reader) ListBufferEntries(
 	if f != nil {
 		limit = normLimit(f.Limit)
 		if f.After != nil {
-			t, idStr, err := cursor.Decode(*f.After)
+			c, err := cursor.Decode(*f.After)
 			if err != nil {
 				return BufferListResult{}, oops.In(scope).
 					Code(ErrCodeListBadCursor).
 					Public("Invalid pagination cursor.").
 					Wrap(err)
 			}
-			bufID, _ := uuid.Parse(idStr)
 			conds = append(conds, "(updated_at, id) < (?, ?)")
-			args = append(args, t, bufID)
+			args = append(args, c.Time(), c.I)
 		}
 	}
 	args = append(args, limit+1)
@@ -201,16 +200,15 @@ func (r *Reader) ListMyBufferEntries(
 	args := []any{callerID}
 	cursorCond := ""
 	if after != nil {
-		t, idStr, err := cursor.Decode(*after)
+		c, err := cursor.Decode(*after)
 		if err != nil {
 			return BufferListResult{}, oops.In(scope).
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		bufID, _ := uuid.Parse(idStr)
 		cursorCond = ` AND (updated_at, id) < (?, ?)`
-		args = append(args, t, bufID)
+		args = append(args, c.Time(), c.I)
 	}
 	args = append(args, limit+1)
 	q := `SELECT ` + bufferSelect + ` FROM projections.patient_incident_buffer

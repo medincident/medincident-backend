@@ -96,16 +96,15 @@ func (r *Reader) ListRequestTypesByOrganization(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return RequestTypeListResult{}, oops.In("reader.request.classifier").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		typeID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, id) < (?, ?)`
-		args = append(args, t, typeID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -162,16 +161,15 @@ func (r *Reader) ListActiveRequestTypesByOrganization(
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return RequestTypeListResult{}, oops.In("reader.request.classifier").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		typeID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (updated_at, id) < (?, ?)`
-		args = append(args, t, typeID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)

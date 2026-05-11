@@ -294,7 +294,7 @@ func (r *RoleReader) ListSystemAdmins(
 		 WHERE 1=1`
 	args := make([]any, 0, 3)
 	if q.After != nil {
-		t, zitadelID, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return SystemAdminListResult{}, oops.In("reader.membership.role").
 				Code(ErrCodeListBadCursor).
@@ -302,7 +302,7 @@ func (r *RoleReader) ListSystemAdmins(
 				Wrap(err)
 		}
 		sqlBuf += ` AND (created_at, zitadel_user_id) < (?, ?)`
-		args = append(args, t, zitadelID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY created_at DESC, zitadel_user_id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -395,16 +395,15 @@ func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField s
 	args := make([]any, 0, 4)
 	args = append(args, parentID)
 	if q.After != nil {
-		t, idStr, err := cursor.Decode(*q.After)
+		c, err := cursor.Decode(*q.After)
 		if err != nil {
 			return RoleListResult{}, oops.In("reader.membership.role").
 				Code(ErrCodeListBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		empID, _ := uuid.Parse(idStr)
 		sqlBuf += ` AND (role.updated_at, role.employee_id) < (?, ?)`
-		args = append(args, t, empID)
+		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf += ` ORDER BY role.updated_at DESC, role.employee_id DESC LIMIT ?`
 	args = append(args, q.Limit+1)

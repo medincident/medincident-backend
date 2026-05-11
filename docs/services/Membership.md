@@ -1005,3 +1005,193 @@
 |---|---|---|
 | `membership_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
 | `permission_denied` | 403 | Нет прав доступа |
+
+---
+
+## Кандидаты для назначения
+
+Методы возвращают пользователей или сотрудников, которых **можно** назначить на конкретную роль или нанять. Каждый метод исключает тех, кто уже занимает эту роль. Пагинация — cursor-based (opaque курсор в поле `next_cursor`). Поиск — подстрочный, без учёта регистра (`ILIKE %query%`).
+
+---
+
+### ListCandidatesForHire
+
+**HTTP:** `GET /v1/organizations/{organization_id}/candidates:hire`
+**gRPC:** `MembershipQueryService.ListCandidatesForHire`
+
+Возвращает Zitadel-пользователей, которые **не являются** активными сотрудниками указанной организации (`terminated_at IS NULL`). Пользователь, уволенный из организации (`terminated_at IS NOT NULL`), снова появляется в списке.
+
+#### Права доступа
+
+`AdminOf.Organization` — системный администратор или администратор организации.
+
+#### Параметры запроса
+
+| Поле | Тип | Описание |
+|------|-----|---------|
+| `organization_id` | UUID | Идентификатор организации (путевой параметр) |
+| `query` | string | Поиск по имени / email (необязательно, макс. 256 символов) |
+| `after` | string | Opaque cursor для следующей страницы |
+| `limit` | int32 | Размер страницы; 0 → 50, диапазон [1, 500] |
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|-----|------|---------|
+| `candidate_search_query_too_long` | 400 | Строка поиска превышает 256 символов |
+| `invalid_cursor` | 400 | Курсор имеет неверный формат |
+| `list_limit_out_of_range` | 400 | Лимит вне диапазона [1, 500] |
+| `unauthenticated` | 401 | Отсутствует или недействителен Bearer-токен |
+| `permission_denied` | 403 | Нет прав доступа |
+| `candidate_load_failed` | 500 | Внутренняя ошибка БД |
+
+---
+
+### ListCandidatesForSystemAdmin
+
+**HTTP:** `GET /v1/system-admins/candidates`
+**gRPC:** `MembershipQueryService.ListCandidatesForSystemAdmin`
+
+Возвращает всех Zitadel-пользователей, не состоящих в `projections.system_admins`. Не требует принадлежности к организации.
+
+#### Права доступа
+
+`SystemAdmin`
+
+#### Параметры запроса
+
+| Поле | Тип | Описание |
+|------|-----|---------|
+| `query` | string | Поиск по имени / email (необязательно, макс. 256 символов) |
+| `after` | string | Opaque cursor |
+| `limit` | int32 | Размер страницы; 0 → 50, диапазон [1, 500] |
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|-----|------|---------|
+| `candidate_search_query_too_long` | 400 | Строка поиска превышает 256 символов |
+| `invalid_cursor` | 400 | Курсор имеет неверный формат |
+| `list_limit_out_of_range` | 400 | Лимит вне диапазона [1, 500] |
+| `unauthenticated` | 401 | — |
+| `permission_denied` | 403 | — |
+| `candidate_load_failed` | 500 | — |
+
+---
+
+### ListCandidatesForOrgAdmin
+
+**HTTP:** `GET /v1/organizations/{organization_id}/candidates:org-admin`
+**gRPC:** `MembershipQueryService.ListCandidatesForOrgAdmin`
+
+Возвращает активных сотрудников организации (`terminated_at IS NULL`), не имеющих роли администратора организации в **данной** организации. Пользователь, являющийся администратором в другой организации, попадает в список.
+
+#### Права доступа
+
+`AdminOf.Organization`
+
+#### Параметры запроса
+
+| Поле | Тип | Описание |
+|------|-----|---------|
+| `organization_id` | UUID | Идентификатор организации |
+| `query` | string | Поиск по имени / email (необязательно, макс. 256 символов) |
+| `after` | string | Opaque cursor |
+| `limit` | int32 | Размер страницы |
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|-----|------|---------|
+| `candidate_search_query_too_long` | 400 | — |
+| `invalid_cursor` | 400 | — |
+| `list_limit_out_of_range` | 400 | — |
+| `unauthenticated` | 401 | — |
+| `permission_denied` | 403 | — |
+| `candidate_load_failed` | 500 | — |
+
+---
+
+### ListCandidatesForOrgHead
+
+**HTTP:** `GET /v1/organizations/{organization_id}/candidates:org-head`
+**gRPC:** `MembershipQueryService.ListCandidatesForOrgHead`
+
+Возвращает активных сотрудников организации, не являющихся руководителем данной организации.
+
+#### Права доступа
+
+`AdminOf.Organization`
+
+#### Ошибки
+
+Аналогично [`ListCandidatesForOrgAdmin`](#listcandidatesfororgadmin).
+
+---
+
+### ListCandidatesForOrgDispatcher
+
+**HTTP:** `GET /v1/organizations/{organization_id}/candidates:org-dispatcher`
+**gRPC:** `MembershipQueryService.ListCandidatesForOrgDispatcher`
+
+Возвращает активных сотрудников организации, не являющихся диспетчером данной организации.
+
+#### Права доступа
+
+`AdminOf.Organization`
+
+#### Ошибки
+
+Аналогично [`ListCandidatesForOrgAdmin`](#listcandidatesfororgadmin).
+
+---
+
+### ListCandidatesForClinicHead
+
+**HTTP:** `GET /v1/clinics/{clinic_id}/candidates:clinic-head`
+**gRPC:** `MembershipQueryService.ListCandidatesForClinicHead`
+
+Возвращает активных сотрудников клиники (`employee_cards.clinic_id = clinic_id`, `terminated_at IS NULL`), которые ещё не являются главой данной клиники. Сотрудник, являющийся главой **другой** клиники, попадает в список.
+
+#### Права доступа
+
+`AdminOf.Clinic` — системный администратор или администратор организации, которой принадлежит клиника.
+
+#### Параметры запроса
+
+| Поле | Тип | Описание |
+|------|-----|---------|
+| `clinic_id` | UUID | Идентификатор клиники |
+| `query` | string | Поиск по имени / email (необязательно, макс. 256 символов) |
+| `after` | string | Opaque cursor |
+| `limit` | int32 | Размер страницы |
+
+#### Ошибки
+
+Аналогично [`ListCandidatesForOrgAdmin`](#listcandidatesfororgadmin).
+
+---
+
+### ListCandidatesForDeptResponsible
+
+**HTTP:** `GET /v1/departments/{department_id}/candidates:dept-responsible`
+**gRPC:** `MembershipQueryService.ListCandidatesForDeptResponsible`
+
+Возвращает активных сотрудников отдела (`employee_cards.department_id = department_id`, `terminated_at IS NULL`), которые ещё не являются ответственным данного отдела. Сотрудник, являющийся ответственным **другого** отдела, попадает в список.
+
+#### Права доступа
+
+`AdminOf.Department` — системный администратор или администратор организации, которой принадлежит отдел.
+
+#### Параметры запроса
+
+| Поле | Тип | Описание |
+|------|-----|---------|
+| `department_id` | UUID | Идентификатор отдела |
+| `query` | string | Поиск по имени / email (необязательно, макс. 256 символов) |
+| `after` | string | Opaque cursor |
+| `limit` | int32 | Размер страницы |
+
+#### Ошибки
+
+Аналогично [`ListCandidatesForOrgAdmin`](#listcandidatesfororgadmin).

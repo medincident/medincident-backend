@@ -134,6 +134,7 @@ var httpCodeOverrides = map[string]int{
 	"buffer_not_patient_owner":             http.StatusForbidden,
 	"validation_failed":                    http.StatusBadRequest,
 	"announcement_query_bad_cursor":        http.StatusBadRequest,
+	"invalid_cursor":                       http.StatusBadRequest,
 	"buffer_type_not_allowed_for_patients": http.StatusUnprocessableEntity,
 	"incident_not_cancellable":             http.StatusUnprocessableEntity,
 	"incident_not_reopenable":              http.StatusUnprocessableEntity,

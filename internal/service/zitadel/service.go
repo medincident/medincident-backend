@@ -8,6 +8,7 @@ import (
 	"errors"
 	"net"
 	"net/url"
+	"time"
 
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
@@ -15,7 +16,9 @@ import (
 	"github.com/zitadel/zitadel-go/v3/pkg/client"
 	user_v2 "github.com/zitadel/zitadel-go/v3/pkg/client/zitadel/user/v2"
 	zitadelcfg "github.com/zitadel/zitadel-go/v3/pkg/zitadel"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/status"
 )
 
@@ -27,6 +30,30 @@ const (
 	// unexpected error from the Zitadel API.
 	ErrCodeZitadelVerifyFailed = "zitadel_verify_failed"
 )
+
+// keepalive parameters for the persistent gRPC connection to Zitadel.
+// Proxies and load balancers (nginx, AWS ALB, k8s ingress) typically close
+// idle TCP connections after 60–600 s. Sending a ping every 30 s keeps the
+// connection alive without triggering Zitadel's server-side GOAWAY (which
+// enforces a minimum ping interval of 10 s by default).
+const (
+	zitadelKeepaliveTime    = 30 * time.Second
+	zitadelKeepaliveTimeout = 10 * time.Second
+)
+
+// zitadelDialOpts returns gRPC dial options shared by all Zitadel client
+// constructors. PermitWithoutStream must be true so pings are sent even
+// when no RPC is in flight — exactly the idle-connection case we guard
+// against.
+func zitadelDialOpts() []grpc.DialOption {
+	return []grpc.DialOption{
+		grpc.WithKeepaliveParams(keepalive.ClientParameters{
+			Time:                zitadelKeepaliveTime,
+			Timeout:             zitadelKeepaliveTimeout,
+			PermitWithoutStream: true,
+		}),
+	}
+}
 
 // ErrUserNotFound is returned by Service.Verify when Zitadel reports
 // NotFound for a given user ID. Any other error is wrapped with
@@ -66,6 +93,7 @@ func NewServiceFromKeyFile(ctx context.Context, logger *zerolog.Logger, domain, 
 			oidc.ScopeOpenID,
 			client.ScopeZitadelAPI(),
 		)),
+		client.WithGRPCDialOptions(zitadelDialOpts()...),
 	)
 	if err != nil {
 		return nil, oops.In("services.zitadel").
@@ -94,6 +122,7 @@ func NewServiceFromPAT(ctx context.Context, logger *zerolog.Logger, domain, pat 
 		ctx,
 		zitadelcfg.New(hostname, opts...),
 		client.WithAuth(client.PAT(pat)),
+		client.WithGRPCDialOptions(zitadelDialOpts()...),
 	)
 	if err != nil {
 		return nil, oops.In("services.zitadel").

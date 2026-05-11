@@ -411,16 +411,15 @@ func (r *Reader) listAnnouncements(
 	}
 
 	if f.Cursor != nil {
-		t, idStr, err := cursor.Decode(*f.Cursor)
+		c, err := cursor.Decode(*f.Cursor)
 		if err != nil {
 			return ListResult{}, oops.In(readerScope).
 				Code(ErrCodeAnnouncementBadCursor).
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		annID, _ := uuid.Parse(idStr)
 		clauses = append(clauses, "(a.created_at, a.id) < (?, ?)")
-		args = append(args, t, annID)
+		args = append(args, c.Time(), c.I)
 	}
 
 	whereSQL := ""
