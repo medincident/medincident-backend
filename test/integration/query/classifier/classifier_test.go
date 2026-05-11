@@ -93,8 +93,8 @@ func TestReader_Category_Get_And_Subtree(t *testing.T) {
 
 	roots, err := reader.ListActiveRootCategories(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, roots, 1)
-	require.Equal(t, rootID, roots[0].ID)
+	require.Len(t, roots.Items, 1)
+	require.Equal(t, rootID, roots.Items[0].ID)
 
 	subtree, err := reader.ListCategorySubtree(ctx, sysadminCaller, rootID)
 	require.NoError(t, err)
@@ -154,12 +154,12 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 
 	active, err := reader.ListActiveTypesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, active, 1)
-	require.Equal(t, typeID, active[0].ID)
+	require.Len(t, active.Items, 1)
+	require.Equal(t, typeID, active.Items[0].ID)
 
 	byCat, err := reader.ListTypesByCategory(ctx, sysadminCaller, catID, classifierread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, byCat, 1)
+	require.Len(t, byCat.Items, 1)
 }
 
 // TestReader_PatientAllowed_Types_And_VisibleCategories seeds a fixture
@@ -231,8 +231,8 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 
 	allowedTypes, err := reader.ListPatientAllowedTypesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
 	require.NoError(t, err)
-	allowedIDs := make(map[uuid.UUID]bool, len(allowedTypes))
-	for _, tp := range allowedTypes {
+	allowedIDs := make(map[uuid.UUID]bool, len(allowedTypes.Items))
+	for _, tp := range allowedTypes.Items {
 		allowedIDs[tp.ID] = true
 		require.True(t, tp.IsActive)
 		require.True(t, tp.IsAllowedForPatients)
@@ -244,8 +244,8 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 
 	visibleCats, err := reader.ListPatientVisibleCategoriesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
 	require.NoError(t, err)
-	visibleIDs := make(map[uuid.UUID]bool, len(visibleCats))
-	for _, c := range visibleCats {
+	visibleIDs := make(map[uuid.UUID]bool, len(visibleCats.Items))
+	for _, c := range visibleCats.Items {
 		visibleIDs[c.ID] = true
 		require.True(t, c.IsActive, "patient-visible categories must themselves be active")
 	}

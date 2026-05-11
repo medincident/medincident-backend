@@ -183,6 +183,6 @@ func TestRoleReader_ListSystemAdmins(t *testing.T) {
 	reader := memberread.NewRoleReader(testDB, authzSvc, &logger)
 	items, err := reader.ListSystemAdmins(ctx, sysadminCaller, memberread.ListQuery{})
 	require.NoError(t, err)
-	require.Len(t, items, 2)
-	require.Equal(t, "zit-b", items[0].ZitadelUserID)
+	require.Len(t, items.Items, 2)
+	require.Equal(t, "zit-b", items.Items[0].ZitadelUserID)
 }

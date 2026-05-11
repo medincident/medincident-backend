@@ -103,8 +103,8 @@ func TestListServiceRequestsByIncident_HappyPath(t *testing.T) {
 		ctx, sysadminCaller, incidentID, requestread.ListQuery{Limit: 10},
 	)
 	require.NoError(t, err)
-	assert.Len(t, list, 1)
-	assert.Equal(t, reqID, list[0].ID)
+	assert.Len(t, list.Items, 1)
+	assert.Equal(t, reqID, list.Items[0].ID)
 }
 
 func TestGetServiceRequestHistory_HappyPath(t *testing.T) {
