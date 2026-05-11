@@ -888,7 +888,7 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x12service_request_id\x18\x01 \x01(\tR\x10serviceRequestId\"\xc2\x01\n" +
 	" GetServiceRequestHistoryResponse\x12K\n" +
 	"\x0estatus_history\x18\x01 \x03(\v2$.query.request.v1.StatusHistoryEntryR\rstatusHistory\x12Q\n" +
-	"\x10executor_history\x18\x02 \x03(\v2&.query.request.v1.ExecutorHistoryEntryR\x0fexecutorHistory2\xa7\v\n" +
+	"\x10executor_history\x18\x02 \x03(\v2&.query.request.v1.ExecutorHistoryEntryR\x0fexecutorHistory2\xfd\v\n" +
 	"\x1aServiceRequestQueryService\x12\x8f\x02\n" +
 	"\x11GetServiceRequest\x12*.query.request.v1.GetServiceRequestRequest\x1a+.query.request.v1.GetServiceRequestResponse\"\xa0\x01\x92A|Jz\n" +
 	"\x03404\x12s\n" +
@@ -898,10 +898,11 @@ const file_query_request_v1_request_proto_rawDesc = "" +
 	"\x03400\x12\xbb\x01\n" +
 	"\xb8\x01Validation failed. Error codes:\n" +
 	"- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n" +
-	"- `request_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/service-requests\x12\xb9\x03\n" +
-	"\x1dListServiceRequestsByIncident\x126.query.request.v1.ListServiceRequestsByIncidentRequest\x1a7.query.request.v1.ListServiceRequestsByIncidentResponse\"\xa6\x02\x92A\xee\x01Jn\n" +
-	"\x03400\x12g\n" +
-	"eValidation failed. Error codes:\n" +
+	"- `request_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x026\x124/v1/organizations/{organization_id}/service-requests\x12\x8f\x04\n" +
+	"\x1dListServiceRequestsByIncident\x126.query.request.v1.ListServiceRequestsByIncidentRequest\x1a7.query.request.v1.ListServiceRequestsByIncidentResponse\"\xfc\x02\x92A\xc4\x02J\xc3\x01\n" +
+	"\x03400\x12\xbb\x01\n" +
+	"\xb8\x01Validation failed. Error codes:\n" +
+	"- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n" +
 	"- `request_bad_cursor` — pagination cursor is invalid or malformed.J|\n" +
 	"\x03404\x12u\n" +
 	"sNot found. Error codes:\n" +

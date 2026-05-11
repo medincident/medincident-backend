@@ -4231,7 +4231,7 @@
             }
           },
           "400": {
-            "description": "Validation failed. Error codes:\n- `request_bad_cursor` — pagination cursor is invalid or malformed.",
+            "description": "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `request_bad_cursor` — pagination cursor is invalid or malformed.",
             "schema": {}
           },
           "401": {

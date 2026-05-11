@@ -204,6 +204,7 @@ created → in_work ←→ on_hold
 | Код | HTTP | Описание |
 |---|---|---|
 | `request_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `service_request_list_limit_out_of_range` | 400 | Лимит выходит за допустимые границы |
 | `permission_denied` | 403 | Недостаточно прав |
 
 ### ListServiceRequestsByIncident
@@ -213,6 +214,7 @@ created → in_work ←→ on_hold
 | Код | HTTP | Описание |
 |---|---|---|
 | `request_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `service_request_list_limit_out_of_range` | 400 | Лимит выходит за допустимые границы |
 | `validation_failed` | 400 | Ошибка валидации |
 | `permission_denied` | 403 | Недостаточно прав |
 | `service_request_query_incident_not_found` | 404 | Инцидент не найден |

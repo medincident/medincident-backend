@@ -79,7 +79,7 @@ service ServiceRequestQueryService {
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "400"
-        value: {description: "Validation failed. Error codes:\n- `request_bad_cursor` — pagination cursor is invalid or malformed."}
+        value: {description: "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `request_bad_cursor` — pagination cursor is invalid or malformed."}
       }
       responses: {
         key: "404"
