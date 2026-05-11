@@ -326,7 +326,7 @@ type ListCategoriesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -375,16 +375,17 @@ func (x *ListCategoriesByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListCategoriesByOrganizationRequest) GetOffset() int32 {
+func (x *ListCategoriesByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListCategoriesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Category            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -426,11 +427,18 @@ func (x *ListCategoriesByOrganizationResponse) GetItems() []*Category {
 	return nil
 }
 
+func (x *ListCategoriesByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListActiveRootCategoriesRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -479,16 +487,17 @@ func (x *ListActiveRootCategoriesRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListActiveRootCategoriesRequest) GetOffset() int32 {
+func (x *ListActiveRootCategoriesRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListActiveRootCategoriesResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Category            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -528,6 +537,13 @@ func (x *ListActiveRootCategoriesResponse) GetItems() []*Category {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListActiveRootCategoriesResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type ListCategorySubtreeRequest struct {
@@ -574,6 +590,9 @@ func (x *ListCategorySubtreeRequest) GetRootCategoryId() string {
 	return ""
 }
 
+// ListCategorySubtreeResponse returns the full subtree rooted at the
+// requested category. No pagination — the subtree depth is bounded and
+// the full result is always returned.
 type ListCategorySubtreeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Category            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -710,7 +729,7 @@ type ListTypesByCategoryRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CategoryId    string                 `protobuf:"bytes,1,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -759,16 +778,17 @@ func (x *ListTypesByCategoryRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListTypesByCategoryRequest) GetOffset() int32 {
+func (x *ListTypesByCategoryRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListTypesByCategoryResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Type                `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -810,11 +830,18 @@ func (x *ListTypesByCategoryResponse) GetItems() []*Type {
 	return nil
 }
 
+func (x *ListTypesByCategoryResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListActiveTypesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -863,16 +890,17 @@ func (x *ListActiveTypesByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListActiveTypesByOrganizationRequest) GetOffset() int32 {
+func (x *ListActiveTypesByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListActiveTypesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Type                `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -914,11 +942,18 @@ func (x *ListActiveTypesByOrganizationResponse) GetItems() []*Type {
 	return nil
 }
 
+func (x *ListActiveTypesByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListPatientAllowedTypesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -967,16 +1002,17 @@ func (x *ListPatientAllowedTypesByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListPatientAllowedTypesByOrganizationRequest) GetOffset() int32 {
+func (x *ListPatientAllowedTypesByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListPatientAllowedTypesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Type                `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1018,11 +1054,18 @@ func (x *ListPatientAllowedTypesByOrganizationResponse) GetItems() []*Type {
 	return nil
 }
 
+func (x *ListPatientAllowedTypesByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListPatientVisibleCategoriesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1071,16 +1114,17 @@ func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetOffset() int32 {
+func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListPatientVisibleCategoriesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Category            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1122,6 +1166,13 @@ func (x *ListPatientVisibleCategoriesByOrganizationResponse) GetItems() []*Categ
 	return nil
 }
 
+func (x *ListPatientVisibleCategoriesByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 var File_query_incident_classifier_v1_classifier_proto protoreflect.FileDescriptor
 
 const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
@@ -1157,19 +1208,25 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x12GetCategoryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"Y\n" +
 	"\x13GetCategoryResponse\x12B\n" +
-	"\bcategory\x18\x01 \x01(\v2&.query.incident.classifier.v1.CategoryR\bcategory\"|\n" +
+	"\bcategory\x18\x01 \x01(\v2&.query.incident.classifier.v1.CategoryR\bcategory\"z\n" +
 	"#ListCategoriesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"d\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x9a\x01\n" +
 	"$ListCategoriesByOrganizationResponse\x12<\n" +
-	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\"x\n" +
+	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"v\n" +
 	"\x1fListActiveRootCategoriesRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"`\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x96\x01\n" +
 	" ListActiveRootCategoriesResponse\x12<\n" +
-	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\"F\n" +
+	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"F\n" +
 	"\x1aListCategorySubtreeRequest\x12(\n" +
 	"\x10root_category_id\x18\x01 \x01(\tR\x0erootCategoryId\"[\n" +
 	"\x1bListCategorySubtreeResponse\x12<\n" +
@@ -1177,32 +1234,44 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x0eGetTypeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"I\n" +
 	"\x0fGetTypeResponse\x126\n" +
-	"\x04type\x18\x01 \x01(\v2\".query.incident.classifier.v1.TypeR\x04type\"k\n" +
+	"\x04type\x18\x01 \x01(\v2\".query.incident.classifier.v1.TypeR\x04type\"i\n" +
 	"\x1aListTypesByCategoryRequest\x12\x1f\n" +
 	"\vcategory_id\x18\x01 \x01(\tR\n" +
 	"categoryId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"W\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x8d\x01\n" +
 	"\x1bListTypesByCategoryResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"}\n" +
+	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"{\n" +
 	"$ListActiveTypesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"a\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x97\x01\n" +
 	"%ListActiveTypesByOrganizationResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"\x85\x01\n" +
+	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\x83\x01\n" +
 	",ListPatientAllowedTypesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"i\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x9f\x01\n" +
 	"-ListPatientAllowedTypesByOrganizationResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\"\x8a\x01\n" +
+	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\x88\x01\n" +
 	"1ListPatientVisibleCategoriesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"r\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\xa8\x01\n" +
 	"2ListPatientVisibleCategoriesByOrganizationResponse\x12<\n" +
-	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items2\x9e\x11\n" +
+	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor2\x9e\x11\n" +
 	"\x1eIncidentClassifierQueryService\x12\x8d\x02\n" +
 	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"\x98\x01\x92AqJo\n" +
 	"\x03404\x12h\n" +
@@ -1313,6 +1382,12 @@ func file_query_incident_classifier_v1_classifier_proto_init() {
 	}
 	file_query_incident_classifier_v1_classifier_proto_msgTypes[0].OneofWrappers = []any{}
 	file_query_incident_classifier_v1_classifier_proto_msgTypes[1].OneofWrappers = []any{}
+	file_query_incident_classifier_v1_classifier_proto_msgTypes[5].OneofWrappers = []any{}
+	file_query_incident_classifier_v1_classifier_proto_msgTypes[7].OneofWrappers = []any{}
+	file_query_incident_classifier_v1_classifier_proto_msgTypes[13].OneofWrappers = []any{}
+	file_query_incident_classifier_v1_classifier_proto_msgTypes[15].OneofWrappers = []any{}
+	file_query_incident_classifier_v1_classifier_proto_msgTypes[17].OneofWrappers = []any{}
+	file_query_incident_classifier_v1_classifier_proto_msgTypes[19].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

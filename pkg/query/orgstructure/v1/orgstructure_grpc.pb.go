@@ -36,9 +36,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // OrgStructureQueryService exposes read methods over the orgstructure
-// projections. Pagination is offset/limit; backed by COUNT(*) queries
-// via dedicated CountX RPCs — clients drive pagination controls with
-// both values.
+// projections. List endpoints use cursor-based keyset pagination.
 type OrgStructureQueryServiceClient interface {
 	GetOrganization(ctx context.Context, in *GetOrganizationRequest, opts ...grpc.CallOption) (*GetOrganizationResponse, error)
 	ListOrganizations(ctx context.Context, in *ListOrganizationsRequest, opts ...grpc.CallOption) (*ListOrganizationsResponse, error)
@@ -165,9 +163,7 @@ func (c *orgStructureQueryServiceClient) CountDepartmentsByClinic(ctx context.Co
 // for forward compatibility.
 //
 // OrgStructureQueryService exposes read methods over the orgstructure
-// projections. Pagination is offset/limit; backed by COUNT(*) queries
-// via dedicated CountX RPCs — clients drive pagination controls with
-// both values.
+// projections. List endpoints use cursor-based keyset pagination.
 type OrgStructureQueryServiceServer interface {
 	GetOrganization(context.Context, *GetOrganizationRequest) (*GetOrganizationResponse, error)
 	ListOrganizations(context.Context, *ListOrganizationsRequest) (*ListOrganizationsResponse, error)

@@ -704,11 +704,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -956,11 +955,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           },
           {
             "name": "includeTerminated",
@@ -1691,11 +1689,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           },
           {
             "name": "includeTerminated",
@@ -2560,11 +2557,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -3130,11 +3126,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -4155,11 +4150,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -4741,11 +4735,11 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
+            "description": "Opaque pagination cursor returned as next_cursor from a previous\nresponse. Omit or leave empty to start from the first page. An\ninvalid cursor is rejected with a domain error.",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -4921,11 +4915,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -5260,11 +5253,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -5512,11 +5504,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -5851,11 +5842,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           },
           {
             "name": "includeTerminated",
@@ -6022,11 +6012,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           },
           {
             "name": "includeTerminated",
@@ -6111,11 +6100,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -6450,11 +6438,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -6591,11 +6578,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -6659,11 +6645,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -6727,11 +6712,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -6796,11 +6780,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -6930,11 +6913,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -7062,11 +7044,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -7085,7 +7066,7 @@
             }
           },
           "400": {
-            "description": "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.\n- `service_request_list_offset_out_of_range` — offset is out of the allowed range.",
+            "description": "Validation failed. Error codes:\n- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.",
             "schema": {}
           },
           "401": {
@@ -7128,11 +7109,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -7296,11 +7276,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -8022,11 +8001,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -8248,11 +8226,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -8333,11 +8310,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -8454,11 +8430,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -9212,11 +9187,10 @@
             "format": "int32"
           },
           {
-            "name": "offset",
+            "name": "after",
             "in": "query",
             "required": false,
-            "type": "integer",
-            "format": "int32"
+            "type": "string"
           }
         ],
         "tags": [
@@ -11456,6 +11430,9 @@
             "type": "object",
             "$ref": "#/definitions/v1RequestType"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11468,6 +11445,9 @@
             "type": "object",
             "$ref": "#/definitions/v1Category"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11480,6 +11460,9 @@
             "type": "object",
             "$ref": "#/definitions/classifierV1Type"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11537,6 +11520,9 @@
             "type": "object",
             "$ref": "#/definitions/v1BufferEntryView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11549,6 +11535,9 @@
             "type": "object",
             "$ref": "#/definitions/v1Category"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11562,7 +11551,8 @@
             "$ref": "#/definitions/v1Category"
           }
         }
-      }
+      },
+      "description": "ListCategorySubtreeResponse returns the full subtree rooted at the\nrequested category. No pagination — the subtree depth is bounded and\nthe full result is always returned."
     },
     "v1ListClinicsByOrganizationResponse": {
       "type": "object",
@@ -11573,6 +11563,9 @@
             "type": "object",
             "$ref": "#/definitions/v1ClinicListItem"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11585,6 +11578,9 @@
             "type": "object",
             "$ref": "#/definitions/v1DepartmentListItem"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11597,6 +11593,9 @@
             "type": "object",
             "$ref": "#/definitions/v1EmployeeCardView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11609,6 +11608,9 @@
             "type": "object",
             "$ref": "#/definitions/v1EmployeeCardView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11621,6 +11623,9 @@
             "type": "object",
             "$ref": "#/definitions/v1EmployeeCardView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11633,6 +11638,9 @@
             "type": "object",
             "$ref": "#/definitions/v1IncidentView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11645,6 +11653,9 @@
             "type": "object",
             "$ref": "#/definitions/v1BufferEntryView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11657,6 +11668,9 @@
             "type": "object",
             "$ref": "#/definitions/v1IncidentView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11681,6 +11695,9 @@
             "type": "object",
             "$ref": "#/definitions/v1RoleAssignment"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11693,6 +11710,9 @@
             "type": "object",
             "$ref": "#/definitions/v1RoleAssignment"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11705,6 +11725,9 @@
             "type": "object",
             "$ref": "#/definitions/v1RoleAssignment"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11717,6 +11740,9 @@
             "type": "object",
             "$ref": "#/definitions/v1OrganizationListItem"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11729,6 +11755,9 @@
             "type": "object",
             "$ref": "#/definitions/classifierV1Type"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11741,6 +11770,9 @@
             "type": "object",
             "$ref": "#/definitions/v1Category"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11753,6 +11785,9 @@
             "type": "object",
             "$ref": "#/definitions/v1RequestType"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11765,6 +11800,9 @@
             "type": "object",
             "$ref": "#/definitions/v1ServiceRequest"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11777,6 +11815,9 @@
             "type": "object",
             "$ref": "#/definitions/v1ServiceRequest"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11789,6 +11830,9 @@
             "type": "object",
             "$ref": "#/definitions/v1SystemAdminView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11801,6 +11845,9 @@
             "type": "object",
             "$ref": "#/definitions/classifierV1Type"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -11813,6 +11860,9 @@
             "type": "object",
             "$ref": "#/definitions/v1VacationView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -12206,6 +12256,9 @@
             "type": "object",
             "$ref": "#/definitions/v1EmployeeCardView"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },
@@ -12218,6 +12271,9 @@
             "type": "object",
             "$ref": "#/definitions/v1OrganizationListItem"
           }
+        },
+        "nextCursor": {
+          "type": "string"
         }
       }
     },

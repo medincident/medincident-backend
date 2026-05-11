@@ -49,6 +49,15 @@ func (h *BufferQueryHandler) GetBufferEntry(
 	return &incidentqueryv1.GetBufferEntryResponse{Entry: bufferToProto(v)}, nil
 }
 
+// afterPtr converts an empty proto string to nil, treating empty as
+// "start from the beginning".
+func afterPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
 func (h *BufferQueryHandler) ListBufferEntries(
 	ctx context.Context, req *incidentqueryv1.ListBufferEntriesRequest,
 ) (*incidentqueryv1.ListBufferEntriesResponse, error) {
@@ -68,15 +77,18 @@ func (h *BufferQueryHandler) ListBufferEntries(
 		}
 		statuses = append(statuses, ms)
 	}
-	items, err := h.reader.ListBufferEntries(ctx, callerID, orgID, &bufferread.ListBufferFilters{
+	result, err := h.reader.ListBufferEntries(ctx, callerID, orgID, &bufferread.ListBufferFilters{
 		Statuses: statuses,
 		Limit:    int(req.GetLimit()),
-		Offset:   int(req.GetOffset()),
+		After:    afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &incidentqueryv1.ListBufferEntriesResponse{Items: buffersToProto(items)}, nil
+	return &incidentqueryv1.ListBufferEntriesResponse{
+		Items:      buffersToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 func (h *BufferQueryHandler) ListMyBufferEntries(
@@ -86,11 +98,14 @@ func (h *BufferQueryHandler) ListMyBufferEntries(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListMyBufferEntries(ctx, callerID, int(req.GetLimit()), int(req.GetOffset()))
+	result, err := h.reader.ListMyBufferEntries(ctx, callerID, int(req.GetLimit()), afterPtr(req.GetAfter()))
 	if err != nil {
 		return nil, err
 	}
-	return &incidentqueryv1.ListMyBufferEntriesResponse{Items: buffersToProto(items)}, nil
+	return &incidentqueryv1.ListMyBufferEntriesResponse{
+		Items:      buffersToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 func parseUUID(raw, field, code string) (uuid.UUID, error) {

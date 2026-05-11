@@ -5,6 +5,11 @@
 package request
 
 import (
+	"encoding/base64"
+	"encoding/json"
+	"time"
+
+	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -18,7 +23,7 @@ const (
 	ErrCodeServiceRequestNotFound   = "service_request_query_not_found"
 	ErrCodeIncidentNotFound         = "service_request_query_incident_not_found"
 	ErrCodeListLimitOutOfRange      = "service_request_list_limit_out_of_range"
-	ErrCodeListOffsetOutOfRange     = "service_request_list_offset_out_of_range"
+	ErrCodeListBadCursor            = "service_request_list_bad_cursor"
 )
 
 const scope = "services.query.request"
@@ -35,21 +40,38 @@ func NewReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *Reader {
 	return &Reader{db: db, authz: az, logger: logger}
 }
 
+// createdAtCursor is the keyset pagination token for lists ordered by
+// (created_at DESC, id DESC).
+type createdAtCursor struct {
+	CreatedAt time.Time `json:"created_at"`
+	ID        uuid.UUID `json:"id"`
+}
+
+func encodeCursor[T any](c T) string {
+	b, _ := json.Marshal(c)
+	return base64.StdEncoding.EncodeToString(b)
+}
+
+func decodeCursor[T any](s string) (T, error) {
+	b, err := base64.StdEncoding.DecodeString(s)
+	var zero T
+	if err != nil {
+		return zero, err
+	}
+	var c T
+	if err := json.Unmarshal(b, &c); err != nil {
+		return zero, err
+	}
+	return c, nil
+}
+
 // ListQuery captures pagination parameters.
 type ListQuery struct {
-	Limit  int
-	Offset int
+	Limit int
+	After *string
 }
 
 func (q *ListQuery) normalize() error {
-	if q.Offset < 0 {
-		return oops.In(scope).
-			Code(ErrCodeListOffsetOutOfRange).
-			Public("List offset must be non-negative.").
-			With("field", "offset").
-			With("actual_value", q.Offset).
-			Errorf("offset out of range")
-	}
 	if q.Limit == 0 {
 		q.Limit = query.DefaultLimit
 		return nil
@@ -65,6 +87,12 @@ func (q *ListQuery) normalize() error {
 			Errorf("limit out of range")
 	}
 	return nil
+}
+
+// ServiceRequestListResult is returned by paginated list methods.
+type ServiceRequestListResult struct {
+	Items      []ServiceRequestView
+	NextCursor *string
 }
 
 func wrapRead(err error, action string) error {

@@ -488,7 +488,7 @@ type ListEmployeesByDepartmentRequest struct {
 	state        protoimpl.MessageState `protogen:"open.v1"`
 	DepartmentId string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
 	Limit        int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset       int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After        string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	// When false (default), rows with terminated_at IS NOT NULL are
 	// hidden. Set true to include offboarded employees.
 	IncludeTerminated bool `protobuf:"varint,4,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
@@ -546,11 +546,11 @@ func (x *ListEmployeesByDepartmentRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListEmployeesByDepartmentRequest) GetOffset() int32 {
+func (x *ListEmployeesByDepartmentRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 func (x *ListEmployeesByDepartmentRequest) GetIncludeTerminated() bool {
@@ -577,6 +577,7 @@ func (x *ListEmployeesByDepartmentRequest) GetPosition() string {
 type ListEmployeesByDepartmentResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -618,11 +619,18 @@ func (x *ListEmployeesByDepartmentResponse) GetItems() []*EmployeeCardView {
 	return nil
 }
 
+func (x *ListEmployeesByDepartmentResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListEmployeesByClinicRequest struct {
 	state    protoimpl.MessageState `protogen:"open.v1"`
 	ClinicId string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
 	Limit    int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset   int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After    string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	// When false (default), rows with terminated_at IS NOT NULL are
 	// hidden. Set true to include offboarded employees.
 	IncludeTerminated bool `protobuf:"varint,4,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
@@ -680,11 +688,11 @@ func (x *ListEmployeesByClinicRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListEmployeesByClinicRequest) GetOffset() int32 {
+func (x *ListEmployeesByClinicRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 func (x *ListEmployeesByClinicRequest) GetIncludeTerminated() bool {
@@ -711,6 +719,7 @@ func (x *ListEmployeesByClinicRequest) GetPosition() string {
 type ListEmployeesByClinicResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -752,11 +761,18 @@ func (x *ListEmployeesByClinicResponse) GetItems() []*EmployeeCardView {
 	return nil
 }
 
+func (x *ListEmployeesByClinicResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListEmployeesByOrganizationRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	// When false (default), rows with terminated_at IS NOT NULL are
 	// hidden. Set true to include offboarded employees.
 	IncludeTerminated bool `protobuf:"varint,4,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
@@ -814,11 +830,11 @@ func (x *ListEmployeesByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListEmployeesByOrganizationRequest) GetOffset() int32 {
+func (x *ListEmployeesByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 func (x *ListEmployeesByOrganizationRequest) GetIncludeTerminated() bool {
@@ -845,6 +861,7 @@ func (x *ListEmployeesByOrganizationRequest) GetPosition() string {
 type ListEmployeesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -884,6 +901,13 @@ func (x *ListEmployeesByOrganizationResponse) GetItems() []*EmployeeCardView {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListEmployeesByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type CountEmployeesByDepartmentRequest struct {
@@ -1249,9 +1273,9 @@ type SearchEmployeesByOrganizationRequest struct {
 	// as ListEmployeesByOrganization with the same filters. Maximum
 	// length 256 characters; over-long inputs are rejected before the
 	// authz round-trip.
-	Query  string `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
-	Limit  int32  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset int32  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
+	Query string `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
+	Limit int32  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	After string `protobuf:"bytes,4,opt,name=after,proto3" json:"after,omitempty"`
 	// When false (default), rows with terminated_at IS NOT NULL are
 	// hidden. Set true to include offboarded employees.
 	IncludeTerminated bool `protobuf:"varint,5,opt,name=include_terminated,json=includeTerminated,proto3" json:"include_terminated,omitempty"`
@@ -1316,11 +1340,11 @@ func (x *SearchEmployeesByOrganizationRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *SearchEmployeesByOrganizationRequest) GetOffset() int32 {
+func (x *SearchEmployeesByOrganizationRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 func (x *SearchEmployeesByOrganizationRequest) GetIncludeTerminated() bool {
@@ -1347,6 +1371,7 @@ func (x *SearchEmployeesByOrganizationRequest) GetPosition() string {
 type SearchEmployeesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1388,6 +1413,13 @@ func (x *SearchEmployeesByOrganizationResponse) GetItems() []*EmployeeCardView {
 	return nil
 }
 
+func (x *SearchEmployeesByOrganizationResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListVacationsByEmployeeRequest struct {
 	state      protoimpl.MessageState `protogen:"open.v1"`
 	EmployeeId string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
@@ -1395,7 +1427,7 @@ type ListVacationsByEmployeeRequest struct {
 	// Valid values: scheduled, active, ended, cancelled.
 	State         string `protobuf:"bytes,2,opt,name=state,proto3" json:"state,omitempty"`
 	Limit         int32  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32  `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
+	After         string `protobuf:"bytes,4,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1451,16 +1483,17 @@ func (x *ListVacationsByEmployeeRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListVacationsByEmployeeRequest) GetOffset() int32 {
+func (x *ListVacationsByEmployeeRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListVacationsByEmployeeResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*VacationView        `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1500,6 +1533,13 @@ func (x *ListVacationsByEmployeeResponse) GetItems() []*VacationView {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListVacationsByEmployeeResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 type CountVacationsByEmployeeRequest struct {
@@ -1780,7 +1820,7 @@ type ListOrgAdminsRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1829,16 +1869,17 @@ func (x *ListOrgAdminsRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListOrgAdminsRequest) GetOffset() int32 {
+func (x *ListOrgAdminsRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListOrgAdminsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*RoleAssignment      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1880,11 +1921,18 @@ func (x *ListOrgAdminsResponse) GetItems() []*RoleAssignment {
 	return nil
 }
 
+func (x *ListOrgAdminsResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListOrgDispatchersRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -1933,16 +1981,17 @@ func (x *ListOrgDispatchersRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListOrgDispatchersRequest) GetOffset() int32 {
+func (x *ListOrgDispatchersRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListOrgDispatchersResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*RoleAssignment      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1984,11 +2033,18 @@ func (x *ListOrgDispatchersResponse) GetItems() []*RoleAssignment {
 	return nil
 }
 
+func (x *ListOrgDispatchersResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListOrgHeadsRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset         int32                  `protobuf:"varint,3,opt,name=offset,proto3" json:"offset,omitempty"`
+	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -2037,16 +2093,17 @@ func (x *ListOrgHeadsRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListOrgHeadsRequest) GetOffset() int32 {
+func (x *ListOrgHeadsRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListOrgHeadsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*RoleAssignment      `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2088,10 +2145,17 @@ func (x *ListOrgHeadsResponse) GetItems() []*RoleAssignment {
 	return nil
 }
 
+func (x *ListOrgHeadsResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListSystemAdminsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
-	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
+	After         string                 `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2133,16 +2197,17 @@ func (x *ListSystemAdminsRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListSystemAdminsRequest) GetOffset() int32 {
+func (x *ListSystemAdminsRequest) GetAfter() string {
 	if x != nil {
-		return x.Offset
+		return x.After
 	}
-	return 0
+	return ""
 }
 
 type ListSystemAdminsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*SystemAdminView     `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2182,6 +2247,13 @@ func (x *ListSystemAdminsResponse) GetItems() []*SystemAdminView {
 		return x.Items
 	}
 	return nil
+}
+
+func (x *ListSystemAdminsResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
 }
 
 var File_query_membership_v1_membership_proto protoreflect.FileDescriptor
@@ -2249,40 +2321,49 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x12GetEmployeeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"X\n" +
 	"\x13GetEmployeeResponse\x12A\n" +
-	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"\xf3\x01\n" +
+	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"\xf1\x01\n" +
 	" ListEmployeesByDepartmentRequest\x12#\n" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\x12-\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12-\n" +
 	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
 	"\von_vacation\x18\x05 \x01(\bR\n" +
 	"onVacation\x12\x1f\n" +
 	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
-	"\t_position\"`\n" +
+	"\t_position\"\x96\x01\n" +
 	"!ListEmployeesByDepartmentResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"\xe7\x01\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\xe5\x01\n" +
 	"\x1cListEmployeesByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\x12-\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12-\n" +
 	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
 	"\von_vacation\x18\x05 \x01(\bR\n" +
 	"onVacation\x12\x1f\n" +
 	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
-	"\t_position\"\\\n" +
+	"\t_position\"\x92\x01\n" +
 	"\x1dListEmployeesByClinicResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"\xf9\x01\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\xf7\x01\n" +
 	"\"ListEmployeesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\x12-\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12-\n" +
 	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
 	"\von_vacation\x18\x05 \x01(\bR\n" +
 	"onVacation\x12\x1f\n" +
 	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
-	"\t_position\"b\n" +
+	"\t_position\"\x98\x01\n" +
 	"#ListEmployeesByOrganizationResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"\xc6\x01\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\xc6\x01\n" +
 	"!CountEmployeesByDepartmentRequest\x12#\n" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\x12-\n" +
 	"\x12include_terminated\x18\x02 \x01(\bR\x11includeTerminated\x12\x1f\n" +
@@ -2309,27 +2390,33 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\bposition\x18\x04 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
 	"\t_position\"<\n" +
 	"$CountEmployeesByOrganizationResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total\"\x91\x02\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\"\x8f\x02\n" +
 	"$SearchEmployeesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05query\x18\x02 \x01(\tR\x05query\x12\x14\n" +
-	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x04 \x01(\x05R\x06offset\x12-\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x04 \x01(\tR\x05after\x12-\n" +
 	"\x12include_terminated\x18\x05 \x01(\bR\x11includeTerminated\x12\x1f\n" +
 	"\von_vacation\x18\x06 \x01(\bR\n" +
 	"onVacation\x12\x1f\n" +
 	"\bposition\x18\a \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
-	"\t_position\"d\n" +
+	"\t_position\"\x9a\x01\n" +
 	"%SearchEmployeesByOrganizationResponse\x12;\n" +
-	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\"\x85\x01\n" +
+	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"\x83\x01\n" +
 	"\x1eListVacationsByEmployeeRequest\x12\x1f\n" +
 	"\vemployee_id\x18\x01 \x01(\tR\n" +
 	"employeeId\x12\x14\n" +
 	"\x05state\x18\x02 \x01(\tR\x05state\x12\x14\n" +
-	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x04 \x01(\x05R\x06offset\"Z\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x04 \x01(\tR\x05after\"\x90\x01\n" +
 	"\x1fListVacationsByEmployeeResponse\x127\n" +
-	"\x05items\x18\x01 \x03(\v2!.query.membership.v1.VacationViewR\x05items\"X\n" +
+	"\x05items\x18\x01 \x03(\v2!.query.membership.v1.VacationViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"X\n" +
 	"\x1fCountVacationsByEmployeeRequest\x12\x1f\n" +
 	"\vemployee_id\x18\x01 \x01(\tR\n" +
 	"employeeId\x12\x14\n" +
@@ -2349,30 +2436,42 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\n" +
 	"assignment\x18\x01 \x01(\v2#.query.membership.v1.RoleAssignmentH\x00R\n" +
 	"assignment\x88\x01\x01B\r\n" +
-	"\v_assignment\"m\n" +
+	"\v_assignment\"k\n" +
 	"\x14ListOrgAdminsRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"R\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x88\x01\n" +
 	"\x15ListOrgAdminsResponse\x129\n" +
-	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\"r\n" +
+	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"p\n" +
 	"\x19ListOrgDispatchersRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"W\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x8d\x01\n" +
 	"\x1aListOrgDispatchersResponse\x129\n" +
-	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\"l\n" +
+	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"j\n" +
 	"\x13ListOrgHeadsRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x03 \x01(\x05R\x06offset\"Q\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\"\x87\x01\n" +
 	"\x14ListOrgHeadsResponse\x129\n" +
-	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\"G\n" +
+	"\x05items\x18\x01 \x03(\v2#.query.membership.v1.RoleAssignmentR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor\"E\n" +
 	"\x17ListSystemAdminsRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x05R\x06offset\"V\n" +
+	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x14\n" +
+	"\x05after\x18\x02 \x01(\tR\x05after\"\x8c\x01\n" +
 	"\x18ListSystemAdminsResponse\x12:\n" +
-	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items2\x9d\x17\n" +
+	"\x05items\x18\x01 \x03(\v2$.query.membership.v1.SystemAdminViewR\x05items\x12$\n" +
+	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"nextCursor\x88\x01\x01B\x0e\n" +
+	"\f_next_cursor2\x9d\x17\n" +
 	"\x16MembershipQueryService\x12\xed\x01\n" +
 	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x8a\x01\x92AmJk\n" +
 	"\x03404\x12d\n" +
@@ -2524,14 +2623,23 @@ func file_query_membership_v1_membership_proto_init() {
 	file_query_membership_v1_membership_proto_msgTypes[1].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[2].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[6].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[7].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[8].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[9].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[10].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[11].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[12].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[14].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[16].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[18].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[19].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[21].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[25].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[27].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[29].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[31].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[33].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[35].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -43,6 +43,15 @@ func parseOrganizationID(raw string) (uuid.UUID, error) {
 	return id, nil
 }
 
+// afterPtr converts an empty proto string to nil, treating empty as
+// "start from the beginning".
+func afterPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
 // RequestClassifierQueryHandler implements
 // classifierqueryv1.RequestClassifierQueryServiceServer.
 type RequestClassifierQueryHandler struct {
@@ -91,14 +100,17 @@ func (h *RequestClassifierQueryHandler) ListRequestTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListRequestTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListRequestTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListRequestTypesByOrganizationResponse{Items: requestTypesToProto(items)}, nil
+	return &classifierqueryv1.ListRequestTypesByOrganizationResponse{
+		Items:      requestTypesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListActiveRequestTypesByOrganization returns active request types
@@ -116,14 +128,17 @@ func (h *RequestClassifierQueryHandler) ListActiveRequestTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListActiveRequestTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListActiveRequestTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListActiveRequestTypesByOrganizationResponse{Items: requestTypesToProto(items)}, nil
+	return &classifierqueryv1.ListActiveRequestTypesByOrganizationResponse{
+		Items:      requestTypesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // requestTypeToProto adapts one RequestTypeView.

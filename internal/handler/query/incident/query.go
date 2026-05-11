@@ -79,11 +79,23 @@ func (h *IncidentQueryHandler) ListIncidents(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListIncidents(ctx, callerID, orgID, &f)
+	result, err := h.reader.ListIncidents(ctx, callerID, orgID, &f)
 	if err != nil {
 		return nil, err
 	}
-	return &incidentqueryv1.ListIncidentsResponse{Items: incidentsToProto(items)}, nil
+	return &incidentqueryv1.ListIncidentsResponse{
+		Items:      incidentsToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
+}
+
+// afterPtr converts an empty proto string to nil, treating empty as
+// "start from the beginning".
+func afterPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
 }
 
 func (h *IncidentQueryHandler) ListMyIncidents(
@@ -93,11 +105,14 @@ func (h *IncidentQueryHandler) ListMyIncidents(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListMyIncidents(ctx, callerID, int(req.GetLimit()), int(req.GetOffset()))
+	result, err := h.reader.ListMyIncidents(ctx, callerID, int(req.GetLimit()), afterPtr(req.GetAfter()))
 	if err != nil {
 		return nil, err
 	}
-	return &incidentqueryv1.ListMyIncidentsResponse{Items: incidentsToProto(items)}, nil
+	return &incidentqueryv1.ListMyIncidentsResponse{
+		Items:      incidentsToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 func (h *IncidentQueryHandler) GetIncidentHistory(
@@ -123,8 +138,8 @@ func (h *IncidentQueryHandler) GetIncidentHistory(
 
 func decodeListFilters(req *incidentqueryv1.ListIncidentsRequest) (queryincident.ListFilters, error) {
 	f := queryincident.ListFilters{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	}
 	for _, s := range req.GetStatuses() {
 		ms, err := protoStatusToModel(s)

@@ -32,6 +32,26 @@ type RoleAssignmentView struct {
 	Deputy *EmployeeCardView
 }
 
+// RoleListResult is returned by all paginated role list methods.
+// NextCursor is nil when no more pages remain.
+type RoleListResult struct {
+	Items      []RoleAssignmentView
+	NextCursor *string
+}
+
+// SystemAdminView mirrors projections.system_admins.
+type SystemAdminView struct {
+	ZitadelUserID string
+	CreatedAt     time.Time
+}
+
+// SystemAdminListResult is returned by ListSystemAdmins. NextCursor is
+// nil when no more pages remain.
+type SystemAdminListResult struct {
+	Items      []SystemAdminView
+	NextCursor *string
+}
+
 // employeeCardColumns returns the ordered SELECT list for one
 // employee_cards row, with every column qualified by the given table
 // alias. The column order matches ScanEmployeeCard / scanEmployeeCardPtrs.
@@ -43,7 +63,8 @@ func employeeCardColumns(alias string) string {
 		alias + `.clinic_id, ` + alias + `.clinic_name, ` +
 		alias + `.department_id, ` + alias + `.department_name, ` +
 		alias + `.position, ` + alias + `.terminated_at, ` +
-		alias + `.current_vacation_ends_at, ` + alias + `.next_vacation_starts_at`
+		alias + `.current_vacation_ends_at, ` + alias + `.next_vacation_starts_at, ` +
+		alias + `.updated_at`
 }
 
 // deputyCardScan carries every column of the deputy's employee_cards
@@ -69,6 +90,7 @@ type deputyCardScan struct {
 	TerminatedAt          *time.Time
 	CurrentVacationEndsAt *time.Time
 	NextVacationStartsAt  *time.Time
+	UpdatedAt             *time.Time
 }
 
 // scanTargets returns the pointer slice to pass into rows.Scan in the
@@ -82,6 +104,7 @@ func (d *deputyCardScan) scanTargets() []any {
 		&d.DepartmentID, &d.DepartmentName,
 		&d.Position, &d.TerminatedAt,
 		&d.CurrentVacationEndsAt, &d.NextVacationStartsAt,
+		&d.UpdatedAt,
 	}
 }
 
@@ -117,6 +140,9 @@ func (d *deputyCardScan) toView() *EmployeeCardView {
 	if d.DepartmentID != nil {
 		out.DepartmentID = *d.DepartmentID
 	}
+	if d.UpdatedAt != nil {
+		out.UpdatedAt = *d.UpdatedAt
+	}
 	return out
 }
 
@@ -129,7 +155,7 @@ func scanAssignment(scanner interface {
 }, out *RoleAssignmentView,
 ) error {
 	var dep deputyCardScan
-	dests := make([]any, 0, 32)
+	dests := make([]any, 0, 34)
 	dests = append(dests,
 		&out.Holder.EmployeeID, &out.Holder.ZitadelUserID,
 		&out.Holder.FirstName, &out.Holder.LastName, &out.Holder.DisplayName, &out.Holder.Email,
@@ -138,6 +164,7 @@ func scanAssignment(scanner interface {
 		&out.Holder.DepartmentID, &out.Holder.DepartmentName,
 		&out.Holder.Position, &out.Holder.TerminatedAt,
 		&out.Holder.CurrentVacationEndsAt, &out.Holder.NextVacationStartsAt,
+		&out.Holder.UpdatedAt,
 	)
 	dests = append(dests, dep.scanTargets()...)
 	if err := scanner.Scan(dests...); err != nil {
@@ -196,12 +223,12 @@ func (r *RoleReader) ListOrgAdmins(
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]RoleAssignmentView, error) {
+) (RoleListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return RoleListResult{}, err
 	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return RoleListResult{}, err
 	}
 	return r.listRolesByParent(ctx, "projections.org_admins", "organization_id", orgID, q)
 }
@@ -215,12 +242,12 @@ func (r *RoleReader) ListOrgDispatchers(
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]RoleAssignmentView, error) {
+) (RoleListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return RoleListResult{}, err
 	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return RoleListResult{}, err
 	}
 	return r.listRolesByParent(ctx, "projections.org_dispatchers", "organization_id", orgID, q)
 }
@@ -234,20 +261,14 @@ func (r *RoleReader) ListOrgHeads(
 	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
-) ([]RoleAssignmentView, error) {
+) (RoleListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return RoleListResult{}, err
 	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return nil, err
+		return RoleListResult{}, err
 	}
 	return r.listRolesByParent(ctx, "projections.org_heads", "organization_id", orgID, q)
-}
-
-// SystemAdminView mirrors projections.system_admins.
-type SystemAdminView struct {
-	ZitadelUserID string
-	CreatedAt     time.Time
 }
 
 // ListSystemAdmins returns every system-admin row. Authorization:
@@ -258,30 +279,43 @@ func (r *RoleReader) ListSystemAdmins(
 	ctx context.Context,
 	caller authz.Caller,
 	q ListQuery,
-) ([]SystemAdminView, error) {
+) (SystemAdminListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return SystemAdminListResult{}, err
 	}
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.SystemAdmin); err != nil {
-		return nil, err
+		return SystemAdminListResult{}, err
 	}
-	rows, err := r.db.WithContext(ctx).Raw(`
-		SELECT zitadel_user_id, created_at
+	sqlBuf := `SELECT zitadel_user_id, created_at
 		  FROM projections.system_admins
-		 ORDER BY created_at DESC, zitadel_user_id DESC
-		 LIMIT ? OFFSET ?`, q.Limit, q.Offset).Rows()
+		 WHERE 1=1`
+	args := make([]any, 0, 3)
+	if q.After != nil {
+		c, err := decodeCursor[systemAdminCursor](*q.After)
+		if err != nil {
+			return SystemAdminListResult{}, oops.In("reader.membership.role").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (created_at, zitadel_user_id) < (?, ?)`
+		args = append(args, c.CreatedAt, c.ZitadelUserID)
+	}
+	sqlBuf += ` ORDER BY created_at DESC, zitadel_user_id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.membership.role").
+		return SystemAdminListResult{}, oops.In("reader.membership.role").
 			Code(ErrCodeRoleLoadFailed).
 			With("role", "system_admin").
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]SystemAdminView, 0, q.Limit)
+	out := make([]SystemAdminView, 0, q.Limit+1)
 	for rows.Next() {
 		var v SystemAdminView
 		if err := rows.Scan(&v.ZitadelUserID, &v.CreatedAt); err != nil {
-			return nil, oops.In("reader.membership.role").
+			return SystemAdminListResult{}, oops.In("reader.membership.role").
 				Code(ErrCodeRoleLoadFailed).
 				With("role", "system_admin").
 				Wrap(err)
@@ -289,12 +323,20 @@ func (r *RoleReader) ListSystemAdmins(
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.membership.role").
+		return SystemAdminListResult{}, oops.In("reader.membership.role").
 			Code(ErrCodeRoleLoadFailed).
 			With("role", "system_admin").
 			Wrap(err)
 	}
-	return out, nil
+
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := encodeCursor(systemAdminCursor{CreatedAt: last.CreatedAt, ZitadelUserID: last.ZitadelUserID})
+		nextCursor = &s
+	}
+	return SystemAdminListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // oneRoleByParent returns the first role row (by employee_id asc) for
@@ -338,31 +380,45 @@ func (r *RoleReader) oneRoleByParent(ctx context.Context, table, parentField str
 // multiple holders). Callers must have already called q.normalize().
 // The SELECT joins projections.employee_cards for holder (INNER) and
 // deputy (LEFT) so each returned view carries the full card.
-func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField string, parentID uuid.UUID, q ListQuery) ([]RoleAssignmentView, error) {
-	rows, err := r.db.WithContext(ctx).Raw(
-		selectRoleAssignment+`
-		   FROM `+table+` role
+// Ordered by role.employee_id ASC for stable keyset pagination.
+func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField string, parentID uuid.UUID, q ListQuery) (RoleListResult, error) {
+	sqlBuf := selectRoleAssignment + `
+		   FROM ` + table + ` role
 		   JOIN projections.employee_cards holder
 		     ON holder.employee_id = role.employee_id
 		   LEFT JOIN projections.employee_cards deputy
 		     ON deputy.employee_id = role.deputy_employee_id
-		  WHERE role.`+parentField+` = ?
-		  ORDER BY role.employee_id ASC
-		  LIMIT ? OFFSET ?`, parentID, q.Limit, q.Offset,
-	).Rows()
+		  WHERE role.` + parentField + ` = ?`
+	args := make([]any, 0, 3)
+	args = append(args, parentID)
+	if q.After != nil {
+		c, err := decodeCursor[roleCursor](*q.After)
+		if err != nil {
+			return RoleListResult{}, oops.In("reader.membership.role").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND role.employee_id > ?`
+		args = append(args, c.EmployeeID)
+	}
+	sqlBuf += ` ORDER BY role.employee_id ASC LIMIT ?`
+	args = append(args, q.Limit+1)
+
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.membership.role").
+		return RoleListResult{}, oops.In("reader.membership.role").
 			Code(ErrCodeRoleLoadFailed).
 			With("table", table).
 			With(parentField, parentID).
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]RoleAssignmentView, 0, q.Limit)
+	out := make([]RoleAssignmentView, 0, q.Limit+1)
 	for rows.Next() {
 		var v RoleAssignmentView
 		if err := scanAssignment(rows, &v); err != nil {
-			return nil, oops.In("reader.membership.role").
+			return RoleListResult{}, oops.In("reader.membership.role").
 				Code(ErrCodeRoleLoadFailed).
 				With("table", table).
 				Wrap(err)
@@ -370,10 +426,18 @@ func (r *RoleReader) listRolesByParent(ctx context.Context, table, parentField s
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.membership.role").
+		return RoleListResult{}, oops.In("reader.membership.role").
 			Code(ErrCodeRoleLoadFailed).
 			With("table", table).
 			Wrap(err)
 	}
-	return out, nil
+
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := encodeCursor(roleCursor{EmployeeID: last.Holder.EmployeeID})
+		nextCursor = &s
+	}
+	return RoleListResult{Items: out, NextCursor: nextCursor}, nil
 }

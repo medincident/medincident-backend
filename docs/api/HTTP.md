@@ -5149,7 +5149,7 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 |---|---|---|---|---|
 |categoryId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -5169,7 +5169,8 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
       "updatedAt": "string",
       "isAllowedForPatients": true
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -5385,7 +5386,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -5404,7 +5405,8 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -5444,7 +5446,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visib
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -5463,7 +5465,8 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:patient-visib
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -5503,7 +5506,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -5522,7 +5525,8 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -5562,7 +5566,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -5582,7 +5586,8 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
       "updatedAt": "string",
       "isAllowedForPatients": true
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -5626,7 +5631,7 @@ an-incident.-parameters">Parameters</h3>
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -5646,7 +5651,8 @@ an-incident.-parameters">Parameters</h3>
       "updatedAt": "string",
       "isAllowedForPatients": true
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -5838,7 +5844,7 @@ curl -X GET /v1/query/incidents:mine \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -5874,7 +5880,8 @@ curl -X GET /v1/query/incidents:mine \
       "reopenedFromIncidentId": "string",
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -5922,7 +5929,7 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
 |occurredFrom|query|string|false|RFC3339Nano|
 |occurredTo|query|string|false|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 #### Enumerated Values
 
@@ -5974,7 +5981,8 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
       "reopenedFromIncidentId": "string",
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -6015,7 +6023,7 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
 |organizationId|path|string|true|none|
 |statuses|query|array[string]|false|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 #### Enumerated Values
 
@@ -6048,7 +6056,8 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
       "updatedAt": "string",
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -6150,7 +6159,7 @@ curl -X GET /v1/query/patient-incidents:mine \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -6173,7 +6182,8 @@ curl -X GET /v1/query/patient-incidents:mine \
       "updatedAt": "string",
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -6215,7 +6225,7 @@ curl -X GET /v1/clinics/{clinicId}/employees \
 |---|---|---|---|---|
 |clinicId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 |includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
 |onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
 |position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
@@ -6256,7 +6266,8 @@ before comparison; all-whitespace is treated as unset.
       "currentVacationEndsAt": "string",
       "nextVacationStartsAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -6439,7 +6450,7 @@ curl -X GET /v1/departments/{departmentId}/employees \
 |---|---|---|---|---|
 |departmentId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 |includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
 |onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
 |position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
@@ -6480,7 +6491,8 @@ before comparison; all-whitespace is treated as unset.
       "currentVacationEndsAt": "string",
       "nextVacationStartsAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -6664,7 +6676,7 @@ curl -X GET /v1/employees/{employeeId}/vacations \
 |employeeId|path|string|true|none|
 |state|query|string|false|Optional state filter. When empty, all states are returned.|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 #### Detailed descriptions
 
@@ -6687,7 +6699,8 @@ Valid values: scheduled, active, ended, cancelled.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -6846,7 +6859,7 @@ curl -X GET /v1/organizations/{organizationId}/admins \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -6893,7 +6906,8 @@ curl -X GET /v1/organizations/{organizationId}/admins \
         "nextVacationStartsAt": "string"
       }
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -6933,7 +6947,7 @@ curl -X GET /v1/organizations/{organizationId}/dispatchers \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -6980,7 +6994,8 @@ curl -X GET /v1/organizations/{organizationId}/dispatchers \
         "nextVacationStartsAt": "string"
       }
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7020,7 +7035,7 @@ curl -X GET /v1/organizations/{organizationId}/employees \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 |includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
 |onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
 |position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
@@ -7061,7 +7076,8 @@ before comparison; all-whitespace is treated as unset.
       "currentVacationEndsAt": "string",
       "nextVacationStartsAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7162,7 +7178,7 @@ curl -X GET /v1/organizations/{organizationId}/employees:search \
 |organizationId|path|string|true|none|
 |query|query|string|false|Fuzzy substring matched case-insensitively (ILIKE %query%) against|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 |includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
 |onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
 |position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
@@ -7210,7 +7226,8 @@ before comparison; all-whitespace is treated as unset.
       "currentVacationEndsAt": "string",
       "nextVacationStartsAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7250,7 +7267,7 @@ curl -X GET /v1/organizations/{organizationId}/heads \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -7297,7 +7314,8 @@ curl -X GET /v1/organizations/{organizationId}/heads \
         "nextVacationStartsAt": "string"
       }
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7336,7 +7354,7 @@ curl -X GET /v1/system-admins \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -7349,7 +7367,8 @@ curl -X GET /v1/system-admins \
       "zitadelUserId": "string",
       "createdAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7391,7 +7410,7 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 |---|---|---|---|---|
 |clinicId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -7405,7 +7424,8 @@ curl -X GET /v1/clinics/{clinicId}/departments \
       "clinicId": "string",
       "name": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7611,7 +7631,13 @@ curl -X GET /v1/organizations \
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|Opaque pagination cursor returned as next_cursor from a previous|
+
+#### Detailed descriptions
+
+**after**: Opaque pagination cursor returned as next_cursor from a previous
+response. Omit or leave empty to start from the first page. An
+invalid cursor is rejected with a domain error.
 
 > Example responses
 
@@ -7624,7 +7650,8 @@ curl -X GET /v1/organizations \
       "id": "string",
       "name": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7727,7 +7754,7 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -7741,7 +7768,8 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
       "organizationId": "string",
       "name": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7867,7 +7895,7 @@ curl -X GET /v1/organizations:search \
 |---|---|---|---|---|
 |query|query|string|false|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -7880,7 +7908,8 @@ curl -X GET /v1/organizations:search \
       "id": "string",
       "name": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7922,7 +7951,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -7940,7 +7969,8 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -7980,7 +8010,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types:active \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -7998,7 +8028,8 @@ curl -X GET /v1/organizations/{organizationId}/request-types:active \
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -8098,7 +8129,7 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
 |---|---|---|---|---|
 |incidentId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -8128,7 +8159,8 @@ curl -X GET /v1/incidents/{incidentId}/service-requests \
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -8172,7 +8204,7 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
-|offset|query|integer(int32)|false|none|
+|after|query|string|false|none|
 
 > Example responses
 
@@ -8202,7 +8234,8 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 ```
 
@@ -8212,8 +8245,7 @@ curl -X GET /v1/organizations/{organizationId}/service-requests \
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListServiceRequestsResponse](#schemav1listservicerequestsresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
-- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.
-- `service_request_list_offset_out_of_range` — offset is out of the allowed range.|Inline|
+- `service_request_list_limit_out_of_range` — limit exceeds the allowed maximum.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
@@ -12796,7 +12828,8 @@ patient_status, description and timestamps are populated.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -12806,6 +12839,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1RequestType](#schemav1requesttype)]|false|none|none|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListActiveRootCategoriesResponse">v1ListActiveRootCategoriesResponse</h2>
 <!-- backwards compatibility -->
@@ -12827,7 +12861,8 @@ patient_status, description and timestamps are populated.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -12837,6 +12872,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListActiveTypesByOrganizationResponse">v1ListActiveTypesByOrganizationResponse</h2>
 <!-- backwards compatibility -->
@@ -12859,7 +12895,8 @@ patient_status, description and timestamps are populated.
       "updatedAt": "string",
       "isAllowedForPatients": true
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -12869,6 +12906,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListAnnouncementsForClinicResponse">v1ListAnnouncementsForClinicResponse</h2>
 <!-- backwards compatibility -->
@@ -13011,7 +13049,8 @@ patient_status, description and timestamps are populated.
       "updatedAt": "string",
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13021,6 +13060,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1BufferEntryView](#schemav1bufferentryview)]|false|none|none|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListCategoriesByOrganizationResponse">v1ListCategoriesByOrganizationResponse</h2>
 <!-- backwards compatibility -->
@@ -13042,7 +13082,8 @@ patient_status, description and timestamps are populated.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13052,6 +13093,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListCategorySubtreeResponse">v1ListCategorySubtreeResponse</h2>
 <!-- backwards compatibility -->
@@ -13078,6 +13120,10 @@ patient_status, description and timestamps are populated.
 
 ```
 
+ListCategorySubtreeResponse returns the full subtree rooted at the
+requested category. No pagination — the subtree depth is bounded and
+the full result is always returned.
+
 ### Properties
 
 |Name|Type|Required|Restrictions|Description|
@@ -13099,7 +13145,8 @@ patient_status, description and timestamps are populated.
       "organizationId": "string",
       "name": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13109,6 +13156,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1ClinicListItem](#schemav1cliniclistitem)]|false|none|[ClinicListItem is the minimal shape returned by list endpoints.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListDepartmentsByClinicResponse">v1ListDepartmentsByClinicResponse</h2>
 <!-- backwards compatibility -->
@@ -13125,7 +13173,8 @@ patient_status, description and timestamps are populated.
       "clinicId": "string",
       "name": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13135,6 +13184,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1DepartmentListItem](#schemav1departmentlistitem)]|false|none|[DepartmentListItem is the minimal shape returned by list endpoints.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListEmployeesByClinicResponse">v1ListEmployeesByClinicResponse</h2>
 <!-- backwards compatibility -->
@@ -13164,7 +13214,8 @@ patient_status, description and timestamps are populated.
       "currentVacationEndsAt": "string",
       "nextVacationStartsAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13174,6 +13225,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListEmployeesByDepartmentResponse">v1ListEmployeesByDepartmentResponse</h2>
 <!-- backwards compatibility -->
@@ -13203,7 +13255,8 @@ patient_status, description and timestamps are populated.
       "currentVacationEndsAt": "string",
       "nextVacationStartsAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13213,6 +13266,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListEmployeesByOrganizationResponse">v1ListEmployeesByOrganizationResponse</h2>
 <!-- backwards compatibility -->
@@ -13242,7 +13296,8 @@ patient_status, description and timestamps are populated.
       "currentVacationEndsAt": "string",
       "nextVacationStartsAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13252,6 +13307,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListIncidentsResponse">v1ListIncidentsResponse</h2>
 <!-- backwards compatibility -->
@@ -13290,7 +13346,8 @@ patient_status, description and timestamps are populated.
       "reopenedFromIncidentId": "string",
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13300,6 +13357,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1IncidentView](#schemav1incidentview)]|false|none|[IncidentView is the unified payload. For patients only id, status,<br>patient_status, description and timestamps are populated.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListMyBufferEntriesResponse">v1ListMyBufferEntriesResponse</h2>
 <!-- backwards compatibility -->
@@ -13325,7 +13383,8 @@ patient_status, description and timestamps are populated.
       "updatedAt": "string",
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13335,6 +13394,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1BufferEntryView](#schemav1bufferentryview)]|false|none|none|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListMyIncidentsResponse">v1ListMyIncidentsResponse</h2>
 <!-- backwards compatibility -->
@@ -13373,7 +13433,8 @@ patient_status, description and timestamps are populated.
       "reopenedFromIncidentId": "string",
       "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13383,6 +13444,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1IncidentView](#schemav1incidentview)]|false|none|[IncidentView is the unified payload. For patients only id, status,<br>patient_status, description and timestamps are populated.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListMyOrganizationsResponse">v1ListMyOrganizationsResponse</h2>
 <!-- backwards compatibility -->
@@ -13457,7 +13519,8 @@ patient_status, description and timestamps are populated.
         "nextVacationStartsAt": "string"
       }
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13467,6 +13530,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1RoleAssignment](#schemav1roleassignment)]|false|none|[RoleAssignment is a role row enriched with the denormalised card for<br>the holder and, when present, the deputy. Read-model callers use<br>this so they do not need to follow role lookups with N+1 GetEmployee<br>calls to render a name or email.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListOrgDispatchersResponse">v1ListOrgDispatchersResponse</h2>
 <!-- backwards compatibility -->
@@ -13516,7 +13580,8 @@ patient_status, description and timestamps are populated.
         "nextVacationStartsAt": "string"
       }
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13526,6 +13591,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1RoleAssignment](#schemav1roleassignment)]|false|none|[RoleAssignment is a role row enriched with the denormalised card for<br>the holder and, when present, the deputy. Read-model callers use<br>this so they do not need to follow role lookups with N+1 GetEmployee<br>calls to render a name or email.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListOrgHeadsResponse">v1ListOrgHeadsResponse</h2>
 <!-- backwards compatibility -->
@@ -13575,7 +13641,8 @@ patient_status, description and timestamps are populated.
         "nextVacationStartsAt": "string"
       }
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13585,6 +13652,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1RoleAssignment](#schemav1roleassignment)]|false|none|[RoleAssignment is a role row enriched with the denormalised card for<br>the holder and, when present, the deputy. Read-model callers use<br>this so they do not need to follow role lookups with N+1 GetEmployee<br>calls to render a name or email.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListOrganizationsResponse">v1ListOrganizationsResponse</h2>
 <!-- backwards compatibility -->
@@ -13600,7 +13668,8 @@ patient_status, description and timestamps are populated.
       "id": "string",
       "name": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13610,6 +13679,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1OrganizationListItem](#schemav1organizationlistitem)]|false|none|[OrganizationListItem is the minimal shape returned by list endpoints.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListPatientAllowedTypesByOrganizationResponse">v1ListPatientAllowedTypesByOrganizationResponse</h2>
 <!-- backwards compatibility -->
@@ -13632,7 +13702,8 @@ patient_status, description and timestamps are populated.
       "updatedAt": "string",
       "isAllowedForPatients": true
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13642,6 +13713,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListPatientVisibleCategoriesByOrganizationResponse">v1ListPatientVisibleCategoriesByOrganizationResponse</h2>
 <!-- backwards compatibility -->
@@ -13663,7 +13735,8 @@ patient_status, description and timestamps are populated.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13673,6 +13746,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListRequestTypesByOrganizationResponse">v1ListRequestTypesByOrganizationResponse</h2>
 <!-- backwards compatibility -->
@@ -13693,7 +13767,8 @@ patient_status, description and timestamps are populated.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13703,6 +13778,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1RequestType](#schemav1requesttype)]|false|none|none|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListServiceRequestsByIncidentResponse">v1ListServiceRequestsByIncidentResponse</h2>
 <!-- backwards compatibility -->
@@ -13735,7 +13811,8 @@ patient_status, description and timestamps are populated.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13745,6 +13822,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1ServiceRequest](#schemav1servicerequest)]|false|none|none|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListServiceRequestsResponse">v1ListServiceRequestsResponse</h2>
 <!-- backwards compatibility -->
@@ -13777,7 +13855,8 @@ patient_status, description and timestamps are populated.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13787,6 +13866,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1ServiceRequest](#schemav1servicerequest)]|false|none|none|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListSystemAdminsResponse">v1ListSystemAdminsResponse</h2>
 <!-- backwards compatibility -->
@@ -13802,7 +13882,8 @@ patient_status, description and timestamps are populated.
       "zitadelUserId": "string",
       "createdAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13812,6 +13893,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1SystemAdminView](#schemav1systemadminview)]|false|none|[SystemAdminView is the system-admin role; system admins are rooted in<br>Zitadel user ids, not employee ids.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListTypesByCategoryResponse">v1ListTypesByCategoryResponse</h2>
 <!-- backwards compatibility -->
@@ -13834,7 +13916,8 @@ patient_status, description and timestamps are populated.
       "updatedAt": "string",
       "isAllowedForPatients": true
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13844,6 +13927,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ListVacationsByEmployeeResponse">v1ListVacationsByEmployeeResponse</h2>
 <!-- backwards compatibility -->
@@ -13864,7 +13948,8 @@ patient_status, description and timestamps are populated.
       "createdAt": "string",
       "updatedAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -13874,6 +13959,7 @@ patient_status, description and timestamps are populated.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1VacationView](#schemav1vacationview)]|false|none|[VacationView mirrors projections.employee_vacations. state is one of<br>{scheduled, active, ended, cancelled}.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1MoveIncidentCategoryResponse">v1MoveIncidentCategoryResponse</h2>
 <!-- backwards compatibility -->
@@ -14714,7 +14800,8 @@ calls to render a name or email.
       "currentVacationEndsAt": "string",
       "nextVacationStartsAt": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -14724,6 +14811,7 @@ calls to render a name or email.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1EmployeeCardView](#schemav1employeecardview)]|false|none|[EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1SearchOrganizationsResponse">v1SearchOrganizationsResponse</h2>
 <!-- backwards compatibility -->
@@ -14739,7 +14827,8 @@ calls to render a name or email.
       "id": "string",
       "name": "string"
     }
-  ]
+  ],
+  "nextCursor": "string"
 }
 
 ```
@@ -14749,6 +14838,7 @@ calls to render a name or email.
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |items|[[v1OrganizationListItem](#schemav1organizationlistitem)]|false|none|[OrganizationListItem is the minimal shape returned by list endpoints.]|
+|nextCursor|string|false|none|none|
 
 <h2 id="tocS_v1ServiceRequest">v1ServiceRequest</h2>
 <!-- backwards compatibility -->

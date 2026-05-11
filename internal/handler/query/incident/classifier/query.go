@@ -32,6 +32,15 @@ func parseOrganizationID(raw string) (uuid.UUID, error) {
 	return id, nil
 }
 
+// afterPtr converts an empty proto string to nil, treating empty as
+// "start from the beginning".
+func afterPtr(s string) *string {
+	if s == "" {
+		return nil
+	}
+	return &s
+}
+
 // IncidentClassifierQueryHandler implements
 // classifierqueryv1.IncidentClassifierQueryServiceServer.
 type IncidentClassifierQueryHandler struct {
@@ -80,14 +89,17 @@ func (h *IncidentClassifierQueryHandler) ListCategoriesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListCategoriesByOrganizationResponse{Items: categoriesToProto(items)}, nil
+	return &classifierqueryv1.ListCategoriesByOrganizationResponse{
+		Items:      categoriesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListActiveRootCategories returns active roots.
@@ -104,14 +116,17 @@ func (h *IncidentClassifierQueryHandler) ListActiveRootCategories(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListActiveRootCategories(ctx, caller, id, classifierread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListActiveRootCategories(ctx, caller, id, classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListActiveRootCategoriesResponse{Items: categoriesToProto(items)}, nil
+	return &classifierqueryv1.ListActiveRootCategoriesResponse{
+		Items:      categoriesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListCategorySubtree returns a flattened subtree.
@@ -170,14 +185,17 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListTypesByCategory(ctx, caller, id, classifierread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListTypesByCategory(ctx, caller, id, classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListTypesByCategoryResponse{Items: typesToProto(items)}, nil
+	return &classifierqueryv1.ListTypesByCategoryResponse{
+		Items:      typesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListActiveTypesByOrganization returns active types for an org.
@@ -194,14 +212,17 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListActiveTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListActiveTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListActiveTypesByOrganizationResponse{Items: typesToProto(items)}, nil
+	return &classifierqueryv1.ListActiveTypesByOrganizationResponse{
+		Items:      typesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListPatientAllowedTypesByOrganization returns the active types that
@@ -219,14 +240,17 @@ func (h *IncidentClassifierQueryHandler) ListPatientAllowedTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListPatientAllowedTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListPatientAllowedTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListPatientAllowedTypesByOrganizationResponse{Items: typesToProto(items)}, nil
+	return &classifierqueryv1.ListPatientAllowedTypesByOrganizationResponse{
+		Items:      typesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // ListPatientVisibleCategoriesByOrganization returns the active categories
@@ -245,14 +269,17 @@ func (h *IncidentClassifierQueryHandler) ListPatientVisibleCategoriesByOrganizat
 	if err != nil {
 		return nil, err
 	}
-	items, err := h.reader.ListPatientVisibleCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit:  int(req.GetLimit()),
-		Offset: int(req.GetOffset()),
+	result, err := h.reader.ListPatientVisibleCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListPatientVisibleCategoriesByOrganizationResponse{Items: categoriesToProto(items)}, nil
+	return &classifierqueryv1.ListPatientVisibleCategoriesByOrganizationResponse{
+		Items:      categoriesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
 }
 
 // parseCategoryID parses a category UUID.

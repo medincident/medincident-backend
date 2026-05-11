@@ -15,6 +15,11 @@
 package classifier
 
 import (
+	"encoding/base64"
+	"encoding/json"
+	"time"
+
+	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
@@ -25,26 +30,50 @@ import (
 
 // Error codes emitted by pagination validators.
 const (
-	ErrCodeListLimitOutOfRange  = "list_limit_out_of_range"
-	ErrCodeListOffsetOutOfRange = "list_offset_out_of_range"
+	ErrCodeListLimitOutOfRange = "list_limit_out_of_range"
+	ErrCodeListBadCursor       = "list_bad_cursor"
 )
+
+// createdAtCursor is the keyset pagination token for lists ordered by
+// (created_at DESC, id DESC).
+type createdAtCursor struct {
+	CreatedAt time.Time `json:"created_at"`
+	ID        uuid.UUID `json:"id"`
+}
+
+// nameCursor is the keyset pagination token for lists ordered by
+// (name ASC, id ASC).
+type nameCursor struct {
+	Name string    `json:"name"`
+	ID   uuid.UUID `json:"id"`
+}
+
+func encodeCursor[T any](c T) string {
+	b, _ := json.Marshal(c)
+	return base64.StdEncoding.EncodeToString(b)
+}
+
+func decodeCursor[T any](s string) (T, error) {
+	b, err := base64.StdEncoding.DecodeString(s)
+	var zero T
+	if err != nil {
+		return zero, err
+	}
+	var c T
+	if err := json.Unmarshal(b, &c); err != nil {
+		return zero, err
+	}
+	return c, nil
+}
 
 // ListQuery is the input shared by paginated list endpoints.
 type ListQuery struct {
-	Limit  int
-	Offset int
+	Limit int
+	After *string
 }
 
 // normalize validates and normalizes the pagination fields.
 func (q *ListQuery) normalize() error {
-	if q.Offset < 0 {
-		return oops.In("reader.incident.classifier").
-			Code(ErrCodeListOffsetOutOfRange).
-			Public("List offset must be non-negative.").
-			With("field", "offset").
-			With("actual_value", q.Offset).
-			Errorf("offset out of range")
-	}
 	if q.Limit == 0 {
 		q.Limit = query.DefaultLimit
 		return nil
@@ -60,6 +89,18 @@ func (q *ListQuery) normalize() error {
 			Errorf("limit out of range")
 	}
 	return nil
+}
+
+// CategoryListResult is returned by paginated category list methods.
+type CategoryListResult struct {
+	Items      []CategoryView
+	NextCursor *string
+}
+
+// TypeListResult is returned by paginated type list methods.
+type TypeListResult struct {
+	Items      []TypeView
+	NextCursor *string
 }
 
 // Reader exposes read methods for both aggregates in this domain.

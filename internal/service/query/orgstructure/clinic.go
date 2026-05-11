@@ -36,6 +36,14 @@ type ClinicListItem struct {
 	ID             uuid.UUID
 	OrganizationID uuid.UUID
 	Name           string
+	CreatedAt      time.Time
+}
+
+// ClinicListResult is returned by ListByOrganization. NextCursor is nil
+// when no more pages remain.
+type ClinicListResult struct {
+	Items      []ClinicListItem
+	NextCursor *string
 }
 
 // Get returns the ClinicDetails for the given id. Authorization:
@@ -118,9 +126,9 @@ func (r *ClinicReader) CountByOrganization(
 // ListByOrganization returns up to q.Limit clinics belonging to the
 // given organization, ordered most-recently-created first. Authorization:
 // authz.ReaderOf.Organization(organizationID). Pagination bounds are
-// normalized first so a malformed Limit/Offset cannot trigger a
-// gratuitous authz DB round-trip — matching the validate→authorize
-// order used on the command side.
+// normalized first so a malformed Limit cannot trigger a gratuitous
+// authz DB round-trip — matching the validate→authorize order used on
+// the command side.
 //
 // See: docs/services/OrgStructure.md
 func (r *ClinicReader) ListByOrganization(
@@ -128,35 +136,47 @@ func (r *ClinicReader) ListByOrganization(
 	caller authz.Caller,
 	organizationID uuid.UUID,
 	q ListQuery,
-) ([]ClinicListItem, error) {
+) (ClinicListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return ClinicListResult{}, err
 	}
 	if err := r.authz.Require(
 		ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(organizationID),
 	); err != nil {
-		return nil, err
+		return ClinicListResult{}, err
 	}
-	rows, err := r.db.WithContext(ctx).Raw(`
-		SELECT id, organization_id, name
+	sqlBuf := `SELECT id, organization_id, name, created_at
 		  FROM projections.clinics
-		 WHERE organization_id = ?
-		 ORDER BY created_at DESC, id DESC
-		 LIMIT ? OFFSET ?`, organizationID, q.Limit, q.Offset,
-	).Rows()
+		 WHERE organization_id = ?`
+	args := make([]any, 0, 4)
+	args = append(args, organizationID)
+	if q.After != nil {
+		c, err := decodeCursor(*q.After)
+		if err != nil {
+			return ClinicListResult{}, oops.In("reader.orgstructure.clinic").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (created_at, id) < (?, ?)`
+		args = append(args, c.CreatedAt, c.ID)
+	}
+	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.orgstructure.clinic").
+		return ClinicListResult{}, oops.In("reader.orgstructure.clinic").
 			Code(ErrCodeClinicLoadFailed).
 			With("organization_id", organizationID).
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
 
-	out := make([]ClinicListItem, 0, q.Limit)
+	out := make([]ClinicListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v ClinicListItem
-		if err := rows.Scan(&v.ID, &v.OrganizationID, &v.Name); err != nil {
-			return nil, oops.In("reader.orgstructure.clinic").
+		if err := rows.Scan(&v.ID, &v.OrganizationID, &v.Name, &v.CreatedAt); err != nil {
+			return ClinicListResult{}, oops.In("reader.orgstructure.clinic").
 				Code(ErrCodeClinicLoadFailed).
 				With("organization_id", organizationID).
 				Wrap(err)
@@ -164,10 +184,18 @@ func (r *ClinicReader) ListByOrganization(
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.orgstructure.clinic").
+		return ClinicListResult{}, oops.In("reader.orgstructure.clinic").
 			Code(ErrCodeClinicLoadFailed).
 			With("organization_id", organizationID).
 			Wrap(err)
 	}
-	return out, nil
+
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := encodeCursor(cursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		nextCursor = &s
+	}
+	return ClinicListResult{Items: out, NextCursor: nextCursor}, nil
 }

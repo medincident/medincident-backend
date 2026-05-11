@@ -7,6 +7,8 @@ package incident
 import (
 	"context"
 	"database/sql"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"strings"
 	"time"
@@ -25,7 +27,39 @@ import (
 const (
 	ErrCodeIncidentReadFailed = "incident_query_read_failed"
 	ErrCodeIncidentNotFound   = "incident_query_not_found"
+	ErrCodeListBadCursor      = "incident_list_bad_cursor"
 )
+
+// incidentCursor is the keyset pagination token for lists ordered by
+// (created_at DESC, id DESC).
+type incidentCursor struct {
+	CreatedAt time.Time `json:"created_at"`
+	ID        uuid.UUID `json:"id"`
+}
+
+func encodeCursor[T any](c T) string {
+	b, _ := json.Marshal(c)
+	return base64.StdEncoding.EncodeToString(b)
+}
+
+func decodeCursor[T any](s string) (T, error) {
+	b, err := base64.StdEncoding.DecodeString(s)
+	var zero T
+	if err != nil {
+		return zero, err
+	}
+	var c T
+	if err := json.Unmarshal(b, &c); err != nil {
+		return zero, err
+	}
+	return c, nil
+}
+
+// IncidentListResult is returned by paginated incident list methods.
+type IncidentListResult struct {
+	Items      []IncidentView
+	NextCursor *string
+}
 
 const scope = "services.query.incident"
 
@@ -402,7 +436,7 @@ type ListFilters struct {
 	OccurredFrom *time.Time
 	OccurredTo   *time.Time
 	Limit        int
-	Offset       int
+	After        *string
 }
 
 // ListIncidents returns incidents in an organization the caller may see.
@@ -410,17 +444,19 @@ type ListFilters struct {
 // See: docs/services/incident/Incidents.md
 func (r *Reader) ListIncidents(
 	ctx context.Context, callerID string, orgID uuid.UUID, f *ListFilters,
-) ([]IncidentView, error) {
+) (IncidentListResult, error) {
 	if f == nil {
 		f = &ListFilters{}
 	}
 	cc, err := r.resolveCaller(ctx, callerID)
 	if err != nil {
-		return nil, err
+		return IncidentListResult{}, err
 	}
-	where, args := r.visibilityClause(cc, "")
+	where, visArgs := r.visibilityClause(cc, "")
 	conds := []string{"organization_id = ?", where}
-	args = append([]any{orgID}, args...)
+	args := make([]any, 0, len(visArgs)+12)
+	args = append(args, orgID)
+	args = append(args, visArgs...)
 
 	if len(f.Statuses) > 0 {
 		ph := strings.TrimSuffix(strings.Repeat("?,", len(f.Statuses)), ",")
@@ -460,29 +496,47 @@ func (r *Reader) ListIncidents(
 		conds = append(conds, "occurred_at <= ?")
 		args = append(args, *f.OccurredTo)
 	}
-	limit, offset := paginationDefaults(f.Limit, f.Offset)
-	args = append(args, limit, offset)
+	limit := normLimit(f.Limit)
+	if f.After != nil {
+		c, err := decodeCursor[incidentCursor](*f.After)
+		if err != nil {
+			return IncidentListResult{}, oops.In(scope).
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		conds = append(conds, "(created_at, id) < (?, ?)")
+		args = append(args, c.CreatedAt, c.ID)
+	}
+	args = append(args, limit+1)
 
 	q := `SELECT ` + selectColumns + ` FROM projections.incidents WHERE ` +
-		strings.Join(conds, " AND ") + ` ORDER BY created_at DESC LIMIT ? OFFSET ?`
+		strings.Join(conds, " AND ") + ` ORDER BY created_at DESC, id DESC LIMIT ?`
 	rows, err := r.db.WithContext(ctx).Raw(q, args...).Rows()
 	if err != nil {
-		return nil, wrapRead(err, "list incidents")
+		return IncidentListResult{}, wrapRead(err, "list incidents")
 	}
 	defer func() { _ = rows.Close() }()
-	out := []IncidentView{}
+	out := make([]IncidentView, 0, limit+1)
 	for rows.Next() {
 		var v IncidentView
 		if err := scanIncident(rows, &v); err != nil {
-			return nil, wrapRead(err, "scan incident row")
+			return IncidentListResult{}, wrapRead(err, "scan incident row")
 		}
 		v.PatientPerspective = cc.IsPatient()
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, wrapRead(err, "iterate incident rows")
+		return IncidentListResult{}, wrapRead(err, "iterate incident rows")
 	}
-	return out, nil
+	var nextCursor *string
+	if len(out) > limit {
+		out = out[:limit]
+		last := out[len(out)-1]
+		s := encodeCursor(incidentCursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		nextCursor = &s
+	}
+	return IncidentListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
 // ListMyIncidents returns incidents where the caller is the registrar
@@ -490,13 +544,13 @@ func (r *Reader) ListIncidents(
 //
 // See: docs/services/incident/Incidents.md
 func (r *Reader) ListMyIncidents(
-	ctx context.Context, callerID string, limit, offset int,
-) ([]IncidentView, error) {
+	ctx context.Context, callerID string, limit int, after *string,
+) (IncidentListResult, error) {
 	cc, err := r.resolveCaller(ctx, callerID)
 	if err != nil {
-		return nil, err
+		return IncidentListResult{}, err
 	}
-	limit, offset = paginationDefaults(limit, offset)
+	limit = normLimit(limit)
 
 	conds := []string{}
 	args := []any{}
@@ -507,49 +561,63 @@ func (r *Reader) ListMyIncidents(
 	conds = append(conds, "source_patient_zitadel_user_id = ?")
 	args = append(args, callerID)
 
+	cursorConds := ""
+	if after != nil {
+		c, err := decodeCursor[incidentCursor](*after)
+		if err != nil {
+			return IncidentListResult{}, oops.In(scope).
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		cursorConds = ` AND (created_at, id) < (?, ?)`
+		args = append(args, c.CreatedAt, c.ID)
+	}
+	args = append(args, limit+1)
+
 	q := `SELECT ` + selectColumns + ` FROM projections.incidents WHERE (` +
-		strings.Join(conds, " OR ") + `) ORDER BY created_at DESC LIMIT ? OFFSET ?`
-	args = append(args, limit, offset)
+		strings.Join(conds, " OR ") + `)` + cursorConds +
+		` ORDER BY created_at DESC, id DESC LIMIT ?`
 
 	rows, err := r.db.WithContext(ctx).Raw(q, args...).Rows()
 	if err != nil {
-		return nil, wrapRead(err, "list my incidents")
+		return IncidentListResult{}, wrapRead(err, "list my incidents")
 	}
 	defer func() { _ = rows.Close() }()
-	out := []IncidentView{}
+	out := make([]IncidentView, 0, limit+1)
 	for rows.Next() {
 		var v IncidentView
 		if err := scanIncident(rows, &v); err != nil {
-			return nil, wrapRead(err, "scan my incident row")
+			return IncidentListResult{}, wrapRead(err, "scan my incident row")
 		}
 		v.PatientPerspective = cc.IsPatient()
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, wrapRead(err, "iterate my incident rows")
+		return IncidentListResult{}, wrapRead(err, "iterate my incident rows")
 	}
-	return out, nil
+	var nextCursor *string
+	if len(out) > limit {
+		out = out[:limit]
+		last := out[len(out)-1]
+		s := encodeCursor(incidentCursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		nextCursor = &s
+	}
+	return IncidentListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// PaginationDefaults clamps a (limit, offset) pair to safe bounds.
-// Out-of-range limits fall back to query.DefaultLimit; negative
-// offsets become 0. Exported so the buffer reader (and any future
-// reader that needs the same lenient clamping) can share the impl.
-func PaginationDefaults(limit, offset int) (outLimit, outOffset int) {
+// NormLimit clamps a caller-supplied limit to safe bounds.
+// Zero or out-of-range values fall back to query.DefaultLimit.
+// Exported so the buffer reader and other readers can share the impl.
+func NormLimit(limit int) int {
 	if limit <= 0 || limit > query.MaxLimit {
-		limit = query.DefaultLimit
+		return query.DefaultLimit
 	}
-	if offset < 0 {
-		offset = 0
-	}
-	return limit, offset
+	return limit
 }
 
-// paginationDefaults is the unexported alias kept for backwards
-// compatibility with existing call sites in this package.
-func paginationDefaults(limit, offset int) (outLimit, outOffset int) {
-	return PaginationDefaults(limit, offset)
-}
+// normLimit is the unexported alias for call sites in this package.
+func normLimit(limit int) int { return NormLimit(limit) }
 
 // StatusHistoryEntry mirrors a row of projections.incident_status_history.
 type StatusHistoryEntry struct {

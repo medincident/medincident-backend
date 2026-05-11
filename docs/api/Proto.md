@@ -5439,7 +5439,7 @@ Category mirrors projections.incident_categories row.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5455,6 +5455,7 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [Category](#query-incident-classifier-v1-Category) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5471,7 +5472,7 @@ Category mirrors projections.incident_categories row.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5487,6 +5488,7 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [Type](#query-incident-classifier-v1-Type) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5503,7 +5505,7 @@ Category mirrors projections.incident_categories row.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5519,6 +5521,7 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [Category](#query-incident-classifier-v1-Category) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5543,7 +5546,9 @@ Category mirrors projections.incident_categories row.
 <a name="query-incident-classifier-v1-ListCategorySubtreeResponse"></a>
 
 ### ListCategorySubtreeResponse
-
+ListCategorySubtreeResponse returns the full subtree rooted at the
+requested category. No pagination — the subtree depth is bounded and
+the full result is always returned.
 
 
 | Field | Type | Label | Description |
@@ -5565,7 +5570,7 @@ Category mirrors projections.incident_categories row.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5581,6 +5586,7 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [Type](#query-incident-classifier-v1-Type) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5597,7 +5603,7 @@ Category mirrors projections.incident_categories row.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5613,6 +5619,7 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [Category](#query-incident-classifier-v1-Category) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5629,7 +5636,7 @@ Category mirrors projections.incident_categories row.
 | ----- | ---- | ----- | ----------- |
 | category_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5645,6 +5652,7 @@ Category mirrors projections.incident_categories row.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [Type](#query-incident-classifier-v1-Type) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5888,7 +5896,7 @@ patient_status, description and timestamps are populated.
 | organization_id | [string](#string) |  |  |
 | statuses | [BufferStatus](#query-incident-v1-BufferStatus) | repeated |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5904,6 +5912,7 @@ patient_status, description and timestamps are populated.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [BufferEntryView](#query-incident-v1-BufferEntryView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5928,7 +5937,7 @@ patient_status, description and timestamps are populated.
 | occurred_from | [string](#string) | optional | RFC3339Nano |
 | occurred_to | [string](#string) | optional |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5944,6 +5953,7 @@ patient_status, description and timestamps are populated.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [IncidentView](#query-incident-v1-IncidentView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5959,7 +5969,7 @@ patient_status, description and timestamps are populated.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -5975,6 +5985,7 @@ patient_status, description and timestamps are populated.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [BufferEntryView](#query-incident-v1-BufferEntryView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -5990,7 +6001,7 @@ patient_status, description and timestamps are populated.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -6006,6 +6017,7 @@ patient_status, description and timestamps are populated.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [IncidentView](#query-incident-v1-IncidentView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6428,7 +6440,7 @@ when the backing column is NULL.
 | ----- | ---- | ----- | ----------- |
 | clinic_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 | include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
 | on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
 | position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
@@ -6447,6 +6459,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6463,7 +6476,7 @@ when the backing column is NULL.
 | ----- | ---- | ----- | ----------- |
 | department_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 | include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
 | on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
 | position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
@@ -6482,6 +6495,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6498,7 +6512,7 @@ when the backing column is NULL.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 | include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
 | on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
 | position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
@@ -6517,6 +6531,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6533,7 +6548,7 @@ when the backing column is NULL.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -6549,6 +6564,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [RoleAssignment](#query-membership-v1-RoleAssignment) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6565,7 +6581,7 @@ when the backing column is NULL.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -6581,6 +6597,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [RoleAssignment](#query-membership-v1-RoleAssignment) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6597,7 +6614,7 @@ when the backing column is NULL.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -6613,6 +6630,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [RoleAssignment](#query-membership-v1-RoleAssignment) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6628,7 +6646,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -6644,6 +6662,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [SystemAdminView](#query-membership-v1-SystemAdminView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6661,7 +6680,7 @@ when the backing column is NULL.
 | employee_id | [string](#string) |  |  |
 | state | [string](#string) |  | Optional state filter. When empty, all states are returned. Valid values: scheduled, active, ended, cancelled. |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -6677,6 +6696,7 @@ when the backing column is NULL.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [VacationView](#query-membership-v1-VacationView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -6713,7 +6733,7 @@ calls to render a name or email.
 | organization_id | [string](#string) |  |  |
 | query | [string](#string) |  | Fuzzy substring matched case-insensitively (ILIKE %query%) against first_name, last_name, display_name, and email. Trimmed at the handler boundary; an empty query degenerates to the same behaviour as ListEmployeesByOrganization with the same filters. Maximum length 256 characters; over-long inputs are rejected before the authz round-trip. |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 | include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
 | on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
 | position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
@@ -6732,6 +6752,7 @@ calls to render a name or email.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [EmployeeCardView](#query-membership-v1-EmployeeCardView) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -7098,7 +7119,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -7114,6 +7135,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [ClinicListItem](#query-orgstructure-v1-ClinicListItem) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -7130,7 +7152,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | ----- | ---- | ----- | ----------- |
 | clinic_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -7146,6 +7168,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [DepartmentListItem](#query-orgstructure-v1-DepartmentListItem) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -7161,7 +7184,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  | Opaque pagination cursor returned as next_cursor from a previous response. Omit or leave empty to start from the first page. An invalid cursor is rejected with a domain error. |
 
 
 
@@ -7177,6 +7200,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [OrganizationListItem](#query-orgstructure-v1-OrganizationListItem) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -7247,7 +7271,7 @@ projection row has neither longitude nor latitude.
 | ----- | ---- | ----- | ----------- |
 | query | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -7263,6 +7287,7 @@ projection row has neither longitude nor latitude.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [OrganizationListItem](#query-orgstructure-v1-OrganizationListItem) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -7279,9 +7304,7 @@ projection row has neither longitude nor latitude.
 
 ### OrgStructureQueryService
 OrgStructureQueryService exposes read methods over the orgstructure
-projections. Pagination is offset/limit; backed by COUNT(*) queries
-via dedicated CountX RPCs — clients drive pagination controls with
-both values.
+projections. List endpoints use cursor-based keyset pagination.
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
@@ -7347,7 +7370,7 @@ both values.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -7363,6 +7386,7 @@ both values.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [RequestType](#query-request-classifier-v1-RequestType) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -7379,7 +7403,7 @@ both values.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -7395,6 +7419,7 @@ both values.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [RequestType](#query-request-classifier-v1-RequestType) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -7559,7 +7584,7 @@ both values.
 | ----- | ---- | ----- | ----------- |
 | incident_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -7575,6 +7600,7 @@ both values.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [ServiceRequest](#query-request-v1-ServiceRequest) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 
@@ -7591,7 +7617,7 @@ both values.
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
-| offset | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
 
 
 
@@ -7607,6 +7633,7 @@ both values.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | items | [ServiceRequest](#query-request-v1-ServiceRequest) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
 
 
 

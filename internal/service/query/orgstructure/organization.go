@@ -53,8 +53,16 @@ type OrganizationDetails struct {
 // OrganizationListItem is the minimal view returned by paginated list
 // endpoints.
 type OrganizationListItem struct {
-	ID   uuid.UUID
-	Name string
+	ID        uuid.UUID
+	Name      string
+	CreatedAt time.Time
+}
+
+// OrganizationListResult is returned by List and Search. NextCursor is
+// nil when no more pages remain.
+type OrganizationListResult struct {
+	Items      []OrganizationListItem
+	NextCursor *string
 }
 
 // Get returns the OrganizationDetails for the given id. Returns an
@@ -101,39 +109,49 @@ func (r *OrganizationReader) Get(ctx context.Context, id uuid.UUID) (*Organizati
 // List returns up to q.Limit organizations, ordered most-recently-created first.
 //
 // See: docs/services/OrgStructure.md
-func (r *OrganizationReader) List(ctx context.Context, q ListQuery) ([]OrganizationListItem, error) {
+func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (OrganizationListResult, error) {
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return OrganizationListResult{}, err
 	}
-	rows, err := r.db.WithContext(ctx).Raw(`
-		SELECT id, name
-		  FROM projections.organizations
-		 ORDER BY created_at DESC, id DESC
-		 LIMIT ? OFFSET ?`, q.Limit, q.Offset,
-	).Rows()
+	sqlBuf := `SELECT id, name, created_at FROM projections.organizations`
+	args := make([]any, 0, 3)
+	if q.After != nil {
+		c, err := decodeCursor(*q.After)
+		if err != nil {
+			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` WHERE (created_at, id) < (?, ?)`
+		args = append(args, c.CreatedAt, c.ID)
+	}
+	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.orgstructure.organization").
+		return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 			Code(ErrCodeOrganizationLoadFailed).
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
 
-	out := make([]OrganizationListItem, 0, q.Limit)
+	out := make([]OrganizationListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v OrganizationListItem
-		if err := rows.Scan(&v.ID, &v.Name); err != nil {
-			return nil, oops.In("reader.orgstructure.organization").
+		if err := rows.Scan(&v.ID, &v.Name, &v.CreatedAt); err != nil {
+			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeOrganizationLoadFailed).
 				Wrap(err)
 		}
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.orgstructure.organization").
+		return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 			Code(ErrCodeOrganizationLoadFailed).
 			Wrap(err)
 	}
-	return out, nil
+	return buildListResult(out, q.Limit), nil
 }
 
 // Search returns organizations whose name contains the given substring
@@ -144,9 +162,9 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) ([]Organizat
 // always bound positionally so users cannot inject SQL.
 //
 // See: docs/services/OrgStructure.md
-func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQuery) ([]OrganizationListItem, error) {
+func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQuery) (OrganizationListResult, error) {
 	if len(query) > organizationSearchMaxQueryLength {
-		return nil, oops.In("reader.orgstructure.organization").
+		return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 			Code(ErrCodeOrganizationSearchQueryTooLong).
 			Public("Search query is too long.").
 			With("max_length", organizationSearchMaxQueryLength).
@@ -154,40 +172,72 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 			Errorf("search query too long")
 	}
 	if err := q.normalize(); err != nil {
-		return nil, err
+		return OrganizationListResult{}, err
 	}
-	sqlBuf := `SELECT id, name FROM projections.organizations`
-	args := make([]any, 0, 3)
+	clauses := make([]string, 0, 2)
+	args := make([]any, 0, 4)
 	if query != "" {
-		sqlBuf += ` WHERE COALESCE(name, '') ILIKE ?`
+		clauses = append(clauses, `COALESCE(name, '') ILIKE ?`)
 		args = append(args, "%"+like.EscapePattern(query)+"%")
 	}
-	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?`
-	args = append(args, q.Limit, q.Offset)
+	if q.After != nil {
+		c, err := decodeCursor(*q.After)
+		if err != nil {
+			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		clauses = append(clauses, `(created_at, id) < (?, ?)`)
+		args = append(args, c.CreatedAt, c.ID)
+	}
+	sqlBuf := `SELECT id, name, created_at FROM projections.organizations`
+	for i, c := range clauses {
+		if i == 0 {
+			sqlBuf += ` WHERE ` + c
+		} else {
+			sqlBuf += ` AND ` + c
+		}
+	}
+	sqlBuf += ` ORDER BY created_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
 	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
 	if err != nil {
-		return nil, oops.In("reader.orgstructure.organization").
+		return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 			Code(ErrCodeOrganizationLoadFailed).
 			Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
 
-	out := make([]OrganizationListItem, 0, q.Limit)
+	out := make([]OrganizationListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v OrganizationListItem
-		if err := rows.Scan(&v.ID, &v.Name); err != nil {
-			return nil, oops.In("reader.orgstructure.organization").
+		if err := rows.Scan(&v.ID, &v.Name, &v.CreatedAt); err != nil {
+			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeOrganizationLoadFailed).
 				Wrap(err)
 		}
 		out = append(out, v)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, oops.In("reader.orgstructure.organization").
+		return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 			Code(ErrCodeOrganizationLoadFailed).
 			Wrap(err)
 	}
-	return out, nil
+	return buildListResult(out, q.Limit), nil
+}
+
+// buildListResult trims the over-fetched row and computes the next
+// cursor from the last item in the page.
+func buildListResult(rows []OrganizationListItem, limit int) OrganizationListResult {
+	var nextCursor *string
+	if len(rows) > limit {
+		rows = rows[:limit]
+		last := rows[len(rows)-1]
+		s := encodeCursor(cursor{CreatedAt: last.CreatedAt, ID: last.ID})
+		nextCursor = &s
+	}
+	return OrganizationListResult{Items: rows, NextCursor: nextCursor}
 }
 
 // Count returns the total number of organizations in the projection.
