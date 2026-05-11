@@ -276,7 +276,8 @@ func main() {
 		}
 	}
 
-	// Shut consumers first so no new writes land during DB teardown.
+	shutdownGRPC(grpcServer, logger)
+
 	consumerCtx, cancelConsumer := context.WithTimeout(context.Background(), consumerShutdownTimeout)
 	if err := consumer.Shutdown(consumerCtx); err != nil {
 		logger.Warn().Err(err).Msg("consumer shutdown error")
@@ -289,7 +290,6 @@ func main() {
 	}
 	cancelConsumer2()
 
-	shutdownGRPC(grpcServer, logger)
 	logger.Info().Msg("query-server stopped")
 }
 
