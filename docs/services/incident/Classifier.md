@@ -370,13 +370,6 @@
 
 ### ListCategorySubtree
 
-#### Ошибки
-
-| Код | HTTP | Описание |
-|---|---|---|
-| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
-
 ### GetCategory
 
 **HTTP:** `GET /v1/incident-categories/{id}`

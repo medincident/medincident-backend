@@ -183,6 +183,27 @@
 | `GetBufferEntry` | OrgDispatcherOf или пациент-владелец |
 | `ListMyBufferEntries` | Authenticated (только свои) |
 
+### ListBufferEntries
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа |
+
+---
+
+### ListMyBufferEntries
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+
+---
+
 ### GetBufferEntry
 
 **HTTP:** `GET /v1/query/patient-incidents/{id}`
