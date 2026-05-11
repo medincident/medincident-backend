@@ -823,6 +823,359 @@ func local_request_MembershipQueryService_ListSystemAdmins_0(ctx context.Context
 	return msg, metadata, err
 }
 
+var filter_MembershipQueryService_ListCandidatesForHire_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_MembershipQueryService_ListCandidatesForHire_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForHireRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForHire_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.ListCandidatesForHire(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipQueryService_ListCandidatesForHire_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForHireRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForHire_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListCandidatesForHire(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+var filter_MembershipQueryService_ListCandidatesForSystemAdmin_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+
+func request_MembershipQueryService_ListCandidatesForSystemAdmin_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForSystemAdminRequest
+		metadata runtime.ServerMetadata
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForSystemAdmin_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.ListCandidatesForSystemAdmin(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipQueryService_ListCandidatesForSystemAdmin_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForSystemAdminRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForSystemAdmin_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListCandidatesForSystemAdmin(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+var filter_MembershipQueryService_ListCandidatesForOrgAdmin_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_MembershipQueryService_ListCandidatesForOrgAdmin_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForOrgAdminRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForOrgAdmin_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.ListCandidatesForOrgAdmin(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipQueryService_ListCandidatesForOrgAdmin_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForOrgAdminRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForOrgAdmin_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListCandidatesForOrgAdmin(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+var filter_MembershipQueryService_ListCandidatesForOrgHead_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_MembershipQueryService_ListCandidatesForOrgHead_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForOrgHeadRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForOrgHead_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.ListCandidatesForOrgHead(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipQueryService_ListCandidatesForOrgHead_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForOrgHeadRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForOrgHead_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListCandidatesForOrgHead(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+var filter_MembershipQueryService_ListCandidatesForOrgDispatcher_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_MembershipQueryService_ListCandidatesForOrgDispatcher_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForOrgDispatcherRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForOrgDispatcher_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.ListCandidatesForOrgDispatcher(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipQueryService_ListCandidatesForOrgDispatcher_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForOrgDispatcherRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForOrgDispatcher_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListCandidatesForOrgDispatcher(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+var filter_MembershipQueryService_ListCandidatesForClinicHead_0 = &utilities.DoubleArray{Encoding: map[string]int{"clinic_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_MembershipQueryService_ListCandidatesForClinicHead_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForClinicHeadRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["clinic_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "clinic_id")
+	}
+	protoReq.ClinicId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "clinic_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForClinicHead_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.ListCandidatesForClinicHead(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipQueryService_ListCandidatesForClinicHead_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForClinicHeadRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["clinic_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "clinic_id")
+	}
+	protoReq.ClinicId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "clinic_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForClinicHead_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListCandidatesForClinicHead(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+var filter_MembershipQueryService_ListCandidatesForDeptResponsible_0 = &utilities.DoubleArray{Encoding: map[string]int{"department_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_MembershipQueryService_ListCandidatesForDeptResponsible_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForDeptResponsibleRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["department_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "department_id")
+	}
+	protoReq.DepartmentId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "department_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForDeptResponsible_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.ListCandidatesForDeptResponsible(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipQueryService_ListCandidatesForDeptResponsible_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListCandidatesForDeptResponsibleRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["department_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "department_id")
+	}
+	protoReq.DepartmentId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "department_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MembershipQueryService_ListCandidatesForDeptResponsible_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListCandidatesForDeptResponsible(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 // RegisterMembershipQueryServiceHandlerServer registers the http handlers for service MembershipQueryService to "mux".
 // UnaryRPC     :call MembershipQueryServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -1149,6 +1502,146 @@ func RegisterMembershipQueryServiceHandlerServer(ctx context.Context, mux *runti
 		}
 		forward_MembershipQueryService_ListSystemAdmins_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForHire_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForHire", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/candidates:hire"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipQueryService_ListCandidatesForHire_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForHire_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForSystemAdmin_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForSystemAdmin", runtime.WithHTTPPathPattern("/v1/system-admins/candidates"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipQueryService_ListCandidatesForSystemAdmin_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForSystemAdmin_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForOrgAdmin_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgAdmin", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/candidates:org-admin"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipQueryService_ListCandidatesForOrgAdmin_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForOrgAdmin_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForOrgHead_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgHead", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/candidates:org-head"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipQueryService_ListCandidatesForOrgHead_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForOrgHead_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForOrgDispatcher_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgDispatcher", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/candidates:org-dispatcher"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipQueryService_ListCandidatesForOrgDispatcher_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForOrgDispatcher_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForClinicHead_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForClinicHead", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/candidates:clinic-head"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipQueryService_ListCandidatesForClinicHead_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForClinicHead_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForDeptResponsible_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForDeptResponsible", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/candidates:dept-responsible"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipQueryService_ListCandidatesForDeptResponsible_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForDeptResponsible_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 
 	return nil
 }
@@ -1461,43 +1954,176 @@ func RegisterMembershipQueryServiceHandlerClient(ctx context.Context, mux *runti
 		}
 		forward_MembershipQueryService_ListSystemAdmins_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForHire_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForHire", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/candidates:hire"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipQueryService_ListCandidatesForHire_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForHire_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForSystemAdmin_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForSystemAdmin", runtime.WithHTTPPathPattern("/v1/system-admins/candidates"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipQueryService_ListCandidatesForSystemAdmin_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForSystemAdmin_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForOrgAdmin_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgAdmin", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/candidates:org-admin"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipQueryService_ListCandidatesForOrgAdmin_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForOrgAdmin_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForOrgHead_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgHead", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/candidates:org-head"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipQueryService_ListCandidatesForOrgHead_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForOrgHead_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForOrgDispatcher_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgDispatcher", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/candidates:org-dispatcher"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipQueryService_ListCandidatesForOrgDispatcher_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForOrgDispatcher_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForClinicHead_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForClinicHead", runtime.WithHTTPPathPattern("/v1/clinics/{clinic_id}/candidates:clinic-head"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipQueryService_ListCandidatesForClinicHead_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForClinicHead_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodGet, pattern_MembershipQueryService_ListCandidatesForDeptResponsible_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.membership.v1.MembershipQueryService/ListCandidatesForDeptResponsible", runtime.WithHTTPPathPattern("/v1/departments/{department_id}/candidates:dept-responsible"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipQueryService_ListCandidatesForDeptResponsible_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipQueryService_ListCandidatesForDeptResponsible_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	return nil
 }
 
 var (
-	pattern_MembershipQueryService_GetEmployee_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "employees", "id"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByDepartment_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "employees"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByClinic_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "employees"}, ""))
-	pattern_MembershipQueryService_ListEmployeesByOrganization_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, ""))
-	pattern_MembershipQueryService_CountEmployeesByDepartment_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "employees"}, "count"))
-	pattern_MembershipQueryService_CountEmployeesByClinic_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "employees"}, "count"))
-	pattern_MembershipQueryService_CountEmployeesByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, "count"))
-	pattern_MembershipQueryService_SearchEmployeesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, "search"))
-	pattern_MembershipQueryService_ListVacationsByEmployee_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, ""))
-	pattern_MembershipQueryService_CountVacationsByEmployee_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, "count"))
-	pattern_MembershipQueryService_GetClinicHead_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "head"}, ""))
-	pattern_MembershipQueryService_GetDepartmentResponsible_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "responsible"}, ""))
-	pattern_MembershipQueryService_ListOrgAdmins_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "admins"}, ""))
-	pattern_MembershipQueryService_ListOrgDispatchers_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "dispatchers"}, ""))
-	pattern_MembershipQueryService_ListOrgHeads_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "heads"}, ""))
-	pattern_MembershipQueryService_ListSystemAdmins_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "system-admins"}, ""))
+	pattern_MembershipQueryService_GetEmployee_0                      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "employees", "id"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByDepartment_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "employees"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByClinic_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "employees"}, ""))
+	pattern_MembershipQueryService_ListEmployeesByOrganization_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, ""))
+	pattern_MembershipQueryService_CountEmployeesByDepartment_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "employees"}, "count"))
+	pattern_MembershipQueryService_CountEmployeesByClinic_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "employees"}, "count"))
+	pattern_MembershipQueryService_CountEmployeesByOrganization_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, "count"))
+	pattern_MembershipQueryService_SearchEmployeesByOrganization_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "employees"}, "search"))
+	pattern_MembershipQueryService_ListVacationsByEmployee_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, ""))
+	pattern_MembershipQueryService_CountVacationsByEmployee_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, "count"))
+	pattern_MembershipQueryService_GetClinicHead_0                    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "head"}, ""))
+	pattern_MembershipQueryService_GetDepartmentResponsible_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "responsible"}, ""))
+	pattern_MembershipQueryService_ListOrgAdmins_0                    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "admins"}, ""))
+	pattern_MembershipQueryService_ListOrgDispatchers_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "dispatchers"}, ""))
+	pattern_MembershipQueryService_ListOrgHeads_0                     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "heads"}, ""))
+	pattern_MembershipQueryService_ListSystemAdmins_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "system-admins"}, ""))
+	pattern_MembershipQueryService_ListCandidatesForHire_0            = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "candidates"}, "hire"))
+	pattern_MembershipQueryService_ListCandidatesForSystemAdmin_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "system-admins", "candidates"}, ""))
+	pattern_MembershipQueryService_ListCandidatesForOrgAdmin_0        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "candidates"}, "org-admin"))
+	pattern_MembershipQueryService_ListCandidatesForOrgHead_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "candidates"}, "org-head"))
+	pattern_MembershipQueryService_ListCandidatesForOrgDispatcher_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "candidates"}, "org-dispatcher"))
+	pattern_MembershipQueryService_ListCandidatesForClinicHead_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "clinics", "clinic_id", "candidates"}, "clinic-head"))
+	pattern_MembershipQueryService_ListCandidatesForDeptResponsible_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "departments", "department_id", "candidates"}, "dept-responsible"))
 )
 
 var (
-	forward_MembershipQueryService_GetEmployee_0                   = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListEmployeesByDepartment_0     = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListEmployeesByClinic_0         = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListEmployeesByOrganization_0   = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_CountEmployeesByDepartment_0    = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_CountEmployeesByClinic_0        = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_CountEmployeesByOrganization_0  = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_SearchEmployeesByOrganization_0 = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListVacationsByEmployee_0       = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_CountVacationsByEmployee_0      = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_GetClinicHead_0                 = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_GetDepartmentResponsible_0      = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListOrgAdmins_0                 = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListOrgDispatchers_0            = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListOrgHeads_0                  = runtime.ForwardResponseMessage
-	forward_MembershipQueryService_ListSystemAdmins_0              = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_GetEmployee_0                      = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListEmployeesByDepartment_0        = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListEmployeesByClinic_0            = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListEmployeesByOrganization_0      = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_CountEmployeesByDepartment_0       = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_CountEmployeesByClinic_0           = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_CountEmployeesByOrganization_0     = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_SearchEmployeesByOrganization_0    = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListVacationsByEmployee_0          = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_CountVacationsByEmployee_0         = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_GetClinicHead_0                    = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_GetDepartmentResponsible_0         = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListOrgAdmins_0                    = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListOrgDispatchers_0               = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListOrgHeads_0                     = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListSystemAdmins_0                 = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListCandidatesForHire_0            = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListCandidatesForSystemAdmin_0     = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListCandidatesForOrgAdmin_0        = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListCandidatesForOrgHead_0         = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListCandidatesForOrgDispatcher_0   = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListCandidatesForClinicHead_0      = runtime.ForwardResponseMessage
+	forward_MembershipQueryService_ListCandidatesForDeptResponsible_0 = runtime.ForwardResponseMessage
 )

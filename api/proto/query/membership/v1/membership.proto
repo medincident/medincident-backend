@@ -114,6 +114,69 @@ service MembershipQueryService {
   rpc ListSystemAdmins(ListSystemAdminsRequest) returns (ListSystemAdminsResponse) {
     option (google.api.http) = {get: "/v1/system-admins"};
   }
+  rpc ListCandidatesForHire(ListCandidatesForHireRequest) returns (ListCandidatesForHireResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/candidates:hire"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+    };
+  }
+  rpc ListCandidatesForSystemAdmin(ListCandidatesForSystemAdminRequest) returns (ListCandidatesForSystemAdminResponse) {
+    option (google.api.http) = {get: "/v1/system-admins/candidates"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+    };
+  }
+  rpc ListCandidatesForOrgAdmin(ListCandidatesForOrgAdminRequest) returns (ListCandidatesForOrgAdminResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/candidates:org-admin"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+    };
+  }
+  rpc ListCandidatesForOrgHead(ListCandidatesForOrgHeadRequest) returns (ListCandidatesForOrgHeadResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/candidates:org-head"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+    };
+  }
+  rpc ListCandidatesForOrgDispatcher(ListCandidatesForOrgDispatcherRequest) returns (ListCandidatesForOrgDispatcherResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/candidates:org-dispatcher"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+    };
+  }
+  rpc ListCandidatesForClinicHead(ListCandidatesForClinicHeadRequest) returns (ListCandidatesForClinicHeadResponse) {
+    option (google.api.http) = {get: "/v1/clinics/{clinic_id}/candidates:clinic-head"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+    };
+  }
+  rpc ListCandidatesForDeptResponsible(ListCandidatesForDeptResponsibleRequest) returns (ListCandidatesForDeptResponsibleResponse) {
+    option (google.api.http) = {get: "/v1/departments/{department_id}/candidates:dept-responsible"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+    };
+  }
 }
 
 // EmployeeCardView is the denormalised card projection returned by
@@ -370,4 +433,97 @@ message ListSystemAdminsRequest {
 }
 message ListSystemAdminsResponse {
   repeated SystemAdminView items = 1;
+}
+
+// ZitadelUserView is a lightweight projection of projections.users used
+// by candidate-listing endpoints that operate on raw Zitadel identities
+// (ForHire, ForSystemAdmin). Fields mirror the NOT NULL columns of the
+// users table.
+message ZitadelUserView {
+  string zitadel_user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string display_name = 4;
+  string email = 5;
+}
+
+message ListCandidatesForHireRequest {
+  string organization_id = 1;
+  // Optional substring search (ILIKE %query%) on first_name, last_name,
+  // display_name, email. Trimmed at the handler boundary. Max 256 chars.
+  string query = 2;
+  // Opaque cursor from next_cursor of a previous response. Empty = first page.
+  string after = 3;
+  // Page size. 0 → default 50. Range [1, 500].
+  int32 limit = 4;
+}
+message ListCandidatesForHireResponse {
+  repeated ZitadelUserView items = 1;
+  // Opaque cursor for the next page. Empty when this is the last page.
+  string next_cursor = 2;
+}
+
+message ListCandidatesForSystemAdminRequest {
+  string query = 1;
+  string after = 2;
+  int32 limit = 3;
+}
+message ListCandidatesForSystemAdminResponse {
+  repeated ZitadelUserView items = 1;
+  string next_cursor = 2;
+}
+
+message ListCandidatesForOrgAdminRequest {
+  string organization_id = 1;
+  string query = 2;
+  string after = 3;
+  int32 limit = 4;
+}
+message ListCandidatesForOrgAdminResponse {
+  repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
+}
+
+message ListCandidatesForOrgHeadRequest {
+  string organization_id = 1;
+  string query = 2;
+  string after = 3;
+  int32 limit = 4;
+}
+message ListCandidatesForOrgHeadResponse {
+  repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
+}
+
+message ListCandidatesForOrgDispatcherRequest {
+  string organization_id = 1;
+  string query = 2;
+  string after = 3;
+  int32 limit = 4;
+}
+message ListCandidatesForOrgDispatcherResponse {
+  repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
+}
+
+message ListCandidatesForClinicHeadRequest {
+  string clinic_id = 1;
+  string query = 2;
+  string after = 3;
+  int32 limit = 4;
+}
+message ListCandidatesForClinicHeadResponse {
+  repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
+}
+
+message ListCandidatesForDeptResponsibleRequest {
+  string department_id = 1;
+  string query = 2;
+  string after = 3;
+  int32 limit = 4;
+}
+message ListCandidatesForDeptResponsibleResponse {
+  repeated EmployeeCardView items = 1;
+  string next_cursor = 2;
 }

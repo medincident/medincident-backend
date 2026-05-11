@@ -19,22 +19,29 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MembershipQueryService_GetEmployee_FullMethodName                   = "/query.membership.v1.MembershipQueryService/GetEmployee"
-	MembershipQueryService_ListEmployeesByDepartment_FullMethodName     = "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment"
-	MembershipQueryService_ListEmployeesByClinic_FullMethodName         = "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic"
-	MembershipQueryService_ListEmployeesByOrganization_FullMethodName   = "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization"
-	MembershipQueryService_CountEmployeesByDepartment_FullMethodName    = "/query.membership.v1.MembershipQueryService/CountEmployeesByDepartment"
-	MembershipQueryService_CountEmployeesByClinic_FullMethodName        = "/query.membership.v1.MembershipQueryService/CountEmployeesByClinic"
-	MembershipQueryService_CountEmployeesByOrganization_FullMethodName  = "/query.membership.v1.MembershipQueryService/CountEmployeesByOrganization"
-	MembershipQueryService_SearchEmployeesByOrganization_FullMethodName = "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization"
-	MembershipQueryService_ListVacationsByEmployee_FullMethodName       = "/query.membership.v1.MembershipQueryService/ListVacationsByEmployee"
-	MembershipQueryService_CountVacationsByEmployee_FullMethodName      = "/query.membership.v1.MembershipQueryService/CountVacationsByEmployee"
-	MembershipQueryService_GetClinicHead_FullMethodName                 = "/query.membership.v1.MembershipQueryService/GetClinicHead"
-	MembershipQueryService_GetDepartmentResponsible_FullMethodName      = "/query.membership.v1.MembershipQueryService/GetDepartmentResponsible"
-	MembershipQueryService_ListOrgAdmins_FullMethodName                 = "/query.membership.v1.MembershipQueryService/ListOrgAdmins"
-	MembershipQueryService_ListOrgDispatchers_FullMethodName            = "/query.membership.v1.MembershipQueryService/ListOrgDispatchers"
-	MembershipQueryService_ListOrgHeads_FullMethodName                  = "/query.membership.v1.MembershipQueryService/ListOrgHeads"
-	MembershipQueryService_ListSystemAdmins_FullMethodName              = "/query.membership.v1.MembershipQueryService/ListSystemAdmins"
+	MembershipQueryService_GetEmployee_FullMethodName                      = "/query.membership.v1.MembershipQueryService/GetEmployee"
+	MembershipQueryService_ListEmployeesByDepartment_FullMethodName        = "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment"
+	MembershipQueryService_ListEmployeesByClinic_FullMethodName            = "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic"
+	MembershipQueryService_ListEmployeesByOrganization_FullMethodName      = "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization"
+	MembershipQueryService_CountEmployeesByDepartment_FullMethodName       = "/query.membership.v1.MembershipQueryService/CountEmployeesByDepartment"
+	MembershipQueryService_CountEmployeesByClinic_FullMethodName           = "/query.membership.v1.MembershipQueryService/CountEmployeesByClinic"
+	MembershipQueryService_CountEmployeesByOrganization_FullMethodName     = "/query.membership.v1.MembershipQueryService/CountEmployeesByOrganization"
+	MembershipQueryService_SearchEmployeesByOrganization_FullMethodName    = "/query.membership.v1.MembershipQueryService/SearchEmployeesByOrganization"
+	MembershipQueryService_ListVacationsByEmployee_FullMethodName          = "/query.membership.v1.MembershipQueryService/ListVacationsByEmployee"
+	MembershipQueryService_CountVacationsByEmployee_FullMethodName         = "/query.membership.v1.MembershipQueryService/CountVacationsByEmployee"
+	MembershipQueryService_GetClinicHead_FullMethodName                    = "/query.membership.v1.MembershipQueryService/GetClinicHead"
+	MembershipQueryService_GetDepartmentResponsible_FullMethodName         = "/query.membership.v1.MembershipQueryService/GetDepartmentResponsible"
+	MembershipQueryService_ListOrgAdmins_FullMethodName                    = "/query.membership.v1.MembershipQueryService/ListOrgAdmins"
+	MembershipQueryService_ListOrgDispatchers_FullMethodName               = "/query.membership.v1.MembershipQueryService/ListOrgDispatchers"
+	MembershipQueryService_ListOrgHeads_FullMethodName                     = "/query.membership.v1.MembershipQueryService/ListOrgHeads"
+	MembershipQueryService_ListSystemAdmins_FullMethodName                 = "/query.membership.v1.MembershipQueryService/ListSystemAdmins"
+	MembershipQueryService_ListCandidatesForHire_FullMethodName            = "/query.membership.v1.MembershipQueryService/ListCandidatesForHire"
+	MembershipQueryService_ListCandidatesForSystemAdmin_FullMethodName     = "/query.membership.v1.MembershipQueryService/ListCandidatesForSystemAdmin"
+	MembershipQueryService_ListCandidatesForOrgAdmin_FullMethodName        = "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgAdmin"
+	MembershipQueryService_ListCandidatesForOrgHead_FullMethodName         = "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgHead"
+	MembershipQueryService_ListCandidatesForOrgDispatcher_FullMethodName   = "/query.membership.v1.MembershipQueryService/ListCandidatesForOrgDispatcher"
+	MembershipQueryService_ListCandidatesForClinicHead_FullMethodName      = "/query.membership.v1.MembershipQueryService/ListCandidatesForClinicHead"
+	MembershipQueryService_ListCandidatesForDeptResponsible_FullMethodName = "/query.membership.v1.MembershipQueryService/ListCandidatesForDeptResponsible"
 )
 
 // MembershipQueryServiceClient is the client API for MembershipQueryService service.
@@ -61,6 +68,13 @@ type MembershipQueryServiceClient interface {
 	ListOrgDispatchers(ctx context.Context, in *ListOrgDispatchersRequest, opts ...grpc.CallOption) (*ListOrgDispatchersResponse, error)
 	ListOrgHeads(ctx context.Context, in *ListOrgHeadsRequest, opts ...grpc.CallOption) (*ListOrgHeadsResponse, error)
 	ListSystemAdmins(ctx context.Context, in *ListSystemAdminsRequest, opts ...grpc.CallOption) (*ListSystemAdminsResponse, error)
+	ListCandidatesForHire(ctx context.Context, in *ListCandidatesForHireRequest, opts ...grpc.CallOption) (*ListCandidatesForHireResponse, error)
+	ListCandidatesForSystemAdmin(ctx context.Context, in *ListCandidatesForSystemAdminRequest, opts ...grpc.CallOption) (*ListCandidatesForSystemAdminResponse, error)
+	ListCandidatesForOrgAdmin(ctx context.Context, in *ListCandidatesForOrgAdminRequest, opts ...grpc.CallOption) (*ListCandidatesForOrgAdminResponse, error)
+	ListCandidatesForOrgHead(ctx context.Context, in *ListCandidatesForOrgHeadRequest, opts ...grpc.CallOption) (*ListCandidatesForOrgHeadResponse, error)
+	ListCandidatesForOrgDispatcher(ctx context.Context, in *ListCandidatesForOrgDispatcherRequest, opts ...grpc.CallOption) (*ListCandidatesForOrgDispatcherResponse, error)
+	ListCandidatesForClinicHead(ctx context.Context, in *ListCandidatesForClinicHeadRequest, opts ...grpc.CallOption) (*ListCandidatesForClinicHeadResponse, error)
+	ListCandidatesForDeptResponsible(ctx context.Context, in *ListCandidatesForDeptResponsibleRequest, opts ...grpc.CallOption) (*ListCandidatesForDeptResponsibleResponse, error)
 }
 
 type membershipQueryServiceClient struct {
@@ -231,6 +245,76 @@ func (c *membershipQueryServiceClient) ListSystemAdmins(ctx context.Context, in 
 	return out, nil
 }
 
+func (c *membershipQueryServiceClient) ListCandidatesForHire(ctx context.Context, in *ListCandidatesForHireRequest, opts ...grpc.CallOption) (*ListCandidatesForHireResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListCandidatesForHireResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_ListCandidatesForHire_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipQueryServiceClient) ListCandidatesForSystemAdmin(ctx context.Context, in *ListCandidatesForSystemAdminRequest, opts ...grpc.CallOption) (*ListCandidatesForSystemAdminResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListCandidatesForSystemAdminResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_ListCandidatesForSystemAdmin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipQueryServiceClient) ListCandidatesForOrgAdmin(ctx context.Context, in *ListCandidatesForOrgAdminRequest, opts ...grpc.CallOption) (*ListCandidatesForOrgAdminResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListCandidatesForOrgAdminResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_ListCandidatesForOrgAdmin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipQueryServiceClient) ListCandidatesForOrgHead(ctx context.Context, in *ListCandidatesForOrgHeadRequest, opts ...grpc.CallOption) (*ListCandidatesForOrgHeadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListCandidatesForOrgHeadResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_ListCandidatesForOrgHead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipQueryServiceClient) ListCandidatesForOrgDispatcher(ctx context.Context, in *ListCandidatesForOrgDispatcherRequest, opts ...grpc.CallOption) (*ListCandidatesForOrgDispatcherResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListCandidatesForOrgDispatcherResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_ListCandidatesForOrgDispatcher_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipQueryServiceClient) ListCandidatesForClinicHead(ctx context.Context, in *ListCandidatesForClinicHeadRequest, opts ...grpc.CallOption) (*ListCandidatesForClinicHeadResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListCandidatesForClinicHeadResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_ListCandidatesForClinicHead_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipQueryServiceClient) ListCandidatesForDeptResponsible(ctx context.Context, in *ListCandidatesForDeptResponsibleRequest, opts ...grpc.CallOption) (*ListCandidatesForDeptResponsibleResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListCandidatesForDeptResponsibleResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_ListCandidatesForDeptResponsible_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MembershipQueryServiceServer is the server API for MembershipQueryService service.
 // All implementations must embed UnimplementedMembershipQueryServiceServer
 // for forward compatibility.
@@ -255,6 +339,13 @@ type MembershipQueryServiceServer interface {
 	ListOrgDispatchers(context.Context, *ListOrgDispatchersRequest) (*ListOrgDispatchersResponse, error)
 	ListOrgHeads(context.Context, *ListOrgHeadsRequest) (*ListOrgHeadsResponse, error)
 	ListSystemAdmins(context.Context, *ListSystemAdminsRequest) (*ListSystemAdminsResponse, error)
+	ListCandidatesForHire(context.Context, *ListCandidatesForHireRequest) (*ListCandidatesForHireResponse, error)
+	ListCandidatesForSystemAdmin(context.Context, *ListCandidatesForSystemAdminRequest) (*ListCandidatesForSystemAdminResponse, error)
+	ListCandidatesForOrgAdmin(context.Context, *ListCandidatesForOrgAdminRequest) (*ListCandidatesForOrgAdminResponse, error)
+	ListCandidatesForOrgHead(context.Context, *ListCandidatesForOrgHeadRequest) (*ListCandidatesForOrgHeadResponse, error)
+	ListCandidatesForOrgDispatcher(context.Context, *ListCandidatesForOrgDispatcherRequest) (*ListCandidatesForOrgDispatcherResponse, error)
+	ListCandidatesForClinicHead(context.Context, *ListCandidatesForClinicHeadRequest) (*ListCandidatesForClinicHeadResponse, error)
+	ListCandidatesForDeptResponsible(context.Context, *ListCandidatesForDeptResponsibleRequest) (*ListCandidatesForDeptResponsibleResponse, error)
 	mustEmbedUnimplementedMembershipQueryServiceServer()
 }
 
@@ -312,6 +403,27 @@ func (UnimplementedMembershipQueryServiceServer) ListOrgHeads(context.Context, *
 }
 func (UnimplementedMembershipQueryServiceServer) ListSystemAdmins(context.Context, *ListSystemAdminsRequest) (*ListSystemAdminsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListSystemAdmins not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) ListCandidatesForHire(context.Context, *ListCandidatesForHireRequest) (*ListCandidatesForHireResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListCandidatesForHire not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) ListCandidatesForSystemAdmin(context.Context, *ListCandidatesForSystemAdminRequest) (*ListCandidatesForSystemAdminResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListCandidatesForSystemAdmin not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) ListCandidatesForOrgAdmin(context.Context, *ListCandidatesForOrgAdminRequest) (*ListCandidatesForOrgAdminResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListCandidatesForOrgAdmin not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) ListCandidatesForOrgHead(context.Context, *ListCandidatesForOrgHeadRequest) (*ListCandidatesForOrgHeadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListCandidatesForOrgHead not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) ListCandidatesForOrgDispatcher(context.Context, *ListCandidatesForOrgDispatcherRequest) (*ListCandidatesForOrgDispatcherResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListCandidatesForOrgDispatcher not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) ListCandidatesForClinicHead(context.Context, *ListCandidatesForClinicHeadRequest) (*ListCandidatesForClinicHeadResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListCandidatesForClinicHead not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) ListCandidatesForDeptResponsible(context.Context, *ListCandidatesForDeptResponsibleRequest) (*ListCandidatesForDeptResponsibleResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListCandidatesForDeptResponsible not implemented")
 }
 func (UnimplementedMembershipQueryServiceServer) mustEmbedUnimplementedMembershipQueryServiceServer() {
 }
@@ -623,6 +735,132 @@ func _MembershipQueryService_ListSystemAdmins_Handler(srv interface{}, ctx conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MembershipQueryService_ListCandidatesForHire_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCandidatesForHireRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForHire(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_ListCandidatesForHire_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForHire(ctx, req.(*ListCandidatesForHireRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipQueryService_ListCandidatesForSystemAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCandidatesForSystemAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForSystemAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_ListCandidatesForSystemAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForSystemAdmin(ctx, req.(*ListCandidatesForSystemAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipQueryService_ListCandidatesForOrgAdmin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCandidatesForOrgAdminRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForOrgAdmin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_ListCandidatesForOrgAdmin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForOrgAdmin(ctx, req.(*ListCandidatesForOrgAdminRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipQueryService_ListCandidatesForOrgHead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCandidatesForOrgHeadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForOrgHead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_ListCandidatesForOrgHead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForOrgHead(ctx, req.(*ListCandidatesForOrgHeadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipQueryService_ListCandidatesForOrgDispatcher_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCandidatesForOrgDispatcherRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForOrgDispatcher(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_ListCandidatesForOrgDispatcher_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForOrgDispatcher(ctx, req.(*ListCandidatesForOrgDispatcherRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipQueryService_ListCandidatesForClinicHead_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCandidatesForClinicHeadRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForClinicHead(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_ListCandidatesForClinicHead_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForClinicHead(ctx, req.(*ListCandidatesForClinicHeadRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipQueryService_ListCandidatesForDeptResponsible_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListCandidatesForDeptResponsibleRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForDeptResponsible(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_ListCandidatesForDeptResponsible_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).ListCandidatesForDeptResponsible(ctx, req.(*ListCandidatesForDeptResponsibleRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MembershipQueryService_ServiceDesc is the grpc.ServiceDesc for MembershipQueryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -693,6 +931,34 @@ var MembershipQueryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListSystemAdmins",
 			Handler:    _MembershipQueryService_ListSystemAdmins_Handler,
+		},
+		{
+			MethodName: "ListCandidatesForHire",
+			Handler:    _MembershipQueryService_ListCandidatesForHire_Handler,
+		},
+		{
+			MethodName: "ListCandidatesForSystemAdmin",
+			Handler:    _MembershipQueryService_ListCandidatesForSystemAdmin_Handler,
+		},
+		{
+			MethodName: "ListCandidatesForOrgAdmin",
+			Handler:    _MembershipQueryService_ListCandidatesForOrgAdmin_Handler,
+		},
+		{
+			MethodName: "ListCandidatesForOrgHead",
+			Handler:    _MembershipQueryService_ListCandidatesForOrgHead_Handler,
+		},
+		{
+			MethodName: "ListCandidatesForOrgDispatcher",
+			Handler:    _MembershipQueryService_ListCandidatesForOrgDispatcher_Handler,
+		},
+		{
+			MethodName: "ListCandidatesForClinicHead",
+			Handler:    _MembershipQueryService_ListCandidatesForClinicHead_Handler,
+		},
+		{
+			MethodName: "ListCandidatesForDeptResponsible",
+			Handler:    _MembershipQueryService_ListCandidatesForDeptResponsible_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
