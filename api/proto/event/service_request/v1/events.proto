@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package event.service_request.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+// ServiceRequestCreated — subject: medincident.event.service_request.v1.created
+// aggregate_id = service_request UUID
+// author_display_name is NOT included — query-side projector calls lookupUserDisplayName(tx, author_id).
+message ServiceRequestCreated {
+  string request_id = 1;
+  string organization_id = 2;
+  string clinic_id = 3;
+  string department_id = 4;
+  string type_id = 5;
+  google.protobuf.StringValue incident_id = 6;
+  string description = 7;
+  string status = 8;
+  string author_id = 9;
+  google.protobuf.Timestamp created_at = 10;
+}
+
+// ServiceRequestStatusChanged — subject: medincident.event.service_request.v1.status_changed
+message ServiceRequestStatusChanged {
+  string request_id = 1;
+  string old_status = 2;
+  string new_status = 3;
+  string actor_id = 4;
+  google.protobuf.Timestamp changed_at = 5;
+}
+
+// ServiceRequestDescriptionUpdated — subject: medincident.event.service_request.v1.description_updated
+message ServiceRequestDescriptionUpdated {
+  string request_id = 1;
+  string description = 2;
+  google.protobuf.Timestamp updated_at = 3;
+}
+
+// ServiceRequestExecutorAssigned — subject: medincident.event.service_request.v1.executor_assigned
+message ServiceRequestExecutorAssigned {
+  string request_id = 1;
+  string employee_id = 2;
+  string actor_id = 3;
+  google.protobuf.Timestamp changed_at = 4;
+}
+
+// ServiceRequestExecutorRemoved — subject: medincident.event.service_request.v1.executor_removed
+message ServiceRequestExecutorRemoved {
+  string request_id = 1;
+  string employee_id = 2;
+  string actor_id = 3;
+  google.protobuf.Timestamp changed_at = 4;
+}
