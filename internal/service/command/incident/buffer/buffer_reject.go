@@ -9,8 +9,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
@@ -63,6 +63,10 @@ func (s *BufferService) Reject(ctx context.Context, cmd RejectCommand) error {
 		if err := tx.Save(b).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
 		}
-		return projector.BufferUpdated(tx, b)
+		env, err := buildPatientIncidentBufferUpdatedEnvelope(b)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.patient_incident_buffer.v1.updated", env)
 	})
 }

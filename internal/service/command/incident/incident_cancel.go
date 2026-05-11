@@ -9,8 +9,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
@@ -60,9 +60,7 @@ func (s *IncidentService) Cancel(
 				Errorf("not pending")
 		}
 
-		// Resolve actor up-front so display_name lookup errors surface as
-		// real failures instead of silent empty strings in the audit row.
-		actorEmpID, displayName, err := s.resolveActor(tx, cmd.Caller.ZitadelUserID)
+		actorEmpID, err := s.resolveActorEmployeeID(tx, cmd.Caller.ZitadelUserID)
 		if err != nil {
 			return err
 		}
@@ -73,7 +71,10 @@ func (s *IncidentService) Cancel(
 		if err := tx.Save(inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-		return projector.IncidentStatusChanged(tx, inc.ID, old, inc.Status,
-			actorEmpID, displayName, now)
+		env, err := buildIncidentStatusChangedEnvelope(inc.ID, old, inc.Status, actorEmpID, cmd.Caller.ZitadelUserID, now)
+		if err != nil {
+			return err
+		}
+		return outbox.Append(tx, "medincident.event.incident.v1.status_changed", env)
 	})
 }

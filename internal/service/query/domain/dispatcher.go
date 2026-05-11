@@ -13,7 +13,9 @@ import (
 	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
 	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
 	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
+	bufferv1 "github.com/medincident/medincident-backend/pkg/event/incident/buffer/v1"
 	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
+	incidentv1 "github.com/medincident/medincident-backend/pkg/event/incident/v1"
 	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
 	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
 	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
@@ -194,6 +196,22 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 			return d.proj.TypeDisallowedForPatients(tx, aggregateID, occurredAt, m)
 		case *classifierv1.IncidentTypeDeleted:
 			return d.proj.TypeDeleted(tx, aggregateID, occurredAt, m)
+
+		// ── Incident ──────────────────────────────────────────────────────────
+		case *incidentv1.IncidentCreated:
+			return d.proj.IncidentCreated(tx, aggregateID, occurredAt, m)
+		case *incidentv1.IncidentStatusChanged:
+			return d.proj.IncidentStatusChanged(tx, aggregateID, occurredAt, m)
+		case *incidentv1.IncidentPriorityChanged:
+			return d.proj.IncidentPriorityChanged(tx, aggregateID, occurredAt, m)
+		case *incidentv1.IncidentDescriptionUpdated:
+			return d.proj.IncidentDescriptionUpdated(tx, aggregateID, occurredAt, m)
+
+		// ── Patient Incident Buffer ───────────────────────────────────────────
+		case *bufferv1.PatientIncidentBufferCreated:
+			return d.proj.PatientIncidentBufferCreated(tx, aggregateID, occurredAt, m)
+		case *bufferv1.PatientIncidentBufferUpdated:
+			return d.proj.PatientIncidentBufferUpdated(tx, aggregateID, occurredAt, m)
 
 		default:
 			d.log.Warn().

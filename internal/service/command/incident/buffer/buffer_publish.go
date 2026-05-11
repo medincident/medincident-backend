@@ -9,12 +9,17 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
+	"google.golang.org/protobuf/types/known/anypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	incidentv1 "github.com/medincident/medincident-backend/pkg/event/incident/v1"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 type PublishPayload struct {
@@ -122,8 +127,8 @@ func (s *BufferService) Publish(
 				Errorf("invalid type")
 		}
 
-		// Resolve dispatcher snapshot for registrar denormalisation.
-		reg, err := s.loadDispatcherSnapshot(tx, cmd.Caller.ZitadelUserID, b.OrganizationID)
+		// Resolve dispatcher's employee ID for registrar denormalisation.
+		dispatcherEmpID, err := s.loadDispatcherEmployeeID(tx, cmd.Caller.ZitadelUserID, b.OrganizationID)
 		if err != nil {
 			return err
 		}
@@ -146,7 +151,7 @@ func (s *BufferService) Publish(
 			Description:                desc,
 			PatientOriginalDescription: b.Description,
 			OccurredAt:                 occurredAtOrNow(b.OccurredAt, now),
-			RegistrarEmployeeID:        reg.EmployeeID,
+			RegistrarEmployeeID:        dispatcherEmpID,
 			SourcePatientZitadelUserID: null.StringFrom(b.PatientZitadelUserID),
 			SourceBufferID:             uuid.NullUUID{UUID: b.ID, Valid: true},
 			CreatedAt:                  now,
@@ -155,7 +160,13 @@ func (s *BufferService) Publish(
 		if err := tx.Create(&inc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
 		}
-		if err := projector.IncidentCreated(tx, &inc, &reg); err != nil {
+
+		// Emit IncidentCreated
+		incEnv, err := buildBufferIncidentCreatedEnvelope(&inc, cmd.Caller.ZitadelUserID)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.incident.v1.created", incEnv); err != nil {
 			return err
 		}
 
@@ -168,7 +179,11 @@ func (s *BufferService) Publish(
 		if err := tx.Save(b).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
 		}
-		if err := projector.BufferUpdated(tx, b); err != nil {
+		bufEnv, err := buildPatientIncidentBufferUpdatedEnvelope(b)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.patient_incident_buffer.v1.updated", bufEnv); err != nil {
 			return err
 		}
 		result.IncidentID = incidentID
@@ -177,42 +192,65 @@ func (s *BufferService) Publish(
 	return result, err
 }
 
-// loadDispatcherSnapshot mirrors loadRegistrarSnapshot from the
-// incident package but is local to keep packages decoupled.
-func (s *BufferService) loadDispatcherSnapshot(
+// loadDispatcherEmployeeID returns the dispatcher's employee row in the given org.
+// Display name is resolved query-side from the event's registrar_zitadel_user_id.
+func (s *BufferService) loadDispatcherEmployeeID(
 	tx *gorm.DB, callerZitadelID string, orgID uuid.UUID,
-) (projector.IncidentRegistrarSnapshot, error) {
+) (uuid.UUID, error) {
 	var emp model.Employee
 	if err := tx.Where("zitadel_user_id = ? AND organization_id = ?",
 		callerZitadelID, orgID).First(&emp).Error; err != nil {
-		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
+		return uuid.UUID{}, oops.In(scope).
 			Code(ErrCodeBufferDispatcherNotFound).
 			Public("Dispatcher employee record not found.").Wrap(err)
 	}
-	// Dispatcher's department lookup failure IS a department-level
-	// error (the FK is a real domain.departments row referenced from
-	// the dispatcher's employee record), so keep ErrCodeBufferDeptNotFound here.
-	var dept model.Department
-	if err := tx.First(&dept, "id = ?", emp.DepartmentID).Error; err != nil {
-		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
-			Code(ErrCodeBufferDeptNotFound).
-			With("department_id", emp.DepartmentID).Wrap(err)
+	return emp.ID, nil
+}
+
+// buildBufferIncidentCreatedEnvelope builds an IncidentCreated envelope
+// for an incident materialised from a buffer entry. Defined locally
+// to keep the buffer package independent of the incident package.
+func buildBufferIncidentCreatedEnvelope(
+	inc *model.Incident,
+	registrarZitadelUserID string,
+) (*eventv1.Envelope, error) {
+	msg := &incidentv1.IncidentCreated{
+		IncidentId:             inc.ID.String(),
+		OrganizationId:         inc.OrganizationID.String(),
+		ClinicId:               inc.ClinicID.String(),
+		DepartmentId:           inc.DepartmentID.String(),
+		CategoryId:             inc.CategoryID.String(),
+		TypeId:                 inc.TypeID.String(),
+		Status:                 string(inc.Status),
+		Priority:               string(inc.Priority),
+		OccurredAt:             timestamppb.New(inc.OccurredAt),
+		RegistrarZitadelUserId: registrarZitadelUserID,
+		RegistrarEmployeeId:    inc.RegistrarEmployeeID.String(),
+		CreatedAt:              timestamppb.New(inc.CreatedAt),
 	}
-	var displayName string
-	if err := tx.Raw(
-		`SELECT display_name FROM projections.users WHERE id = ?`,
-		callerZitadelID,
-	).Scan(&displayName).Error; err != nil || displayName == "" {
-		return projector.IncidentRegistrarSnapshot{}, oops.In(scope).
-			Code(ErrCodeBufferDispatcherNotFound).
-			Public("Dispatcher user record missing.").Errorf("display_name lookup failed")
+	if inc.Description.Valid {
+		msg.Description = wrapperspb.String(inc.Description.String)
 	}
-	return projector.IncidentRegistrarSnapshot{
-		EmployeeID:     emp.ID,
-		DisplayName:    displayName,
-		Position:       emp.Position.Ptr(),
-		OrganizationID: emp.OrganizationID,
-		ClinicID:       dept.ClinicID,
-		DepartmentID:   emp.DepartmentID,
+	if inc.PatientOriginalDescription.Valid {
+		msg.PatientOriginalDescription = wrapperspb.String(inc.PatientOriginalDescription.String)
+	}
+	if inc.SourcePatientZitadelUserID.Valid {
+		msg.SourcePatientZitadelUserId = wrapperspb.String(inc.SourcePatientZitadelUserID.String)
+	}
+	if inc.SourceBufferID.Valid {
+		msg.SourceBufferId = wrapperspb.String(inc.SourceBufferID.UUID.String())
+	}
+	if inc.ReopenedFromIncidentID.Valid {
+		msg.ReopenedFromIncidentId = wrapperspb.String(inc.ReopenedFromIncidentID.UUID.String())
+	}
+	payload, err := anypb.New(msg)
+	if err != nil {
+		return nil, oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
+	}
+	return &eventv1.Envelope{
+		OccurredAt:    timestamppb.New(inc.CreatedAt),
+		AggregateType: "incident",
+		AggregateId:   inc.ID.String(),
+		Payload:       payload,
 	}, nil
 }

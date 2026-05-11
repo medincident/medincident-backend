@@ -10,8 +10,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/outbox"
 	"github.com/medincident/medincident-backend/internal/service/authz"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	"github.com/medincident/medincident-backend/internal/service/validation"
 )
 
@@ -65,7 +65,7 @@ func (s *IncidentService) Reopen(
 			privilegedActorPolicy(src.OrganizationID, src.ClinicID, src.DepartmentID)); err != nil {
 			return err
 		}
-		reg, err := s.loadRegistrarSnapshot(tx, cmd.Caller.ZitadelUserID, src.OrganizationID)
+		registrarEmpID, err := s.loadRegistrarEmployeeID(tx, cmd.Caller.ZitadelUserID, src.OrganizationID)
 		if err != nil {
 			return err
 		}
@@ -81,7 +81,7 @@ func (s *IncidentService) Reopen(
 			Priority:                   model.IncidentPriorityNormal,
 			Description:                null.String{},
 			OccurredAt:                 now,
-			RegistrarEmployeeID:        reg.EmployeeID,
+			RegistrarEmployeeID:        registrarEmpID,
 			SourcePatientZitadelUserID: src.SourcePatientZitadelUserID,
 			ReopenedFromIncidentID:     uuid.NullUUID{UUID: src.ID, Valid: true},
 			CreatedAt:                  now,
@@ -90,7 +90,11 @@ func (s *IncidentService) Reopen(
 		if err := tx.Create(&newInc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-		if err := projector.IncidentCreated(tx, &newInc, &reg); err != nil {
+		env, err := buildIncidentCreatedEnvelope(&newInc, cmd.Caller.ZitadelUserID)
+		if err != nil {
+			return err
+		}
+		if err := outbox.Append(tx, "medincident.event.incident.v1.created", env); err != nil {
 			return err
 		}
 		result.NewIncidentID = newID
