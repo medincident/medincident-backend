@@ -49,6 +49,12 @@ func Decode(s string) (Cursor, error) {
 			Public("Invalid pagination cursor.").
 			Wrap(err)
 	}
+	if c.T == 0 || c.I == "" {
+		return Cursor{}, oops.In("cursor").
+			Code(ErrCodeInvalidCursor).
+			Public("Invalid pagination cursor.").
+			Errorf("cursor missing required fields")
+	}
 	return c, nil
 }
 

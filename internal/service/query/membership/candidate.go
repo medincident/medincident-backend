@@ -257,13 +257,15 @@ func (r *CandidateReader) ForSystemAdmin(
 }
 
 func (r *CandidateReader) queryUsers(ctx context.Context, sql string, args []any, limit int) ([]ZitadelUserView, string, error) {
+	// Fetch limit+1 to distinguish "has next page" from "exact multiple of limit".
+	args[len(args)-1] = limit + 1
 	rows, err := r.db.WithContext(ctx).Raw(sql, args...).Rows()
 	if err != nil {
 		return nil, "", oops.In("reader.membership.candidate").
 			Code(ErrCodeCandidateLoadFailed).Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]ZitadelUserView, 0, limit)
+	out := make([]ZitadelUserView, 0, limit+1)
 	for rows.Next() {
 		var v ZitadelUserView
 		if err := scanUserRow(rows, &v); err != nil {
@@ -277,7 +279,8 @@ func (r *CandidateReader) queryUsers(ctx context.Context, sql string, args []any
 			Code(ErrCodeCandidateLoadFailed).Wrap(err)
 	}
 	next := ""
-	if len(out) == limit {
+	if len(out) > limit {
+		out = out[:limit]
 		last := out[len(out)-1]
 		next = cursor.Encode(last.UpdatedAt, last.ZitadelUserID)
 	}
@@ -329,6 +332,16 @@ func (r *CandidateReader) listEmployeeCandidates(
 	if err != nil {
 		return nil, "", err
 	}
+	// employee_id is a UUID column; a non-UUID cursor.I would cause a Postgres
+	// cast error reported as 500 instead of 400. Validate early.
+	if hasCursor {
+		if _, err := uuid.Parse(cur.I); err != nil {
+			return nil, "", oops.In("reader.membership.candidate").
+				Code(cursor.ErrCodeInvalidCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+	}
 	extra, extraArgs := appendEmployeeSearchAndCursor(searchQuery, cur, hasCursor)
 	sql := selectEmployeeCardEC + `
 	WHERE ec.` + scopeField + ` = ?
@@ -339,7 +352,8 @@ func (r *CandidateReader) listEmployeeCandidates(
 	args := make([]any, 0, 2+len(extraArgs)+1)
 	args = append(args, scopeID)
 	args = append(args, extraArgs...)
-	args = append(args, limit)
+	// Fetch limit+1 to distinguish "has next page" from "exact multiple of limit".
+	args = append(args, limit+1)
 
 	rows, err := r.db.WithContext(ctx).Raw(sql, args...).Rows()
 	if err != nil {
@@ -347,7 +361,7 @@ func (r *CandidateReader) listEmployeeCandidates(
 			Code(ErrCodeCandidateLoadFailed).Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]EmployeeCardView, 0, limit)
+	out := make([]EmployeeCardView, 0, limit+1)
 	var lastUpdatedAt time.Time
 	var lastID string
 	for rows.Next() {
@@ -365,7 +379,8 @@ func (r *CandidateReader) listEmployeeCandidates(
 			Code(ErrCodeCandidateLoadFailed).Wrap(err)
 	}
 	next := ""
-	if len(out) == limit {
+	if len(out) > limit {
+		out = out[:limit]
 		next = cursor.Encode(lastUpdatedAt, lastID)
 	}
 	return out, next, nil

@@ -51,6 +51,18 @@ func TestDecode_EmptyString_ReturnsInvalidCursor(t *testing.T) {
 	assert.Equal(t, cursor.ErrCodeInvalidCursor, oe.Code())
 }
 
+func TestDecode_MissingFields_ReturnsInvalidCursor(t *testing.T) {
+	// Valid JSON but missing t/i fields — should reject as invalid cursor.
+	for _, payload := range []string{"{}", `{"t":1}`, `{"i":"some-id"}`} {
+		s := base64.RawURLEncoding.EncodeToString([]byte(payload))
+		_, err := cursor.Decode(s)
+		require.Error(t, err, "payload %q should be rejected", payload)
+		oe, ok := oops.AsOops(err)
+		require.True(t, ok)
+		assert.Equal(t, cursor.ErrCodeInvalidCursor, oe.Code())
+	}
+}
+
 func TestEncode_SameTimeDifferentID_DifferentCursors(t *testing.T) {
 	ts := time.Now().UTC()
 	assert.NotEqual(t, cursor.Encode(ts, "id-a"), cursor.Encode(ts, "id-b"))
