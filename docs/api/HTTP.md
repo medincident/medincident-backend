@@ -6264,7 +6264,8 @@ display_name, email. Trimmed at the handler boundary. Max 256 chars.
 - `list_limit_out_of_range` — limit outside [1, 500].|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="membershipqueryservice_listcandidatesforclinichead-responseschema">Response Schema</h3>
@@ -6567,7 +6568,8 @@ display_name, email. Trimmed at the handler boundary. Max 256 chars.
 - `list_limit_out_of_range` — limit outside [1, 500].|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="membershipqueryservice_listcandidatesfordeptresponsible-responseschema">Response Schema</h3>
@@ -7129,7 +7131,8 @@ display_name, email. Trimmed at the handler boundary. Max 256 chars.
 - `list_limit_out_of_range` — limit outside [1, 500].|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="membershipqueryservice_listcandidatesforhire-responseschema">Response Schema</h3>
@@ -7208,7 +7211,8 @@ display_name, email. Trimmed at the handler boundary. Max 256 chars.
 - `list_limit_out_of_range` — limit outside [1, 500].|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="membershipqueryservice_listcandidatesfororgadmin-responseschema">Response Schema</h3>
@@ -7287,7 +7291,8 @@ display_name, email. Trimmed at the handler boundary. Max 256 chars.
 - `list_limit_out_of_range` — limit outside [1, 500].|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="membershipqueryservice_listcandidatesfororgdispatcher-responseschema">Response Schema</h3>
@@ -7366,7 +7371,8 @@ display_name, email. Trimmed at the handler boundary. Max 256 chars.
 - `list_limit_out_of_range` — limit outside [1, 500].|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="membershipqueryservice_listcandidatesfororghead-responseschema">Response Schema</h3>
@@ -7889,7 +7895,8 @@ display_name, email. Trimmed at the handler boundary. Max 256 chars.
 - `list_limit_out_of_range` — limit outside [1, 500].|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `candidate_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="membershipqueryservice_listcandidatesforsystemadmin-responseschema">Response Schema</h3>

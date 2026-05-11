@@ -121,6 +121,10 @@ service MembershipQueryService {
         key: "400"
         value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
       }
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed."}
+      }
     };
   }
   rpc ListCandidatesForSystemAdmin(ListCandidatesForSystemAdminRequest) returns (ListCandidatesForSystemAdminResponse) {
@@ -129,6 +133,10 @@ service MembershipQueryService {
       responses: {
         key: "400"
         value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed."}
       }
     };
   }
@@ -139,6 +147,10 @@ service MembershipQueryService {
         key: "400"
         value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
       }
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed."}
+      }
     };
   }
   rpc ListCandidatesForOrgHead(ListCandidatesForOrgHeadRequest) returns (ListCandidatesForOrgHeadResponse) {
@@ -147,6 +159,10 @@ service MembershipQueryService {
       responses: {
         key: "400"
         value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed."}
       }
     };
   }
@@ -157,6 +173,10 @@ service MembershipQueryService {
         key: "400"
         value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
       }
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed."}
+      }
     };
   }
   rpc ListCandidatesForClinicHead(ListCandidatesForClinicHeadRequest) returns (ListCandidatesForClinicHeadResponse) {
@@ -166,6 +186,10 @@ service MembershipQueryService {
         key: "400"
         value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
       }
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed."}
+      }
     };
   }
   rpc ListCandidatesForDeptResponsible(ListCandidatesForDeptResponsibleRequest) returns (ListCandidatesForDeptResponsibleResponse) {
@@ -174,6 +198,10 @@ service MembershipQueryService {
       responses: {
         key: "400"
         value: {description: "Invalid input. Error codes:\n- `candidate_search_query_too_long` — search query exceeds 256 characters.\n- `invalid_cursor` — cursor is malformed.\n- `list_limit_out_of_range` — limit outside [1, 500]."}
+      }
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed."}
       }
     };
   }

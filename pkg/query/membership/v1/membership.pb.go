@@ -3370,7 +3370,7 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"(ListCandidatesForDeptResponsibleResponse\x12;\n" +
 	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor2\xdf.\n" +
+	"nextCursor2\x944\n" +
 	"\x16MembershipQueryService\x12\xed\x01\n" +
 	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x8a\x01\x92AmJk\n" +
 	"\x03404\x12d\n" +
@@ -3390,49 +3390,70 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"2\x82\xd3\xe4\x93\x02,\x12*/v1/organizations/{organization_id}/admins\x12\xae\x01\n" +
 	"\x12ListOrgDispatchers\x12..query.membership.v1.ListOrgDispatchersRequest\x1a/.query.membership.v1.ListOrgDispatchersResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/organizations/{organization_id}/dispatchers\x12\x96\x01\n" +
 	"\fListOrgHeads\x12(.query.membership.v1.ListOrgHeadsRequest\x1a).query.membership.v1.ListOrgHeadsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/heads\x12\x8a\x01\n" +
-	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-admins\x12\x9a\x03\n" +
-	"\x15ListCandidatesForHire\x121.query.membership.v1.ListCandidatesForHireRequest\x1a2.query.membership.v1.ListCandidatesForHireResponse\"\x99\x02\x92A\xda\x01J\xd7\x01\n" +
+	"\x10ListSystemAdmins\x12,.query.membership.v1.ListSystemAdminsRequest\x1a-.query.membership.v1.ListSystemAdminsResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/system-admins\x12\xfd\x03\n" +
+	"\x15ListCandidatesForHire\x121.query.membership.v1.ListCandidatesForHireRequest\x1a2.query.membership.v1.ListCandidatesForHireResponse\"\xfc\x02\x92A\xbd\x02J\xd7\x01\n" +
 	"\x03400\x12\xcf\x01\n" +
 	"\xcc\x01Invalid input. Error codes:\n" +
 	"- `candidate_search_query_too_long` — search query exceeds 256 characters.\n" +
 	"- `invalid_cursor` — cursor is malformed.\n" +
-	"- `list_limit_out_of_range` — limit outside [1, 500].\x82\xd3\xe4\x93\x025\x123/v1/organizations/{organization_id}/candidates:hire\x12\x98\x03\n" +
-	"\x1cListCandidatesForSystemAdmin\x128.query.membership.v1.ListCandidatesForSystemAdminRequest\x1a9.query.membership.v1.ListCandidatesForSystemAdminResponse\"\x82\x02\x92A\xda\x01J\xd7\x01\n" +
+	"- `list_limit_out_of_range` — limit outside [1, 500].Ja\n" +
+	"\x03500\x12Z\n" +
+	"XInternal server error. Error codes:\n" +
+	"- `candidate_load_failed` — database query failed.\x82\xd3\xe4\x93\x025\x123/v1/organizations/{organization_id}/candidates:hire\x12\xfb\x03\n" +
+	"\x1cListCandidatesForSystemAdmin\x128.query.membership.v1.ListCandidatesForSystemAdminRequest\x1a9.query.membership.v1.ListCandidatesForSystemAdminResponse\"\xe5\x02\x92A\xbd\x02J\xd7\x01\n" +
 	"\x03400\x12\xcf\x01\n" +
 	"\xcc\x01Invalid input. Error codes:\n" +
 	"- `candidate_search_query_too_long` — search query exceeds 256 characters.\n" +
 	"- `invalid_cursor` — cursor is malformed.\n" +
-	"- `list_limit_out_of_range` — limit outside [1, 500].\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/system-admins/candidates\x12\xab\x03\n" +
-	"\x19ListCandidatesForOrgAdmin\x125.query.membership.v1.ListCandidatesForOrgAdminRequest\x1a6.query.membership.v1.ListCandidatesForOrgAdminResponse\"\x9e\x02\x92A\xda\x01J\xd7\x01\n" +
+	"- `list_limit_out_of_range` — limit outside [1, 500].Ja\n" +
+	"\x03500\x12Z\n" +
+	"XInternal server error. Error codes:\n" +
+	"- `candidate_load_failed` — database query failed.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/system-admins/candidates\x12\x8e\x04\n" +
+	"\x19ListCandidatesForOrgAdmin\x125.query.membership.v1.ListCandidatesForOrgAdminRequest\x1a6.query.membership.v1.ListCandidatesForOrgAdminResponse\"\x81\x03\x92A\xbd\x02J\xd7\x01\n" +
 	"\x03400\x12\xcf\x01\n" +
 	"\xcc\x01Invalid input. Error codes:\n" +
 	"- `candidate_search_query_too_long` — search query exceeds 256 characters.\n" +
 	"- `invalid_cursor` — cursor is malformed.\n" +
-	"- `list_limit_out_of_range` — limit outside [1, 500].\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/candidates:org-admin\x12\xa7\x03\n" +
-	"\x18ListCandidatesForOrgHead\x124.query.membership.v1.ListCandidatesForOrgHeadRequest\x1a5.query.membership.v1.ListCandidatesForOrgHeadResponse\"\x9d\x02\x92A\xda\x01J\xd7\x01\n" +
+	"- `list_limit_out_of_range` — limit outside [1, 500].Ja\n" +
+	"\x03500\x12Z\n" +
+	"XInternal server error. Error codes:\n" +
+	"- `candidate_load_failed` — database query failed.\x82\xd3\xe4\x93\x02:\x128/v1/organizations/{organization_id}/candidates:org-admin\x12\x8a\x04\n" +
+	"\x18ListCandidatesForOrgHead\x124.query.membership.v1.ListCandidatesForOrgHeadRequest\x1a5.query.membership.v1.ListCandidatesForOrgHeadResponse\"\x80\x03\x92A\xbd\x02J\xd7\x01\n" +
 	"\x03400\x12\xcf\x01\n" +
 	"\xcc\x01Invalid input. Error codes:\n" +
 	"- `candidate_search_query_too_long` — search query exceeds 256 characters.\n" +
 	"- `invalid_cursor` — cursor is malformed.\n" +
-	"- `list_limit_out_of_range` — limit outside [1, 500].\x82\xd3\xe4\x93\x029\x127/v1/organizations/{organization_id}/candidates:org-head\x12\xbf\x03\n" +
-	"\x1eListCandidatesForOrgDispatcher\x12:.query.membership.v1.ListCandidatesForOrgDispatcherRequest\x1a;.query.membership.v1.ListCandidatesForOrgDispatcherResponse\"\xa3\x02\x92A\xda\x01J\xd7\x01\n" +
+	"- `list_limit_out_of_range` — limit outside [1, 500].Ja\n" +
+	"\x03500\x12Z\n" +
+	"XInternal server error. Error codes:\n" +
+	"- `candidate_load_failed` — database query failed.\x82\xd3\xe4\x93\x029\x127/v1/organizations/{organization_id}/candidates:org-head\x12\xa2\x04\n" +
+	"\x1eListCandidatesForOrgDispatcher\x12:.query.membership.v1.ListCandidatesForOrgDispatcherRequest\x1a;.query.membership.v1.ListCandidatesForOrgDispatcherResponse\"\x86\x03\x92A\xbd\x02J\xd7\x01\n" +
 	"\x03400\x12\xcf\x01\n" +
 	"\xcc\x01Invalid input. Error codes:\n" +
 	"- `candidate_search_query_too_long` — search query exceeds 256 characters.\n" +
 	"- `invalid_cursor` — cursor is malformed.\n" +
-	"- `list_limit_out_of_range` — limit outside [1, 500].\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/candidates:org-dispatcher\x12\xa7\x03\n" +
-	"\x1bListCandidatesForClinicHead\x127.query.membership.v1.ListCandidatesForClinicHeadRequest\x1a8.query.membership.v1.ListCandidatesForClinicHeadResponse\"\x94\x02\x92A\xda\x01J\xd7\x01\n" +
+	"- `list_limit_out_of_range` — limit outside [1, 500].Ja\n" +
+	"\x03500\x12Z\n" +
+	"XInternal server error. Error codes:\n" +
+	"- `candidate_load_failed` — database query failed.\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/candidates:org-dispatcher\x12\x8a\x04\n" +
+	"\x1bListCandidatesForClinicHead\x127.query.membership.v1.ListCandidatesForClinicHeadRequest\x1a8.query.membership.v1.ListCandidatesForClinicHeadResponse\"\xf7\x02\x92A\xbd\x02J\xd7\x01\n" +
 	"\x03400\x12\xcf\x01\n" +
 	"\xcc\x01Invalid input. Error codes:\n" +
 	"- `candidate_search_query_too_long` — search query exceeds 256 characters.\n" +
 	"- `invalid_cursor` — cursor is malformed.\n" +
-	"- `list_limit_out_of_range` — limit outside [1, 500].\x82\xd3\xe4\x93\x020\x12./v1/clinics/{clinic_id}/candidates:clinic-head\x12\xc3\x03\n" +
-	" ListCandidatesForDeptResponsible\x12<.query.membership.v1.ListCandidatesForDeptResponsibleRequest\x1a=.query.membership.v1.ListCandidatesForDeptResponsibleResponse\"\xa1\x02\x92A\xda\x01J\xd7\x01\n" +
+	"- `list_limit_out_of_range` — limit outside [1, 500].Ja\n" +
+	"\x03500\x12Z\n" +
+	"XInternal server error. Error codes:\n" +
+	"- `candidate_load_failed` — database query failed.\x82\xd3\xe4\x93\x020\x12./v1/clinics/{clinic_id}/candidates:clinic-head\x12\xa6\x04\n" +
+	" ListCandidatesForDeptResponsible\x12<.query.membership.v1.ListCandidatesForDeptResponsibleRequest\x1a=.query.membership.v1.ListCandidatesForDeptResponsibleResponse\"\x84\x03\x92A\xbd\x02J\xd7\x01\n" +
 	"\x03400\x12\xcf\x01\n" +
 	"\xcc\x01Invalid input. Error codes:\n" +
 	"- `candidate_search_query_too_long` — search query exceeds 256 characters.\n" +
 	"- `invalid_cursor` — cursor is malformed.\n" +
-	"- `list_limit_out_of_range` — limit outside [1, 500].\x82\xd3\xe4\x93\x02=\x12;/v1/departments/{department_id}/candidates:dept-responsibleB\xd0\x04\x92A\xe3\x02RI\n" +
+	"- `list_limit_out_of_range` — limit outside [1, 500].Ja\n" +
+	"\x03500\x12Z\n" +
+	"XInternal server error. Error codes:\n" +
+	"- `candidate_load_failed` — database query failed.\x82\xd3\xe4\x93\x02=\x12;/v1/departments/{department_id}/candidates:dept-responsibleB\xd0\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

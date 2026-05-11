@@ -675,10 +675,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -1668,10 +1666,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -5375,10 +5371,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -5449,10 +5443,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -5521,10 +5513,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -5593,10 +5583,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -9752,10 +9740,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `candidate_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
