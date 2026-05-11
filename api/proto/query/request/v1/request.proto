@@ -130,7 +130,7 @@ message ListServiceRequestsRequest {
 }
 message ListServiceRequestsResponse {
   repeated ServiceRequest items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListServiceRequestsByIncidentRequest {
@@ -140,7 +140,7 @@ message ListServiceRequestsByIncidentRequest {
 }
 message ListServiceRequestsByIncidentResponse {
   repeated ServiceRequest items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message StatusHistoryEntry {

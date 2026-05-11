@@ -144,7 +144,7 @@ message ListCategoriesByOrganizationRequest {
 }
 message ListCategoriesByOrganizationResponse {
   repeated Category items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListActiveRootCategoriesRequest {
@@ -154,12 +154,16 @@ message ListActiveRootCategoriesRequest {
 }
 message ListActiveRootCategoriesResponse {
   repeated Category items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListCategorySubtreeRequest {
   string root_category_id = 1;
 }
+
+// ListCategorySubtreeResponse returns the full subtree rooted at the
+// requested category. No pagination — the subtree depth is bounded and
+// the full result is always returned.
 message ListCategorySubtreeResponse {
   repeated Category items = 1;
 }
@@ -178,7 +182,7 @@ message ListTypesByCategoryRequest {
 }
 message ListTypesByCategoryResponse {
   repeated Type items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListActiveTypesByOrganizationRequest {
@@ -188,7 +192,7 @@ message ListActiveTypesByOrganizationRequest {
 }
 message ListActiveTypesByOrganizationResponse {
   repeated Type items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListPatientAllowedTypesByOrganizationRequest {
@@ -198,7 +202,7 @@ message ListPatientAllowedTypesByOrganizationRequest {
 }
 message ListPatientAllowedTypesByOrganizationResponse {
   repeated Type items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListPatientVisibleCategoriesByOrganizationRequest {
@@ -208,5 +212,5 @@ message ListPatientVisibleCategoriesByOrganizationRequest {
 }
 message ListPatientVisibleCategoriesByOrganizationResponse {
   repeated Category items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }

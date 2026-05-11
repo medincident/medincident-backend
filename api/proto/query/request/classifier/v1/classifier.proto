@@ -97,7 +97,7 @@ message ListRequestTypesByOrganizationRequest {
 }
 message ListRequestTypesByOrganizationResponse {
   repeated RequestType items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListActiveRequestTypesByOrganizationRequest {
@@ -107,5 +107,5 @@ message ListActiveRequestTypesByOrganizationRequest {
 }
 message ListActiveRequestTypesByOrganizationResponse {
   repeated RequestType items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }

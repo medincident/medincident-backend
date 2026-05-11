@@ -190,7 +190,7 @@ message ListEmployeesByDepartmentRequest {
 }
 message ListEmployeesByDepartmentResponse {
   repeated EmployeeCardView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListEmployeesByClinicRequest {
@@ -209,7 +209,7 @@ message ListEmployeesByClinicRequest {
 }
 message ListEmployeesByClinicResponse {
   repeated EmployeeCardView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListEmployeesByOrganizationRequest {
@@ -228,7 +228,7 @@ message ListEmployeesByOrganizationRequest {
 }
 message ListEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message CountEmployeesByDepartmentRequest {
@@ -302,7 +302,7 @@ message SearchEmployeesByOrganizationRequest {
 }
 message SearchEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListVacationsByEmployeeRequest {
@@ -315,7 +315,7 @@ message ListVacationsByEmployeeRequest {
 }
 message ListVacationsByEmployeeResponse {
   repeated VacationView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message CountVacationsByEmployeeRequest {
@@ -349,7 +349,7 @@ message ListOrgAdminsRequest {
 }
 message ListOrgAdminsResponse {
   repeated RoleAssignment items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListOrgDispatchersRequest {
@@ -359,7 +359,7 @@ message ListOrgDispatchersRequest {
 }
 message ListOrgDispatchersResponse {
   repeated RoleAssignment items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListOrgHeadsRequest {
@@ -369,7 +369,7 @@ message ListOrgHeadsRequest {
 }
 message ListOrgHeadsResponse {
   repeated RoleAssignment items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListSystemAdminsRequest {
@@ -378,5 +378,5 @@ message ListSystemAdminsRequest {
 }
 message ListSystemAdminsResponse {
   repeated SystemAdminView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }

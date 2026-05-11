@@ -185,11 +185,14 @@ message GetOrganizationResponse {
 
 message ListOrganizationsRequest {
   int32 limit = 1;
+  // Opaque pagination cursor returned as next_cursor from a previous
+  // response. Omit or leave empty to start from the first page. An
+  // invalid cursor is rejected with a domain error.
   string after = 2;
 }
 message ListOrganizationsResponse {
   repeated OrganizationListItem items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message CountOrganizationsRequest {}
@@ -204,7 +207,7 @@ message SearchOrganizationsRequest {
 }
 message SearchOrganizationsResponse {
   repeated OrganizationListItem items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message GetClinicRequest {
@@ -221,7 +224,7 @@ message ListClinicsByOrganizationRequest {
 }
 message ListClinicsByOrganizationResponse {
   repeated ClinicListItem items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message CountClinicsByOrganizationRequest {
@@ -245,7 +248,7 @@ message ListDepartmentsByClinicRequest {
 }
 message ListDepartmentsByClinicResponse {
   repeated DepartmentListItem items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message CountDepartmentsByClinicRequest {

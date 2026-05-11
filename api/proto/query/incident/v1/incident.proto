@@ -228,7 +228,7 @@ message ListIncidentsRequest {
 }
 message ListIncidentsResponse {
   repeated IncidentView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListMyIncidentsRequest {
@@ -237,7 +237,7 @@ message ListMyIncidentsRequest {
 }
 message ListMyIncidentsResponse {
   repeated IncidentView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message GetIncidentHistoryRequest {
@@ -263,7 +263,7 @@ message ListBufferEntriesRequest {
 }
 message ListBufferEntriesResponse {
   repeated BufferEntryView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
 
 message ListMyBufferEntriesRequest {
@@ -272,5 +272,5 @@ message ListMyBufferEntriesRequest {
 }
 message ListMyBufferEntriesResponse {
   repeated BufferEntryView items = 1;
-  string next_cursor = 2;
+  optional string next_cursor = 2;
 }
