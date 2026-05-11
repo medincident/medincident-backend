@@ -11,15 +11,19 @@ import (
 	"github.com/guregu/null/v6"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	orgread "github.com/medincident/medincident-backend/internal/service/query/orgstructure"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
 )
 
 // TestOrganizationReader_Get_ReturnsViewSeededByProjector seeds a
-// projection row via the command-side projector and reads it back
+// projection row via the query-side projector and reads it back
 // through OrganizationReader. The read surface preserves the full card.
 func TestOrganizationReader_Get_ReturnsViewSeededByProjector(t *testing.T) {
 	resetProjections(t)
@@ -37,7 +41,15 @@ func TestOrganizationReader_Get_ReturnsViewSeededByProjector(t *testing.T) {
 		UpdatedAt:    now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationCreated(tx, org)
+		return qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+			Name:        org.Name,
+			Description: org.Description.String,
+			LegalAddress: &orgv1.Address{
+				Text:  org.LegalAddress.Text,
+				Point: &orgv1.Point{Longitude: 4.25, Latitude: 50.85},
+			},
+			CreatedAt: timestamppb.New(org.CreatedAt),
+		})
 	}))
 
 	reader := orgread.NewOrganizationReader(testDB, &logger)
@@ -85,7 +97,11 @@ func TestOrganizationReader_List_And_Count(t *testing.T) {
 			UpdatedAt:    now.Add(time.Duration(i) * time.Minute),
 		}
 		require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-			return projector.OrganizationCreated(tx, org)
+			return qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+				Name:         org.Name,
+				LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+				CreatedAt:    timestamppb.New(org.CreatedAt),
+			})
 		}))
 	}
 
@@ -122,7 +138,11 @@ func TestOrganizationReader_Search_FiltersByNameSubstring(t *testing.T) {
 			UpdatedAt:    now.Add(time.Duration(i) * time.Minute),
 		}
 		require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-			return projector.OrganizationCreated(tx, org)
+			return qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+				Name:         org.Name,
+				LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+				CreatedAt:    timestamppb.New(org.CreatedAt),
+			})
 		}))
 	}
 
@@ -143,11 +163,13 @@ func TestClinicReader_Get_And_ListByOrganization(t *testing.T) {
 
 	orgID := uuid.Must(uuid.NewV7())
 	now := time.Now().UTC().Truncate(time.Second)
-	org := &model.Organization{
-		ID: orgID, Name: "O", LegalAddress: model.Address{Text: "S"}, CreatedAt: now, UpdatedAt: now,
-	}
+	org := &model.Organization{ID: orgID, Name: "O", LegalAddress: model.Address{Text: "S"}, CreatedAt: now, UpdatedAt: now}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationCreated(tx, org)
+		return qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+			Name:         org.Name,
+			LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+			CreatedAt:    timestamppb.New(org.CreatedAt),
+		})
 	}))
 
 	clinicID := uuid.Must(uuid.NewV7())
@@ -161,7 +183,13 @@ func TestClinicReader_Get_And_ListByOrganization(t *testing.T) {
 		UpdatedAt:       now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicCreated(tx, clinic)
+		return qprojector.ClinicCreated(tx, clinic.ID.String(), clinic.CreatedAt, &clinicv1.ClinicCreated{
+			OrganizationId:  clinic.OrganizationID.String(),
+			Name:            clinic.Name,
+			Description:     clinic.Description.String,
+			PhysicalAddress: &clinicv1.Address{Text: clinic.PhysicalAddress.Text},
+			CreatedAt:       timestamppb.New(clinic.CreatedAt),
+		})
 	}))
 
 	reader := orgread.NewClinicReader(testDB, authzSvc, &logger)
@@ -193,13 +221,27 @@ func TestDepartmentReader_Get_And_ListByClinic(t *testing.T) {
 	dept := &model.Department{ID: deptID, ClinicID: clinicID, Name: "Radiology", Description: null.StringFrom("radiology department, long description"), CreatedAt: now, UpdatedAt: now}
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.OrganizationCreated(tx, org); err != nil {
+		if err := qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+			Name:         org.Name,
+			LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+			CreatedAt:    timestamppb.New(org.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		if err := projector.ClinicCreated(tx, clinic); err != nil {
+		if err := qprojector.ClinicCreated(tx, clinic.ID.String(), clinic.CreatedAt, &clinicv1.ClinicCreated{
+			OrganizationId:  clinic.OrganizationID.String(),
+			Name:            clinic.Name,
+			PhysicalAddress: &clinicv1.Address{Text: clinic.PhysicalAddress.Text},
+			CreatedAt:       timestamppb.New(clinic.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		return projector.DepartmentCreated(tx, dept)
+		return qprojector.DepartmentCreated(tx, dept.ID.String(), dept.CreatedAt, &deptv1.DepartmentCreated{
+			ClinicId:    dept.ClinicID.String(),
+			Name:        dept.Name,
+			Description: dept.Description.String,
+			CreatedAt:   timestamppb.New(dept.CreatedAt),
+		})
 	}))
 
 	reader := orgread.NewDepartmentReader(testDB, authzSvc, &logger)

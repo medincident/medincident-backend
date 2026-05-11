@@ -10,10 +10,14 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
+	empv1 "github.com/medincident/medincident-backend/pkg/event/employee/v1"
 )
 
 // seedDepartment is a test helper that creates an organization + clinic
@@ -30,7 +34,11 @@ func seedDepartment(t *testing.T, ctx context.Context, now time.Time) (*model.Or
 		UpdatedAt: now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentCreated(tx, dept)
+		return qprojector.DepartmentCreated(tx, dept.ID.String(), dept.CreatedAt, &deptv1.DepartmentCreated{
+			ClinicId:  dept.ClinicID.String(),
+			Name:      dept.Name,
+			CreatedAt: timestamppb.New(dept.CreatedAt),
+		})
 	}))
 	return org, clinic, dept
 }
@@ -55,7 +63,13 @@ func TestEmployeeHired_WritesEmployeeCardAndBumpsCounters(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeHired(tx, emp)
+		return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			Position:       emp.Position.String,
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+		})
 	}))
 
 	var zit, position string
@@ -115,12 +129,21 @@ func TestEmployeeTerminated_StampsTerminatedAtAndDecrementsCounters(t *testing.T
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeHired(tx, emp)
+		return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+		})
 	}))
 
 	terminatedAt := now.Add(24 * time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeTerminated(tx, emp, terminatedAt)
+		return qprojector.EmployeeTerminated(tx, emp.ID.String(), terminatedAt, &empv1.EmployeeTerminated{
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			TerminatedAt:   timestamppb.New(terminatedAt),
+		})
 	}))
 
 	var empTerminated, cardTerminated *time.Time
@@ -168,7 +191,12 @@ func TestEmployeeDepartmentChanged_CrossClinicMove(t *testing.T) {
 		UpdatedAt:       now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicCreated(tx, clinic2)
+		return qprojector.ClinicCreated(tx, clinic2.ID.String(), clinic2.CreatedAt, &clinicv1.ClinicCreated{
+			OrganizationId:  clinic2.OrganizationID.String(),
+			Name:            clinic2.Name,
+			PhysicalAddress: &clinicv1.Address{Text: clinic2.PhysicalAddress.Text},
+			CreatedAt:       timestamppb.New(clinic2.CreatedAt),
+		})
 	}))
 	dept2 := &model.Department{
 		ID:        uuid.Must(uuid.NewV7()),
@@ -178,7 +206,11 @@ func TestEmployeeDepartmentChanged_CrossClinicMove(t *testing.T) {
 		UpdatedAt: now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentCreated(tx, dept2)
+		return qprojector.DepartmentCreated(tx, dept2.ID.String(), dept2.CreatedAt, &deptv1.DepartmentCreated{
+			ClinicId:  dept2.ClinicID.String(),
+			Name:      dept2.Name,
+			CreatedAt: timestamppb.New(dept2.CreatedAt),
+		})
 	}))
 
 	emp := &model.Employee{
@@ -190,14 +222,21 @@ func TestEmployeeDepartmentChanged_CrossClinicMove(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeHired(tx, emp)
+		return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+		})
 	}))
 
 	// Move employee to dept2 (different clinic).
-	emp.DepartmentID = dept2.ID
-	emp.UpdatedAt = now.Add(time.Hour)
+	updatedAt := now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeDepartmentChanged(tx, emp)
+		return qprojector.EmployeeDepartmentChanged(tx, emp.ID.String(), updatedAt, &empv1.EmployeeDepartmentChanged{
+			NewDepartmentId: dept2.ID.String(),
+			UpdatedAt:       timestamppb.New(updatedAt),
+		})
 	}))
 
 	var c1, c2, d1, d2 int64
@@ -248,13 +287,21 @@ func TestEmployeePositionChanged_UpdatesRowAndCard(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeeHired(tx, emp)
+		return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			Position:       emp.Position.String,
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+		})
 	}))
 
-	emp.Position = null.StringFrom("Senior Nurse")
-	emp.UpdatedAt = now.Add(time.Hour)
+	updatedAt := now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.EmployeePositionChanged(tx, emp)
+		return qprojector.EmployeePositionChanged(tx, emp.ID.String(), updatedAt, &empv1.EmployeePositionChanged{
+			Position:  "Senior Nurse",
+			UpdatedAt: timestamppb.New(updatedAt),
+		})
 	}))
 
 	var empPos, cardPos *string

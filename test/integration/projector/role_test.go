@@ -10,10 +10,15 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	deptv1 "github.com/medincident/medincident-backend/pkg/event/department/v1"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
+	sav1 "github.com/medincident/medincident-backend/pkg/event/system_admin/v1"
 )
 
 // TestClinicHead_AssignAndRevoke verifies the assign/revoke pair for
@@ -34,7 +39,10 @@ func TestClinicHead_AssignAndRevoke(t *testing.T) {
 		UpdatedAt:  now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicHeadAssigned(tx, role)
+		return qprojector.ClinicHeadAssigned(tx, role.ClinicID.String(), role.CreatedAt, &clinicv1.ClinicHeadAssigned{
+			EmployeeId: role.EmployeeID.String(),
+			AssignedAt: timestamppb.New(role.CreatedAt),
+		})
 	}))
 
 	var count int64
@@ -45,7 +53,9 @@ func TestClinicHead_AssignAndRevoke(t *testing.T) {
 	require.Equal(t, int64(1), count)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicHeadRevoked(tx, clinic.ID, empID)
+		return qprojector.ClinicHeadRevoked(tx, clinic.ID.String(), time.Now(), &clinicv1.ClinicHeadRevoked{
+			EmployeeId: empID.String(),
+		})
 	}))
 
 	require.NoError(t, testDB.WithContext(ctx).Raw(
@@ -72,10 +82,15 @@ func TestDepartmentResponsible_AssignAndRevoke(t *testing.T) {
 		UpdatedAt:    now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentResponsibleAssigned(tx, role)
+		return qprojector.DeptResponsibleAssigned(tx, role.DepartmentID.String(), role.CreatedAt, &deptv1.DeptResponsibleAssigned{
+			EmployeeId: role.EmployeeID.String(),
+			AssignedAt: timestamppb.New(role.CreatedAt),
+		})
 	}))
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.DepartmentResponsibleRevoked(tx, dept.ID, empID)
+		return qprojector.DeptResponsibleRevoked(tx, dept.ID.String(), time.Now(), &deptv1.DeptResponsibleRevoked{
+			EmployeeId: empID.String(),
+		})
 	}))
 
 	var count int64
@@ -103,13 +118,20 @@ func TestOrgAdmin_AssignWithDeputyAndRevoke(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgAdminAssigned(tx, role)
+		return qprojector.OrgAdminAssigned(tx, role.OrganizationID.String(), role.CreatedAt, &orgv1.OrgAdminAssigned{
+			EmployeeId: role.EmployeeID.String(),
+			AssignedAt: timestamppb.New(role.CreatedAt),
+		})
 	}))
 
 	role.DeputyEmployeeID = null.ValueFrom(deputyID)
 	role.UpdatedAt = now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgAdminDeputyAssigned(tx, role)
+		return qprojector.OrgAdminDeputyAssigned(tx, role.OrganizationID.String(), role.UpdatedAt, &orgv1.OrgAdminDeputyAssigned{
+			EmployeeId:       role.EmployeeID.String(),
+			DeputyEmployeeId: role.DeputyEmployeeID.V.String(),
+			UpdatedAt:        timestamppb.New(role.UpdatedAt),
+		})
 	}))
 
 	var gotDeputy *uuid.UUID
@@ -120,8 +142,12 @@ func TestOrgAdmin_AssignWithDeputyAndRevoke(t *testing.T) {
 	require.NotNil(t, gotDeputy)
 	require.Equal(t, deputyID, *gotDeputy)
 
+	removedAt := now.Add(2 * time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgAdminDeputyRemoved(tx, org.ID, empID, now.Add(2*time.Hour))
+		return qprojector.OrgAdminDeputyRemoved(tx, org.ID.String(), removedAt, &orgv1.OrgAdminDeputyRemoved{
+			EmployeeId: empID.String(),
+			UpdatedAt:  timestamppb.New(removedAt),
+		})
 	}))
 
 	require.NoError(t, testDB.WithContext(ctx).Raw(
@@ -131,7 +157,9 @@ func TestOrgAdmin_AssignWithDeputyAndRevoke(t *testing.T) {
 	require.Nil(t, gotDeputy)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgAdminRevoked(tx, org.ID, empID)
+		return qprojector.OrgAdminRevoked(tx, org.ID.String(), time.Now(), &orgv1.OrgAdminRevoked{
+			EmployeeId: empID.String(),
+		})
 	}))
 
 	var count int64
@@ -157,10 +185,15 @@ func TestOrgDispatcher_AssignAndRevoke(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgDispatcherAssigned(tx, role)
+		return qprojector.OrgDispatcherAssigned(tx, role.OrganizationID.String(), role.CreatedAt, &orgv1.OrgDispatcherAssigned{
+			EmployeeId: role.EmployeeID.String(),
+			AssignedAt: timestamppb.New(role.CreatedAt),
+		})
 	}))
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgDispatcherRevoked(tx, org.ID, empID)
+		return qprojector.OrgDispatcherRevoked(tx, org.ID.String(), time.Now(), &orgv1.OrgDispatcherRevoked{
+			EmployeeId: empID.String(),
+		})
 	}))
 
 	var count int64
@@ -186,10 +219,15 @@ func TestOrgHead_AssignAndRevoke(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgHeadAssigned(tx, role)
+		return qprojector.OrgHeadAssigned(tx, role.OrganizationID.String(), role.CreatedAt, &orgv1.OrgHeadAssigned{
+			EmployeeId: role.EmployeeID.String(),
+			AssignedAt: timestamppb.New(role.CreatedAt),
+		})
 	}))
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrgHeadRevoked(tx, org.ID, empID)
+		return qprojector.OrgHeadRevoked(tx, org.ID.String(), time.Now(), &orgv1.OrgHeadRevoked{
+			EmployeeId: empID.String(),
+		})
 	}))
 
 	var count int64
@@ -209,7 +247,9 @@ func TestSystemAdmin_GrantAndRevoke(t *testing.T) {
 	zitadelID := "zit-admin-1"
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.SystemAdminGranted(tx, zitadelID, now)
+		return qprojector.SystemAdminGranted(tx, zitadelID, now, &sav1.SystemAdminGranted{
+			GrantedAt: timestamppb.New(now),
+		})
 	}))
 
 	var count int64
@@ -219,7 +259,7 @@ func TestSystemAdmin_GrantAndRevoke(t *testing.T) {
 	require.Equal(t, int64(1), count)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.SystemAdminRevoked(tx, zitadelID)
+		return qprojector.SystemAdminRevoked(tx, zitadelID, time.Now(), &sav1.SystemAdminRevoked{})
 	}))
 
 	require.NoError(t, testDB.WithContext(ctx).Raw(

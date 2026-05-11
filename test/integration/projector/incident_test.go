@@ -10,10 +10,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
 )
 
 // TestCategory_LifecycleProjection runs a representative category flow
@@ -38,14 +41,24 @@ func TestCategory_LifecycleProjection(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.CategoryCreated(tx, cat)
+		return qprojector.CategoryCreated(tx, cat.ID.String(), cat.CreatedAt, &classifierv1.IncidentCategoryCreated{
+			OrganizationId: cat.OrganizationID.String(),
+			Name:           cat.Name,
+			Description:    wrapperspb.String(cat.Description.String),
+			IsActive:       cat.IsActive,
+			CreatedAt:      timestamppb.New(cat.CreatedAt),
+		})
 	}))
 
 	cat.Name = "Cat B"
 	cat.Description = null.StringFrom("updated description")
 	cat.UpdatedAt = now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.CategoryUpdateDetails(tx, cat)
+		return qprojector.CategoryDetailsUpdated(tx, cat.ID.String(), cat.UpdatedAt, &classifierv1.IncidentCategoryDetailsUpdated{
+			Name:        cat.Name,
+			Description: wrapperspb.String(cat.Description.String),
+			UpdatedAt:   timestamppb.New(cat.UpdatedAt),
+		})
 	}))
 	var name string
 	require.NoError(t, testDB.WithContext(ctx).Raw(
@@ -56,7 +69,10 @@ func TestCategory_LifecycleProjection(t *testing.T) {
 	// Move under a new parent.
 	newParent := uuid.NullUUID{UUID: parentID, Valid: true}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.CategoryMove(tx, catID, newParent, now.Add(2*time.Hour))
+		return qprojector.CategoryMoved(tx, catID.String(), now.Add(2*time.Hour), &classifierv1.IncidentCategoryMoved{
+			NewParentCategoryId: wrapperspb.String(newParent.UUID.String()),
+			UpdatedAt:           timestamppb.New(now.Add(2 * time.Hour)),
+		})
 	}))
 	var gotParent *uuid.UUID
 	require.NoError(t, testDB.WithContext(ctx).Raw(
@@ -66,7 +82,9 @@ func TestCategory_LifecycleProjection(t *testing.T) {
 	require.Equal(t, parentID, *gotParent)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.CategoryDeactivate(tx, catID, now.Add(3*time.Hour))
+		return qprojector.CategoryDeactivated(tx, catID.String(), now.Add(3*time.Hour), &classifierv1.IncidentCategoryDeactivated{
+			UpdatedAt: timestamppb.New(now.Add(3 * time.Hour)),
+		})
 	}))
 	var active bool
 	require.NoError(t, testDB.WithContext(ctx).Raw(
@@ -75,7 +93,9 @@ func TestCategory_LifecycleProjection(t *testing.T) {
 	require.False(t, active)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.CategoryReactivate(tx, catID, now.Add(4*time.Hour))
+		return qprojector.CategoryReactivated(tx, catID.String(), now.Add(4*time.Hour), &classifierv1.IncidentCategoryReactivated{
+			UpdatedAt: timestamppb.New(now.Add(4 * time.Hour)),
+		})
 	}))
 	require.NoError(t, testDB.WithContext(ctx).Raw(
 		`SELECT is_active FROM projections.incident_categories WHERE id = ?`, catID,
@@ -83,7 +103,7 @@ func TestCategory_LifecycleProjection(t *testing.T) {
 	require.True(t, active)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.CategoryDeleted(tx, catID)
+		return qprojector.CategoryDeleted(tx, catID.String(), time.Now(), &classifierv1.IncidentCategoryDeleted{})
 	}))
 	var count int64
 	require.NoError(t, testDB.WithContext(ctx).Raw(
@@ -115,17 +135,30 @@ func TestType_LifecycleProjection(t *testing.T) {
 		UpdatedAt:      now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.TypeCreated(tx, typ)
+		return qprojector.TypeCreated(tx, typ.ID.String(), typ.CreatedAt, &classifierv1.IncidentTypeCreated{
+			OrganizationId: typ.OrganizationID.String(),
+			CategoryId:     typ.CategoryID.String(),
+			Name:           typ.Name,
+			Description:    wrapperspb.String(typ.Description.String),
+			IsActive:       typ.IsActive,
+			CreatedAt:      timestamppb.New(typ.CreatedAt),
+		})
 	}))
 
 	typ.Name = "Type B"
 	typ.UpdatedAt = now.Add(time.Hour)
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.TypeUpdateDetails(tx, typ)
+		return qprojector.TypeDetailsUpdated(tx, typ.ID.String(), typ.UpdatedAt, &classifierv1.IncidentTypeDetailsUpdated{
+			Name:      typ.Name,
+			UpdatedAt: timestamppb.New(typ.UpdatedAt),
+		})
 	}))
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.TypeMove(tx, typeID, newCatID, now.Add(2*time.Hour))
+		return qprojector.TypeMoved(tx, typeID.String(), now.Add(2*time.Hour), &classifierv1.IncidentTypeMoved{
+			NewCategoryId: newCatID.String(),
+			UpdatedAt:     timestamppb.New(now.Add(2 * time.Hour)),
+		})
 	}))
 	var gotCatID uuid.UUID
 	require.NoError(t, testDB.WithContext(ctx).Raw(
@@ -134,7 +167,9 @@ func TestType_LifecycleProjection(t *testing.T) {
 	require.Equal(t, newCatID, gotCatID)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.TypeDeactivate(tx, typeID, now.Add(3*time.Hour))
+		return qprojector.TypeDeactivated(tx, typeID.String(), now.Add(3*time.Hour), &classifierv1.IncidentTypeDeactivated{
+			UpdatedAt: timestamppb.New(now.Add(3 * time.Hour)),
+		})
 	}))
 	var active bool
 	require.NoError(t, testDB.WithContext(ctx).Raw(
@@ -143,7 +178,9 @@ func TestType_LifecycleProjection(t *testing.T) {
 	require.False(t, active)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.TypeReactivate(tx, typeID, now.Add(4*time.Hour))
+		return qprojector.TypeReactivated(tx, typeID.String(), now.Add(4*time.Hour), &classifierv1.IncidentTypeReactivated{
+			UpdatedAt: timestamppb.New(now.Add(4 * time.Hour)),
+		})
 	}))
 	require.NoError(t, testDB.WithContext(ctx).Raw(
 		`SELECT is_active FROM projections.incident_types WHERE id = ?`, typeID,
@@ -151,7 +188,7 @@ func TestType_LifecycleProjection(t *testing.T) {
 	require.True(t, active)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.TypeDeleted(tx, typeID)
+		return qprojector.TypeDeleted(tx, typeID.String(), time.Now(), &classifierv1.IncidentTypeDeleted{})
 	}))
 	var count int64
 	require.NoError(t, testDB.WithContext(ctx).Raw(

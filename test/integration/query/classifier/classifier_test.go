@@ -11,11 +11,14 @@ import (
 	"github.com/guregu/null/v6"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
 	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
 )
 
 // TestReader_Category_Get_And_Subtree seeds a three-level tree and
@@ -54,13 +57,31 @@ func TestReader_Category_Get_And_Subtree(t *testing.T) {
 	}
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.CategoryCreated(tx, root); err != nil {
+		if err := qprojector.CategoryCreated(tx, root.ID.String(), root.CreatedAt, &classifierv1.IncidentCategoryCreated{
+			OrganizationId: root.OrganizationID.String(),
+			Name:           root.Name,
+			Description:    wrapperspb.String(root.Description.String),
+			IsActive:       root.IsActive,
+			CreatedAt:      timestamppb.New(root.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		if err := projector.CategoryCreated(tx, child); err != nil {
+		if err := qprojector.CategoryCreated(tx, child.ID.String(), child.CreatedAt, &classifierv1.IncidentCategoryCreated{
+			OrganizationId:   child.OrganizationID.String(),
+			Name:             child.Name,
+			ParentCategoryId: wrapperspb.String(child.ParentCategoryID.UUID.String()),
+			IsActive:         child.IsActive,
+			CreatedAt:        timestamppb.New(child.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		return projector.CategoryCreated(tx, grand)
+		return qprojector.CategoryCreated(tx, grand.ID.String(), grand.CreatedAt, &classifierv1.IncidentCategoryCreated{
+			OrganizationId:   grand.OrganizationID.String(),
+			Name:             grand.Name,
+			ParentCategoryId: wrapperspb.String(grand.ParentCategoryID.UUID.String()),
+			IsActive:         grand.IsActive,
+			CreatedAt:        timestamppb.New(grand.CreatedAt),
+		})
 	}))
 
 	reader := classifierread.NewReader(testDB, authzSvc, &logger)
@@ -107,10 +128,21 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 	}
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		if err := projector.CategoryCreated(tx, cat); err != nil {
+		if err := qprojector.CategoryCreated(tx, cat.ID.String(), cat.CreatedAt, &classifierv1.IncidentCategoryCreated{
+			OrganizationId: cat.OrganizationID.String(),
+			Name:           cat.Name,
+			IsActive:       cat.IsActive,
+			CreatedAt:      timestamppb.New(cat.CreatedAt),
+		}); err != nil {
 			return err
 		}
-		return projector.TypeCreated(tx, typ)
+		return qprojector.TypeCreated(tx, typ.ID.String(), typ.CreatedAt, &classifierv1.IncidentTypeCreated{
+			OrganizationId: typ.OrganizationID.String(),
+			CategoryId:     typ.CategoryID.String(),
+			Name:           typ.Name,
+			IsActive:       typ.IsActive,
+			CreatedAt:      timestamppb.New(typ.CreatedAt),
+		})
 	}))
 
 	reader := classifierread.NewReader(testDB, authzSvc, &logger)
@@ -133,17 +165,7 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 // TestReader_PatientAllowed_Types_And_VisibleCategories seeds a fixture
 // containing every interesting combination of (category active?, type
 // active?, type allowed-for-patients?) and verifies that each patient-mode
-// reader method honours its own contract:
-//
-//   - ListPatientAllowedTypesByOrganization filters on the type's own
-//     is_active AND is_allowed_for_patients only; ancestor activity is the
-//     visibility-tree's concern, not this list's.
-//   - ListPatientVisibleCategoriesByOrganization returns categories that
-//     are themselves active AND have at least one active+allowed type
-//     somewhere in their subtree. It includes intermediate ancestors so
-//     the patient sees the full path, and excludes categories whose every
-//     descendant type is unavailable (or whose ancestor chain breaks at an
-//     inactive category).
+// reader method honours its own contract.
 func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 	resetProjections(t)
 	ctx := context.Background()
@@ -152,16 +174,6 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 	now := time.Now().UTC().Truncate(time.Second)
 	orgID := uuid.Must(uuid.NewV7())
 
-	// Fixture (same org):
-	//
-	//   surgical (active)              ← visible: has allowed type below
-	//     wardFalls (active)           ← visible: direct allowed type
-	//       allowedFall   (active, allowed)   ← appears in patient list
-	//       internalOnly  (active, NOT allowed)
-	//     archived (inactive)          ← invisible: ancestor inactive
-	//       wouldAllow   (active, allowed)    ← excluded: parent inactive
-	//   adminOnly (active)             ← invisible: no allowed type below
-	//     adminOnlyType (active, NOT allowed)
 	surgicalID := uuid.Must(uuid.NewV7())
 	wardFallsID := uuid.Must(uuid.NewV7())
 	archivedID := uuid.Must(uuid.NewV7())
@@ -187,12 +199,28 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		for _, c := range categories {
-			if err := projector.CategoryCreated(tx, c); err != nil {
+			ev := &classifierv1.IncidentCategoryCreated{
+				OrganizationId: c.OrganizationID.String(),
+				Name:           c.Name,
+				IsActive:       c.IsActive,
+				CreatedAt:      timestamppb.New(c.CreatedAt),
+			}
+			if c.ParentCategoryID.Valid {
+				ev.ParentCategoryId = wrapperspb.String(c.ParentCategoryID.UUID.String())
+			}
+			if err := qprojector.CategoryCreated(tx, c.ID.String(), c.CreatedAt, ev); err != nil {
 				return err
 			}
 		}
-		for _, t := range types {
-			if err := projector.TypeCreated(tx, t); err != nil {
+		for _, tp := range types {
+			if err := qprojector.TypeCreated(tx, tp.ID.String(), tp.CreatedAt, &classifierv1.IncidentTypeCreated{
+				OrganizationId:       tp.OrganizationID.String(),
+				CategoryId:           tp.CategoryID.String(),
+				Name:                 tp.Name,
+				IsActive:             tp.IsActive,
+				IsAllowedForPatients: tp.IsAllowedForPatients,
+				CreatedAt:            timestamppb.New(tp.CreatedAt),
+			}); err != nil {
 				return err
 			}
 		}
@@ -201,12 +229,6 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 
 	reader := classifierread.NewReader(testDB, authzSvc, &logger)
 
-	// Patient-allowed types: only the active+allowed leaf under an active
-	// category chain. wouldAllowID is allowed but its parent category is
-	// inactive — included? It depends on intent. The current method filters
-	// on the type's own is_active AND is_allowed_for_patients, NOT on
-	// ancestor activity. The category-level filter (subtree visibility) is
-	// the consumer's choice. We assert this contract explicitly.
 	allowedTypes, err := reader.ListPatientAllowedTypesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
 	require.NoError(t, err)
 	allowedIDs := make(map[uuid.UUID]bool, len(allowedTypes))
@@ -220,10 +242,6 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 	require.False(t, allowedIDs[internalOnlyID], "non-allowed type must be excluded")
 	require.False(t, allowedIDs[adminOnlyTypeID], "non-allowed type must be excluded")
 
-	// Patient-visible categories: surgical (root, has allowed descendant) and
-	// wardFalls (direct allowed type). Archived is inactive → excluded.
-	// adminOnly has only non-allowed types → excluded. wouldAllow's parent
-	// (archived) is inactive, so wouldAllow does not contribute visibility.
 	visibleCats, err := reader.ListPatientVisibleCategoriesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
 	require.NoError(t, err)
 	visibleIDs := make(map[uuid.UUID]bool, len(visibleCats))

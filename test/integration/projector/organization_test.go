@@ -10,10 +10,12 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
 )
 
 // TestOrganizationCreated_WritesRowAndCounters confirms the projector
@@ -35,7 +37,12 @@ func TestOrganizationCreated_WritesRowAndCounters(t *testing.T) {
 	}
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationCreated(tx, org)
+		return qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+			Name:         org.Name,
+			Description:  org.Description.String,
+			LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+			CreatedAt:    timestamppb.New(org.CreatedAt),
+		})
 	}))
 
 	var name string
@@ -75,7 +82,12 @@ func TestOrganizationDetailsChanged_UpdatesRowAndEmployeeCards(t *testing.T) {
 		UpdatedAt:    now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationCreated(tx, org)
+		return qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+			Name:         org.Name,
+			Description:  org.Description.String,
+			LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+			CreatedAt:    timestamppb.New(org.CreatedAt),
+		})
 	}))
 
 	// Seed an employee_card row that should be re-mirrored on rename.
@@ -93,7 +105,11 @@ func TestOrganizationDetailsChanged_UpdatesRowAndEmployeeCards(t *testing.T) {
 	org.UpdatedAt = now.Add(time.Hour)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationDetailsChanged(tx, org)
+		return qprojector.OrganizationDetailsChanged(tx, org.ID.String(), org.UpdatedAt, &orgv1.OrganizationDetailsChanged{
+			Name:        org.Name,
+			Description: org.Description.String,
+			UpdatedAt:   timestamppb.New(org.UpdatedAt),
+		})
 	}))
 
 	var name string
@@ -127,7 +143,11 @@ func TestOrganizationLegalAddressChanged_UpdatesRow(t *testing.T) {
 		UpdatedAt:    now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationCreated(tx, org)
+		return qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+			Name:         org.Name,
+			LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+			CreatedAt:    timestamppb.New(org.CreatedAt),
+		})
 	}))
 
 	org.LegalAddress = model.Address{
@@ -137,7 +157,13 @@ func TestOrganizationLegalAddressChanged_UpdatesRow(t *testing.T) {
 	org.UpdatedAt = now.Add(time.Hour)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationLegalAddressChanged(tx, org)
+		return qprojector.OrganizationLegalAddressChanged(tx, org.ID.String(), org.UpdatedAt, &orgv1.OrganizationLegalAddressChanged{
+			LegalAddress: &orgv1.Address{
+				Text:  org.LegalAddress.Text,
+				Point: &orgv1.Point{Longitude: 12.5, Latitude: -7.25},
+			},
+			UpdatedAt: timestamppb.New(org.UpdatedAt),
+		})
 	}))
 
 	var addrText string

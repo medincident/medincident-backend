@@ -10,10 +10,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/command/projector"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
+	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
 )
 
 // seedOrganization is a test helper that inserts a fresh organization
@@ -29,7 +32,12 @@ func seedOrganization(t *testing.T, ctx context.Context, now time.Time) *model.O
 		UpdatedAt:    now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.OrganizationCreated(tx, org)
+		return qprojector.OrganizationCreated(tx, org.ID.String(), org.CreatedAt, &orgv1.OrganizationCreated{
+			Name:         org.Name,
+			Description:  org.Description.String,
+			LegalAddress: &orgv1.Address{Text: org.LegalAddress.Text},
+			CreatedAt:    timestamppb.New(org.CreatedAt),
+		})
 	}))
 	return org
 }
@@ -54,7 +62,13 @@ func TestClinicCreated_WritesRowCountersAndBumpsOrg(t *testing.T) {
 		UpdatedAt:       now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicCreated(tx, clinic)
+		return qprojector.ClinicCreated(tx, clinic.ID.String(), clinic.CreatedAt, &clinicv1.ClinicCreated{
+			OrganizationId:  clinic.OrganizationID.String(),
+			Name:            clinic.Name,
+			Description:     clinic.Description.String,
+			PhysicalAddress: &clinicv1.Address{Text: clinic.PhysicalAddress.Text},
+			CreatedAt:       timestamppb.New(clinic.CreatedAt),
+		})
 	}))
 
 	var name string
@@ -101,7 +115,13 @@ func TestClinicDetailsChanged_UpdatesRowAndEmployeeCards(t *testing.T) {
 		UpdatedAt:       now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicCreated(tx, clinic)
+		return qprojector.ClinicCreated(tx, clinic.ID.String(), clinic.CreatedAt, &clinicv1.ClinicCreated{
+			OrganizationId:  clinic.OrganizationID.String(),
+			Name:            clinic.Name,
+			Description:     clinic.Description.String,
+			PhysicalAddress: &clinicv1.Address{Text: clinic.PhysicalAddress.Text},
+			CreatedAt:       timestamppb.New(clinic.CreatedAt),
+		})
 	}))
 
 	// Seed an employee_card row that should be re-mirrored on rename.
@@ -118,7 +138,11 @@ func TestClinicDetailsChanged_UpdatesRowAndEmployeeCards(t *testing.T) {
 	clinic.UpdatedAt = now.Add(time.Hour)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicDetailsChanged(tx, clinic)
+		return qprojector.ClinicDetailsChanged(tx, clinic.ID.String(), clinic.UpdatedAt, &clinicv1.ClinicDetailsChanged{
+			Name:        clinic.Name,
+			Description: clinic.Description.String,
+			UpdatedAt:   timestamppb.New(clinic.UpdatedAt),
+		})
 	}))
 
 	var name string
@@ -154,7 +178,12 @@ func TestClinicPhysicalAddressChanged_UpdatesRow(t *testing.T) {
 		UpdatedAt:       now,
 	}
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicCreated(tx, clinic)
+		return qprojector.ClinicCreated(tx, clinic.ID.String(), clinic.CreatedAt, &clinicv1.ClinicCreated{
+			OrganizationId:  clinic.OrganizationID.String(),
+			Name:            clinic.Name,
+			PhysicalAddress: &clinicv1.Address{Text: clinic.PhysicalAddress.Text},
+			CreatedAt:       timestamppb.New(clinic.CreatedAt),
+		})
 	}))
 
 	clinic.PhysicalAddress = model.Address{
@@ -164,7 +193,13 @@ func TestClinicPhysicalAddressChanged_UpdatesRow(t *testing.T) {
 	clinic.UpdatedAt = now.Add(time.Hour)
 
 	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		return projector.ClinicPhysicalAddressChanged(tx, clinic)
+		return qprojector.ClinicPhysicalAddressChanged(tx, clinic.ID.String(), clinic.UpdatedAt, &clinicv1.ClinicPhysicalAddressChanged{
+			PhysicalAddress: &clinicv1.Address{
+				Text:  clinic.PhysicalAddress.Text,
+				Point: &clinicv1.Point{Longitude: 10.5, Latitude: -3.25},
+			},
+			UpdatedAt: timestamppb.New(clinic.UpdatedAt),
+		})
 	}))
 
 	var addrText string
