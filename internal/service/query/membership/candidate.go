@@ -361,27 +361,28 @@ func (r *CandidateReader) listEmployeeCandidates(
 			Code(ErrCodeCandidateLoadFailed).Wrap(err)
 	}
 	defer func() { _ = rows.Close() }()
-	out := make([]EmployeeCardView, 0, limit+1)
-	var lastUpdatedAt time.Time
-	var lastID string
+	raw := make([]employeeWithUpdatedAt, 0, limit+1)
 	for rows.Next() {
 		var v employeeWithUpdatedAt
 		if err := scanEmployeeWithUpdatedAt(rows, &v); err != nil {
 			return nil, "", oops.In("reader.membership.candidate").
 				Code(ErrCodeCandidateLoadFailed).Wrap(err)
 		}
-		out = append(out, v.EmployeeCardView)
-		lastUpdatedAt = v.UpdatedAt
-		lastID = v.EmployeeID.String()
+		raw = append(raw, v)
 	}
 	if err := rows.Err(); err != nil {
 		return nil, "", oops.In("reader.membership.candidate").
 			Code(ErrCodeCandidateLoadFailed).Wrap(err)
 	}
 	next := ""
-	if len(out) > limit {
-		out = out[:limit]
-		next = cursor.Encode(lastUpdatedAt, lastID)
+	if len(raw) > limit {
+		raw = raw[:limit]
+		last := raw[len(raw)-1]
+		next = cursor.Encode(last.UpdatedAt, last.EmployeeID.String())
+	}
+	out := make([]EmployeeCardView, len(raw))
+	for i := range raw {
+		out[i] = raw[i].EmployeeCardView
 	}
 	return out, next, nil
 }
