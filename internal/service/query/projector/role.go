@@ -25,7 +25,7 @@ func ClinicHeadAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *clinic
 		return err
 	}
 	assignedAt := ev.GetAssignedAt().AsTime()
-	if err := tx.Exec(`INSERT INTO projections.clinic_heads (clinic_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (clinic_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
+	if err := tx.Exec(`INSERT INTO projections.clinic_heads (clinic_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (clinic_id, employee_id) DO NOTHING`,
 		clinicID, empID, assignedAt, assignedAt).Error; err != nil {
 		return wrapRole(err, "clinic_head", empID)
 	}
@@ -98,7 +98,7 @@ func DeptResponsibleAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *d
 		return err
 	}
 	at := ev.GetAssignedAt().AsTime()
-	if err := tx.Exec(`INSERT INTO projections.department_responsibles (department_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (department_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
+	if err := tx.Exec(`INSERT INTO projections.department_responsibles (department_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (department_id, employee_id) DO NOTHING`,
 		deptID, empID, at, at).Error; err != nil {
 		return wrapRole(err, "dept_responsible", empID)
 	}
@@ -171,7 +171,7 @@ func OrgAdminAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.Or
 		return err
 	}
 	at := ev.GetAssignedAt().AsTime()
-	if err := tx.Exec(`INSERT INTO projections.org_admins (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
+	if err := tx.Exec(`INSERT INTO projections.org_admins (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id, employee_id) DO NOTHING`,
 		orgID, empID, at, at).Error; err != nil {
 		return wrapRole(err, "org_admin", empID)
 	}
@@ -244,7 +244,7 @@ func OrgHeadAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv1.Org
 		return err
 	}
 	at := ev.GetAssignedAt().AsTime()
-	if err := tx.Exec(`INSERT INTO projections.org_heads (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
+	if err := tx.Exec(`INSERT INTO projections.org_heads (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id, employee_id) DO NOTHING`,
 		orgID, empID, at, at).Error; err != nil {
 		return wrapRole(err, "org_head", empID)
 	}
@@ -317,7 +317,7 @@ func OrgDispatcherAssigned(tx *gorm.DB, aggregateID string, _ time.Time, ev *org
 		return err
 	}
 	at := ev.GetAssignedAt().AsTime()
-	if err := tx.Exec(`INSERT INTO projections.org_dispatchers (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id) DO UPDATE SET employee_id = EXCLUDED.employee_id, updated_at = EXCLUDED.updated_at`,
+	if err := tx.Exec(`INSERT INTO projections.org_dispatchers (organization_id, employee_id, deputy_employee_id, created_at, updated_at) VALUES (?, ?, NULL, ?, ?) ON CONFLICT (organization_id, employee_id) DO NOTHING`,
 		orgID, empID, at, at).Error; err != nil {
 		return wrapRole(err, "org_dispatcher", empID)
 	}
@@ -382,8 +382,8 @@ func OrgDispatcherRevoked(tx *gorm.DB, aggregateID string, _ time.Time, ev *orgv
 
 func SystemAdminGranted(tx *gorm.DB, aggregateID string, _ time.Time, ev *sav1.SystemAdminGranted) error {
 	grantedAt := ev.GetGrantedAt().AsTime()
-	if err := tx.Exec(`INSERT INTO projections.system_admins (zitadel_user_id, created_at, updated_at) VALUES (?, ?, ?) ON CONFLICT (zitadel_user_id) DO NOTHING`,
-		aggregateID, grantedAt, grantedAt).Error; err != nil {
+	if err := tx.Exec(`INSERT INTO projections.system_admins (zitadel_user_id, created_at) VALUES (?, ?) ON CONFLICT (zitadel_user_id) DO NOTHING`,
+		aggregateID, grantedAt).Error; err != nil {
 		return oops.In("projector.system_admin").Code(ErrCodeRoleProjectionFailed).With("zitadel_user_id", aggregateID).Wrap(err)
 	}
 	return nil

@@ -23,9 +23,9 @@ func TestScheduleVacation_Success_Unlimited(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	var projState string
-	require.NoError(t, testDB.Raw(`SELECT state FROM projections.employee_vacations WHERE id = ?`, res.ID).Row().Scan(&projState))
-	require.Equal(t, "scheduled", projState)
+	var domainCount int64
+	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.employee_vacations WHERE id = ?`, res.ID).Scan(&domainCount).Error)
+	require.Equal(t, int64(1), domainCount)
 }
 
 func TestScheduleVacation_Success_WithEnd(t *testing.T) {

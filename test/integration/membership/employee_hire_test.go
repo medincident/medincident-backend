@@ -43,14 +43,9 @@ func TestHireEmployee_Success_WithPosition(t *testing.T) {
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.employees WHERE id = ?`, res.ID).Scan(&count).Error)
 	require.Equal(t, int64(1), count)
 
-	// Projection row written atomically.
-	var projCount int64
-	require.NoError(t, testDB.Raw(`SELECT count(*) FROM projections.employees WHERE id = ?`, res.ID).Scan(&projCount).Error)
-	require.Equal(t, int64(1), projCount)
-
-	var projPos string
-	require.NoError(t, testDB.Raw(`SELECT position FROM projections.employees WHERE id = ?`, res.ID).Row().Scan(&projPos))
-	require.Equal(t, "Senior nurse", projPos)
+	var domainPos string
+	require.NoError(t, testDB.Raw(`SELECT COALESCE(position, '') FROM domain.employees WHERE id = ?`, res.ID).Row().Scan(&domainPos))
+	require.Equal(t, "Senior nurse", domainPos)
 }
 
 func TestHireEmployee_Success_NoPosition(t *testing.T) {
@@ -64,9 +59,9 @@ func TestHireEmployee_Success_NoPosition(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	var projPos *string
-	require.NoError(t, testDB.Raw(`SELECT position FROM projections.employees WHERE id = ?`, res.ID).Row().Scan(&projPos))
-	assert.Nil(t, projPos)
+	var domainPos *string
+	require.NoError(t, testDB.Raw(`SELECT position FROM domain.employees WHERE id = ?`, res.ID).Row().Scan(&domainPos))
+	assert.Nil(t, domainPos)
 }
 
 func TestHireEmployee_WhitespaceOnlyPositionRejected(t *testing.T) {

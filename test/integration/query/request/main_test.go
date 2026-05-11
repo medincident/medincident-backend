@@ -20,11 +20,15 @@ import (
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
 	requestsvc "github.com/medincident/medincident-backend/internal/service/command/request"
 	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/request/classifier"
+	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
 	requestread "github.com/medincident/medincident-backend/internal/service/query/request"
+	servicerequestv1 "github.com/medincident/medincident-backend/pkg/event/service_request/v1"
 )
 
 const (
@@ -219,7 +223,10 @@ func seedEmployee(t *testing.T, zitadelID string, orgID, deptID uuid.UUID) uuid.
 	return empID
 }
 
-func createRequest(t *testing.T, ctx context.Context, deptID, typeID, empID uuid.UUID) uuid.UUID {
+// createRequest creates a service request via the command service and synchronously
+// projects it into projections.service_requests / projections.service_request_executor_history
+// so that query-side readers can find the data immediately (no NATS pipeline in this suite).
+func createRequest(t *testing.T, ctx context.Context, orgID, clinicID, deptID, typeID, empID uuid.UUID) uuid.UUID {
 	t.Helper()
 	res, err := requestSvc.Create(ctx, &requestsvc.CreateServiceRequestCommand{
 		Caller: sysadminCaller,
@@ -231,5 +238,28 @@ func createRequest(t *testing.T, ctx context.Context, deptID, typeID, empID uuid
 		},
 	})
 	require.NoError(t, err)
+
+	now := time.Now()
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := qprojector.ServiceRequestCreated(tx, res.ID.String(), now, &servicerequestv1.ServiceRequestCreated{
+			RequestId:      res.ID.String(),
+			OrganizationId: orgID.String(),
+			ClinicId:       clinicID.String(),
+			DepartmentId:   deptID.String(),
+			TypeId:         typeID.String(),
+			Description:    "Описание заявки",
+			Status:         "created",
+			AuthorId:       sysadminZitadelID,
+			CreatedAt:      timestamppb.New(now),
+		}); err != nil {
+			return err
+		}
+		return qprojector.ServiceRequestExecutorAssigned(tx, res.ID.String(), now, &servicerequestv1.ServiceRequestExecutorAssigned{
+			RequestId:  res.ID.String(),
+			EmployeeId: empID.String(),
+			ActorId:    sysadminZitadelID,
+			ChangedAt:  timestamppb.New(now),
+		})
+	}))
 	return res.ID
 }

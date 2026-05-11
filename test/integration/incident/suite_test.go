@@ -25,8 +25,6 @@ import (
 	buffersvc "github.com/medincident/medincident-backend/internal/service/command/incident/buffer"
 	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
 	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
-	queryincident "github.com/medincident/medincident-backend/internal/service/query/incident"
-	querybuffer "github.com/medincident/medincident-backend/internal/service/query/incident/buffer"
 )
 
 // sysadminZitadelID is the Zitadel user ID seeded into domain.system_admins
@@ -47,8 +45,6 @@ var (
 	typeSvc     *classifiersvc.IncidentTypeService
 	incidentSvc *incidentsvc.IncidentService
 	bufferSvc   *buffersvc.BufferService
-	incidentRdr *queryincident.Reader
-	bufferRdr   *querybuffer.Reader
 )
 
 func TestMain(m *testing.M) {
@@ -100,8 +96,6 @@ func TestMain(m *testing.M) {
 	typeSvc = classifiersvc.NewIncidentTypeService(testDB, authzSvc, &testLogger)
 	incidentSvc = incidentsvc.NewIncidentService(testDB, authzSvc, &testLogger)
 	bufferSvc = buffersvc.NewBufferService(testDB, authzSvc, &testLogger)
-	incidentRdr = queryincident.NewReader(testDB, &testLogger)
-	bufferRdr = querybuffer.NewReader(testDB, &testLogger, incidentRdr)
 
 	os.Exit(m.Run())
 }
@@ -272,7 +266,7 @@ func seedType(t *testing.T, categoryID uuid.UUID, allowPatients bool) uuid.UUID 
 }
 
 // seedEmployee directly inserts a domain.employees row (bypassing the
-// Zitadel verifier used by EmployeeService.Hire) and its projection row.
+// Zitadel verifier used by EmployeeService.Hire).
 // Returns the new employee UUID.
 func seedEmployee(t *testing.T, zitadelID string, orgID, deptID uuid.UUID) uuid.UUID {
 	t.Helper()
@@ -289,17 +283,10 @@ func seedEmployee(t *testing.T, zitadelID string, orgID, deptID uuid.UUID) uuid.
 	); err != nil {
 		t.Fatalf("insert domain.employees: %v", err)
 	}
-	if _, err := raw.Exec(
-		`INSERT INTO projections.employees (id, zitadel_user_id, organization_id, department_id, hired_at, created_at, updated_at)
-		 VALUES ($1, $2, $3, $4, now(), now(), now())`,
-		empID, zitadelID, orgID, deptID,
-	); err != nil {
-		t.Fatalf("insert projections.employees: %v", err)
-	}
 	return empID
 }
 
-// seedOrgAdmin directly inserts the org_admins role row + projection.
+// seedOrgAdmin directly inserts the org_admins role row.
 func seedOrgAdmin(t *testing.T, empID, orgID uuid.UUID) {
 	t.Helper()
 	raw, err := testDB.DB()
@@ -312,16 +299,9 @@ func seedOrgAdmin(t *testing.T, empID, orgID uuid.UUID) {
 	); err != nil {
 		t.Fatalf("insert domain.org_admins: %v", err)
 	}
-	if _, err := raw.Exec(
-		`INSERT INTO projections.org_admins (organization_id, employee_id, created_at)
-		 VALUES ($1, $2, now())`,
-		orgID, empID,
-	); err != nil {
-		t.Fatalf("insert projections.org_admins: %v", err)
-	}
 }
 
-// seedOrgHead directly inserts the org_heads role row + projection.
+// seedOrgHead directly inserts the org_heads role row.
 func seedOrgHead(t *testing.T, empID, orgID uuid.UUID) {
 	t.Helper()
 	raw, err := testDB.DB()
@@ -334,16 +314,9 @@ func seedOrgHead(t *testing.T, empID, orgID uuid.UUID) {
 	); err != nil {
 		t.Fatalf("insert domain.org_heads: %v", err)
 	}
-	if _, err := raw.Exec(
-		`INSERT INTO projections.org_heads (organization_id, employee_id, created_at)
-		 VALUES ($1, $2, now())`,
-		orgID, empID,
-	); err != nil {
-		t.Fatalf("insert projections.org_heads: %v", err)
-	}
 }
 
-// seedClinicHead directly inserts the clinic_heads role row + projection.
+// seedClinicHead directly inserts the clinic_heads role row.
 func seedClinicHead(t *testing.T, empID, clinicID uuid.UUID) {
 	t.Helper()
 	raw, err := testDB.DB()
@@ -356,16 +329,9 @@ func seedClinicHead(t *testing.T, empID, clinicID uuid.UUID) {
 	); err != nil {
 		t.Fatalf("insert domain.clinic_heads: %v", err)
 	}
-	if _, err := raw.Exec(
-		`INSERT INTO projections.clinic_heads (clinic_id, employee_id, created_at)
-		 VALUES ($1, $2, now())`,
-		clinicID, empID,
-	); err != nil {
-		t.Fatalf("insert projections.clinic_heads: %v", err)
-	}
 }
 
-// seedDeptResponsible directly inserts the department_responsibles role + projection.
+// seedDeptResponsible directly inserts the department_responsibles role.
 func seedDeptResponsible(t *testing.T, empID, deptID uuid.UUID) {
 	t.Helper()
 	raw, err := testDB.DB()
@@ -378,16 +344,9 @@ func seedDeptResponsible(t *testing.T, empID, deptID uuid.UUID) {
 	); err != nil {
 		t.Fatalf("insert domain.department_responsibles: %v", err)
 	}
-	if _, err := raw.Exec(
-		`INSERT INTO projections.department_responsibles (department_id, employee_id, created_at)
-		 VALUES ($1, $2, now())`,
-		deptID, empID,
-	); err != nil {
-		t.Fatalf("insert projections.department_responsibles: %v", err)
-	}
 }
 
-// seedOrgDispatcher directly inserts the org_dispatchers role row + projection.
+// seedOrgDispatcher directly inserts the org_dispatchers role row.
 func seedOrgDispatcher(t *testing.T, empID, orgID uuid.UUID) {
 	t.Helper()
 	raw, err := testDB.DB()
@@ -399,13 +358,6 @@ func seedOrgDispatcher(t *testing.T, empID, orgID uuid.UUID) {
 		orgID, empID,
 	); err != nil {
 		t.Fatalf("insert domain.org_dispatchers: %v", err)
-	}
-	if _, err := raw.Exec(
-		`INSERT INTO projections.org_dispatchers (organization_id, employee_id, created_at)
-		 VALUES ($1, $2, now())`,
-		orgID, empID,
-	); err != nil {
-		t.Fatalf("insert projections.org_dispatchers: %v", err)
 	}
 }
 
@@ -431,26 +383,4 @@ func createIncident(
 	})
 	require.NoError(t, err)
 	return res.ID
-}
-
-// countStatusHistory returns the number of status history rows for an incident.
-func countStatusHistory(t *testing.T, incidentID uuid.UUID) int {
-	t.Helper()
-	var n int
-	require.NoError(t, testDB.Raw(
-		`SELECT count(*) FROM projections.incident_status_history WHERE incident_id = ?`,
-		incidentID,
-	).Scan(&n).Error)
-	return n
-}
-
-// countPriorityHistory returns the number of priority history rows for an incident.
-func countPriorityHistory(t *testing.T, incidentID uuid.UUID) int {
-	t.Helper()
-	var n int
-	require.NoError(t, testDB.Raw(
-		`SELECT count(*) FROM projections.incident_priority_history WHERE incident_id = ?`,
-		incidentID,
-	).Scan(&n).Error)
-	return n
 }

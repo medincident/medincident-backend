@@ -68,7 +68,7 @@ Query-server подписывается на NATS JetStream с параметр�
 Стрим **не создаётся приложением автоматически** — он должен быть
 подготовлен администратором до запуска сервисов. Конфигурация стрима:
 
-- **Name**: `medincident.events`
+- **Name**: `medincident_events`
 - **Subjects**: `medincident.event.>`
 - **Storage**: File
 - **Retention**: Limits (или по требованиям проекта)

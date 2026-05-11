@@ -38,9 +38,9 @@ func TestUpdateEmployeePosition_Success(t *testing.T) {
 		},
 	}))
 
-	var projPos string
-	require.NoError(t, testDB.Raw(`SELECT position FROM projections.employees WHERE id = ?`, id).Row().Scan(&projPos))
-	assert.Equal(t, "Head nurse", projPos)
+	var domainPos string
+	require.NoError(t, testDB.Raw(`SELECT COALESCE(position, '') FROM domain.employees WHERE id = ?`, id).Row().Scan(&domainPos))
+	assert.Equal(t, "Head nurse", domainPos)
 }
 
 func TestUpdateEmployeePosition_ClearPosition(t *testing.T) {
@@ -68,9 +68,9 @@ func TestUpdateEmployeePosition_NoOp(t *testing.T) {
 		Caller:  sysadminCaller,
 		Payload: membership.UpdateEmployeePositionPayload{ID: id.String(), Position: nil},
 	}))
-	var projPos *string
-	require.NoError(t, testDB.Raw(`SELECT position FROM projections.employees WHERE id = ?`, id).Row().Scan(&projPos))
-	assert.Nil(t, projPos)
+	var domainPos *string
+	require.NoError(t, testDB.Raw(`SELECT position FROM domain.employees WHERE id = ?`, id).Row().Scan(&domainPos))
+	assert.Nil(t, domainPos)
 }
 
 func TestUpdateEmployeePosition_NotFound(t *testing.T) {

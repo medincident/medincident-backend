@@ -57,18 +57,6 @@ func TestServiceRequest_Create_HappyPath(t *testing.T) {
 	assert.Equal(t, model.ServiceRequestStatusCreated, sr.Status)
 	assert.Equal(t, deptID, sr.DepartmentID)
 	assert.Equal(t, typeID, sr.TypeID)
-
-	var projStatus string
-	require.NoError(t, testDB.Raw(
-		`SELECT status FROM projections.service_requests WHERE id = ?`, res.ID,
-	).Scan(&projStatus).Error)
-	assert.Equal(t, "created", projStatus)
-
-	var execCount int64
-	require.NoError(t, testDB.Raw(
-		`SELECT COUNT(*) FROM projections.service_request_executor_history WHERE request_id = ?`, res.ID,
-	).Scan(&execCount).Error)
-	assert.Equal(t, int64(1), execCount)
 }
 
 func TestServiceRequest_Create_DeptNotFound(t *testing.T) {
@@ -189,13 +177,6 @@ func TestServiceRequest_UpdateStatus_ExecutorTransition(t *testing.T) {
 		},
 	}))
 	assert.Equal(t, model.ServiceRequestStatusInWork, loadRequest(t, reqID).Status)
-
-	var histCount int64
-	require.NoError(t, testDB.Raw(
-		`SELECT COUNT(*) FROM projections.service_request_status_history WHERE request_id = ?`, reqID,
-	).Scan(&histCount).Error)
-	// Create seeds one NULL→created row; UpdateStatus adds a second created→in_work row.
-	assert.Equal(t, int64(2), histCount)
 }
 
 func TestServiceRequest_UpdateStatus_ResponsibleCompletes(t *testing.T) {

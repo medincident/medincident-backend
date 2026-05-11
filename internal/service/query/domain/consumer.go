@@ -36,7 +36,7 @@ const (
 // once the downstream recovers.
 const nakRetryDelay = 5 * time.Second
 
-// Consumer is the NATS JetStream consumer for the medincident.events stream.
+// Consumer is the NATS JetStream consumer for the medincident_events stream.
 // Lifecycle is managed via Start / Shutdown; Start spins up a Consume
 // loop in the background, Shutdown halts the loop and drains in-flight
 // messages.

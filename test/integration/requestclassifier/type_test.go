@@ -32,14 +32,6 @@ func TestRequestType_Create_HappyPath(t *testing.T) {
 	assert.Equal(t, "Тип заявки", row.Name)
 	assert.True(t, row.IsActive)
 	assert.Equal(t, orgID, row.OrganizationID)
-
-	var projName string
-	var projActive bool
-	require.NoError(t, testDB.Raw(
-		`SELECT name, is_active FROM projections.request_types WHERE id = ?`, res.ID,
-	).Row().Scan(&projName, &projActive))
-	assert.Equal(t, "Тип заявки", projName)
-	assert.True(t, projActive)
 }
 
 func TestRequestType_Create_NameConflict(t *testing.T) {
@@ -86,12 +78,6 @@ func TestRequestType_UpdateDetails_HappyPath(t *testing.T) {
 	row := loadType(t, res.ID)
 	assert.Equal(t, "Новое имя", row.Name)
 	assert.True(t, row.Description.Valid)
-
-	var projName string
-	require.NoError(t, testDB.Raw(
-		`SELECT name FROM projections.request_types WHERE id = ?`, res.ID,
-	).Scan(&projName).Error)
-	assert.Equal(t, "Новое имя", projName)
 }
 
 func TestRequestType_UpdateDetails_NotFound(t *testing.T) {
@@ -121,12 +107,6 @@ func TestRequestType_Deactivate_HappyPath(t *testing.T) {
 	})
 	require.NoError(t, err)
 	assert.False(t, loadType(t, res.ID).IsActive)
-
-	var projActive bool
-	require.NoError(t, testDB.Raw(
-		`SELECT is_active FROM projections.request_types WHERE id = ?`, res.ID,
-	).Scan(&projActive).Error)
-	assert.False(t, projActive)
 }
 
 func TestRequestType_Deactivate_Idempotent(t *testing.T) {
@@ -176,12 +156,6 @@ func TestRequestType_Reactivate_HappyPath(t *testing.T) {
 	})
 	require.NoError(t, err)
 	assert.True(t, loadType(t, res.ID).IsActive)
-
-	var projActive bool
-	require.NoError(t, testDB.Raw(
-		`SELECT is_active FROM projections.request_types WHERE id = ?`, res.ID,
-	).Scan(&projActive).Error)
-	assert.True(t, projActive)
 }
 
 func TestRequestType_Reactivate_NameConflict(t *testing.T) {
@@ -235,8 +209,5 @@ func TestRequestType_Delete_HappyPath(t *testing.T) {
 
 	var n int64
 	require.NoError(t, testDB.Raw(`SELECT COUNT(*) FROM domain.request_types WHERE id = ?`, res.ID).Scan(&n).Error)
-	assert.Equal(t, int64(0), n)
-
-	require.NoError(t, testDB.Raw(`SELECT COUNT(*) FROM projections.request_types WHERE id = ?`, res.ID).Scan(&n).Error)
 	assert.Equal(t, int64(0), n)
 }

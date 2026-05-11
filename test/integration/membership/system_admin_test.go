@@ -26,13 +26,6 @@ func TestGrantSystemAdmin_Success(t *testing.T) {
 		`SELECT count(*) FROM domain.system_admins WHERE zitadel_user_id = ?`, testUserAliceID,
 	).Scan(&count).Error)
 	assert.Equal(t, int64(1), count)
-
-	// Sync projector must have written the matching projection row.
-	var projCount int64
-	require.NoError(t, testDB.Raw(
-		`SELECT count(*) FROM projections.system_admins WHERE zitadel_user_id = ?`, testUserAliceID,
-	).Scan(&projCount).Error)
-	assert.Equal(t, int64(1), projCount)
 }
 
 func TestGrantSystemAdmin_ZitadelUserNotFound(t *testing.T) {

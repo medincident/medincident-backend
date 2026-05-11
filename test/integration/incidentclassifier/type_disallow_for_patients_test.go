@@ -37,13 +37,6 @@ func TestType_DisallowForPatients_HappyPath(t *testing.T) {
 	assert.False(t, row.IsAllowedForPatients)
 	assert.True(t, row.UpdatedAt.After(allowedUpdatedAt),
 		"updated_at must advance after Disallow")
-
-	var projAllowed bool
-	require.NoError(t, testDB.Raw(
-		`SELECT is_allowed_for_patients FROM projections.incident_types WHERE id = ?`,
-		tpID,
-	).Row().Scan(&projAllowed))
-	assert.False(t, projAllowed)
 }
 
 func TestType_DisallowForPatients_Idempotent(t *testing.T) {

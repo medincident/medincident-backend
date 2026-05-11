@@ -6,7 +6,7 @@
 `nats` CLI установлен и NATS-сервер доступен.
 
 ```bash
-nats stream add medincident.events \
+nats stream add medincident_events \
   --subjects "medincident.event.>" \
   --storage file \
   --retention limits \
@@ -23,7 +23,7 @@ nats stream add medincident.events \
 Для локальной разработки (одна реплика, без дедупликации):
 
 ```bash
-nats stream add medincident.events \
+nats stream add medincident_events \
   --subjects "medincident.event.>" \
   --storage memory \
   --replicas 1

@@ -119,7 +119,7 @@ func TestMain(m *testing.M) {
 
 	// Create stream — only in tests; prod stream is admin-provisioned.
 	_, err = js.CreateStream(ctx, jetstream.StreamConfig{
-		Name:     "medincident.events",
+		Name:     "medincident_events",
 		Subjects: []string{"medincident.event.>"},
 		Storage:  jetstream.MemoryStorage,
 	})
@@ -140,7 +140,7 @@ func TestMain(m *testing.M) {
 	proj := qprojector.NewProjectors()
 	natsCfg := &config.NATSConfig{
 		URL:         natsURL,
-		Stream:      "medincident.events",
+		Stream:      "medincident_events",
 		Subjects:    []string{"medincident.event.>"},
 		DurableName: "test-domain-consumer",
 	}
@@ -190,18 +190,19 @@ func resetDBs(t *testing.T) {
 			t.Fatalf("truncate command: %v", err)
 		}
 	}
-	// Re-seed sysadmin.
-	if _, err := rawCmd.Exec(`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1)`, sysadminZitadelID); err != nil {
+	// Re-seed sysadmin (idempotent — TestMain already inserts it once).
+	if _, err := rawCmd.Exec(`INSERT INTO domain.system_admins (zitadel_user_id) VALUES ($1) ON CONFLICT DO NOTHING`, sysadminZitadelID); err != nil {
 		t.Fatalf("seed sysadmin: %v", err)
 	}
 
 	rawQry, _ := queryDB.DB()
-	for _, q := range []string{
-		`TRUNCATE SCHEMA projections CASCADE`,
-	} {
-		if _, err := rawQry.Exec(q); err != nil {
-			t.Fatalf("truncate query: %v", err)
-		}
+	if _, err := rawQry.Exec(`
+		DO $$ DECLARE r RECORD; BEGIN
+		  FOR r IN SELECT tablename FROM pg_tables WHERE schemaname = 'projections' LOOP
+		    EXECUTE 'TRUNCATE TABLE projections.' || quote_ident(r.tablename) || ' CASCADE';
+		  END LOOP;
+		END $$`); err != nil {
+		t.Fatalf("truncate query: %v", err)
 	}
 }
 
