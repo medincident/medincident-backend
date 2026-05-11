@@ -26,6 +26,8 @@ const (
 	ErrCodeIncidentClassifierProjectionFailed = "incident_classifier_projection_failed"
 	ErrCodeRequestTypeProjectionFailed        = "request_type_projection_failed"
 	ErrCodeServiceRequestProjectionFailed     = "service_request_projection_failed"
+	ErrCodeIncidentLifecycleProjectionFailed  = "incident_lifecycle_projection_failed"
+	ErrCodeIncidentBufferProjectionFailed     = "incident_buffer_projection_failed"
 )
 
 // Projectors is a value-receiver grouping of all projection functions,

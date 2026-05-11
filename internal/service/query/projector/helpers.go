@@ -44,8 +44,6 @@ func lookupUserName(tx *gorm.DB, zitadelID string) (first, last, display, email 
 
 // lookupUserDisplayName returns projections.users.display_name, or empty
 // string when the row is absent.
-//
-//nolint:unused // reserved for future membership projectors
 func lookupUserDisplayName(tx *gorm.DB, zitadelID string) string {
 	var name string
 	_ = tx.Raw(`SELECT display_name FROM projections.users WHERE id = ?`, zitadelID).
