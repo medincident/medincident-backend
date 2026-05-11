@@ -306,11 +306,13 @@ const notExistsOrgDispatcher = `NOT EXISTS (
 const notExistsClinicHead = `NOT EXISTS (
 	SELECT 1 FROM projections.clinic_heads x
 	WHERE x.employee_id = ec.employee_id
+	  AND x.clinic_id = ec.clinic_id
 )`
 
 const notExistsDeptResponsible = `NOT EXISTS (
 	SELECT 1 FROM projections.department_responsibles x
 	WHERE x.employee_id = ec.employee_id
+	  AND x.department_id = ec.department_id
 )`
 
 // listEmployeeCandidates executes the shared NOT EXISTS + scope filter query.
