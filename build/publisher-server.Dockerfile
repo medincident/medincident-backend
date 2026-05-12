@@ -3,7 +3,7 @@
 # toolchain version as go.mod. The second stage is a distroless base
 # that runs as a non-root user with no shell.
 
-ARG GO_VERSION=1.26.2
+ARG GO_VERSION=1.26.3
 
 FROM --platform=$BUILDPLATFORM golang:${GO_VERSION}-alpine AS build
 ARG TARGETOS TARGETARCH
