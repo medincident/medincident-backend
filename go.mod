@@ -13,7 +13,7 @@ require (
 	github.com/guregu/null/v6 v6.0.0
 	github.com/jackc/pgx/v5 v5.9.2
 	github.com/medincident/medincident-zitadel-actions v0.0.3
-	github.com/nats-io/nats.go v1.51.0
+	github.com/nats-io/nats.go v1.52.0
 	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.35.1
 	github.com/samber/oops v1.21.0
