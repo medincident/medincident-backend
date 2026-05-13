@@ -15,12 +15,14 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"google.golang.org/protobuf/proto"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
 
 	"github.com/medincident/medincident-backend/internal/service/authz"
 	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
+	eventv1 "github.com/medincident/medincident-backend/pkg/event/v1"
 )
 
 // sysadminZitadelID is the Zitadel user ID of the seeded system-admin
@@ -113,6 +115,7 @@ func resetDB(t *testing.T) {
 		t.Fatalf("get raw db: %v", err)
 	}
 	truncate := []string{
+		`TRUNCATE TABLE outbox.events CASCADE`,
 		`TRUNCATE TABLE domain.system_admins CASCADE`,
 		`TRUNCATE TABLE domain.departments CASCADE`,
 		`TRUNCATE TABLE domain.clinics CASCADE`,
@@ -153,4 +156,30 @@ func countDepartments(t *testing.T) int {
 	var n int
 	require.NoError(t, testDB.Raw(`SELECT count(*) FROM domain.departments`).Scan(&n).Error)
 	return n
+}
+
+// countOutboxEvents returns the number of outbox rows with the given subject.
+func countOutboxEvents(t *testing.T, subject string) int {
+	t.Helper()
+	var n int
+	require.NoError(t, testDB.Raw(
+		`SELECT count(*) FROM outbox.events WHERE subject = ?`, subject,
+	).Scan(&n).Error)
+	return n
+}
+
+// outboxEnvelope reads the single outbox row with the given subject and
+// returns the decoded Envelope. Fails the test if the row is absent or
+// the payload cannot be unmarshalled.
+func outboxEnvelope(t *testing.T, subject string) *eventv1.Envelope {
+	t.Helper()
+	require.Equal(t, 1, countOutboxEvents(t, subject),
+		"expected exactly one outbox event for subject %q", subject)
+	var raw []byte
+	require.NoError(t, testDB.Raw(
+		`SELECT payload FROM outbox.events WHERE subject = ?`, subject,
+	).Row().Scan(&raw))
+	var env eventv1.Envelope
+	require.NoError(t, proto.Unmarshal(raw, &env))
+	return &env
 }

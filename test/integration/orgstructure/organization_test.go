@@ -15,6 +15,7 @@ import (
 	"github.com/medincident/medincident-backend/internal/model"
 	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
 	"github.com/medincident/medincident-backend/internal/service/validation"
+	orgv1 "github.com/medincident/medincident-backend/pkg/event/organization/v1"
 )
 
 // codeOf extracts the oops Code as a string from any error in a joined
@@ -156,4 +157,99 @@ func TestOrganization_UpdateDetails_RealChange(t *testing.T) {
 	).Row().Scan(&domainOrg.Name, &domainOrg.Description))
 	assert.Equal(t, "Орг А обновлённая", domainOrg.Name)
 	assert.Equal(t, changed, domainOrg.Description)
+}
+
+func TestOrganization_UpdateLegalAddress_HappyPath(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+	orgID := seedOrganization(t)
+
+	err := orgSvc.UpdateLegalAddress(ctx, orgsvc.UpdateOrganizationLegalAddressCommand{
+		Caller: sysadminCaller,
+		Payload: orgsvc.UpdateOrganizationLegalAddressPayload{
+			ID:      orgID.String(),
+			Address: orgsvc.AddressInput{Text: "г. Казань, ул. Баумана, д. 10"},
+		},
+	})
+	require.NoError(t, err)
+
+	var org model.Organization
+	require.NoError(t, testDB.First(&org, "id = ?", orgID).Error)
+	assert.Equal(t, "г. Казань, ул. Баумана, д. 10", org.LegalAddress.Text)
+	assert.False(t, org.LegalAddress.Point.Valid, "point must be absent")
+
+	env := outboxEnvelope(t, "medincident.event.organization.v1.legal_address_changed")
+	var msg orgv1.OrganizationLegalAddressChanged
+	require.NoError(t, env.Payload.UnmarshalTo(&msg))
+	assert.Equal(t, orgID.String(), env.AggregateId)
+	assert.Equal(t, "г. Казань, ул. Баумана, д. 10", msg.GetLegalAddress().GetText())
+	assert.Nil(t, msg.GetLegalAddress().GetPoint())
+}
+
+func TestOrganization_UpdateLegalAddress_HappyPath_WithPoint(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+	orgID := seedOrganization(t)
+
+	err := orgSvc.UpdateLegalAddress(ctx, orgsvc.UpdateOrganizationLegalAddressCommand{
+		Caller: sysadminCaller,
+		Payload: orgsvc.UpdateOrganizationLegalAddressPayload{
+			ID: orgID.String(),
+			Address: orgsvc.AddressInput{
+				Text:  "г. Москва, ул. Пушкина, д. 1",
+				Point: &orgsvc.PointInput{Longitude: 37.6, Latitude: 55.75},
+			},
+		},
+	})
+	require.NoError(t, err)
+
+	var org model.Organization
+	require.NoError(t, testDB.First(&org, "id = ?", orgID).Error)
+	assert.Equal(t, "г. Москва, ул. Пушкина, д. 1", org.LegalAddress.Text)
+	require.True(t, org.LegalAddress.Point.Valid)
+	assert.InDelta(t, 37.6, org.LegalAddress.Point.V.Longitude, 0.0001)
+	assert.InDelta(t, 55.75, org.LegalAddress.Point.V.Latitude, 0.0001)
+
+	env := outboxEnvelope(t, "medincident.event.organization.v1.legal_address_changed")
+	var msg orgv1.OrganizationLegalAddressChanged
+	require.NoError(t, env.Payload.UnmarshalTo(&msg))
+	assert.Equal(t, orgID.String(), env.AggregateId)
+	assert.Equal(t, "г. Москва, ул. Пушкина, д. 1", msg.GetLegalAddress().GetText())
+	require.NotNil(t, msg.GetLegalAddress().GetPoint())
+	assert.InDelta(t, 37.6, msg.GetLegalAddress().GetPoint().GetLongitude(), 0.0001)
+	assert.InDelta(t, 55.75, msg.GetLegalAddress().GetPoint().GetLatitude(), 0.0001)
+}
+
+func TestOrganization_UpdateLegalAddress_NoOp(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+	orgID := seedOrganization(t)
+
+	err := orgSvc.UpdateLegalAddress(ctx, orgsvc.UpdateOrganizationLegalAddressCommand{
+		Caller: sysadminCaller,
+		Payload: orgsvc.UpdateOrganizationLegalAddressPayload{
+			ID:      orgID.String(),
+			Address: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
+		},
+	})
+	require.NoError(t, err)
+
+	assert.Equal(t, 0, countOutboxEvents(t, "medincident.event.organization.v1.legal_address_changed"))
+}
+
+func TestOrganization_UpdateLegalAddress_OrganizationNotFound(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+
+	err := orgSvc.UpdateLegalAddress(ctx, orgsvc.UpdateOrganizationLegalAddressCommand{
+		Caller: sysadminCaller,
+		Payload: orgsvc.UpdateOrganizationLegalAddressPayload{
+			ID:      uuid.New().String(),
+			Address: orgsvc.AddressInput{Text: "г. Москва, ул. Ленина, д. 1"},
+		},
+	})
+	require.Error(t, err)
+	assert.Equal(t, orgsvc.ErrCodeOrganizationNotFound, codeOf(t, err))
+	assert.Equal(t, 0, countOrganizations(t))
+	assert.Equal(t, 0, countOutboxEvents(t, "medincident.event.organization.v1.legal_address_changed"))
 }
