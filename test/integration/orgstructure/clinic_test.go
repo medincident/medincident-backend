@@ -87,6 +87,7 @@ func TestClinic_UpdatePhysicalAddress_HappyPath(t *testing.T) {
 	env := outboxEnvelope(t, "medincident.event.clinic.v1.physical_address_changed")
 	var msg clinicv1.ClinicPhysicalAddressChanged
 	require.NoError(t, env.Payload.UnmarshalTo(&msg))
+	assert.Equal(t, clinicID.String(), env.AggregateId)
 	assert.Equal(t, "г. Москва, ул. Новая, д. 5", msg.GetPhysicalAddress().GetText())
 	assert.Nil(t, msg.GetPhysicalAddress().GetPoint())
 }
@@ -118,6 +119,7 @@ func TestClinic_UpdatePhysicalAddress_HappyPath_WithPoint(t *testing.T) {
 	env := outboxEnvelope(t, "medincident.event.clinic.v1.physical_address_changed")
 	var msg clinicv1.ClinicPhysicalAddressChanged
 	require.NoError(t, env.Payload.UnmarshalTo(&msg))
+	assert.Equal(t, clinicID.String(), env.AggregateId)
 	assert.Equal(t, "г. Сочи, ул. Сириуса, д. 1", msg.GetPhysicalAddress().GetText())
 	require.NotNil(t, msg.GetPhysicalAddress().GetPoint())
 	assert.InDelta(t, 39.72, msg.GetPhysicalAddress().GetPoint().GetLongitude(), 0.0001)
@@ -154,5 +156,6 @@ func TestClinic_UpdatePhysicalAddress_ClinicNotFound(t *testing.T) {
 	})
 	require.Error(t, err)
 	assert.Equal(t, orgsvc.ErrCodeClinicNotFound, codeOf(t, err))
+	assert.Equal(t, 0, countClinics(t))
 	assert.Equal(t, 0, countOutboxEvents(t, "medincident.event.clinic.v1.physical_address_changed"))
 }
