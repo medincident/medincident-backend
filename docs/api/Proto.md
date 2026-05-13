@@ -3459,6 +3459,12 @@ aggregate_id = employee UUID
 | department_id | [string](#string) |  |  |
 | position | [string](#string) |  | empty = not set |
 | hired_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| user_name | [string](#string) |  | User profile snapshot from Zitadel at hire time — used to seed projections.users so ForHire works without the async identity consumer. |
+| first_name | [string](#string) |  |  |
+| last_name | [string](#string) |  |  |
+| display_name | [string](#string) |  |  |
+| email | [string](#string) |  |  |
+| preferred_language | [string](#string) |  |  |
 
 
 

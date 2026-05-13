@@ -59,8 +59,9 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 
 	zitadelUserID := strings.TrimSpace(cmd.Payload.ZitadelUserID)
 
-	// Phase 2: Zitadel verify (outside tx, fail-fast).
-	if err := s.verifier.Verify(ctx, zitadelUserID); err != nil {
+	// Phase 2: fetch user profile from Zitadel (outside tx, fail-fast).
+	userProfile, err := s.verifier.GetUser(ctx, zitadelUserID)
+	if err != nil {
 		if errors.Is(err, zitadel.ErrUserNotFound) {
 			return HireEmployeeResult{}, oops.In(scopeEmployee).
 				Code(ErrCodeZitadelUserNotFound).
@@ -76,7 +77,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 
 	// Phase 3: transaction.
 	var result HireEmployeeResult
-	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		var orgID uuid.UUID
 		err := tx.Raw(`
 			SELECT c.organization_id
@@ -127,7 +128,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 				Wrap(err)
 		}
 
-		env, err := buildEmployeeHiredEnvelope(&emp)
+		env, err := buildEmployeeHiredEnvelope(&emp, userProfile)
 		if err != nil {
 			return err
 		}
@@ -140,17 +141,23 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 	return result, err
 }
 
-func buildEmployeeHiredEnvelope(emp *model.Employee) (*eventv1.Envelope, error) {
+func buildEmployeeHiredEnvelope(emp *model.Employee, profile zitadel.UserProfile) (*eventv1.Envelope, error) { //nolint:gocritic
 	var pos string
 	if emp.Position.Valid {
 		pos = emp.Position.String
 	}
 	msg := &empv1.EmployeeHired{
-		ZitadelUserId:  emp.ZitadelUserID,
-		OrganizationId: emp.OrganizationID.String(),
-		DepartmentId:   emp.DepartmentID.String(),
-		Position:       pos,
-		HiredAt:        timestamppb.New(emp.CreatedAt),
+		ZitadelUserId:     emp.ZitadelUserID,
+		OrganizationId:    emp.OrganizationID.String(),
+		DepartmentId:      emp.DepartmentID.String(),
+		Position:          pos,
+		HiredAt:           timestamppb.New(emp.CreatedAt),
+		UserName:          profile.UserName,
+		FirstName:         profile.FirstName,
+		LastName:          profile.LastName,
+		DisplayName:       profile.DisplayName,
+		Email:             profile.Email,
+		PreferredLanguage: profile.PreferredLanguage,
 	}
 	payload, err := anypb.New(msg)
 	if err != nil {

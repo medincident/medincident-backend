@@ -31,8 +31,16 @@ type EmployeeHired struct {
 	DepartmentId   string                 `protobuf:"bytes,3,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
 	Position       string                 `protobuf:"bytes,4,opt,name=position,proto3" json:"position,omitempty"` // empty = not set
 	HiredAt        *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=hired_at,json=hiredAt,proto3" json:"hired_at,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	// User profile snapshot from Zitadel at hire time — used to seed
+	// projections.users so ForHire works without the async identity consumer.
+	UserName          string `protobuf:"bytes,6,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
+	FirstName         string `protobuf:"bytes,7,opt,name=first_name,json=firstName,proto3" json:"first_name,omitempty"`
+	LastName          string `protobuf:"bytes,8,opt,name=last_name,json=lastName,proto3" json:"last_name,omitempty"`
+	DisplayName       string `protobuf:"bytes,9,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
+	Email             string `protobuf:"bytes,10,opt,name=email,proto3" json:"email,omitempty"`
+	PreferredLanguage string `protobuf:"bytes,11,opt,name=preferred_language,json=preferredLanguage,proto3" json:"preferred_language,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *EmployeeHired) Reset() {
@@ -98,6 +106,48 @@ func (x *EmployeeHired) GetHiredAt() *timestamppb.Timestamp {
 		return x.HiredAt
 	}
 	return nil
+}
+
+func (x *EmployeeHired) GetUserName() string {
+	if x != nil {
+		return x.UserName
+	}
+	return ""
+}
+
+func (x *EmployeeHired) GetFirstName() string {
+	if x != nil {
+		return x.FirstName
+	}
+	return ""
+}
+
+func (x *EmployeeHired) GetLastName() string {
+	if x != nil {
+		return x.LastName
+	}
+	return ""
+}
+
+func (x *EmployeeHired) GetDisplayName() string {
+	if x != nil {
+		return x.DisplayName
+	}
+	return ""
+}
+
+func (x *EmployeeHired) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *EmployeeHired) GetPreferredLanguage() string {
+	if x != nil {
+		return x.PreferredLanguage
+	}
+	return ""
 }
 
 // EmployeePositionChanged — subject: medincident.event.employee.v1.position_changed
@@ -271,13 +321,21 @@ var File_event_employee_v1_events_proto protoreflect.FileDescriptor
 
 const file_event_employee_v1_events_proto_rawDesc = "" +
 	"\n" +
-	"\x1eevent/employee/v1/events.proto\x12\x11event.employee.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd8\x01\n" +
+	"\x1eevent/employee/v1/events.proto\x12\x11event.employee.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x99\x03\n" +
 	"\rEmployeeHired\x12&\n" +
 	"\x0fzitadel_user_id\x18\x01 \x01(\tR\rzitadelUserId\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12#\n" +
 	"\rdepartment_id\x18\x03 \x01(\tR\fdepartmentId\x12\x1a\n" +
 	"\bposition\x18\x04 \x01(\tR\bposition\x125\n" +
-	"\bhired_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\ahiredAt\"p\n" +
+	"\bhired_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\ahiredAt\x12\x1b\n" +
+	"\tuser_name\x18\x06 \x01(\tR\buserName\x12\x1d\n" +
+	"\n" +
+	"first_name\x18\a \x01(\tR\tfirstName\x12\x1b\n" +
+	"\tlast_name\x18\b \x01(\tR\blastName\x12!\n" +
+	"\fdisplay_name\x18\t \x01(\tR\vdisplayName\x12\x14\n" +
+	"\x05email\x18\n" +
+	" \x01(\tR\x05email\x12-\n" +
+	"\x12preferred_language\x18\v \x01(\tR\x11preferredLanguage\"p\n" +
 	"\x17EmployeePositionChanged\x12\x1a\n" +
 	"\bposition\x18\x01 \x01(\tR\bposition\x129\n" +
 	"\n" +

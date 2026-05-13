@@ -55,10 +55,20 @@ func zitadelDialOpts() []grpc.DialOption {
 	}
 }
 
-// ErrUserNotFound is returned by Service.Verify when Zitadel reports
-// NotFound for a given user ID. Any other error is wrapped with
-// ErrCodeZitadelVerifyFailed.
+// ErrUserNotFound is returned by Service.Verify and Service.GetUser when
+// Zitadel reports NotFound for a given user ID. Any other error is wrapped
+// with ErrCodeZitadelVerifyFailed.
 var ErrUserNotFound = errors.New("zitadel: user not found")
+
+// UserProfile holds the human-user profile fields fetched from Zitadel.
+type UserProfile struct {
+	UserName          string
+	FirstName         string
+	LastName          string
+	DisplayName       string
+	Email             string
+	PreferredLanguage string
+}
 
 // Service wraps a configured zitadel-go v3 client. Concrete type —
 // do NOT introduce an interface for it. Safe for concurrent use.
@@ -226,4 +236,36 @@ func (s *Service) Verify(ctx context.Context, zitadelUserID string) error {
 		Code(ErrCodeZitadelVerifyFailed).
 		With("zitadel_user_id", zitadelUserID).
 		Wrap(err)
+}
+
+// GetUser fetches the human user profile from Zitadel. Returns
+// ErrUserNotFound when Zitadel reports NotFound, or a wrapped error
+// otherwise.
+func (s *Service) GetUser(ctx context.Context, zitadelUserID string) (UserProfile, error) {
+	resp, err := s.cl.UserServiceV2().GetUserByID(ctx, &user_v2.GetUserByIDRequest{
+		UserId: zitadelUserID,
+	})
+	if err != nil {
+		if st, ok := status.FromError(err); ok && st.Code() == codes.NotFound {
+			return UserProfile{}, ErrUserNotFound
+		}
+		return UserProfile{}, oops.In("services.zitadel").
+			Code(ErrCodeZitadelVerifyFailed).
+			With("zitadel_user_id", zitadelUserID).
+			Wrap(err)
+	}
+	u := resp.GetUser()
+	p := UserProfile{UserName: u.GetUsername()}
+	if h := u.GetHuman(); h != nil {
+		if prof := h.GetProfile(); prof != nil {
+			p.FirstName = prof.GetGivenName()
+			p.LastName = prof.GetFamilyName()
+			p.DisplayName = prof.GetDisplayName()
+			p.PreferredLanguage = prof.GetPreferredLanguage()
+		}
+		if em := h.GetEmail(); em != nil {
+			p.Email = em.GetEmail()
+		}
+	}
+	return p, nil
 }

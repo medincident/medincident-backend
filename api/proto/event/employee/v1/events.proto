@@ -12,6 +12,14 @@ message EmployeeHired {
   string department_id = 3;
   string position = 4; // empty = not set
   google.protobuf.Timestamp hired_at = 5;
+  // User profile snapshot from Zitadel at hire time — used to seed
+  // projections.users so ForHire works without the async identity consumer.
+  string user_name = 6;
+  string first_name = 7;
+  string last_name = 8;
+  string display_name = 9;
+  string email = 10;
+  string preferred_language = 11;
 }
 
 // EmployeePositionChanged — subject: medincident.event.employee.v1.position_changed
