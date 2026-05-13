@@ -250,6 +250,6 @@ func TestOrganization_UpdateLegalAddress_OrganizationNotFound(t *testing.T) {
 	})
 	require.Error(t, err)
 	assert.Equal(t, orgsvc.ErrCodeOrganizationNotFound, codeOf(t, err))
-	assert.Equal(t, 0, countOutboxEvents(t, "medincident.event.organization.v1.legal_address_changed"))
 	assert.Equal(t, 0, countOrganizations(t))
+	assert.Equal(t, 0, countOutboxEvents(t, "medincident.event.organization.v1.legal_address_changed"))
 }
