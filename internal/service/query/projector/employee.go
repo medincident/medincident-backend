@@ -50,6 +50,9 @@ func EmployeeHired(
 
 	// Seed projections.users from the profile embedded in the event so
 	// ForHire works even when the async identity consumer hasn't run yet.
+	// On conflict, update the mutable profile fields so a re-hire with a
+	// refreshed profile keeps the row current; created_at and email_verified
+	// are preserved because the identity consumer owns them authoritatively.
 	if ev.GetEmail() != "" {
 		if err := tx.Exec(`
 			INSERT INTO projections.users
@@ -57,7 +60,14 @@ func EmployeeHired(
 			     email, email_verified, preferred_language, gender,
 			     created_at, updated_at)
 			VALUES (?, ?, ?, ?, ?, NULL, ?, FALSE, ?, 0, ?, ?)
-			ON CONFLICT (id) DO NOTHING`,
+			ON CONFLICT (id) DO UPDATE
+			    SET user_name          = EXCLUDED.user_name,
+			        first_name         = EXCLUDED.first_name,
+			        last_name          = EXCLUDED.last_name,
+			        display_name       = EXCLUDED.display_name,
+			        email              = EXCLUDED.email,
+			        preferred_language = EXCLUDED.preferred_language,
+			        updated_at         = EXCLUDED.updated_at`,
 			ev.GetZitadelUserId(), ev.GetUserName(),
 			ev.GetFirstName(), ev.GetLastName(), ev.GetDisplayName(),
 			ev.GetEmail(), ev.GetPreferredLanguage(),

@@ -55,15 +55,9 @@ func zitadelDialOpts() []grpc.DialOption {
 	}
 }
 
-const (
-	// ErrCodeZitadelGetUserFailed is used when GetUser encounters an
-	// unexpected error from the Zitadel API.
-	ErrCodeZitadelGetUserFailed = "zitadel_get_user_failed"
-)
-
-// ErrUserNotFound is returned by Service.Verify when Zitadel reports
-// NotFound for a given user ID. Any other error is wrapped with
-// ErrCodeZitadelVerifyFailed.
+// ErrUserNotFound is returned by Service.Verify and Service.GetUser when
+// Zitadel reports NotFound for a given user ID. Any other error is wrapped
+// with ErrCodeZitadelVerifyFailed.
 var ErrUserNotFound = errors.New("zitadel: user not found")
 
 // UserProfile holds the human-user profile fields fetched from Zitadel.
@@ -256,7 +250,7 @@ func (s *Service) GetUser(ctx context.Context, zitadelUserID string) (UserProfil
 			return UserProfile{}, ErrUserNotFound
 		}
 		return UserProfile{}, oops.In("services.zitadel").
-			Code(ErrCodeZitadelGetUserFailed).
+			Code(ErrCodeZitadelVerifyFailed).
 			With("zitadel_user_id", zitadelUserID).
 			Wrap(err)
 	}

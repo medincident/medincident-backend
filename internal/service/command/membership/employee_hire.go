@@ -70,7 +70,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 				Wrap(err)
 		}
 		return HireEmployeeResult{}, oops.In(scopeEmployee).
-			Code(zitadel.ErrCodeZitadelGetUserFailed).
+			Code(zitadel.ErrCodeZitadelVerifyFailed).
 			With("zitadel_user_id", zitadelUserID).
 			Wrap(err)
 	}
@@ -128,7 +128,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 				Wrap(err)
 		}
 
-		env, err := buildEmployeeHiredEnvelope(&emp, &userProfile)
+		env, err := buildEmployeeHiredEnvelope(&emp, userProfile)
 		if err != nil {
 			return err
 		}
@@ -141,7 +141,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 	return result, err
 }
 
-func buildEmployeeHiredEnvelope(emp *model.Employee, profile *zitadel.UserProfile) (*eventv1.Envelope, error) {
+func buildEmployeeHiredEnvelope(emp *model.Employee, profile zitadel.UserProfile) (*eventv1.Envelope, error) { //nolint:gocritic
 	var pos string
 	if emp.Position.Valid {
 		pos = emp.Position.String
