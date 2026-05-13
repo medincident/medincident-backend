@@ -48,6 +48,28 @@ func EmployeeHired(
 		pos = null.StringFrom(ev.GetPosition())
 	}
 
+	// Seed projections.users from the profile embedded in the event so
+	// ForHire works even when the async identity consumer hasn't run yet.
+	if ev.GetEmail() != "" {
+		if err := tx.Exec(`
+			INSERT INTO projections.users
+			    (id, user_name, first_name, last_name, display_name, nick_name,
+			     email, email_verified, preferred_language, gender,
+			     created_at, updated_at)
+			VALUES (?, ?, ?, ?, ?, NULL, ?, FALSE, ?, 0, ?, ?)
+			ON CONFLICT (id) DO NOTHING`,
+			ev.GetZitadelUserId(), ev.GetUserName(),
+			ev.GetFirstName(), ev.GetLastName(), ev.GetDisplayName(),
+			ev.GetEmail(), ev.GetPreferredLanguage(),
+			hiredAt, hiredAt,
+		).Error; err != nil {
+			return oops.In("projector.employee").
+				Code(ErrCodeEmployeeProjectionFailed).
+				With("employee_id", aggregateID).
+				Wrap(err)
+		}
+	}
+
 	if err := tx.Exec(`
 		INSERT INTO projections.employees
 		    (id, zitadel_user_id, organization_id, clinic_id, department_id,

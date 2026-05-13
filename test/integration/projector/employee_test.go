@@ -268,6 +268,86 @@ func TestEmployeeDepartmentChanged_CrossClinicMove(t *testing.T) {
 	require.Equal(t, dept2.Name, *newDeptName)
 }
 
+// TestEmployeeHired_SeedsProjectionsUsers confirms that when the
+// EmployeeHired event carries user profile fields the projector upserts
+// a row into projections.users so ForHire works without the async
+// identity consumer.
+func TestEmployeeHired_SeedsProjectionsUsers(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+
+	now := time.Now().UTC().Truncate(time.Second)
+	org, _, dept := seedDepartment(t, ctx, now)
+
+	emp := &model.Employee{
+		ID:             uuid.Must(uuid.NewV7()),
+		ZitadelUserID:  "zit-user-profile",
+		OrganizationID: org.ID,
+		DepartmentID:   dept.ID,
+		CreatedAt:      now,
+		UpdatedAt:      now,
+	}
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:     emp.ZitadelUserID,
+			OrganizationId:    emp.OrganizationID.String(),
+			DepartmentId:      emp.DepartmentID.String(),
+			HiredAt:           timestamppb.New(emp.CreatedAt),
+			UserName:          "jdoe",
+			FirstName:         "Jane",
+			LastName:          "Doe",
+			DisplayName:       "Jane Doe",
+			Email:             "jane@example.com",
+			PreferredLanguage: "en",
+		})
+	}))
+
+	var firstName, lastName, displayName, email string
+	require.NoError(t, testDB.WithContext(ctx).Raw(
+		`SELECT first_name, last_name, display_name, email FROM projections.users WHERE id = ?`,
+		emp.ZitadelUserID,
+	).Row().Scan(&firstName, &lastName, &displayName, &email))
+	require.Equal(t, "Jane", firstName)
+	require.Equal(t, "Doe", lastName)
+	require.Equal(t, "Jane Doe", displayName)
+	require.Equal(t, "jane@example.com", email)
+}
+
+// TestEmployeeHired_NoUserRowWhenEmailEmpty confirms that the projector
+// skips the projections.users upsert when the event has no email field
+// (legacy events re-processed from before the profile fix).
+func TestEmployeeHired_NoUserRowWhenEmailEmpty(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+
+	now := time.Now().UTC().Truncate(time.Second)
+	org, _, dept := seedDepartment(t, ctx, now)
+
+	emp := &model.Employee{
+		ID:             uuid.Must(uuid.NewV7()),
+		ZitadelUserID:  "zit-user-no-profile",
+		OrganizationID: org.ID,
+		DepartmentID:   dept.ID,
+		CreatedAt:      now,
+		UpdatedAt:      now,
+	}
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		return qprojector.EmployeeHired(tx, emp.ID.String(), emp.CreatedAt, &empv1.EmployeeHired{
+			ZitadelUserId:  emp.ZitadelUserID,
+			OrganizationId: emp.OrganizationID.String(),
+			DepartmentId:   emp.DepartmentID.String(),
+			HiredAt:        timestamppb.New(emp.CreatedAt),
+			// No profile fields — simulates a legacy event.
+		})
+	}))
+
+	var count int64
+	require.NoError(t, testDB.WithContext(ctx).Raw(
+		`SELECT count(*) FROM projections.users WHERE id = ?`, emp.ZitadelUserID,
+	).Row().Scan(&count))
+	require.Equal(t, int64(0), count, "no users row when email is empty")
+}
+
 // TestEmployeePositionChanged_UpdatesRowAndCard confirms the projector
 // updates position on both employees and employee_cards.
 func TestEmployeePositionChanged_UpdatesRowAndCard(t *testing.T) {
