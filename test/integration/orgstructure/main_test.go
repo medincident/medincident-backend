@@ -173,6 +173,8 @@ func countOutboxEvents(t *testing.T, subject string) int {
 // the payload cannot be unmarshalled.
 func outboxEnvelope(t *testing.T, subject string) *eventv1.Envelope {
 	t.Helper()
+	require.Equal(t, 1, countOutboxEvents(t, subject),
+		"expected exactly one outbox event for subject %q", subject)
 	var raw []byte
 	require.NoError(t, testDB.Raw(
 		`SELECT payload FROM outbox.events WHERE subject = ?`, subject,
