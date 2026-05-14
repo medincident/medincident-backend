@@ -49,18 +49,17 @@ func IncidentCreated(
 	if err != nil {
 		return err
 	}
-	registrarOrgID, err := parseUUID(ev.GetRegistrarOrganizationId(), "registrar_organization_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
-	if err != nil {
-		return err
-	}
-	registrarClinicID, err := parseUUID(ev.GetRegistrarClinicId(), "registrar_clinic_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
-	if err != nil {
-		return err
-	}
-	registrarDeptID, err := parseUUID(ev.GetRegistrarDepartmentId(), "registrar_department_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
-	if err != nil {
-		return err
-	}
+	// Registrar location fields were added after the initial release.
+	// Pre-fix events carry empty strings — fall back to the employee projection
+	// so those events can still be replayed without a permanent Term().
+	registrarOrgID, registrarClinicID, registrarDeptID := resolveRegistrarLocation(
+		tx,
+		ev.GetRegistrarOrganizationId(),
+		ev.GetRegistrarClinicId(),
+		ev.GetRegistrarDepartmentId(),
+		ev.GetRegistrarZitadelUserId(),
+		orgID, clinicID, deptID,
+	)
 	createdAt := ev.GetCreatedAt().AsTime()
 	occAt := ev.GetOccurredAt().AsTime()
 

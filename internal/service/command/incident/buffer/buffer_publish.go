@@ -134,7 +134,8 @@ func (s *BufferService) Publish(
 		}
 		var dispDept model.Department
 		if err := tx.First(&dispDept, "id = ?", dispatcherEmp.DepartmentID).Error; err != nil {
-			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
+			return oops.In(scope).Code(ErrCodeBufferLoadFailed).
+				With("department_id", dispatcherEmp.DepartmentID).Wrap(err)
 		}
 
 		// Description: dispatcher-supplied if present, else patient's text.
