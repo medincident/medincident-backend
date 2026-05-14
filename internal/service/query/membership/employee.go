@@ -136,14 +136,19 @@ func (r *EmployeeReader) GetForSelf(
 ) (*EmployeeCardView, error) {
 	var out EmployeeCardView
 	err := ScanEmployeeCard(
-		r.db.WithContext(ctx).Raw(SelectEmployeeCard+` WHERE zitadel_user_id = ?`, caller.ZitadelUserID).Row(),
+		r.db.WithContext(ctx).Raw(
+			SelectEmployeeCard+
+				` WHERE zitadel_user_id = ? AND terminated_at IS NULL`+
+				` ORDER BY updated_at DESC LIMIT 1`,
+			caller.ZitadelUserID,
+		).Row(),
 		&out,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, oops.In("reader.membership.employee").
 				Code(ErrCodeEmployeeNotFound).
-				Public("No employee record for the authenticated user.").
+				Public("No active employee record for the authenticated user.").
 				With("zitadel_user_id", caller.ZitadelUserID).
 				Errorf("not found")
 		}
