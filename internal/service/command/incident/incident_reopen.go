@@ -78,9 +78,13 @@ func (s *IncidentService) Reopen(
 			privilegedActorPolicy(src.OrganizationID, src.ClinicID, src.DepartmentID)); err != nil {
 			return err
 		}
-		registrarEmpID, err := s.loadRegistrarEmployeeID(tx, cmd.Caller.ZitadelUserID, src.OrganizationID)
+		registrarEmp, err := s.loadRegistrarEmployee(tx, cmd.Caller.ZitadelUserID, src.OrganizationID)
 		if err != nil {
 			return err
+		}
+		var regDept model.Department
+		if err := tx.First(&regDept, "id = ?", registrarEmp.DepartmentID).Error; err != nil {
+			return oops.In(scope).Code(ErrCodeIncidentLoadFailed).Wrap(err)
 		}
 
 		newInc := model.Incident{
@@ -94,7 +98,7 @@ func (s *IncidentService) Reopen(
 			Priority:                   model.IncidentPriorityNormal,
 			Description:                null.String{},
 			OccurredAt:                 now,
-			RegistrarEmployeeID:        registrarEmpID,
+			RegistrarEmployeeID:        registrarEmp.ID,
 			SourcePatientZitadelUserID: src.SourcePatientZitadelUserID,
 			ReopenedFromIncidentID:     uuid.NullUUID{UUID: src.ID, Valid: true},
 			CreatedAt:                  now,
@@ -103,7 +107,7 @@ func (s *IncidentService) Reopen(
 		if err := tx.Create(&newInc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-		env, err := buildIncidentCreatedEnvelope(&newInc, cmd.Caller.ZitadelUserID)
+		env, err := buildIncidentCreatedEnvelope(&newInc, cmd.Caller.ZitadelUserID, registrarEmp, regDept.ClinicID)
 		if err != nil {
 			return err
 		}

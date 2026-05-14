@@ -48,6 +48,7 @@
 | `incident_type_not_found` | 404 | Тип инцидента не найден |
 | `incident_employee_not_found` | 404 | Регистратор (сотрудник) не найден |
 | `incident_registrar_user_not_found` | 404 | Проекция пользователя регистратора не найдена |
+| `incident_load_failed` | 500 | Не удалось загрузить связанные данные |
 
 ---
 

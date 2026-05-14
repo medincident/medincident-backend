@@ -44,6 +44,10 @@ type IncidentCreated struct {
 	SourceBufferId             *wrapperspb.StringValue `protobuf:"bytes,15,opt,name=source_buffer_id,json=sourceBufferId,proto3" json:"source_buffer_id,omitempty"`
 	ReopenedFromIncidentId     *wrapperspb.StringValue `protobuf:"bytes,16,opt,name=reopened_from_incident_id,json=reopenedFromIncidentId,proto3" json:"reopened_from_incident_id,omitempty"`
 	CreatedAt                  *timestamppb.Timestamp  `protobuf:"bytes,17,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	RegistrarOrganizationId    string                  `protobuf:"bytes,18,opt,name=registrar_organization_id,json=registrarOrganizationId,proto3" json:"registrar_organization_id,omitempty"`
+	RegistrarClinicId          string                  `protobuf:"bytes,19,opt,name=registrar_clinic_id,json=registrarClinicId,proto3" json:"registrar_clinic_id,omitempty"`
+	RegistrarDepartmentId      string                  `protobuf:"bytes,20,opt,name=registrar_department_id,json=registrarDepartmentId,proto3" json:"registrar_department_id,omitempty"`
+	RegistrarPosition          *wrapperspb.StringValue `protobuf:"bytes,21,opt,name=registrar_position,json=registrarPosition,proto3" json:"registrar_position,omitempty"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -193,6 +197,34 @@ func (x *IncidentCreated) GetReopenedFromIncidentId() *wrapperspb.StringValue {
 func (x *IncidentCreated) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *IncidentCreated) GetRegistrarOrganizationId() string {
+	if x != nil {
+		return x.RegistrarOrganizationId
+	}
+	return ""
+}
+
+func (x *IncidentCreated) GetRegistrarClinicId() string {
+	if x != nil {
+		return x.RegistrarClinicId
+	}
+	return ""
+}
+
+func (x *IncidentCreated) GetRegistrarDepartmentId() string {
+	if x != nil {
+		return x.RegistrarDepartmentId
+	}
+	return ""
+}
+
+func (x *IncidentCreated) GetRegistrarPosition() *wrapperspb.StringValue {
+	if x != nil {
+		return x.RegistrarPosition
 	}
 	return nil
 }
@@ -432,7 +464,7 @@ var File_event_incident_v1_events_proto protoreflect.FileDescriptor
 
 const file_event_incident_v1_events_proto_rawDesc = "" +
 	"\n" +
-	"\x1eevent/incident/v1/events.proto\x12\x11event.incident.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\x95\a\n" +
+	"\x1eevent/incident/v1/events.proto\x12\x11event.incident.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\x86\t\n" +
 	"\x0fIncidentCreated\x12\x1f\n" +
 	"\vincident_id\x18\x01 \x01(\tR\n" +
 	"incidentId\x12'\n" +
@@ -455,7 +487,11 @@ const file_event_incident_v1_events_proto_rawDesc = "" +
 	"\x10source_buffer_id\x18\x0f \x01(\v2\x1c.google.protobuf.StringValueR\x0esourceBufferId\x12W\n" +
 	"\x19reopened_from_incident_id\x18\x10 \x01(\v2\x1c.google.protobuf.StringValueR\x16reopenedFromIncidentId\x129\n" +
 	"\n" +
-	"created_at\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xae\x02\n" +
+	"created_at\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12:\n" +
+	"\x19registrar_organization_id\x18\x12 \x01(\tR\x17registrarOrganizationId\x12.\n" +
+	"\x13registrar_clinic_id\x18\x13 \x01(\tR\x11registrarClinicId\x126\n" +
+	"\x17registrar_department_id\x18\x14 \x01(\tR\x15registrarDepartmentId\x12K\n" +
+	"\x12registrar_position\x18\x15 \x01(\v2\x1c.google.protobuf.StringValueR\x11registrarPosition\"\xae\x02\n" +
 	"\x15IncidentStatusChanged\x12\x1f\n" +
 	"\vincident_id\x18\x01 \x01(\tR\n" +
 	"incidentId\x12\x1d\n" +
@@ -513,17 +549,18 @@ var file_event_incident_v1_events_proto_depIdxs = []int32{
 	4,  // 4: event.incident.v1.IncidentCreated.source_buffer_id:type_name -> google.protobuf.StringValue
 	4,  // 5: event.incident.v1.IncidentCreated.reopened_from_incident_id:type_name -> google.protobuf.StringValue
 	5,  // 6: event.incident.v1.IncidentCreated.created_at:type_name -> google.protobuf.Timestamp
-	4,  // 7: event.incident.v1.IncidentStatusChanged.actor_employee_id:type_name -> google.protobuf.StringValue
-	5,  // 8: event.incident.v1.IncidentStatusChanged.changed_at:type_name -> google.protobuf.Timestamp
-	4,  // 9: event.incident.v1.IncidentPriorityChanged.actor_employee_id:type_name -> google.protobuf.StringValue
-	5,  // 10: event.incident.v1.IncidentPriorityChanged.changed_at:type_name -> google.protobuf.Timestamp
-	4,  // 11: event.incident.v1.IncidentDescriptionUpdated.description:type_name -> google.protobuf.StringValue
-	5,  // 12: event.incident.v1.IncidentDescriptionUpdated.updated_at:type_name -> google.protobuf.Timestamp
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	4,  // 7: event.incident.v1.IncidentCreated.registrar_position:type_name -> google.protobuf.StringValue
+	4,  // 8: event.incident.v1.IncidentStatusChanged.actor_employee_id:type_name -> google.protobuf.StringValue
+	5,  // 9: event.incident.v1.IncidentStatusChanged.changed_at:type_name -> google.protobuf.Timestamp
+	4,  // 10: event.incident.v1.IncidentPriorityChanged.actor_employee_id:type_name -> google.protobuf.StringValue
+	5,  // 11: event.incident.v1.IncidentPriorityChanged.changed_at:type_name -> google.protobuf.Timestamp
+	4,  // 12: event.incident.v1.IncidentDescriptionUpdated.description:type_name -> google.protobuf.StringValue
+	5,  // 13: event.incident.v1.IncidentDescriptionUpdated.updated_at:type_name -> google.protobuf.Timestamp
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_event_incident_v1_events_proto_init() }
