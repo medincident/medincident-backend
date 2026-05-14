@@ -3469,7 +3469,7 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"(ListCandidatesForDeptResponsibleResponse\x12;\n" +
 	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor2\xc3<\n" +
+	"nextCursor2\xb2A\n" +
 	"\x16MembershipQueryService\x12\xed\x01\n" +
 	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x8a\x01\x92AmJk\n" +
 	"\x03404\x12d\n" +
@@ -3486,10 +3486,19 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\"\xab\x01\x92AsJq\n" +
 	"\x03400\x12j\n" +
 	"hValidation failed. Error codes:\n" +
-	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xc6\x01\n" +
-	"\x1aCountEmployeesByDepartment\x126.query.membership.v1.CountEmployeesByDepartmentRequest\x1a7.query.membership.v1.CountEmployeesByDepartmentResponse\"7\x82\xd3\xe4\x93\x021\x12//v1/departments/{department_id}/employees:count\x12\xb2\x01\n" +
-	"\x16CountEmployeesByClinic\x122.query.membership.v1.CountEmployeesByClinicRequest\x1a3.query.membership.v1.CountEmployeesByClinicResponse\"/\x82\xd3\xe4\x93\x02)\x12'/v1/clinics/{clinic_id}/employees:count\x12\xd0\x01\n" +
-	"\x1cCountEmployeesByOrganization\x128.query.membership.v1.CountEmployeesByOrganizationRequest\x1a9.query.membership.v1.CountEmployeesByOrganizationResponse\";\x82\xd3\xe4\x93\x025\x123/v1/organizations/{organization_id}/employees:count\x12\xcb\x02\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xb2\x02\n" +
+	"\x1aCountEmployeesByDepartment\x126.query.membership.v1.CountEmployeesByDepartmentRequest\x1a7.query.membership.v1.CountEmployeesByDepartmentResponse\"\xa2\x01\x92AhJf\n" +
+	"\x03500\x12_\n" +
+	"]Internal server error. Error codes:\n" +
+	"- `employee_card_count_failed` — database query failed.\x82\xd3\xe4\x93\x021\x12//v1/departments/{department_id}/employees:count\x12\x9e\x02\n" +
+	"\x16CountEmployeesByClinic\x122.query.membership.v1.CountEmployeesByClinicRequest\x1a3.query.membership.v1.CountEmployeesByClinicResponse\"\x9a\x01\x92AhJf\n" +
+	"\x03500\x12_\n" +
+	"]Internal server error. Error codes:\n" +
+	"- `employee_card_count_failed` — database query failed.\x82\xd3\xe4\x93\x02)\x12'/v1/clinics/{clinic_id}/employees:count\x12\xbc\x02\n" +
+	"\x1cCountEmployeesByOrganization\x128.query.membership.v1.CountEmployeesByOrganizationRequest\x1a9.query.membership.v1.CountEmployeesByOrganizationResponse\"\xa6\x01\x92AhJf\n" +
+	"\x03500\x12_\n" +
+	"]Internal server error. Error codes:\n" +
+	"- `employee_card_count_failed` — database query failed.\x82\xd3\xe4\x93\x025\x123/v1/organizations/{organization_id}/employees:count\x12\xcb\x02\n" +
 	"\x1dSearchEmployeesByOrganization\x129.query.membership.v1.SearchEmployeesByOrganizationRequest\x1a:.query.membership.v1.SearchEmployeesByOrganizationResponse\"\xb2\x01\x92AsJq\n" +
 	"\x03400\x12j\n" +
 	"hValidation failed. Error codes:\n" +
@@ -3497,10 +3506,19 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x17ListVacationsByEmployee\x123.query.membership.v1.ListVacationsByEmployeeRequest\x1a4.query.membership.v1.ListVacationsByEmployeeResponse\"\xa3\x01\x92AsJq\n" +
 	"\x03400\x12j\n" +
 	"hValidation failed. Error codes:\n" +
-	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02'\x12%/v1/employees/{employee_id}/vacations\x12\xbc\x01\n" +
-	"\x18CountVacationsByEmployee\x124.query.membership.v1.CountVacationsByEmployeeRequest\x1a5.query.membership.v1.CountVacationsByEmployeeResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/employees/{employee_id}/vacations:count\x12\x8c\x01\n" +
-	"\rGetClinicHead\x12).query.membership.v1.GetClinicHeadRequest\x1a*.query.membership.v1.GetClinicHeadResponse\"$\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/clinics/{clinic_id}/head\x12\xbc\x01\n" +
-	"\x18GetDepartmentResponsible\x124.query.membership.v1.GetDepartmentResponsibleRequest\x1a5.query.membership.v1.GetDepartmentResponsibleResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/departments/{department_id}/responsible\x12\x91\x02\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02'\x12%/v1/employees/{employee_id}/vacations\x12\xa3\x02\n" +
+	"\x18CountVacationsByEmployee\x124.query.membership.v1.CountVacationsByEmployeeRequest\x1a5.query.membership.v1.CountVacationsByEmployeeResponse\"\x99\x01\x92AcJa\n" +
+	"\x03500\x12Z\n" +
+	"XInternal server error. Error codes:\n" +
+	"- `vacation_count_failed` — database query failed.\x82\xd3\xe4\x93\x02-\x12+/v1/employees/{employee_id}/vacations:count\x12\xee\x01\n" +
+	"\rGetClinicHead\x12).query.membership.v1.GetClinicHeadRequest\x1a*.query.membership.v1.GetClinicHeadResponse\"\x85\x01\x92A^J\\\n" +
+	"\x03500\x12U\n" +
+	"SInternal server error. Error codes:\n" +
+	"- `role_load_failed` — database query failed.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/clinics/{clinic_id}/head\x12\x9e\x02\n" +
+	"\x18GetDepartmentResponsible\x124.query.membership.v1.GetDepartmentResponsibleRequest\x1a5.query.membership.v1.GetDepartmentResponsibleResponse\"\x94\x01\x92A^J\\\n" +
+	"\x03500\x12U\n" +
+	"SInternal server error. Error codes:\n" +
+	"- `role_load_failed` — database query failed.\x82\xd3\xe4\x93\x02-\x12+/v1/departments/{department_id}/responsible\x12\x91\x02\n" +
 	"\rListOrgAdmins\x12).query.membership.v1.ListOrgAdminsRequest\x1a*.query.membership.v1.ListOrgAdminsResponse\"\xa8\x01\x92AsJq\n" +
 	"\x03400\x12j\n" +
 	"hValidation failed. Error codes:\n" +

@@ -1649,7 +1649,7 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x1fCountDepartmentsByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\"8\n" +
 	" CountDepartmentsByClinicResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total2\xc2\x13\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total2\xfb\x15\n" +
 	"\x18OrgStructureQueryService\x12\x84\x02\n" +
 	"\x0fGetOrganization\x12-.query.orgstructure.v1.GetOrganizationRequest\x1a..query.orgstructure.v1.GetOrganizationResponse\"\x91\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
@@ -1658,8 +1658,11 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x11ListOrganizations\x12/.query.orgstructure.v1.ListOrganizationsRequest\x1a0.query.orgstructure.v1.ListOrganizationsResponse\"\x91\x01\x92AuJs\n" +
 	"\x03400\x12l\n" +
 	"jValidation failed. Error codes:\n" +
-	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/organizations\x12\x9a\x01\n" +
-	"\x12CountOrganizations\x120.query.orgstructure.v1.CountOrganizationsRequest\x1a1.query.orgstructure.v1.CountOrganizationsResponse\"\x1f\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/organizations:count\x12\x97\x02\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/organizations\x12\x85\x02\n" +
+	"\x12CountOrganizations\x120.query.orgstructure.v1.CountOrganizationsRequest\x1a1.query.orgstructure.v1.CountOrganizationsResponse\"\x89\x01\x92AgJe\n" +
+	"\x03500\x12^\n" +
+	"\\Internal server error. Error codes:\n" +
+	"- `organization_count_failed` — database query failed.\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/organizations:count\x12\x97\x02\n" +
 	"\x13SearchOrganizations\x121.query.orgstructure.v1.SearchOrganizationsRequest\x1a2.query.orgstructure.v1.SearchOrganizationsResponse\"\x98\x01\x92AuJs\n" +
 	"\x03400\x12l\n" +
 	"jValidation failed. Error codes:\n" +
@@ -1671,8 +1674,11 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"\xab\x01\x92AuJs\n" +
 	"\x03400\x12l\n" +
 	"jValidation failed. Error codes:\n" +
-	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02-\x12+/v1/organizations/{organization_id}/clinics\x12\xcc\x01\n" +
-	"\x1aCountClinicsByOrganization\x128.query.orgstructure.v1.CountClinicsByOrganizationRequest\x1a9.query.orgstructure.v1.CountClinicsByOrganizationResponse\"9\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/clinics:count\x12\xf8\x01\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02-\x12+/v1/organizations/{organization_id}/clinics\x12\xb1\x02\n" +
+	"\x1aCountClinicsByOrganization\x128.query.orgstructure.v1.CountClinicsByOrganizationRequest\x1a9.query.orgstructure.v1.CountClinicsByOrganizationResponse\"\x9d\x01\x92AaJ_\n" +
+	"\x03500\x12X\n" +
+	"VInternal server error. Error codes:\n" +
+	"- `clinic_count_failed` — database query failed.\x82\xd3\xe4\x93\x023\x121/v1/organizations/{organization_id}/clinics:count\x12\xf8\x01\n" +
 	"\rGetDepartment\x12+.query.orgstructure.v1.GetDepartmentRequest\x1a,.query.orgstructure.v1.GetDepartmentResponse\"\x8b\x01\x92AlJj\n" +
 	"\x03404\x12c\n" +
 	"aNot found. Error codes:\n" +
@@ -1680,8 +1686,11 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"\xa3\x01\x92AuJs\n" +
 	"\x03400\x12l\n" +
 	"jValidation failed. Error codes:\n" +
-	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02%\x12#/v1/clinics/{clinic_id}/departments\x12\xbe\x01\n" +
-	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/clinics/{clinic_id}/departments:countB\xe0\x04\x92A\xe3\x02RI\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02%\x12#/v1/clinics/{clinic_id}/departments\x12\xa7\x02\n" +
+	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"\x99\x01\x92AeJc\n" +
+	"\x03500\x12\\\n" +
+	"ZInternal server error. Error codes:\n" +
+	"- `department_count_failed` — database query failed.\x82\xd3\xe4\x93\x02+\x12)/v1/clinics/{clinic_id}/departments:countB\xe0\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

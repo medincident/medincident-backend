@@ -77,6 +77,12 @@ service OrgStructureQueryService {
   }
   rpc CountOrganizations(CountOrganizationsRequest) returns (CountOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations:count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `organization_count_failed` — database query failed."}
+      }
+    };
   }
   rpc SearchOrganizations(SearchOrganizationsRequest) returns (SearchOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/organizations:search"};
@@ -108,6 +114,12 @@ service OrgStructureQueryService {
   }
   rpc CountClinicsByOrganization(CountClinicsByOrganizationRequest) returns (CountClinicsByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/clinics:count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `clinic_count_failed` — database query failed."}
+      }
+    };
   }
 
   rpc GetDepartment(GetDepartmentRequest) returns (GetDepartmentResponse) {
@@ -130,6 +142,12 @@ service OrgStructureQueryService {
   }
   rpc CountDepartmentsByClinic(CountDepartmentsByClinicRequest) returns (CountDepartmentsByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/departments:count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `department_count_failed` — database query failed."}
+      }
+    };
   }
 }
 

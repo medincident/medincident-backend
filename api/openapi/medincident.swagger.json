@@ -876,10 +876,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `department_count_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -1082,10 +1080,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `employee_card_count_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -1157,10 +1153,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `role_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -1550,10 +1544,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `stats_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -1884,10 +1876,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `employee_card_count_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -1959,10 +1949,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `role_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -2286,10 +2274,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `stats_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -2793,10 +2779,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `vacation_count_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -3497,10 +3481,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `incident_category_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -4513,10 +4495,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `self_identity_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -4678,10 +4658,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `self_orgs_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -4900,10 +4878,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `organization_id_generation_failed` — failed to generate a new organization ID.\n- `organization_save_failed` — database write failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -5761,10 +5737,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `clinic_count_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -6303,10 +6277,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `employee_card_count_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -7531,10 +7503,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `stats_load_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -7585,10 +7555,8 @@
             }
           },
           "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Internal server error. Error codes:\n- `organization_count_failed` — database query failed.",
+            "schema": {}
           },
           "default": {
             "description": "An unexpected error response.",
@@ -8056,10 +8024,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -8141,10 +8107,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",
@@ -8401,10 +8365,8 @@
             }
           },
           "400": {
-            "description": "Validation failed or invalid input.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Validation failed. Error codes:\n- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.",
+            "schema": {}
           },
           "401": {
             "description": "Unauthenticated — missing or invalid token.",

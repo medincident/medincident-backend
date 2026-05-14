@@ -972,9 +972,13 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"!\n" +
-	"\x1fUpdateDepartmentDetailsResponse2\x91\x12\n" +
-	"\x1aOrgStructureCommandService\x12\x9b\x01\n" +
-	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xbe\x02\n" +
+	"\x1fUpdateDepartmentDetailsResponse2\xd3\x13\n" +
+	"\x1aOrgStructureCommandService\x12\xdd\x02\n" +
+	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\xdd\x01\x92A\xbd\x01J\xba\x01\n" +
+	"\x03500\x12\xb2\x01\n" +
+	"\xaf\x01Internal server error. Error codes:\n" +
+	"- `organization_id_generation_failed` — failed to generate a new organization ID.\n" +
+	"- `organization_save_failed` — database write failed.\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xbe\x02\n" +
 	"\x19UpdateOrganizationDetails\x129.command.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.command.orgstructure.v1.UpdateOrganizationDetailsResponse\"\xa9\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +

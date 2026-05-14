@@ -69,12 +69,30 @@ service AnnouncementQueryService {
   }
   rpc ListAnnouncementsForOrganization(ListAnnouncementsForOrganizationRequest) returns (ListAnnouncementsForOrganizationResponse) {
     option (google.api.http) = {get: "/v1/query/organizations/{organization_id}/announcements"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListAnnouncementsForClinic(ListAnnouncementsForClinicRequest) returns (ListAnnouncementsForClinicResponse) {
     option (google.api.http) = {get: "/v1/query/clinics/{clinic_id}/announcements"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
   rpc ListAnnouncementsForDepartment(ListAnnouncementsForDepartmentRequest) returns (ListAnnouncementsForDepartmentResponse) {
     option (google.api.http) = {get: "/v1/query/departments/{department_id}/announcements"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "400"
+        value: {description: "Validation failed. Error codes:\n- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+    };
   }
 }
 
