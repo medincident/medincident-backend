@@ -484,6 +484,86 @@ func (x *GetEmployeeResponse) GetEmployee() *EmployeeCardView {
 	return nil
 }
 
+type GetMyEmployeeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMyEmployeeRequest) Reset() {
+	*x = GetMyEmployeeRequest{}
+	mi := &file_query_membership_v1_membership_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyEmployeeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyEmployeeRequest) ProtoMessage() {}
+
+func (x *GetMyEmployeeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_query_membership_v1_membership_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyEmployeeRequest.ProtoReflect.Descriptor instead.
+func (*GetMyEmployeeRequest) Descriptor() ([]byte, []int) {
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{6}
+}
+
+type GetMyEmployeeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Employee      *EmployeeCardView      `protobuf:"bytes,1,opt,name=employee,proto3" json:"employee,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMyEmployeeResponse) Reset() {
+	*x = GetMyEmployeeResponse{}
+	mi := &file_query_membership_v1_membership_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMyEmployeeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMyEmployeeResponse) ProtoMessage() {}
+
+func (x *GetMyEmployeeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_query_membership_v1_membership_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMyEmployeeResponse.ProtoReflect.Descriptor instead.
+func (*GetMyEmployeeResponse) Descriptor() ([]byte, []int) {
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *GetMyEmployeeResponse) GetEmployee() *EmployeeCardView {
+	if x != nil {
+		return x.Employee
+	}
+	return nil
+}
+
 type ListEmployeesByDepartmentRequest struct {
 	state        protoimpl.MessageState `protogen:"open.v1"`
 	DepartmentId string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
@@ -504,7 +584,7 @@ type ListEmployeesByDepartmentRequest struct {
 
 func (x *ListEmployeesByDepartmentRequest) Reset() {
 	*x = ListEmployeesByDepartmentRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[6]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -516,7 +596,7 @@ func (x *ListEmployeesByDepartmentRequest) String() string {
 func (*ListEmployeesByDepartmentRequest) ProtoMessage() {}
 
 func (x *ListEmployeesByDepartmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[6]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -529,7 +609,7 @@ func (x *ListEmployeesByDepartmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmployeesByDepartmentRequest.ProtoReflect.Descriptor instead.
 func (*ListEmployeesByDepartmentRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{6}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ListEmployeesByDepartmentRequest) GetDepartmentId() string {
@@ -584,7 +664,7 @@ type ListEmployeesByDepartmentResponse struct {
 
 func (x *ListEmployeesByDepartmentResponse) Reset() {
 	*x = ListEmployeesByDepartmentResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[7]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -596,7 +676,7 @@ func (x *ListEmployeesByDepartmentResponse) String() string {
 func (*ListEmployeesByDepartmentResponse) ProtoMessage() {}
 
 func (x *ListEmployeesByDepartmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[7]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -609,7 +689,7 @@ func (x *ListEmployeesByDepartmentResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ListEmployeesByDepartmentResponse.ProtoReflect.Descriptor instead.
 func (*ListEmployeesByDepartmentResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{7}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListEmployeesByDepartmentResponse) GetItems() []*EmployeeCardView {
@@ -646,7 +726,7 @@ type ListEmployeesByClinicRequest struct {
 
 func (x *ListEmployeesByClinicRequest) Reset() {
 	*x = ListEmployeesByClinicRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[8]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -658,7 +738,7 @@ func (x *ListEmployeesByClinicRequest) String() string {
 func (*ListEmployeesByClinicRequest) ProtoMessage() {}
 
 func (x *ListEmployeesByClinicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[8]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -671,7 +751,7 @@ func (x *ListEmployeesByClinicRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmployeesByClinicRequest.ProtoReflect.Descriptor instead.
 func (*ListEmployeesByClinicRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{8}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ListEmployeesByClinicRequest) GetClinicId() string {
@@ -726,7 +806,7 @@ type ListEmployeesByClinicResponse struct {
 
 func (x *ListEmployeesByClinicResponse) Reset() {
 	*x = ListEmployeesByClinicResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[9]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -738,7 +818,7 @@ func (x *ListEmployeesByClinicResponse) String() string {
 func (*ListEmployeesByClinicResponse) ProtoMessage() {}
 
 func (x *ListEmployeesByClinicResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[9]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -751,7 +831,7 @@ func (x *ListEmployeesByClinicResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEmployeesByClinicResponse.ProtoReflect.Descriptor instead.
 func (*ListEmployeesByClinicResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{9}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ListEmployeesByClinicResponse) GetItems() []*EmployeeCardView {
@@ -788,7 +868,7 @@ type ListEmployeesByOrganizationRequest struct {
 
 func (x *ListEmployeesByOrganizationRequest) Reset() {
 	*x = ListEmployeesByOrganizationRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[10]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -800,7 +880,7 @@ func (x *ListEmployeesByOrganizationRequest) String() string {
 func (*ListEmployeesByOrganizationRequest) ProtoMessage() {}
 
 func (x *ListEmployeesByOrganizationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[10]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -813,7 +893,7 @@ func (x *ListEmployeesByOrganizationRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use ListEmployeesByOrganizationRequest.ProtoReflect.Descriptor instead.
 func (*ListEmployeesByOrganizationRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{10}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ListEmployeesByOrganizationRequest) GetOrganizationId() string {
@@ -868,7 +948,7 @@ type ListEmployeesByOrganizationResponse struct {
 
 func (x *ListEmployeesByOrganizationResponse) Reset() {
 	*x = ListEmployeesByOrganizationResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[11]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -880,7 +960,7 @@ func (x *ListEmployeesByOrganizationResponse) String() string {
 func (*ListEmployeesByOrganizationResponse) ProtoMessage() {}
 
 func (x *ListEmployeesByOrganizationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[11]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -893,7 +973,7 @@ func (x *ListEmployeesByOrganizationResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use ListEmployeesByOrganizationResponse.ProtoReflect.Descriptor instead.
 func (*ListEmployeesByOrganizationResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{11}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListEmployeesByOrganizationResponse) GetItems() []*EmployeeCardView {
@@ -928,7 +1008,7 @@ type CountEmployeesByDepartmentRequest struct {
 
 func (x *CountEmployeesByDepartmentRequest) Reset() {
 	*x = CountEmployeesByDepartmentRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[12]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -940,7 +1020,7 @@ func (x *CountEmployeesByDepartmentRequest) String() string {
 func (*CountEmployeesByDepartmentRequest) ProtoMessage() {}
 
 func (x *CountEmployeesByDepartmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[12]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -953,7 +1033,7 @@ func (x *CountEmployeesByDepartmentRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use CountEmployeesByDepartmentRequest.ProtoReflect.Descriptor instead.
 func (*CountEmployeesByDepartmentRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{12}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *CountEmployeesByDepartmentRequest) GetDepartmentId() string {
@@ -993,7 +1073,7 @@ type CountEmployeesByDepartmentResponse struct {
 
 func (x *CountEmployeesByDepartmentResponse) Reset() {
 	*x = CountEmployeesByDepartmentResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[13]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1005,7 +1085,7 @@ func (x *CountEmployeesByDepartmentResponse) String() string {
 func (*CountEmployeesByDepartmentResponse) ProtoMessage() {}
 
 func (x *CountEmployeesByDepartmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[13]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1018,7 +1098,7 @@ func (x *CountEmployeesByDepartmentResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use CountEmployeesByDepartmentResponse.ProtoReflect.Descriptor instead.
 func (*CountEmployeesByDepartmentResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{13}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *CountEmployeesByDepartmentResponse) GetTotal() int64 {
@@ -1046,7 +1126,7 @@ type CountEmployeesByClinicRequest struct {
 
 func (x *CountEmployeesByClinicRequest) Reset() {
 	*x = CountEmployeesByClinicRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[14]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1058,7 +1138,7 @@ func (x *CountEmployeesByClinicRequest) String() string {
 func (*CountEmployeesByClinicRequest) ProtoMessage() {}
 
 func (x *CountEmployeesByClinicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[14]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1071,7 +1151,7 @@ func (x *CountEmployeesByClinicRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CountEmployeesByClinicRequest.ProtoReflect.Descriptor instead.
 func (*CountEmployeesByClinicRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{14}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *CountEmployeesByClinicRequest) GetClinicId() string {
@@ -1111,7 +1191,7 @@ type CountEmployeesByClinicResponse struct {
 
 func (x *CountEmployeesByClinicResponse) Reset() {
 	*x = CountEmployeesByClinicResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[15]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1123,7 +1203,7 @@ func (x *CountEmployeesByClinicResponse) String() string {
 func (*CountEmployeesByClinicResponse) ProtoMessage() {}
 
 func (x *CountEmployeesByClinicResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[15]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1136,7 +1216,7 @@ func (x *CountEmployeesByClinicResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CountEmployeesByClinicResponse.ProtoReflect.Descriptor instead.
 func (*CountEmployeesByClinicResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{15}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *CountEmployeesByClinicResponse) GetTotal() int64 {
@@ -1164,7 +1244,7 @@ type CountEmployeesByOrganizationRequest struct {
 
 func (x *CountEmployeesByOrganizationRequest) Reset() {
 	*x = CountEmployeesByOrganizationRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[16]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1176,7 +1256,7 @@ func (x *CountEmployeesByOrganizationRequest) String() string {
 func (*CountEmployeesByOrganizationRequest) ProtoMessage() {}
 
 func (x *CountEmployeesByOrganizationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[16]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1189,7 +1269,7 @@ func (x *CountEmployeesByOrganizationRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use CountEmployeesByOrganizationRequest.ProtoReflect.Descriptor instead.
 func (*CountEmployeesByOrganizationRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{16}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *CountEmployeesByOrganizationRequest) GetOrganizationId() string {
@@ -1229,7 +1309,7 @@ type CountEmployeesByOrganizationResponse struct {
 
 func (x *CountEmployeesByOrganizationResponse) Reset() {
 	*x = CountEmployeesByOrganizationResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[17]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1241,7 +1321,7 @@ func (x *CountEmployeesByOrganizationResponse) String() string {
 func (*CountEmployeesByOrganizationResponse) ProtoMessage() {}
 
 func (x *CountEmployeesByOrganizationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[17]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1254,7 +1334,7 @@ func (x *CountEmployeesByOrganizationResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use CountEmployeesByOrganizationResponse.ProtoReflect.Descriptor instead.
 func (*CountEmployeesByOrganizationResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{17}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CountEmployeesByOrganizationResponse) GetTotal() int64 {
@@ -1291,7 +1371,7 @@ type SearchEmployeesByOrganizationRequest struct {
 
 func (x *SearchEmployeesByOrganizationRequest) Reset() {
 	*x = SearchEmployeesByOrganizationRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[18]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1303,7 +1383,7 @@ func (x *SearchEmployeesByOrganizationRequest) String() string {
 func (*SearchEmployeesByOrganizationRequest) ProtoMessage() {}
 
 func (x *SearchEmployeesByOrganizationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[18]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1316,7 +1396,7 @@ func (x *SearchEmployeesByOrganizationRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use SearchEmployeesByOrganizationRequest.ProtoReflect.Descriptor instead.
 func (*SearchEmployeesByOrganizationRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{18}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *SearchEmployeesByOrganizationRequest) GetOrganizationId() string {
@@ -1378,7 +1458,7 @@ type SearchEmployeesByOrganizationResponse struct {
 
 func (x *SearchEmployeesByOrganizationResponse) Reset() {
 	*x = SearchEmployeesByOrganizationResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[19]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1390,7 +1470,7 @@ func (x *SearchEmployeesByOrganizationResponse) String() string {
 func (*SearchEmployeesByOrganizationResponse) ProtoMessage() {}
 
 func (x *SearchEmployeesByOrganizationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[19]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1403,7 +1483,7 @@ func (x *SearchEmployeesByOrganizationResponse) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use SearchEmployeesByOrganizationResponse.ProtoReflect.Descriptor instead.
 func (*SearchEmployeesByOrganizationResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{19}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *SearchEmployeesByOrganizationResponse) GetItems() []*EmployeeCardView {
@@ -1434,7 +1514,7 @@ type ListVacationsByEmployeeRequest struct {
 
 func (x *ListVacationsByEmployeeRequest) Reset() {
 	*x = ListVacationsByEmployeeRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[20]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1446,7 +1526,7 @@ func (x *ListVacationsByEmployeeRequest) String() string {
 func (*ListVacationsByEmployeeRequest) ProtoMessage() {}
 
 func (x *ListVacationsByEmployeeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[20]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1459,7 +1539,7 @@ func (x *ListVacationsByEmployeeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListVacationsByEmployeeRequest.ProtoReflect.Descriptor instead.
 func (*ListVacationsByEmployeeRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{20}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ListVacationsByEmployeeRequest) GetEmployeeId() string {
@@ -1500,7 +1580,7 @@ type ListVacationsByEmployeeResponse struct {
 
 func (x *ListVacationsByEmployeeResponse) Reset() {
 	*x = ListVacationsByEmployeeResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[21]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1512,7 +1592,7 @@ func (x *ListVacationsByEmployeeResponse) String() string {
 func (*ListVacationsByEmployeeResponse) ProtoMessage() {}
 
 func (x *ListVacationsByEmployeeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[21]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1525,7 +1605,7 @@ func (x *ListVacationsByEmployeeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListVacationsByEmployeeResponse.ProtoReflect.Descriptor instead.
 func (*ListVacationsByEmployeeResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{21}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *ListVacationsByEmployeeResponse) GetItems() []*VacationView {
@@ -1554,7 +1634,7 @@ type CountVacationsByEmployeeRequest struct {
 
 func (x *CountVacationsByEmployeeRequest) Reset() {
 	*x = CountVacationsByEmployeeRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[22]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1566,7 +1646,7 @@ func (x *CountVacationsByEmployeeRequest) String() string {
 func (*CountVacationsByEmployeeRequest) ProtoMessage() {}
 
 func (x *CountVacationsByEmployeeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[22]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1579,7 +1659,7 @@ func (x *CountVacationsByEmployeeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CountVacationsByEmployeeRequest.ProtoReflect.Descriptor instead.
 func (*CountVacationsByEmployeeRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{22}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *CountVacationsByEmployeeRequest) GetEmployeeId() string {
@@ -1605,7 +1685,7 @@ type CountVacationsByEmployeeResponse struct {
 
 func (x *CountVacationsByEmployeeResponse) Reset() {
 	*x = CountVacationsByEmployeeResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[23]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1617,7 +1697,7 @@ func (x *CountVacationsByEmployeeResponse) String() string {
 func (*CountVacationsByEmployeeResponse) ProtoMessage() {}
 
 func (x *CountVacationsByEmployeeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[23]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1630,7 +1710,7 @@ func (x *CountVacationsByEmployeeResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CountVacationsByEmployeeResponse.ProtoReflect.Descriptor instead.
 func (*CountVacationsByEmployeeResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{23}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *CountVacationsByEmployeeResponse) GetTotal() int64 {
@@ -1649,7 +1729,7 @@ type GetClinicHeadRequest struct {
 
 func (x *GetClinicHeadRequest) Reset() {
 	*x = GetClinicHeadRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[24]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1661,7 +1741,7 @@ func (x *GetClinicHeadRequest) String() string {
 func (*GetClinicHeadRequest) ProtoMessage() {}
 
 func (x *GetClinicHeadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[24]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1674,7 +1754,7 @@ func (x *GetClinicHeadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetClinicHeadRequest.ProtoReflect.Descriptor instead.
 func (*GetClinicHeadRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{24}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetClinicHeadRequest) GetClinicId() string {
@@ -1693,7 +1773,7 @@ type GetClinicHeadResponse struct {
 
 func (x *GetClinicHeadResponse) Reset() {
 	*x = GetClinicHeadResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[25]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1705,7 +1785,7 @@ func (x *GetClinicHeadResponse) String() string {
 func (*GetClinicHeadResponse) ProtoMessage() {}
 
 func (x *GetClinicHeadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[25]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1718,7 +1798,7 @@ func (x *GetClinicHeadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetClinicHeadResponse.ProtoReflect.Descriptor instead.
 func (*GetClinicHeadResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{25}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *GetClinicHeadResponse) GetAssignment() *RoleAssignment {
@@ -1737,7 +1817,7 @@ type GetDepartmentResponsibleRequest struct {
 
 func (x *GetDepartmentResponsibleRequest) Reset() {
 	*x = GetDepartmentResponsibleRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[26]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1749,7 +1829,7 @@ func (x *GetDepartmentResponsibleRequest) String() string {
 func (*GetDepartmentResponsibleRequest) ProtoMessage() {}
 
 func (x *GetDepartmentResponsibleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[26]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1762,7 +1842,7 @@ func (x *GetDepartmentResponsibleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDepartmentResponsibleRequest.ProtoReflect.Descriptor instead.
 func (*GetDepartmentResponsibleRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{26}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *GetDepartmentResponsibleRequest) GetDepartmentId() string {
@@ -1781,7 +1861,7 @@ type GetDepartmentResponsibleResponse struct {
 
 func (x *GetDepartmentResponsibleResponse) Reset() {
 	*x = GetDepartmentResponsibleResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[27]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1793,7 +1873,7 @@ func (x *GetDepartmentResponsibleResponse) String() string {
 func (*GetDepartmentResponsibleResponse) ProtoMessage() {}
 
 func (x *GetDepartmentResponsibleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[27]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1806,7 +1886,7 @@ func (x *GetDepartmentResponsibleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetDepartmentResponsibleResponse.ProtoReflect.Descriptor instead.
 func (*GetDepartmentResponsibleResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{27}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *GetDepartmentResponsibleResponse) GetAssignment() *RoleAssignment {
@@ -1827,7 +1907,7 @@ type ListOrgAdminsRequest struct {
 
 func (x *ListOrgAdminsRequest) Reset() {
 	*x = ListOrgAdminsRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[28]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1839,7 +1919,7 @@ func (x *ListOrgAdminsRequest) String() string {
 func (*ListOrgAdminsRequest) ProtoMessage() {}
 
 func (x *ListOrgAdminsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[28]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1852,7 +1932,7 @@ func (x *ListOrgAdminsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrgAdminsRequest.ProtoReflect.Descriptor instead.
 func (*ListOrgAdminsRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{28}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ListOrgAdminsRequest) GetOrganizationId() string {
@@ -1886,7 +1966,7 @@ type ListOrgAdminsResponse struct {
 
 func (x *ListOrgAdminsResponse) Reset() {
 	*x = ListOrgAdminsResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[29]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1898,7 +1978,7 @@ func (x *ListOrgAdminsResponse) String() string {
 func (*ListOrgAdminsResponse) ProtoMessage() {}
 
 func (x *ListOrgAdminsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[29]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1911,7 +1991,7 @@ func (x *ListOrgAdminsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrgAdminsResponse.ProtoReflect.Descriptor instead.
 func (*ListOrgAdminsResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{29}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ListOrgAdminsResponse) GetItems() []*RoleAssignment {
@@ -1939,7 +2019,7 @@ type ListOrgDispatchersRequest struct {
 
 func (x *ListOrgDispatchersRequest) Reset() {
 	*x = ListOrgDispatchersRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[30]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1951,7 +2031,7 @@ func (x *ListOrgDispatchersRequest) String() string {
 func (*ListOrgDispatchersRequest) ProtoMessage() {}
 
 func (x *ListOrgDispatchersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[30]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1964,7 +2044,7 @@ func (x *ListOrgDispatchersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrgDispatchersRequest.ProtoReflect.Descriptor instead.
 func (*ListOrgDispatchersRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{30}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ListOrgDispatchersRequest) GetOrganizationId() string {
@@ -1998,7 +2078,7 @@ type ListOrgDispatchersResponse struct {
 
 func (x *ListOrgDispatchersResponse) Reset() {
 	*x = ListOrgDispatchersResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[31]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2010,7 +2090,7 @@ func (x *ListOrgDispatchersResponse) String() string {
 func (*ListOrgDispatchersResponse) ProtoMessage() {}
 
 func (x *ListOrgDispatchersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[31]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2023,7 +2103,7 @@ func (x *ListOrgDispatchersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrgDispatchersResponse.ProtoReflect.Descriptor instead.
 func (*ListOrgDispatchersResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{31}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *ListOrgDispatchersResponse) GetItems() []*RoleAssignment {
@@ -2051,7 +2131,7 @@ type ListOrgHeadsRequest struct {
 
 func (x *ListOrgHeadsRequest) Reset() {
 	*x = ListOrgHeadsRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[32]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2063,7 +2143,7 @@ func (x *ListOrgHeadsRequest) String() string {
 func (*ListOrgHeadsRequest) ProtoMessage() {}
 
 func (x *ListOrgHeadsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[32]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2076,7 +2156,7 @@ func (x *ListOrgHeadsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrgHeadsRequest.ProtoReflect.Descriptor instead.
 func (*ListOrgHeadsRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{32}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *ListOrgHeadsRequest) GetOrganizationId() string {
@@ -2110,7 +2190,7 @@ type ListOrgHeadsResponse struct {
 
 func (x *ListOrgHeadsResponse) Reset() {
 	*x = ListOrgHeadsResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[33]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2122,7 +2202,7 @@ func (x *ListOrgHeadsResponse) String() string {
 func (*ListOrgHeadsResponse) ProtoMessage() {}
 
 func (x *ListOrgHeadsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[33]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2135,7 +2215,7 @@ func (x *ListOrgHeadsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListOrgHeadsResponse.ProtoReflect.Descriptor instead.
 func (*ListOrgHeadsResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{33}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ListOrgHeadsResponse) GetItems() []*RoleAssignment {
@@ -2162,7 +2242,7 @@ type ListSystemAdminsRequest struct {
 
 func (x *ListSystemAdminsRequest) Reset() {
 	*x = ListSystemAdminsRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[34]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2174,7 +2254,7 @@ func (x *ListSystemAdminsRequest) String() string {
 func (*ListSystemAdminsRequest) ProtoMessage() {}
 
 func (x *ListSystemAdminsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[34]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2187,7 +2267,7 @@ func (x *ListSystemAdminsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSystemAdminsRequest.ProtoReflect.Descriptor instead.
 func (*ListSystemAdminsRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{34}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ListSystemAdminsRequest) GetLimit() int32 {
@@ -2214,7 +2294,7 @@ type ListSystemAdminsResponse struct {
 
 func (x *ListSystemAdminsResponse) Reset() {
 	*x = ListSystemAdminsResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[35]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2226,7 +2306,7 @@ func (x *ListSystemAdminsResponse) String() string {
 func (*ListSystemAdminsResponse) ProtoMessage() {}
 
 func (x *ListSystemAdminsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[35]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2239,7 +2319,7 @@ func (x *ListSystemAdminsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListSystemAdminsResponse.ProtoReflect.Descriptor instead.
 func (*ListSystemAdminsResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{35}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ListSystemAdminsResponse) GetItems() []*SystemAdminView {
@@ -2273,7 +2353,7 @@ type ZitadelUserView struct {
 
 func (x *ZitadelUserView) Reset() {
 	*x = ZitadelUserView{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[36]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2285,7 +2365,7 @@ func (x *ZitadelUserView) String() string {
 func (*ZitadelUserView) ProtoMessage() {}
 
 func (x *ZitadelUserView) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[36]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2298,7 +2378,7 @@ func (x *ZitadelUserView) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ZitadelUserView.ProtoReflect.Descriptor instead.
 func (*ZitadelUserView) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{36}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *ZitadelUserView) GetZitadelUserId() string {
@@ -2352,7 +2432,7 @@ type ListCandidatesForHireRequest struct {
 
 func (x *ListCandidatesForHireRequest) Reset() {
 	*x = ListCandidatesForHireRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[37]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2364,7 +2444,7 @@ func (x *ListCandidatesForHireRequest) String() string {
 func (*ListCandidatesForHireRequest) ProtoMessage() {}
 
 func (x *ListCandidatesForHireRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[37]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2377,7 +2457,7 @@ func (x *ListCandidatesForHireRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCandidatesForHireRequest.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForHireRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{37}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *ListCandidatesForHireRequest) GetOrganizationId() string {
@@ -2419,7 +2499,7 @@ type ListCandidatesForHireResponse struct {
 
 func (x *ListCandidatesForHireResponse) Reset() {
 	*x = ListCandidatesForHireResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[38]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2431,7 +2511,7 @@ func (x *ListCandidatesForHireResponse) String() string {
 func (*ListCandidatesForHireResponse) ProtoMessage() {}
 
 func (x *ListCandidatesForHireResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[38]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2444,7 +2524,7 @@ func (x *ListCandidatesForHireResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCandidatesForHireResponse.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForHireResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{38}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *ListCandidatesForHireResponse) GetItems() []*ZitadelUserView {
@@ -2474,7 +2554,7 @@ type ListCandidatesForSystemAdminRequest struct {
 
 func (x *ListCandidatesForSystemAdminRequest) Reset() {
 	*x = ListCandidatesForSystemAdminRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[39]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2486,7 +2566,7 @@ func (x *ListCandidatesForSystemAdminRequest) String() string {
 func (*ListCandidatesForSystemAdminRequest) ProtoMessage() {}
 
 func (x *ListCandidatesForSystemAdminRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[39]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2499,7 +2579,7 @@ func (x *ListCandidatesForSystemAdminRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use ListCandidatesForSystemAdminRequest.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForSystemAdminRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{39}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ListCandidatesForSystemAdminRequest) GetQuery() string {
@@ -2533,7 +2613,7 @@ type ListCandidatesForSystemAdminResponse struct {
 
 func (x *ListCandidatesForSystemAdminResponse) Reset() {
 	*x = ListCandidatesForSystemAdminResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[40]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2545,7 +2625,7 @@ func (x *ListCandidatesForSystemAdminResponse) String() string {
 func (*ListCandidatesForSystemAdminResponse) ProtoMessage() {}
 
 func (x *ListCandidatesForSystemAdminResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[40]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2558,7 +2638,7 @@ func (x *ListCandidatesForSystemAdminResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use ListCandidatesForSystemAdminResponse.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForSystemAdminResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{40}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *ListCandidatesForSystemAdminResponse) GetItems() []*ZitadelUserView {
@@ -2589,7 +2669,7 @@ type ListCandidatesForOrgAdminRequest struct {
 
 func (x *ListCandidatesForOrgAdminRequest) Reset() {
 	*x = ListCandidatesForOrgAdminRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[41]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2601,7 +2681,7 @@ func (x *ListCandidatesForOrgAdminRequest) String() string {
 func (*ListCandidatesForOrgAdminRequest) ProtoMessage() {}
 
 func (x *ListCandidatesForOrgAdminRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[41]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2614,7 +2694,7 @@ func (x *ListCandidatesForOrgAdminRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCandidatesForOrgAdminRequest.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForOrgAdminRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{41}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *ListCandidatesForOrgAdminRequest) GetOrganizationId() string {
@@ -2655,7 +2735,7 @@ type ListCandidatesForOrgAdminResponse struct {
 
 func (x *ListCandidatesForOrgAdminResponse) Reset() {
 	*x = ListCandidatesForOrgAdminResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[42]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2667,7 +2747,7 @@ func (x *ListCandidatesForOrgAdminResponse) String() string {
 func (*ListCandidatesForOrgAdminResponse) ProtoMessage() {}
 
 func (x *ListCandidatesForOrgAdminResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[42]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2680,7 +2760,7 @@ func (x *ListCandidatesForOrgAdminResponse) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use ListCandidatesForOrgAdminResponse.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForOrgAdminResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{42}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *ListCandidatesForOrgAdminResponse) GetItems() []*EmployeeCardView {
@@ -2711,7 +2791,7 @@ type ListCandidatesForOrgHeadRequest struct {
 
 func (x *ListCandidatesForOrgHeadRequest) Reset() {
 	*x = ListCandidatesForOrgHeadRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[43]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2723,7 +2803,7 @@ func (x *ListCandidatesForOrgHeadRequest) String() string {
 func (*ListCandidatesForOrgHeadRequest) ProtoMessage() {}
 
 func (x *ListCandidatesForOrgHeadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[43]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2736,7 +2816,7 @@ func (x *ListCandidatesForOrgHeadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCandidatesForOrgHeadRequest.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForOrgHeadRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{43}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *ListCandidatesForOrgHeadRequest) GetOrganizationId() string {
@@ -2777,7 +2857,7 @@ type ListCandidatesForOrgHeadResponse struct {
 
 func (x *ListCandidatesForOrgHeadResponse) Reset() {
 	*x = ListCandidatesForOrgHeadResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[44]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2789,7 +2869,7 @@ func (x *ListCandidatesForOrgHeadResponse) String() string {
 func (*ListCandidatesForOrgHeadResponse) ProtoMessage() {}
 
 func (x *ListCandidatesForOrgHeadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[44]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2802,7 +2882,7 @@ func (x *ListCandidatesForOrgHeadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCandidatesForOrgHeadResponse.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForOrgHeadResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{44}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *ListCandidatesForOrgHeadResponse) GetItems() []*EmployeeCardView {
@@ -2833,7 +2913,7 @@ type ListCandidatesForOrgDispatcherRequest struct {
 
 func (x *ListCandidatesForOrgDispatcherRequest) Reset() {
 	*x = ListCandidatesForOrgDispatcherRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[45]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2845,7 +2925,7 @@ func (x *ListCandidatesForOrgDispatcherRequest) String() string {
 func (*ListCandidatesForOrgDispatcherRequest) ProtoMessage() {}
 
 func (x *ListCandidatesForOrgDispatcherRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[45]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2858,7 +2938,7 @@ func (x *ListCandidatesForOrgDispatcherRequest) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use ListCandidatesForOrgDispatcherRequest.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForOrgDispatcherRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{45}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *ListCandidatesForOrgDispatcherRequest) GetOrganizationId() string {
@@ -2899,7 +2979,7 @@ type ListCandidatesForOrgDispatcherResponse struct {
 
 func (x *ListCandidatesForOrgDispatcherResponse) Reset() {
 	*x = ListCandidatesForOrgDispatcherResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[46]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2911,7 +2991,7 @@ func (x *ListCandidatesForOrgDispatcherResponse) String() string {
 func (*ListCandidatesForOrgDispatcherResponse) ProtoMessage() {}
 
 func (x *ListCandidatesForOrgDispatcherResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[46]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2924,7 +3004,7 @@ func (x *ListCandidatesForOrgDispatcherResponse) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use ListCandidatesForOrgDispatcherResponse.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForOrgDispatcherResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{46}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *ListCandidatesForOrgDispatcherResponse) GetItems() []*EmployeeCardView {
@@ -2955,7 +3035,7 @@ type ListCandidatesForClinicHeadRequest struct {
 
 func (x *ListCandidatesForClinicHeadRequest) Reset() {
 	*x = ListCandidatesForClinicHeadRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[47]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2967,7 +3047,7 @@ func (x *ListCandidatesForClinicHeadRequest) String() string {
 func (*ListCandidatesForClinicHeadRequest) ProtoMessage() {}
 
 func (x *ListCandidatesForClinicHeadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[47]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2980,7 +3060,7 @@ func (x *ListCandidatesForClinicHeadRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use ListCandidatesForClinicHeadRequest.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForClinicHeadRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{47}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *ListCandidatesForClinicHeadRequest) GetClinicId() string {
@@ -3021,7 +3101,7 @@ type ListCandidatesForClinicHeadResponse struct {
 
 func (x *ListCandidatesForClinicHeadResponse) Reset() {
 	*x = ListCandidatesForClinicHeadResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[48]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3033,7 +3113,7 @@ func (x *ListCandidatesForClinicHeadResponse) String() string {
 func (*ListCandidatesForClinicHeadResponse) ProtoMessage() {}
 
 func (x *ListCandidatesForClinicHeadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[48]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3046,7 +3126,7 @@ func (x *ListCandidatesForClinicHeadResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use ListCandidatesForClinicHeadResponse.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForClinicHeadResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{48}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *ListCandidatesForClinicHeadResponse) GetItems() []*EmployeeCardView {
@@ -3077,7 +3157,7 @@ type ListCandidatesForDeptResponsibleRequest struct {
 
 func (x *ListCandidatesForDeptResponsibleRequest) Reset() {
 	*x = ListCandidatesForDeptResponsibleRequest{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[49]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3089,7 +3169,7 @@ func (x *ListCandidatesForDeptResponsibleRequest) String() string {
 func (*ListCandidatesForDeptResponsibleRequest) ProtoMessage() {}
 
 func (x *ListCandidatesForDeptResponsibleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[49]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3102,7 +3182,7 @@ func (x *ListCandidatesForDeptResponsibleRequest) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use ListCandidatesForDeptResponsibleRequest.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForDeptResponsibleRequest) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{49}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *ListCandidatesForDeptResponsibleRequest) GetDepartmentId() string {
@@ -3143,7 +3223,7 @@ type ListCandidatesForDeptResponsibleResponse struct {
 
 func (x *ListCandidatesForDeptResponsibleResponse) Reset() {
 	*x = ListCandidatesForDeptResponsibleResponse{}
-	mi := &file_query_membership_v1_membership_proto_msgTypes[50]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3155,7 +3235,7 @@ func (x *ListCandidatesForDeptResponsibleResponse) String() string {
 func (*ListCandidatesForDeptResponsibleResponse) ProtoMessage() {}
 
 func (x *ListCandidatesForDeptResponsibleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_membership_v1_membership_proto_msgTypes[50]
+	mi := &file_query_membership_v1_membership_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3168,7 +3248,7 @@ func (x *ListCandidatesForDeptResponsibleResponse) ProtoReflect() protoreflect.M
 
 // Deprecated: Use ListCandidatesForDeptResponsibleResponse.ProtoReflect.Descriptor instead.
 func (*ListCandidatesForDeptResponsibleResponse) Descriptor() ([]byte, []int) {
-	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{50}
+	return file_query_membership_v1_membership_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *ListCandidatesForDeptResponsibleResponse) GetItems() []*EmployeeCardView {
@@ -3250,6 +3330,9 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x12GetEmployeeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"X\n" +
 	"\x13GetEmployeeResponse\x12A\n" +
+	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"\x16\n" +
+	"\x14GetMyEmployeeRequest\"Z\n" +
+	"\x15GetMyEmployeeResponse\x12A\n" +
 	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"\xf1\x01\n" +
 	" ListEmployeesByDepartmentRequest\x12#\n" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\x12\x14\n" +
@@ -3469,12 +3552,16 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"(ListCandidatesForDeptResponsibleResponse\x12;\n" +
 	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor2\xc3<\n" +
+	"nextCursor2\xbb>\n" +
 	"\x16MembershipQueryService\x12\xed\x01\n" +
 	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x8a\x01\x92AmJk\n" +
 	"\x03404\x12d\n" +
 	"bNot found. Error codes:\n" +
-	"- `employee_card_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xb4\x02\n" +
+	"- `employee_card_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02\x14\x12\x12/v1/employees/{id}\x12\xf5\x01\n" +
+	"\rGetMyEmployee\x12).query.membership.v1.GetMyEmployeeRequest\x1a*.query.membership.v1.GetMyEmployeeResponse\"\x8c\x01\x92AqJo\n" +
+	"\x03404\x12h\n" +
+	"fNot found. Error codes:\n" +
+	"- `employee_card_not_found` — the authenticated user has no employee record.\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/employees/me\x12\xb4\x02\n" +
 	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"\xa7\x01\x92AsJq\n" +
 	"\x03400\x12j\n" +
 	"hValidation failed. Error codes:\n" +
@@ -3609,7 +3696,7 @@ func file_query_membership_v1_membership_proto_rawDescGZIP() []byte {
 	return file_query_membership_v1_membership_proto_rawDescData
 }
 
-var file_query_membership_v1_membership_proto_msgTypes = make([]protoimpl.MessageInfo, 51)
+var file_query_membership_v1_membership_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
 var file_query_membership_v1_membership_proto_goTypes = []any{
 	(*EmployeeCardView)(nil),                         // 0: query.membership.v1.EmployeeCardView
 	(*VacationView)(nil),                             // 1: query.membership.v1.VacationView
@@ -3617,125 +3704,130 @@ var file_query_membership_v1_membership_proto_goTypes = []any{
 	(*SystemAdminView)(nil),                          // 3: query.membership.v1.SystemAdminView
 	(*GetEmployeeRequest)(nil),                       // 4: query.membership.v1.GetEmployeeRequest
 	(*GetEmployeeResponse)(nil),                      // 5: query.membership.v1.GetEmployeeResponse
-	(*ListEmployeesByDepartmentRequest)(nil),         // 6: query.membership.v1.ListEmployeesByDepartmentRequest
-	(*ListEmployeesByDepartmentResponse)(nil),        // 7: query.membership.v1.ListEmployeesByDepartmentResponse
-	(*ListEmployeesByClinicRequest)(nil),             // 8: query.membership.v1.ListEmployeesByClinicRequest
-	(*ListEmployeesByClinicResponse)(nil),            // 9: query.membership.v1.ListEmployeesByClinicResponse
-	(*ListEmployeesByOrganizationRequest)(nil),       // 10: query.membership.v1.ListEmployeesByOrganizationRequest
-	(*ListEmployeesByOrganizationResponse)(nil),      // 11: query.membership.v1.ListEmployeesByOrganizationResponse
-	(*CountEmployeesByDepartmentRequest)(nil),        // 12: query.membership.v1.CountEmployeesByDepartmentRequest
-	(*CountEmployeesByDepartmentResponse)(nil),       // 13: query.membership.v1.CountEmployeesByDepartmentResponse
-	(*CountEmployeesByClinicRequest)(nil),            // 14: query.membership.v1.CountEmployeesByClinicRequest
-	(*CountEmployeesByClinicResponse)(nil),           // 15: query.membership.v1.CountEmployeesByClinicResponse
-	(*CountEmployeesByOrganizationRequest)(nil),      // 16: query.membership.v1.CountEmployeesByOrganizationRequest
-	(*CountEmployeesByOrganizationResponse)(nil),     // 17: query.membership.v1.CountEmployeesByOrganizationResponse
-	(*SearchEmployeesByOrganizationRequest)(nil),     // 18: query.membership.v1.SearchEmployeesByOrganizationRequest
-	(*SearchEmployeesByOrganizationResponse)(nil),    // 19: query.membership.v1.SearchEmployeesByOrganizationResponse
-	(*ListVacationsByEmployeeRequest)(nil),           // 20: query.membership.v1.ListVacationsByEmployeeRequest
-	(*ListVacationsByEmployeeResponse)(nil),          // 21: query.membership.v1.ListVacationsByEmployeeResponse
-	(*CountVacationsByEmployeeRequest)(nil),          // 22: query.membership.v1.CountVacationsByEmployeeRequest
-	(*CountVacationsByEmployeeResponse)(nil),         // 23: query.membership.v1.CountVacationsByEmployeeResponse
-	(*GetClinicHeadRequest)(nil),                     // 24: query.membership.v1.GetClinicHeadRequest
-	(*GetClinicHeadResponse)(nil),                    // 25: query.membership.v1.GetClinicHeadResponse
-	(*GetDepartmentResponsibleRequest)(nil),          // 26: query.membership.v1.GetDepartmentResponsibleRequest
-	(*GetDepartmentResponsibleResponse)(nil),         // 27: query.membership.v1.GetDepartmentResponsibleResponse
-	(*ListOrgAdminsRequest)(nil),                     // 28: query.membership.v1.ListOrgAdminsRequest
-	(*ListOrgAdminsResponse)(nil),                    // 29: query.membership.v1.ListOrgAdminsResponse
-	(*ListOrgDispatchersRequest)(nil),                // 30: query.membership.v1.ListOrgDispatchersRequest
-	(*ListOrgDispatchersResponse)(nil),               // 31: query.membership.v1.ListOrgDispatchersResponse
-	(*ListOrgHeadsRequest)(nil),                      // 32: query.membership.v1.ListOrgHeadsRequest
-	(*ListOrgHeadsResponse)(nil),                     // 33: query.membership.v1.ListOrgHeadsResponse
-	(*ListSystemAdminsRequest)(nil),                  // 34: query.membership.v1.ListSystemAdminsRequest
-	(*ListSystemAdminsResponse)(nil),                 // 35: query.membership.v1.ListSystemAdminsResponse
-	(*ZitadelUserView)(nil),                          // 36: query.membership.v1.ZitadelUserView
-	(*ListCandidatesForHireRequest)(nil),             // 37: query.membership.v1.ListCandidatesForHireRequest
-	(*ListCandidatesForHireResponse)(nil),            // 38: query.membership.v1.ListCandidatesForHireResponse
-	(*ListCandidatesForSystemAdminRequest)(nil),      // 39: query.membership.v1.ListCandidatesForSystemAdminRequest
-	(*ListCandidatesForSystemAdminResponse)(nil),     // 40: query.membership.v1.ListCandidatesForSystemAdminResponse
-	(*ListCandidatesForOrgAdminRequest)(nil),         // 41: query.membership.v1.ListCandidatesForOrgAdminRequest
-	(*ListCandidatesForOrgAdminResponse)(nil),        // 42: query.membership.v1.ListCandidatesForOrgAdminResponse
-	(*ListCandidatesForOrgHeadRequest)(nil),          // 43: query.membership.v1.ListCandidatesForOrgHeadRequest
-	(*ListCandidatesForOrgHeadResponse)(nil),         // 44: query.membership.v1.ListCandidatesForOrgHeadResponse
-	(*ListCandidatesForOrgDispatcherRequest)(nil),    // 45: query.membership.v1.ListCandidatesForOrgDispatcherRequest
-	(*ListCandidatesForOrgDispatcherResponse)(nil),   // 46: query.membership.v1.ListCandidatesForOrgDispatcherResponse
-	(*ListCandidatesForClinicHeadRequest)(nil),       // 47: query.membership.v1.ListCandidatesForClinicHeadRequest
-	(*ListCandidatesForClinicHeadResponse)(nil),      // 48: query.membership.v1.ListCandidatesForClinicHeadResponse
-	(*ListCandidatesForDeptResponsibleRequest)(nil),  // 49: query.membership.v1.ListCandidatesForDeptResponsibleRequest
-	(*ListCandidatesForDeptResponsibleResponse)(nil), // 50: query.membership.v1.ListCandidatesForDeptResponsibleResponse
+	(*GetMyEmployeeRequest)(nil),                     // 6: query.membership.v1.GetMyEmployeeRequest
+	(*GetMyEmployeeResponse)(nil),                    // 7: query.membership.v1.GetMyEmployeeResponse
+	(*ListEmployeesByDepartmentRequest)(nil),         // 8: query.membership.v1.ListEmployeesByDepartmentRequest
+	(*ListEmployeesByDepartmentResponse)(nil),        // 9: query.membership.v1.ListEmployeesByDepartmentResponse
+	(*ListEmployeesByClinicRequest)(nil),             // 10: query.membership.v1.ListEmployeesByClinicRequest
+	(*ListEmployeesByClinicResponse)(nil),            // 11: query.membership.v1.ListEmployeesByClinicResponse
+	(*ListEmployeesByOrganizationRequest)(nil),       // 12: query.membership.v1.ListEmployeesByOrganizationRequest
+	(*ListEmployeesByOrganizationResponse)(nil),      // 13: query.membership.v1.ListEmployeesByOrganizationResponse
+	(*CountEmployeesByDepartmentRequest)(nil),        // 14: query.membership.v1.CountEmployeesByDepartmentRequest
+	(*CountEmployeesByDepartmentResponse)(nil),       // 15: query.membership.v1.CountEmployeesByDepartmentResponse
+	(*CountEmployeesByClinicRequest)(nil),            // 16: query.membership.v1.CountEmployeesByClinicRequest
+	(*CountEmployeesByClinicResponse)(nil),           // 17: query.membership.v1.CountEmployeesByClinicResponse
+	(*CountEmployeesByOrganizationRequest)(nil),      // 18: query.membership.v1.CountEmployeesByOrganizationRequest
+	(*CountEmployeesByOrganizationResponse)(nil),     // 19: query.membership.v1.CountEmployeesByOrganizationResponse
+	(*SearchEmployeesByOrganizationRequest)(nil),     // 20: query.membership.v1.SearchEmployeesByOrganizationRequest
+	(*SearchEmployeesByOrganizationResponse)(nil),    // 21: query.membership.v1.SearchEmployeesByOrganizationResponse
+	(*ListVacationsByEmployeeRequest)(nil),           // 22: query.membership.v1.ListVacationsByEmployeeRequest
+	(*ListVacationsByEmployeeResponse)(nil),          // 23: query.membership.v1.ListVacationsByEmployeeResponse
+	(*CountVacationsByEmployeeRequest)(nil),          // 24: query.membership.v1.CountVacationsByEmployeeRequest
+	(*CountVacationsByEmployeeResponse)(nil),         // 25: query.membership.v1.CountVacationsByEmployeeResponse
+	(*GetClinicHeadRequest)(nil),                     // 26: query.membership.v1.GetClinicHeadRequest
+	(*GetClinicHeadResponse)(nil),                    // 27: query.membership.v1.GetClinicHeadResponse
+	(*GetDepartmentResponsibleRequest)(nil),          // 28: query.membership.v1.GetDepartmentResponsibleRequest
+	(*GetDepartmentResponsibleResponse)(nil),         // 29: query.membership.v1.GetDepartmentResponsibleResponse
+	(*ListOrgAdminsRequest)(nil),                     // 30: query.membership.v1.ListOrgAdminsRequest
+	(*ListOrgAdminsResponse)(nil),                    // 31: query.membership.v1.ListOrgAdminsResponse
+	(*ListOrgDispatchersRequest)(nil),                // 32: query.membership.v1.ListOrgDispatchersRequest
+	(*ListOrgDispatchersResponse)(nil),               // 33: query.membership.v1.ListOrgDispatchersResponse
+	(*ListOrgHeadsRequest)(nil),                      // 34: query.membership.v1.ListOrgHeadsRequest
+	(*ListOrgHeadsResponse)(nil),                     // 35: query.membership.v1.ListOrgHeadsResponse
+	(*ListSystemAdminsRequest)(nil),                  // 36: query.membership.v1.ListSystemAdminsRequest
+	(*ListSystemAdminsResponse)(nil),                 // 37: query.membership.v1.ListSystemAdminsResponse
+	(*ZitadelUserView)(nil),                          // 38: query.membership.v1.ZitadelUserView
+	(*ListCandidatesForHireRequest)(nil),             // 39: query.membership.v1.ListCandidatesForHireRequest
+	(*ListCandidatesForHireResponse)(nil),            // 40: query.membership.v1.ListCandidatesForHireResponse
+	(*ListCandidatesForSystemAdminRequest)(nil),      // 41: query.membership.v1.ListCandidatesForSystemAdminRequest
+	(*ListCandidatesForSystemAdminResponse)(nil),     // 42: query.membership.v1.ListCandidatesForSystemAdminResponse
+	(*ListCandidatesForOrgAdminRequest)(nil),         // 43: query.membership.v1.ListCandidatesForOrgAdminRequest
+	(*ListCandidatesForOrgAdminResponse)(nil),        // 44: query.membership.v1.ListCandidatesForOrgAdminResponse
+	(*ListCandidatesForOrgHeadRequest)(nil),          // 45: query.membership.v1.ListCandidatesForOrgHeadRequest
+	(*ListCandidatesForOrgHeadResponse)(nil),         // 46: query.membership.v1.ListCandidatesForOrgHeadResponse
+	(*ListCandidatesForOrgDispatcherRequest)(nil),    // 47: query.membership.v1.ListCandidatesForOrgDispatcherRequest
+	(*ListCandidatesForOrgDispatcherResponse)(nil),   // 48: query.membership.v1.ListCandidatesForOrgDispatcherResponse
+	(*ListCandidatesForClinicHeadRequest)(nil),       // 49: query.membership.v1.ListCandidatesForClinicHeadRequest
+	(*ListCandidatesForClinicHeadResponse)(nil),      // 50: query.membership.v1.ListCandidatesForClinicHeadResponse
+	(*ListCandidatesForDeptResponsibleRequest)(nil),  // 51: query.membership.v1.ListCandidatesForDeptResponsibleRequest
+	(*ListCandidatesForDeptResponsibleResponse)(nil), // 52: query.membership.v1.ListCandidatesForDeptResponsibleResponse
 }
 var file_query_membership_v1_membership_proto_depIdxs = []int32{
 	0,  // 0: query.membership.v1.RoleAssignment.holder:type_name -> query.membership.v1.EmployeeCardView
 	0,  // 1: query.membership.v1.RoleAssignment.deputy:type_name -> query.membership.v1.EmployeeCardView
 	0,  // 2: query.membership.v1.GetEmployeeResponse.employee:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 3: query.membership.v1.ListEmployeesByDepartmentResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 4: query.membership.v1.ListEmployeesByClinicResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 5: query.membership.v1.ListEmployeesByOrganizationResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 6: query.membership.v1.SearchEmployeesByOrganizationResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	1,  // 7: query.membership.v1.ListVacationsByEmployeeResponse.items:type_name -> query.membership.v1.VacationView
-	2,  // 8: query.membership.v1.GetClinicHeadResponse.assignment:type_name -> query.membership.v1.RoleAssignment
-	2,  // 9: query.membership.v1.GetDepartmentResponsibleResponse.assignment:type_name -> query.membership.v1.RoleAssignment
-	2,  // 10: query.membership.v1.ListOrgAdminsResponse.items:type_name -> query.membership.v1.RoleAssignment
-	2,  // 11: query.membership.v1.ListOrgDispatchersResponse.items:type_name -> query.membership.v1.RoleAssignment
-	2,  // 12: query.membership.v1.ListOrgHeadsResponse.items:type_name -> query.membership.v1.RoleAssignment
-	3,  // 13: query.membership.v1.ListSystemAdminsResponse.items:type_name -> query.membership.v1.SystemAdminView
-	36, // 14: query.membership.v1.ListCandidatesForHireResponse.items:type_name -> query.membership.v1.ZitadelUserView
-	36, // 15: query.membership.v1.ListCandidatesForSystemAdminResponse.items:type_name -> query.membership.v1.ZitadelUserView
-	0,  // 16: query.membership.v1.ListCandidatesForOrgAdminResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 17: query.membership.v1.ListCandidatesForOrgHeadResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 18: query.membership.v1.ListCandidatesForOrgDispatcherResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 19: query.membership.v1.ListCandidatesForClinicHeadResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	0,  // 20: query.membership.v1.ListCandidatesForDeptResponsibleResponse.items:type_name -> query.membership.v1.EmployeeCardView
-	4,  // 21: query.membership.v1.MembershipQueryService.GetEmployee:input_type -> query.membership.v1.GetEmployeeRequest
-	6,  // 22: query.membership.v1.MembershipQueryService.ListEmployeesByDepartment:input_type -> query.membership.v1.ListEmployeesByDepartmentRequest
-	8,  // 23: query.membership.v1.MembershipQueryService.ListEmployeesByClinic:input_type -> query.membership.v1.ListEmployeesByClinicRequest
-	10, // 24: query.membership.v1.MembershipQueryService.ListEmployeesByOrganization:input_type -> query.membership.v1.ListEmployeesByOrganizationRequest
-	12, // 25: query.membership.v1.MembershipQueryService.CountEmployeesByDepartment:input_type -> query.membership.v1.CountEmployeesByDepartmentRequest
-	14, // 26: query.membership.v1.MembershipQueryService.CountEmployeesByClinic:input_type -> query.membership.v1.CountEmployeesByClinicRequest
-	16, // 27: query.membership.v1.MembershipQueryService.CountEmployeesByOrganization:input_type -> query.membership.v1.CountEmployeesByOrganizationRequest
-	18, // 28: query.membership.v1.MembershipQueryService.SearchEmployeesByOrganization:input_type -> query.membership.v1.SearchEmployeesByOrganizationRequest
-	20, // 29: query.membership.v1.MembershipQueryService.ListVacationsByEmployee:input_type -> query.membership.v1.ListVacationsByEmployeeRequest
-	22, // 30: query.membership.v1.MembershipQueryService.CountVacationsByEmployee:input_type -> query.membership.v1.CountVacationsByEmployeeRequest
-	24, // 31: query.membership.v1.MembershipQueryService.GetClinicHead:input_type -> query.membership.v1.GetClinicHeadRequest
-	26, // 32: query.membership.v1.MembershipQueryService.GetDepartmentResponsible:input_type -> query.membership.v1.GetDepartmentResponsibleRequest
-	28, // 33: query.membership.v1.MembershipQueryService.ListOrgAdmins:input_type -> query.membership.v1.ListOrgAdminsRequest
-	30, // 34: query.membership.v1.MembershipQueryService.ListOrgDispatchers:input_type -> query.membership.v1.ListOrgDispatchersRequest
-	32, // 35: query.membership.v1.MembershipQueryService.ListOrgHeads:input_type -> query.membership.v1.ListOrgHeadsRequest
-	34, // 36: query.membership.v1.MembershipQueryService.ListSystemAdmins:input_type -> query.membership.v1.ListSystemAdminsRequest
-	37, // 37: query.membership.v1.MembershipQueryService.ListCandidatesForHire:input_type -> query.membership.v1.ListCandidatesForHireRequest
-	39, // 38: query.membership.v1.MembershipQueryService.ListCandidatesForSystemAdmin:input_type -> query.membership.v1.ListCandidatesForSystemAdminRequest
-	41, // 39: query.membership.v1.MembershipQueryService.ListCandidatesForOrgAdmin:input_type -> query.membership.v1.ListCandidatesForOrgAdminRequest
-	43, // 40: query.membership.v1.MembershipQueryService.ListCandidatesForOrgHead:input_type -> query.membership.v1.ListCandidatesForOrgHeadRequest
-	45, // 41: query.membership.v1.MembershipQueryService.ListCandidatesForOrgDispatcher:input_type -> query.membership.v1.ListCandidatesForOrgDispatcherRequest
-	47, // 42: query.membership.v1.MembershipQueryService.ListCandidatesForClinicHead:input_type -> query.membership.v1.ListCandidatesForClinicHeadRequest
-	49, // 43: query.membership.v1.MembershipQueryService.ListCandidatesForDeptResponsible:input_type -> query.membership.v1.ListCandidatesForDeptResponsibleRequest
-	5,  // 44: query.membership.v1.MembershipQueryService.GetEmployee:output_type -> query.membership.v1.GetEmployeeResponse
-	7,  // 45: query.membership.v1.MembershipQueryService.ListEmployeesByDepartment:output_type -> query.membership.v1.ListEmployeesByDepartmentResponse
-	9,  // 46: query.membership.v1.MembershipQueryService.ListEmployeesByClinic:output_type -> query.membership.v1.ListEmployeesByClinicResponse
-	11, // 47: query.membership.v1.MembershipQueryService.ListEmployeesByOrganization:output_type -> query.membership.v1.ListEmployeesByOrganizationResponse
-	13, // 48: query.membership.v1.MembershipQueryService.CountEmployeesByDepartment:output_type -> query.membership.v1.CountEmployeesByDepartmentResponse
-	15, // 49: query.membership.v1.MembershipQueryService.CountEmployeesByClinic:output_type -> query.membership.v1.CountEmployeesByClinicResponse
-	17, // 50: query.membership.v1.MembershipQueryService.CountEmployeesByOrganization:output_type -> query.membership.v1.CountEmployeesByOrganizationResponse
-	19, // 51: query.membership.v1.MembershipQueryService.SearchEmployeesByOrganization:output_type -> query.membership.v1.SearchEmployeesByOrganizationResponse
-	21, // 52: query.membership.v1.MembershipQueryService.ListVacationsByEmployee:output_type -> query.membership.v1.ListVacationsByEmployeeResponse
-	23, // 53: query.membership.v1.MembershipQueryService.CountVacationsByEmployee:output_type -> query.membership.v1.CountVacationsByEmployeeResponse
-	25, // 54: query.membership.v1.MembershipQueryService.GetClinicHead:output_type -> query.membership.v1.GetClinicHeadResponse
-	27, // 55: query.membership.v1.MembershipQueryService.GetDepartmentResponsible:output_type -> query.membership.v1.GetDepartmentResponsibleResponse
-	29, // 56: query.membership.v1.MembershipQueryService.ListOrgAdmins:output_type -> query.membership.v1.ListOrgAdminsResponse
-	31, // 57: query.membership.v1.MembershipQueryService.ListOrgDispatchers:output_type -> query.membership.v1.ListOrgDispatchersResponse
-	33, // 58: query.membership.v1.MembershipQueryService.ListOrgHeads:output_type -> query.membership.v1.ListOrgHeadsResponse
-	35, // 59: query.membership.v1.MembershipQueryService.ListSystemAdmins:output_type -> query.membership.v1.ListSystemAdminsResponse
-	38, // 60: query.membership.v1.MembershipQueryService.ListCandidatesForHire:output_type -> query.membership.v1.ListCandidatesForHireResponse
-	40, // 61: query.membership.v1.MembershipQueryService.ListCandidatesForSystemAdmin:output_type -> query.membership.v1.ListCandidatesForSystemAdminResponse
-	42, // 62: query.membership.v1.MembershipQueryService.ListCandidatesForOrgAdmin:output_type -> query.membership.v1.ListCandidatesForOrgAdminResponse
-	44, // 63: query.membership.v1.MembershipQueryService.ListCandidatesForOrgHead:output_type -> query.membership.v1.ListCandidatesForOrgHeadResponse
-	46, // 64: query.membership.v1.MembershipQueryService.ListCandidatesForOrgDispatcher:output_type -> query.membership.v1.ListCandidatesForOrgDispatcherResponse
-	48, // 65: query.membership.v1.MembershipQueryService.ListCandidatesForClinicHead:output_type -> query.membership.v1.ListCandidatesForClinicHeadResponse
-	50, // 66: query.membership.v1.MembershipQueryService.ListCandidatesForDeptResponsible:output_type -> query.membership.v1.ListCandidatesForDeptResponsibleResponse
-	44, // [44:67] is the sub-list for method output_type
-	21, // [21:44] is the sub-list for method input_type
-	21, // [21:21] is the sub-list for extension type_name
-	21, // [21:21] is the sub-list for extension extendee
-	0,  // [0:21] is the sub-list for field type_name
+	0,  // 3: query.membership.v1.GetMyEmployeeResponse.employee:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 4: query.membership.v1.ListEmployeesByDepartmentResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 5: query.membership.v1.ListEmployeesByClinicResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 6: query.membership.v1.ListEmployeesByOrganizationResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 7: query.membership.v1.SearchEmployeesByOrganizationResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	1,  // 8: query.membership.v1.ListVacationsByEmployeeResponse.items:type_name -> query.membership.v1.VacationView
+	2,  // 9: query.membership.v1.GetClinicHeadResponse.assignment:type_name -> query.membership.v1.RoleAssignment
+	2,  // 10: query.membership.v1.GetDepartmentResponsibleResponse.assignment:type_name -> query.membership.v1.RoleAssignment
+	2,  // 11: query.membership.v1.ListOrgAdminsResponse.items:type_name -> query.membership.v1.RoleAssignment
+	2,  // 12: query.membership.v1.ListOrgDispatchersResponse.items:type_name -> query.membership.v1.RoleAssignment
+	2,  // 13: query.membership.v1.ListOrgHeadsResponse.items:type_name -> query.membership.v1.RoleAssignment
+	3,  // 14: query.membership.v1.ListSystemAdminsResponse.items:type_name -> query.membership.v1.SystemAdminView
+	38, // 15: query.membership.v1.ListCandidatesForHireResponse.items:type_name -> query.membership.v1.ZitadelUserView
+	38, // 16: query.membership.v1.ListCandidatesForSystemAdminResponse.items:type_name -> query.membership.v1.ZitadelUserView
+	0,  // 17: query.membership.v1.ListCandidatesForOrgAdminResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 18: query.membership.v1.ListCandidatesForOrgHeadResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 19: query.membership.v1.ListCandidatesForOrgDispatcherResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 20: query.membership.v1.ListCandidatesForClinicHeadResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	0,  // 21: query.membership.v1.ListCandidatesForDeptResponsibleResponse.items:type_name -> query.membership.v1.EmployeeCardView
+	4,  // 22: query.membership.v1.MembershipQueryService.GetEmployee:input_type -> query.membership.v1.GetEmployeeRequest
+	6,  // 23: query.membership.v1.MembershipQueryService.GetMyEmployee:input_type -> query.membership.v1.GetMyEmployeeRequest
+	8,  // 24: query.membership.v1.MembershipQueryService.ListEmployeesByDepartment:input_type -> query.membership.v1.ListEmployeesByDepartmentRequest
+	10, // 25: query.membership.v1.MembershipQueryService.ListEmployeesByClinic:input_type -> query.membership.v1.ListEmployeesByClinicRequest
+	12, // 26: query.membership.v1.MembershipQueryService.ListEmployeesByOrganization:input_type -> query.membership.v1.ListEmployeesByOrganizationRequest
+	14, // 27: query.membership.v1.MembershipQueryService.CountEmployeesByDepartment:input_type -> query.membership.v1.CountEmployeesByDepartmentRequest
+	16, // 28: query.membership.v1.MembershipQueryService.CountEmployeesByClinic:input_type -> query.membership.v1.CountEmployeesByClinicRequest
+	18, // 29: query.membership.v1.MembershipQueryService.CountEmployeesByOrganization:input_type -> query.membership.v1.CountEmployeesByOrganizationRequest
+	20, // 30: query.membership.v1.MembershipQueryService.SearchEmployeesByOrganization:input_type -> query.membership.v1.SearchEmployeesByOrganizationRequest
+	22, // 31: query.membership.v1.MembershipQueryService.ListVacationsByEmployee:input_type -> query.membership.v1.ListVacationsByEmployeeRequest
+	24, // 32: query.membership.v1.MembershipQueryService.CountVacationsByEmployee:input_type -> query.membership.v1.CountVacationsByEmployeeRequest
+	26, // 33: query.membership.v1.MembershipQueryService.GetClinicHead:input_type -> query.membership.v1.GetClinicHeadRequest
+	28, // 34: query.membership.v1.MembershipQueryService.GetDepartmentResponsible:input_type -> query.membership.v1.GetDepartmentResponsibleRequest
+	30, // 35: query.membership.v1.MembershipQueryService.ListOrgAdmins:input_type -> query.membership.v1.ListOrgAdminsRequest
+	32, // 36: query.membership.v1.MembershipQueryService.ListOrgDispatchers:input_type -> query.membership.v1.ListOrgDispatchersRequest
+	34, // 37: query.membership.v1.MembershipQueryService.ListOrgHeads:input_type -> query.membership.v1.ListOrgHeadsRequest
+	36, // 38: query.membership.v1.MembershipQueryService.ListSystemAdmins:input_type -> query.membership.v1.ListSystemAdminsRequest
+	39, // 39: query.membership.v1.MembershipQueryService.ListCandidatesForHire:input_type -> query.membership.v1.ListCandidatesForHireRequest
+	41, // 40: query.membership.v1.MembershipQueryService.ListCandidatesForSystemAdmin:input_type -> query.membership.v1.ListCandidatesForSystemAdminRequest
+	43, // 41: query.membership.v1.MembershipQueryService.ListCandidatesForOrgAdmin:input_type -> query.membership.v1.ListCandidatesForOrgAdminRequest
+	45, // 42: query.membership.v1.MembershipQueryService.ListCandidatesForOrgHead:input_type -> query.membership.v1.ListCandidatesForOrgHeadRequest
+	47, // 43: query.membership.v1.MembershipQueryService.ListCandidatesForOrgDispatcher:input_type -> query.membership.v1.ListCandidatesForOrgDispatcherRequest
+	49, // 44: query.membership.v1.MembershipQueryService.ListCandidatesForClinicHead:input_type -> query.membership.v1.ListCandidatesForClinicHeadRequest
+	51, // 45: query.membership.v1.MembershipQueryService.ListCandidatesForDeptResponsible:input_type -> query.membership.v1.ListCandidatesForDeptResponsibleRequest
+	5,  // 46: query.membership.v1.MembershipQueryService.GetEmployee:output_type -> query.membership.v1.GetEmployeeResponse
+	7,  // 47: query.membership.v1.MembershipQueryService.GetMyEmployee:output_type -> query.membership.v1.GetMyEmployeeResponse
+	9,  // 48: query.membership.v1.MembershipQueryService.ListEmployeesByDepartment:output_type -> query.membership.v1.ListEmployeesByDepartmentResponse
+	11, // 49: query.membership.v1.MembershipQueryService.ListEmployeesByClinic:output_type -> query.membership.v1.ListEmployeesByClinicResponse
+	13, // 50: query.membership.v1.MembershipQueryService.ListEmployeesByOrganization:output_type -> query.membership.v1.ListEmployeesByOrganizationResponse
+	15, // 51: query.membership.v1.MembershipQueryService.CountEmployeesByDepartment:output_type -> query.membership.v1.CountEmployeesByDepartmentResponse
+	17, // 52: query.membership.v1.MembershipQueryService.CountEmployeesByClinic:output_type -> query.membership.v1.CountEmployeesByClinicResponse
+	19, // 53: query.membership.v1.MembershipQueryService.CountEmployeesByOrganization:output_type -> query.membership.v1.CountEmployeesByOrganizationResponse
+	21, // 54: query.membership.v1.MembershipQueryService.SearchEmployeesByOrganization:output_type -> query.membership.v1.SearchEmployeesByOrganizationResponse
+	23, // 55: query.membership.v1.MembershipQueryService.ListVacationsByEmployee:output_type -> query.membership.v1.ListVacationsByEmployeeResponse
+	25, // 56: query.membership.v1.MembershipQueryService.CountVacationsByEmployee:output_type -> query.membership.v1.CountVacationsByEmployeeResponse
+	27, // 57: query.membership.v1.MembershipQueryService.GetClinicHead:output_type -> query.membership.v1.GetClinicHeadResponse
+	29, // 58: query.membership.v1.MembershipQueryService.GetDepartmentResponsible:output_type -> query.membership.v1.GetDepartmentResponsibleResponse
+	31, // 59: query.membership.v1.MembershipQueryService.ListOrgAdmins:output_type -> query.membership.v1.ListOrgAdminsResponse
+	33, // 60: query.membership.v1.MembershipQueryService.ListOrgDispatchers:output_type -> query.membership.v1.ListOrgDispatchersResponse
+	35, // 61: query.membership.v1.MembershipQueryService.ListOrgHeads:output_type -> query.membership.v1.ListOrgHeadsResponse
+	37, // 62: query.membership.v1.MembershipQueryService.ListSystemAdmins:output_type -> query.membership.v1.ListSystemAdminsResponse
+	40, // 63: query.membership.v1.MembershipQueryService.ListCandidatesForHire:output_type -> query.membership.v1.ListCandidatesForHireResponse
+	42, // 64: query.membership.v1.MembershipQueryService.ListCandidatesForSystemAdmin:output_type -> query.membership.v1.ListCandidatesForSystemAdminResponse
+	44, // 65: query.membership.v1.MembershipQueryService.ListCandidatesForOrgAdmin:output_type -> query.membership.v1.ListCandidatesForOrgAdminResponse
+	46, // 66: query.membership.v1.MembershipQueryService.ListCandidatesForOrgHead:output_type -> query.membership.v1.ListCandidatesForOrgHeadResponse
+	48, // 67: query.membership.v1.MembershipQueryService.ListCandidatesForOrgDispatcher:output_type -> query.membership.v1.ListCandidatesForOrgDispatcherResponse
+	50, // 68: query.membership.v1.MembershipQueryService.ListCandidatesForClinicHead:output_type -> query.membership.v1.ListCandidatesForClinicHeadResponse
+	52, // 69: query.membership.v1.MembershipQueryService.ListCandidatesForDeptResponsible:output_type -> query.membership.v1.ListCandidatesForDeptResponsibleResponse
+	46, // [46:70] is the sub-list for method output_type
+	22, // [22:46] is the sub-list for method input_type
+	22, // [22:22] is the sub-list for extension type_name
+	22, // [22:22] is the sub-list for extension extendee
+	0,  // [0:22] is the sub-list for field type_name
 }
 
 func init() { file_query_membership_v1_membership_proto_init() }
@@ -3746,31 +3838,31 @@ func file_query_membership_v1_membership_proto_init() {
 	file_query_membership_v1_membership_proto_msgTypes[0].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[1].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[2].OneofWrappers = []any{}
-	file_query_membership_v1_membership_proto_msgTypes[6].OneofWrappers = []any{}
-	file_query_membership_v1_membership_proto_msgTypes[7].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[8].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[9].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[10].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[11].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[12].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[13].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[14].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[16].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[18].OneofWrappers = []any{}
-	file_query_membership_v1_membership_proto_msgTypes[19].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[20].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[21].OneofWrappers = []any{}
-	file_query_membership_v1_membership_proto_msgTypes[25].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[23].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[27].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[29].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[31].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[33].OneofWrappers = []any{}
 	file_query_membership_v1_membership_proto_msgTypes[35].OneofWrappers = []any{}
+	file_query_membership_v1_membership_proto_msgTypes[37].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_membership_v1_membership_proto_rawDesc), len(file_query_membership_v1_membership_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   51,
+			NumMessages:   53,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

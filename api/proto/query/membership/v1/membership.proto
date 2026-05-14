@@ -67,6 +67,15 @@ service MembershipQueryService {
       }
     };
   }
+  rpc GetMyEmployee(GetMyEmployeeRequest) returns (GetMyEmployeeResponse) {
+    option (google.api.http) = {get: "/v1/employees/me"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `employee_card_not_found` — the authenticated user has no employee record."}
+      }
+    };
+  }
   rpc ListEmployeesByDepartment(ListEmployeesByDepartmentRequest) returns (ListEmployeesByDepartmentResponse) {
     option (google.api.http) = {get: "/v1/departments/{department_id}/employees"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
@@ -316,6 +325,11 @@ message GetEmployeeRequest {
   string id = 1;
 }
 message GetEmployeeResponse {
+  EmployeeCardView employee = 1;
+}
+
+message GetMyEmployeeRequest {}
+message GetMyEmployeeResponse {
   EmployeeCardView employee = 1;
 }
 

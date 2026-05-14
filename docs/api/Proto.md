@@ -450,6 +450,8 @@
     - [GetDepartmentResponsibleResponse](#query-membership-v1-GetDepartmentResponsibleResponse)
     - [GetEmployeeRequest](#query-membership-v1-GetEmployeeRequest)
     - [GetEmployeeResponse](#query-membership-v1-GetEmployeeResponse)
+    - [GetMyEmployeeRequest](#query-membership-v1-GetMyEmployeeRequest)
+    - [GetMyEmployeeResponse](#query-membership-v1-GetMyEmployeeResponse)
     - [ListCandidatesForClinicHeadRequest](#query-membership-v1-ListCandidatesForClinicHeadRequest)
     - [ListCandidatesForClinicHeadResponse](#query-membership-v1-ListCandidatesForClinicHeadResponse)
     - [ListCandidatesForDeptResponsibleRequest](#query-membership-v1-ListCandidatesForDeptResponsibleRequest)
@@ -6950,6 +6952,31 @@ when the backing column is NULL.
 
 
 
+<a name="query-membership-v1-GetMyEmployeeRequest"></a>
+
+### GetMyEmployeeRequest
+
+
+
+
+
+
+
+<a name="query-membership-v1-GetMyEmployeeResponse"></a>
+
+### GetMyEmployeeResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee | [EmployeeCardView](#query-membership-v1-EmployeeCardView) |  |  |
+
+
+
+
+
+
 <a name="query-membership-v1-ListCandidatesForClinicHeadRequest"></a>
 
 ### ListCandidatesForClinicHeadRequest
@@ -7593,6 +7620,7 @@ department responsibles, org admins/heads/dispatchers, system admins).
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | GetEmployee | [GetEmployeeRequest](#query-membership-v1-GetEmployeeRequest) | [GetEmployeeResponse](#query-membership-v1-GetEmployeeResponse) |  |
+| GetMyEmployee | [GetMyEmployeeRequest](#query-membership-v1-GetMyEmployeeRequest) | [GetMyEmployeeResponse](#query-membership-v1-GetMyEmployeeResponse) |  |
 | ListEmployeesByDepartment | [ListEmployeesByDepartmentRequest](#query-membership-v1-ListEmployeesByDepartmentRequest) | [ListEmployeesByDepartmentResponse](#query-membership-v1-ListEmployeesByDepartmentResponse) |  |
 | ListEmployeesByClinic | [ListEmployeesByClinicRequest](#query-membership-v1-ListEmployeesByClinicRequest) | [ListEmployeesByClinicResponse](#query-membership-v1-ListEmployeesByClinicResponse) |  |
 | ListEmployeesByOrganization | [ListEmployeesByOrganizationRequest](#query-membership-v1-ListEmployeesByOrganizationRequest) | [ListEmployeesByOrganizationResponse](#query-membership-v1-ListEmployeesByOrganizationResponse) |  |

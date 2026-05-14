@@ -125,6 +125,36 @@ func (r *EmployeeReader) Get(
 	return &out, nil
 }
 
+// GetForSelf returns the employee card whose zitadel_user_id matches the
+// caller. Authorization is implicit: the query is scoped to the caller's
+// own Zitadel user ID, so no additional authz check is needed.
+//
+// See: docs/services/Membership.md
+func (r *EmployeeReader) GetForSelf(
+	ctx context.Context,
+	caller authz.Caller,
+) (*EmployeeCardView, error) {
+	var out EmployeeCardView
+	err := ScanEmployeeCard(
+		r.db.WithContext(ctx).Raw(SelectEmployeeCard+` WHERE zitadel_user_id = ?`, caller.ZitadelUserID).Row(),
+		&out,
+	)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, oops.In("reader.membership.employee").
+				Code(ErrCodeEmployeeNotFound).
+				Public("No employee record for the authenticated user.").
+				With("zitadel_user_id", caller.ZitadelUserID).
+				Errorf("not found")
+		}
+		return nil, oops.In("reader.membership.employee").
+			Code(ErrCodeEmployeeLoadFailed).
+			With("zitadel_user_id", caller.ZitadelUserID).
+			Wrap(err)
+	}
+	return &out, nil
+}
+
 // EmployeeFilter is the optional filter shared by every List / Count
 // over employee_cards. Zero value = no restriction beyond the scope.
 // IncludeTerminated=false (default) hides rows whose terminated_at is

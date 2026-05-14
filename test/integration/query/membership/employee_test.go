@@ -15,6 +15,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	memberread "github.com/medincident/medincident-backend/internal/service/query/membership"
 	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
 	clinicv1 "github.com/medincident/medincident-backend/pkg/event/clinic/v1"
@@ -313,4 +314,46 @@ func TestEmployeeReader_ListVacationsByEmployee(t *testing.T) {
 	none, err := reader.ListVacationsByEmployee(ctx, sysadminCaller, empID, "active", memberread.ListQuery{})
 	require.NoError(t, err)
 	require.Empty(t, none.Items)
+}
+
+func TestEmployeeReader_GetForSelf(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+
+	now := time.Now().UTC().Truncate(time.Second)
+	orgID, _, deptID := seedOrgClinicDept(t, ctx, now)
+
+	empID := uuid.Must(uuid.NewV7())
+	const zitadelID = "zit-self-test"
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		return qprojector.EmployeeHired(tx, empID.String(), now, &empv1.EmployeeHired{
+			ZitadelUserId:  zitadelID,
+			OrganizationId: orgID.String(),
+			DepartmentId:   deptID.String(),
+			Position:       "Doctor",
+			HiredAt:        timestamppb.New(now),
+		})
+	}))
+
+	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
+
+	// Any authenticated caller can call GetForSelf — authz is implicit (scoped to own record).
+	selfCaller := authz.Caller{ZitadelUserID: zitadelID}
+	got, err := reader.GetForSelf(ctx, selfCaller)
+	require.NoError(t, err)
+	require.Equal(t, empID, got.EmployeeID)
+	require.Equal(t, zitadelID, got.ZitadelUserID)
+	require.Equal(t, deptID, got.DepartmentID)
+}
+
+func TestEmployeeReader_GetForSelf_NotFound(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+
+	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
+	_, err := reader.GetForSelf(ctx, authz.Caller{ZitadelUserID: "no-such-zitadel-id"})
+	require.Error(t, err)
+	require.Contains(t, err.Error(), memberread.ErrCodeEmployeeNotFound)
 }
