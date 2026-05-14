@@ -7456,6 +7456,67 @@ curl -X GET /v1/departments/{departmentId}/responsible \
 This operation does not require authentication
 </aside>
 
+## MembershipQueryService_GetMyEmployee
+
+<a id="opIdMembershipQueryService_GetMyEmployee"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/employees/me \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/employees/me`
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "employee": {
+    "employeeId": "string",
+    "zitadelUserId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "displayName": "string",
+    "email": "string",
+    "organizationId": "string",
+    "organizationName": "string",
+    "clinicId": "string",
+    "clinicName": "string",
+    "departmentId": "string",
+    "departmentName": "string",
+    "position": "string",
+    "terminatedAt": "string",
+    "currentVacationEndsAt": "string",
+    "nextVacationStartsAt": "string"
+  }
+}
+```
+
+<h3 id="membershipqueryservice_getmyemployee-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1GetMyEmployeeResponse](#schemav1getmyemployeeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `employee_card_not_found` — the authenticated user has no employee record.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_getmyemployee-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 ## MembershipQueryService_ListVacationsByEmployee
 
 <a id="opIdMembershipQueryService_ListVacationsByEmployee"></a>
@@ -13549,6 +13610,43 @@ ErrorResponse
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |isDepartmentResponsible|boolean|false|none|none|
+
+<h2 id="tocS_v1GetMyEmployeeResponse">v1GetMyEmployeeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1getmyemployeeresponse"></a>
+<a id="schema_v1GetMyEmployeeResponse"></a>
+<a id="tocSv1getmyemployeeresponse"></a>
+<a id="tocsv1getmyemployeeresponse"></a>
+
+```json
+{
+  "employee": {
+    "employeeId": "string",
+    "zitadelUserId": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "displayName": "string",
+    "email": "string",
+    "organizationId": "string",
+    "organizationName": "string",
+    "clinicId": "string",
+    "clinicName": "string",
+    "departmentId": "string",
+    "departmentName": "string",
+    "position": "string",
+    "terminatedAt": "string",
+    "currentVacationEndsAt": "string",
+    "nextVacationStartsAt": "string"
+  }
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|employee|[v1EmployeeCardView](#schemav1employeecardview)|false|none|EmployeeCardView is the denormalised card projection returned by<br>both Get and List endpoints. Fields mirror projections.employee_cards<br>columns; timestamps are RFC3339 strings. Optional fields stay unset<br>when the backing column is NULL.|
 
 <h2 id="tocS_v1GetMyEmploymentResponse">v1GetMyEmploymentResponse</h2>
 <!-- backwards compatibility -->

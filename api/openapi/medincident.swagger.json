@@ -2834,6 +2834,56 @@
         ]
       }
     },
+    "/v1/employees/me": {
+      "get": {
+        "operationId": "MembershipQueryService_GetMyEmployee",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMyEmployeeResponse"
+            }
+          },
+          "400": {
+            "description": "Validation failed or invalid input.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthenticated — missing or invalid token.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "403": {
+            "description": "Permission denied.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "404": {
+            "description": "Not found. Error codes:\n- `employee_card_not_found` — the authenticated user has no employee record.",
+            "schema": {}
+          },
+          "500": {
+            "description": "Unexpected server error.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/v1ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "MembershipQueryService"
+        ]
+      }
+    },
     "/v1/employees/{employeeId}": {
       "delete": {
         "operationId": "MembershipCommandService_TerminateEmployee",
@@ -12293,6 +12343,14 @@
       "properties": {
         "isDepartmentResponsible": {
           "type": "boolean"
+        }
+      }
+    },
+    "v1GetMyEmployeeResponse": {
+      "type": "object",
+      "properties": {
+        "employee": {
+          "$ref": "#/definitions/v1EmployeeCardView"
         }
       }
     },

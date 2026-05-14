@@ -792,6 +792,25 @@
 
 ---
 
+### GetMyEmployee
+
+**HTTP:** `GET /v1/employees/me`
+**gRPC:** `MembershipQueryService.GetMyEmployee`
+
+Возвращает карточку сотрудника для текущего аутентифицированного пользователя. Авторизация неявная — запрос ограничен `zitadel_user_id` из токена, поэтому никаких дополнительных прав не требуется.
+
+#### Права доступа
+
+Любой аутентифицированный пользователь (Bearer-токен).
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `employee_card_not_found` | 404 | У текущего пользователя нет записи сотрудника |
+
+---
+
 ### ListEmployeesByDepartment
 
 **HTTP:** `GET /v1/departments/{department_id}/employees`
