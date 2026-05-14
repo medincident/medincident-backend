@@ -118,6 +118,34 @@ service MembershipCommandService {
       }
     };
   }
+  rpc DeactivateEmployee(DeactivateEmployeeRequest) returns (DeactivateEmployeeResponse) {
+    option (google.api.http) = {
+      post: "/v1/employees/{employee_id}/deactivate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+    };
+  }
+  rpc ActivateEmployee(ActivateEmployeeRequest) returns (ActivateEmployeeResponse) {
+    option (google.api.http) = {
+      post: "/v1/employees/{employee_id}/activate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `employee_not_found` — employee with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Business rule violation. Error codes:\n- `employee_activate_parent_inactive` — parent department is inactive."}
+      }
+    };
+  }
 
   // Vacation lifecycle
   rpc StartVacationNow(StartVacationNowRequest) returns (StartVacationNowResponse) {
@@ -494,6 +522,16 @@ message TerminateEmployeeRequest {
   string employee_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 message TerminateEmployeeResponse {}
+
+message DeactivateEmployeeRequest {
+  string employee_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeactivateEmployeeResponse {}
+
+message ActivateEmployeeRequest {
+  string employee_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message ActivateEmployeeResponse {}
 
 // ------ Vacation ------
 

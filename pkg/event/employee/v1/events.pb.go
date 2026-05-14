@@ -317,6 +317,112 @@ func (x *EmployeeTerminated) GetTerminatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// EmployeeDeactivated — subject: medincident.event.employee.v1.deactivated
+type EmployeeDeactivated struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmployeeDeactivated) Reset() {
+	*x = EmployeeDeactivated{}
+	mi := &file_event_employee_v1_events_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmployeeDeactivated) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmployeeDeactivated) ProtoMessage() {}
+
+func (x *EmployeeDeactivated) ProtoReflect() protoreflect.Message {
+	mi := &file_event_employee_v1_events_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmployeeDeactivated.ProtoReflect.Descriptor instead.
+func (*EmployeeDeactivated) Descriptor() ([]byte, []int) {
+	return file_event_employee_v1_events_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *EmployeeDeactivated) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *EmployeeDeactivated) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+// EmployeeActivated — subject: medincident.event.employee.v1.activated
+type EmployeeActivated struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EmployeeActivated) Reset() {
+	*x = EmployeeActivated{}
+	mi := &file_event_employee_v1_events_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EmployeeActivated) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EmployeeActivated) ProtoMessage() {}
+
+func (x *EmployeeActivated) ProtoReflect() protoreflect.Message {
+	mi := &file_event_employee_v1_events_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EmployeeActivated.ProtoReflect.Descriptor instead.
+func (*EmployeeActivated) Descriptor() ([]byte, []int) {
+	return file_event_employee_v1_events_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *EmployeeActivated) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+func (x *EmployeeActivated) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
 var File_event_employee_v1_events_proto protoreflect.FileDescriptor
 
 const file_event_employee_v1_events_proto_rawDesc = "" +
@@ -347,7 +453,17 @@ const file_event_employee_v1_events_proto_rawDesc = "" +
 	"\x12EmployeeTerminated\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12#\n" +
 	"\rdepartment_id\x18\x02 \x01(\tR\fdepartmentId\x12?\n" +
-	"\rterminated_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fterminatedAtB\xd7\x01\n" +
+	"\rterminated_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fterminatedAt\"q\n" +
+	"\x13EmployeeDeactivated\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x129\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"o\n" +
+	"\x11EmployeeActivated\x12\x1f\n" +
+	"\vemployee_id\x18\x01 \x01(\tR\n" +
+	"employeeId\x129\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\xd7\x01\n" +
 	"\x15com.event.employee.v1B\vEventsProtoP\x01ZKgithub.com/medincident/medincident-backend/pkg/event/employee/v1;employeev1\xa2\x02\x03EEX\xaa\x02\x11Event.Employee.V1\xca\x02\x11Event\\Employee\\V1\xe2\x02\x1dEvent\\Employee\\V1\\GPBMetadata\xea\x02\x13Event::Employee::V1b\x06proto3"
 
 var (
@@ -362,24 +478,28 @@ func file_event_employee_v1_events_proto_rawDescGZIP() []byte {
 	return file_event_employee_v1_events_proto_rawDescData
 }
 
-var file_event_employee_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_event_employee_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_event_employee_v1_events_proto_goTypes = []any{
 	(*EmployeeHired)(nil),             // 0: event.employee.v1.EmployeeHired
 	(*EmployeePositionChanged)(nil),   // 1: event.employee.v1.EmployeePositionChanged
 	(*EmployeeDepartmentChanged)(nil), // 2: event.employee.v1.EmployeeDepartmentChanged
 	(*EmployeeTerminated)(nil),        // 3: event.employee.v1.EmployeeTerminated
-	(*timestamppb.Timestamp)(nil),     // 4: google.protobuf.Timestamp
+	(*EmployeeDeactivated)(nil),       // 4: event.employee.v1.EmployeeDeactivated
+	(*EmployeeActivated)(nil),         // 5: event.employee.v1.EmployeeActivated
+	(*timestamppb.Timestamp)(nil),     // 6: google.protobuf.Timestamp
 }
 var file_event_employee_v1_events_proto_depIdxs = []int32{
-	4, // 0: event.employee.v1.EmployeeHired.hired_at:type_name -> google.protobuf.Timestamp
-	4, // 1: event.employee.v1.EmployeePositionChanged.updated_at:type_name -> google.protobuf.Timestamp
-	4, // 2: event.employee.v1.EmployeeDepartmentChanged.updated_at:type_name -> google.protobuf.Timestamp
-	4, // 3: event.employee.v1.EmployeeTerminated.terminated_at:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	6, // 0: event.employee.v1.EmployeeHired.hired_at:type_name -> google.protobuf.Timestamp
+	6, // 1: event.employee.v1.EmployeePositionChanged.updated_at:type_name -> google.protobuf.Timestamp
+	6, // 2: event.employee.v1.EmployeeDepartmentChanged.updated_at:type_name -> google.protobuf.Timestamp
+	6, // 3: event.employee.v1.EmployeeTerminated.terminated_at:type_name -> google.protobuf.Timestamp
+	6, // 4: event.employee.v1.EmployeeDeactivated.updated_at:type_name -> google.protobuf.Timestamp
+	6, // 5: event.employee.v1.EmployeeActivated.updated_at:type_name -> google.protobuf.Timestamp
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_event_employee_v1_events_proto_init() }
@@ -393,7 +513,7 @@ func file_event_employee_v1_events_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_event_employee_v1_events_proto_rawDesc), len(file_event_employee_v1_events_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

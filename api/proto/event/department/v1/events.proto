@@ -21,6 +21,24 @@ message DepartmentDetailsChanged {
   google.protobuf.Timestamp updated_at = 3;
 }
 
+// DepartmentDeactivated — subject: medincident.event.department.v1.deactivated
+message DepartmentDeactivated {
+  string department_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// DepartmentActivated — subject: medincident.event.department.v1.activated
+message DepartmentActivated {
+  string department_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// DepartmentDeleted — subject: medincident.event.department.v1.deleted
+message DepartmentDeleted {
+  string department_id = 1;
+  google.protobuf.Timestamp deleted_at = 2;
+}
+
 // ── Department-level role events ──────────────────────────────────────
 
 // DeptResponsibleAssigned — subject: medincident.event.department.v1.dept_responsible_assigned

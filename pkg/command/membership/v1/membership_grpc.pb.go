@@ -23,6 +23,8 @@ const (
 	MembershipCommandService_UpdateEmployeePosition_FullMethodName             = "/command.membership.v1.MembershipCommandService/UpdateEmployeePosition"
 	MembershipCommandService_UpdateEmployeeDepartment_FullMethodName           = "/command.membership.v1.MembershipCommandService/UpdateEmployeeDepartment"
 	MembershipCommandService_TerminateEmployee_FullMethodName                  = "/command.membership.v1.MembershipCommandService/TerminateEmployee"
+	MembershipCommandService_DeactivateEmployee_FullMethodName                 = "/command.membership.v1.MembershipCommandService/DeactivateEmployee"
+	MembershipCommandService_ActivateEmployee_FullMethodName                   = "/command.membership.v1.MembershipCommandService/ActivateEmployee"
 	MembershipCommandService_StartVacationNow_FullMethodName                   = "/command.membership.v1.MembershipCommandService/StartVacationNow"
 	MembershipCommandService_ScheduleVacation_FullMethodName                   = "/command.membership.v1.MembershipCommandService/ScheduleVacation"
 	MembershipCommandService_UpdateVacationEndDate_FullMethodName              = "/command.membership.v1.MembershipCommandService/UpdateVacationEndDate"
@@ -69,6 +71,8 @@ type MembershipCommandServiceClient interface {
 	UpdateEmployeePosition(ctx context.Context, in *UpdateEmployeePositionRequest, opts ...grpc.CallOption) (*UpdateEmployeePositionResponse, error)
 	UpdateEmployeeDepartment(ctx context.Context, in *UpdateEmployeeDepartmentRequest, opts ...grpc.CallOption) (*UpdateEmployeeDepartmentResponse, error)
 	TerminateEmployee(ctx context.Context, in *TerminateEmployeeRequest, opts ...grpc.CallOption) (*TerminateEmployeeResponse, error)
+	DeactivateEmployee(ctx context.Context, in *DeactivateEmployeeRequest, opts ...grpc.CallOption) (*DeactivateEmployeeResponse, error)
+	ActivateEmployee(ctx context.Context, in *ActivateEmployeeRequest, opts ...grpc.CallOption) (*ActivateEmployeeResponse, error)
 	// Vacation lifecycle
 	StartVacationNow(ctx context.Context, in *StartVacationNowRequest, opts ...grpc.CallOption) (*StartVacationNowResponse, error)
 	ScheduleVacation(ctx context.Context, in *ScheduleVacationRequest, opts ...grpc.CallOption) (*ScheduleVacationResponse, error)
@@ -147,6 +151,26 @@ func (c *membershipCommandServiceClient) TerminateEmployee(ctx context.Context, 
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TerminateEmployeeResponse)
 	err := c.cc.Invoke(ctx, MembershipCommandService_TerminateEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipCommandServiceClient) DeactivateEmployee(ctx context.Context, in *DeactivateEmployeeRequest, opts ...grpc.CallOption) (*DeactivateEmployeeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeactivateEmployeeResponse)
+	err := c.cc.Invoke(ctx, MembershipCommandService_DeactivateEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipCommandServiceClient) ActivateEmployee(ctx context.Context, in *ActivateEmployeeRequest, opts ...grpc.CallOption) (*ActivateEmployeeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ActivateEmployeeResponse)
+	err := c.cc.Invoke(ctx, MembershipCommandService_ActivateEmployee_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -440,6 +464,8 @@ type MembershipCommandServiceServer interface {
 	UpdateEmployeePosition(context.Context, *UpdateEmployeePositionRequest) (*UpdateEmployeePositionResponse, error)
 	UpdateEmployeeDepartment(context.Context, *UpdateEmployeeDepartmentRequest) (*UpdateEmployeeDepartmentResponse, error)
 	TerminateEmployee(context.Context, *TerminateEmployeeRequest) (*TerminateEmployeeResponse, error)
+	DeactivateEmployee(context.Context, *DeactivateEmployeeRequest) (*DeactivateEmployeeResponse, error)
+	ActivateEmployee(context.Context, *ActivateEmployeeRequest) (*ActivateEmployeeResponse, error)
 	// Vacation lifecycle
 	StartVacationNow(context.Context, *StartVacationNowRequest) (*StartVacationNowResponse, error)
 	ScheduleVacation(context.Context, *ScheduleVacationRequest) (*ScheduleVacationResponse, error)
@@ -495,6 +521,12 @@ func (UnimplementedMembershipCommandServiceServer) UpdateEmployeeDepartment(cont
 }
 func (UnimplementedMembershipCommandServiceServer) TerminateEmployee(context.Context, *TerminateEmployeeRequest) (*TerminateEmployeeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method TerminateEmployee not implemented")
+}
+func (UnimplementedMembershipCommandServiceServer) DeactivateEmployee(context.Context, *DeactivateEmployeeRequest) (*DeactivateEmployeeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeactivateEmployee not implemented")
+}
+func (UnimplementedMembershipCommandServiceServer) ActivateEmployee(context.Context, *ActivateEmployeeRequest) (*ActivateEmployeeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ActivateEmployee not implemented")
 }
 func (UnimplementedMembershipCommandServiceServer) StartVacationNow(context.Context, *StartVacationNowRequest) (*StartVacationNowResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method StartVacationNow not implemented")
@@ -667,6 +699,42 @@ func _MembershipCommandService_TerminateEmployee_Handler(srv interface{}, ctx co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MembershipCommandServiceServer).TerminateEmployee(ctx, req.(*TerminateEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipCommandService_DeactivateEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeactivateEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipCommandServiceServer).DeactivateEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipCommandService_DeactivateEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipCommandServiceServer).DeactivateEmployee(ctx, req.(*DeactivateEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipCommandService_ActivateEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipCommandServiceServer).ActivateEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipCommandService_ActivateEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipCommandServiceServer).ActivateEmployee(ctx, req.(*ActivateEmployeeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1179,6 +1247,14 @@ var MembershipCommandService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TerminateEmployee",
 			Handler:    _MembershipCommandService_TerminateEmployee_Handler,
+		},
+		{
+			MethodName: "DeactivateEmployee",
+			Handler:    _MembershipCommandService_DeactivateEmployee_Handler,
+		},
+		{
+			MethodName: "ActivateEmployee",
+			Handler:    _MembershipCommandService_ActivateEmployee_Handler,
 		},
 		{
 			MethodName: "StartVacationNow",

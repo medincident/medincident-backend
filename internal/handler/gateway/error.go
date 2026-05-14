@@ -168,6 +168,7 @@ var httpCodeSuffixes = []struct {
 	{suffix: "_already_ended", status: http.StatusConflict},
 	{suffix: "_name_conflict", status: http.StatusConflict},
 	{suffix: "_overlap", status: http.StatusConflict},
+	{suffix: "_has_dependents", status: http.StatusConflict},
 	// 422 — state and business preconditions (more specific before shorter suffixes)
 	{suffix: "_invalid_status_transition", status: http.StatusUnprocessableEntity},
 	{suffix: "_not_in_department", status: http.StatusUnprocessableEntity},

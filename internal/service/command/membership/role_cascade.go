@@ -245,3 +245,38 @@ func cascadeRevokeOrgDispatcherAll(tx *gorm.DB, employeeID uuid.UUID, now time.T
 func cascadeClearOrgDispatcherDeputy(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
 	return cascadeClearRoleDeputyBy(tx, orgDispatcherCascade, "deputy_employee_id = ?", []any{employeeID}, now)
 }
+
+// RevokeAllEmployeeRoles revokes every role held by the given employee
+// (DepartmentResponsible, ClinicHead, OrgAdmin, OrgHead, OrgDispatcher)
+// and clears any deputy slots where the employee is a deputy.
+// Exported for use by orgstructure cascade operations.
+func RevokeAllEmployeeRoles(tx *gorm.DB, employeeID uuid.UUID, now time.Time) error {
+	if err := cascadeRevokeDepartmentResponsibleAll(tx, employeeID, now); err != nil {
+		return err
+	}
+	if err := cascadeClearDepartmentResponsibleDeputy(tx, employeeID, now); err != nil {
+		return err
+	}
+	if err := cascadeRevokeClinicHeadAll(tx, employeeID, now); err != nil {
+		return err
+	}
+	if err := cascadeClearClinicHeadDeputy(tx, employeeID, now); err != nil {
+		return err
+	}
+	if err := cascadeRevokeOrgAdminAll(tx, employeeID, now); err != nil {
+		return err
+	}
+	if err := cascadeClearOrgAdminDeputy(tx, employeeID, now); err != nil {
+		return err
+	}
+	if err := cascadeRevokeOrgHeadAll(tx, employeeID, now); err != nil {
+		return err
+	}
+	if err := cascadeClearOrgHeadDeputy(tx, employeeID, now); err != nil {
+		return err
+	}
+	if err := cascadeRevokeOrgDispatcherAll(tx, employeeID, now); err != nil {
+		return err
+	}
+	return cascadeClearOrgDispatcherDeputy(tx, employeeID, now)
+}

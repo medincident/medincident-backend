@@ -15,6 +15,7 @@ type Clinic struct {
 	Name            string      `gorm:"<-"`
 	Description     null.String `gorm:"<-"`
 	PhysicalAddress Address     `gorm:"column:physical_address;<-"`
+	IsActive        bool        `gorm:"<-"`
 	CreatedAt       time.Time   `gorm:"<-:create"`
 	UpdatedAt       time.Time   `gorm:"<-"`
 }

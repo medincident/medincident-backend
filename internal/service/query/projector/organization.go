@@ -146,6 +146,83 @@ func OrganizationLegalAddressChanged(
 	return nil
 }
 
+// OrganizationDeactivated sets is_active=false in projections.organizations.
+//
+// See: docs/services/OrgStructure.md
+func OrganizationDeactivated(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	ev *orgv1.OrganizationDeactivated,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.organization", ErrCodeOrganizationProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`
+		UPDATE projections.organizations
+		   SET is_active = FALSE, updated_at = ?
+		 WHERE id = ?`,
+		ev.GetUpdatedAt().AsTime(), id,
+	).Error; err != nil {
+		return oops.In("projector.organization").
+			Code(ErrCodeOrganizationProjectionFailed).
+			With("organization_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
+// OrganizationActivated sets is_active=true in projections.organizations.
+//
+// See: docs/services/OrgStructure.md
+func OrganizationActivated(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	ev *orgv1.OrganizationActivated,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.organization", ErrCodeOrganizationProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`
+		UPDATE projections.organizations
+		   SET is_active = TRUE, updated_at = ?
+		 WHERE id = ?`,
+		ev.GetUpdatedAt().AsTime(), id,
+	).Error; err != nil {
+		return oops.In("projector.organization").
+			Code(ErrCodeOrganizationProjectionFailed).
+			With("organization_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
+// OrganizationDeleted removes the row from projections.organizations.
+// Cascade FK rules in the projection schema clean up dependent rows.
+//
+// See: docs/services/OrgStructure.md
+func OrganizationDeleted(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	_ *orgv1.OrganizationDeleted,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.organization", ErrCodeOrganizationProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`DELETE FROM projections.organizations WHERE id = ?`, id).Error; err != nil {
+		return oops.In("projector.organization").
+			Code(ErrCodeOrganizationProjectionFailed).
+			With("organization_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
 func (p *Projectors) OrganizationCreated(tx *gorm.DB, id string, t time.Time, ev *orgv1.OrganizationCreated) error {
 	return OrganizationCreated(tx, id, t, ev)
 }
@@ -156,4 +233,16 @@ func (p *Projectors) OrganizationDetailsChanged(tx *gorm.DB, id string, t time.T
 
 func (p *Projectors) OrganizationLegalAddressChanged(tx *gorm.DB, id string, t time.Time, ev *orgv1.OrganizationLegalAddressChanged) error {
 	return OrganizationLegalAddressChanged(tx, id, t, ev)
+}
+
+func (p *Projectors) OrganizationDeactivated(tx *gorm.DB, id string, t time.Time, ev *orgv1.OrganizationDeactivated) error {
+	return OrganizationDeactivated(tx, id, t, ev)
+}
+
+func (p *Projectors) OrganizationActivated(tx *gorm.DB, id string, t time.Time, ev *orgv1.OrganizationActivated) error {
+	return OrganizationActivated(tx, id, t, ev)
+}
+
+func (p *Projectors) OrganizationDeleted(tx *gorm.DB, id string, t time.Time, ev *orgv1.OrganizationDeleted) error {
+	return OrganizationDeleted(tx, id, t, ev)
 }

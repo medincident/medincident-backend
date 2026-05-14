@@ -327,6 +327,64 @@ func bumpDepartmentEmployees(tx *gorm.DB, deptID uuid.UUID, now time.Time) error
 	return nil
 }
 
+// EmployeeDeactivated sets is_active=false in projections.employees and
+// projections.employee_cards.
+//
+// See: docs/services/OrgStructure.md
+func EmployeeDeactivated(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	ev *empv1.EmployeeDeactivated,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
+	updatedAt := ev.GetUpdatedAt().AsTime()
+	if err := tx.Exec(`
+		UPDATE projections.employees
+		   SET is_active = FALSE, updated_at = ?
+		 WHERE id = ?`,
+		updatedAt, id,
+	).Error; err != nil {
+		return oops.In("projector.employee").
+			Code(ErrCodeEmployeeProjectionFailed).
+			With("employee_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
+// EmployeeActivated sets is_active=true in projections.employees and
+// projections.employee_cards.
+//
+// See: docs/services/OrgStructure.md
+func EmployeeActivated(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	ev *empv1.EmployeeActivated,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.employee", ErrCodeEmployeeProjectionFailed)
+	if err != nil {
+		return err
+	}
+	updatedAt := ev.GetUpdatedAt().AsTime()
+	if err := tx.Exec(`
+		UPDATE projections.employees
+		   SET is_active = TRUE, updated_at = ?
+		 WHERE id = ?`,
+		updatedAt, id,
+	).Error; err != nil {
+		return oops.In("projector.employee").
+			Code(ErrCodeEmployeeProjectionFailed).
+			With("employee_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
 // Forwarding methods on *Projectors
 
 func (p *Projectors) EmployeeHired(tx *gorm.DB, id string, t time.Time, ev *empv1.EmployeeHired) error {
@@ -343,4 +401,12 @@ func (p *Projectors) EmployeeDepartmentChanged(tx *gorm.DB, id string, t time.Ti
 
 func (p *Projectors) EmployeePositionChanged(tx *gorm.DB, id string, t time.Time, ev *empv1.EmployeePositionChanged) error {
 	return EmployeePositionChanged(tx, id, t, ev)
+}
+
+func (p *Projectors) EmployeeDeactivated(tx *gorm.DB, id string, t time.Time, ev *empv1.EmployeeDeactivated) error {
+	return EmployeeDeactivated(tx, id, t, ev)
+}
+
+func (p *Projectors) EmployeeActivated(tx *gorm.DB, id string, t time.Time, ev *empv1.EmployeeActivated) error {
+	return EmployeeActivated(tx, id, t, ev)
 }

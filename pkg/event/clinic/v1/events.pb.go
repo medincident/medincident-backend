@@ -320,6 +320,165 @@ func (x *ClinicPhysicalAddressChanged) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// ClinicDeactivated — subject: medincident.event.clinic.v1.deactivated
+type ClinicDeactivated struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClinicDeactivated) Reset() {
+	*x = ClinicDeactivated{}
+	mi := &file_event_clinic_v1_events_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClinicDeactivated) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClinicDeactivated) ProtoMessage() {}
+
+func (x *ClinicDeactivated) ProtoReflect() protoreflect.Message {
+	mi := &file_event_clinic_v1_events_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClinicDeactivated.ProtoReflect.Descriptor instead.
+func (*ClinicDeactivated) Descriptor() ([]byte, []int) {
+	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ClinicDeactivated) GetClinicId() string {
+	if x != nil {
+		return x.ClinicId
+	}
+	return ""
+}
+
+func (x *ClinicDeactivated) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+// ClinicActivated — subject: medincident.event.clinic.v1.activated
+type ClinicActivated struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClinicActivated) Reset() {
+	*x = ClinicActivated{}
+	mi := &file_event_clinic_v1_events_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClinicActivated) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClinicActivated) ProtoMessage() {}
+
+func (x *ClinicActivated) ProtoReflect() protoreflect.Message {
+	mi := &file_event_clinic_v1_events_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClinicActivated.ProtoReflect.Descriptor instead.
+func (*ClinicActivated) Descriptor() ([]byte, []int) {
+	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ClinicActivated) GetClinicId() string {
+	if x != nil {
+		return x.ClinicId
+	}
+	return ""
+}
+
+func (x *ClinicActivated) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+// ClinicDeleted — subject: medincident.event.clinic.v1.deleted
+type ClinicDeleted struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClinicDeleted) Reset() {
+	*x = ClinicDeleted{}
+	mi := &file_event_clinic_v1_events_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClinicDeleted) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClinicDeleted) ProtoMessage() {}
+
+func (x *ClinicDeleted) ProtoReflect() protoreflect.Message {
+	mi := &file_event_clinic_v1_events_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClinicDeleted.ProtoReflect.Descriptor instead.
+func (*ClinicDeleted) Descriptor() ([]byte, []int) {
+	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ClinicDeleted) GetClinicId() string {
+	if x != nil {
+		return x.ClinicId
+	}
+	return ""
+}
+
+func (x *ClinicDeleted) GetDeletedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DeletedAt
+	}
+	return nil
+}
+
 // ClinicHeadAssigned — subject: medincident.event.clinic.v1.clinic_head_assigned
 type ClinicHeadAssigned struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -331,7 +490,7 @@ type ClinicHeadAssigned struct {
 
 func (x *ClinicHeadAssigned) Reset() {
 	*x = ClinicHeadAssigned{}
-	mi := &file_event_clinic_v1_events_proto_msgTypes[5]
+	mi := &file_event_clinic_v1_events_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -343,7 +502,7 @@ func (x *ClinicHeadAssigned) String() string {
 func (*ClinicHeadAssigned) ProtoMessage() {}
 
 func (x *ClinicHeadAssigned) ProtoReflect() protoreflect.Message {
-	mi := &file_event_clinic_v1_events_proto_msgTypes[5]
+	mi := &file_event_clinic_v1_events_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -356,7 +515,7 @@ func (x *ClinicHeadAssigned) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClinicHeadAssigned.ProtoReflect.Descriptor instead.
 func (*ClinicHeadAssigned) Descriptor() ([]byte, []int) {
-	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{5}
+	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ClinicHeadAssigned) GetEmployeeId() string {
@@ -384,7 +543,7 @@ type ClinicHeadDeputyAssigned struct {
 
 func (x *ClinicHeadDeputyAssigned) Reset() {
 	*x = ClinicHeadDeputyAssigned{}
-	mi := &file_event_clinic_v1_events_proto_msgTypes[6]
+	mi := &file_event_clinic_v1_events_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -396,7 +555,7 @@ func (x *ClinicHeadDeputyAssigned) String() string {
 func (*ClinicHeadDeputyAssigned) ProtoMessage() {}
 
 func (x *ClinicHeadDeputyAssigned) ProtoReflect() protoreflect.Message {
-	mi := &file_event_clinic_v1_events_proto_msgTypes[6]
+	mi := &file_event_clinic_v1_events_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -409,7 +568,7 @@ func (x *ClinicHeadDeputyAssigned) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClinicHeadDeputyAssigned.ProtoReflect.Descriptor instead.
 func (*ClinicHeadDeputyAssigned) Descriptor() ([]byte, []int) {
-	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{6}
+	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ClinicHeadDeputyAssigned) GetEmployeeId() string {
@@ -443,7 +602,7 @@ type ClinicHeadDeputyRemoved struct {
 
 func (x *ClinicHeadDeputyRemoved) Reset() {
 	*x = ClinicHeadDeputyRemoved{}
-	mi := &file_event_clinic_v1_events_proto_msgTypes[7]
+	mi := &file_event_clinic_v1_events_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -455,7 +614,7 @@ func (x *ClinicHeadDeputyRemoved) String() string {
 func (*ClinicHeadDeputyRemoved) ProtoMessage() {}
 
 func (x *ClinicHeadDeputyRemoved) ProtoReflect() protoreflect.Message {
-	mi := &file_event_clinic_v1_events_proto_msgTypes[7]
+	mi := &file_event_clinic_v1_events_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -468,7 +627,7 @@ func (x *ClinicHeadDeputyRemoved) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClinicHeadDeputyRemoved.ProtoReflect.Descriptor instead.
 func (*ClinicHeadDeputyRemoved) Descriptor() ([]byte, []int) {
-	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{7}
+	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ClinicHeadDeputyRemoved) GetEmployeeId() string {
@@ -494,7 +653,7 @@ type ClinicHeadRevoked struct {
 
 func (x *ClinicHeadRevoked) Reset() {
 	*x = ClinicHeadRevoked{}
-	mi := &file_event_clinic_v1_events_proto_msgTypes[8]
+	mi := &file_event_clinic_v1_events_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -506,7 +665,7 @@ func (x *ClinicHeadRevoked) String() string {
 func (*ClinicHeadRevoked) ProtoMessage() {}
 
 func (x *ClinicHeadRevoked) ProtoReflect() protoreflect.Message {
-	mi := &file_event_clinic_v1_events_proto_msgTypes[8]
+	mi := &file_event_clinic_v1_events_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -519,7 +678,7 @@ func (x *ClinicHeadRevoked) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClinicHeadRevoked.ProtoReflect.Descriptor instead.
 func (*ClinicHeadRevoked) Descriptor() ([]byte, []int) {
-	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{8}
+	return file_event_clinic_v1_events_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ClinicHeadRevoked) GetEmployeeId() string {
@@ -555,7 +714,19 @@ const file_event_clinic_v1_events_proto_rawDesc = "" +
 	"\x1cClinicPhysicalAddressChanged\x12C\n" +
 	"\x10physical_address\x18\x01 \x01(\v2\x18.event.clinic.v1.AddressR\x0fphysicalAddress\x129\n" +
 	"\n" +
-	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"r\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"k\n" +
+	"\x11ClinicDeactivated\x12\x1b\n" +
+	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x129\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"i\n" +
+	"\x0fClinicActivated\x12\x1b\n" +
+	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x129\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"g\n" +
+	"\rClinicDeleted\x12\x1b\n" +
+	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x129\n" +
+	"\n" +
+	"deleted_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt\"r\n" +
 	"\x12ClinicHeadAssigned\x12\x1f\n" +
 	"\vemployee_id\x18\x01 \x01(\tR\n" +
 	"employeeId\x12;\n" +
@@ -589,34 +760,40 @@ func file_event_clinic_v1_events_proto_rawDescGZIP() []byte {
 	return file_event_clinic_v1_events_proto_rawDescData
 }
 
-var file_event_clinic_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_event_clinic_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_event_clinic_v1_events_proto_goTypes = []any{
 	(*Address)(nil),                      // 0: event.clinic.v1.Address
 	(*Point)(nil),                        // 1: event.clinic.v1.Point
 	(*ClinicCreated)(nil),                // 2: event.clinic.v1.ClinicCreated
 	(*ClinicDetailsChanged)(nil),         // 3: event.clinic.v1.ClinicDetailsChanged
 	(*ClinicPhysicalAddressChanged)(nil), // 4: event.clinic.v1.ClinicPhysicalAddressChanged
-	(*ClinicHeadAssigned)(nil),           // 5: event.clinic.v1.ClinicHeadAssigned
-	(*ClinicHeadDeputyAssigned)(nil),     // 6: event.clinic.v1.ClinicHeadDeputyAssigned
-	(*ClinicHeadDeputyRemoved)(nil),      // 7: event.clinic.v1.ClinicHeadDeputyRemoved
-	(*ClinicHeadRevoked)(nil),            // 8: event.clinic.v1.ClinicHeadRevoked
-	(*timestamppb.Timestamp)(nil),        // 9: google.protobuf.Timestamp
+	(*ClinicDeactivated)(nil),            // 5: event.clinic.v1.ClinicDeactivated
+	(*ClinicActivated)(nil),              // 6: event.clinic.v1.ClinicActivated
+	(*ClinicDeleted)(nil),                // 7: event.clinic.v1.ClinicDeleted
+	(*ClinicHeadAssigned)(nil),           // 8: event.clinic.v1.ClinicHeadAssigned
+	(*ClinicHeadDeputyAssigned)(nil),     // 9: event.clinic.v1.ClinicHeadDeputyAssigned
+	(*ClinicHeadDeputyRemoved)(nil),      // 10: event.clinic.v1.ClinicHeadDeputyRemoved
+	(*ClinicHeadRevoked)(nil),            // 11: event.clinic.v1.ClinicHeadRevoked
+	(*timestamppb.Timestamp)(nil),        // 12: google.protobuf.Timestamp
 }
 var file_event_clinic_v1_events_proto_depIdxs = []int32{
-	1, // 0: event.clinic.v1.Address.point:type_name -> event.clinic.v1.Point
-	0, // 1: event.clinic.v1.ClinicCreated.physical_address:type_name -> event.clinic.v1.Address
-	9, // 2: event.clinic.v1.ClinicCreated.created_at:type_name -> google.protobuf.Timestamp
-	9, // 3: event.clinic.v1.ClinicDetailsChanged.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 4: event.clinic.v1.ClinicPhysicalAddressChanged.physical_address:type_name -> event.clinic.v1.Address
-	9, // 5: event.clinic.v1.ClinicPhysicalAddressChanged.updated_at:type_name -> google.protobuf.Timestamp
-	9, // 6: event.clinic.v1.ClinicHeadAssigned.assigned_at:type_name -> google.protobuf.Timestamp
-	9, // 7: event.clinic.v1.ClinicHeadDeputyAssigned.updated_at:type_name -> google.protobuf.Timestamp
-	9, // 8: event.clinic.v1.ClinicHeadDeputyRemoved.updated_at:type_name -> google.protobuf.Timestamp
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	1,  // 0: event.clinic.v1.Address.point:type_name -> event.clinic.v1.Point
+	0,  // 1: event.clinic.v1.ClinicCreated.physical_address:type_name -> event.clinic.v1.Address
+	12, // 2: event.clinic.v1.ClinicCreated.created_at:type_name -> google.protobuf.Timestamp
+	12, // 3: event.clinic.v1.ClinicDetailsChanged.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 4: event.clinic.v1.ClinicPhysicalAddressChanged.physical_address:type_name -> event.clinic.v1.Address
+	12, // 5: event.clinic.v1.ClinicPhysicalAddressChanged.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 6: event.clinic.v1.ClinicDeactivated.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 7: event.clinic.v1.ClinicActivated.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 8: event.clinic.v1.ClinicDeleted.deleted_at:type_name -> google.protobuf.Timestamp
+	12, // 9: event.clinic.v1.ClinicHeadAssigned.assigned_at:type_name -> google.protobuf.Timestamp
+	12, // 10: event.clinic.v1.ClinicHeadDeputyAssigned.updated_at:type_name -> google.protobuf.Timestamp
+	12, // 11: event.clinic.v1.ClinicHeadDeputyRemoved.updated_at:type_name -> google.protobuf.Timestamp
+	12, // [12:12] is the sub-list for method output_type
+	12, // [12:12] is the sub-list for method input_type
+	12, // [12:12] is the sub-list for extension type_name
+	12, // [12:12] is the sub-list for extension extendee
+	0,  // [0:12] is the sub-list for field type_name
 }
 
 func init() { file_event_clinic_v1_events_proto_init() }
@@ -630,7 +807,7 @@ func file_event_clinic_v1_events_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_event_clinic_v1_events_proto_rawDesc), len(file_event_clinic_v1_events_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

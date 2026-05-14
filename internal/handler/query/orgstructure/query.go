@@ -78,8 +78,9 @@ func (h *OrgStructureQueryHandler) ListOrganizations(
 	out := make([]*orgqueryv1.OrganizationListItem, 0, len(result.Items))
 	for _, item := range result.Items {
 		out = append(out, &orgqueryv1.OrganizationListItem{
-			Id:   item.ID.String(),
-			Name: item.Name,
+			Id:       item.ID.String(),
+			Name:     item.Name,
+			IsActive: item.IsActive,
 		})
 	}
 	return &orgqueryv1.ListOrganizationsResponse{
@@ -107,8 +108,9 @@ func (h *OrgStructureQueryHandler) SearchOrganizations(
 	out := make([]*orgqueryv1.OrganizationListItem, 0, len(result.Items))
 	for _, item := range result.Items {
 		out = append(out, &orgqueryv1.OrganizationListItem{
-			Id:   item.ID.String(),
-			Name: item.Name,
+			Id:       item.ID.String(),
+			Name:     item.Name,
+			IsActive: item.IsActive,
 		})
 	}
 	return &orgqueryv1.SearchOrganizationsResponse{
@@ -177,6 +179,7 @@ func (h *OrgStructureQueryHandler) ListClinicsByOrganization(
 			Id:             item.ID.String(),
 			OrganizationId: item.OrganizationID.String(),
 			Name:           item.Name,
+			IsActive:       item.IsActive,
 		})
 	}
 	return &orgqueryv1.ListClinicsByOrganizationResponse{
@@ -255,6 +258,7 @@ func (h *OrgStructureQueryHandler) ListDepartmentsByClinic(
 			Id:       item.ID.String(),
 			ClinicId: item.ClinicID.String(),
 			Name:     item.Name,
+			IsActive: item.IsActive,
 		})
 	}
 	return &orgqueryv1.ListDepartmentsByClinicResponse{
@@ -292,6 +296,7 @@ func organizationToProto(v *orgread.OrganizationDetails) *orgqueryv1.Organizatio
 		Name:         v.Name,
 		Description:  v.Description,
 		LegalAddress: addressViewToProto(v.LegalAddress),
+		IsActive:     v.IsActive,
 		CreatedAt:    v.CreatedAt.UTC().Format(time.RFC3339Nano),
 		UpdatedAt:    v.UpdatedAt.UTC().Format(time.RFC3339Nano),
 	}
@@ -305,6 +310,7 @@ func clinicToProto(v *orgread.ClinicDetails) *orgqueryv1.Clinic {
 		Name:            v.Name,
 		Description:     v.Description,
 		PhysicalAddress: addressViewToProto(v.PhysicalAddress),
+		IsActive:        v.IsActive,
 		CreatedAt:       v.CreatedAt.UTC().Format(time.RFC3339Nano),
 		UpdatedAt:       v.UpdatedAt.UTC().Format(time.RFC3339Nano),
 	}
@@ -317,6 +323,7 @@ func departmentToProto(v *orgread.DepartmentDetails) *orgqueryv1.Department {
 		ClinicId:    v.ClinicID.String(),
 		Name:        v.Name,
 		Description: v.Description,
+		IsActive:    v.IsActive,
 		CreatedAt:   v.CreatedAt.UTC().Format(time.RFC3339Nano),
 		UpdatedAt:   v.UpdatedAt.UTC().Format(time.RFC3339Nano),
 	}

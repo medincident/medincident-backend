@@ -24,10 +24,12 @@ import (
 // Struct-tag violations are collapsed into a single validation_failed
 // oops error by the validation translator.
 const (
-	ErrCodeOrganizationIDGenerationFailed = "organization_id_generation_failed"
-	ErrCodeOrganizationSaveFailed         = "organization_save_failed"
-	ErrCodeOrganizationLoadFailed         = "organization_load_failed"
-	ErrCodeOrganizationNotFound           = "organization_not_found"
+	ErrCodeOrganizationIDGenerationFailed  = "organization_id_generation_failed"
+	ErrCodeOrganizationSaveFailed          = "organization_save_failed"
+	ErrCodeOrganizationLoadFailed          = "organization_load_failed"
+	ErrCodeOrganizationNotFound            = "organization_not_found"
+	ErrCodeOrganizationDeleteFailed        = "organization_delete_failed"
+	ErrCodeOrganizationDeleteHasDependents = "organization_delete_has_dependents"
 )
 
 // CreateOrganizationPayload is the validated client-facing payload of
@@ -123,8 +125,9 @@ func (s *OrganizationService) Create(
 	}
 
 	org := model.Organization{
-		ID:   id,
-		Name: strings.TrimSpace(cmd.Payload.Name),
+		ID:       id,
+		Name:     strings.TrimSpace(cmd.Payload.Name),
+		IsActive: true,
 		LegalAddress: model.Address{
 			Text: strings.TrimSpace(cmd.Payload.LegalAddress.Text),
 		},

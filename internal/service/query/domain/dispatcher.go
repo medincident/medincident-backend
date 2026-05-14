@@ -78,6 +78,12 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 			return d.proj.OrganizationDetailsChanged(tx, aggregateID, occurredAt, m)
 		case *orgv1.OrganizationLegalAddressChanged:
 			return d.proj.OrganizationLegalAddressChanged(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrganizationDeactivated:
+			return d.proj.OrganizationDeactivated(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrganizationActivated:
+			return d.proj.OrganizationActivated(tx, aggregateID, occurredAt, m)
+		case *orgv1.OrganizationDeleted:
+			return d.proj.OrganizationDeleted(tx, aggregateID, occurredAt, m)
 
 		// ── Clinic ────────────────────────────────────────────────────────
 		case *clinicv1.ClinicCreated:
@@ -86,12 +92,24 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 			return d.proj.ClinicDetailsChanged(tx, aggregateID, occurredAt, m)
 		case *clinicv1.ClinicPhysicalAddressChanged:
 			return d.proj.ClinicPhysicalAddressChanged(tx, aggregateID, occurredAt, m)
+		case *clinicv1.ClinicDeactivated:
+			return d.proj.ClinicDeactivated(tx, aggregateID, occurredAt, m)
+		case *clinicv1.ClinicActivated:
+			return d.proj.ClinicActivated(tx, aggregateID, occurredAt, m)
+		case *clinicv1.ClinicDeleted:
+			return d.proj.ClinicDeleted(tx, aggregateID, occurredAt, m)
 
 		// ── Department ────────────────────────────────────────────────────
 		case *deptv1.DepartmentCreated:
 			return d.proj.DepartmentCreated(tx, aggregateID, occurredAt, m)
 		case *deptv1.DepartmentDetailsChanged:
 			return d.proj.DepartmentDetailsChanged(tx, aggregateID, occurredAt, m)
+		case *deptv1.DepartmentDeactivated:
+			return d.proj.DepartmentDeactivated(tx, aggregateID, occurredAt, m)
+		case *deptv1.DepartmentActivated:
+			return d.proj.DepartmentActivated(tx, aggregateID, occurredAt, m)
+		case *deptv1.DepartmentDeleted:
+			return d.proj.DepartmentDeleted(tx, aggregateID, occurredAt, m)
 
 		// ── Employee ──────────────────────────────────────────────────────
 		case *empv1.EmployeeHired:
@@ -102,6 +120,10 @@ func (d *Dispatcher) Dispatch(ctx context.Context, msg jetstream.Msg) error {
 			return d.proj.EmployeeDepartmentChanged(tx, aggregateID, occurredAt, m)
 		case *empv1.EmployeePositionChanged:
 			return d.proj.EmployeePositionChanged(tx, aggregateID, occurredAt, m)
+		case *empv1.EmployeeDeactivated:
+			return d.proj.EmployeeDeactivated(tx, aggregateID, occurredAt, m)
+		case *empv1.EmployeeActivated:
+			return d.proj.EmployeeActivated(tx, aggregateID, occurredAt, m)
 
 		// ── Vacation ──────────────────────────────────────────────────────
 		case *vacv1.VacationScheduled:
