@@ -27,6 +27,7 @@ type ClinicDetails struct {
 	Name            string
 	Description     *string
 	PhysicalAddress AddressView
+	IsActive        bool
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
 }
@@ -37,6 +38,7 @@ type ClinicListItem struct {
 	ID             uuid.UUID
 	OrganizationID uuid.UUID
 	Name           string
+	IsActive       bool
 	UpdatedAt      time.Time
 }
 
@@ -68,13 +70,13 @@ func (r *ClinicReader) Get(
 	err := r.db.WithContext(ctx).Raw(`
 		SELECT id, organization_id, name, description,
 		       physical_address_text, physical_address_longitude, physical_address_latitude,
-		       created_at, updated_at
+		       is_active, created_at, updated_at
 		  FROM projections.clinics
 		 WHERE id = ?`, id,
 	).Row().Scan(
 		&out.ID, &out.OrganizationID, &out.Name, &out.Description,
 		&addrText, &lon, &lat,
-		&out.CreatedAt, &out.UpdatedAt,
+		&out.IsActive, &out.CreatedAt, &out.UpdatedAt,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -146,7 +148,7 @@ func (r *ClinicReader) ListByOrganization(
 	); err != nil {
 		return ClinicListResult{}, err
 	}
-	sqlBuf := `SELECT id, organization_id, name, updated_at
+	sqlBuf := `SELECT id, organization_id, name, is_active, updated_at
 		  FROM projections.clinics
 		 WHERE organization_id = ?`
 	args := make([]any, 0, 4)
@@ -176,7 +178,7 @@ func (r *ClinicReader) ListByOrganization(
 	out := make([]ClinicListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v ClinicListItem
-		if err := rows.Scan(&v.ID, &v.OrganizationID, &v.Name, &v.UpdatedAt); err != nil {
+		if err := rows.Scan(&v.ID, &v.OrganizationID, &v.Name, &v.IsActive, &v.UpdatedAt); err != nil {
 			return ClinicListResult{}, oops.In("reader.orgstructure.clinic").
 				Code(ErrCodeClinicLoadFailed).
 				With("organization_id", organizationID).

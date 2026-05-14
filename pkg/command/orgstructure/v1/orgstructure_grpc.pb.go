@@ -22,11 +22,20 @@ const (
 	OrgStructureCommandService_CreateOrganization_FullMethodName             = "/command.orgstructure.v1.OrgStructureCommandService/CreateOrganization"
 	OrgStructureCommandService_UpdateOrganizationDetails_FullMethodName      = "/command.orgstructure.v1.OrgStructureCommandService/UpdateOrganizationDetails"
 	OrgStructureCommandService_UpdateOrganizationLegalAddress_FullMethodName = "/command.orgstructure.v1.OrgStructureCommandService/UpdateOrganizationLegalAddress"
+	OrgStructureCommandService_DeactivateOrganization_FullMethodName         = "/command.orgstructure.v1.OrgStructureCommandService/DeactivateOrganization"
+	OrgStructureCommandService_ActivateOrganization_FullMethodName           = "/command.orgstructure.v1.OrgStructureCommandService/ActivateOrganization"
+	OrgStructureCommandService_DeleteOrganization_FullMethodName             = "/command.orgstructure.v1.OrgStructureCommandService/DeleteOrganization"
 	OrgStructureCommandService_CreateClinic_FullMethodName                   = "/command.orgstructure.v1.OrgStructureCommandService/CreateClinic"
 	OrgStructureCommandService_UpdateClinicDetails_FullMethodName            = "/command.orgstructure.v1.OrgStructureCommandService/UpdateClinicDetails"
 	OrgStructureCommandService_UpdateClinicPhysicalAddress_FullMethodName    = "/command.orgstructure.v1.OrgStructureCommandService/UpdateClinicPhysicalAddress"
+	OrgStructureCommandService_DeactivateClinic_FullMethodName               = "/command.orgstructure.v1.OrgStructureCommandService/DeactivateClinic"
+	OrgStructureCommandService_ActivateClinic_FullMethodName                 = "/command.orgstructure.v1.OrgStructureCommandService/ActivateClinic"
+	OrgStructureCommandService_DeleteClinic_FullMethodName                   = "/command.orgstructure.v1.OrgStructureCommandService/DeleteClinic"
 	OrgStructureCommandService_CreateDepartment_FullMethodName               = "/command.orgstructure.v1.OrgStructureCommandService/CreateDepartment"
 	OrgStructureCommandService_UpdateDepartmentDetails_FullMethodName        = "/command.orgstructure.v1.OrgStructureCommandService/UpdateDepartmentDetails"
+	OrgStructureCommandService_DeactivateDepartment_FullMethodName           = "/command.orgstructure.v1.OrgStructureCommandService/DeactivateDepartment"
+	OrgStructureCommandService_ActivateDepartment_FullMethodName             = "/command.orgstructure.v1.OrgStructureCommandService/ActivateDepartment"
+	OrgStructureCommandService_DeleteDepartment_FullMethodName               = "/command.orgstructure.v1.OrgStructureCommandService/DeleteDepartment"
 )
 
 // OrgStructureCommandServiceClient is the client API for OrgStructureCommandService service.
@@ -45,11 +54,20 @@ type OrgStructureCommandServiceClient interface {
 	CreateOrganization(ctx context.Context, in *CreateOrganizationRequest, opts ...grpc.CallOption) (*CreateOrganizationResponse, error)
 	UpdateOrganizationDetails(ctx context.Context, in *UpdateOrganizationDetailsRequest, opts ...grpc.CallOption) (*UpdateOrganizationDetailsResponse, error)
 	UpdateOrganizationLegalAddress(ctx context.Context, in *UpdateOrganizationLegalAddressRequest, opts ...grpc.CallOption) (*UpdateOrganizationLegalAddressResponse, error)
+	DeactivateOrganization(ctx context.Context, in *DeactivateOrganizationRequest, opts ...grpc.CallOption) (*DeactivateOrganizationResponse, error)
+	ActivateOrganization(ctx context.Context, in *ActivateOrganizationRequest, opts ...grpc.CallOption) (*ActivateOrganizationResponse, error)
+	DeleteOrganization(ctx context.Context, in *DeleteOrganizationRequest, opts ...grpc.CallOption) (*DeleteOrganizationResponse, error)
 	CreateClinic(ctx context.Context, in *CreateClinicRequest, opts ...grpc.CallOption) (*CreateClinicResponse, error)
 	UpdateClinicDetails(ctx context.Context, in *UpdateClinicDetailsRequest, opts ...grpc.CallOption) (*UpdateClinicDetailsResponse, error)
 	UpdateClinicPhysicalAddress(ctx context.Context, in *UpdateClinicPhysicalAddressRequest, opts ...grpc.CallOption) (*UpdateClinicPhysicalAddressResponse, error)
+	DeactivateClinic(ctx context.Context, in *DeactivateClinicRequest, opts ...grpc.CallOption) (*DeactivateClinicResponse, error)
+	ActivateClinic(ctx context.Context, in *ActivateClinicRequest, opts ...grpc.CallOption) (*ActivateClinicResponse, error)
+	DeleteClinic(ctx context.Context, in *DeleteClinicRequest, opts ...grpc.CallOption) (*DeleteClinicResponse, error)
 	CreateDepartment(ctx context.Context, in *CreateDepartmentRequest, opts ...grpc.CallOption) (*CreateDepartmentResponse, error)
 	UpdateDepartmentDetails(ctx context.Context, in *UpdateDepartmentDetailsRequest, opts ...grpc.CallOption) (*UpdateDepartmentDetailsResponse, error)
+	DeactivateDepartment(ctx context.Context, in *DeactivateDepartmentRequest, opts ...grpc.CallOption) (*DeactivateDepartmentResponse, error)
+	ActivateDepartment(ctx context.Context, in *ActivateDepartmentRequest, opts ...grpc.CallOption) (*ActivateDepartmentResponse, error)
+	DeleteDepartment(ctx context.Context, in *DeleteDepartmentRequest, opts ...grpc.CallOption) (*DeleteDepartmentResponse, error)
 }
 
 type orgStructureCommandServiceClient struct {
@@ -90,6 +108,36 @@ func (c *orgStructureCommandServiceClient) UpdateOrganizationLegalAddress(ctx co
 	return out, nil
 }
 
+func (c *orgStructureCommandServiceClient) DeactivateOrganization(ctx context.Context, in *DeactivateOrganizationRequest, opts ...grpc.CallOption) (*DeactivateOrganizationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeactivateOrganizationResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_DeactivateOrganization_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgStructureCommandServiceClient) ActivateOrganization(ctx context.Context, in *ActivateOrganizationRequest, opts ...grpc.CallOption) (*ActivateOrganizationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ActivateOrganizationResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_ActivateOrganization_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgStructureCommandServiceClient) DeleteOrganization(ctx context.Context, in *DeleteOrganizationRequest, opts ...grpc.CallOption) (*DeleteOrganizationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteOrganizationResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_DeleteOrganization_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *orgStructureCommandServiceClient) CreateClinic(ctx context.Context, in *CreateClinicRequest, opts ...grpc.CallOption) (*CreateClinicResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateClinicResponse)
@@ -120,6 +168,36 @@ func (c *orgStructureCommandServiceClient) UpdateClinicPhysicalAddress(ctx conte
 	return out, nil
 }
 
+func (c *orgStructureCommandServiceClient) DeactivateClinic(ctx context.Context, in *DeactivateClinicRequest, opts ...grpc.CallOption) (*DeactivateClinicResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeactivateClinicResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_DeactivateClinic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgStructureCommandServiceClient) ActivateClinic(ctx context.Context, in *ActivateClinicRequest, opts ...grpc.CallOption) (*ActivateClinicResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ActivateClinicResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_ActivateClinic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgStructureCommandServiceClient) DeleteClinic(ctx context.Context, in *DeleteClinicRequest, opts ...grpc.CallOption) (*DeleteClinicResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteClinicResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_DeleteClinic_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *orgStructureCommandServiceClient) CreateDepartment(ctx context.Context, in *CreateDepartmentRequest, opts ...grpc.CallOption) (*CreateDepartmentResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateDepartmentResponse)
@@ -134,6 +212,36 @@ func (c *orgStructureCommandServiceClient) UpdateDepartmentDetails(ctx context.C
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdateDepartmentDetailsResponse)
 	err := c.cc.Invoke(ctx, OrgStructureCommandService_UpdateDepartmentDetails_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgStructureCommandServiceClient) DeactivateDepartment(ctx context.Context, in *DeactivateDepartmentRequest, opts ...grpc.CallOption) (*DeactivateDepartmentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeactivateDepartmentResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_DeactivateDepartment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgStructureCommandServiceClient) ActivateDepartment(ctx context.Context, in *ActivateDepartmentRequest, opts ...grpc.CallOption) (*ActivateDepartmentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ActivateDepartmentResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_ActivateDepartment_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orgStructureCommandServiceClient) DeleteDepartment(ctx context.Context, in *DeleteDepartmentRequest, opts ...grpc.CallOption) (*DeleteDepartmentResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteDepartmentResponse)
+	err := c.cc.Invoke(ctx, OrgStructureCommandService_DeleteDepartment_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -156,11 +264,20 @@ type OrgStructureCommandServiceServer interface {
 	CreateOrganization(context.Context, *CreateOrganizationRequest) (*CreateOrganizationResponse, error)
 	UpdateOrganizationDetails(context.Context, *UpdateOrganizationDetailsRequest) (*UpdateOrganizationDetailsResponse, error)
 	UpdateOrganizationLegalAddress(context.Context, *UpdateOrganizationLegalAddressRequest) (*UpdateOrganizationLegalAddressResponse, error)
+	DeactivateOrganization(context.Context, *DeactivateOrganizationRequest) (*DeactivateOrganizationResponse, error)
+	ActivateOrganization(context.Context, *ActivateOrganizationRequest) (*ActivateOrganizationResponse, error)
+	DeleteOrganization(context.Context, *DeleteOrganizationRequest) (*DeleteOrganizationResponse, error)
 	CreateClinic(context.Context, *CreateClinicRequest) (*CreateClinicResponse, error)
 	UpdateClinicDetails(context.Context, *UpdateClinicDetailsRequest) (*UpdateClinicDetailsResponse, error)
 	UpdateClinicPhysicalAddress(context.Context, *UpdateClinicPhysicalAddressRequest) (*UpdateClinicPhysicalAddressResponse, error)
+	DeactivateClinic(context.Context, *DeactivateClinicRequest) (*DeactivateClinicResponse, error)
+	ActivateClinic(context.Context, *ActivateClinicRequest) (*ActivateClinicResponse, error)
+	DeleteClinic(context.Context, *DeleteClinicRequest) (*DeleteClinicResponse, error)
 	CreateDepartment(context.Context, *CreateDepartmentRequest) (*CreateDepartmentResponse, error)
 	UpdateDepartmentDetails(context.Context, *UpdateDepartmentDetailsRequest) (*UpdateDepartmentDetailsResponse, error)
+	DeactivateDepartment(context.Context, *DeactivateDepartmentRequest) (*DeactivateDepartmentResponse, error)
+	ActivateDepartment(context.Context, *ActivateDepartmentRequest) (*ActivateDepartmentResponse, error)
+	DeleteDepartment(context.Context, *DeleteDepartmentRequest) (*DeleteDepartmentResponse, error)
 	mustEmbedUnimplementedOrgStructureCommandServiceServer()
 }
 
@@ -180,6 +297,15 @@ func (UnimplementedOrgStructureCommandServiceServer) UpdateOrganizationDetails(c
 func (UnimplementedOrgStructureCommandServiceServer) UpdateOrganizationLegalAddress(context.Context, *UpdateOrganizationLegalAddressRequest) (*UpdateOrganizationLegalAddressResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateOrganizationLegalAddress not implemented")
 }
+func (UnimplementedOrgStructureCommandServiceServer) DeactivateOrganization(context.Context, *DeactivateOrganizationRequest) (*DeactivateOrganizationResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeactivateOrganization not implemented")
+}
+func (UnimplementedOrgStructureCommandServiceServer) ActivateOrganization(context.Context, *ActivateOrganizationRequest) (*ActivateOrganizationResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ActivateOrganization not implemented")
+}
+func (UnimplementedOrgStructureCommandServiceServer) DeleteOrganization(context.Context, *DeleteOrganizationRequest) (*DeleteOrganizationResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteOrganization not implemented")
+}
 func (UnimplementedOrgStructureCommandServiceServer) CreateClinic(context.Context, *CreateClinicRequest) (*CreateClinicResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateClinic not implemented")
 }
@@ -189,11 +315,29 @@ func (UnimplementedOrgStructureCommandServiceServer) UpdateClinicDetails(context
 func (UnimplementedOrgStructureCommandServiceServer) UpdateClinicPhysicalAddress(context.Context, *UpdateClinicPhysicalAddressRequest) (*UpdateClinicPhysicalAddressResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateClinicPhysicalAddress not implemented")
 }
+func (UnimplementedOrgStructureCommandServiceServer) DeactivateClinic(context.Context, *DeactivateClinicRequest) (*DeactivateClinicResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeactivateClinic not implemented")
+}
+func (UnimplementedOrgStructureCommandServiceServer) ActivateClinic(context.Context, *ActivateClinicRequest) (*ActivateClinicResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ActivateClinic not implemented")
+}
+func (UnimplementedOrgStructureCommandServiceServer) DeleteClinic(context.Context, *DeleteClinicRequest) (*DeleteClinicResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteClinic not implemented")
+}
 func (UnimplementedOrgStructureCommandServiceServer) CreateDepartment(context.Context, *CreateDepartmentRequest) (*CreateDepartmentResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateDepartment not implemented")
 }
 func (UnimplementedOrgStructureCommandServiceServer) UpdateDepartmentDetails(context.Context, *UpdateDepartmentDetailsRequest) (*UpdateDepartmentDetailsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateDepartmentDetails not implemented")
+}
+func (UnimplementedOrgStructureCommandServiceServer) DeactivateDepartment(context.Context, *DeactivateDepartmentRequest) (*DeactivateDepartmentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeactivateDepartment not implemented")
+}
+func (UnimplementedOrgStructureCommandServiceServer) ActivateDepartment(context.Context, *ActivateDepartmentRequest) (*ActivateDepartmentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ActivateDepartment not implemented")
+}
+func (UnimplementedOrgStructureCommandServiceServer) DeleteDepartment(context.Context, *DeleteDepartmentRequest) (*DeleteDepartmentResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteDepartment not implemented")
 }
 func (UnimplementedOrgStructureCommandServiceServer) mustEmbedUnimplementedOrgStructureCommandServiceServer() {
 }
@@ -271,6 +415,60 @@ func _OrgStructureCommandService_UpdateOrganizationLegalAddress_Handler(srv inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrgStructureCommandService_DeactivateOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeactivateOrganizationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).DeactivateOrganization(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_DeactivateOrganization_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).DeactivateOrganization(ctx, req.(*DeactivateOrganizationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgStructureCommandService_ActivateOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateOrganizationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).ActivateOrganization(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_ActivateOrganization_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).ActivateOrganization(ctx, req.(*ActivateOrganizationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgStructureCommandService_DeleteOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteOrganizationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).DeleteOrganization(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_DeleteOrganization_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).DeleteOrganization(ctx, req.(*DeleteOrganizationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _OrgStructureCommandService_CreateClinic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateClinicRequest)
 	if err := dec(in); err != nil {
@@ -325,6 +523,60 @@ func _OrgStructureCommandService_UpdateClinicPhysicalAddress_Handler(srv interfa
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrgStructureCommandService_DeactivateClinic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeactivateClinicRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).DeactivateClinic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_DeactivateClinic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).DeactivateClinic(ctx, req.(*DeactivateClinicRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgStructureCommandService_ActivateClinic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateClinicRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).ActivateClinic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_ActivateClinic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).ActivateClinic(ctx, req.(*ActivateClinicRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgStructureCommandService_DeleteClinic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteClinicRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).DeleteClinic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_DeleteClinic_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).DeleteClinic(ctx, req.(*DeleteClinicRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _OrgStructureCommandService_CreateDepartment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateDepartmentRequest)
 	if err := dec(in); err != nil {
@@ -361,6 +613,60 @@ func _OrgStructureCommandService_UpdateDepartmentDetails_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OrgStructureCommandService_DeactivateDepartment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeactivateDepartmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).DeactivateDepartment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_DeactivateDepartment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).DeactivateDepartment(ctx, req.(*DeactivateDepartmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgStructureCommandService_ActivateDepartment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ActivateDepartmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).ActivateDepartment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_ActivateDepartment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).ActivateDepartment(ctx, req.(*ActivateDepartmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrgStructureCommandService_DeleteDepartment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDepartmentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrgStructureCommandServiceServer).DeleteDepartment(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OrgStructureCommandService_DeleteDepartment_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrgStructureCommandServiceServer).DeleteDepartment(ctx, req.(*DeleteDepartmentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OrgStructureCommandService_ServiceDesc is the grpc.ServiceDesc for OrgStructureCommandService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -381,6 +687,18 @@ var OrgStructureCommandService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrgStructureCommandService_UpdateOrganizationLegalAddress_Handler,
 		},
 		{
+			MethodName: "DeactivateOrganization",
+			Handler:    _OrgStructureCommandService_DeactivateOrganization_Handler,
+		},
+		{
+			MethodName: "ActivateOrganization",
+			Handler:    _OrgStructureCommandService_ActivateOrganization_Handler,
+		},
+		{
+			MethodName: "DeleteOrganization",
+			Handler:    _OrgStructureCommandService_DeleteOrganization_Handler,
+		},
+		{
 			MethodName: "CreateClinic",
 			Handler:    _OrgStructureCommandService_CreateClinic_Handler,
 		},
@@ -393,12 +711,36 @@ var OrgStructureCommandService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrgStructureCommandService_UpdateClinicPhysicalAddress_Handler,
 		},
 		{
+			MethodName: "DeactivateClinic",
+			Handler:    _OrgStructureCommandService_DeactivateClinic_Handler,
+		},
+		{
+			MethodName: "ActivateClinic",
+			Handler:    _OrgStructureCommandService_ActivateClinic_Handler,
+		},
+		{
+			MethodName: "DeleteClinic",
+			Handler:    _OrgStructureCommandService_DeleteClinic_Handler,
+		},
+		{
 			MethodName: "CreateDepartment",
 			Handler:    _OrgStructureCommandService_CreateDepartment_Handler,
 		},
 		{
 			MethodName: "UpdateDepartmentDetails",
 			Handler:    _OrgStructureCommandService_UpdateDepartmentDetails_Handler,
+		},
+		{
+			MethodName: "DeactivateDepartment",
+			Handler:    _OrgStructureCommandService_DeactivateDepartment_Handler,
+		},
+		{
+			MethodName: "ActivateDepartment",
+			Handler:    _OrgStructureCommandService_ActivateDepartment_Handler,
+		},
+		{
+			MethodName: "DeleteDepartment",
+			Handler:    _OrgStructureCommandService_DeleteDepartment_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

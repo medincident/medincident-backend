@@ -40,6 +40,24 @@ message OrganizationLegalAddressChanged {
   google.protobuf.Timestamp updated_at = 2;
 }
 
+// OrganizationDeactivated — subject: medincident.event.organization.v1.deactivated
+message OrganizationDeactivated {
+  string organization_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// OrganizationActivated — subject: medincident.event.organization.v1.activated
+message OrganizationActivated {
+  string organization_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// OrganizationDeleted — subject: medincident.event.organization.v1.deleted
+message OrganizationDeleted {
+  string organization_id = 1;
+  google.protobuf.Timestamp deleted_at = 2;
+}
+
 // ── Org-level role events ─────────────────────────────────────────────
 
 // OrgAdminAssigned — subject: medincident.event.organization.v1.org_admin_assigned

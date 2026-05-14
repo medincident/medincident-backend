@@ -40,3 +40,15 @@ message EmployeeTerminated {
   string department_id = 2;
   google.protobuf.Timestamp terminated_at = 3;
 }
+
+// EmployeeDeactivated — subject: medincident.event.employee.v1.deactivated
+message EmployeeDeactivated {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// EmployeeActivated — subject: medincident.event.employee.v1.activated
+message EmployeeActivated {
+  string employee_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}

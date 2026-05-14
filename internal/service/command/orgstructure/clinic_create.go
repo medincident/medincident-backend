@@ -24,11 +24,14 @@ import (
 // primitive validation. Validation codes are generic and live in
 // internal/validation.
 const (
-	ErrCodeClinicIDGenerationFailed   = "clinic_id_generation_failed"
-	ErrCodeClinicSaveFailed           = "clinic_save_failed"
-	ErrCodeClinicLoadFailed           = "clinic_load_failed"
-	ErrCodeClinicNotFound             = "clinic_not_found"
-	ErrCodeClinicOrganizationNotFound = "clinic_organization_not_found"
+	ErrCodeClinicIDGenerationFailed     = "clinic_id_generation_failed"
+	ErrCodeClinicSaveFailed             = "clinic_save_failed"
+	ErrCodeClinicLoadFailed             = "clinic_load_failed"
+	ErrCodeClinicNotFound               = "clinic_not_found"
+	ErrCodeClinicOrganizationNotFound   = "clinic_organization_not_found"
+	ErrCodeClinicDeleteFailed           = "clinic_delete_failed"
+	ErrCodeClinicDeleteHasDependents    = "clinic_delete_has_dependents"
+	ErrCodeClinicActivateParentInactive = "clinic_activate_parent_inactive"
 )
 
 // CreateClinicPayload is the validated client-facing payload of

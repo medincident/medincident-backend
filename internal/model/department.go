@@ -14,6 +14,7 @@ type Department struct {
 	ClinicID    uuid.UUID   `gorm:"<-:create"`
 	Name        string      `gorm:"<-"`
 	Description null.String `gorm:"<-"`
+	IsActive    bool        `gorm:"<-"`
 	CreatedAt   time.Time   `gorm:"<-:create"`
 	UpdatedAt   time.Time   `gorm:"<-"`
 }

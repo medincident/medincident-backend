@@ -140,10 +140,98 @@ func DepartmentDetailsChanged(
 	return nil
 }
 
+// DepartmentDeactivated sets is_active=false in projections.departments.
+//
+// See: docs/services/OrgStructure.md
+func DepartmentDeactivated(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	ev *deptv1.DepartmentDeactivated,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.department", ErrCodeDepartmentProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`
+		UPDATE projections.departments
+		   SET is_active = FALSE, updated_at = ?
+		 WHERE id = ?`,
+		ev.GetUpdatedAt().AsTime(), id,
+	).Error; err != nil {
+		return oops.In("projector.department").
+			Code(ErrCodeDepartmentProjectionFailed).
+			With("department_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
+// DepartmentActivated sets is_active=true in projections.departments.
+//
+// See: docs/services/OrgStructure.md
+func DepartmentActivated(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	ev *deptv1.DepartmentActivated,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.department", ErrCodeDepartmentProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`
+		UPDATE projections.departments
+		   SET is_active = TRUE, updated_at = ?
+		 WHERE id = ?`,
+		ev.GetUpdatedAt().AsTime(), id,
+	).Error; err != nil {
+		return oops.In("projector.department").
+			Code(ErrCodeDepartmentProjectionFailed).
+			With("department_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
+// DepartmentDeleted removes the row from projections.departments.
+//
+// See: docs/services/OrgStructure.md
+func DepartmentDeleted(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	_ *deptv1.DepartmentDeleted,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.department", ErrCodeDepartmentProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`DELETE FROM projections.departments WHERE id = ?`, id).Error; err != nil {
+		return oops.In("projector.department").
+			Code(ErrCodeDepartmentProjectionFailed).
+			With("department_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
 func (p *Projectors) DepartmentCreated(tx *gorm.DB, id string, t time.Time, ev *deptv1.DepartmentCreated) error {
 	return DepartmentCreated(tx, id, t, ev)
 }
 
 func (p *Projectors) DepartmentDetailsChanged(tx *gorm.DB, id string, t time.Time, ev *deptv1.DepartmentDetailsChanged) error {
 	return DepartmentDetailsChanged(tx, id, t, ev)
+}
+
+func (p *Projectors) DepartmentDeactivated(tx *gorm.DB, id string, t time.Time, ev *deptv1.DepartmentDeactivated) error {
+	return DepartmentDeactivated(tx, id, t, ev)
+}
+
+func (p *Projectors) DepartmentActivated(tx *gorm.DB, id string, t time.Time, ev *deptv1.DepartmentActivated) error {
+	return DepartmentActivated(tx, id, t, ev)
+}
+
+func (p *Projectors) DepartmentDeleted(tx *gorm.DB, id string, t time.Time, ev *deptv1.DepartmentDeleted) error {
+	return DepartmentDeleted(tx, id, t, ev)
 }

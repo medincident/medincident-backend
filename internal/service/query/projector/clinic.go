@@ -163,6 +163,82 @@ func ClinicPhysicalAddressChanged(
 	return nil
 }
 
+// ClinicDeactivated sets is_active=false in projections.clinics.
+//
+// See: docs/services/OrgStructure.md
+func ClinicDeactivated(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	ev *clinicv1.ClinicDeactivated,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.clinic", ErrCodeClinicProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`
+		UPDATE projections.clinics
+		   SET is_active = FALSE, updated_at = ?
+		 WHERE id = ?`,
+		ev.GetUpdatedAt().AsTime(), id,
+	).Error; err != nil {
+		return oops.In("projector.clinic").
+			Code(ErrCodeClinicProjectionFailed).
+			With("clinic_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
+// ClinicActivated sets is_active=true in projections.clinics.
+//
+// See: docs/services/OrgStructure.md
+func ClinicActivated(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	ev *clinicv1.ClinicActivated,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.clinic", ErrCodeClinicProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`
+		UPDATE projections.clinics
+		   SET is_active = TRUE, updated_at = ?
+		 WHERE id = ?`,
+		ev.GetUpdatedAt().AsTime(), id,
+	).Error; err != nil {
+		return oops.In("projector.clinic").
+			Code(ErrCodeClinicProjectionFailed).
+			With("clinic_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
+// ClinicDeleted removes the row from projections.clinics.
+//
+// See: docs/services/OrgStructure.md
+func ClinicDeleted(
+	tx *gorm.DB,
+	aggregateID string,
+	_ time.Time,
+	_ *clinicv1.ClinicDeleted,
+) error {
+	id, err := parseUUID(aggregateID, "aggregate_id", "projector.clinic", ErrCodeClinicProjectionFailed)
+	if err != nil {
+		return err
+	}
+	if err := tx.Exec(`DELETE FROM projections.clinics WHERE id = ?`, id).Error; err != nil {
+		return oops.In("projector.clinic").
+			Code(ErrCodeClinicProjectionFailed).
+			With("clinic_id", aggregateID).
+			Wrap(err)
+	}
+	return nil
+}
+
 func (p *Projectors) ClinicCreated(tx *gorm.DB, id string, t time.Time, ev *clinicv1.ClinicCreated) error {
 	return ClinicCreated(tx, id, t, ev)
 }
@@ -173,4 +249,16 @@ func (p *Projectors) ClinicDetailsChanged(tx *gorm.DB, id string, t time.Time, e
 
 func (p *Projectors) ClinicPhysicalAddressChanged(tx *gorm.DB, id string, t time.Time, ev *clinicv1.ClinicPhysicalAddressChanged) error {
 	return ClinicPhysicalAddressChanged(tx, id, t, ev)
+}
+
+func (p *Projectors) ClinicDeactivated(tx *gorm.DB, id string, t time.Time, ev *clinicv1.ClinicDeactivated) error {
+	return ClinicDeactivated(tx, id, t, ev)
+}
+
+func (p *Projectors) ClinicActivated(tx *gorm.DB, id string, t time.Time, ev *clinicv1.ClinicActivated) error {
+	return ClinicActivated(tx, id, t, ev)
+}
+
+func (p *Projectors) ClinicDeleted(tx *gorm.DB, id string, t time.Time, ev *clinicv1.ClinicDeleted) error {
+	return ClinicDeleted(tx, id, t, ev)
 }

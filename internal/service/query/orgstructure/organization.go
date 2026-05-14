@@ -47,6 +47,7 @@ type OrganizationDetails struct {
 	Name         string
 	Description  *string
 	LegalAddress AddressView
+	IsActive     bool
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }
@@ -56,6 +57,7 @@ type OrganizationDetails struct {
 type OrganizationListItem struct {
 	ID        uuid.UUID
 	Name      string
+	IsActive  bool
 	UpdatedAt time.Time
 }
 
@@ -79,13 +81,13 @@ func (r *OrganizationReader) Get(ctx context.Context, id uuid.UUID) (*Organizati
 	err := r.db.WithContext(ctx).Raw(`
 		SELECT id, name, description,
 		       legal_address_text, legal_address_longitude, legal_address_latitude,
-		       created_at, updated_at
+		       is_active, created_at, updated_at
 		  FROM projections.organizations
 		 WHERE id = ?`, id,
 	).Row().Scan(
 		&out.ID, &out.Name, &out.Description,
 		&addrText, &lon, &lat,
-		&out.CreatedAt, &out.UpdatedAt,
+		&out.IsActive, &out.CreatedAt, &out.UpdatedAt,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -114,7 +116,7 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (Organizatio
 	if err := q.normalize(); err != nil {
 		return OrganizationListResult{}, err
 	}
-	sqlBuf := `SELECT id, name, updated_at FROM projections.organizations`
+	sqlBuf := `SELECT id, name, is_active, updated_at FROM projections.organizations`
 	args := make([]any, 0, 3)
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
@@ -140,7 +142,7 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (Organizatio
 	out := make([]OrganizationListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v OrganizationListItem
-		if err := rows.Scan(&v.ID, &v.Name, &v.UpdatedAt); err != nil {
+		if err := rows.Scan(&v.ID, &v.Name, &v.IsActive, &v.UpdatedAt); err != nil {
 			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeOrganizationLoadFailed).
 				Wrap(err)
@@ -192,7 +194,7 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 		clauses = append(clauses, `(updated_at, id) < (?, ?)`)
 		args = append(args, c.Time(), c.I)
 	}
-	sqlBuf := `SELECT id, name, updated_at FROM projections.organizations`
+	sqlBuf := `SELECT id, name, is_active, updated_at FROM projections.organizations`
 	for i, c := range clauses {
 		if i == 0 {
 			sqlBuf += ` WHERE ` + c
@@ -213,7 +215,7 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 	out := make([]OrganizationListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v OrganizationListItem
-		if err := rows.Scan(&v.ID, &v.Name, &v.UpdatedAt); err != nil {
+		if err := rows.Scan(&v.ID, &v.Name, &v.IsActive, &v.UpdatedAt); err != nil {
 			return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeOrganizationLoadFailed).
 				Wrap(err)

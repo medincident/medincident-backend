@@ -2293,6 +2293,120 @@ curl -X DELETE /v1/employees/{employeeId} \
 This operation does not require authentication
 </aside>
 
+## MembershipCommandService_ActivateEmployee
+
+<a id="opIdMembershipCommandService_ActivateEmployee"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/employees/{employeeId}/activate \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/employees/{employeeId}/activate`
+
+> Body parameter
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_activateemployee-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceActivateEmployeeBody](#schemamembershipcommandserviceactivateemployeebody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_activateemployee-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ActivateEmployeeResponse](#schemav1activateemployeeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `employee_not_found` — employee with the given ID does not exist.|Inline|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Business rule violation. Error codes:
+- `employee_activate_parent_inactive` — parent department is inactive.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipcommandservice_activateemployee-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## MembershipCommandService_DeactivateEmployee
+
+<a id="opIdMembershipCommandService_DeactivateEmployee"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/employees/{employeeId}/deactivate \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/employees/{employeeId}/deactivate`
+
+> Body parameter
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_deactivateemployee-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|employeeId|path|string|true|none|
+|body|body|[MembershipCommandServiceDeactivateEmployeeBody](#schemamembershipcommandservicedeactivateemployeebody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="membershipcommandservice_deactivateemployee-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateEmployeeResponse](#schemav1deactivateemployeeresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `employee_not_found` — employee with the given ID does not exist.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipcommandservice_deactivateemployee-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 ## MembershipCommandService_UpdateEmployeeDepartment
 
 <a id="opIdMembershipCommandService_UpdateEmployeeDepartment"></a>
@@ -3462,6 +3576,170 @@ This operation does not require authentication
 
 <h1 id="command-announcement-v1-announcement-proto-orgstructurecommandservice">OrgStructureCommandService</h1>
 
+## OrgStructureCommandService_DeleteClinic
+
+<a id="opIdOrgStructureCommandService_DeleteClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/clinics/{clinicId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/clinics/{clinicId}`
+
+<h3 id="orgstructurecommandservice_deleteclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deleteclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeleteClinicResponse](#schemav1deleteclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `clinic_not_found` — clinic with the given ID does not exist.|Inline|
+|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
+- `clinic_delete_has_dependents` — clinic has associated incidents or service requests.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_deleteclinic-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_ActivateClinic
+
+<a id="opIdOrgStructureCommandService_ActivateClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/clinics/{clinicId}/activate \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/clinics/{clinicId}/activate`
+
+> Body parameter
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_activateclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceActivateClinicBody](#schemaorgstructurecommandserviceactivateclinicbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_activateclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ActivateClinicResponse](#schemav1activateclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `clinic_not_found` — clinic with the given ID does not exist.|Inline|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Business rule violation. Error codes:
+- `clinic_activate_parent_inactive` — parent organization is inactive.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_activateclinic-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_DeactivateClinic
+
+<a id="opIdOrgStructureCommandService_DeactivateClinic"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/clinics/{clinicId}/deactivate \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/clinics/{clinicId}/deactivate`
+
+> Body parameter
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deactivateclinic-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|clinicId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceDeactivateClinicBody](#schemaorgstructurecommandservicedeactivateclinicbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deactivateclinic-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateClinicResponse](#schemav1deactivateclinicresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `clinic_not_found` — clinic with the given ID does not exist.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_deactivateclinic-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 ## OrgStructureCommandService_CreateDepartment
 
 <a id="opIdOrgStructureCommandService_CreateDepartment"></a>
@@ -3646,6 +3924,170 @@ curl -X PUT /v1/clinics/{clinicId}/physical-address \
 This operation does not require authentication
 </aside>
 
+## OrgStructureCommandService_DeleteDepartment
+
+<a id="opIdOrgStructureCommandService_DeleteDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/departments/{departmentId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/departments/{departmentId}`
+
+<h3 id="orgstructurecommandservice_deletedepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deletedepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeleteDepartmentResponse](#schemav1deletedepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `department_not_found` — department with the given ID does not exist.|Inline|
+|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
+- `department_delete_has_dependents` — department has associated incidents or service requests.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_deletedepartment-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_ActivateDepartment
+
+<a id="opIdOrgStructureCommandService_ActivateDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/departments/{departmentId}/activate \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/departments/{departmentId}/activate`
+
+> Body parameter
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_activatedepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceActivateDepartmentBody](#schemaorgstructurecommandserviceactivatedepartmentbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_activatedepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ActivateDepartmentResponse](#schemav1activatedepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `department_not_found` — department with the given ID does not exist.|Inline|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Business rule violation. Error codes:
+- `department_activate_parent_inactive` — parent clinic is inactive.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_activatedepartment-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_DeactivateDepartment
+
+<a id="opIdOrgStructureCommandService_DeactivateDepartment"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/departments/{departmentId}/deactivate \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/departments/{departmentId}/deactivate`
+
+> Body parameter
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deactivatedepartment-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|departmentId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceDeactivateDepartmentBody](#schemaorgstructurecommandservicedeactivatedepartmentbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deactivatedepartment-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateDepartmentResponse](#schemav1deactivatedepartmentresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `department_not_found` — department with the given ID does not exist.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_deactivatedepartment-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 ## OrgStructureCommandService_UpdateDepartmentDetails
 
 <a id="opIdOrgStructureCommandService_UpdateDepartmentDetails"></a>
@@ -3768,6 +4210,112 @@ curl -X POST /v1/organizations \
 This operation does not require authentication
 </aside>
 
+## OrgStructureCommandService_DeleteOrganization
+
+<a id="opIdOrgStructureCommandService_DeleteOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X DELETE /v1/organizations/{organizationId} \
+  -H 'Accept: application/json'
+
+```
+
+`DELETE /v1/organizations/{organizationId}`
+
+<h3 id="orgstructurecommandservice_deleteorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deleteorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeleteOrganizationResponse](#schemav1deleteorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `organization_not_found` — organization with the given ID does not exist.|Inline|
+|409|[Conflict](https://tools.ietf.org/html/rfc7231#section-6.5.8)|Conflict. Error codes:
+- `organization_delete_has_dependents` — organization has associated incidents or service requests.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_deleteorganization-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_ActivateOrganization
+
+<a id="opIdOrgStructureCommandService_ActivateOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/activate \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/activate`
+
+> Body parameter
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_activateorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceActivateOrganizationBody](#schemaorgstructurecommandserviceactivateorganizationbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_activateorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ActivateOrganizationResponse](#schemav1activateorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `organization_not_found` — organization with the given ID does not exist.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_activateorganization-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
 ## OrgStructureCommandService_CreateClinic
 
 <a id="opIdOrgStructureCommandService_CreateClinic"></a>
@@ -3831,6 +4379,62 @@ curl -X POST /v1/organizations/{organizationId}/clinics \
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="orgstructurecommandservice_createclinic-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## OrgStructureCommandService_DeactivateOrganization
+
+<a id="opIdOrgStructureCommandService_DeactivateOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X POST /v1/organizations/{organizationId}/deactivate \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json'
+
+```
+
+`POST /v1/organizations/{organizationId}/deactivate`
+
+> Body parameter
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deactivateorganization-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|body|body|[OrgStructureCommandServiceDeactivateOrganizationBody](#schemaorgstructurecommandservicedeactivateorganizationbody)|true|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{}
+```
+
+<h3 id="orgstructurecommandservice_deactivateorganization-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1DeactivateOrganizationResponse](#schemav1deactivateorganizationresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|Not found. Error codes:
+- `organization_not_found` — organization with the given ID does not exist.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_deactivateorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -8018,7 +8622,8 @@ curl -X GET /v1/clinics/{clinicId}/departments \
     {
       "id": "string",
       "clinicId": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ],
   "nextCursor": "string"
@@ -8128,6 +8733,7 @@ curl -X GET /v1/clinics/{id} \
         "latitude": 0.1
       }
     },
+    "isActive": true,
     "createdAt": "string",
     "updatedAt": "string"
   }
@@ -8185,6 +8791,7 @@ curl -X GET /v1/departments/{id} \
     "clinicId": "string",
     "name": "string",
     "description": "string",
+    "isActive": true,
     "createdAt": "string",
     "updatedAt": "string"
   }
@@ -8247,7 +8854,8 @@ invalid cursor is rejected with a domain error.
   "items": [
     {
       "id": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ],
   "nextCursor": "string"
@@ -8310,6 +8918,7 @@ curl -X GET /v1/organizations/{id} \
         "latitude": 0.1
       }
     },
+    "isActive": true,
     "createdAt": "string",
     "updatedAt": "string"
   }
@@ -8368,7 +8977,8 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
     {
       "id": "string",
       "organizationId": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ],
   "nextCursor": "string"
@@ -8511,7 +9121,8 @@ curl -X GET /v1/organizations:search \
   "items": [
     {
       "id": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ],
   "nextCursor": "string"
@@ -9201,7 +9812,8 @@ curl -X GET /v1/me/organizations \
   "items": [
     {
       "id": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ]
 }
@@ -9811,6 +10423,22 @@ Cancellation by registrar uses CancelIncident.
 |---|---|---|---|---|
 |newStatus|[commandIncidentV1IncidentStatus](#schemacommandincidentv1incidentstatus)|true|none|none|
 
+<h2 id="tocS_MembershipCommandServiceActivateEmployeeBody">MembershipCommandServiceActivateEmployeeBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandserviceactivateemployeebody"></a>
+<a id="schema_MembershipCommandServiceActivateEmployeeBody"></a>
+<a id="tocSmembershipcommandserviceactivateemployeebody"></a>
+<a id="tocsmembershipcommandserviceactivateemployeebody"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
 <h2 id="tocS_MembershipCommandServiceAssignClinicHeadBody">MembershipCommandServiceAssignClinicHeadBody</h2>
 <!-- backwards compatibility -->
 <a id="schemamembershipcommandserviceassignclinicheadbody"></a>
@@ -10011,6 +10639,22 @@ Cancellation by registrar uses CancelIncident.
 |---|---|---|---|---|
 |deputyEmployeeId|string|true|none|none|
 
+<h2 id="tocS_MembershipCommandServiceDeactivateEmployeeBody">MembershipCommandServiceDeactivateEmployeeBody</h2>
+<!-- backwards compatibility -->
+<a id="schemamembershipcommandservicedeactivateemployeebody"></a>
+<a id="schema_MembershipCommandServiceDeactivateEmployeeBody"></a>
+<a id="tocSmembershipcommandservicedeactivateemployeebody"></a>
+<a id="tocsmembershipcommandservicedeactivateemployeebody"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
 <h2 id="tocS_MembershipCommandServiceScheduleVacationBody">MembershipCommandServiceScheduleVacationBody</h2>
 <!-- backwards compatibility -->
 <a id="schemamembershipcommandserviceschedulevacationbody"></a>
@@ -10113,6 +10757,54 @@ Cancellation by registrar uses CancelIncident.
 |---|---|---|---|---|
 |endsAt|string(date-time)|true|none|none|
 
+<h2 id="tocS_OrgStructureCommandServiceActivateClinicBody">OrgStructureCommandServiceActivateClinicBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandserviceactivateclinicbody"></a>
+<a id="schema_OrgStructureCommandServiceActivateClinicBody"></a>
+<a id="tocSorgstructurecommandserviceactivateclinicbody"></a>
+<a id="tocsorgstructurecommandserviceactivateclinicbody"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_OrgStructureCommandServiceActivateDepartmentBody">OrgStructureCommandServiceActivateDepartmentBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandserviceactivatedepartmentbody"></a>
+<a id="schema_OrgStructureCommandServiceActivateDepartmentBody"></a>
+<a id="tocSorgstructurecommandserviceactivatedepartmentbody"></a>
+<a id="tocsorgstructurecommandserviceactivatedepartmentbody"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_OrgStructureCommandServiceActivateOrganizationBody">OrgStructureCommandServiceActivateOrganizationBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandserviceactivateorganizationbody"></a>
+<a id="schema_OrgStructureCommandServiceActivateOrganizationBody"></a>
+<a id="tocSorgstructurecommandserviceactivateorganizationbody"></a>
+<a id="tocsorgstructurecommandserviceactivateorganizationbody"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
 <h2 id="tocS_OrgStructureCommandServiceCreateClinicBody">OrgStructureCommandServiceCreateClinicBody</h2>
 <!-- backwards compatibility -->
 <a id="schemaorgstructurecommandservicecreateclinicbody"></a>
@@ -10164,6 +10856,54 @@ Cancellation by registrar uses CancelIncident.
 |---|---|---|---|---|
 |name|string|true|none|none|
 |description|string|false|none|none|
+
+<h2 id="tocS_OrgStructureCommandServiceDeactivateClinicBody">OrgStructureCommandServiceDeactivateClinicBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandservicedeactivateclinicbody"></a>
+<a id="schema_OrgStructureCommandServiceDeactivateClinicBody"></a>
+<a id="tocSorgstructurecommandservicedeactivateclinicbody"></a>
+<a id="tocsorgstructurecommandservicedeactivateclinicbody"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_OrgStructureCommandServiceDeactivateDepartmentBody">OrgStructureCommandServiceDeactivateDepartmentBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandservicedeactivatedepartmentbody"></a>
+<a id="schema_OrgStructureCommandServiceDeactivateDepartmentBody"></a>
+<a id="tocSorgstructurecommandservicedeactivatedepartmentbody"></a>
+<a id="tocsorgstructurecommandservicedeactivatedepartmentbody"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_OrgStructureCommandServiceDeactivateOrganizationBody">OrgStructureCommandServiceDeactivateOrganizationBody</h2>
+<!-- backwards compatibility -->
+<a id="schemaorgstructurecommandservicedeactivateorganizationbody"></a>
+<a id="schema_OrgStructureCommandServiceDeactivateOrganizationBody"></a>
+<a id="tocSorgstructurecommandservicedeactivateorganizationbody"></a>
+<a id="tocsorgstructurecommandservicedeactivateorganizationbody"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
 
 <h2 id="tocS_OrgStructureCommandServiceUpdateClinicDetailsBody">OrgStructureCommandServiceUpdateClinicDetailsBody</h2>
 <!-- backwards compatibility -->
@@ -10733,6 +11473,70 @@ projection row has neither longitude nor latitude.
 |actorName|string|false|none|none|
 |changedAt|string|false|none|none|
 
+<h2 id="tocS_v1ActivateClinicResponse">v1ActivateClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1activateclinicresponse"></a>
+<a id="schema_v1ActivateClinicResponse"></a>
+<a id="tocSv1activateclinicresponse"></a>
+<a id="tocsv1activateclinicresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1ActivateDepartmentResponse">v1ActivateDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1activatedepartmentresponse"></a>
+<a id="schema_v1ActivateDepartmentResponse"></a>
+<a id="tocSv1activatedepartmentresponse"></a>
+<a id="tocsv1activatedepartmentresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1ActivateEmployeeResponse">v1ActivateEmployeeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1activateemployeeresponse"></a>
+<a id="schema_v1ActivateEmployeeResponse"></a>
+<a id="tocSv1activateemployeeresponse"></a>
+<a id="tocsv1activateemployeeresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1ActivateOrganizationResponse">v1ActivateOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1activateorganizationresponse"></a>
+<a id="schema_v1ActivateOrganizationResponse"></a>
+<a id="tocSv1activateorganizationresponse"></a>
+<a id="tocsv1activateorganizationresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
 <h2 id="tocS_v1ActorView">v1ActorView</h2>
 <!-- backwards compatibility -->
 <a id="schemav1actorview"></a>
@@ -11232,6 +12036,7 @@ Category mirrors projections.incident_categories row.
       "latitude": 0.1
     }
   },
+  "isActive": true,
   "createdAt": "string",
   "updatedAt": "string"
 }
@@ -11249,6 +12054,7 @@ Clinic mirrors the projections.clinics row returned by GetClinic.
 |name|string|false|none|none|
 |description|string|false|none|none|
 |physicalAddress|[queryOrgstructureV1Address](#schemaqueryorgstructurev1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
+|isActive|boolean|false|none|none|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
@@ -11263,7 +12069,8 @@ Clinic mirrors the projections.clinics row returned by GetClinic.
 {
   "id": "string",
   "organizationId": "string",
-  "name": "string"
+  "name": "string",
+  "isActive": true
 }
 
 ```
@@ -11277,6 +12084,7 @@ ClinicListItem is the minimal shape returned by list endpoints.
 |id|string|false|none|none|
 |organizationId|string|false|none|none|
 |name|string|false|none|none|
+|isActive|boolean|false|none|none|
 
 <h2 id="tocS_v1ClinicStats">v1ClinicStats</h2>
 <!-- backwards compatibility -->
@@ -11748,6 +12556,54 @@ ClinicListItem is the minimal shape returned by list endpoints.
 |---|---|---|---|---|
 |serviceRequestId|string|false|none|none|
 
+<h2 id="tocS_v1DeactivateClinicResponse">v1DeactivateClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deactivateclinicresponse"></a>
+<a id="schema_v1DeactivateClinicResponse"></a>
+<a id="tocSv1deactivateclinicresponse"></a>
+<a id="tocsv1deactivateclinicresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1DeactivateDepartmentResponse">v1DeactivateDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deactivatedepartmentresponse"></a>
+<a id="schema_v1DeactivateDepartmentResponse"></a>
+<a id="tocSv1deactivatedepartmentresponse"></a>
+<a id="tocsv1deactivatedepartmentresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1DeactivateEmployeeResponse">v1DeactivateEmployeeResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deactivateemployeeresponse"></a>
+<a id="schema_v1DeactivateEmployeeResponse"></a>
+<a id="tocSv1deactivateemployeeresponse"></a>
+<a id="tocsv1deactivateemployeeresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
 <h2 id="tocS_v1DeactivateIncidentCategoryResponse">v1DeactivateIncidentCategoryResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1deactivateincidentcategoryresponse"></a>
@@ -11780,12 +12636,60 @@ ClinicListItem is the minimal shape returned by list endpoints.
 
 *None*
 
+<h2 id="tocS_v1DeactivateOrganizationResponse">v1DeactivateOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deactivateorganizationresponse"></a>
+<a id="schema_v1DeactivateOrganizationResponse"></a>
+<a id="tocSv1deactivateorganizationresponse"></a>
+<a id="tocsv1deactivateorganizationresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
 <h2 id="tocS_v1DeactivateRequestTypeResponse">v1DeactivateRequestTypeResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1deactivaterequesttyperesponse"></a>
 <a id="schema_v1DeactivateRequestTypeResponse"></a>
 <a id="tocSv1deactivaterequesttyperesponse"></a>
 <a id="tocsv1deactivaterequesttyperesponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1DeleteClinicResponse">v1DeleteClinicResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deleteclinicresponse"></a>
+<a id="schema_v1DeleteClinicResponse"></a>
+<a id="tocSv1deleteclinicresponse"></a>
+<a id="tocsv1deleteclinicresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
+<h2 id="tocS_v1DeleteDepartmentResponse">v1DeleteDepartmentResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deletedepartmentresponse"></a>
+<a id="schema_v1DeleteDepartmentResponse"></a>
+<a id="tocSv1deletedepartmentresponse"></a>
+<a id="tocsv1deletedepartmentresponse"></a>
 
 ```json
 {}
@@ -11828,6 +12732,22 @@ ClinicListItem is the minimal shape returned by list endpoints.
 
 *None*
 
+<h2 id="tocS_v1DeleteOrganizationResponse">v1DeleteOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1deleteorganizationresponse"></a>
+<a id="schema_v1DeleteOrganizationResponse"></a>
+<a id="tocSv1deleteorganizationresponse"></a>
+<a id="tocsv1deleteorganizationresponse"></a>
+
+```json
+{}
+
+```
+
+### Properties
+
+*None*
+
 <h2 id="tocS_v1DeleteRequestTypeResponse">v1DeleteRequestTypeResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1deleterequesttyperesponse"></a>
@@ -11857,6 +12777,7 @@ ClinicListItem is the minimal shape returned by list endpoints.
   "clinicId": "string",
   "name": "string",
   "description": "string",
+  "isActive": true,
   "createdAt": "string",
   "updatedAt": "string"
 }
@@ -11874,6 +12795,7 @@ GetDepartment.
 |clinicId|string|false|none|none|
 |name|string|false|none|none|
 |description|string|false|none|none|
+|isActive|boolean|false|none|none|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
@@ -11912,7 +12834,8 @@ GetDepartment.
 {
   "id": "string",
   "clinicId": "string",
-  "name": "string"
+  "name": "string",
+  "isActive": true
 }
 
 ```
@@ -11926,6 +12849,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 |id|string|false|none|none|
 |clinicId|string|false|none|none|
 |name|string|false|none|none|
+|isActive|boolean|false|none|none|
 
 <h2 id="tocS_v1DepartmentStats">v1DepartmentStats</h2>
 <!-- backwards compatibility -->
@@ -12308,6 +13232,7 @@ ErrorResponse
         "latitude": 0.1
       }
     },
+    "isActive": true,
     "createdAt": "string",
     "updatedAt": "string"
   }
@@ -12361,6 +13286,7 @@ ErrorResponse
     "clinicId": "string",
     "name": "string",
     "description": "string",
+    "isActive": true,
     "createdAt": "string",
     "updatedAt": "string"
   }
@@ -12725,6 +13651,7 @@ ErrorResponse
         "latitude": 0.1
       }
     },
+    "isActive": true,
     "createdAt": "string",
     "updatedAt": "string"
   }
@@ -14025,7 +14952,8 @@ the full result is always returned.
     {
       "id": "string",
       "organizationId": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ],
   "nextCursor": "string"
@@ -14053,7 +14981,8 @@ the full result is always returned.
     {
       "id": "string",
       "clinicId": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ],
   "nextCursor": "string"
@@ -14340,7 +15269,8 @@ the full result is always returned.
   "items": [
     {
       "id": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ]
 }
@@ -14548,7 +15478,8 @@ the full result is always returned.
   "items": [
     {
       "id": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ],
   "nextCursor": "string"
@@ -14894,6 +15825,7 @@ the full result is always returned.
       "latitude": 0.1
     }
   },
+  "isActive": true,
   "createdAt": "string",
   "updatedAt": "string"
 }
@@ -14911,6 +15843,7 @@ GetOrganization. Timestamps are RFC3339 strings.
 |name|string|false|none|none|
 |description|string|false|none|none|
 |legalAddress|[queryOrgstructureV1Address](#schemaqueryorgstructurev1address)|false|none|Address is the read-side view of a stored postal address; Point is<br>optional because the command-side allows text-only addresses.|
+|isActive|boolean|false|none|none|
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 
@@ -14924,7 +15857,8 @@ GetOrganization. Timestamps are RFC3339 strings.
 ```json
 {
   "id": "string",
-  "name": "string"
+  "name": "string",
+  "isActive": true
 }
 
 ```
@@ -14937,6 +15871,7 @@ OrganizationListItem is the minimal shape returned by list endpoints.
 |---|---|---|---|---|
 |id|string|false|none|none|
 |name|string|false|none|none|
+|isActive|boolean|false|none|none|
 
 <h2 id="tocS_v1OrganizationStats">v1OrganizationStats</h2>
 <!-- backwards compatibility -->
@@ -15707,7 +16642,8 @@ calls to render a name or email.
   "items": [
     {
       "id": "string",
-      "name": "string"
+      "name": "string",
+      "isActive": true
     }
   ],
   "nextCursor": "string"
