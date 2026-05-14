@@ -4,12 +4,14 @@ package membership_query_integration_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
 	"testing"
 	"time"
 
+	"github.com/samber/oops"
 	"github.com/testcontainers/testcontainers-go"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
@@ -129,4 +131,17 @@ func resetProjections(t *testing.T) {
 	); err != nil {
 		t.Fatalf("seed sysadmin: %v", err)
 	}
+}
+
+func codeOf(t *testing.T, err error) string {
+	t.Helper()
+	var oe oops.OopsError
+	if !errors.As(err, &oe) {
+		t.Fatalf("expected oops error, got %T: %v", err, err)
+	}
+	code, ok := oe.Code().(string)
+	if !ok {
+		t.Fatalf("oops.Code() returned non-string: %T %v", oe.Code(), oe.Code())
+	}
+	return code
 }

@@ -355,5 +355,5 @@ func TestEmployeeReader_GetForSelf_NotFound(t *testing.T) {
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
 	_, err := reader.GetForSelf(ctx, authz.Caller{ZitadelUserID: "no-such-zitadel-id"})
 	require.Error(t, err)
-	require.Contains(t, err.Error(), memberread.ErrCodeEmployeeNotFound)
+	require.Equal(t, memberread.ErrCodeEmployeeNotFound, codeOf(t, err))
 }
