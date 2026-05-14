@@ -11,19 +11,6 @@ import (
 	"github.com/medincident/medincident-backend/internal/service/command/membership"
 )
 
-func hireAlice(t *testing.T, f fixture) string {
-	t.Helper()
-	res, err := empSvc.Hire(ctxT(t), membership.HireEmployeeCommand{
-		Caller: sysadminCaller,
-		Payload: membership.HireEmployeePayload{
-			ZitadelUserID: testUserAliceID,
-			DepartmentID:  f.DeptA1a.String(),
-		},
-	})
-	require.NoError(t, err)
-	return res.ID.String()
-}
-
 func isEmployeeActive(t *testing.T, employeeID string) bool {
 	t.Helper()
 	var active bool

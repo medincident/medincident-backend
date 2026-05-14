@@ -103,6 +103,7 @@ func (s *DepartmentService) Create(
 		ID:       id,
 		ClinicID: clinicID,
 		Name:     strings.TrimSpace(cmd.Payload.Name),
+		IsActive: true,
 	}
 	if cmd.Payload.Description != nil {
 		dept.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))

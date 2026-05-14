@@ -127,6 +127,7 @@ func (s *ClinicService) Create(
 		ID:             id,
 		OrganizationID: orgID,
 		Name:           strings.TrimSpace(cmd.Payload.Name),
+		IsActive:       true,
 		PhysicalAddress: model.Address{
 			Text: strings.TrimSpace(cmd.Payload.PhysicalAddress.Text),
 		},

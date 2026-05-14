@@ -125,8 +125,9 @@ func (s *OrganizationService) Create(
 	}
 
 	org := model.Organization{
-		ID:   id,
-		Name: strings.TrimSpace(cmd.Payload.Name),
+		ID:       id,
+		Name:     strings.TrimSpace(cmd.Payload.Name),
+		IsActive: true,
 		LegalAddress: model.Address{
 			Text: strings.TrimSpace(cmd.Payload.LegalAddress.Text),
 		},
