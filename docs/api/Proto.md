@@ -3867,6 +3867,10 @@ aggregate_id = incident UUID
 | source_buffer_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
 | reopened_from_incident_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| registrar_organization_id | [string](#string) |  |  |
+| registrar_clinic_id | [string](#string) |  |  |
+| registrar_department_id | [string](#string) |  |  |
+| registrar_position | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
 
 
 

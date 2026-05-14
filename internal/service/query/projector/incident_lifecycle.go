@@ -49,20 +49,28 @@ func IncidentCreated(
 	if err != nil {
 		return err
 	}
+	registrarOrgID, err := parseUUID(ev.GetRegistrarOrganizationId(), "registrar_organization_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	registrarClinicID, err := parseUUID(ev.GetRegistrarClinicId(), "registrar_clinic_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
+	registrarDeptID, err := parseUUID(ev.GetRegistrarDepartmentId(), "registrar_department_id", "projector.incident_lifecycle", ErrCodeIncidentLifecycleProjectionFailed)
+	if err != nil {
+		return err
+	}
 	createdAt := ev.GetCreatedAt().AsTime()
 	occAt := ev.GetOccurredAt().AsTime()
 
 	// Resolve registrar display name from the identity projection.
 	registrarDisplayName := lookupUserDisplayName(tx, ev.GetRegistrarZitadelUserId())
 
-	// Resolve registrar org/clinic/dept/position from the employee projection.
-	// EmployeeHired is always published before IncidentCreated (ordered outbox),
-	// so the employee row is guaranteed to exist by the time this runs.
-	regSnap, err := lookupRegistrarSnapshot(tx, registrarEmpID)
-	if err != nil {
-		return err
+	var registrarPosition null.String
+	if sv := ev.GetRegistrarPosition(); sv != nil {
+		registrarPosition = null.StringFrom(sv.GetValue())
 	}
-
 	var desc null.String
 	if sv := ev.GetDescription(); sv != nil {
 		desc = null.StringFrom(sv.GetValue())
@@ -97,7 +105,8 @@ func IncidentCreated(
 			id, organization_id, clinic_id, department_id, category_id, type_id,
 			status, priority, description, patient_original_description,
 			occurred_at, registrar_employee_id, registrar_display_name,
-			registrar_position, registrar_organization_id, registrar_clinic_id, registrar_department_id,
+			registrar_position, registrar_organization_id,
+			registrar_clinic_id, registrar_department_id,
 			source_patient_zitadel_user_id, source_buffer_id,
 			reopened_from_incident_id, created_at, updated_at
 		) VALUES (
@@ -106,7 +115,8 @@ func IncidentCreated(
 		id, orgID, clinicID, deptID, catID, typeID,
 		ev.GetStatus(), ev.GetPriority(), desc, patientOrigDesc,
 		occAt, registrarEmpID, registrarDisplayName,
-		regSnap.position, regSnap.organizationID, regSnap.clinicID, regSnap.departmentID,
+		registrarPosition, registrarOrgID,
+		registrarClinicID, registrarDeptID,
 		srcPatientUserID, srcBufID,
 		reopenedFromID, createdAt, createdAt,
 	).Error; err != nil {

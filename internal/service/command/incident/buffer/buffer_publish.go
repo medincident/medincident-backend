@@ -127,10 +127,14 @@ func (s *BufferService) Publish(
 				Errorf("invalid type")
 		}
 
-		// Resolve dispatcher's employee ID for registrar denormalisation.
-		dispatcherEmpID, err := s.loadDispatcherEmployeeID(tx, cmd.Caller.ZitadelUserID, b.OrganizationID)
+		// Resolve dispatcher's employee and their department (for clinic denorm).
+		dispatcherEmp, err := s.loadDispatcherEmployee(tx, cmd.Caller.ZitadelUserID, b.OrganizationID)
 		if err != nil {
 			return err
+		}
+		var dispDept model.Department
+		if err := tx.First(&dispDept, "id = ?", dispatcherEmp.DepartmentID).Error; err != nil {
+			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
 		}
 
 		// Description: dispatcher-supplied if present, else patient's text.
@@ -151,7 +155,7 @@ func (s *BufferService) Publish(
 			Description:                desc,
 			PatientOriginalDescription: b.Description,
 			OccurredAt:                 occurredAtOrNow(b.OccurredAt, now),
-			RegistrarEmployeeID:        dispatcherEmpID,
+			RegistrarEmployeeID:        dispatcherEmp.ID,
 			SourcePatientZitadelUserID: null.StringFrom(b.PatientZitadelUserID),
 			SourceBufferID:             uuid.NullUUID{UUID: b.ID, Valid: true},
 			CreatedAt:                  now,
@@ -162,7 +166,7 @@ func (s *BufferService) Publish(
 		}
 
 		// Emit IncidentCreated
-		incEnv, err := buildBufferIncidentCreatedEnvelope(&inc, cmd.Caller.ZitadelUserID)
+		incEnv, err := buildBufferIncidentCreatedEnvelope(&inc, cmd.Caller.ZitadelUserID, dispatcherEmp, dispDept.ClinicID)
 		if err != nil {
 			return err
 		}
@@ -192,19 +196,19 @@ func (s *BufferService) Publish(
 	return result, err
 }
 
-// loadDispatcherEmployeeID returns the dispatcher's employee row in the given org.
+// loadDispatcherEmployee returns the dispatcher's employee row in the given org.
 // Display name is resolved query-side from the event's registrar_zitadel_user_id.
-func (s *BufferService) loadDispatcherEmployeeID(
+func (s *BufferService) loadDispatcherEmployee(
 	tx *gorm.DB, callerZitadelID string, orgID uuid.UUID,
-) (uuid.UUID, error) {
+) (*model.Employee, error) {
 	var emp model.Employee
 	if err := tx.Where("zitadel_user_id = ? AND organization_id = ?",
 		callerZitadelID, orgID).First(&emp).Error; err != nil {
-		return uuid.UUID{}, oops.In(scope).
+		return nil, oops.In(scope).
 			Code(ErrCodeBufferDispatcherNotFound).
 			Public("Dispatcher employee record not found.").Wrap(err)
 	}
-	return emp.ID, nil
+	return &emp, nil
 }
 
 // buildBufferIncidentCreatedEnvelope builds an IncidentCreated envelope
@@ -213,20 +217,28 @@ func (s *BufferService) loadDispatcherEmployeeID(
 func buildBufferIncidentCreatedEnvelope(
 	inc *model.Incident,
 	registrarZitadelUserID string,
+	registrarEmp *model.Employee,
+	registrarClinicID uuid.UUID,
 ) (*eventv1.Envelope, error) {
 	msg := &incidentv1.IncidentCreated{
-		IncidentId:             inc.ID.String(),
-		OrganizationId:         inc.OrganizationID.String(),
-		ClinicId:               inc.ClinicID.String(),
-		DepartmentId:           inc.DepartmentID.String(),
-		CategoryId:             inc.CategoryID.String(),
-		TypeId:                 inc.TypeID.String(),
-		Status:                 string(inc.Status),
-		Priority:               string(inc.Priority),
-		OccurredAt:             timestamppb.New(inc.OccurredAt),
-		RegistrarZitadelUserId: registrarZitadelUserID,
-		RegistrarEmployeeId:    inc.RegistrarEmployeeID.String(),
-		CreatedAt:              timestamppb.New(inc.CreatedAt),
+		IncidentId:              inc.ID.String(),
+		OrganizationId:          inc.OrganizationID.String(),
+		ClinicId:                inc.ClinicID.String(),
+		DepartmentId:            inc.DepartmentID.String(),
+		CategoryId:              inc.CategoryID.String(),
+		TypeId:                  inc.TypeID.String(),
+		Status:                  string(inc.Status),
+		Priority:                string(inc.Priority),
+		OccurredAt:              timestamppb.New(inc.OccurredAt),
+		RegistrarZitadelUserId:  registrarZitadelUserID,
+		RegistrarEmployeeId:     inc.RegistrarEmployeeID.String(),
+		RegistrarOrganizationId: registrarEmp.OrganizationID.String(),
+		RegistrarClinicId:       registrarClinicID.String(),
+		RegistrarDepartmentId:   registrarEmp.DepartmentID.String(),
+		CreatedAt:               timestamppb.New(inc.CreatedAt),
+	}
+	if registrarEmp.Position.Valid {
+		msg.RegistrarPosition = wrapperspb.String(registrarEmp.Position.String)
 	}
 	if inc.Description.Valid {
 		msg.Description = wrapperspb.String(inc.Description.String)
