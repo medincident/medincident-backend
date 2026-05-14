@@ -27,6 +27,8 @@ import (
 
 	"github.com/medincident/medincident-backend/internal/config"
 	"github.com/medincident/medincident-backend/internal/service/authz"
+	incidentsvc "github.com/medincident/medincident-backend/internal/service/command/incident"
+	classifiersvc "github.com/medincident/medincident-backend/internal/service/command/incident/classifier"
 	orgsvc "github.com/medincident/medincident-backend/internal/service/command/orgstructure"
 	domainread "github.com/medincident/medincident-backend/internal/service/query/domain"
 	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
@@ -41,10 +43,13 @@ var (
 	commandDB *gorm.DB
 	queryDB   *gorm.DB
 
-	authzSvc *authz.Authz
-	orgSvc   *orgsvc.OrganizationService
-	clinSvc  *orgsvc.ClinicService
-	deptSvc  *orgsvc.DepartmentService
+	authzSvc         *authz.Authz
+	orgSvc           *orgsvc.OrganizationService
+	clinSvc          *orgsvc.ClinicService
+	deptSvc          *orgsvc.DepartmentService
+	classifierCatSvc *classifiersvc.IncidentCategoryService
+	classifierTypSvc *classifiersvc.IncidentTypeService
+	incidentSvc      *incidentsvc.IncidentService
 
 	domainConsumer *domainread.Consumer
 )
@@ -136,6 +141,9 @@ func TestMain(m *testing.M) {
 	orgSvc = orgsvc.NewOrganizationService(commandDB, authzSvc, &testLogger)
 	clinSvc = orgsvc.NewClinicService(commandDB, authzSvc, &testLogger)
 	deptSvc = orgsvc.NewDepartmentService(commandDB, authzSvc, &testLogger)
+	classifierCatSvc = classifiersvc.NewIncidentCategoryService(commandDB, authzSvc, &testLogger)
+	classifierTypSvc = classifiersvc.NewIncidentTypeService(commandDB, authzSvc, &testLogger)
+	incidentSvc = incidentsvc.NewIncidentService(commandDB, authzSvc, &testLogger)
 
 	proj := qprojector.NewProjectors()
 	natsCfg := &config.NATSConfig{
@@ -180,7 +188,13 @@ func must(err error, msg string) {
 func resetDBs(t *testing.T) {
 	t.Helper()
 	rawCmd, _ := commandDB.DB()
+	// Truncate in dependency order; CASCADE handles FK-dependent children.
 	for _, q := range []string{
+		`TRUNCATE TABLE domain.incidents CASCADE`,
+		`TRUNCATE TABLE domain.patient_incident_buffer CASCADE`,
+		`TRUNCATE TABLE domain.incident_types CASCADE`,
+		`TRUNCATE TABLE domain.incident_categories CASCADE`,
+		`TRUNCATE TABLE domain.employees CASCADE`,
 		`TRUNCATE TABLE domain.departments CASCADE`,
 		`TRUNCATE TABLE domain.clinics CASCADE`,
 		`TRUNCATE TABLE domain.organizations CASCADE`,
