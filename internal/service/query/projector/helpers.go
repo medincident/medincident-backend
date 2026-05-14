@@ -85,6 +85,40 @@ func lookupOrgIDForClinic(tx *gorm.DB, clinicID uuid.UUID) (uuid.UUID, error) {
 	return orgID, nil
 }
 
+// registrarSnapshot holds the projection-side employee fields needed for
+// the projections.incidents insert. Fetched via JOIN so clinic_id is
+// always resolved even when projections.employees.clinic_id is NULL.
+type registrarSnapshot struct {
+	organizationID uuid.UUID
+	clinicID       uuid.UUID
+	departmentID   uuid.UUID
+	position       null.String
+}
+
+// lookupRegistrarSnapshot fetches org/clinic/dept/position for an employee
+// from projections.employees (JOIN projections.departments for clinic_id).
+// Returns a transient (_failed) error when the row is absent so the
+// consumer NAKs and retries once the EmployeeHired projection lands.
+func lookupRegistrarSnapshot(tx *gorm.DB, employeeID uuid.UUID) (registrarSnapshot, error) {
+	var snap registrarSnapshot
+	err := tx.Raw(`
+		SELECT e.organization_id,
+		       COALESCE(e.clinic_id, d.clinic_id) AS clinic_id,
+		       e.department_id,
+		       e.position
+		FROM projections.employees e
+		JOIN projections.departments d ON d.id = e.department_id
+		WHERE e.id = ?`, employeeID,
+	).Row().Scan(&snap.organizationID, &snap.clinicID, &snap.departmentID, &snap.position)
+	if err != nil {
+		return registrarSnapshot{}, oops.In("projector.incident_lifecycle").
+			Code(ErrCodeIncidentLifecycleProjectionFailed).
+			With("registrar_employee_id", employeeID).
+			Wrap(err)
+	}
+	return snap, nil
+}
+
 // parseUUID parses s as a UUID and returns a permanent (_malformed) error on
 // failure so the dispatcher calls Term() instead of NakWithDelay.
 func parseUUID(s, fieldName, oopsIn, oopsCode string) (uuid.UUID, error) {
