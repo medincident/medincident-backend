@@ -86,7 +86,7 @@ func (s *ClinicService) Delete(
 		}
 		if len(empIDs) > 0 {
 			if err := tx.Exec(
-				`DELETE FROM domain.employees WHERE id = ANY(?)`, empIDs,
+				`DELETE FROM domain.employees WHERE id IN (?)`, empIDs,
 			).Error; err != nil {
 				return oops.In("services.orgstructure.clinic").
 					Code(ErrCodeClinicDeleteFailed).

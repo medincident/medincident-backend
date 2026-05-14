@@ -89,7 +89,7 @@ func (s *DepartmentService) Deactivate(
 		var deactivatedEmpIDs []uuid.UUID
 		if len(empIDs) > 0 {
 			if err := tx.Raw(
-				`UPDATE domain.employees SET is_active = FALSE, updated_at = now() WHERE id = ANY(?) AND is_active RETURNING id`,
+				`UPDATE domain.employees SET is_active = FALSE, updated_at = now() WHERE id IN (?) AND is_active RETURNING id`,
 				empIDs,
 			).Scan(&deactivatedEmpIDs).Error; err != nil {
 				return oops.In("services.orgstructure.department").

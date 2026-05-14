@@ -87,7 +87,7 @@ func (s *OrganizationService) Deactivate(
 			// Collect active department IDs in those clinics.
 			var deptIDs []uuid.UUID
 			if err := tx.Raw(
-				`SELECT id FROM domain.departments WHERE clinic_id = ANY(?) AND is_active FOR UPDATE`,
+				`SELECT id FROM domain.departments WHERE clinic_id IN (?) AND is_active FOR UPDATE`,
 				clinicIDs,
 			).Scan(&deptIDs).Error; err != nil {
 				return oops.In("services.orgstructure.organization").
@@ -100,7 +100,7 @@ func (s *OrganizationService) Deactivate(
 				// Collect active employee IDs in those departments.
 				var empIDs []uuid.UUID
 				if err := tx.Raw(
-					`SELECT id FROM domain.employees WHERE department_id = ANY(?) AND is_active FOR UPDATE`,
+					`SELECT id FROM domain.employees WHERE department_id IN (?) AND is_active FOR UPDATE`,
 					deptIDs,
 				).Scan(&empIDs).Error; err != nil {
 					return oops.In("services.orgstructure.organization").
@@ -118,7 +118,7 @@ func (s *OrganizationService) Deactivate(
 				// Deactivate employees.
 				var deactivatedEmpIDs []uuid.UUID
 				if err := tx.Raw(
-					`UPDATE domain.employees SET is_active = FALSE, updated_at = now() WHERE id = ANY(?) AND is_active RETURNING id`,
+					`UPDATE domain.employees SET is_active = FALSE, updated_at = now() WHERE id IN (?) AND is_active RETURNING id`,
 					empIDs,
 				).Scan(&deactivatedEmpIDs).Error; err != nil {
 					return oops.In("services.orgstructure.organization").
@@ -135,7 +135,7 @@ func (s *OrganizationService) Deactivate(
 				// Deactivate departments.
 				var deactivatedDeptIDs []uuid.UUID
 				if err := tx.Raw(
-					`UPDATE domain.departments SET is_active = FALSE, updated_at = now() WHERE id = ANY(?) AND is_active RETURNING id`,
+					`UPDATE domain.departments SET is_active = FALSE, updated_at = now() WHERE id IN (?) AND is_active RETURNING id`,
 					deptIDs,
 				).Scan(&deactivatedDeptIDs).Error; err != nil {
 					return oops.In("services.orgstructure.organization").
@@ -153,7 +153,7 @@ func (s *OrganizationService) Deactivate(
 			// Deactivate clinics.
 			var deactivatedClinicIDs []uuid.UUID
 			if err := tx.Raw(
-				`UPDATE domain.clinics SET is_active = FALSE, updated_at = now() WHERE id = ANY(?) AND is_active RETURNING id`,
+				`UPDATE domain.clinics SET is_active = FALSE, updated_at = now() WHERE id IN (?) AND is_active RETURNING id`,
 				clinicIDs,
 			).Scan(&deactivatedClinicIDs).Error; err != nil {
 				return oops.In("services.orgstructure.organization").
