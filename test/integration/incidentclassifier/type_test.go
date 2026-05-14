@@ -215,6 +215,62 @@ func TestType_MoveSameOrg(t *testing.T) {
 	assert.Equal(t, c2.ID, row.CategoryID)
 }
 
+func TestType_MoveToInactiveCategory(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+	orgID := insertOrganization(t, "Org")
+
+	// Source category (active, holds the type).
+	src, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Source",
+		},
+	})
+	require.NoError(t, err)
+
+	// Destination category that will be deactivated.
+	dst, err := categorySvc.Create(ctx, classifiersvc.CreateIncidentCategoryCommand{
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentCategoryPayload{
+			OrganizationID: orgID.String(),
+			Name:           "Destination",
+		},
+	})
+	require.NoError(t, err)
+
+	res, err := typeSvc.Create(ctx, classifiersvc.CreateIncidentTypeCommand{
+		Caller: sysadminCaller,
+		Payload: classifiersvc.CreateIncidentTypePayload{
+			CategoryID: src.ID.String(),
+			Name:       "Movable",
+		},
+	})
+	require.NoError(t, err)
+
+	// Deactivate the destination category.
+	_, err = categorySvc.Deactivate(ctx, classifiersvc.DeactivateIncidentCategoryCommand{
+		Caller:  sysadminCaller,
+		Payload: classifiersvc.DeactivateIncidentCategoryPayload{CategoryID: dst.ID.String()},
+	})
+	require.NoError(t, err)
+
+	// Attempting to move into an inactive category must be rejected.
+	_, err = typeSvc.Move(ctx, classifiersvc.MoveIncidentTypeCommand{
+		Caller: sysadminCaller,
+		Payload: classifiersvc.MoveIncidentTypePayload{
+			TypeID:        res.ID.String(),
+			NewCategoryID: dst.ID.String(),
+		},
+	})
+	require.Error(t, err)
+	assert.Equal(t, classifiersvc.ErrCodeIncidentTypeCategoryInactive, codeOf(t, err))
+
+	// The type must still reside in the source category.
+	assert.Equal(t, src.ID, loadType(t, res.ID).CategoryID)
+}
+
 func TestType_MoveCrossOrg(t *testing.T) {
 	resetDB(t)
 	ctx := context.Background()

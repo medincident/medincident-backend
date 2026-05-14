@@ -2,12 +2,14 @@ package incident
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/outbox"
@@ -52,9 +54,20 @@ func (s *IncidentService) Reopen(
 
 	var result ReopenIncidentResult
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		src, err := s.loadIncident(tx, srcID)
-		if err != nil {
-			return err
+		var src model.Incident
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&src, "id = ?", srcID).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return oops.In(scope).
+					Code(ErrCodeIncidentNotFound).
+					Public("Incident not found.").
+					With("incident_id", srcID).
+					Wrap(err)
+			}
+			return oops.In(scope).
+				Code(ErrCodeIncidentLoadFailed).
+				With("incident_id", srcID).
+				Wrap(err)
 		}
 		if src.Status != model.IncidentStatusDone && src.Status != model.IncidentStatusRejected {
 			return oops.In(scope).Code(ErrCodeIncidentNotReopenable).
