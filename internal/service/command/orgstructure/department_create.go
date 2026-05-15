@@ -23,11 +23,14 @@ import (
 // Error codes emitted by Department-aggregate commands that are not
 // primitive validation.
 const (
-	ErrCodeDepartmentIDGenerationFailed = "department_id_generation_failed"
-	ErrCodeDepartmentSaveFailed         = "department_save_failed"
-	ErrCodeDepartmentLoadFailed         = "department_load_failed"
-	ErrCodeDepartmentNotFound           = "department_not_found"
-	ErrCodeDepartmentClinicNotFound     = "department_clinic_not_found"
+	ErrCodeDepartmentIDGenerationFailed     = "department_id_generation_failed"
+	ErrCodeDepartmentSaveFailed             = "department_save_failed"
+	ErrCodeDepartmentLoadFailed             = "department_load_failed"
+	ErrCodeDepartmentNotFound               = "department_not_found"
+	ErrCodeDepartmentClinicNotFound         = "department_clinic_not_found"
+	ErrCodeDepartmentDeleteFailed           = "department_delete_failed"
+	ErrCodeDepartmentDeleteHasDependents    = "department_delete_has_dependents"
+	ErrCodeDepartmentActivateParentInactive = "department_activate_parent_inactive"
 )
 
 // CreateDepartmentPayload is the validated client-facing payload of
@@ -100,6 +103,7 @@ func (s *DepartmentService) Create(
 		ID:       id,
 		ClinicID: clinicID,
 		Name:     strings.TrimSpace(cmd.Payload.Name),
+		IsActive: true,
 	}
 	if cmd.Payload.Description != nil {
 		dept.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))

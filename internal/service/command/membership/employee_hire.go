@@ -110,6 +110,7 @@ func (s *EmployeeService) Hire(ctx context.Context, cmd HireEmployeeCommand) (Hi
 			ZitadelUserID:  zitadelUserID,
 			OrganizationID: orgID,
 			DepartmentID:   departmentID,
+			IsActive:       true,
 		}
 		if cmd.Payload.Position != nil {
 			emp.Position = null.StringFrom(strings.TrimSpace(*cmd.Payload.Position))

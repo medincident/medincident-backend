@@ -91,6 +91,8 @@
     - [IncidentCommandService](#command-incident-v1-IncidentCommandService)
 
 - [command/membership/v1/membership.proto](#command_membership_v1_membership-proto)
+    - [ActivateEmployeeRequest](#command-membership-v1-ActivateEmployeeRequest)
+    - [ActivateEmployeeResponse](#command-membership-v1-ActivateEmployeeResponse)
     - [AssignClinicHeadDeputyRequest](#command-membership-v1-AssignClinicHeadDeputyRequest)
     - [AssignClinicHeadDeputyResponse](#command-membership-v1-AssignClinicHeadDeputyResponse)
     - [AssignClinicHeadRequest](#command-membership-v1-AssignClinicHeadRequest)
@@ -113,6 +115,8 @@
     - [AssignOrganizationHeadResponse](#command-membership-v1-AssignOrganizationHeadResponse)
     - [CancelScheduledVacationRequest](#command-membership-v1-CancelScheduledVacationRequest)
     - [CancelScheduledVacationResponse](#command-membership-v1-CancelScheduledVacationResponse)
+    - [DeactivateEmployeeRequest](#command-membership-v1-DeactivateEmployeeRequest)
+    - [DeactivateEmployeeResponse](#command-membership-v1-DeactivateEmployeeResponse)
     - [ForceEndVacationRequest](#command-membership-v1-ForceEndVacationRequest)
     - [ForceEndVacationResponse](#command-membership-v1-ForceEndVacationResponse)
     - [GrantSystemAdminRequest](#command-membership-v1-GrantSystemAdminRequest)
@@ -157,6 +161,12 @@
     - [MembershipCommandService](#command-membership-v1-MembershipCommandService)
 
 - [command/orgstructure/v1/orgstructure.proto](#command_orgstructure_v1_orgstructure-proto)
+    - [ActivateClinicRequest](#command-orgstructure-v1-ActivateClinicRequest)
+    - [ActivateClinicResponse](#command-orgstructure-v1-ActivateClinicResponse)
+    - [ActivateDepartmentRequest](#command-orgstructure-v1-ActivateDepartmentRequest)
+    - [ActivateDepartmentResponse](#command-orgstructure-v1-ActivateDepartmentResponse)
+    - [ActivateOrganizationRequest](#command-orgstructure-v1-ActivateOrganizationRequest)
+    - [ActivateOrganizationResponse](#command-orgstructure-v1-ActivateOrganizationResponse)
     - [AddressInput](#command-orgstructure-v1-AddressInput)
     - [CreateClinicRequest](#command-orgstructure-v1-CreateClinicRequest)
     - [CreateClinicResponse](#command-orgstructure-v1-CreateClinicResponse)
@@ -164,6 +174,18 @@
     - [CreateDepartmentResponse](#command-orgstructure-v1-CreateDepartmentResponse)
     - [CreateOrganizationRequest](#command-orgstructure-v1-CreateOrganizationRequest)
     - [CreateOrganizationResponse](#command-orgstructure-v1-CreateOrganizationResponse)
+    - [DeactivateClinicRequest](#command-orgstructure-v1-DeactivateClinicRequest)
+    - [DeactivateClinicResponse](#command-orgstructure-v1-DeactivateClinicResponse)
+    - [DeactivateDepartmentRequest](#command-orgstructure-v1-DeactivateDepartmentRequest)
+    - [DeactivateDepartmentResponse](#command-orgstructure-v1-DeactivateDepartmentResponse)
+    - [DeactivateOrganizationRequest](#command-orgstructure-v1-DeactivateOrganizationRequest)
+    - [DeactivateOrganizationResponse](#command-orgstructure-v1-DeactivateOrganizationResponse)
+    - [DeleteClinicRequest](#command-orgstructure-v1-DeleteClinicRequest)
+    - [DeleteClinicResponse](#command-orgstructure-v1-DeleteClinicResponse)
+    - [DeleteDepartmentRequest](#command-orgstructure-v1-DeleteDepartmentRequest)
+    - [DeleteDepartmentResponse](#command-orgstructure-v1-DeleteDepartmentResponse)
+    - [DeleteOrganizationRequest](#command-orgstructure-v1-DeleteOrganizationRequest)
+    - [DeleteOrganizationResponse](#command-orgstructure-v1-DeleteOrganizationResponse)
     - [PointInput](#command-orgstructure-v1-PointInput)
     - [UpdateClinicDetailsRequest](#command-orgstructure-v1-UpdateClinicDetailsRequest)
     - [UpdateClinicDetailsResponse](#command-orgstructure-v1-UpdateClinicDetailsResponse)
@@ -206,7 +228,10 @@
 
 - [event/clinic/v1/events.proto](#event_clinic_v1_events-proto)
     - [Address](#event-clinic-v1-Address)
+    - [ClinicActivated](#event-clinic-v1-ClinicActivated)
     - [ClinicCreated](#event-clinic-v1-ClinicCreated)
+    - [ClinicDeactivated](#event-clinic-v1-ClinicDeactivated)
+    - [ClinicDeleted](#event-clinic-v1-ClinicDeleted)
     - [ClinicDetailsChanged](#event-clinic-v1-ClinicDetailsChanged)
     - [ClinicHeadAssigned](#event-clinic-v1-ClinicHeadAssigned)
     - [ClinicHeadDeputyAssigned](#event-clinic-v1-ClinicHeadDeputyAssigned)
@@ -216,7 +241,10 @@
     - [Point](#event-clinic-v1-Point)
 
 - [event/department/v1/events.proto](#event_department_v1_events-proto)
+    - [DepartmentActivated](#event-department-v1-DepartmentActivated)
     - [DepartmentCreated](#event-department-v1-DepartmentCreated)
+    - [DepartmentDeactivated](#event-department-v1-DepartmentDeactivated)
+    - [DepartmentDeleted](#event-department-v1-DepartmentDeleted)
     - [DepartmentDetailsChanged](#event-department-v1-DepartmentDetailsChanged)
     - [DeptResponsibleAssigned](#event-department-v1-DeptResponsibleAssigned)
     - [DeptResponsibleDeputyAssigned](#event-department-v1-DeptResponsibleDeputyAssigned)
@@ -224,6 +252,8 @@
     - [DeptResponsibleRevoked](#event-department-v1-DeptResponsibleRevoked)
 
 - [event/employee/v1/events.proto](#event_employee_v1_events-proto)
+    - [EmployeeActivated](#event-employee-v1-EmployeeActivated)
+    - [EmployeeDeactivated](#event-employee-v1-EmployeeDeactivated)
     - [EmployeeDepartmentChanged](#event-employee-v1-EmployeeDepartmentChanged)
     - [EmployeeHired](#event-employee-v1-EmployeeHired)
     - [EmployeePositionChanged](#event-employee-v1-EmployeePositionChanged)
@@ -269,7 +299,10 @@
     - [OrgHeadDeputyAssigned](#event-organization-v1-OrgHeadDeputyAssigned)
     - [OrgHeadDeputyRemoved](#event-organization-v1-OrgHeadDeputyRemoved)
     - [OrgHeadRevoked](#event-organization-v1-OrgHeadRevoked)
+    - [OrganizationActivated](#event-organization-v1-OrganizationActivated)
     - [OrganizationCreated](#event-organization-v1-OrganizationCreated)
+    - [OrganizationDeactivated](#event-organization-v1-OrganizationDeactivated)
+    - [OrganizationDeleted](#event-organization-v1-OrganizationDeleted)
     - [OrganizationDetailsChanged](#event-organization-v1-OrganizationDetailsChanged)
     - [OrganizationLegalAddressChanged](#event-organization-v1-OrganizationLegalAddressChanged)
     - [Point](#event-organization-v1-Point)
@@ -417,6 +450,8 @@
     - [GetDepartmentResponsibleResponse](#query-membership-v1-GetDepartmentResponsibleResponse)
     - [GetEmployeeRequest](#query-membership-v1-GetEmployeeRequest)
     - [GetEmployeeResponse](#query-membership-v1-GetEmployeeResponse)
+    - [GetMyEmployeeRequest](#query-membership-v1-GetMyEmployeeRequest)
+    - [GetMyEmployeeResponse](#query-membership-v1-GetMyEmployeeResponse)
     - [ListCandidatesForClinicHeadRequest](#query-membership-v1-ListCandidatesForClinicHeadRequest)
     - [ListCandidatesForClinicHeadResponse](#query-membership-v1-ListCandidatesForClinicHeadResponse)
     - [ListCandidatesForDeptResponsibleRequest](#query-membership-v1-ListCandidatesForDeptResponsibleRequest)
@@ -1653,6 +1688,31 @@ created directly by employees (not the patient buffer).
 
 
 
+<a name="command-membership-v1-ActivateEmployeeRequest"></a>
+
+### ActivateEmployeeRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-membership-v1-ActivateEmployeeResponse"></a>
+
+### ActivateEmployeeResponse
+
+
+
+
+
+
+
 <a name="command-membership-v1-AssignClinicHeadDeputyRequest"></a>
 
 ### AssignClinicHeadDeputyRequest
@@ -1936,6 +1996,31 @@ created directly by employees (not the patient buffer).
 <a name="command-membership-v1-CancelScheduledVacationResponse"></a>
 
 ### CancelScheduledVacationResponse
+
+
+
+
+
+
+
+<a name="command-membership-v1-DeactivateEmployeeRequest"></a>
+
+### DeactivateEmployeeRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-membership-v1-DeactivateEmployeeResponse"></a>
+
+### DeactivateEmployeeResponse
 
 
 
@@ -2499,6 +2584,8 @@ operates directly on Zitadel user identifiers.
 | UpdateEmployeePosition | [UpdateEmployeePositionRequest](#command-membership-v1-UpdateEmployeePositionRequest) | [UpdateEmployeePositionResponse](#command-membership-v1-UpdateEmployeePositionResponse) |  |
 | UpdateEmployeeDepartment | [UpdateEmployeeDepartmentRequest](#command-membership-v1-UpdateEmployeeDepartmentRequest) | [UpdateEmployeeDepartmentResponse](#command-membership-v1-UpdateEmployeeDepartmentResponse) |  |
 | TerminateEmployee | [TerminateEmployeeRequest](#command-membership-v1-TerminateEmployeeRequest) | [TerminateEmployeeResponse](#command-membership-v1-TerminateEmployeeResponse) |  |
+| DeactivateEmployee | [DeactivateEmployeeRequest](#command-membership-v1-DeactivateEmployeeRequest) | [DeactivateEmployeeResponse](#command-membership-v1-DeactivateEmployeeResponse) |  |
+| ActivateEmployee | [ActivateEmployeeRequest](#command-membership-v1-ActivateEmployeeRequest) | [ActivateEmployeeResponse](#command-membership-v1-ActivateEmployeeResponse) |  |
 | StartVacationNow | [StartVacationNowRequest](#command-membership-v1-StartVacationNowRequest) | [StartVacationNowResponse](#command-membership-v1-StartVacationNowResponse) | Vacation lifecycle |
 | ScheduleVacation | [ScheduleVacationRequest](#command-membership-v1-ScheduleVacationRequest) | [ScheduleVacationResponse](#command-membership-v1-ScheduleVacationResponse) |  |
 | UpdateVacationEndDate | [UpdateVacationEndDateRequest](#command-membership-v1-UpdateVacationEndDateRequest) | [UpdateVacationEndDateResponse](#command-membership-v1-UpdateVacationEndDateResponse) |  |
@@ -2535,6 +2622,81 @@ operates directly on Zitadel user identifiers.
 <p align="right"><a href="#top">Top</a></p>
 
 ## command/orgstructure/v1/orgstructure.proto
+
+
+
+<a name="command-orgstructure-v1-ActivateClinicRequest"></a>
+
+### ActivateClinicRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-ActivateClinicResponse"></a>
+
+### ActivateClinicResponse
+
+
+
+
+
+
+
+<a name="command-orgstructure-v1-ActivateDepartmentRequest"></a>
+
+### ActivateDepartmentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-ActivateDepartmentResponse"></a>
+
+### ActivateDepartmentResponse
+
+
+
+
+
+
+
+<a name="command-orgstructure-v1-ActivateOrganizationRequest"></a>
+
+### ActivateOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-ActivateOrganizationResponse"></a>
+
+### ActivateOrganizationResponse
+
+
+
+
 
 
 
@@ -2645,6 +2807,156 @@ operates directly on Zitadel user identifiers.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeactivateClinicRequest"></a>
+
+### DeactivateClinicRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeactivateClinicResponse"></a>
+
+### DeactivateClinicResponse
+
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeactivateDepartmentRequest"></a>
+
+### DeactivateDepartmentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeactivateDepartmentResponse"></a>
+
+### DeactivateDepartmentResponse
+
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeactivateOrganizationRequest"></a>
+
+### DeactivateOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeactivateOrganizationResponse"></a>
+
+### DeactivateOrganizationResponse
+
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeleteClinicRequest"></a>
+
+### DeleteClinicRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeleteClinicResponse"></a>
+
+### DeleteClinicResponse
+
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeleteDepartmentRequest"></a>
+
+### DeleteDepartmentRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeleteDepartmentResponse"></a>
+
+### DeleteDepartmentResponse
+
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeleteOrganizationRequest"></a>
+
+### DeleteOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="command-orgstructure-v1-DeleteOrganizationResponse"></a>
+
+### DeleteOrganizationResponse
+
 
 
 
@@ -2823,11 +3135,20 @@ generated under pkg/.
 | CreateOrganization | [CreateOrganizationRequest](#command-orgstructure-v1-CreateOrganizationRequest) | [CreateOrganizationResponse](#command-orgstructure-v1-CreateOrganizationResponse) |  |
 | UpdateOrganizationDetails | [UpdateOrganizationDetailsRequest](#command-orgstructure-v1-UpdateOrganizationDetailsRequest) | [UpdateOrganizationDetailsResponse](#command-orgstructure-v1-UpdateOrganizationDetailsResponse) |  |
 | UpdateOrganizationLegalAddress | [UpdateOrganizationLegalAddressRequest](#command-orgstructure-v1-UpdateOrganizationLegalAddressRequest) | [UpdateOrganizationLegalAddressResponse](#command-orgstructure-v1-UpdateOrganizationLegalAddressResponse) |  |
+| DeactivateOrganization | [DeactivateOrganizationRequest](#command-orgstructure-v1-DeactivateOrganizationRequest) | [DeactivateOrganizationResponse](#command-orgstructure-v1-DeactivateOrganizationResponse) |  |
+| ActivateOrganization | [ActivateOrganizationRequest](#command-orgstructure-v1-ActivateOrganizationRequest) | [ActivateOrganizationResponse](#command-orgstructure-v1-ActivateOrganizationResponse) |  |
+| DeleteOrganization | [DeleteOrganizationRequest](#command-orgstructure-v1-DeleteOrganizationRequest) | [DeleteOrganizationResponse](#command-orgstructure-v1-DeleteOrganizationResponse) |  |
 | CreateClinic | [CreateClinicRequest](#command-orgstructure-v1-CreateClinicRequest) | [CreateClinicResponse](#command-orgstructure-v1-CreateClinicResponse) |  |
 | UpdateClinicDetails | [UpdateClinicDetailsRequest](#command-orgstructure-v1-UpdateClinicDetailsRequest) | [UpdateClinicDetailsResponse](#command-orgstructure-v1-UpdateClinicDetailsResponse) |  |
 | UpdateClinicPhysicalAddress | [UpdateClinicPhysicalAddressRequest](#command-orgstructure-v1-UpdateClinicPhysicalAddressRequest) | [UpdateClinicPhysicalAddressResponse](#command-orgstructure-v1-UpdateClinicPhysicalAddressResponse) |  |
+| DeactivateClinic | [DeactivateClinicRequest](#command-orgstructure-v1-DeactivateClinicRequest) | [DeactivateClinicResponse](#command-orgstructure-v1-DeactivateClinicResponse) |  |
+| ActivateClinic | [ActivateClinicRequest](#command-orgstructure-v1-ActivateClinicRequest) | [ActivateClinicResponse](#command-orgstructure-v1-ActivateClinicResponse) |  |
+| DeleteClinic | [DeleteClinicRequest](#command-orgstructure-v1-DeleteClinicRequest) | [DeleteClinicResponse](#command-orgstructure-v1-DeleteClinicResponse) |  |
 | CreateDepartment | [CreateDepartmentRequest](#command-orgstructure-v1-CreateDepartmentRequest) | [CreateDepartmentResponse](#command-orgstructure-v1-CreateDepartmentResponse) |  |
 | UpdateDepartmentDetails | [UpdateDepartmentDetailsRequest](#command-orgstructure-v1-UpdateDepartmentDetailsRequest) | [UpdateDepartmentDetailsResponse](#command-orgstructure-v1-UpdateDepartmentDetailsResponse) |  |
+| DeactivateDepartment | [DeactivateDepartmentRequest](#command-orgstructure-v1-DeactivateDepartmentRequest) | [DeactivateDepartmentResponse](#command-orgstructure-v1-DeactivateDepartmentResponse) |  |
+| ActivateDepartment | [ActivateDepartmentRequest](#command-orgstructure-v1-ActivateDepartmentRequest) | [ActivateDepartmentResponse](#command-orgstructure-v1-ActivateDepartmentResponse) |  |
+| DeleteDepartment | [DeleteDepartmentRequest](#command-orgstructure-v1-DeleteDepartmentRequest) | [DeleteDepartmentResponse](#command-orgstructure-v1-DeleteDepartmentResponse) |  |
 
 
 
@@ -3161,6 +3482,22 @@ generated under pkg/.
 
 
 
+<a name="event-clinic-v1-ClinicActivated"></a>
+
+### ClinicActivated
+ClinicActivated — subject: medincident.event.clinic.v1.activated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
 <a name="event-clinic-v1-ClinicCreated"></a>
 
 ### ClinicCreated
@@ -3175,6 +3512,38 @@ subject: medincident.event.clinic.v1.created
 | description | [string](#string) |  |  |
 | physical_address | [Address](#event-clinic-v1-Address) |  |  |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-clinic-v1-ClinicDeactivated"></a>
+
+### ClinicDeactivated
+ClinicDeactivated — subject: medincident.event.clinic.v1.deactivated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-clinic-v1-ClinicDeleted"></a>
+
+### ClinicDeleted
+ClinicDeleted — subject: medincident.event.clinic.v1.deleted
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| clinic_id | [string](#string) |  |  |
+| deleted_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 
 
 
@@ -3312,6 +3681,22 @@ subject: medincident.event.clinic.v1.physical_address_changed
 
 
 
+<a name="event-department-v1-DepartmentActivated"></a>
+
+### DepartmentActivated
+DepartmentActivated — subject: medincident.event.department.v1.activated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
 <a name="event-department-v1-DepartmentCreated"></a>
 
 ### DepartmentCreated
@@ -3325,6 +3710,38 @@ subject: medincident.event.department.v1.created
 | name | [string](#string) |  |  |
 | description | [string](#string) |  |  |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-department-v1-DepartmentDeactivated"></a>
+
+### DepartmentDeactivated
+DepartmentDeactivated — subject: medincident.event.department.v1.deactivated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-department-v1-DepartmentDeleted"></a>
+
+### DepartmentDeleted
+DepartmentDeleted — subject: medincident.event.department.v1.deleted
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| department_id | [string](#string) |  |  |
+| deleted_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 
 
 
@@ -3426,6 +3843,38 @@ DeptResponsibleAssigned — subject: medincident.event.department.v1.dept_respon
 <p align="right"><a href="#top">Top</a></p>
 
 ## event/employee/v1/events.proto
+
+
+
+<a name="event-employee-v1-EmployeeActivated"></a>
+
+### EmployeeActivated
+EmployeeActivated — subject: medincident.event.employee.v1.activated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-employee-v1-EmployeeDeactivated"></a>
+
+### EmployeeDeactivated
+EmployeeDeactivated — subject: medincident.event.employee.v1.deactivated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
 
 
 
@@ -3867,6 +4316,10 @@ aggregate_id = incident UUID
 | source_buffer_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
 | reopened_from_incident_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| registrar_organization_id | [string](#string) |  |  |
+| registrar_clinic_id | [string](#string) |  |  |
+| registrar_department_id | [string](#string) |  |  |
+| registrar_position | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
 
 
 
@@ -4155,6 +4608,22 @@ OrgHeadAssigned — subject: medincident.event.organization.v1.org_head_assigned
 
 
 
+<a name="event-organization-v1-OrganizationActivated"></a>
+
+### OrganizationActivated
+OrganizationActivated — subject: medincident.event.organization.v1.activated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
 <a name="event-organization-v1-OrganizationCreated"></a>
 
 ### OrganizationCreated
@@ -4168,6 +4637,38 @@ subject: medincident.event.organization.v1.created
 | description | [string](#string) |  | empty = absent |
 | legal_address | [Address](#event-organization-v1-Address) |  |  |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-organization-v1-OrganizationDeactivated"></a>
+
+### OrganizationDeactivated
+OrganizationDeactivated — subject: medincident.event.organization.v1.deactivated
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+
+
+
+
+
+
+<a name="event-organization-v1-OrganizationDeleted"></a>
+
+### OrganizationDeleted
+OrganizationDeleted — subject: medincident.event.organization.v1.deleted
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| deleted_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 
 
 
@@ -6451,6 +6952,31 @@ when the backing column is NULL.
 
 
 
+<a name="query-membership-v1-GetMyEmployeeRequest"></a>
+
+### GetMyEmployeeRequest
+
+
+
+
+
+
+
+<a name="query-membership-v1-GetMyEmployeeResponse"></a>
+
+### GetMyEmployeeResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| employee | [EmployeeCardView](#query-membership-v1-EmployeeCardView) |  |  |
+
+
+
+
+
+
 <a name="query-membership-v1-ListCandidatesForClinicHeadRequest"></a>
 
 ### ListCandidatesForClinicHeadRequest
@@ -7094,6 +7620,7 @@ department responsibles, org admins/heads/dispatchers, system admins).
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | GetEmployee | [GetEmployeeRequest](#query-membership-v1-GetEmployeeRequest) | [GetEmployeeResponse](#query-membership-v1-GetEmployeeResponse) |  |
+| GetMyEmployee | [GetMyEmployeeRequest](#query-membership-v1-GetMyEmployeeRequest) | [GetMyEmployeeResponse](#query-membership-v1-GetMyEmployeeResponse) |  |
 | ListEmployeesByDepartment | [ListEmployeesByDepartmentRequest](#query-membership-v1-ListEmployeesByDepartmentRequest) | [ListEmployeesByDepartmentResponse](#query-membership-v1-ListEmployeesByDepartmentResponse) |  |
 | ListEmployeesByClinic | [ListEmployeesByClinicRequest](#query-membership-v1-ListEmployeesByClinicRequest) | [ListEmployeesByClinicResponse](#query-membership-v1-ListEmployeesByClinicResponse) |  |
 | ListEmployeesByOrganization | [ListEmployeesByOrganizationRequest](#query-membership-v1-ListEmployeesByOrganizationRequest) | [ListEmployeesByOrganizationResponse](#query-membership-v1-ListEmployeesByOrganizationResponse) |  |
@@ -7158,6 +7685,7 @@ Clinic mirrors the projections.clinics row returned by GetClinic.
 | name | [string](#string) |  |  |
 | description | [string](#string) | optional |  |
 | physical_address | [Address](#query-orgstructure-v1-Address) |  |  |
+| is_active | [bool](#bool) |  |  |
 | created_at | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
 
@@ -7177,6 +7705,7 @@ ClinicListItem is the minimal shape returned by list endpoints.
 | id | [string](#string) |  |  |
 | organization_id | [string](#string) |  |  |
 | name | [string](#string) |  |  |
+| is_active | [bool](#bool) |  |  |
 
 
 
@@ -7281,6 +7810,7 @@ GetDepartment.
 | clinic_id | [string](#string) |  |  |
 | name | [string](#string) |  |  |
 | description | [string](#string) | optional |  |
+| is_active | [bool](#bool) |  |  |
 | created_at | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
 
@@ -7300,6 +7830,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | id | [string](#string) |  |  |
 | clinic_id | [string](#string) |  |  |
 | name | [string](#string) |  |  |
+| is_active | [bool](#bool) |  |  |
 
 
 
@@ -7507,6 +8038,7 @@ GetOrganization. Timestamps are RFC3339 strings.
 | name | [string](#string) |  |  |
 | description | [string](#string) | optional |  |
 | legal_address | [Address](#query-orgstructure-v1-Address) |  |  |
+| is_active | [bool](#bool) |  |  |
 | created_at | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
 
@@ -7525,6 +8057,7 @@ OrganizationListItem is the minimal shape returned by list endpoints.
 | ----- | ---- | ----- | ----------- |
 | id | [string](#string) |  |  |
 | name | [string](#string) |  |  |
+| is_active | [bool](#bool) |  |  |
 
 
 

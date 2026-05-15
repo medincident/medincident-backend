@@ -140,6 +140,7 @@ type Organization struct {
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description   *string                `protobuf:"bytes,3,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	LegalAddress  *Address               `protobuf:"bytes,4,opt,name=legal_address,json=legalAddress,proto3" json:"legal_address,omitempty"`
+	IsActive      bool                   `protobuf:"varint,7,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	CreatedAt     string                 `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     string                 `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -204,6 +205,13 @@ func (x *Organization) GetLegalAddress() *Address {
 	return nil
 }
 
+func (x *Organization) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
+}
+
 func (x *Organization) GetCreatedAt() string {
 	if x != nil {
 		return x.CreatedAt
@@ -223,6 +231,7 @@ type OrganizationListItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	IsActive      bool                   `protobuf:"varint,3,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -271,6 +280,13 @@ func (x *OrganizationListItem) GetName() string {
 	return ""
 }
 
+func (x *OrganizationListItem) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
+}
+
 // Clinic mirrors the projections.clinics row returned by GetClinic.
 type Clinic struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
@@ -279,6 +295,7 @@ type Clinic struct {
 	Name            string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	Description     *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	PhysicalAddress *Address               `protobuf:"bytes,5,opt,name=physical_address,json=physicalAddress,proto3" json:"physical_address,omitempty"`
+	IsActive        bool                   `protobuf:"varint,8,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	CreatedAt       string                 `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt       string                 `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields   protoimpl.UnknownFields
@@ -350,6 +367,13 @@ func (x *Clinic) GetPhysicalAddress() *Address {
 	return nil
 }
 
+func (x *Clinic) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
+}
+
 func (x *Clinic) GetCreatedAt() string {
 	if x != nil {
 		return x.CreatedAt
@@ -370,6 +394,7 @@ type ClinicListItem struct {
 	Id             string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	OrganizationId string                 `protobuf:"bytes,2,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	Name           string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	IsActive       bool                   `protobuf:"varint,4,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -425,6 +450,13 @@ func (x *ClinicListItem) GetName() string {
 	return ""
 }
 
+func (x *ClinicListItem) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
+}
+
 // Department mirrors the projections.departments row returned by
 // GetDepartment.
 type Department struct {
@@ -433,6 +465,7 @@ type Department struct {
 	ClinicId      string                 `protobuf:"bytes,2,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	Description   *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	IsActive      bool                   `protobuf:"varint,7,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	CreatedAt     string                 `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     string                 `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -497,6 +530,13 @@ func (x *Department) GetDescription() string {
 	return ""
 }
 
+func (x *Department) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
+}
+
 func (x *Department) GetCreatedAt() string {
 	if x != nil {
 		return x.CreatedAt
@@ -517,6 +557,7 @@ type DepartmentListItem struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	ClinicId      string                 `protobuf:"bytes,2,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	IsActive      bool                   `protobuf:"varint,4,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -570,6 +611,13 @@ func (x *DepartmentListItem) GetName() string {
 		return x.Name
 	}
 	return ""
+}
+
+func (x *DepartmentListItem) GetIsActive() bool {
+	if x != nil {
+		return x.IsActive
+	}
+	return false
 }
 
 type GetOrganizationRequest struct {
@@ -1546,50 +1594,56 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\aAddress\x12\x12\n" +
 	"\x04text\x18\x01 \x01(\tR\x04text\x127\n" +
 	"\x05point\x18\x02 \x01(\v2\x1c.query.orgstructure.v1.PointH\x00R\x05point\x88\x01\x01B\b\n" +
-	"\x06_point\"\xec\x01\n" +
+	"\x06_point\"\x89\x02\n" +
 	"\fOrganization\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01\x12C\n" +
-	"\rlegal_address\x18\x04 \x01(\v2\x1e.query.orgstructure.v1.AddressR\flegalAddress\x12\x1d\n" +
+	"\rlegal_address\x18\x04 \x01(\v2\x1e.query.orgstructure.v1.AddressR\flegalAddress\x12\x1b\n" +
+	"\tis_active\x18\a \x01(\bR\bisActive\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\x06 \x01(\tR\tupdatedAtB\x0e\n" +
-	"\f_description\":\n" +
+	"\f_description\"W\n" +
 	"\x14OrganizationListItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"\x95\x02\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x1b\n" +
+	"\tis_active\x18\x03 \x01(\bR\bisActive\"\xb2\x02\n" +
 	"\x06Clinic\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12%\n" +
 	"\vdescription\x18\x04 \x01(\tH\x00R\vdescription\x88\x01\x01\x12I\n" +
-	"\x10physical_address\x18\x05 \x01(\v2\x1e.query.orgstructure.v1.AddressR\x0fphysicalAddress\x12\x1d\n" +
+	"\x10physical_address\x18\x05 \x01(\v2\x1e.query.orgstructure.v1.AddressR\x0fphysicalAddress\x12\x1b\n" +
+	"\tis_active\x18\b \x01(\bR\bisActive\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\x06 \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\a \x01(\tR\tupdatedAtB\x0e\n" +
-	"\f_description\"]\n" +
+	"\f_description\"z\n" +
 	"\x0eClinicListItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\"\xc2\x01\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1b\n" +
+	"\tis_active\x18\x04 \x01(\bR\bisActive\"\xdf\x01\n" +
 	"\n" +
 	"Department\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
 	"\tclinic_id\x18\x02 \x01(\tR\bclinicId\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1d\n" +
+	"\vdescription\x18\x04 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1b\n" +
+	"\tis_active\x18\a \x01(\bR\bisActive\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\x06 \x01(\tR\tupdatedAtB\x0e\n" +
-	"\f_description\"U\n" +
+	"\f_description\"r\n" +
 	"\x12DepartmentListItem\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1b\n" +
 	"\tclinic_id\x18\x02 \x01(\tR\bclinicId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\"(\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1b\n" +
+	"\tis_active\x18\x04 \x01(\bR\bisActive\"(\n" +
 	"\x16GetOrganizationRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"b\n" +
 	"\x17GetOrganizationResponse\x12G\n" +

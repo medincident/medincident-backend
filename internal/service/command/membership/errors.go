@@ -16,6 +16,7 @@ const (
 
 	// Business preconditions — 409/422-class.
 	ErrCodeEmployeeAlreadyHired            = "employee_already_hired"
+	ErrCodeEmployeeActivateParentInactive  = "employee_activate_parent_inactive"
 	ErrCodeEmployeeNotFound                = "employee_not_found"
 	ErrCodeDepartmentNotFound              = "department_not_found"
 	ErrCodeClinicNotFound                  = "clinic_not_found"

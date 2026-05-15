@@ -2,12 +2,14 @@ package incident
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/guregu/null/v6"
 	"github.com/samber/oops"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	"github.com/medincident/medincident-backend/internal/model"
 	"github.com/medincident/medincident-backend/internal/outbox"
@@ -52,9 +54,20 @@ func (s *IncidentService) Reopen(
 
 	var result ReopenIncidentResult
 	err = s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
-		src, err := s.loadIncident(tx, srcID)
-		if err != nil {
-			return err
+		var src model.Incident
+		if err := tx.Clauses(clause.Locking{Strength: clause.LockingStrengthUpdate}).
+			First(&src, "id = ?", srcID).Error; err != nil {
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				return oops.In(scope).
+					Code(ErrCodeIncidentNotFound).
+					Public("Incident not found.").
+					With("incident_id", srcID).
+					Wrap(err)
+			}
+			return oops.In(scope).
+				Code(ErrCodeIncidentLoadFailed).
+				With("incident_id", srcID).
+				Wrap(err)
 		}
 		if src.Status != model.IncidentStatusDone && src.Status != model.IncidentStatusRejected {
 			return oops.In(scope).Code(ErrCodeIncidentNotReopenable).
@@ -65,9 +78,13 @@ func (s *IncidentService) Reopen(
 			privilegedActorPolicy(src.OrganizationID, src.ClinicID, src.DepartmentID)); err != nil {
 			return err
 		}
-		registrarEmpID, err := s.loadRegistrarEmployeeID(tx, cmd.Caller.ZitadelUserID, src.OrganizationID)
+		registrarEmp, err := s.loadRegistrarEmployee(tx, cmd.Caller.ZitadelUserID, src.OrganizationID)
 		if err != nil {
 			return err
+		}
+		var regDept model.Department
+		if err := tx.First(&regDept, "id = ?", registrarEmp.DepartmentID).Error; err != nil {
+			return oops.In(scope).Code(ErrCodeIncidentLoadFailed).Wrap(err)
 		}
 
 		newInc := model.Incident{
@@ -81,7 +98,7 @@ func (s *IncidentService) Reopen(
 			Priority:                   model.IncidentPriorityNormal,
 			Description:                null.String{},
 			OccurredAt:                 now,
-			RegistrarEmployeeID:        registrarEmpID,
+			RegistrarEmployeeID:        registrarEmp.ID,
 			SourcePatientZitadelUserID: src.SourcePatientZitadelUserID,
 			ReopenedFromIncidentID:     uuid.NullUUID{UUID: src.ID, Valid: true},
 			CreatedAt:                  now,
@@ -90,7 +107,7 @@ func (s *IncidentService) Reopen(
 		if err := tx.Create(&newInc).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).Wrap(err)
 		}
-		env, err := buildIncidentCreatedEnvelope(&newInc, cmd.Caller.ZitadelUserID)
+		env, err := buildIncidentCreatedEnvelope(&newInc, cmd.Caller.ZitadelUserID, registrarEmp, regDept.ClinicID)
 		if err != nil {
 			return err
 		}

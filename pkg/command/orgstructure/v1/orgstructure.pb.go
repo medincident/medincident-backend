@@ -416,6 +416,246 @@ func (*UpdateOrganizationLegalAddressResponse) Descriptor() ([]byte, []int) {
 	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{7}
 }
 
+type DeactivateOrganizationRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *DeactivateOrganizationRequest) Reset() {
+	*x = DeactivateOrganizationRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateOrganizationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateOrganizationRequest) ProtoMessage() {}
+
+func (x *DeactivateOrganizationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateOrganizationRequest.ProtoReflect.Descriptor instead.
+func (*DeactivateOrganizationRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DeactivateOrganizationRequest) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+type DeactivateOrganizationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeactivateOrganizationResponse) Reset() {
+	*x = DeactivateOrganizationResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateOrganizationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateOrganizationResponse) ProtoMessage() {}
+
+func (x *DeactivateOrganizationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateOrganizationResponse.ProtoReflect.Descriptor instead.
+func (*DeactivateOrganizationResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{9}
+}
+
+type ActivateOrganizationRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ActivateOrganizationRequest) Reset() {
+	*x = ActivateOrganizationRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateOrganizationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateOrganizationRequest) ProtoMessage() {}
+
+func (x *ActivateOrganizationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateOrganizationRequest.ProtoReflect.Descriptor instead.
+func (*ActivateOrganizationRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ActivateOrganizationRequest) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+type ActivateOrganizationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateOrganizationResponse) Reset() {
+	*x = ActivateOrganizationResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateOrganizationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateOrganizationResponse) ProtoMessage() {}
+
+func (x *ActivateOrganizationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateOrganizationResponse.ProtoReflect.Descriptor instead.
+func (*ActivateOrganizationResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{11}
+}
+
+type DeleteOrganizationRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *DeleteOrganizationRequest) Reset() {
+	*x = DeleteOrganizationRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteOrganizationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteOrganizationRequest) ProtoMessage() {}
+
+func (x *DeleteOrganizationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteOrganizationRequest.ProtoReflect.Descriptor instead.
+func (*DeleteOrganizationRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DeleteOrganizationRequest) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+type DeleteOrganizationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteOrganizationResponse) Reset() {
+	*x = DeleteOrganizationResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteOrganizationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteOrganizationResponse) ProtoMessage() {}
+
+func (x *DeleteOrganizationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteOrganizationResponse.ProtoReflect.Descriptor instead.
+func (*DeleteOrganizationResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{13}
+}
+
 type CreateClinicRequest struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId  string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
@@ -428,7 +668,7 @@ type CreateClinicRequest struct {
 
 func (x *CreateClinicRequest) Reset() {
 	*x = CreateClinicRequest{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[8]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -440,7 +680,7 @@ func (x *CreateClinicRequest) String() string {
 func (*CreateClinicRequest) ProtoMessage() {}
 
 func (x *CreateClinicRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[8]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -453,7 +693,7 @@ func (x *CreateClinicRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateClinicRequest.ProtoReflect.Descriptor instead.
 func (*CreateClinicRequest) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{8}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *CreateClinicRequest) GetOrganizationId() string {
@@ -493,7 +733,7 @@ type CreateClinicResponse struct {
 
 func (x *CreateClinicResponse) Reset() {
 	*x = CreateClinicResponse{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[9]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -505,7 +745,7 @@ func (x *CreateClinicResponse) String() string {
 func (*CreateClinicResponse) ProtoMessage() {}
 
 func (x *CreateClinicResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[9]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -518,7 +758,7 @@ func (x *CreateClinicResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateClinicResponse.ProtoReflect.Descriptor instead.
 func (*CreateClinicResponse) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{9}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *CreateClinicResponse) GetClinicId() string {
@@ -539,7 +779,7 @@ type UpdateClinicDetailsRequest struct {
 
 func (x *UpdateClinicDetailsRequest) Reset() {
 	*x = UpdateClinicDetailsRequest{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[10]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -551,7 +791,7 @@ func (x *UpdateClinicDetailsRequest) String() string {
 func (*UpdateClinicDetailsRequest) ProtoMessage() {}
 
 func (x *UpdateClinicDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[10]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -564,7 +804,7 @@ func (x *UpdateClinicDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateClinicDetailsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateClinicDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{10}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateClinicDetailsRequest) GetClinicId() string {
@@ -596,7 +836,7 @@ type UpdateClinicDetailsResponse struct {
 
 func (x *UpdateClinicDetailsResponse) Reset() {
 	*x = UpdateClinicDetailsResponse{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[11]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -608,7 +848,7 @@ func (x *UpdateClinicDetailsResponse) String() string {
 func (*UpdateClinicDetailsResponse) ProtoMessage() {}
 
 func (x *UpdateClinicDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[11]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -621,7 +861,7 @@ func (x *UpdateClinicDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateClinicDetailsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateClinicDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{11}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{17}
 }
 
 type UpdateClinicPhysicalAddressRequest struct {
@@ -634,7 +874,7 @@ type UpdateClinicPhysicalAddressRequest struct {
 
 func (x *UpdateClinicPhysicalAddressRequest) Reset() {
 	*x = UpdateClinicPhysicalAddressRequest{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[12]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -646,7 +886,7 @@ func (x *UpdateClinicPhysicalAddressRequest) String() string {
 func (*UpdateClinicPhysicalAddressRequest) ProtoMessage() {}
 
 func (x *UpdateClinicPhysicalAddressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[12]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -659,7 +899,7 @@ func (x *UpdateClinicPhysicalAddressRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use UpdateClinicPhysicalAddressRequest.ProtoReflect.Descriptor instead.
 func (*UpdateClinicPhysicalAddressRequest) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{12}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *UpdateClinicPhysicalAddressRequest) GetClinicId() string {
@@ -684,7 +924,7 @@ type UpdateClinicPhysicalAddressResponse struct {
 
 func (x *UpdateClinicPhysicalAddressResponse) Reset() {
 	*x = UpdateClinicPhysicalAddressResponse{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[13]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -696,7 +936,7 @@ func (x *UpdateClinicPhysicalAddressResponse) String() string {
 func (*UpdateClinicPhysicalAddressResponse) ProtoMessage() {}
 
 func (x *UpdateClinicPhysicalAddressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[13]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -709,7 +949,247 @@ func (x *UpdateClinicPhysicalAddressResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UpdateClinicPhysicalAddressResponse.ProtoReflect.Descriptor instead.
 func (*UpdateClinicPhysicalAddressResponse) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{13}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{19}
+}
+
+type DeactivateClinicRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeactivateClinicRequest) Reset() {
+	*x = DeactivateClinicRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateClinicRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateClinicRequest) ProtoMessage() {}
+
+func (x *DeactivateClinicRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateClinicRequest.ProtoReflect.Descriptor instead.
+func (*DeactivateClinicRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *DeactivateClinicRequest) GetClinicId() string {
+	if x != nil {
+		return x.ClinicId
+	}
+	return ""
+}
+
+type DeactivateClinicResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeactivateClinicResponse) Reset() {
+	*x = DeactivateClinicResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateClinicResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateClinicResponse) ProtoMessage() {}
+
+func (x *DeactivateClinicResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateClinicResponse.ProtoReflect.Descriptor instead.
+func (*DeactivateClinicResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{21}
+}
+
+type ActivateClinicRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateClinicRequest) Reset() {
+	*x = ActivateClinicRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateClinicRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateClinicRequest) ProtoMessage() {}
+
+func (x *ActivateClinicRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateClinicRequest.ProtoReflect.Descriptor instead.
+func (*ActivateClinicRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ActivateClinicRequest) GetClinicId() string {
+	if x != nil {
+		return x.ClinicId
+	}
+	return ""
+}
+
+type ActivateClinicResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateClinicResponse) Reset() {
+	*x = ActivateClinicResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateClinicResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateClinicResponse) ProtoMessage() {}
+
+func (x *ActivateClinicResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateClinicResponse.ProtoReflect.Descriptor instead.
+func (*ActivateClinicResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{23}
+}
+
+type DeleteClinicRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteClinicRequest) Reset() {
+	*x = DeleteClinicRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteClinicRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteClinicRequest) ProtoMessage() {}
+
+func (x *DeleteClinicRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteClinicRequest.ProtoReflect.Descriptor instead.
+func (*DeleteClinicRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *DeleteClinicRequest) GetClinicId() string {
+	if x != nil {
+		return x.ClinicId
+	}
+	return ""
+}
+
+type DeleteClinicResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteClinicResponse) Reset() {
+	*x = DeleteClinicResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteClinicResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteClinicResponse) ProtoMessage() {}
+
+func (x *DeleteClinicResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteClinicResponse.ProtoReflect.Descriptor instead.
+func (*DeleteClinicResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{25}
 }
 
 type CreateDepartmentRequest struct {
@@ -723,7 +1203,7 @@ type CreateDepartmentRequest struct {
 
 func (x *CreateDepartmentRequest) Reset() {
 	*x = CreateDepartmentRequest{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[14]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -735,7 +1215,7 @@ func (x *CreateDepartmentRequest) String() string {
 func (*CreateDepartmentRequest) ProtoMessage() {}
 
 func (x *CreateDepartmentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[14]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -748,7 +1228,7 @@ func (x *CreateDepartmentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateDepartmentRequest.ProtoReflect.Descriptor instead.
 func (*CreateDepartmentRequest) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{14}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *CreateDepartmentRequest) GetClinicId() string {
@@ -781,7 +1261,7 @@ type CreateDepartmentResponse struct {
 
 func (x *CreateDepartmentResponse) Reset() {
 	*x = CreateDepartmentResponse{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[15]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -793,7 +1273,7 @@ func (x *CreateDepartmentResponse) String() string {
 func (*CreateDepartmentResponse) ProtoMessage() {}
 
 func (x *CreateDepartmentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[15]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -806,7 +1286,7 @@ func (x *CreateDepartmentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateDepartmentResponse.ProtoReflect.Descriptor instead.
 func (*CreateDepartmentResponse) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{15}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *CreateDepartmentResponse) GetDepartmentId() string {
@@ -827,7 +1307,7 @@ type UpdateDepartmentDetailsRequest struct {
 
 func (x *UpdateDepartmentDetailsRequest) Reset() {
 	*x = UpdateDepartmentDetailsRequest{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[16]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -839,7 +1319,7 @@ func (x *UpdateDepartmentDetailsRequest) String() string {
 func (*UpdateDepartmentDetailsRequest) ProtoMessage() {}
 
 func (x *UpdateDepartmentDetailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[16]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -852,7 +1332,7 @@ func (x *UpdateDepartmentDetailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDepartmentDetailsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateDepartmentDetailsRequest) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{16}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *UpdateDepartmentDetailsRequest) GetDepartmentId() string {
@@ -884,7 +1364,7 @@ type UpdateDepartmentDetailsResponse struct {
 
 func (x *UpdateDepartmentDetailsResponse) Reset() {
 	*x = UpdateDepartmentDetailsResponse{}
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[17]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -896,7 +1376,7 @@ func (x *UpdateDepartmentDetailsResponse) String() string {
 func (*UpdateDepartmentDetailsResponse) ProtoMessage() {}
 
 func (x *UpdateDepartmentDetailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[17]
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -909,7 +1389,247 @@ func (x *UpdateDepartmentDetailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDepartmentDetailsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateDepartmentDetailsResponse) Descriptor() ([]byte, []int) {
-	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{17}
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{29}
+}
+
+type DeactivateDepartmentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DepartmentId  string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeactivateDepartmentRequest) Reset() {
+	*x = DeactivateDepartmentRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateDepartmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateDepartmentRequest) ProtoMessage() {}
+
+func (x *DeactivateDepartmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateDepartmentRequest.ProtoReflect.Descriptor instead.
+func (*DeactivateDepartmentRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *DeactivateDepartmentRequest) GetDepartmentId() string {
+	if x != nil {
+		return x.DepartmentId
+	}
+	return ""
+}
+
+type DeactivateDepartmentResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeactivateDepartmentResponse) Reset() {
+	*x = DeactivateDepartmentResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateDepartmentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateDepartmentResponse) ProtoMessage() {}
+
+func (x *DeactivateDepartmentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateDepartmentResponse.ProtoReflect.Descriptor instead.
+func (*DeactivateDepartmentResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{31}
+}
+
+type ActivateDepartmentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DepartmentId  string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateDepartmentRequest) Reset() {
+	*x = ActivateDepartmentRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateDepartmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateDepartmentRequest) ProtoMessage() {}
+
+func (x *ActivateDepartmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateDepartmentRequest.ProtoReflect.Descriptor instead.
+func (*ActivateDepartmentRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *ActivateDepartmentRequest) GetDepartmentId() string {
+	if x != nil {
+		return x.DepartmentId
+	}
+	return ""
+}
+
+type ActivateDepartmentResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateDepartmentResponse) Reset() {
+	*x = ActivateDepartmentResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateDepartmentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateDepartmentResponse) ProtoMessage() {}
+
+func (x *ActivateDepartmentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateDepartmentResponse.ProtoReflect.Descriptor instead.
+func (*ActivateDepartmentResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{33}
+}
+
+type DeleteDepartmentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	DepartmentId  string                 `protobuf:"bytes,1,opt,name=department_id,json=departmentId,proto3" json:"department_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteDepartmentRequest) Reset() {
+	*x = DeleteDepartmentRequest{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteDepartmentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteDepartmentRequest) ProtoMessage() {}
+
+func (x *DeleteDepartmentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteDepartmentRequest.ProtoReflect.Descriptor instead.
+func (*DeleteDepartmentRequest) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *DeleteDepartmentRequest) GetDepartmentId() string {
+	if x != nil {
+		return x.DepartmentId
+	}
+	return ""
+}
+
+type DeleteDepartmentResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteDepartmentResponse) Reset() {
+	*x = DeleteDepartmentResponse{}
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteDepartmentResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteDepartmentResponse) ProtoMessage() {}
+
+func (x *DeleteDepartmentResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_orgstructure_v1_orgstructure_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteDepartmentResponse.ProtoReflect.Descriptor instead.
+func (*DeleteDepartmentResponse) Descriptor() ([]byte, []int) {
+	return file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP(), []int{35}
 }
 
 var File_command_orgstructure_v1_orgstructure_proto protoreflect.FileDescriptor
@@ -941,7 +1661,16 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"%UpdateOrganizationLegalAddressRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12O\n" +
 	"\rlegal_address\x18\x02 \x01(\v2%.command.orgstructure.v1.AddressInputB\x03\xe0A\x02R\flegalAddress\"(\n" +
-	"&UpdateOrganizationLegalAddressResponse\"\xea\x01\n" +
+	"&UpdateOrganizationLegalAddressResponse\"M\n" +
+	"\x1dDeactivateOrganizationRequest\x12,\n" +
+	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\" \n" +
+	"\x1eDeactivateOrganizationResponse\"K\n" +
+	"\x1bActivateOrganizationRequest\x12,\n" +
+	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\"\x1e\n" +
+	"\x1cActivateOrganizationResponse\"I\n" +
+	"\x19DeleteOrganizationRequest\x12,\n" +
+	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\"\x1c\n" +
+	"\x1aDeleteOrganizationResponse\"\xea\x01\n" +
 	"\x13CreateClinicRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12U\n" +
@@ -959,7 +1688,16 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\"UpdateClinicPhysicalAddressRequest\x12 \n" +
 	"\tclinic_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bclinicId\x12U\n" +
 	"\x10physical_address\x18\x02 \x01(\v2%.command.orgstructure.v1.AddressInputB\x03\xe0A\x02R\x0fphysicalAddress\"%\n" +
-	"#UpdateClinicPhysicalAddressResponse\"\x8b\x01\n" +
+	"#UpdateClinicPhysicalAddressResponse\";\n" +
+	"\x17DeactivateClinicRequest\x12 \n" +
+	"\tclinic_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bclinicId\"\x1a\n" +
+	"\x18DeactivateClinicResponse\"9\n" +
+	"\x15ActivateClinicRequest\x12 \n" +
+	"\tclinic_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bclinicId\"\x18\n" +
+	"\x16ActivateClinicResponse\"7\n" +
+	"\x13DeleteClinicRequest\x12 \n" +
+	"\tclinic_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bclinicId\"\x16\n" +
+	"\x14DeleteClinicResponse\"\x8b\x01\n" +
 	"\x17CreateDepartmentRequest\x12 \n" +
 	"\tclinic_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bclinicId\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12%\n" +
@@ -972,13 +1710,18 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x04name\x18\x02 \x01(\tB\x03\xe0A\x02R\x04name\x12%\n" +
 	"\vdescription\x18\x03 \x01(\tH\x00R\vdescription\x88\x01\x01B\x0e\n" +
 	"\f_description\"!\n" +
-	"\x1fUpdateDepartmentDetailsResponse2\xd3\x13\n" +
-	"\x1aOrgStructureCommandService\x12\xdd\x02\n" +
-	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\xdd\x01\x92A\xbd\x01J\xba\x01\n" +
-	"\x03500\x12\xb2\x01\n" +
-	"\xaf\x01Internal server error. Error codes:\n" +
-	"- `organization_id_generation_failed` — failed to generate a new organization ID.\n" +
-	"- `organization_save_failed` — database write failed.\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xbe\x02\n" +
+	"\x1fUpdateDepartmentDetailsResponse\"G\n" +
+	"\x1bDeactivateDepartmentRequest\x12(\n" +
+	"\rdepartment_id\x18\x01 \x01(\tB\x03\xe0A\x02R\fdepartmentId\"\x1e\n" +
+	"\x1cDeactivateDepartmentResponse\"E\n" +
+	"\x19ActivateDepartmentRequest\x12(\n" +
+	"\rdepartment_id\x18\x01 \x01(\tB\x03\xe0A\x02R\fdepartmentId\"\x1c\n" +
+	"\x1aActivateDepartmentResponse\"C\n" +
+	"\x17DeleteDepartmentRequest\x12(\n" +
+	"\rdepartment_id\x18\x01 \x01(\tB\x03\xe0A\x02R\fdepartmentId\"\x1a\n" +
+	"\x18DeleteDepartmentResponse2\x92+\n" +
+	"\x1aOrgStructureCommandService\x12\x9b\x01\n" +
+	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xbe\x02\n" +
 	"\x19UpdateOrganizationDetails\x129.command.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.command.orgstructure.v1.UpdateOrganizationDetailsResponse\"\xa9\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
@@ -986,7 +1729,22 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x1eUpdateOrganizationLegalAddress\x12>.command.orgstructure.v1.UpdateOrganizationLegalAddressRequest\x1a?.command.orgstructure.v1.UpdateOrganizationLegalAddressResponse\"\xaf\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x026:\x01*\x1a1/v1/organizations/{organization_id}/legal-address\x12\x9e\x02\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x026:\x01*\x1a1/v1/organizations/{organization_id}/legal-address\x12\xb8\x02\n" +
+	"\x16DeactivateOrganization\x126.command.orgstructure.v1.DeactivateOrganizationRequest\x1a7.command.orgstructure.v1.DeactivateOrganizationResponse\"\xac\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x023:\x01*\"./v1/organizations/{organization_id}/deactivate\x12\xb0\x02\n" +
+	"\x14ActivateOrganization\x124.command.orgstructure.v1.ActivateOrganizationRequest\x1a5.command.orgstructure.v1.ActivateOrganizationResponse\"\xaa\x01\x92ApJn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x021:\x01*\",/v1/organizations/{organization_id}/activate\x12\xa7\x03\n" +
+	"\x12DeleteOrganization\x122.command.orgstructure.v1.DeleteOrganizationRequest\x1a3.command.orgstructure.v1.DeleteOrganizationResponse\"\xa7\x02\x92A\xf8\x01Jn\n" +
+	"\x03404\x12g\n" +
+	"eNot found. Error codes:\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.J\x85\x01\n" +
+	"\x03409\x12~\n" +
+	"|Conflict. Error codes:\n" +
+	"- `organization_delete_has_dependents` — organization has associated incidents or service requests.\x82\xd3\xe4\x93\x02%*#/v1/organizations/{organization_id}\x12\x9e\x02\n" +
 	"\fCreateClinic\x12,.command.orgstructure.v1.CreateClinicRequest\x1a-.command.orgstructure.v1.CreateClinicResponse\"\xb0\x01\x92AwJu\n" +
 	"\x03404\x12n\n" +
 	"lNot found. Error codes:\n" +
@@ -998,7 +1756,25 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x1bUpdateClinicPhysicalAddress\x12;.command.orgstructure.v1.UpdateClinicPhysicalAddressRequest\x1a<.command.orgstructure.v1.UpdateClinicPhysicalAddressResponse\"\x9a\x01\x92AdJb\n" +
 	"\x03404\x12[\n" +
 	"YNot found. Error codes:\n" +
-	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\x9a\x02\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02-:\x01*\x1a(/v1/clinics/{clinic_id}/physical-address\x12\x8e\x02\n" +
+	"\x10DeactivateClinic\x120.command.orgstructure.v1.DeactivateClinicRequest\x1a1.command.orgstructure.v1.DeactivateClinicResponse\"\x94\x01\x92AdJb\n" +
+	"\x03404\x12[\n" +
+	"YNot found. Error codes:\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02':\x01*\"\"/v1/clinics/{clinic_id}/deactivate\x12\x80\x03\n" +
+	"\x0eActivateClinic\x12..command.orgstructure.v1.ActivateClinicRequest\x1a/.command.orgstructure.v1.ActivateClinicResponse\"\x8c\x02\x92A\xdd\x01Jb\n" +
+	"\x03404\x12[\n" +
+	"YNot found. Error codes:\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.Jw\n" +
+	"\x03422\x12p\n" +
+	"nBusiness rule violation. Error codes:\n" +
+	"- `clinic_activate_parent_inactive` — parent organization is inactive.\x82\xd3\xe4\x93\x02%:\x01*\" /v1/clinics/{clinic_id}/activate\x12\xf0\x02\n" +
+	"\fDeleteClinic\x12,.command.orgstructure.v1.DeleteClinicRequest\x1a-.command.orgstructure.v1.DeleteClinicResponse\"\x82\x02\x92A\xdf\x01Jb\n" +
+	"\x03404\x12[\n" +
+	"YNot found. Error codes:\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.Jy\n" +
+	"\x03409\x12r\n" +
+	"pConflict. Error codes:\n" +
+	"- `clinic_delete_has_dependents` — clinic has associated incidents or service requests.\x82\xd3\xe4\x93\x02\x19*\x17/v1/clinics/{clinic_id}\x12\x9a\x02\n" +
 	"\x10CreateDepartment\x120.command.orgstructure.v1.CreateDepartmentRequest\x1a1.command.orgstructure.v1.CreateDepartmentResponse\"\xa0\x01\x92AoJm\n" +
 	"\x03404\x12f\n" +
 	"dNot found. Error codes:\n" +
@@ -1006,7 +1782,25 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x17UpdateDepartmentDetails\x127.command.orgstructure.v1.UpdateDepartmentDetailsRequest\x1a8.command.orgstructure.v1.UpdateDepartmentDetailsResponse\"\xa1\x01\x92AlJj\n" +
 	"\x03404\x12c\n" +
 	"aNot found. Error codes:\n" +
-	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/detailsB\xec\x04\x92A\xe3\x02RI\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02,:\x01*\x1a'/v1/departments/{department_id}/details\x12\xaa\x02\n" +
+	"\x14DeactivateDepartment\x124.command.orgstructure.v1.DeactivateDepartmentRequest\x1a5.command.orgstructure.v1.DeactivateDepartmentResponse\"\xa4\x01\x92AlJj\n" +
+	"\x03404\x12c\n" +
+	"aNot found. Error codes:\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02/:\x01*\"*/v1/departments/{department_id}/deactivate\x12\x9a\x03\n" +
+	"\x12ActivateDepartment\x122.command.orgstructure.v1.ActivateDepartmentRequest\x1a3.command.orgstructure.v1.ActivateDepartmentResponse\"\x9a\x02\x92A\xe3\x01Jj\n" +
+	"\x03404\x12c\n" +
+	"aNot found. Error codes:\n" +
+	"- `department_not_found` — department with the given ID does not exist.Ju\n" +
+	"\x03422\x12n\n" +
+	"lBusiness rule violation. Error codes:\n" +
+	"- `department_activate_parent_inactive` — parent clinic is inactive.\x82\xd3\xe4\x93\x02-:\x01*\"(/v1/departments/{department_id}/activate\x12\x95\x03\n" +
+	"\x10DeleteDepartment\x120.command.orgstructure.v1.DeleteDepartmentRequest\x1a1.command.orgstructure.v1.DeleteDepartmentResponse\"\x9b\x02\x92A\xf0\x01Jj\n" +
+	"\x03404\x12c\n" +
+	"aNot found. Error codes:\n" +
+	"- `department_not_found` — department with the given ID does not exist.J\x81\x01\n" +
+	"\x03409\x12z\n" +
+	"xConflict. Error codes:\n" +
+	"- `department_delete_has_dependents` — department has associated incidents or service requests.\x82\xd3\xe4\x93\x02!*\x1f/v1/departments/{department_id}B\xec\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -1036,7 +1830,7 @@ func file_command_orgstructure_v1_orgstructure_proto_rawDescGZIP() []byte {
 	return file_command_orgstructure_v1_orgstructure_proto_rawDescData
 }
 
-var file_command_orgstructure_v1_orgstructure_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_command_orgstructure_v1_orgstructure_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
 var file_command_orgstructure_v1_orgstructure_proto_goTypes = []any{
 	(*PointInput)(nil),                             // 0: command.orgstructure.v1.PointInput
 	(*AddressInput)(nil),                           // 1: command.orgstructure.v1.AddressInput
@@ -1046,16 +1840,34 @@ var file_command_orgstructure_v1_orgstructure_proto_goTypes = []any{
 	(*UpdateOrganizationDetailsResponse)(nil),      // 5: command.orgstructure.v1.UpdateOrganizationDetailsResponse
 	(*UpdateOrganizationLegalAddressRequest)(nil),  // 6: command.orgstructure.v1.UpdateOrganizationLegalAddressRequest
 	(*UpdateOrganizationLegalAddressResponse)(nil), // 7: command.orgstructure.v1.UpdateOrganizationLegalAddressResponse
-	(*CreateClinicRequest)(nil),                    // 8: command.orgstructure.v1.CreateClinicRequest
-	(*CreateClinicResponse)(nil),                   // 9: command.orgstructure.v1.CreateClinicResponse
-	(*UpdateClinicDetailsRequest)(nil),             // 10: command.orgstructure.v1.UpdateClinicDetailsRequest
-	(*UpdateClinicDetailsResponse)(nil),            // 11: command.orgstructure.v1.UpdateClinicDetailsResponse
-	(*UpdateClinicPhysicalAddressRequest)(nil),     // 12: command.orgstructure.v1.UpdateClinicPhysicalAddressRequest
-	(*UpdateClinicPhysicalAddressResponse)(nil),    // 13: command.orgstructure.v1.UpdateClinicPhysicalAddressResponse
-	(*CreateDepartmentRequest)(nil),                // 14: command.orgstructure.v1.CreateDepartmentRequest
-	(*CreateDepartmentResponse)(nil),               // 15: command.orgstructure.v1.CreateDepartmentResponse
-	(*UpdateDepartmentDetailsRequest)(nil),         // 16: command.orgstructure.v1.UpdateDepartmentDetailsRequest
-	(*UpdateDepartmentDetailsResponse)(nil),        // 17: command.orgstructure.v1.UpdateDepartmentDetailsResponse
+	(*DeactivateOrganizationRequest)(nil),          // 8: command.orgstructure.v1.DeactivateOrganizationRequest
+	(*DeactivateOrganizationResponse)(nil),         // 9: command.orgstructure.v1.DeactivateOrganizationResponse
+	(*ActivateOrganizationRequest)(nil),            // 10: command.orgstructure.v1.ActivateOrganizationRequest
+	(*ActivateOrganizationResponse)(nil),           // 11: command.orgstructure.v1.ActivateOrganizationResponse
+	(*DeleteOrganizationRequest)(nil),              // 12: command.orgstructure.v1.DeleteOrganizationRequest
+	(*DeleteOrganizationResponse)(nil),             // 13: command.orgstructure.v1.DeleteOrganizationResponse
+	(*CreateClinicRequest)(nil),                    // 14: command.orgstructure.v1.CreateClinicRequest
+	(*CreateClinicResponse)(nil),                   // 15: command.orgstructure.v1.CreateClinicResponse
+	(*UpdateClinicDetailsRequest)(nil),             // 16: command.orgstructure.v1.UpdateClinicDetailsRequest
+	(*UpdateClinicDetailsResponse)(nil),            // 17: command.orgstructure.v1.UpdateClinicDetailsResponse
+	(*UpdateClinicPhysicalAddressRequest)(nil),     // 18: command.orgstructure.v1.UpdateClinicPhysicalAddressRequest
+	(*UpdateClinicPhysicalAddressResponse)(nil),    // 19: command.orgstructure.v1.UpdateClinicPhysicalAddressResponse
+	(*DeactivateClinicRequest)(nil),                // 20: command.orgstructure.v1.DeactivateClinicRequest
+	(*DeactivateClinicResponse)(nil),               // 21: command.orgstructure.v1.DeactivateClinicResponse
+	(*ActivateClinicRequest)(nil),                  // 22: command.orgstructure.v1.ActivateClinicRequest
+	(*ActivateClinicResponse)(nil),                 // 23: command.orgstructure.v1.ActivateClinicResponse
+	(*DeleteClinicRequest)(nil),                    // 24: command.orgstructure.v1.DeleteClinicRequest
+	(*DeleteClinicResponse)(nil),                   // 25: command.orgstructure.v1.DeleteClinicResponse
+	(*CreateDepartmentRequest)(nil),                // 26: command.orgstructure.v1.CreateDepartmentRequest
+	(*CreateDepartmentResponse)(nil),               // 27: command.orgstructure.v1.CreateDepartmentResponse
+	(*UpdateDepartmentDetailsRequest)(nil),         // 28: command.orgstructure.v1.UpdateDepartmentDetailsRequest
+	(*UpdateDepartmentDetailsResponse)(nil),        // 29: command.orgstructure.v1.UpdateDepartmentDetailsResponse
+	(*DeactivateDepartmentRequest)(nil),            // 30: command.orgstructure.v1.DeactivateDepartmentRequest
+	(*DeactivateDepartmentResponse)(nil),           // 31: command.orgstructure.v1.DeactivateDepartmentResponse
+	(*ActivateDepartmentRequest)(nil),              // 32: command.orgstructure.v1.ActivateDepartmentRequest
+	(*ActivateDepartmentResponse)(nil),             // 33: command.orgstructure.v1.ActivateDepartmentResponse
+	(*DeleteDepartmentRequest)(nil),                // 34: command.orgstructure.v1.DeleteDepartmentRequest
+	(*DeleteDepartmentResponse)(nil),               // 35: command.orgstructure.v1.DeleteDepartmentResponse
 }
 var file_command_orgstructure_v1_orgstructure_proto_depIdxs = []int32{
 	0,  // 0: command.orgstructure.v1.AddressInput.point:type_name -> command.orgstructure.v1.PointInput
@@ -1066,21 +1878,39 @@ var file_command_orgstructure_v1_orgstructure_proto_depIdxs = []int32{
 	2,  // 5: command.orgstructure.v1.OrgStructureCommandService.CreateOrganization:input_type -> command.orgstructure.v1.CreateOrganizationRequest
 	4,  // 6: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationDetails:input_type -> command.orgstructure.v1.UpdateOrganizationDetailsRequest
 	6,  // 7: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationLegalAddress:input_type -> command.orgstructure.v1.UpdateOrganizationLegalAddressRequest
-	8,  // 8: command.orgstructure.v1.OrgStructureCommandService.CreateClinic:input_type -> command.orgstructure.v1.CreateClinicRequest
-	10, // 9: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicDetails:input_type -> command.orgstructure.v1.UpdateClinicDetailsRequest
-	12, // 10: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicPhysicalAddress:input_type -> command.orgstructure.v1.UpdateClinicPhysicalAddressRequest
-	14, // 11: command.orgstructure.v1.OrgStructureCommandService.CreateDepartment:input_type -> command.orgstructure.v1.CreateDepartmentRequest
-	16, // 12: command.orgstructure.v1.OrgStructureCommandService.UpdateDepartmentDetails:input_type -> command.orgstructure.v1.UpdateDepartmentDetailsRequest
-	3,  // 13: command.orgstructure.v1.OrgStructureCommandService.CreateOrganization:output_type -> command.orgstructure.v1.CreateOrganizationResponse
-	5,  // 14: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationDetails:output_type -> command.orgstructure.v1.UpdateOrganizationDetailsResponse
-	7,  // 15: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationLegalAddress:output_type -> command.orgstructure.v1.UpdateOrganizationLegalAddressResponse
-	9,  // 16: command.orgstructure.v1.OrgStructureCommandService.CreateClinic:output_type -> command.orgstructure.v1.CreateClinicResponse
-	11, // 17: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicDetails:output_type -> command.orgstructure.v1.UpdateClinicDetailsResponse
-	13, // 18: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicPhysicalAddress:output_type -> command.orgstructure.v1.UpdateClinicPhysicalAddressResponse
-	15, // 19: command.orgstructure.v1.OrgStructureCommandService.CreateDepartment:output_type -> command.orgstructure.v1.CreateDepartmentResponse
-	17, // 20: command.orgstructure.v1.OrgStructureCommandService.UpdateDepartmentDetails:output_type -> command.orgstructure.v1.UpdateDepartmentDetailsResponse
-	13, // [13:21] is the sub-list for method output_type
-	5,  // [5:13] is the sub-list for method input_type
+	8,  // 8: command.orgstructure.v1.OrgStructureCommandService.DeactivateOrganization:input_type -> command.orgstructure.v1.DeactivateOrganizationRequest
+	10, // 9: command.orgstructure.v1.OrgStructureCommandService.ActivateOrganization:input_type -> command.orgstructure.v1.ActivateOrganizationRequest
+	12, // 10: command.orgstructure.v1.OrgStructureCommandService.DeleteOrganization:input_type -> command.orgstructure.v1.DeleteOrganizationRequest
+	14, // 11: command.orgstructure.v1.OrgStructureCommandService.CreateClinic:input_type -> command.orgstructure.v1.CreateClinicRequest
+	16, // 12: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicDetails:input_type -> command.orgstructure.v1.UpdateClinicDetailsRequest
+	18, // 13: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicPhysicalAddress:input_type -> command.orgstructure.v1.UpdateClinicPhysicalAddressRequest
+	20, // 14: command.orgstructure.v1.OrgStructureCommandService.DeactivateClinic:input_type -> command.orgstructure.v1.DeactivateClinicRequest
+	22, // 15: command.orgstructure.v1.OrgStructureCommandService.ActivateClinic:input_type -> command.orgstructure.v1.ActivateClinicRequest
+	24, // 16: command.orgstructure.v1.OrgStructureCommandService.DeleteClinic:input_type -> command.orgstructure.v1.DeleteClinicRequest
+	26, // 17: command.orgstructure.v1.OrgStructureCommandService.CreateDepartment:input_type -> command.orgstructure.v1.CreateDepartmentRequest
+	28, // 18: command.orgstructure.v1.OrgStructureCommandService.UpdateDepartmentDetails:input_type -> command.orgstructure.v1.UpdateDepartmentDetailsRequest
+	30, // 19: command.orgstructure.v1.OrgStructureCommandService.DeactivateDepartment:input_type -> command.orgstructure.v1.DeactivateDepartmentRequest
+	32, // 20: command.orgstructure.v1.OrgStructureCommandService.ActivateDepartment:input_type -> command.orgstructure.v1.ActivateDepartmentRequest
+	34, // 21: command.orgstructure.v1.OrgStructureCommandService.DeleteDepartment:input_type -> command.orgstructure.v1.DeleteDepartmentRequest
+	3,  // 22: command.orgstructure.v1.OrgStructureCommandService.CreateOrganization:output_type -> command.orgstructure.v1.CreateOrganizationResponse
+	5,  // 23: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationDetails:output_type -> command.orgstructure.v1.UpdateOrganizationDetailsResponse
+	7,  // 24: command.orgstructure.v1.OrgStructureCommandService.UpdateOrganizationLegalAddress:output_type -> command.orgstructure.v1.UpdateOrganizationLegalAddressResponse
+	9,  // 25: command.orgstructure.v1.OrgStructureCommandService.DeactivateOrganization:output_type -> command.orgstructure.v1.DeactivateOrganizationResponse
+	11, // 26: command.orgstructure.v1.OrgStructureCommandService.ActivateOrganization:output_type -> command.orgstructure.v1.ActivateOrganizationResponse
+	13, // 27: command.orgstructure.v1.OrgStructureCommandService.DeleteOrganization:output_type -> command.orgstructure.v1.DeleteOrganizationResponse
+	15, // 28: command.orgstructure.v1.OrgStructureCommandService.CreateClinic:output_type -> command.orgstructure.v1.CreateClinicResponse
+	17, // 29: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicDetails:output_type -> command.orgstructure.v1.UpdateClinicDetailsResponse
+	19, // 30: command.orgstructure.v1.OrgStructureCommandService.UpdateClinicPhysicalAddress:output_type -> command.orgstructure.v1.UpdateClinicPhysicalAddressResponse
+	21, // 31: command.orgstructure.v1.OrgStructureCommandService.DeactivateClinic:output_type -> command.orgstructure.v1.DeactivateClinicResponse
+	23, // 32: command.orgstructure.v1.OrgStructureCommandService.ActivateClinic:output_type -> command.orgstructure.v1.ActivateClinicResponse
+	25, // 33: command.orgstructure.v1.OrgStructureCommandService.DeleteClinic:output_type -> command.orgstructure.v1.DeleteClinicResponse
+	27, // 34: command.orgstructure.v1.OrgStructureCommandService.CreateDepartment:output_type -> command.orgstructure.v1.CreateDepartmentResponse
+	29, // 35: command.orgstructure.v1.OrgStructureCommandService.UpdateDepartmentDetails:output_type -> command.orgstructure.v1.UpdateDepartmentDetailsResponse
+	31, // 36: command.orgstructure.v1.OrgStructureCommandService.DeactivateDepartment:output_type -> command.orgstructure.v1.DeactivateDepartmentResponse
+	33, // 37: command.orgstructure.v1.OrgStructureCommandService.ActivateDepartment:output_type -> command.orgstructure.v1.ActivateDepartmentResponse
+	35, // 38: command.orgstructure.v1.OrgStructureCommandService.DeleteDepartment:output_type -> command.orgstructure.v1.DeleteDepartmentResponse
+	22, // [22:39] is the sub-list for method output_type
+	5,  // [5:22] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -1094,17 +1924,17 @@ func file_command_orgstructure_v1_orgstructure_proto_init() {
 	file_command_orgstructure_v1_orgstructure_proto_msgTypes[1].OneofWrappers = []any{}
 	file_command_orgstructure_v1_orgstructure_proto_msgTypes[2].OneofWrappers = []any{}
 	file_command_orgstructure_v1_orgstructure_proto_msgTypes[4].OneofWrappers = []any{}
-	file_command_orgstructure_v1_orgstructure_proto_msgTypes[8].OneofWrappers = []any{}
-	file_command_orgstructure_v1_orgstructure_proto_msgTypes[10].OneofWrappers = []any{}
 	file_command_orgstructure_v1_orgstructure_proto_msgTypes[14].OneofWrappers = []any{}
 	file_command_orgstructure_v1_orgstructure_proto_msgTypes[16].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[26].OneofWrappers = []any{}
+	file_command_orgstructure_v1_orgstructure_proto_msgTypes[28].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_command_orgstructure_v1_orgstructure_proto_rawDesc), len(file_command_orgstructure_v1_orgstructure_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   36,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

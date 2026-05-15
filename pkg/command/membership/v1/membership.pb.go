@@ -385,6 +385,166 @@ func (*TerminateEmployeeResponse) Descriptor() ([]byte, []int) {
 	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{7}
 }
 
+type DeactivateEmployeeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeactivateEmployeeRequest) Reset() {
+	*x = DeactivateEmployeeRequest{}
+	mi := &file_command_membership_v1_membership_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateEmployeeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateEmployeeRequest) ProtoMessage() {}
+
+func (x *DeactivateEmployeeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_membership_v1_membership_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateEmployeeRequest.ProtoReflect.Descriptor instead.
+func (*DeactivateEmployeeRequest) Descriptor() ([]byte, []int) {
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DeactivateEmployeeRequest) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type DeactivateEmployeeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeactivateEmployeeResponse) Reset() {
+	*x = DeactivateEmployeeResponse{}
+	mi := &file_command_membership_v1_membership_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeactivateEmployeeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeactivateEmployeeResponse) ProtoMessage() {}
+
+func (x *DeactivateEmployeeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_membership_v1_membership_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeactivateEmployeeResponse.ProtoReflect.Descriptor instead.
+func (*DeactivateEmployeeResponse) Descriptor() ([]byte, []int) {
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{9}
+}
+
+type ActivateEmployeeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateEmployeeRequest) Reset() {
+	*x = ActivateEmployeeRequest{}
+	mi := &file_command_membership_v1_membership_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateEmployeeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateEmployeeRequest) ProtoMessage() {}
+
+func (x *ActivateEmployeeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_command_membership_v1_membership_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateEmployeeRequest.ProtoReflect.Descriptor instead.
+func (*ActivateEmployeeRequest) Descriptor() ([]byte, []int) {
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ActivateEmployeeRequest) GetEmployeeId() string {
+	if x != nil {
+		return x.EmployeeId
+	}
+	return ""
+}
+
+type ActivateEmployeeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ActivateEmployeeResponse) Reset() {
+	*x = ActivateEmployeeResponse{}
+	mi := &file_command_membership_v1_membership_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ActivateEmployeeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ActivateEmployeeResponse) ProtoMessage() {}
+
+func (x *ActivateEmployeeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_command_membership_v1_membership_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ActivateEmployeeResponse.ProtoReflect.Descriptor instead.
+func (*ActivateEmployeeResponse) Descriptor() ([]byte, []int) {
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{11}
+}
+
 type StartVacationNowRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	EmployeeId    string                 `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3" json:"employee_id,omitempty"`
@@ -395,7 +555,7 @@ type StartVacationNowRequest struct {
 
 func (x *StartVacationNowRequest) Reset() {
 	*x = StartVacationNowRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[8]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -407,7 +567,7 @@ func (x *StartVacationNowRequest) String() string {
 func (*StartVacationNowRequest) ProtoMessage() {}
 
 func (x *StartVacationNowRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[8]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -420,7 +580,7 @@ func (x *StartVacationNowRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartVacationNowRequest.ProtoReflect.Descriptor instead.
 func (*StartVacationNowRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{8}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *StartVacationNowRequest) GetEmployeeId() string {
@@ -446,7 +606,7 @@ type StartVacationNowResponse struct {
 
 func (x *StartVacationNowResponse) Reset() {
 	*x = StartVacationNowResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[9]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -458,7 +618,7 @@ func (x *StartVacationNowResponse) String() string {
 func (*StartVacationNowResponse) ProtoMessage() {}
 
 func (x *StartVacationNowResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[9]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -471,7 +631,7 @@ func (x *StartVacationNowResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartVacationNowResponse.ProtoReflect.Descriptor instead.
 func (*StartVacationNowResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{9}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *StartVacationNowResponse) GetVacationId() string {
@@ -492,7 +652,7 @@ type ScheduleVacationRequest struct {
 
 func (x *ScheduleVacationRequest) Reset() {
 	*x = ScheduleVacationRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[10]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -504,7 +664,7 @@ func (x *ScheduleVacationRequest) String() string {
 func (*ScheduleVacationRequest) ProtoMessage() {}
 
 func (x *ScheduleVacationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[10]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -517,7 +677,7 @@ func (x *ScheduleVacationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleVacationRequest.ProtoReflect.Descriptor instead.
 func (*ScheduleVacationRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{10}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ScheduleVacationRequest) GetEmployeeId() string {
@@ -550,7 +710,7 @@ type ScheduleVacationResponse struct {
 
 func (x *ScheduleVacationResponse) Reset() {
 	*x = ScheduleVacationResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[11]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -562,7 +722,7 @@ func (x *ScheduleVacationResponse) String() string {
 func (*ScheduleVacationResponse) ProtoMessage() {}
 
 func (x *ScheduleVacationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[11]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -575,7 +735,7 @@ func (x *ScheduleVacationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ScheduleVacationResponse.ProtoReflect.Descriptor instead.
 func (*ScheduleVacationResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{11}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ScheduleVacationResponse) GetVacationId() string {
@@ -595,7 +755,7 @@ type UpdateVacationEndDateRequest struct {
 
 func (x *UpdateVacationEndDateRequest) Reset() {
 	*x = UpdateVacationEndDateRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[12]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -607,7 +767,7 @@ func (x *UpdateVacationEndDateRequest) String() string {
 func (*UpdateVacationEndDateRequest) ProtoMessage() {}
 
 func (x *UpdateVacationEndDateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[12]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -620,7 +780,7 @@ func (x *UpdateVacationEndDateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateVacationEndDateRequest.ProtoReflect.Descriptor instead.
 func (*UpdateVacationEndDateRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{12}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateVacationEndDateRequest) GetVacationId() string {
@@ -645,7 +805,7 @@ type UpdateVacationEndDateResponse struct {
 
 func (x *UpdateVacationEndDateResponse) Reset() {
 	*x = UpdateVacationEndDateResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[13]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -657,7 +817,7 @@ func (x *UpdateVacationEndDateResponse) String() string {
 func (*UpdateVacationEndDateResponse) ProtoMessage() {}
 
 func (x *UpdateVacationEndDateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[13]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -670,7 +830,7 @@ func (x *UpdateVacationEndDateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateVacationEndDateResponse.ProtoReflect.Descriptor instead.
 func (*UpdateVacationEndDateResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{13}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{17}
 }
 
 type ForceEndVacationRequest struct {
@@ -682,7 +842,7 @@ type ForceEndVacationRequest struct {
 
 func (x *ForceEndVacationRequest) Reset() {
 	*x = ForceEndVacationRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[14]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -694,7 +854,7 @@ func (x *ForceEndVacationRequest) String() string {
 func (*ForceEndVacationRequest) ProtoMessage() {}
 
 func (x *ForceEndVacationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[14]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -707,7 +867,7 @@ func (x *ForceEndVacationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ForceEndVacationRequest.ProtoReflect.Descriptor instead.
 func (*ForceEndVacationRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{14}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ForceEndVacationRequest) GetVacationId() string {
@@ -725,7 +885,7 @@ type ForceEndVacationResponse struct {
 
 func (x *ForceEndVacationResponse) Reset() {
 	*x = ForceEndVacationResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[15]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -737,7 +897,7 @@ func (x *ForceEndVacationResponse) String() string {
 func (*ForceEndVacationResponse) ProtoMessage() {}
 
 func (x *ForceEndVacationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[15]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -750,7 +910,7 @@ func (x *ForceEndVacationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ForceEndVacationResponse.ProtoReflect.Descriptor instead.
 func (*ForceEndVacationResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{15}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{19}
 }
 
 type CancelScheduledVacationRequest struct {
@@ -762,7 +922,7 @@ type CancelScheduledVacationRequest struct {
 
 func (x *CancelScheduledVacationRequest) Reset() {
 	*x = CancelScheduledVacationRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[16]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -774,7 +934,7 @@ func (x *CancelScheduledVacationRequest) String() string {
 func (*CancelScheduledVacationRequest) ProtoMessage() {}
 
 func (x *CancelScheduledVacationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[16]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -787,7 +947,7 @@ func (x *CancelScheduledVacationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelScheduledVacationRequest.ProtoReflect.Descriptor instead.
 func (*CancelScheduledVacationRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{16}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *CancelScheduledVacationRequest) GetVacationId() string {
@@ -805,7 +965,7 @@ type CancelScheduledVacationResponse struct {
 
 func (x *CancelScheduledVacationResponse) Reset() {
 	*x = CancelScheduledVacationResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[17]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -817,7 +977,7 @@ func (x *CancelScheduledVacationResponse) String() string {
 func (*CancelScheduledVacationResponse) ProtoMessage() {}
 
 func (x *CancelScheduledVacationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[17]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -830,7 +990,7 @@ func (x *CancelScheduledVacationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelScheduledVacationResponse.ProtoReflect.Descriptor instead.
 func (*CancelScheduledVacationResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{17}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{21}
 }
 
 type AssignDepartmentResponsibleRequest struct {
@@ -843,7 +1003,7 @@ type AssignDepartmentResponsibleRequest struct {
 
 func (x *AssignDepartmentResponsibleRequest) Reset() {
 	*x = AssignDepartmentResponsibleRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[18]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -855,7 +1015,7 @@ func (x *AssignDepartmentResponsibleRequest) String() string {
 func (*AssignDepartmentResponsibleRequest) ProtoMessage() {}
 
 func (x *AssignDepartmentResponsibleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[18]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -868,7 +1028,7 @@ func (x *AssignDepartmentResponsibleRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use AssignDepartmentResponsibleRequest.ProtoReflect.Descriptor instead.
 func (*AssignDepartmentResponsibleRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{18}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *AssignDepartmentResponsibleRequest) GetDepartmentId() string {
@@ -893,7 +1053,7 @@ type AssignDepartmentResponsibleResponse struct {
 
 func (x *AssignDepartmentResponsibleResponse) Reset() {
 	*x = AssignDepartmentResponsibleResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[19]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -905,7 +1065,7 @@ func (x *AssignDepartmentResponsibleResponse) String() string {
 func (*AssignDepartmentResponsibleResponse) ProtoMessage() {}
 
 func (x *AssignDepartmentResponsibleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[19]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -918,7 +1078,7 @@ func (x *AssignDepartmentResponsibleResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use AssignDepartmentResponsibleResponse.ProtoReflect.Descriptor instead.
 func (*AssignDepartmentResponsibleResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{19}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{23}
 }
 
 type RevokeDepartmentResponsibleRequest struct {
@@ -931,7 +1091,7 @@ type RevokeDepartmentResponsibleRequest struct {
 
 func (x *RevokeDepartmentResponsibleRequest) Reset() {
 	*x = RevokeDepartmentResponsibleRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[20]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -943,7 +1103,7 @@ func (x *RevokeDepartmentResponsibleRequest) String() string {
 func (*RevokeDepartmentResponsibleRequest) ProtoMessage() {}
 
 func (x *RevokeDepartmentResponsibleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[20]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -956,7 +1116,7 @@ func (x *RevokeDepartmentResponsibleRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use RevokeDepartmentResponsibleRequest.ProtoReflect.Descriptor instead.
 func (*RevokeDepartmentResponsibleRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{20}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *RevokeDepartmentResponsibleRequest) GetDepartmentId() string {
@@ -981,7 +1141,7 @@ type RevokeDepartmentResponsibleResponse struct {
 
 func (x *RevokeDepartmentResponsibleResponse) Reset() {
 	*x = RevokeDepartmentResponsibleResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[21]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -993,7 +1153,7 @@ func (x *RevokeDepartmentResponsibleResponse) String() string {
 func (*RevokeDepartmentResponsibleResponse) ProtoMessage() {}
 
 func (x *RevokeDepartmentResponsibleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[21]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1006,7 +1166,7 @@ func (x *RevokeDepartmentResponsibleResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use RevokeDepartmentResponsibleResponse.ProtoReflect.Descriptor instead.
 func (*RevokeDepartmentResponsibleResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{21}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{25}
 }
 
 type AssignDepartmentResponsibleDeputyRequest struct {
@@ -1020,7 +1180,7 @@ type AssignDepartmentResponsibleDeputyRequest struct {
 
 func (x *AssignDepartmentResponsibleDeputyRequest) Reset() {
 	*x = AssignDepartmentResponsibleDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[22]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1032,7 +1192,7 @@ func (x *AssignDepartmentResponsibleDeputyRequest) String() string {
 func (*AssignDepartmentResponsibleDeputyRequest) ProtoMessage() {}
 
 func (x *AssignDepartmentResponsibleDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[22]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1045,7 +1205,7 @@ func (x *AssignDepartmentResponsibleDeputyRequest) ProtoReflect() protoreflect.M
 
 // Deprecated: Use AssignDepartmentResponsibleDeputyRequest.ProtoReflect.Descriptor instead.
 func (*AssignDepartmentResponsibleDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{22}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *AssignDepartmentResponsibleDeputyRequest) GetDepartmentId() string {
@@ -1077,7 +1237,7 @@ type AssignDepartmentResponsibleDeputyResponse struct {
 
 func (x *AssignDepartmentResponsibleDeputyResponse) Reset() {
 	*x = AssignDepartmentResponsibleDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[23]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1089,7 +1249,7 @@ func (x *AssignDepartmentResponsibleDeputyResponse) String() string {
 func (*AssignDepartmentResponsibleDeputyResponse) ProtoMessage() {}
 
 func (x *AssignDepartmentResponsibleDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[23]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1102,7 +1262,7 @@ func (x *AssignDepartmentResponsibleDeputyResponse) ProtoReflect() protoreflect.
 
 // Deprecated: Use AssignDepartmentResponsibleDeputyResponse.ProtoReflect.Descriptor instead.
 func (*AssignDepartmentResponsibleDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{23}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{27}
 }
 
 type RemoveDepartmentResponsibleDeputyRequest struct {
@@ -1115,7 +1275,7 @@ type RemoveDepartmentResponsibleDeputyRequest struct {
 
 func (x *RemoveDepartmentResponsibleDeputyRequest) Reset() {
 	*x = RemoveDepartmentResponsibleDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[24]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1127,7 +1287,7 @@ func (x *RemoveDepartmentResponsibleDeputyRequest) String() string {
 func (*RemoveDepartmentResponsibleDeputyRequest) ProtoMessage() {}
 
 func (x *RemoveDepartmentResponsibleDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[24]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1140,7 +1300,7 @@ func (x *RemoveDepartmentResponsibleDeputyRequest) ProtoReflect() protoreflect.M
 
 // Deprecated: Use RemoveDepartmentResponsibleDeputyRequest.ProtoReflect.Descriptor instead.
 func (*RemoveDepartmentResponsibleDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{24}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *RemoveDepartmentResponsibleDeputyRequest) GetDepartmentId() string {
@@ -1165,7 +1325,7 @@ type RemoveDepartmentResponsibleDeputyResponse struct {
 
 func (x *RemoveDepartmentResponsibleDeputyResponse) Reset() {
 	*x = RemoveDepartmentResponsibleDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[25]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1177,7 +1337,7 @@ func (x *RemoveDepartmentResponsibleDeputyResponse) String() string {
 func (*RemoveDepartmentResponsibleDeputyResponse) ProtoMessage() {}
 
 func (x *RemoveDepartmentResponsibleDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[25]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1190,7 +1350,7 @@ func (x *RemoveDepartmentResponsibleDeputyResponse) ProtoReflect() protoreflect.
 
 // Deprecated: Use RemoveDepartmentResponsibleDeputyResponse.ProtoReflect.Descriptor instead.
 func (*RemoveDepartmentResponsibleDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{25}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{29}
 }
 
 type AssignClinicHeadRequest struct {
@@ -1203,7 +1363,7 @@ type AssignClinicHeadRequest struct {
 
 func (x *AssignClinicHeadRequest) Reset() {
 	*x = AssignClinicHeadRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[26]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1215,7 +1375,7 @@ func (x *AssignClinicHeadRequest) String() string {
 func (*AssignClinicHeadRequest) ProtoMessage() {}
 
 func (x *AssignClinicHeadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[26]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1228,7 +1388,7 @@ func (x *AssignClinicHeadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignClinicHeadRequest.ProtoReflect.Descriptor instead.
 func (*AssignClinicHeadRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{26}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *AssignClinicHeadRequest) GetClinicId() string {
@@ -1253,7 +1413,7 @@ type AssignClinicHeadResponse struct {
 
 func (x *AssignClinicHeadResponse) Reset() {
 	*x = AssignClinicHeadResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[27]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1265,7 +1425,7 @@ func (x *AssignClinicHeadResponse) String() string {
 func (*AssignClinicHeadResponse) ProtoMessage() {}
 
 func (x *AssignClinicHeadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[27]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1278,7 +1438,7 @@ func (x *AssignClinicHeadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignClinicHeadResponse.ProtoReflect.Descriptor instead.
 func (*AssignClinicHeadResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{27}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{31}
 }
 
 type RevokeClinicHeadRequest struct {
@@ -1291,7 +1451,7 @@ type RevokeClinicHeadRequest struct {
 
 func (x *RevokeClinicHeadRequest) Reset() {
 	*x = RevokeClinicHeadRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[28]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1303,7 +1463,7 @@ func (x *RevokeClinicHeadRequest) String() string {
 func (*RevokeClinicHeadRequest) ProtoMessage() {}
 
 func (x *RevokeClinicHeadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[28]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1316,7 +1476,7 @@ func (x *RevokeClinicHeadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeClinicHeadRequest.ProtoReflect.Descriptor instead.
 func (*RevokeClinicHeadRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{28}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *RevokeClinicHeadRequest) GetClinicId() string {
@@ -1341,7 +1501,7 @@ type RevokeClinicHeadResponse struct {
 
 func (x *RevokeClinicHeadResponse) Reset() {
 	*x = RevokeClinicHeadResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[29]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1353,7 +1513,7 @@ func (x *RevokeClinicHeadResponse) String() string {
 func (*RevokeClinicHeadResponse) ProtoMessage() {}
 
 func (x *RevokeClinicHeadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[29]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1366,7 +1526,7 @@ func (x *RevokeClinicHeadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeClinicHeadResponse.ProtoReflect.Descriptor instead.
 func (*RevokeClinicHeadResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{29}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{33}
 }
 
 type AssignClinicHeadDeputyRequest struct {
@@ -1380,7 +1540,7 @@ type AssignClinicHeadDeputyRequest struct {
 
 func (x *AssignClinicHeadDeputyRequest) Reset() {
 	*x = AssignClinicHeadDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[30]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1392,7 +1552,7 @@ func (x *AssignClinicHeadDeputyRequest) String() string {
 func (*AssignClinicHeadDeputyRequest) ProtoMessage() {}
 
 func (x *AssignClinicHeadDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[30]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1405,7 +1565,7 @@ func (x *AssignClinicHeadDeputyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignClinicHeadDeputyRequest.ProtoReflect.Descriptor instead.
 func (*AssignClinicHeadDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{30}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *AssignClinicHeadDeputyRequest) GetClinicId() string {
@@ -1437,7 +1597,7 @@ type AssignClinicHeadDeputyResponse struct {
 
 func (x *AssignClinicHeadDeputyResponse) Reset() {
 	*x = AssignClinicHeadDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[31]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1449,7 +1609,7 @@ func (x *AssignClinicHeadDeputyResponse) String() string {
 func (*AssignClinicHeadDeputyResponse) ProtoMessage() {}
 
 func (x *AssignClinicHeadDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[31]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1462,7 +1622,7 @@ func (x *AssignClinicHeadDeputyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignClinicHeadDeputyResponse.ProtoReflect.Descriptor instead.
 func (*AssignClinicHeadDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{31}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{35}
 }
 
 type RemoveClinicHeadDeputyRequest struct {
@@ -1475,7 +1635,7 @@ type RemoveClinicHeadDeputyRequest struct {
 
 func (x *RemoveClinicHeadDeputyRequest) Reset() {
 	*x = RemoveClinicHeadDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[32]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1487,7 +1647,7 @@ func (x *RemoveClinicHeadDeputyRequest) String() string {
 func (*RemoveClinicHeadDeputyRequest) ProtoMessage() {}
 
 func (x *RemoveClinicHeadDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[32]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1500,7 +1660,7 @@ func (x *RemoveClinicHeadDeputyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveClinicHeadDeputyRequest.ProtoReflect.Descriptor instead.
 func (*RemoveClinicHeadDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{32}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *RemoveClinicHeadDeputyRequest) GetClinicId() string {
@@ -1525,7 +1685,7 @@ type RemoveClinicHeadDeputyResponse struct {
 
 func (x *RemoveClinicHeadDeputyResponse) Reset() {
 	*x = RemoveClinicHeadDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[33]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1537,7 +1697,7 @@ func (x *RemoveClinicHeadDeputyResponse) String() string {
 func (*RemoveClinicHeadDeputyResponse) ProtoMessage() {}
 
 func (x *RemoveClinicHeadDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[33]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1550,7 +1710,7 @@ func (x *RemoveClinicHeadDeputyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveClinicHeadDeputyResponse.ProtoReflect.Descriptor instead.
 func (*RemoveClinicHeadDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{33}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{37}
 }
 
 type AssignOrganizationAdminRequest struct {
@@ -1563,7 +1723,7 @@ type AssignOrganizationAdminRequest struct {
 
 func (x *AssignOrganizationAdminRequest) Reset() {
 	*x = AssignOrganizationAdminRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[34]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1575,7 +1735,7 @@ func (x *AssignOrganizationAdminRequest) String() string {
 func (*AssignOrganizationAdminRequest) ProtoMessage() {}
 
 func (x *AssignOrganizationAdminRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[34]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1588,7 +1748,7 @@ func (x *AssignOrganizationAdminRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignOrganizationAdminRequest.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationAdminRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{34}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *AssignOrganizationAdminRequest) GetOrganizationId() string {
@@ -1613,7 +1773,7 @@ type AssignOrganizationAdminResponse struct {
 
 func (x *AssignOrganizationAdminResponse) Reset() {
 	*x = AssignOrganizationAdminResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[35]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1625,7 +1785,7 @@ func (x *AssignOrganizationAdminResponse) String() string {
 func (*AssignOrganizationAdminResponse) ProtoMessage() {}
 
 func (x *AssignOrganizationAdminResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[35]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1638,7 +1798,7 @@ func (x *AssignOrganizationAdminResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignOrganizationAdminResponse.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationAdminResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{35}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{39}
 }
 
 type RevokeOrganizationAdminRequest struct {
@@ -1651,7 +1811,7 @@ type RevokeOrganizationAdminRequest struct {
 
 func (x *RevokeOrganizationAdminRequest) Reset() {
 	*x = RevokeOrganizationAdminRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[36]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1663,7 +1823,7 @@ func (x *RevokeOrganizationAdminRequest) String() string {
 func (*RevokeOrganizationAdminRequest) ProtoMessage() {}
 
 func (x *RevokeOrganizationAdminRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[36]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1676,7 +1836,7 @@ func (x *RevokeOrganizationAdminRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeOrganizationAdminRequest.ProtoReflect.Descriptor instead.
 func (*RevokeOrganizationAdminRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{36}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *RevokeOrganizationAdminRequest) GetOrganizationId() string {
@@ -1701,7 +1861,7 @@ type RevokeOrganizationAdminResponse struct {
 
 func (x *RevokeOrganizationAdminResponse) Reset() {
 	*x = RevokeOrganizationAdminResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[37]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1713,7 +1873,7 @@ func (x *RevokeOrganizationAdminResponse) String() string {
 func (*RevokeOrganizationAdminResponse) ProtoMessage() {}
 
 func (x *RevokeOrganizationAdminResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[37]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1726,7 +1886,7 @@ func (x *RevokeOrganizationAdminResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeOrganizationAdminResponse.ProtoReflect.Descriptor instead.
 func (*RevokeOrganizationAdminResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{37}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{41}
 }
 
 type AssignOrganizationAdminDeputyRequest struct {
@@ -1740,7 +1900,7 @@ type AssignOrganizationAdminDeputyRequest struct {
 
 func (x *AssignOrganizationAdminDeputyRequest) Reset() {
 	*x = AssignOrganizationAdminDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[38]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1752,7 +1912,7 @@ func (x *AssignOrganizationAdminDeputyRequest) String() string {
 func (*AssignOrganizationAdminDeputyRequest) ProtoMessage() {}
 
 func (x *AssignOrganizationAdminDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[38]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1765,7 +1925,7 @@ func (x *AssignOrganizationAdminDeputyRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use AssignOrganizationAdminDeputyRequest.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationAdminDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{38}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *AssignOrganizationAdminDeputyRequest) GetOrganizationId() string {
@@ -1797,7 +1957,7 @@ type AssignOrganizationAdminDeputyResponse struct {
 
 func (x *AssignOrganizationAdminDeputyResponse) Reset() {
 	*x = AssignOrganizationAdminDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[39]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1809,7 +1969,7 @@ func (x *AssignOrganizationAdminDeputyResponse) String() string {
 func (*AssignOrganizationAdminDeputyResponse) ProtoMessage() {}
 
 func (x *AssignOrganizationAdminDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[39]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1822,7 +1982,7 @@ func (x *AssignOrganizationAdminDeputyResponse) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use AssignOrganizationAdminDeputyResponse.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationAdminDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{39}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{43}
 }
 
 type RemoveOrganizationAdminDeputyRequest struct {
@@ -1835,7 +1995,7 @@ type RemoveOrganizationAdminDeputyRequest struct {
 
 func (x *RemoveOrganizationAdminDeputyRequest) Reset() {
 	*x = RemoveOrganizationAdminDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[40]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1847,7 +2007,7 @@ func (x *RemoveOrganizationAdminDeputyRequest) String() string {
 func (*RemoveOrganizationAdminDeputyRequest) ProtoMessage() {}
 
 func (x *RemoveOrganizationAdminDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[40]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1860,7 +2020,7 @@ func (x *RemoveOrganizationAdminDeputyRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use RemoveOrganizationAdminDeputyRequest.ProtoReflect.Descriptor instead.
 func (*RemoveOrganizationAdminDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{40}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *RemoveOrganizationAdminDeputyRequest) GetOrganizationId() string {
@@ -1885,7 +2045,7 @@ type RemoveOrganizationAdminDeputyResponse struct {
 
 func (x *RemoveOrganizationAdminDeputyResponse) Reset() {
 	*x = RemoveOrganizationAdminDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[41]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1897,7 +2057,7 @@ func (x *RemoveOrganizationAdminDeputyResponse) String() string {
 func (*RemoveOrganizationAdminDeputyResponse) ProtoMessage() {}
 
 func (x *RemoveOrganizationAdminDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[41]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1910,7 +2070,7 @@ func (x *RemoveOrganizationAdminDeputyResponse) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use RemoveOrganizationAdminDeputyResponse.ProtoReflect.Descriptor instead.
 func (*RemoveOrganizationAdminDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{41}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{45}
 }
 
 type AssignOrganizationHeadRequest struct {
@@ -1923,7 +2083,7 @@ type AssignOrganizationHeadRequest struct {
 
 func (x *AssignOrganizationHeadRequest) Reset() {
 	*x = AssignOrganizationHeadRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[42]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1935,7 +2095,7 @@ func (x *AssignOrganizationHeadRequest) String() string {
 func (*AssignOrganizationHeadRequest) ProtoMessage() {}
 
 func (x *AssignOrganizationHeadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[42]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1948,7 +2108,7 @@ func (x *AssignOrganizationHeadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignOrganizationHeadRequest.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationHeadRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{42}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *AssignOrganizationHeadRequest) GetOrganizationId() string {
@@ -1973,7 +2133,7 @@ type AssignOrganizationHeadResponse struct {
 
 func (x *AssignOrganizationHeadResponse) Reset() {
 	*x = AssignOrganizationHeadResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[43]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1985,7 +2145,7 @@ func (x *AssignOrganizationHeadResponse) String() string {
 func (*AssignOrganizationHeadResponse) ProtoMessage() {}
 
 func (x *AssignOrganizationHeadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[43]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1998,7 +2158,7 @@ func (x *AssignOrganizationHeadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AssignOrganizationHeadResponse.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationHeadResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{43}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{47}
 }
 
 type RevokeOrganizationHeadRequest struct {
@@ -2011,7 +2171,7 @@ type RevokeOrganizationHeadRequest struct {
 
 func (x *RevokeOrganizationHeadRequest) Reset() {
 	*x = RevokeOrganizationHeadRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[44]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2023,7 +2183,7 @@ func (x *RevokeOrganizationHeadRequest) String() string {
 func (*RevokeOrganizationHeadRequest) ProtoMessage() {}
 
 func (x *RevokeOrganizationHeadRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[44]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2036,7 +2196,7 @@ func (x *RevokeOrganizationHeadRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeOrganizationHeadRequest.ProtoReflect.Descriptor instead.
 func (*RevokeOrganizationHeadRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{44}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *RevokeOrganizationHeadRequest) GetOrganizationId() string {
@@ -2061,7 +2221,7 @@ type RevokeOrganizationHeadResponse struct {
 
 func (x *RevokeOrganizationHeadResponse) Reset() {
 	*x = RevokeOrganizationHeadResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[45]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2073,7 +2233,7 @@ func (x *RevokeOrganizationHeadResponse) String() string {
 func (*RevokeOrganizationHeadResponse) ProtoMessage() {}
 
 func (x *RevokeOrganizationHeadResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[45]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2086,7 +2246,7 @@ func (x *RevokeOrganizationHeadResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeOrganizationHeadResponse.ProtoReflect.Descriptor instead.
 func (*RevokeOrganizationHeadResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{45}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{49}
 }
 
 type AssignOrganizationHeadDeputyRequest struct {
@@ -2100,7 +2260,7 @@ type AssignOrganizationHeadDeputyRequest struct {
 
 func (x *AssignOrganizationHeadDeputyRequest) Reset() {
 	*x = AssignOrganizationHeadDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[46]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2112,7 +2272,7 @@ func (x *AssignOrganizationHeadDeputyRequest) String() string {
 func (*AssignOrganizationHeadDeputyRequest) ProtoMessage() {}
 
 func (x *AssignOrganizationHeadDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[46]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2125,7 +2285,7 @@ func (x *AssignOrganizationHeadDeputyRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use AssignOrganizationHeadDeputyRequest.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationHeadDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{46}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *AssignOrganizationHeadDeputyRequest) GetOrganizationId() string {
@@ -2157,7 +2317,7 @@ type AssignOrganizationHeadDeputyResponse struct {
 
 func (x *AssignOrganizationHeadDeputyResponse) Reset() {
 	*x = AssignOrganizationHeadDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[47]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2169,7 +2329,7 @@ func (x *AssignOrganizationHeadDeputyResponse) String() string {
 func (*AssignOrganizationHeadDeputyResponse) ProtoMessage() {}
 
 func (x *AssignOrganizationHeadDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[47]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2182,7 +2342,7 @@ func (x *AssignOrganizationHeadDeputyResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use AssignOrganizationHeadDeputyResponse.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationHeadDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{47}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{51}
 }
 
 type RemoveOrganizationHeadDeputyRequest struct {
@@ -2195,7 +2355,7 @@ type RemoveOrganizationHeadDeputyRequest struct {
 
 func (x *RemoveOrganizationHeadDeputyRequest) Reset() {
 	*x = RemoveOrganizationHeadDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[48]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2207,7 +2367,7 @@ func (x *RemoveOrganizationHeadDeputyRequest) String() string {
 func (*RemoveOrganizationHeadDeputyRequest) ProtoMessage() {}
 
 func (x *RemoveOrganizationHeadDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[48]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2220,7 +2380,7 @@ func (x *RemoveOrganizationHeadDeputyRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use RemoveOrganizationHeadDeputyRequest.ProtoReflect.Descriptor instead.
 func (*RemoveOrganizationHeadDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{48}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *RemoveOrganizationHeadDeputyRequest) GetOrganizationId() string {
@@ -2245,7 +2405,7 @@ type RemoveOrganizationHeadDeputyResponse struct {
 
 func (x *RemoveOrganizationHeadDeputyResponse) Reset() {
 	*x = RemoveOrganizationHeadDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[49]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2257,7 +2417,7 @@ func (x *RemoveOrganizationHeadDeputyResponse) String() string {
 func (*RemoveOrganizationHeadDeputyResponse) ProtoMessage() {}
 
 func (x *RemoveOrganizationHeadDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[49]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2270,7 +2430,7 @@ func (x *RemoveOrganizationHeadDeputyResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use RemoveOrganizationHeadDeputyResponse.ProtoReflect.Descriptor instead.
 func (*RemoveOrganizationHeadDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{49}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{53}
 }
 
 type AssignOrganizationDispatcherRequest struct {
@@ -2283,7 +2443,7 @@ type AssignOrganizationDispatcherRequest struct {
 
 func (x *AssignOrganizationDispatcherRequest) Reset() {
 	*x = AssignOrganizationDispatcherRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[50]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2295,7 +2455,7 @@ func (x *AssignOrganizationDispatcherRequest) String() string {
 func (*AssignOrganizationDispatcherRequest) ProtoMessage() {}
 
 func (x *AssignOrganizationDispatcherRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[50]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2308,7 +2468,7 @@ func (x *AssignOrganizationDispatcherRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use AssignOrganizationDispatcherRequest.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationDispatcherRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{50}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *AssignOrganizationDispatcherRequest) GetOrganizationId() string {
@@ -2333,7 +2493,7 @@ type AssignOrganizationDispatcherResponse struct {
 
 func (x *AssignOrganizationDispatcherResponse) Reset() {
 	*x = AssignOrganizationDispatcherResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[51]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2345,7 +2505,7 @@ func (x *AssignOrganizationDispatcherResponse) String() string {
 func (*AssignOrganizationDispatcherResponse) ProtoMessage() {}
 
 func (x *AssignOrganizationDispatcherResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[51]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2358,7 +2518,7 @@ func (x *AssignOrganizationDispatcherResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use AssignOrganizationDispatcherResponse.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationDispatcherResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{51}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{55}
 }
 
 type RevokeOrganizationDispatcherRequest struct {
@@ -2371,7 +2531,7 @@ type RevokeOrganizationDispatcherRequest struct {
 
 func (x *RevokeOrganizationDispatcherRequest) Reset() {
 	*x = RevokeOrganizationDispatcherRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[52]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2383,7 +2543,7 @@ func (x *RevokeOrganizationDispatcherRequest) String() string {
 func (*RevokeOrganizationDispatcherRequest) ProtoMessage() {}
 
 func (x *RevokeOrganizationDispatcherRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[52]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2396,7 +2556,7 @@ func (x *RevokeOrganizationDispatcherRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use RevokeOrganizationDispatcherRequest.ProtoReflect.Descriptor instead.
 func (*RevokeOrganizationDispatcherRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{52}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *RevokeOrganizationDispatcherRequest) GetOrganizationId() string {
@@ -2421,7 +2581,7 @@ type RevokeOrganizationDispatcherResponse struct {
 
 func (x *RevokeOrganizationDispatcherResponse) Reset() {
 	*x = RevokeOrganizationDispatcherResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[53]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2433,7 +2593,7 @@ func (x *RevokeOrganizationDispatcherResponse) String() string {
 func (*RevokeOrganizationDispatcherResponse) ProtoMessage() {}
 
 func (x *RevokeOrganizationDispatcherResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[53]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2446,7 +2606,7 @@ func (x *RevokeOrganizationDispatcherResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use RevokeOrganizationDispatcherResponse.ProtoReflect.Descriptor instead.
 func (*RevokeOrganizationDispatcherResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{53}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{57}
 }
 
 type AssignOrganizationDispatcherDeputyRequest struct {
@@ -2460,7 +2620,7 @@ type AssignOrganizationDispatcherDeputyRequest struct {
 
 func (x *AssignOrganizationDispatcherDeputyRequest) Reset() {
 	*x = AssignOrganizationDispatcherDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[54]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2472,7 +2632,7 @@ func (x *AssignOrganizationDispatcherDeputyRequest) String() string {
 func (*AssignOrganizationDispatcherDeputyRequest) ProtoMessage() {}
 
 func (x *AssignOrganizationDispatcherDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[54]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2485,7 +2645,7 @@ func (x *AssignOrganizationDispatcherDeputyRequest) ProtoReflect() protoreflect.
 
 // Deprecated: Use AssignOrganizationDispatcherDeputyRequest.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationDispatcherDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{54}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *AssignOrganizationDispatcherDeputyRequest) GetOrganizationId() string {
@@ -2517,7 +2677,7 @@ type AssignOrganizationDispatcherDeputyResponse struct {
 
 func (x *AssignOrganizationDispatcherDeputyResponse) Reset() {
 	*x = AssignOrganizationDispatcherDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[55]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2529,7 +2689,7 @@ func (x *AssignOrganizationDispatcherDeputyResponse) String() string {
 func (*AssignOrganizationDispatcherDeputyResponse) ProtoMessage() {}
 
 func (x *AssignOrganizationDispatcherDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[55]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2542,7 +2702,7 @@ func (x *AssignOrganizationDispatcherDeputyResponse) ProtoReflect() protoreflect
 
 // Deprecated: Use AssignOrganizationDispatcherDeputyResponse.ProtoReflect.Descriptor instead.
 func (*AssignOrganizationDispatcherDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{55}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{59}
 }
 
 type RemoveOrganizationDispatcherDeputyRequest struct {
@@ -2555,7 +2715,7 @@ type RemoveOrganizationDispatcherDeputyRequest struct {
 
 func (x *RemoveOrganizationDispatcherDeputyRequest) Reset() {
 	*x = RemoveOrganizationDispatcherDeputyRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[56]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2567,7 +2727,7 @@ func (x *RemoveOrganizationDispatcherDeputyRequest) String() string {
 func (*RemoveOrganizationDispatcherDeputyRequest) ProtoMessage() {}
 
 func (x *RemoveOrganizationDispatcherDeputyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[56]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2580,7 +2740,7 @@ func (x *RemoveOrganizationDispatcherDeputyRequest) ProtoReflect() protoreflect.
 
 // Deprecated: Use RemoveOrganizationDispatcherDeputyRequest.ProtoReflect.Descriptor instead.
 func (*RemoveOrganizationDispatcherDeputyRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{56}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *RemoveOrganizationDispatcherDeputyRequest) GetOrganizationId() string {
@@ -2605,7 +2765,7 @@ type RemoveOrganizationDispatcherDeputyResponse struct {
 
 func (x *RemoveOrganizationDispatcherDeputyResponse) Reset() {
 	*x = RemoveOrganizationDispatcherDeputyResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[57]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2617,7 +2777,7 @@ func (x *RemoveOrganizationDispatcherDeputyResponse) String() string {
 func (*RemoveOrganizationDispatcherDeputyResponse) ProtoMessage() {}
 
 func (x *RemoveOrganizationDispatcherDeputyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[57]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2630,7 +2790,7 @@ func (x *RemoveOrganizationDispatcherDeputyResponse) ProtoReflect() protoreflect
 
 // Deprecated: Use RemoveOrganizationDispatcherDeputyResponse.ProtoReflect.Descriptor instead.
 func (*RemoveOrganizationDispatcherDeputyResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{57}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{61}
 }
 
 type GrantSystemAdminRequest struct {
@@ -2642,7 +2802,7 @@ type GrantSystemAdminRequest struct {
 
 func (x *GrantSystemAdminRequest) Reset() {
 	*x = GrantSystemAdminRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[58]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2654,7 +2814,7 @@ func (x *GrantSystemAdminRequest) String() string {
 func (*GrantSystemAdminRequest) ProtoMessage() {}
 
 func (x *GrantSystemAdminRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[58]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2667,7 +2827,7 @@ func (x *GrantSystemAdminRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GrantSystemAdminRequest.ProtoReflect.Descriptor instead.
 func (*GrantSystemAdminRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{58}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *GrantSystemAdminRequest) GetZitadelUserId() string {
@@ -2685,7 +2845,7 @@ type GrantSystemAdminResponse struct {
 
 func (x *GrantSystemAdminResponse) Reset() {
 	*x = GrantSystemAdminResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[59]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2697,7 +2857,7 @@ func (x *GrantSystemAdminResponse) String() string {
 func (*GrantSystemAdminResponse) ProtoMessage() {}
 
 func (x *GrantSystemAdminResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[59]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2710,7 +2870,7 @@ func (x *GrantSystemAdminResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GrantSystemAdminResponse.ProtoReflect.Descriptor instead.
 func (*GrantSystemAdminResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{59}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{63}
 }
 
 type RevokeSystemAdminRequest struct {
@@ -2722,7 +2882,7 @@ type RevokeSystemAdminRequest struct {
 
 func (x *RevokeSystemAdminRequest) Reset() {
 	*x = RevokeSystemAdminRequest{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[60]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2734,7 +2894,7 @@ func (x *RevokeSystemAdminRequest) String() string {
 func (*RevokeSystemAdminRequest) ProtoMessage() {}
 
 func (x *RevokeSystemAdminRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[60]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2747,7 +2907,7 @@ func (x *RevokeSystemAdminRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeSystemAdminRequest.ProtoReflect.Descriptor instead.
 func (*RevokeSystemAdminRequest) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{60}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *RevokeSystemAdminRequest) GetZitadelUserId() string {
@@ -2765,7 +2925,7 @@ type RevokeSystemAdminResponse struct {
 
 func (x *RevokeSystemAdminResponse) Reset() {
 	*x = RevokeSystemAdminResponse{}
-	mi := &file_command_membership_v1_membership_proto_msgTypes[61]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2777,7 +2937,7 @@ func (x *RevokeSystemAdminResponse) String() string {
 func (*RevokeSystemAdminResponse) ProtoMessage() {}
 
 func (x *RevokeSystemAdminResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_command_membership_v1_membership_proto_msgTypes[61]
+	mi := &file_command_membership_v1_membership_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2790,7 +2950,7 @@ func (x *RevokeSystemAdminResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeSystemAdminResponse.ProtoReflect.Descriptor instead.
 func (*RevokeSystemAdminResponse) Descriptor() ([]byte, []int) {
-	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{61}
+	return file_command_membership_v1_membership_proto_rawDescGZIP(), []int{65}
 }
 
 var File_command_membership_v1_membership_proto protoreflect.FileDescriptor
@@ -2820,7 +2980,15 @@ const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\x18TerminateEmployeeRequest\x12$\n" +
 	"\vemployee_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
 	"employeeId\"\x1b\n" +
-	"\x19TerminateEmployeeResponse\"\x85\x01\n" +
+	"\x19TerminateEmployeeResponse\"A\n" +
+	"\x19DeactivateEmployeeRequest\x12$\n" +
+	"\vemployee_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
+	"employeeId\"\x1c\n" +
+	"\x1aDeactivateEmployeeResponse\"?\n" +
+	"\x17ActivateEmployeeRequest\x12$\n" +
+	"\vemployee_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
+	"employeeId\"\x1a\n" +
+	"\x18ActivateEmployeeResponse\"\x85\x01\n" +
 	"\x17StartVacationNowRequest\x12$\n" +
 	"\vemployee_id\x18\x01 \x01(\tB\x03\xe0A\x02R\n" +
 	"employeeId\x128\n" +
@@ -2963,7 +3131,7 @@ const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\x18GrantSystemAdminResponse\"G\n" +
 	"\x18RevokeSystemAdminRequest\x12+\n" +
 	"\x0fzitadel_user_id\x18\x01 \x01(\tB\x03\xe0A\x02R\rzitadelUserId\"\x1b\n" +
-	"\x19RevokeSystemAdminResponse2\xb0c\n" +
+	"\x19RevokeSystemAdminResponse2\xd8h\n" +
 	"\x18MembershipCommandService\x12\xc9\x04\n" +
 	"\fHireEmployee\x12*.command.membership.v1.HireEmployeeRequest\x1a+.command.membership.v1.HireEmployeeResponse\"\xdf\x03\x92A\xc3\x03J\xba\x01\n" +
 	"\x03404\x12\xb2\x01\n" +
@@ -2988,7 +3156,18 @@ const file_command_membership_v1_membership_proto_rawDesc = "" +
 	"\x11TerminateEmployee\x12/.command.membership.v1.TerminateEmployeeRequest\x1a0.command.membership.v1.TerminateEmployeeResponse\"\x8e\x01\x92AhJf\n" +
 	"\x03404\x12_\n" +
 	"]Not found. Error codes:\n" +
-	"- `employee_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/employees/{employee_id}\x12\x9b\x02\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1d*\x1b/v1/employees/{employee_id}\x12\x98\x02\n" +
+	"\x12DeactivateEmployee\x120.command.membership.v1.DeactivateEmployeeRequest\x1a1.command.membership.v1.DeactivateEmployeeResponse\"\x9c\x01\x92AhJf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.\x82\xd3\xe4\x93\x02+:\x01*\"&/v1/employees/{employee_id}/deactivate\x12\x8a\x03\n" +
+	"\x10ActivateEmployee\x12..command.membership.v1.ActivateEmployeeRequest\x1a/.command.membership.v1.ActivateEmployeeResponse\"\x94\x02\x92A\xe1\x01Jf\n" +
+	"\x03404\x12_\n" +
+	"]Not found. Error codes:\n" +
+	"- `employee_not_found` — employee with the given ID does not exist.Jw\n" +
+	"\x03422\x12p\n" +
+	"nBusiness rule violation. Error codes:\n" +
+	"- `employee_activate_parent_inactive` — parent department is inactive.\x82\xd3\xe4\x93\x02):\x01*\"$/v1/employees/{employee_id}/activate\x12\x9b\x02\n" +
 	"\x10StartVacationNow\x12..command.membership.v1.StartVacationNowRequest\x1a/.command.membership.v1.StartVacationNowResponse\"\xa5\x01\x92AhJf\n" +
 	"\x03404\x12_\n" +
 	"]Not found. Error codes:\n" +
@@ -3178,7 +3357,7 @@ func file_command_membership_v1_membership_proto_rawDescGZIP() []byte {
 	return file_command_membership_v1_membership_proto_rawDescData
 }
 
-var file_command_membership_v1_membership_proto_msgTypes = make([]protoimpl.MessageInfo, 62)
+var file_command_membership_v1_membership_proto_msgTypes = make([]protoimpl.MessageInfo, 66)
 var file_command_membership_v1_membership_proto_goTypes = []any{
 	(*HireEmployeeRequest)(nil),                        // 0: command.membership.v1.HireEmployeeRequest
 	(*HireEmployeeResponse)(nil),                       // 1: command.membership.v1.HireEmployeeResponse
@@ -3188,131 +3367,139 @@ var file_command_membership_v1_membership_proto_goTypes = []any{
 	(*UpdateEmployeeDepartmentResponse)(nil),           // 5: command.membership.v1.UpdateEmployeeDepartmentResponse
 	(*TerminateEmployeeRequest)(nil),                   // 6: command.membership.v1.TerminateEmployeeRequest
 	(*TerminateEmployeeResponse)(nil),                  // 7: command.membership.v1.TerminateEmployeeResponse
-	(*StartVacationNowRequest)(nil),                    // 8: command.membership.v1.StartVacationNowRequest
-	(*StartVacationNowResponse)(nil),                   // 9: command.membership.v1.StartVacationNowResponse
-	(*ScheduleVacationRequest)(nil),                    // 10: command.membership.v1.ScheduleVacationRequest
-	(*ScheduleVacationResponse)(nil),                   // 11: command.membership.v1.ScheduleVacationResponse
-	(*UpdateVacationEndDateRequest)(nil),               // 12: command.membership.v1.UpdateVacationEndDateRequest
-	(*UpdateVacationEndDateResponse)(nil),              // 13: command.membership.v1.UpdateVacationEndDateResponse
-	(*ForceEndVacationRequest)(nil),                    // 14: command.membership.v1.ForceEndVacationRequest
-	(*ForceEndVacationResponse)(nil),                   // 15: command.membership.v1.ForceEndVacationResponse
-	(*CancelScheduledVacationRequest)(nil),             // 16: command.membership.v1.CancelScheduledVacationRequest
-	(*CancelScheduledVacationResponse)(nil),            // 17: command.membership.v1.CancelScheduledVacationResponse
-	(*AssignDepartmentResponsibleRequest)(nil),         // 18: command.membership.v1.AssignDepartmentResponsibleRequest
-	(*AssignDepartmentResponsibleResponse)(nil),        // 19: command.membership.v1.AssignDepartmentResponsibleResponse
-	(*RevokeDepartmentResponsibleRequest)(nil),         // 20: command.membership.v1.RevokeDepartmentResponsibleRequest
-	(*RevokeDepartmentResponsibleResponse)(nil),        // 21: command.membership.v1.RevokeDepartmentResponsibleResponse
-	(*AssignDepartmentResponsibleDeputyRequest)(nil),   // 22: command.membership.v1.AssignDepartmentResponsibleDeputyRequest
-	(*AssignDepartmentResponsibleDeputyResponse)(nil),  // 23: command.membership.v1.AssignDepartmentResponsibleDeputyResponse
-	(*RemoveDepartmentResponsibleDeputyRequest)(nil),   // 24: command.membership.v1.RemoveDepartmentResponsibleDeputyRequest
-	(*RemoveDepartmentResponsibleDeputyResponse)(nil),  // 25: command.membership.v1.RemoveDepartmentResponsibleDeputyResponse
-	(*AssignClinicHeadRequest)(nil),                    // 26: command.membership.v1.AssignClinicHeadRequest
-	(*AssignClinicHeadResponse)(nil),                   // 27: command.membership.v1.AssignClinicHeadResponse
-	(*RevokeClinicHeadRequest)(nil),                    // 28: command.membership.v1.RevokeClinicHeadRequest
-	(*RevokeClinicHeadResponse)(nil),                   // 29: command.membership.v1.RevokeClinicHeadResponse
-	(*AssignClinicHeadDeputyRequest)(nil),              // 30: command.membership.v1.AssignClinicHeadDeputyRequest
-	(*AssignClinicHeadDeputyResponse)(nil),             // 31: command.membership.v1.AssignClinicHeadDeputyResponse
-	(*RemoveClinicHeadDeputyRequest)(nil),              // 32: command.membership.v1.RemoveClinicHeadDeputyRequest
-	(*RemoveClinicHeadDeputyResponse)(nil),             // 33: command.membership.v1.RemoveClinicHeadDeputyResponse
-	(*AssignOrganizationAdminRequest)(nil),             // 34: command.membership.v1.AssignOrganizationAdminRequest
-	(*AssignOrganizationAdminResponse)(nil),            // 35: command.membership.v1.AssignOrganizationAdminResponse
-	(*RevokeOrganizationAdminRequest)(nil),             // 36: command.membership.v1.RevokeOrganizationAdminRequest
-	(*RevokeOrganizationAdminResponse)(nil),            // 37: command.membership.v1.RevokeOrganizationAdminResponse
-	(*AssignOrganizationAdminDeputyRequest)(nil),       // 38: command.membership.v1.AssignOrganizationAdminDeputyRequest
-	(*AssignOrganizationAdminDeputyResponse)(nil),      // 39: command.membership.v1.AssignOrganizationAdminDeputyResponse
-	(*RemoveOrganizationAdminDeputyRequest)(nil),       // 40: command.membership.v1.RemoveOrganizationAdminDeputyRequest
-	(*RemoveOrganizationAdminDeputyResponse)(nil),      // 41: command.membership.v1.RemoveOrganizationAdminDeputyResponse
-	(*AssignOrganizationHeadRequest)(nil),              // 42: command.membership.v1.AssignOrganizationHeadRequest
-	(*AssignOrganizationHeadResponse)(nil),             // 43: command.membership.v1.AssignOrganizationHeadResponse
-	(*RevokeOrganizationHeadRequest)(nil),              // 44: command.membership.v1.RevokeOrganizationHeadRequest
-	(*RevokeOrganizationHeadResponse)(nil),             // 45: command.membership.v1.RevokeOrganizationHeadResponse
-	(*AssignOrganizationHeadDeputyRequest)(nil),        // 46: command.membership.v1.AssignOrganizationHeadDeputyRequest
-	(*AssignOrganizationHeadDeputyResponse)(nil),       // 47: command.membership.v1.AssignOrganizationHeadDeputyResponse
-	(*RemoveOrganizationHeadDeputyRequest)(nil),        // 48: command.membership.v1.RemoveOrganizationHeadDeputyRequest
-	(*RemoveOrganizationHeadDeputyResponse)(nil),       // 49: command.membership.v1.RemoveOrganizationHeadDeputyResponse
-	(*AssignOrganizationDispatcherRequest)(nil),        // 50: command.membership.v1.AssignOrganizationDispatcherRequest
-	(*AssignOrganizationDispatcherResponse)(nil),       // 51: command.membership.v1.AssignOrganizationDispatcherResponse
-	(*RevokeOrganizationDispatcherRequest)(nil),        // 52: command.membership.v1.RevokeOrganizationDispatcherRequest
-	(*RevokeOrganizationDispatcherResponse)(nil),       // 53: command.membership.v1.RevokeOrganizationDispatcherResponse
-	(*AssignOrganizationDispatcherDeputyRequest)(nil),  // 54: command.membership.v1.AssignOrganizationDispatcherDeputyRequest
-	(*AssignOrganizationDispatcherDeputyResponse)(nil), // 55: command.membership.v1.AssignOrganizationDispatcherDeputyResponse
-	(*RemoveOrganizationDispatcherDeputyRequest)(nil),  // 56: command.membership.v1.RemoveOrganizationDispatcherDeputyRequest
-	(*RemoveOrganizationDispatcherDeputyResponse)(nil), // 57: command.membership.v1.RemoveOrganizationDispatcherDeputyResponse
-	(*GrantSystemAdminRequest)(nil),                    // 58: command.membership.v1.GrantSystemAdminRequest
-	(*GrantSystemAdminResponse)(nil),                   // 59: command.membership.v1.GrantSystemAdminResponse
-	(*RevokeSystemAdminRequest)(nil),                   // 60: command.membership.v1.RevokeSystemAdminRequest
-	(*RevokeSystemAdminResponse)(nil),                  // 61: command.membership.v1.RevokeSystemAdminResponse
-	(*timestamppb.Timestamp)(nil),                      // 62: google.protobuf.Timestamp
+	(*DeactivateEmployeeRequest)(nil),                  // 8: command.membership.v1.DeactivateEmployeeRequest
+	(*DeactivateEmployeeResponse)(nil),                 // 9: command.membership.v1.DeactivateEmployeeResponse
+	(*ActivateEmployeeRequest)(nil),                    // 10: command.membership.v1.ActivateEmployeeRequest
+	(*ActivateEmployeeResponse)(nil),                   // 11: command.membership.v1.ActivateEmployeeResponse
+	(*StartVacationNowRequest)(nil),                    // 12: command.membership.v1.StartVacationNowRequest
+	(*StartVacationNowResponse)(nil),                   // 13: command.membership.v1.StartVacationNowResponse
+	(*ScheduleVacationRequest)(nil),                    // 14: command.membership.v1.ScheduleVacationRequest
+	(*ScheduleVacationResponse)(nil),                   // 15: command.membership.v1.ScheduleVacationResponse
+	(*UpdateVacationEndDateRequest)(nil),               // 16: command.membership.v1.UpdateVacationEndDateRequest
+	(*UpdateVacationEndDateResponse)(nil),              // 17: command.membership.v1.UpdateVacationEndDateResponse
+	(*ForceEndVacationRequest)(nil),                    // 18: command.membership.v1.ForceEndVacationRequest
+	(*ForceEndVacationResponse)(nil),                   // 19: command.membership.v1.ForceEndVacationResponse
+	(*CancelScheduledVacationRequest)(nil),             // 20: command.membership.v1.CancelScheduledVacationRequest
+	(*CancelScheduledVacationResponse)(nil),            // 21: command.membership.v1.CancelScheduledVacationResponse
+	(*AssignDepartmentResponsibleRequest)(nil),         // 22: command.membership.v1.AssignDepartmentResponsibleRequest
+	(*AssignDepartmentResponsibleResponse)(nil),        // 23: command.membership.v1.AssignDepartmentResponsibleResponse
+	(*RevokeDepartmentResponsibleRequest)(nil),         // 24: command.membership.v1.RevokeDepartmentResponsibleRequest
+	(*RevokeDepartmentResponsibleResponse)(nil),        // 25: command.membership.v1.RevokeDepartmentResponsibleResponse
+	(*AssignDepartmentResponsibleDeputyRequest)(nil),   // 26: command.membership.v1.AssignDepartmentResponsibleDeputyRequest
+	(*AssignDepartmentResponsibleDeputyResponse)(nil),  // 27: command.membership.v1.AssignDepartmentResponsibleDeputyResponse
+	(*RemoveDepartmentResponsibleDeputyRequest)(nil),   // 28: command.membership.v1.RemoveDepartmentResponsibleDeputyRequest
+	(*RemoveDepartmentResponsibleDeputyResponse)(nil),  // 29: command.membership.v1.RemoveDepartmentResponsibleDeputyResponse
+	(*AssignClinicHeadRequest)(nil),                    // 30: command.membership.v1.AssignClinicHeadRequest
+	(*AssignClinicHeadResponse)(nil),                   // 31: command.membership.v1.AssignClinicHeadResponse
+	(*RevokeClinicHeadRequest)(nil),                    // 32: command.membership.v1.RevokeClinicHeadRequest
+	(*RevokeClinicHeadResponse)(nil),                   // 33: command.membership.v1.RevokeClinicHeadResponse
+	(*AssignClinicHeadDeputyRequest)(nil),              // 34: command.membership.v1.AssignClinicHeadDeputyRequest
+	(*AssignClinicHeadDeputyResponse)(nil),             // 35: command.membership.v1.AssignClinicHeadDeputyResponse
+	(*RemoveClinicHeadDeputyRequest)(nil),              // 36: command.membership.v1.RemoveClinicHeadDeputyRequest
+	(*RemoveClinicHeadDeputyResponse)(nil),             // 37: command.membership.v1.RemoveClinicHeadDeputyResponse
+	(*AssignOrganizationAdminRequest)(nil),             // 38: command.membership.v1.AssignOrganizationAdminRequest
+	(*AssignOrganizationAdminResponse)(nil),            // 39: command.membership.v1.AssignOrganizationAdminResponse
+	(*RevokeOrganizationAdminRequest)(nil),             // 40: command.membership.v1.RevokeOrganizationAdminRequest
+	(*RevokeOrganizationAdminResponse)(nil),            // 41: command.membership.v1.RevokeOrganizationAdminResponse
+	(*AssignOrganizationAdminDeputyRequest)(nil),       // 42: command.membership.v1.AssignOrganizationAdminDeputyRequest
+	(*AssignOrganizationAdminDeputyResponse)(nil),      // 43: command.membership.v1.AssignOrganizationAdminDeputyResponse
+	(*RemoveOrganizationAdminDeputyRequest)(nil),       // 44: command.membership.v1.RemoveOrganizationAdminDeputyRequest
+	(*RemoveOrganizationAdminDeputyResponse)(nil),      // 45: command.membership.v1.RemoveOrganizationAdminDeputyResponse
+	(*AssignOrganizationHeadRequest)(nil),              // 46: command.membership.v1.AssignOrganizationHeadRequest
+	(*AssignOrganizationHeadResponse)(nil),             // 47: command.membership.v1.AssignOrganizationHeadResponse
+	(*RevokeOrganizationHeadRequest)(nil),              // 48: command.membership.v1.RevokeOrganizationHeadRequest
+	(*RevokeOrganizationHeadResponse)(nil),             // 49: command.membership.v1.RevokeOrganizationHeadResponse
+	(*AssignOrganizationHeadDeputyRequest)(nil),        // 50: command.membership.v1.AssignOrganizationHeadDeputyRequest
+	(*AssignOrganizationHeadDeputyResponse)(nil),       // 51: command.membership.v1.AssignOrganizationHeadDeputyResponse
+	(*RemoveOrganizationHeadDeputyRequest)(nil),        // 52: command.membership.v1.RemoveOrganizationHeadDeputyRequest
+	(*RemoveOrganizationHeadDeputyResponse)(nil),       // 53: command.membership.v1.RemoveOrganizationHeadDeputyResponse
+	(*AssignOrganizationDispatcherRequest)(nil),        // 54: command.membership.v1.AssignOrganizationDispatcherRequest
+	(*AssignOrganizationDispatcherResponse)(nil),       // 55: command.membership.v1.AssignOrganizationDispatcherResponse
+	(*RevokeOrganizationDispatcherRequest)(nil),        // 56: command.membership.v1.RevokeOrganizationDispatcherRequest
+	(*RevokeOrganizationDispatcherResponse)(nil),       // 57: command.membership.v1.RevokeOrganizationDispatcherResponse
+	(*AssignOrganizationDispatcherDeputyRequest)(nil),  // 58: command.membership.v1.AssignOrganizationDispatcherDeputyRequest
+	(*AssignOrganizationDispatcherDeputyResponse)(nil), // 59: command.membership.v1.AssignOrganizationDispatcherDeputyResponse
+	(*RemoveOrganizationDispatcherDeputyRequest)(nil),  // 60: command.membership.v1.RemoveOrganizationDispatcherDeputyRequest
+	(*RemoveOrganizationDispatcherDeputyResponse)(nil), // 61: command.membership.v1.RemoveOrganizationDispatcherDeputyResponse
+	(*GrantSystemAdminRequest)(nil),                    // 62: command.membership.v1.GrantSystemAdminRequest
+	(*GrantSystemAdminResponse)(nil),                   // 63: command.membership.v1.GrantSystemAdminResponse
+	(*RevokeSystemAdminRequest)(nil),                   // 64: command.membership.v1.RevokeSystemAdminRequest
+	(*RevokeSystemAdminResponse)(nil),                  // 65: command.membership.v1.RevokeSystemAdminResponse
+	(*timestamppb.Timestamp)(nil),                      // 66: google.protobuf.Timestamp
 }
 var file_command_membership_v1_membership_proto_depIdxs = []int32{
-	62, // 0: command.membership.v1.StartVacationNowRequest.ends_at:type_name -> google.protobuf.Timestamp
-	62, // 1: command.membership.v1.ScheduleVacationRequest.starts_at:type_name -> google.protobuf.Timestamp
-	62, // 2: command.membership.v1.ScheduleVacationRequest.ends_at:type_name -> google.protobuf.Timestamp
-	62, // 3: command.membership.v1.UpdateVacationEndDateRequest.ends_at:type_name -> google.protobuf.Timestamp
+	66, // 0: command.membership.v1.StartVacationNowRequest.ends_at:type_name -> google.protobuf.Timestamp
+	66, // 1: command.membership.v1.ScheduleVacationRequest.starts_at:type_name -> google.protobuf.Timestamp
+	66, // 2: command.membership.v1.ScheduleVacationRequest.ends_at:type_name -> google.protobuf.Timestamp
+	66, // 3: command.membership.v1.UpdateVacationEndDateRequest.ends_at:type_name -> google.protobuf.Timestamp
 	0,  // 4: command.membership.v1.MembershipCommandService.HireEmployee:input_type -> command.membership.v1.HireEmployeeRequest
 	2,  // 5: command.membership.v1.MembershipCommandService.UpdateEmployeePosition:input_type -> command.membership.v1.UpdateEmployeePositionRequest
 	4,  // 6: command.membership.v1.MembershipCommandService.UpdateEmployeeDepartment:input_type -> command.membership.v1.UpdateEmployeeDepartmentRequest
 	6,  // 7: command.membership.v1.MembershipCommandService.TerminateEmployee:input_type -> command.membership.v1.TerminateEmployeeRequest
-	8,  // 8: command.membership.v1.MembershipCommandService.StartVacationNow:input_type -> command.membership.v1.StartVacationNowRequest
-	10, // 9: command.membership.v1.MembershipCommandService.ScheduleVacation:input_type -> command.membership.v1.ScheduleVacationRequest
-	12, // 10: command.membership.v1.MembershipCommandService.UpdateVacationEndDate:input_type -> command.membership.v1.UpdateVacationEndDateRequest
-	14, // 11: command.membership.v1.MembershipCommandService.ForceEndVacation:input_type -> command.membership.v1.ForceEndVacationRequest
-	16, // 12: command.membership.v1.MembershipCommandService.CancelScheduledVacation:input_type -> command.membership.v1.CancelScheduledVacationRequest
-	18, // 13: command.membership.v1.MembershipCommandService.AssignDepartmentResponsible:input_type -> command.membership.v1.AssignDepartmentResponsibleRequest
-	20, // 14: command.membership.v1.MembershipCommandService.RevokeDepartmentResponsible:input_type -> command.membership.v1.RevokeDepartmentResponsibleRequest
-	22, // 15: command.membership.v1.MembershipCommandService.AssignDepartmentResponsibleDeputy:input_type -> command.membership.v1.AssignDepartmentResponsibleDeputyRequest
-	24, // 16: command.membership.v1.MembershipCommandService.RemoveDepartmentResponsibleDeputy:input_type -> command.membership.v1.RemoveDepartmentResponsibleDeputyRequest
-	26, // 17: command.membership.v1.MembershipCommandService.AssignClinicHead:input_type -> command.membership.v1.AssignClinicHeadRequest
-	28, // 18: command.membership.v1.MembershipCommandService.RevokeClinicHead:input_type -> command.membership.v1.RevokeClinicHeadRequest
-	30, // 19: command.membership.v1.MembershipCommandService.AssignClinicHeadDeputy:input_type -> command.membership.v1.AssignClinicHeadDeputyRequest
-	32, // 20: command.membership.v1.MembershipCommandService.RemoveClinicHeadDeputy:input_type -> command.membership.v1.RemoveClinicHeadDeputyRequest
-	34, // 21: command.membership.v1.MembershipCommandService.AssignOrganizationAdmin:input_type -> command.membership.v1.AssignOrganizationAdminRequest
-	36, // 22: command.membership.v1.MembershipCommandService.RevokeOrganizationAdmin:input_type -> command.membership.v1.RevokeOrganizationAdminRequest
-	38, // 23: command.membership.v1.MembershipCommandService.AssignOrganizationAdminDeputy:input_type -> command.membership.v1.AssignOrganizationAdminDeputyRequest
-	40, // 24: command.membership.v1.MembershipCommandService.RemoveOrganizationAdminDeputy:input_type -> command.membership.v1.RemoveOrganizationAdminDeputyRequest
-	42, // 25: command.membership.v1.MembershipCommandService.AssignOrganizationHead:input_type -> command.membership.v1.AssignOrganizationHeadRequest
-	44, // 26: command.membership.v1.MembershipCommandService.RevokeOrganizationHead:input_type -> command.membership.v1.RevokeOrganizationHeadRequest
-	46, // 27: command.membership.v1.MembershipCommandService.AssignOrganizationHeadDeputy:input_type -> command.membership.v1.AssignOrganizationHeadDeputyRequest
-	48, // 28: command.membership.v1.MembershipCommandService.RemoveOrganizationHeadDeputy:input_type -> command.membership.v1.RemoveOrganizationHeadDeputyRequest
-	50, // 29: command.membership.v1.MembershipCommandService.AssignOrganizationDispatcher:input_type -> command.membership.v1.AssignOrganizationDispatcherRequest
-	52, // 30: command.membership.v1.MembershipCommandService.RevokeOrganizationDispatcher:input_type -> command.membership.v1.RevokeOrganizationDispatcherRequest
-	54, // 31: command.membership.v1.MembershipCommandService.AssignOrganizationDispatcherDeputy:input_type -> command.membership.v1.AssignOrganizationDispatcherDeputyRequest
-	56, // 32: command.membership.v1.MembershipCommandService.RemoveOrganizationDispatcherDeputy:input_type -> command.membership.v1.RemoveOrganizationDispatcherDeputyRequest
-	58, // 33: command.membership.v1.MembershipCommandService.GrantSystemAdmin:input_type -> command.membership.v1.GrantSystemAdminRequest
-	60, // 34: command.membership.v1.MembershipCommandService.RevokeSystemAdmin:input_type -> command.membership.v1.RevokeSystemAdminRequest
-	1,  // 35: command.membership.v1.MembershipCommandService.HireEmployee:output_type -> command.membership.v1.HireEmployeeResponse
-	3,  // 36: command.membership.v1.MembershipCommandService.UpdateEmployeePosition:output_type -> command.membership.v1.UpdateEmployeePositionResponse
-	5,  // 37: command.membership.v1.MembershipCommandService.UpdateEmployeeDepartment:output_type -> command.membership.v1.UpdateEmployeeDepartmentResponse
-	7,  // 38: command.membership.v1.MembershipCommandService.TerminateEmployee:output_type -> command.membership.v1.TerminateEmployeeResponse
-	9,  // 39: command.membership.v1.MembershipCommandService.StartVacationNow:output_type -> command.membership.v1.StartVacationNowResponse
-	11, // 40: command.membership.v1.MembershipCommandService.ScheduleVacation:output_type -> command.membership.v1.ScheduleVacationResponse
-	13, // 41: command.membership.v1.MembershipCommandService.UpdateVacationEndDate:output_type -> command.membership.v1.UpdateVacationEndDateResponse
-	15, // 42: command.membership.v1.MembershipCommandService.ForceEndVacation:output_type -> command.membership.v1.ForceEndVacationResponse
-	17, // 43: command.membership.v1.MembershipCommandService.CancelScheduledVacation:output_type -> command.membership.v1.CancelScheduledVacationResponse
-	19, // 44: command.membership.v1.MembershipCommandService.AssignDepartmentResponsible:output_type -> command.membership.v1.AssignDepartmentResponsibleResponse
-	21, // 45: command.membership.v1.MembershipCommandService.RevokeDepartmentResponsible:output_type -> command.membership.v1.RevokeDepartmentResponsibleResponse
-	23, // 46: command.membership.v1.MembershipCommandService.AssignDepartmentResponsibleDeputy:output_type -> command.membership.v1.AssignDepartmentResponsibleDeputyResponse
-	25, // 47: command.membership.v1.MembershipCommandService.RemoveDepartmentResponsibleDeputy:output_type -> command.membership.v1.RemoveDepartmentResponsibleDeputyResponse
-	27, // 48: command.membership.v1.MembershipCommandService.AssignClinicHead:output_type -> command.membership.v1.AssignClinicHeadResponse
-	29, // 49: command.membership.v1.MembershipCommandService.RevokeClinicHead:output_type -> command.membership.v1.RevokeClinicHeadResponse
-	31, // 50: command.membership.v1.MembershipCommandService.AssignClinicHeadDeputy:output_type -> command.membership.v1.AssignClinicHeadDeputyResponse
-	33, // 51: command.membership.v1.MembershipCommandService.RemoveClinicHeadDeputy:output_type -> command.membership.v1.RemoveClinicHeadDeputyResponse
-	35, // 52: command.membership.v1.MembershipCommandService.AssignOrganizationAdmin:output_type -> command.membership.v1.AssignOrganizationAdminResponse
-	37, // 53: command.membership.v1.MembershipCommandService.RevokeOrganizationAdmin:output_type -> command.membership.v1.RevokeOrganizationAdminResponse
-	39, // 54: command.membership.v1.MembershipCommandService.AssignOrganizationAdminDeputy:output_type -> command.membership.v1.AssignOrganizationAdminDeputyResponse
-	41, // 55: command.membership.v1.MembershipCommandService.RemoveOrganizationAdminDeputy:output_type -> command.membership.v1.RemoveOrganizationAdminDeputyResponse
-	43, // 56: command.membership.v1.MembershipCommandService.AssignOrganizationHead:output_type -> command.membership.v1.AssignOrganizationHeadResponse
-	45, // 57: command.membership.v1.MembershipCommandService.RevokeOrganizationHead:output_type -> command.membership.v1.RevokeOrganizationHeadResponse
-	47, // 58: command.membership.v1.MembershipCommandService.AssignOrganizationHeadDeputy:output_type -> command.membership.v1.AssignOrganizationHeadDeputyResponse
-	49, // 59: command.membership.v1.MembershipCommandService.RemoveOrganizationHeadDeputy:output_type -> command.membership.v1.RemoveOrganizationHeadDeputyResponse
-	51, // 60: command.membership.v1.MembershipCommandService.AssignOrganizationDispatcher:output_type -> command.membership.v1.AssignOrganizationDispatcherResponse
-	53, // 61: command.membership.v1.MembershipCommandService.RevokeOrganizationDispatcher:output_type -> command.membership.v1.RevokeOrganizationDispatcherResponse
-	55, // 62: command.membership.v1.MembershipCommandService.AssignOrganizationDispatcherDeputy:output_type -> command.membership.v1.AssignOrganizationDispatcherDeputyResponse
-	57, // 63: command.membership.v1.MembershipCommandService.RemoveOrganizationDispatcherDeputy:output_type -> command.membership.v1.RemoveOrganizationDispatcherDeputyResponse
-	59, // 64: command.membership.v1.MembershipCommandService.GrantSystemAdmin:output_type -> command.membership.v1.GrantSystemAdminResponse
-	61, // 65: command.membership.v1.MembershipCommandService.RevokeSystemAdmin:output_type -> command.membership.v1.RevokeSystemAdminResponse
-	35, // [35:66] is the sub-list for method output_type
-	4,  // [4:35] is the sub-list for method input_type
+	8,  // 8: command.membership.v1.MembershipCommandService.DeactivateEmployee:input_type -> command.membership.v1.DeactivateEmployeeRequest
+	10, // 9: command.membership.v1.MembershipCommandService.ActivateEmployee:input_type -> command.membership.v1.ActivateEmployeeRequest
+	12, // 10: command.membership.v1.MembershipCommandService.StartVacationNow:input_type -> command.membership.v1.StartVacationNowRequest
+	14, // 11: command.membership.v1.MembershipCommandService.ScheduleVacation:input_type -> command.membership.v1.ScheduleVacationRequest
+	16, // 12: command.membership.v1.MembershipCommandService.UpdateVacationEndDate:input_type -> command.membership.v1.UpdateVacationEndDateRequest
+	18, // 13: command.membership.v1.MembershipCommandService.ForceEndVacation:input_type -> command.membership.v1.ForceEndVacationRequest
+	20, // 14: command.membership.v1.MembershipCommandService.CancelScheduledVacation:input_type -> command.membership.v1.CancelScheduledVacationRequest
+	22, // 15: command.membership.v1.MembershipCommandService.AssignDepartmentResponsible:input_type -> command.membership.v1.AssignDepartmentResponsibleRequest
+	24, // 16: command.membership.v1.MembershipCommandService.RevokeDepartmentResponsible:input_type -> command.membership.v1.RevokeDepartmentResponsibleRequest
+	26, // 17: command.membership.v1.MembershipCommandService.AssignDepartmentResponsibleDeputy:input_type -> command.membership.v1.AssignDepartmentResponsibleDeputyRequest
+	28, // 18: command.membership.v1.MembershipCommandService.RemoveDepartmentResponsibleDeputy:input_type -> command.membership.v1.RemoveDepartmentResponsibleDeputyRequest
+	30, // 19: command.membership.v1.MembershipCommandService.AssignClinicHead:input_type -> command.membership.v1.AssignClinicHeadRequest
+	32, // 20: command.membership.v1.MembershipCommandService.RevokeClinicHead:input_type -> command.membership.v1.RevokeClinicHeadRequest
+	34, // 21: command.membership.v1.MembershipCommandService.AssignClinicHeadDeputy:input_type -> command.membership.v1.AssignClinicHeadDeputyRequest
+	36, // 22: command.membership.v1.MembershipCommandService.RemoveClinicHeadDeputy:input_type -> command.membership.v1.RemoveClinicHeadDeputyRequest
+	38, // 23: command.membership.v1.MembershipCommandService.AssignOrganizationAdmin:input_type -> command.membership.v1.AssignOrganizationAdminRequest
+	40, // 24: command.membership.v1.MembershipCommandService.RevokeOrganizationAdmin:input_type -> command.membership.v1.RevokeOrganizationAdminRequest
+	42, // 25: command.membership.v1.MembershipCommandService.AssignOrganizationAdminDeputy:input_type -> command.membership.v1.AssignOrganizationAdminDeputyRequest
+	44, // 26: command.membership.v1.MembershipCommandService.RemoveOrganizationAdminDeputy:input_type -> command.membership.v1.RemoveOrganizationAdminDeputyRequest
+	46, // 27: command.membership.v1.MembershipCommandService.AssignOrganizationHead:input_type -> command.membership.v1.AssignOrganizationHeadRequest
+	48, // 28: command.membership.v1.MembershipCommandService.RevokeOrganizationHead:input_type -> command.membership.v1.RevokeOrganizationHeadRequest
+	50, // 29: command.membership.v1.MembershipCommandService.AssignOrganizationHeadDeputy:input_type -> command.membership.v1.AssignOrganizationHeadDeputyRequest
+	52, // 30: command.membership.v1.MembershipCommandService.RemoveOrganizationHeadDeputy:input_type -> command.membership.v1.RemoveOrganizationHeadDeputyRequest
+	54, // 31: command.membership.v1.MembershipCommandService.AssignOrganizationDispatcher:input_type -> command.membership.v1.AssignOrganizationDispatcherRequest
+	56, // 32: command.membership.v1.MembershipCommandService.RevokeOrganizationDispatcher:input_type -> command.membership.v1.RevokeOrganizationDispatcherRequest
+	58, // 33: command.membership.v1.MembershipCommandService.AssignOrganizationDispatcherDeputy:input_type -> command.membership.v1.AssignOrganizationDispatcherDeputyRequest
+	60, // 34: command.membership.v1.MembershipCommandService.RemoveOrganizationDispatcherDeputy:input_type -> command.membership.v1.RemoveOrganizationDispatcherDeputyRequest
+	62, // 35: command.membership.v1.MembershipCommandService.GrantSystemAdmin:input_type -> command.membership.v1.GrantSystemAdminRequest
+	64, // 36: command.membership.v1.MembershipCommandService.RevokeSystemAdmin:input_type -> command.membership.v1.RevokeSystemAdminRequest
+	1,  // 37: command.membership.v1.MembershipCommandService.HireEmployee:output_type -> command.membership.v1.HireEmployeeResponse
+	3,  // 38: command.membership.v1.MembershipCommandService.UpdateEmployeePosition:output_type -> command.membership.v1.UpdateEmployeePositionResponse
+	5,  // 39: command.membership.v1.MembershipCommandService.UpdateEmployeeDepartment:output_type -> command.membership.v1.UpdateEmployeeDepartmentResponse
+	7,  // 40: command.membership.v1.MembershipCommandService.TerminateEmployee:output_type -> command.membership.v1.TerminateEmployeeResponse
+	9,  // 41: command.membership.v1.MembershipCommandService.DeactivateEmployee:output_type -> command.membership.v1.DeactivateEmployeeResponse
+	11, // 42: command.membership.v1.MembershipCommandService.ActivateEmployee:output_type -> command.membership.v1.ActivateEmployeeResponse
+	13, // 43: command.membership.v1.MembershipCommandService.StartVacationNow:output_type -> command.membership.v1.StartVacationNowResponse
+	15, // 44: command.membership.v1.MembershipCommandService.ScheduleVacation:output_type -> command.membership.v1.ScheduleVacationResponse
+	17, // 45: command.membership.v1.MembershipCommandService.UpdateVacationEndDate:output_type -> command.membership.v1.UpdateVacationEndDateResponse
+	19, // 46: command.membership.v1.MembershipCommandService.ForceEndVacation:output_type -> command.membership.v1.ForceEndVacationResponse
+	21, // 47: command.membership.v1.MembershipCommandService.CancelScheduledVacation:output_type -> command.membership.v1.CancelScheduledVacationResponse
+	23, // 48: command.membership.v1.MembershipCommandService.AssignDepartmentResponsible:output_type -> command.membership.v1.AssignDepartmentResponsibleResponse
+	25, // 49: command.membership.v1.MembershipCommandService.RevokeDepartmentResponsible:output_type -> command.membership.v1.RevokeDepartmentResponsibleResponse
+	27, // 50: command.membership.v1.MembershipCommandService.AssignDepartmentResponsibleDeputy:output_type -> command.membership.v1.AssignDepartmentResponsibleDeputyResponse
+	29, // 51: command.membership.v1.MembershipCommandService.RemoveDepartmentResponsibleDeputy:output_type -> command.membership.v1.RemoveDepartmentResponsibleDeputyResponse
+	31, // 52: command.membership.v1.MembershipCommandService.AssignClinicHead:output_type -> command.membership.v1.AssignClinicHeadResponse
+	33, // 53: command.membership.v1.MembershipCommandService.RevokeClinicHead:output_type -> command.membership.v1.RevokeClinicHeadResponse
+	35, // 54: command.membership.v1.MembershipCommandService.AssignClinicHeadDeputy:output_type -> command.membership.v1.AssignClinicHeadDeputyResponse
+	37, // 55: command.membership.v1.MembershipCommandService.RemoveClinicHeadDeputy:output_type -> command.membership.v1.RemoveClinicHeadDeputyResponse
+	39, // 56: command.membership.v1.MembershipCommandService.AssignOrganizationAdmin:output_type -> command.membership.v1.AssignOrganizationAdminResponse
+	41, // 57: command.membership.v1.MembershipCommandService.RevokeOrganizationAdmin:output_type -> command.membership.v1.RevokeOrganizationAdminResponse
+	43, // 58: command.membership.v1.MembershipCommandService.AssignOrganizationAdminDeputy:output_type -> command.membership.v1.AssignOrganizationAdminDeputyResponse
+	45, // 59: command.membership.v1.MembershipCommandService.RemoveOrganizationAdminDeputy:output_type -> command.membership.v1.RemoveOrganizationAdminDeputyResponse
+	47, // 60: command.membership.v1.MembershipCommandService.AssignOrganizationHead:output_type -> command.membership.v1.AssignOrganizationHeadResponse
+	49, // 61: command.membership.v1.MembershipCommandService.RevokeOrganizationHead:output_type -> command.membership.v1.RevokeOrganizationHeadResponse
+	51, // 62: command.membership.v1.MembershipCommandService.AssignOrganizationHeadDeputy:output_type -> command.membership.v1.AssignOrganizationHeadDeputyResponse
+	53, // 63: command.membership.v1.MembershipCommandService.RemoveOrganizationHeadDeputy:output_type -> command.membership.v1.RemoveOrganizationHeadDeputyResponse
+	55, // 64: command.membership.v1.MembershipCommandService.AssignOrganizationDispatcher:output_type -> command.membership.v1.AssignOrganizationDispatcherResponse
+	57, // 65: command.membership.v1.MembershipCommandService.RevokeOrganizationDispatcher:output_type -> command.membership.v1.RevokeOrganizationDispatcherResponse
+	59, // 66: command.membership.v1.MembershipCommandService.AssignOrganizationDispatcherDeputy:output_type -> command.membership.v1.AssignOrganizationDispatcherDeputyResponse
+	61, // 67: command.membership.v1.MembershipCommandService.RemoveOrganizationDispatcherDeputy:output_type -> command.membership.v1.RemoveOrganizationDispatcherDeputyResponse
+	63, // 68: command.membership.v1.MembershipCommandService.GrantSystemAdmin:output_type -> command.membership.v1.GrantSystemAdminResponse
+	65, // 69: command.membership.v1.MembershipCommandService.RevokeSystemAdmin:output_type -> command.membership.v1.RevokeSystemAdminResponse
+	37, // [37:70] is the sub-list for method output_type
+	4,  // [4:37] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
 	4,  // [4:4] is the sub-list for extension extendee
 	0,  // [0:4] is the sub-list for field type_name
@@ -3325,15 +3512,15 @@ func file_command_membership_v1_membership_proto_init() {
 	}
 	file_command_membership_v1_membership_proto_msgTypes[0].OneofWrappers = []any{}
 	file_command_membership_v1_membership_proto_msgTypes[2].OneofWrappers = []any{}
-	file_command_membership_v1_membership_proto_msgTypes[8].OneofWrappers = []any{}
-	file_command_membership_v1_membership_proto_msgTypes[10].OneofWrappers = []any{}
+	file_command_membership_v1_membership_proto_msgTypes[12].OneofWrappers = []any{}
+	file_command_membership_v1_membership_proto_msgTypes[14].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_command_membership_v1_membership_proto_rawDesc), len(file_command_membership_v1_membership_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   62,
+			NumMessages:   66,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -39,6 +39,24 @@ message ClinicPhysicalAddressChanged {
   google.protobuf.Timestamp updated_at = 2;
 }
 
+// ClinicDeactivated — subject: medincident.event.clinic.v1.deactivated
+message ClinicDeactivated {
+  string clinic_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// ClinicActivated — subject: medincident.event.clinic.v1.activated
+message ClinicActivated {
+  string clinic_id = 1;
+  google.protobuf.Timestamp updated_at = 2;
+}
+
+// ClinicDeleted — subject: medincident.event.clinic.v1.deleted
+message ClinicDeleted {
+  string clinic_id = 1;
+  google.protobuf.Timestamp deleted_at = 2;
+}
+
 // ── Clinic-level role events ──────────────────────────────────────────
 
 // ClinicHeadAssigned — subject: medincident.event.clinic.v1.clinic_head_assigned

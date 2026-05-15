@@ -191,6 +191,96 @@ func local_request_MembershipCommandService_TerminateEmployee_0(ctx context.Cont
 	return msg, metadata, err
 }
 
+func request_MembershipCommandService_DeactivateEmployee_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipCommandServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq DeactivateEmployeeRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["employee_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "employee_id")
+	}
+	protoReq.EmployeeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "employee_id", err)
+	}
+	msg, err := client.DeactivateEmployee(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipCommandService_DeactivateEmployee_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipCommandServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq DeactivateEmployeeRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["employee_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "employee_id")
+	}
+	protoReq.EmployeeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "employee_id", err)
+	}
+	msg, err := server.DeactivateEmployee(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_MembershipCommandService_ActivateEmployee_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipCommandServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ActivateEmployeeRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["employee_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "employee_id")
+	}
+	protoReq.EmployeeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "employee_id", err)
+	}
+	msg, err := client.ActivateEmployee(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_MembershipCommandService_ActivateEmployee_0(ctx context.Context, marshaler runtime.Marshaler, server MembershipCommandServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ActivateEmployeeRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	val, ok := pathParams["employee_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "employee_id")
+	}
+	protoReq.EmployeeId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "employee_id", err)
+	}
+	msg, err := server.ActivateEmployee(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_MembershipCommandService_StartVacationNow_0(ctx context.Context, marshaler runtime.Marshaler, client MembershipCommandServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq StartVacationNowRequest
@@ -1636,6 +1726,46 @@ func RegisterMembershipCommandServiceHandlerServer(ctx context.Context, mux *run
 		}
 		forward_MembershipCommandService_TerminateEmployee_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_MembershipCommandService_DeactivateEmployee_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/command.membership.v1.MembershipCommandService/DeactivateEmployee", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/deactivate"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipCommandService_DeactivateEmployee_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipCommandService_DeactivateEmployee_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_MembershipCommandService_ActivateEmployee_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/command.membership.v1.MembershipCommandService/ActivateEmployee", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/activate"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MembershipCommandService_ActivateEmployee_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipCommandService_ActivateEmployee_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPost, pattern_MembershipCommandService_StartVacationNow_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -2284,6 +2414,40 @@ func RegisterMembershipCommandServiceHandlerClient(ctx context.Context, mux *run
 		}
 		forward_MembershipCommandService_TerminateEmployee_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodPost, pattern_MembershipCommandService_DeactivateEmployee_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/command.membership.v1.MembershipCommandService/DeactivateEmployee", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/deactivate"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipCommandService_DeactivateEmployee_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipCommandService_DeactivateEmployee_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_MembershipCommandService_ActivateEmployee_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/command.membership.v1.MembershipCommandService/ActivateEmployee", runtime.WithHTTPPathPattern("/v1/employees/{employee_id}/activate"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MembershipCommandService_ActivateEmployee_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_MembershipCommandService_ActivateEmployee_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodPost, pattern_MembershipCommandService_StartVacationNow_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -2751,6 +2915,8 @@ var (
 	pattern_MembershipCommandService_UpdateEmployeePosition_0             = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "position"}, ""))
 	pattern_MembershipCommandService_UpdateEmployeeDepartment_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "department"}, ""))
 	pattern_MembershipCommandService_TerminateEmployee_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "employees", "employee_id"}, ""))
+	pattern_MembershipCommandService_DeactivateEmployee_0                 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "deactivate"}, ""))
+	pattern_MembershipCommandService_ActivateEmployee_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "activate"}, ""))
 	pattern_MembershipCommandService_StartVacationNow_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, "start-now"))
 	pattern_MembershipCommandService_ScheduleVacation_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "employees", "employee_id", "vacations"}, ""))
 	pattern_MembershipCommandService_UpdateVacationEndDate_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "vacations", "vacation_id", "end-date"}, ""))
@@ -2785,6 +2951,8 @@ var (
 	forward_MembershipCommandService_UpdateEmployeePosition_0             = runtime.ForwardResponseMessage
 	forward_MembershipCommandService_UpdateEmployeeDepartment_0           = runtime.ForwardResponseMessage
 	forward_MembershipCommandService_TerminateEmployee_0                  = runtime.ForwardResponseMessage
+	forward_MembershipCommandService_DeactivateEmployee_0                 = runtime.ForwardResponseMessage
+	forward_MembershipCommandService_ActivateEmployee_0                   = runtime.ForwardResponseMessage
 	forward_MembershipCommandService_StartVacationNow_0                   = runtime.ForwardResponseMessage
 	forward_MembershipCommandService_ScheduleVacation_0                   = runtime.ForwardResponseMessage
 	forward_MembershipCommandService_UpdateVacationEndDate_0              = runtime.ForwardResponseMessage

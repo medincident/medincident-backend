@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	MembershipQueryService_GetEmployee_FullMethodName                      = "/query.membership.v1.MembershipQueryService/GetEmployee"
+	MembershipQueryService_GetMyEmployee_FullMethodName                    = "/query.membership.v1.MembershipQueryService/GetMyEmployee"
 	MembershipQueryService_ListEmployeesByDepartment_FullMethodName        = "/query.membership.v1.MembershipQueryService/ListEmployeesByDepartment"
 	MembershipQueryService_ListEmployeesByClinic_FullMethodName            = "/query.membership.v1.MembershipQueryService/ListEmployeesByClinic"
 	MembershipQueryService_ListEmployeesByOrganization_FullMethodName      = "/query.membership.v1.MembershipQueryService/ListEmployeesByOrganization"
@@ -53,6 +54,7 @@ const (
 // department responsibles, org admins/heads/dispatchers, system admins).
 type MembershipQueryServiceClient interface {
 	GetEmployee(ctx context.Context, in *GetEmployeeRequest, opts ...grpc.CallOption) (*GetEmployeeResponse, error)
+	GetMyEmployee(ctx context.Context, in *GetMyEmployeeRequest, opts ...grpc.CallOption) (*GetMyEmployeeResponse, error)
 	ListEmployeesByDepartment(ctx context.Context, in *ListEmployeesByDepartmentRequest, opts ...grpc.CallOption) (*ListEmployeesByDepartmentResponse, error)
 	ListEmployeesByClinic(ctx context.Context, in *ListEmployeesByClinicRequest, opts ...grpc.CallOption) (*ListEmployeesByClinicResponse, error)
 	ListEmployeesByOrganization(ctx context.Context, in *ListEmployeesByOrganizationRequest, opts ...grpc.CallOption) (*ListEmployeesByOrganizationResponse, error)
@@ -89,6 +91,16 @@ func (c *membershipQueryServiceClient) GetEmployee(ctx context.Context, in *GetE
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetEmployeeResponse)
 	err := c.cc.Invoke(ctx, MembershipQueryService_GetEmployee_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *membershipQueryServiceClient) GetMyEmployee(ctx context.Context, in *GetMyEmployeeRequest, opts ...grpc.CallOption) (*GetMyEmployeeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMyEmployeeResponse)
+	err := c.cc.Invoke(ctx, MembershipQueryService_GetMyEmployee_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -324,6 +336,7 @@ func (c *membershipQueryServiceClient) ListCandidatesForDeptResponsible(ctx cont
 // department responsibles, org admins/heads/dispatchers, system admins).
 type MembershipQueryServiceServer interface {
 	GetEmployee(context.Context, *GetEmployeeRequest) (*GetEmployeeResponse, error)
+	GetMyEmployee(context.Context, *GetMyEmployeeRequest) (*GetMyEmployeeResponse, error)
 	ListEmployeesByDepartment(context.Context, *ListEmployeesByDepartmentRequest) (*ListEmployeesByDepartmentResponse, error)
 	ListEmployeesByClinic(context.Context, *ListEmployeesByClinicRequest) (*ListEmployeesByClinicResponse, error)
 	ListEmployeesByOrganization(context.Context, *ListEmployeesByOrganizationRequest) (*ListEmployeesByOrganizationResponse, error)
@@ -358,6 +371,9 @@ type UnimplementedMembershipQueryServiceServer struct{}
 
 func (UnimplementedMembershipQueryServiceServer) GetEmployee(context.Context, *GetEmployeeRequest) (*GetEmployeeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetEmployee not implemented")
+}
+func (UnimplementedMembershipQueryServiceServer) GetMyEmployee(context.Context, *GetMyEmployeeRequest) (*GetMyEmployeeResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetMyEmployee not implemented")
 }
 func (UnimplementedMembershipQueryServiceServer) ListEmployeesByDepartment(context.Context, *ListEmployeesByDepartmentRequest) (*ListEmployeesByDepartmentResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListEmployeesByDepartment not implemented")
@@ -461,6 +477,24 @@ func _MembershipQueryService_GetEmployee_Handler(srv interface{}, ctx context.Co
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MembershipQueryServiceServer).GetEmployee(ctx, req.(*GetEmployeeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MembershipQueryService_GetMyEmployee_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMyEmployeeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MembershipQueryServiceServer).GetMyEmployee(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MembershipQueryService_GetMyEmployee_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MembershipQueryServiceServer).GetMyEmployee(ctx, req.(*GetMyEmployeeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -871,6 +905,10 @@ var MembershipQueryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetEmployee",
 			Handler:    _MembershipQueryService_GetEmployee_Handler,
+		},
+		{
+			MethodName: "GetMyEmployee",
+			Handler:    _MembershipQueryService_GetMyEmployee_Handler,
 		},
 		{
 			MethodName: "ListEmployeesByDepartment",

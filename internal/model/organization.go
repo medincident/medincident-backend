@@ -15,6 +15,7 @@ type Organization struct {
 	Name         string      `gorm:"<-"`
 	Description  null.String `gorm:"<-"`
 	LegalAddress Address     `gorm:"column:legal_address;<-"`
+	IsActive     bool        `gorm:"<-"`
 	CreatedAt    time.Time   `gorm:"<-:create"`
 	UpdatedAt    time.Time   `gorm:"<-"`
 }

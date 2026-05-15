@@ -250,6 +250,65 @@ func TestIncidentLifecycle_Reopen(t *testing.T) {
 	assert.Equal(t, "pending", newStatus)
 }
 
+// TestIncidentLifecycle_ReopenPendingFails: reopening a pending incident
+// must be rejected with incident_not_reopenable.
+func TestIncidentLifecycle_ReopenPendingFails(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+	w := setupWorld(t)
+
+	incID := createIncident(t, ctx, w.caller, w.deptID, w.categoryID, w.typeID)
+
+	_, err := incidentSvc.Reopen(ctx, incidentsvc.ReopenIncidentCommand{
+		Caller:  sysadminCaller,
+		Payload: incidentsvc.ReopenIncidentPayload{IncidentID: incID.String()},
+	})
+	require.Error(t, err)
+	assert.Equal(t, incidentsvc.ErrCodeIncidentNotReopenable, codeOf(t, err))
+}
+
+// TestIncidentLifecycle_ReopenInProgressFails: reopening an in-progress
+// incident must be rejected.
+func TestIncidentLifecycle_ReopenInProgressFails(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+	w := setupWorld(t)
+
+	incID := createIncident(t, ctx, w.caller, w.deptID, w.categoryID, w.typeID)
+	require.NoError(t, incidentSvc.UpdateStatus(ctx, incidentsvc.UpdateIncidentStatusCommand{
+		Caller:  sysadminCaller,
+		Payload: incidentsvc.UpdateIncidentStatusPayload{IncidentID: incID.String(), NewStatus: string(model.IncidentStatusInProgress)},
+	}))
+
+	_, err := incidentSvc.Reopen(ctx, incidentsvc.ReopenIncidentCommand{
+		Caller:  sysadminCaller,
+		Payload: incidentsvc.ReopenIncidentPayload{IncidentID: incID.String()},
+	})
+	require.Error(t, err)
+	assert.Equal(t, incidentsvc.ErrCodeIncidentNotReopenable, codeOf(t, err))
+}
+
+// TestIncidentLifecycle_ReopenCancelledFails: a cancelled incident is NOT
+// reopenable — only done/rejected are valid sources.
+func TestIncidentLifecycle_ReopenCancelledFails(t *testing.T) {
+	resetDB(t)
+	ctx := context.Background()
+	w := setupWorld(t)
+
+	incID := createIncident(t, ctx, w.caller, w.deptID, w.categoryID, w.typeID)
+	require.NoError(t, incidentSvc.Cancel(ctx, incidentsvc.CancelIncidentCommand{
+		Caller:  w.caller,
+		Payload: incidentsvc.CancelIncidentPayload{IncidentID: incID.String()},
+	}))
+
+	_, err := incidentSvc.Reopen(ctx, incidentsvc.ReopenIncidentCommand{
+		Caller:  sysadminCaller,
+		Payload: incidentsvc.ReopenIncidentPayload{IncidentID: incID.String()},
+	})
+	require.Error(t, err)
+	assert.Equal(t, incidentsvc.ErrCodeIncidentNotReopenable, codeOf(t, err))
+}
+
 // TestIncidentLifecycle_CancelByRegistrar: registrar cancels pending
 // incident. Non-registrar cancel attempt returns permission_denied.
 func TestIncidentLifecycle_CancelByRegistrar(t *testing.T) {

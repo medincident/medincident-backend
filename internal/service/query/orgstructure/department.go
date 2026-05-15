@@ -26,6 +26,7 @@ type DepartmentDetails struct {
 	ClinicID    uuid.UUID
 	Name        string
 	Description *string
+	IsActive    bool
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
@@ -36,6 +37,7 @@ type DepartmentListItem struct {
 	ID        uuid.UUID
 	ClinicID  uuid.UUID
 	Name      string
+	IsActive  bool
 	UpdatedAt time.Time
 }
 
@@ -61,11 +63,11 @@ func (r *DepartmentReader) Get(
 	}
 	var out DepartmentDetails
 	err := r.db.WithContext(ctx).Raw(`
-		SELECT id, clinic_id, name, description, created_at, updated_at
+		SELECT id, clinic_id, name, description, is_active, created_at, updated_at
 		  FROM projections.departments
 		 WHERE id = ?`, id,
 	).Row().Scan(
-		&out.ID, &out.ClinicID, &out.Name, &out.Description, &out.CreatedAt, &out.UpdatedAt,
+		&out.ID, &out.ClinicID, &out.Name, &out.Description, &out.IsActive, &out.CreatedAt, &out.UpdatedAt,
 	)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -130,7 +132,7 @@ func (r *DepartmentReader) ListByClinic(
 	); err != nil {
 		return DepartmentListResult{}, err
 	}
-	sqlBuf := `SELECT id, clinic_id, name, updated_at
+	sqlBuf := `SELECT id, clinic_id, name, is_active, updated_at
 		  FROM projections.departments
 		 WHERE clinic_id = ?`
 	args := make([]any, 0, 4)
@@ -160,7 +162,7 @@ func (r *DepartmentReader) ListByClinic(
 	out := make([]DepartmentListItem, 0, q.Limit+1)
 	for rows.Next() {
 		var v DepartmentListItem
-		if err := rows.Scan(&v.ID, &v.ClinicID, &v.Name, &v.UpdatedAt); err != nil {
+		if err := rows.Scan(&v.ID, &v.ClinicID, &v.Name, &v.IsActive, &v.UpdatedAt); err != nil {
 			return DepartmentListResult{}, oops.In("reader.orgstructure.department").
 				Code(ErrCodeDepartmentLoadFailed).
 				With("clinic_id", clinicID).

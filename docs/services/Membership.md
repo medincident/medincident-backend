@@ -122,6 +122,54 @@
 
 ---
 
+### DeactivateEmployee
+
+**HTTP:** `POST /v1/employees/{employee_id}:deactivate`
+**gRPC:** `MembershipCommandService.DeactivateEmployee`
+
+Деактивирует сотрудника (устанавливает `is_active = false`) и отзывает все его роли. Roles not restored on reactivation.
+
+#### Права доступа
+
+`AdminOf.Employee(employeeID)`
+
+#### Инварианты
+
+- При деактивации автоматически отзываются все роли сотрудника и очищаются слоты заместителей.
+- Роли не восстанавливаются при последующей активации.
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `employee_not_found` | 404 | Сотрудник не найден |
+
+---
+
+### ActivateEmployee
+
+**HTTP:** `POST /v1/employees/{employee_id}:activate`
+**gRPC:** `MembershipCommandService.ActivateEmployee`
+
+Активирует сотрудника. Требует, чтобы родительский отдел был активен. Роли не восстанавливаются.
+
+#### Права доступа
+
+`AdminOf.Employee(employeeID)`
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `validation_failed` | 400 | Ошибки валидации полей |
+| `permission_denied` | 403 | Нет прав доступа |
+| `employee_not_found` | 404 | Сотрудник не найден |
+| `employee_activate_parent_inactive` | 422 | Родительский отдел неактивен |
+
+---
+
 ## Отпуска
 
 ### StartVacationNow
@@ -741,6 +789,25 @@
 |---|---|---|
 | `permission_denied` | 403 | Нет прав доступа |
 | `employee_card_not_found` | 404 | Карточка сотрудника не найдена |
+
+---
+
+### GetMyEmployee
+
+**HTTP:** `GET /v1/employees/me`
+**gRPC:** `MembershipQueryService.GetMyEmployee`
+
+Возвращает карточку сотрудника для текущего аутентифицированного пользователя. Авторизация неявная — запрос ограничен `zitadel_user_id` из токена, поэтому никаких дополнительных прав не требуется.
+
+#### Права доступа
+
+Любой аутентифицированный пользователь (Bearer-токен).
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `employee_card_not_found` | 404 | У текущего пользователя нет записи сотрудника |
 
 ---
 

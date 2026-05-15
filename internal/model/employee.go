@@ -17,6 +17,7 @@ type Employee struct {
 	OrganizationID uuid.UUID   `gorm:"<-:create"`
 	DepartmentID   uuid.UUID   `gorm:"<-"`
 	Position       null.String `gorm:"<-"`
+	IsActive       bool        `gorm:"<-"`
 	CreatedAt      time.Time   `gorm:"<-:create"`
 	UpdatedAt      time.Time   `gorm:"<-"`
 }

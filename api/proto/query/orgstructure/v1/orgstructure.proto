@@ -172,6 +172,7 @@ message Organization {
   string name = 2;
   optional string description = 3;
   Address legal_address = 4;
+  bool is_active = 7;
   string created_at = 5;
   string updated_at = 6;
 }
@@ -180,6 +181,7 @@ message Organization {
 message OrganizationListItem {
   string id = 1;
   string name = 2;
+  bool is_active = 3;
 }
 
 // Clinic mirrors the projections.clinics row returned by GetClinic.
@@ -189,6 +191,7 @@ message Clinic {
   string name = 3;
   optional string description = 4;
   Address physical_address = 5;
+  bool is_active = 8;
   string created_at = 6;
   string updated_at = 7;
 }
@@ -198,6 +201,7 @@ message ClinicListItem {
   string id = 1;
   string organization_id = 2;
   string name = 3;
+  bool is_active = 4;
 }
 
 // Department mirrors the projections.departments row returned by
@@ -207,6 +211,7 @@ message Department {
   string clinic_id = 2;
   string name = 3;
   optional string description = 4;
+  bool is_active = 7;
   string created_at = 5;
   string updated_at = 6;
 }
@@ -216,6 +221,7 @@ message DepartmentListItem {
   string id = 1;
   string clinic_id = 2;
   string name = 3;
+  bool is_active = 4;
 }
 
 message GetOrganizationRequest {

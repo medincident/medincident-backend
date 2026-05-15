@@ -101,6 +101,14 @@ func (s *IncidentTypeService) Move(
 				Errorf("organization mismatch on type move")
 		}
 
+		if !newCategory.IsActive {
+			return oops.In("services.incident.classifier.type").
+				Code(ErrCodeIncidentTypeCategoryInactive).
+				Public("New incident category is inactive.").
+				With("incident_category_id", newCategory.ID).
+				Errorf("category inactive")
+		}
+
 		var updatedAt time.Time
 		if err := tx.Raw(`
 			UPDATE domain.incident_types

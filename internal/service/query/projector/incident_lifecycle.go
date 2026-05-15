@@ -49,12 +49,27 @@ func IncidentCreated(
 	if err != nil {
 		return err
 	}
+	// Registrar location fields were added after the initial release.
+	// Pre-fix events carry empty strings — fall back to the employee projection
+	// so those events can still be replayed without a permanent Term().
+	registrarOrgID, registrarClinicID, registrarDeptID := resolveRegistrarLocation(
+		tx,
+		ev.GetRegistrarOrganizationId(),
+		ev.GetRegistrarClinicId(),
+		ev.GetRegistrarDepartmentId(),
+		ev.GetRegistrarZitadelUserId(),
+		orgID, clinicID, deptID,
+	)
 	createdAt := ev.GetCreatedAt().AsTime()
 	occAt := ev.GetOccurredAt().AsTime()
 
 	// Resolve registrar display name from the identity projection.
 	registrarDisplayName := lookupUserDisplayName(tx, ev.GetRegistrarZitadelUserId())
 
+	var registrarPosition null.String
+	if sv := ev.GetRegistrarPosition(); sv != nil {
+		registrarPosition = null.StringFrom(sv.GetValue())
+	}
 	var desc null.String
 	if sv := ev.GetDescription(); sv != nil {
 		desc = null.StringFrom(sv.GetValue())
@@ -89,14 +104,18 @@ func IncidentCreated(
 			id, organization_id, clinic_id, department_id, category_id, type_id,
 			status, priority, description, patient_original_description,
 			occurred_at, registrar_employee_id, registrar_display_name,
+			registrar_position, registrar_organization_id,
+			registrar_clinic_id, registrar_department_id,
 			source_patient_zitadel_user_id, source_buffer_id,
 			reopened_from_incident_id, created_at, updated_at
 		) VALUES (
-			?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+			?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 		) ON CONFLICT DO NOTHING`,
 		id, orgID, clinicID, deptID, catID, typeID,
 		ev.GetStatus(), ev.GetPriority(), desc, patientOrigDesc,
 		occAt, registrarEmpID, registrarDisplayName,
+		registrarPosition, registrarOrgID,
+		registrarClinicID, registrarDeptID,
 		srcPatientUserID, srcBufID,
 		reopenedFromID, createdAt, createdAt,
 	).Error; err != nil {

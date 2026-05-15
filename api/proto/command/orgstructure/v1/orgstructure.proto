@@ -100,6 +100,43 @@ service OrgStructureCommandService {
       }
     };
   }
+  rpc DeactivateOrganization(DeactivateOrganizationRequest) returns (DeactivateOrganizationResponse) {
+    option (google.api.http) = {
+      post: "/v1/organizations/{organization_id}/deactivate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
+    };
+  }
+  rpc ActivateOrganization(ActivateOrganizationRequest) returns (ActivateOrganizationResponse) {
+    option (google.api.http) = {
+      post: "/v1/organizations/{organization_id}/activate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
+    };
+  }
+  rpc DeleteOrganization(DeleteOrganizationRequest) returns (DeleteOrganizationResponse) {
+    option (google.api.http) = {delete: "/v1/organizations/{organization_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `organization_not_found` — organization with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `organization_delete_has_dependents` — organization has associated incidents or service requests."}
+      }
+    };
+  }
 
   rpc CreateClinic(CreateClinicRequest) returns (CreateClinicResponse) {
     option (google.api.http) = {
@@ -137,6 +174,47 @@ service OrgStructureCommandService {
       }
     };
   }
+  rpc DeactivateClinic(DeactivateClinicRequest) returns (DeactivateClinicResponse) {
+    option (google.api.http) = {
+      post: "/v1/clinics/{clinic_id}/deactivate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."}
+      }
+    };
+  }
+  rpc ActivateClinic(ActivateClinicRequest) returns (ActivateClinicResponse) {
+    option (google.api.http) = {
+      post: "/v1/clinics/{clinic_id}/activate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Business rule violation. Error codes:\n- `clinic_activate_parent_inactive` — parent organization is inactive."}
+      }
+    };
+  }
+  rpc DeleteClinic(DeleteClinicRequest) returns (DeleteClinicResponse) {
+    option (google.api.http) = {delete: "/v1/clinics/{clinic_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `clinic_not_found` — clinic with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `clinic_delete_has_dependents` — clinic has associated incidents or service requests."}
+      }
+    };
+  }
 
   rpc CreateDepartment(CreateDepartmentRequest) returns (CreateDepartmentResponse) {
     option (google.api.http) = {
@@ -159,6 +237,47 @@ service OrgStructureCommandService {
       responses: {
         key: "404"
         value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."}
+      }
+    };
+  }
+  rpc DeactivateDepartment(DeactivateDepartmentRequest) returns (DeactivateDepartmentResponse) {
+    option (google.api.http) = {
+      post: "/v1/departments/{department_id}/deactivate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."}
+      }
+    };
+  }
+  rpc ActivateDepartment(ActivateDepartmentRequest) returns (ActivateDepartmentResponse) {
+    option (google.api.http) = {
+      post: "/v1/departments/{department_id}/activate"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."}
+      }
+      responses: {
+        key: "422"
+        value: {description: "Business rule violation. Error codes:\n- `department_activate_parent_inactive` — parent clinic is inactive."}
+      }
+    };
+  }
+  rpc DeleteDepartment(DeleteDepartmentRequest) returns (DeleteDepartmentResponse) {
+    option (google.api.http) = {delete: "/v1/departments/{department_id}"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "404"
+        value: {description: "Not found. Error codes:\n- `department_not_found` — department with the given ID does not exist."}
+      }
+      responses: {
+        key: "409"
+        value: {description: "Conflict. Error codes:\n- `department_delete_has_dependents` — department has associated incidents or service requests."}
       }
     };
   }
@@ -200,6 +319,21 @@ message UpdateOrganizationLegalAddressRequest {
 }
 message UpdateOrganizationLegalAddressResponse {}
 
+message DeactivateOrganizationRequest {
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeactivateOrganizationResponse {}
+
+message ActivateOrganizationRequest {
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message ActivateOrganizationResponse {}
+
+message DeleteOrganizationRequest {
+  string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeleteOrganizationResponse {}
+
 // ------ Clinic ------
 
 message CreateClinicRequest {
@@ -225,6 +359,21 @@ message UpdateClinicPhysicalAddressRequest {
 }
 message UpdateClinicPhysicalAddressResponse {}
 
+message DeactivateClinicRequest {
+  string clinic_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeactivateClinicResponse {}
+
+message ActivateClinicRequest {
+  string clinic_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message ActivateClinicResponse {}
+
+message DeleteClinicRequest {
+  string clinic_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeleteClinicResponse {}
+
 // ------ Department ------
 
 message CreateDepartmentRequest {
@@ -242,3 +391,18 @@ message UpdateDepartmentDetailsRequest {
   optional string description = 3;
 }
 message UpdateDepartmentDetailsResponse {}
+
+message DeactivateDepartmentRequest {
+  string department_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeactivateDepartmentResponse {}
+
+message ActivateDepartmentRequest {
+  string department_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message ActivateDepartmentResponse {}
+
+message DeleteDepartmentRequest {
+  string department_id = 1 [(google.api.field_behavior) = REQUIRED];
+}
+message DeleteDepartmentResponse {}

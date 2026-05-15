@@ -154,10 +154,14 @@ func (s *IncidentService) Create(
 				With("type_id", typeID).Errorf("inactive")
 		}
 
-		// Resolve registrar employee ID.
-		registrarEmpID, err := s.loadRegistrarEmployeeID(tx, cmd.Caller.ZitadelUserID, orgID)
+		// Resolve registrar employee and their department (for clinic denorm).
+		registrarEmp, err := s.loadRegistrarEmployee(tx, cmd.Caller.ZitadelUserID, orgID)
 		if err != nil {
 			return err
+		}
+		var regDept model.Department
+		if err := tx.First(&regDept, "id = ?", registrarEmp.DepartmentID).Error; err != nil {
+			return oops.In(scope).Code(ErrCodeIncidentLoadFailed).Wrap(err)
 		}
 
 		inc := model.Incident{
@@ -170,7 +174,7 @@ func (s *IncidentService) Create(
 			Status:              model.IncidentStatusPending,
 			Priority:            model.IncidentPriorityNormal,
 			OccurredAt:          occurred,
-			RegistrarEmployeeID: registrarEmpID,
+			RegistrarEmployeeID: registrarEmp.ID,
 			CreatedAt:           now,
 			UpdatedAt:           now,
 		}
@@ -181,7 +185,7 @@ func (s *IncidentService) Create(
 			return oops.In(scope).Code(ErrCodeIncidentSaveFailed).
 				With("incident_id", id).Wrap(err)
 		}
-		env, err := buildIncidentCreatedEnvelope(&inc, cmd.Caller.ZitadelUserID)
+		env, err := buildIncidentCreatedEnvelope(&inc, cmd.Caller.ZitadelUserID, registrarEmp, regDept.ClinicID)
 		if err != nil {
 			return err
 		}
@@ -194,40 +198,48 @@ func (s *IncidentService) Create(
 	return result, err
 }
 
-// loadRegistrarEmployeeID loads the caller's employee row in the given org.
+// loadRegistrarEmployee loads the caller's employee row in the given org.
 // The event carries the Zitadel user ID; display_name is resolved query-side.
-func (s *IncidentService) loadRegistrarEmployeeID(
+func (s *IncidentService) loadRegistrarEmployee(
 	tx *gorm.DB, callerZitadelID string, orgID uuid.UUID,
-) (uuid.UUID, error) {
+) (*model.Employee, error) {
 	var emp model.Employee
 	if err := tx.Where("zitadel_user_id = ? AND organization_id = ?",
 		callerZitadelID, orgID).First(&emp).Error; err != nil {
-		return uuid.UUID{}, oops.In(scope).
+		return nil, oops.In(scope).
 			Code(ErrCodeIncidentEmployeeNotFound).
 			Public("Caller is not an employee of this organization.").
 			With("organization_id", orgID).
 			Wrap(err)
 	}
-	return emp.ID, nil
+	return &emp, nil
 }
 
 func buildIncidentCreatedEnvelope(
 	inc *model.Incident,
 	registrarZitadelUserID string,
+	registrarEmp *model.Employee,
+	registrarClinicID uuid.UUID,
 ) (*eventv1.Envelope, error) {
 	msg := &incidentv1.IncidentCreated{
-		IncidentId:             inc.ID.String(),
-		OrganizationId:         inc.OrganizationID.String(),
-		ClinicId:               inc.ClinicID.String(),
-		DepartmentId:           inc.DepartmentID.String(),
-		CategoryId:             inc.CategoryID.String(),
-		TypeId:                 inc.TypeID.String(),
-		Status:                 string(inc.Status),
-		Priority:               string(inc.Priority),
-		OccurredAt:             timestamppb.New(inc.OccurredAt),
-		RegistrarZitadelUserId: registrarZitadelUserID,
-		RegistrarEmployeeId:    inc.RegistrarEmployeeID.String(),
-		CreatedAt:              timestamppb.New(inc.CreatedAt),
+		IncidentId:              inc.ID.String(),
+		OrganizationId:          inc.OrganizationID.String(),
+		ClinicId:                inc.ClinicID.String(),
+		DepartmentId:            inc.DepartmentID.String(),
+		CategoryId:              inc.CategoryID.String(),
+		TypeId:                  inc.TypeID.String(),
+		Status:                  string(inc.Status),
+		Priority:                string(inc.Priority),
+		OccurredAt:              timestamppb.New(inc.OccurredAt),
+		RegistrarZitadelUserId:  registrarZitadelUserID,
+		RegistrarEmployeeId:     inc.RegistrarEmployeeID.String(),
+		RegistrarOrganizationId: registrarEmp.OrganizationID.String(),
+		RegistrarClinicId:       registrarClinicID.String(),
+		RegistrarDepartmentId:   registrarEmp.DepartmentID.String(),
+		CreatedAt:               timestamppb.New(inc.CreatedAt),
+	}
+	if registrarEmp.Position.Valid {
+		msg.RegistrarPosition = wrapperspb.String(registrarEmp.Position.String)
 	}
 	if inc.Description.Valid {
 		msg.Description = wrapperspb.String(inc.Description.String)

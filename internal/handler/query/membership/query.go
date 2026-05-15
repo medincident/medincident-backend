@@ -65,6 +65,23 @@ func (h *MembershipQueryHandler) GetEmployee(
 	return &membershipqueryv1.GetEmployeeResponse{Employee: employeeCardToProto(view)}, nil
 }
 
+// GetMyEmployee returns the employee card for the authenticated user.
+func (h *MembershipQueryHandler) GetMyEmployee(
+	ctx context.Context,
+	_ *membershipqueryv1.GetMyEmployeeRequest,
+) (*membershipqueryv1.GetMyEmployeeResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	view, err := h.empReader.GetForSelf(ctx, caller)
+	if err != nil {
+		return nil, err
+	}
+	return &membershipqueryv1.GetMyEmployeeResponse{Employee: employeeCardToProto(view)}, nil
+}
+
 // ListEmployeesByDepartment returns the cards under a department.
 func (h *MembershipQueryHandler) ListEmployeesByDepartment(
 	ctx context.Context,

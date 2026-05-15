@@ -25,6 +25,10 @@ message IncidentCreated {
   google.protobuf.StringValue source_buffer_id = 15;
   google.protobuf.StringValue reopened_from_incident_id = 16;
   google.protobuf.Timestamp created_at = 17;
+  string registrar_organization_id = 18;
+  string registrar_clinic_id = 19;
+  string registrar_department_id = 20;
+  google.protobuf.StringValue registrar_position = 21;
 }
 
 // IncidentStatusChanged — subject: medincident.event.incident.v1.status_changed

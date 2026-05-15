@@ -85,6 +85,51 @@ func lookupOrgIDForClinic(tx *gorm.DB, clinicID uuid.UUID) (uuid.UUID, error) {
 	return orgID, nil
 }
 
+// resolveRegistrarLocation returns (orgID, clinicID, deptID) for the registrar.
+// When registrar location fields are present in the event (post-fix events),
+// they are parsed directly. When they are absent (pre-fix events that carry
+// empty strings), the function falls back to querying projections.employees by
+// zitadel_user_id so those events can be replayed without a permanent Term().
+// If the employee projection is also absent, the incident's own values are
+// used as a last resort.
+func resolveRegistrarLocation(
+	tx *gorm.DB,
+	rawOrgID, rawClinicID, rawDeptID string,
+	zitadelUserID string,
+	incidentOrgID, incidentClinicID, incidentDeptID uuid.UUID,
+) (orgID, clinicID, deptID uuid.UUID) {
+	if rawOrgID != "" && rawClinicID != "" && rawDeptID != "" {
+		orgID, _ = uuid.Parse(rawOrgID)
+		clinicID, _ = uuid.Parse(rawClinicID)
+		deptID, _ = uuid.Parse(rawDeptID)
+		if orgID != uuid.Nil && clinicID != uuid.Nil && deptID != uuid.Nil {
+			return orgID, clinicID, deptID
+		}
+	}
+	// Pre-fix event: look up from the employee projection.
+	orgID = incidentOrgID
+	var row struct {
+		DepartmentID uuid.UUID
+		ClinicID     *uuid.UUID
+	}
+	_ = tx.Raw(
+		`SELECT department_id, clinic_id FROM projections.employees
+		  WHERE zitadel_user_id = ? AND organization_id = ? AND terminated_at IS NULL
+		  LIMIT 1`,
+		zitadelUserID, incidentOrgID,
+	).Scan(&row)
+	if row.DepartmentID != uuid.Nil {
+		deptID = row.DepartmentID
+		if row.ClinicID != nil {
+			clinicID = *row.ClinicID
+		} else {
+			clinicID = incidentClinicID
+		}
+		return orgID, clinicID, deptID
+	}
+	return incidentOrgID, incidentClinicID, incidentDeptID
+}
+
 // parseUUID parses s as a UUID and returns a permanent (_malformed) error on
 // failure so the dispatcher calls Term() instead of NakWithDelay.
 func parseUUID(s, fieldName, oopsIn, oopsCode string) (uuid.UUID, error) {
