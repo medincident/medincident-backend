@@ -1719,9 +1719,13 @@ const file_command_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x1aActivateDepartmentResponse\"C\n" +
 	"\x17DeleteDepartmentRequest\x12(\n" +
 	"\rdepartment_id\x18\x01 \x01(\tB\x03\xe0A\x02R\fdepartmentId\"\x1a\n" +
-	"\x18DeleteDepartmentResponse2\x92+\n" +
-	"\x1aOrgStructureCommandService\x12\x9b\x01\n" +
-	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xbe\x02\n" +
+	"\x18DeleteDepartmentResponse2\xd4,\n" +
+	"\x1aOrgStructureCommandService\x12\xdd\x02\n" +
+	"\x12CreateOrganization\x122.command.orgstructure.v1.CreateOrganizationRequest\x1a3.command.orgstructure.v1.CreateOrganizationResponse\"\xdd\x01\x92A\xbd\x01J\xba\x01\n" +
+	"\x03500\x12\xb2\x01\n" +
+	"\xaf\x01Internal server error. Error codes:\n" +
+	"- `organization_id_generation_failed` — failed to generate a new organization ID.\n" +
+	"- `organization_save_failed` — database write failed.\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/v1/organizations\x12\xbe\x02\n" +
 	"\x19UpdateOrganizationDetails\x129.command.orgstructure.v1.UpdateOrganizationDetailsRequest\x1a:.command.orgstructure.v1.UpdateOrganizationDetailsResponse\"\xa9\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
