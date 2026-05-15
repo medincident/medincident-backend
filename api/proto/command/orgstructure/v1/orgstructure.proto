@@ -69,6 +69,12 @@ service OrgStructureCommandService {
       post: "/v1/organizations"
       body: "*"
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `organization_id_generation_failed` — failed to generate a new organization ID.\n- `organization_save_failed` — database write failed."}
+      }
+    };
   }
   rpc UpdateOrganizationDetails(UpdateOrganizationDetailsRequest) returns (UpdateOrganizationDetailsResponse) {
     option (google.api.http) = {

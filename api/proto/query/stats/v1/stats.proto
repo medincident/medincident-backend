@@ -61,12 +61,30 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 service StatsQueryService {
   rpc GetOrganizationStats(GetOrganizationStatsRequest) returns (GetOrganizationStatsResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/stats"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `stats_load_failed` — database query failed."}
+      }
+    };
   }
   rpc GetClinicStats(GetClinicStatsRequest) returns (GetClinicStatsResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/stats"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `stats_load_failed` — database query failed."}
+      }
+    };
   }
   rpc GetDepartmentStats(GetDepartmentStatsRequest) returns (GetDepartmentStatsResponse) {
     option (google.api.http) = {get: "/v1/departments/{department_id}/stats"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `stats_load_failed` — database query failed."}
+      }
+    };
   }
 }
 

@@ -768,15 +768,25 @@ const file_query_announcement_v1_announcement_proto_rawDesc = "" +
 	"\x14AnnouncementPriority\x12%\n" +
 	"!ANNOUNCEMENT_PRIORITY_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cANNOUNCEMENT_PRIORITY_NORMAL\x10\x01\x12\x1e\n" +
-	"\x1aANNOUNCEMENT_PRIORITY_HIGH\x10\x022\xba\a\n" +
+	"\x1aANNOUNCEMENT_PRIORITY_HIGH\x10\x022\xb7\n" +
+	"\n" +
 	"\x18AnnouncementQueryService\x12\x90\x02\n" +
 	"\x0fGetAnnouncement\x12-.query.announcement.v1.GetAnnouncementRequest\x1a..query.announcement.v1.GetAnnouncementResponse\"\x9d\x01\x92AvJt\n" +
 	"\x03404\x12m\n" +
 	"kNot found. Error codes:\n" +
-	"- `announcement_query_not_found` — announcement with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/query/announcements/{id}\x12\xe4\x01\n" +
-	" ListAnnouncementsForOrganization\x12>.query.announcement.v1.ListAnnouncementsForOrganizationRequest\x1a?.query.announcement.v1.ListAnnouncementsForOrganizationResponse\"?\x82\xd3\xe4\x93\x029\x127/v1/query/organizations/{organization_id}/announcements\x12\xc6\x01\n" +
-	"\x1aListAnnouncementsForClinic\x128.query.announcement.v1.ListAnnouncementsForClinicRequest\x1a9.query.announcement.v1.ListAnnouncementsForClinicResponse\"3\x82\xd3\xe4\x93\x02-\x12+/v1/query/clinics/{clinic_id}/announcements\x12\xda\x01\n" +
-	"\x1eListAnnouncementsForDepartment\x12<.query.announcement.v1.ListAnnouncementsForDepartmentRequest\x1a=.query.announcement.v1.ListAnnouncementsForDepartmentResponse\";\x82\xd3\xe4\x93\x025\x123/v1/query/departments/{department_id}/announcementsB\xe0\x04\x92A\xe3\x02RI\n" +
+	"- `announcement_query_not_found` — announcement with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/query/announcements/{id}\x12\xe3\x02\n" +
+	" ListAnnouncementsForOrganization\x12>.query.announcement.v1.ListAnnouncementsForOrganizationRequest\x1a?.query.announcement.v1.ListAnnouncementsForOrganizationResponse\"\xbd\x01\x92A{Jy\n" +
+	"\x03400\x12r\n" +
+	"pValidation failed. Error codes:\n" +
+	"- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x029\x127/v1/query/organizations/{organization_id}/announcements\x12\xc5\x02\n" +
+	"\x1aListAnnouncementsForClinic\x128.query.announcement.v1.ListAnnouncementsForClinicRequest\x1a9.query.announcement.v1.ListAnnouncementsForClinicResponse\"\xb1\x01\x92A{Jy\n" +
+	"\x03400\x12r\n" +
+	"pValidation failed. Error codes:\n" +
+	"- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02-\x12+/v1/query/clinics/{clinic_id}/announcements\x12\xd9\x02\n" +
+	"\x1eListAnnouncementsForDepartment\x12<.query.announcement.v1.ListAnnouncementsForDepartmentRequest\x1a=.query.announcement.v1.ListAnnouncementsForDepartmentResponse\"\xb9\x01\x92A{Jy\n" +
+	"\x03400\x12r\n" +
+	"pValidation failed. Error codes:\n" +
+	"- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x025\x123/v1/query/departments/{department_id}/announcementsB\xe0\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

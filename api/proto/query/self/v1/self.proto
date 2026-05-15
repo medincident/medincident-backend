@@ -64,12 +64,24 @@ service SelfQueryService {
   // GetMyIdentity returns whether the caller is a system administrator.
   rpc GetMyIdentity(GetMyIdentityRequest) returns (GetMyIdentityResponse) {
     option (google.api.http) = {get: "/v1/me"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `self_identity_failed` — database query failed."}
+      }
+    };
   }
 
   // ListMyOrganizations returns every organization where the caller
   // has an active (non-terminated) employee record.
   rpc ListMyOrganizations(ListMyOrganizationsRequest) returns (ListMyOrganizationsResponse) {
     option (google.api.http) = {get: "/v1/me/organizations"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `self_orgs_failed` — database query failed."}
+      }
+    };
   }
 
   // GetMyEmployment returns the caller's employee card in the given

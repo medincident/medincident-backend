@@ -1271,7 +1271,7 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor2\x9e\x17\n" +
+	"\f_next_cursor2\x8d\x18\n" +
 	"\x1eIncidentClassifierQueryService\x12\x8d\x02\n" +
 	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"\x98\x01\x92AqJo\n" +
 	"\x03404\x12h\n" +
@@ -1284,8 +1284,11 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x18ListActiveRootCategories\x12=.query.incident.classifier.v1.ListActiveRootCategoriesRequest\x1a>.query.incident.classifier.v1.ListActiveRootCategoriesResponse\"\xc4\x01\x92A|Jz\n" +
 	"\x03400\x12s\n" +
 	"qValidation failed. Error codes:\n" +
-	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/incident-categories:roots\x12\xc6\x01\n" +
-	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\":\x82\xd3\xe4\x93\x024\x122/v1/incident-categories/{root_category_id}:subtree\x12\xf4\x01\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/incident-categories:roots\x12\xb5\x02\n" +
+	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\"\xa8\x01\x92AkJi\n" +
+	"\x03500\x12b\n" +
+	"`Internal server error. Error codes:\n" +
+	"- `incident_category_load_failed` — database query failed.\x82\xd3\xe4\x93\x024\x122/v1/incident-categories/{root_category_id}:subtree\x12\xf4\x01\n" +
 	"\aGetType\x12,.query.incident.classifier.v1.GetTypeRequest\x1a-.query.incident.classifier.v1.GetTypeResponse\"\x8b\x01\x92AiJg\n" +
 	"\x03404\x12`\n" +
 	"^Not found. Error codes:\n" +

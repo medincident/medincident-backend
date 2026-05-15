@@ -583,10 +583,16 @@ const file_query_self_v1_self_proto_rawDesc = "" +
 	"\x1aGetMyDepartmentRoleRequest\x12#\n" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\"Y\n" +
 	"\x1bGetMyDepartmentRoleResponse\x12:\n" +
-	"\x19is_department_responsible\x18\x01 \x01(\bR\x17isDepartmentResponsible2\x86\v\n" +
-	"\x10SelfQueryService\x12j\n" +
-	"\rGetMyIdentity\x12#.query.self.v1.GetMyIdentityRequest\x1a$.query.self.v1.GetMyIdentityResponse\"\x0e\x82\xd3\xe4\x93\x02\b\x12\x06/v1/me\x12\x8a\x01\n" +
-	"\x13ListMyOrganizations\x12).query.self.v1.ListMyOrganizationsRequest\x1a*.query.self.v1.ListMyOrganizationsResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/me/organizations\x12\xa0\x02\n" +
+	"\x19is_department_responsible\x18\x01 \x01(\bR\x17isDepartmentResponsible2\xcd\f\n" +
+	"\x10SelfQueryService\x12\xcf\x01\n" +
+	"\rGetMyIdentity\x12#.query.self.v1.GetMyIdentityRequest\x1a$.query.self.v1.GetMyIdentityResponse\"s\x92AbJ`\n" +
+	"\x03500\x12Y\n" +
+	"WInternal server error. Error codes:\n" +
+	"- `self_identity_failed` — database query failed.\x82\xd3\xe4\x93\x02\b\x12\x06/v1/me\x12\xeb\x01\n" +
+	"\x13ListMyOrganizations\x12).query.self.v1.ListMyOrganizationsRequest\x1a*.query.self.v1.ListMyOrganizationsResponse\"}\x92A^J\\\n" +
+	"\x03500\x12U\n" +
+	"SInternal server error. Error codes:\n" +
+	"- `self_orgs_failed` — database query failed.\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/me/organizations\x12\xa0\x02\n" +
 	"\x0fGetMyEmployment\x12%.query.self.v1.GetMyEmploymentRequest\x1a&.query.self.v1.GetMyEmploymentResponse\"\xbd\x01\x92A\x80\x01J~\n" +
 	"\x03404\x12w\n" +
 	"uNot found. Error codes:\n" +

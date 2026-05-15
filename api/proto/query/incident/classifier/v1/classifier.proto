@@ -88,6 +88,12 @@ service IncidentClassifierQueryService {
   }
   rpc ListCategorySubtree(ListCategorySubtreeRequest) returns (ListCategorySubtreeResponse) {
     option (google.api.http) = {get: "/v1/incident-categories/{root_category_id}:subtree"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `incident_category_load_failed` — database query failed."}
+      }
+    };
   }
 
   rpc GetType(GetTypeRequest) returns (GetTypeResponse) {

@@ -561,11 +561,20 @@ const file_query_stats_v1_stats_proto_rawDesc = "" +
 	"\x19GetDepartmentStatsRequest\x12#\n" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\"S\n" +
 	"\x1aGetDepartmentStatsResponse\x125\n" +
-	"\x05stats\x18\x01 \x01(\v2\x1f.query.stats.v1.DepartmentStatsR\x05stats2\xe0\x03\n" +
-	"\x11StatsQueryService\x12\xa4\x01\n" +
-	"\x14GetOrganizationStats\x12+.query.stats.v1.GetOrganizationStatsRequest\x1a,.query.stats.v1.GetOrganizationStatsResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/stats\x12\x86\x01\n" +
-	"\x0eGetClinicStats\x12%.query.stats.v1.GetClinicStatsRequest\x1a&.query.stats.v1.GetClinicStatsResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/clinics/{clinic_id}/stats\x12\x9a\x01\n" +
-	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"-\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xa8\x04\x92A\xe3\x02RI\n" +
+	"\x05stats\x18\x01 \x01(\v2\x1f.query.stats.v1.DepartmentStatsR\x05stats2\x89\x06\n" +
+	"\x11StatsQueryService\x12\x87\x02\n" +
+	"\x14GetOrganizationStats\x12+.query.stats.v1.GetOrganizationStatsRequest\x1a,.query.stats.v1.GetOrganizationStatsResponse\"\x93\x01\x92A_J]\n" +
+	"\x03500\x12V\n" +
+	"TInternal server error. Error codes:\n" +
+	"- `stats_load_failed` — database query failed.\x82\xd3\xe4\x93\x02+\x12)/v1/organizations/{organization_id}/stats\x12\xe9\x01\n" +
+	"\x0eGetClinicStats\x12%.query.stats.v1.GetClinicStatsRequest\x1a&.query.stats.v1.GetClinicStatsResponse\"\x87\x01\x92A_J]\n" +
+	"\x03500\x12V\n" +
+	"TInternal server error. Error codes:\n" +
+	"- `stats_load_failed` — database query failed.\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/clinics/{clinic_id}/stats\x12\xfd\x01\n" +
+	"\x12GetDepartmentStats\x12).query.stats.v1.GetDepartmentStatsRequest\x1a*.query.stats.v1.GetDepartmentStatsResponse\"\x8f\x01\x92A_J]\n" +
+	"\x03500\x12V\n" +
+	"TInternal server error. Error codes:\n" +
+	"- `stats_load_failed` — database query failed.\x82\xd3\xe4\x93\x02'\x12%/v1/departments/{department_id}/statsB\xa8\x04\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +

@@ -105,12 +105,30 @@ service MembershipQueryService {
   }
   rpc CountEmployeesByDepartment(CountEmployeesByDepartmentRequest) returns (CountEmployeesByDepartmentResponse) {
     option (google.api.http) = {get: "/v1/departments/{department_id}/employees:count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `employee_card_count_failed` — database query failed."}
+      }
+    };
   }
   rpc CountEmployeesByClinic(CountEmployeesByClinicRequest) returns (CountEmployeesByClinicResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/employees:count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `employee_card_count_failed` — database query failed."}
+      }
+    };
   }
   rpc CountEmployeesByOrganization(CountEmployeesByOrganizationRequest) returns (CountEmployeesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees:count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `employee_card_count_failed` — database query failed."}
+      }
+    };
   }
   rpc SearchEmployeesByOrganization(SearchEmployeesByOrganizationRequest) returns (SearchEmployeesByOrganizationResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/employees:search"};
@@ -133,13 +151,31 @@ service MembershipQueryService {
   }
   rpc CountVacationsByEmployee(CountVacationsByEmployeeRequest) returns (CountVacationsByEmployeeResponse) {
     option (google.api.http) = {get: "/v1/employees/{employee_id}/vacations:count"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `vacation_count_failed` — database query failed."}
+      }
+    };
   }
 
   rpc GetClinicHead(GetClinicHeadRequest) returns (GetClinicHeadResponse) {
     option (google.api.http) = {get: "/v1/clinics/{clinic_id}/head"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `role_load_failed` — database query failed."}
+      }
+    };
   }
   rpc GetDepartmentResponsible(GetDepartmentResponsibleRequest) returns (GetDepartmentResponsibleResponse) {
     option (google.api.http) = {get: "/v1/departments/{department_id}/responsible"};
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      responses: {
+        key: "500"
+        value: {description: "Internal server error. Error codes:\n- `role_load_failed` — database query failed."}
+      }
+    };
   }
   rpc ListOrgAdmins(ListOrgAdminsRequest) returns (ListOrgAdminsResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/admins"};

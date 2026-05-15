@@ -4203,8 +4203,12 @@ curl -X POST /v1/organizations \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `organization_id_generation_failed` — failed to generate a new organization ID.
+- `organization_save_failed` — database write failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurecommandservice_createorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5568,11 +5572,14 @@ curl -X GET /v1/query/clinics/{clinicId}/announcements \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForClinicResponse](#schemav1listannouncementsforclinicresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="announcementqueryservice_listannouncementsforclinic-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5644,11 +5651,14 @@ curl -X GET /v1/query/departments/{departmentId}/announcements \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForDepartmentResponse](#schemav1listannouncementsfordepartmentresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="announcementqueryservice_listannouncementsfordepartment-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5720,11 +5730,14 @@ curl -X GET /v1/query/organizations/{organizationId}/announcements \
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListAnnouncementsForOrganizationResponse](#schemav1listannouncementsfororganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `announcement_query_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="announcementqueryservice_listannouncementsfororganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -5905,8 +5918,11 @@ curl -X GET /v1/incident-categories/{rootCategoryId}:subtree \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `incident_category_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentclassifierqueryservice_listcategorysubtree-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7058,8 +7074,11 @@ before comparison; all-whitespace is treated as unset.
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `employee_card_count_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_countemployeesbyclinic-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7141,8 +7160,11 @@ curl -X GET /v1/clinics/{clinicId}/head \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `role_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_getclinichead-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7366,8 +7388,11 @@ before comparison; all-whitespace is treated as unset.
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `employee_card_count_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_countemployeesbydepartment-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7449,8 +7474,11 @@ curl -X GET /v1/departments/{departmentId}/responsible \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `role_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_getdepartmentresponsible-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -7630,8 +7658,11 @@ Valid values: scheduled, active, ended, cancelled.
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `vacation_count_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_countvacationsbyemployee-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -8333,8 +8364,11 @@ before comparison; all-whitespace is treated as unset.
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `employee_card_count_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="membershipqueryservice_countemployeesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -8748,8 +8782,11 @@ curl -X GET /v1/clinics/{clinicId}/departments:count \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `department_count_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurequeryservice_countdepartmentsbyclinic-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -9103,8 +9140,11 @@ curl -X GET /v1/organizations/{organizationId}/clinics:count \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `clinic_count_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurequeryservice_countclinicsbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -9143,8 +9183,11 @@ curl -X GET /v1/organizations:count \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `organization_count_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="orgstructurequeryservice_countorganizations-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -9721,8 +9764,11 @@ curl -X GET /v1/me \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `self_identity_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="getmyidentity-returns-whether-the-caller-is-a-system-administrator.-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -9889,8 +9935,12 @@ has-an-active-(non-terminated)-employee-record.-responses">Responses</h3>
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `self_orgs_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="listmyorganizations-returns-every-organization-where-the-caller
+has-an-active-(non-terminated)-employee-record.-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -10078,8 +10128,11 @@ curl -X GET /v1/clinics/{clinicId}/stats \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `stats_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="statsqueryservice_getclinicstats-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -10130,8 +10183,11 @@ curl -X GET /v1/departments/{departmentId}/stats \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `stats_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="statsqueryservice_getdepartmentstats-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -10183,8 +10239,11 @@ curl -X GET /v1/organizations/{organizationId}/stats \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed or invalid input.|[v1ErrorResponse](#schemav1errorresponse)|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
 |403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error. Error codes:
+- `stats_load_failed` — database query failed.|Inline|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="statsqueryservice_getorganizationstats-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
