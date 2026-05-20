@@ -532,10 +532,6 @@ func (r *Reader) GetType(
 	return &out, nil
 }
 
-// ListTypesByCategory returns every type under one category.
-// Authorization: authz.ReaderOf.Category(categoryID).
-//
-// See: docs/services/incident/Classifier.md
 // ListTypesByCategory paginates incident types under a category.
 // Employees (ReaderOf.Category) receive all types.
 // Authenticated non-employees (patients) receive only active,
