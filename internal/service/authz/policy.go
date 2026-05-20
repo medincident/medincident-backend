@@ -647,8 +647,17 @@ func (a *Authz) Satisfies(ctx context.Context, callerID string, p Policy) (bool,
 	}
 	bc := &branchCtx{callerID: callerID}
 	branches := p.branches(bc)
-	if len(branches) == 0 || bc.hasZeroScope() {
-		return false, nil
+	if len(branches) == 0 {
+		return false, oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Errorf("policy produced no branches")
+	}
+	if bc.hasZeroScope() {
+		return false, oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Errorf("policy scope is zero uuid")
 	}
 	query := "SELECT EXISTS(" + strings.Join(branches, " UNION ALL ") + ")"
 	var ok bool
