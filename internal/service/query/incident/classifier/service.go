@@ -3,13 +3,17 @@
 // projections.incident_types). Subtree walks use PostgreSQL recursive
 // CTEs in raw SQL.
 //
-// Authorization model: catalog reads (Get / List / Subtree) are gated
-// by authz.ReaderOf.{Category,IncidentType,Organization} — any employee
-// of the owning organization may read. Patient-facing endpoints
-// (ListPatientAllowed*, ListPatientVisible*) run under authz.Authenticated:
-// patients are not employees, but they must pick an organization to
-// file an incident against, so the classifier menu stays open to any
-// logged-in caller. Cross-org reads by employees fail permission_denied.
+// Authorization model: all list/subtree RPCs accept any authenticated
+// caller (authz.Authenticated). Employees (authz.ReaderOf.Organization /
+// authz.ReaderOf.Category) receive the full unfiltered result set.
+// Non-employee authenticated callers (patients) automatically receive
+// only active categories whose subtree contains a patient-allowed type,
+// and only active, patient-allowed types. The branching is done via
+// authz.Satisfies so no permission_denied is raised for patient callers.
+// Get methods (GetCategory, GetType) remain employee-only via
+// authz.ReaderOf.{Category,IncidentType}. Cross-org reads by employees
+// return the full set for the requested org; patients see only the
+// patient-visible subset regardless of their own org.
 //
 // See: docs/services/incident/Classifier.md
 package classifier
