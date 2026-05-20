@@ -368,10 +368,10 @@ func (r *Reader) listActiveRootCategoriesEmployee(
 	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListCategorySubtree returns every descendant of the given root
-// (inclusive), flattened, using a recursive CTE. Authorization:
-// authz.ReaderOf.Category(rootID) — the root category's org scopes
-// the whole subtree.
+// ListCategorySubtree returns every descendant of rootID (inclusive).
+// Employees receive the full subtree regardless of active/patient status.
+// Patients receive only active categories in the subtree whose descendant
+// subtree contains at least one active, patient-allowed type.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) ListCategorySubtree(
@@ -379,9 +379,20 @@ func (r *Reader) ListCategorySubtree(
 	caller authz.Caller,
 	rootID uuid.UUID,
 ) ([]CategoryView, error) {
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(rootID)); err != nil {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
 		return nil, err
 	}
+	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(rootID))
+	if err != nil {
+		return nil, err
+	}
+	if isEmployee {
+		return r.listCategorySubtreeEmployee(ctx, rootID)
+	}
+	return r.listCategorySubtreePatient(ctx, rootID)
+}
+
+func (r *Reader) listCategorySubtreeEmployee(ctx context.Context, rootID uuid.UUID) ([]CategoryView, error) {
 	const query = `
 		WITH RECURSIVE tree AS (
 		  SELECT id, organization_id, parent_category_id, name, description,
@@ -397,6 +408,73 @@ func (r *Reader) ListCategorySubtree(
 		SELECT id, organization_id, parent_category_id, name, description,
 		       is_active, created_at, updated_at
 		  FROM tree
+		 ORDER BY created_at ASC, id ASC`
+	rows, err := r.db.WithContext(ctx).Raw(query, rootID).Rows()
+	if err != nil {
+		return nil, oops.In("reader.incident.classifier.category").
+			Code(ErrCodeCategoryLoadFailed).
+			With("root_category_id", rootID).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]CategoryView, 0)
+	for rows.Next() {
+		var v CategoryView
+		if err := scanCategory(rows, &v); err != nil {
+			return nil, oops.In("reader.incident.classifier.category").
+				Code(ErrCodeCategoryLoadFailed).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, oops.In("reader.incident.classifier.category").
+			Code(ErrCodeCategoryLoadFailed).
+			Wrap(err)
+	}
+	return out, nil
+}
+
+// listCategorySubtreePatient walks down from rootID collecting only active
+// categories that have at least one active patient-allowed type in their
+// own descendant subtree. The CTE walks DOWN first (subtree), then marks
+// directly-qualifying categories (direct), then walks UP within the subtree
+// to include their ancestors (visible).
+func (r *Reader) listCategorySubtreePatient(ctx context.Context, rootID uuid.UUID) ([]CategoryView, error) {
+	const query = `
+		WITH RECURSIVE
+		  subtree AS (
+		    SELECT id, parent_category_id
+		      FROM projections.incident_categories
+		     WHERE id = ?
+		    UNION ALL
+		    SELECT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN subtree s ON c.parent_category_id = s.id
+		     WHERE c.is_active = TRUE
+		  ),
+		  direct AS (
+		    SELECT DISTINCT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN projections.incident_types t ON t.category_id = c.id
+		     WHERE c.id IN (SELECT id FROM subtree)
+		       AND c.is_active = TRUE
+		       AND t.is_active = TRUE
+		       AND t.is_allowed_for_patients = TRUE
+		  ),
+		  visible(id, parent_category_id) AS (
+		    SELECT id, parent_category_id FROM direct
+		    UNION
+		    SELECT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN visible v ON v.parent_category_id = c.id
+		     WHERE c.id IN (SELECT id FROM subtree)
+		       AND c.is_active = TRUE
+		  )
+		SELECT id, organization_id, parent_category_id, name, description,
+		       is_active, created_at, updated_at
+		  FROM projections.incident_categories
+		 WHERE id IN (SELECT id FROM visible)
 		 ORDER BY created_at ASC, id ASC`
 	rows, err := r.db.WithContext(ctx).Raw(query, rootID).Rows()
 	if err != nil {
