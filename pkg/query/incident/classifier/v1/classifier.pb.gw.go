@@ -364,112 +364,6 @@ func local_request_IncidentClassifierQueryService_ListActiveTypesByOrganization_
 	return msg, metadata, err
 }
 
-var filter_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-
-func request_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq ListPatientAllowedTypesByOrganizationRequest
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["organization_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
-	}
-	protoReq.OrganizationId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
-	}
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	msg, err := client.ListPatientAllowedTypesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-}
-
-func local_request_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, server IncidentClassifierQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq ListPatientAllowedTypesByOrganizationRequest
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	val, ok := pathParams["organization_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
-	}
-	protoReq.OrganizationId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
-	}
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	msg, err := server.ListPatientAllowedTypesByOrganization(ctx, &protoReq)
-	return msg, metadata, err
-}
-
-var filter_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-
-func request_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq ListPatientVisibleCategoriesByOrganizationRequest
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["organization_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
-	}
-	protoReq.OrganizationId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
-	}
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	msg, err := client.ListPatientVisibleCategoriesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-}
-
-func local_request_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, server IncidentClassifierQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq ListPatientVisibleCategoriesByOrganizationRequest
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	val, ok := pathParams["organization_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
-	}
-	protoReq.OrganizationId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
-	}
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	msg, err := server.ListPatientVisibleCategoriesByOrganization(ctx, &protoReq)
-	return msg, metadata, err
-}
-
 // RegisterIncidentClassifierQueryServiceHandlerServer registers the http handlers for service IncidentClassifierQueryService to "mux".
 // UnaryRPC     :call IncidentClassifierQueryServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -615,46 +509,6 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 			return
 		}
 		forward_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientAllowedTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types:patient-allowed"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientVisibleCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:patient-visible"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -815,63 +669,25 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		}
 		forward_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientAllowedTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types:patient-allowed"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientVisibleCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:patient-visible"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
 	return nil
 }
 
 var (
-	pattern_IncidentClassifierQueryService_GetCategory_0                                = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "id"}, ""))
-	pattern_IncidentClassifierQueryService_ListCategoriesByOrganization_0               = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, ""))
-	pattern_IncidentClassifierQueryService_ListActiveRootCategories_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, "roots"))
-	pattern_IncidentClassifierQueryService_ListCategorySubtree_0                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "root_category_id"}, "subtree"))
-	pattern_IncidentClassifierQueryService_GetType_0                                    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-types", "id"}, ""))
-	pattern_IncidentClassifierQueryService_ListTypesByCategory_0                        = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "types"}, ""))
-	pattern_IncidentClassifierQueryService_ListActiveTypesByOrganization_0              = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-types"}, "active"))
-	pattern_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-types"}, "patient-allowed"))
-	pattern_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, "patient-visible"))
+	pattern_IncidentClassifierQueryService_GetCategory_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "id"}, ""))
+	pattern_IncidentClassifierQueryService_ListCategoriesByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, ""))
+	pattern_IncidentClassifierQueryService_ListActiveRootCategories_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, "roots"))
+	pattern_IncidentClassifierQueryService_ListCategorySubtree_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "root_category_id"}, "subtree"))
+	pattern_IncidentClassifierQueryService_GetType_0                       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-types", "id"}, ""))
+	pattern_IncidentClassifierQueryService_ListTypesByCategory_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "types"}, ""))
+	pattern_IncidentClassifierQueryService_ListActiveTypesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-types"}, "active"))
 )
 
 var (
-	forward_IncidentClassifierQueryService_GetCategory_0                                = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListCategoriesByOrganization_0               = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListActiveRootCategories_0                   = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListCategorySubtree_0                        = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_GetType_0                                    = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListTypesByCategory_0                        = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListActiveTypesByOrganization_0              = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_0      = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_0 = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_GetCategory_0                   = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListCategoriesByOrganization_0  = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListActiveRootCategories_0      = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListCategorySubtree_0           = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_GetType_0                       = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListTypesByCategory_0           = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListActiveTypesByOrganization_0 = runtime.ForwardResponseMessage
 )

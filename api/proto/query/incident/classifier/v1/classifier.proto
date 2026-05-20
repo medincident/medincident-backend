@@ -123,28 +123,6 @@ service IncidentClassifierQueryService {
       }
     };
   }
-
-  // Patient-facing reads. These are scoped to one organisation and return
-  // only the slice of the classifier that a patient may see when filing
-  // an incident.
-  rpc ListPatientAllowedTypesByOrganization(ListPatientAllowedTypesByOrganizationRequest) returns (ListPatientAllowedTypesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-types:patient-allowed"};
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      responses: {
-        key: "400"
-        value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
-      }
-    };
-  }
-  rpc ListPatientVisibleCategoriesByOrganization(ListPatientVisibleCategoriesByOrganizationRequest) returns (ListPatientVisibleCategoriesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories:patient-visible"};
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-      responses: {
-        key: "400"
-        value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
-      }
-    };
-  }
 }
 
 // Category mirrors projections.incident_categories row.
@@ -234,25 +212,5 @@ message ListActiveTypesByOrganizationRequest {
 }
 message ListActiveTypesByOrganizationResponse {
   repeated Type items = 1;
-  optional string next_cursor = 2;
-}
-
-message ListPatientAllowedTypesByOrganizationRequest {
-  string organization_id = 1;
-  int32 limit = 2;
-  string after = 3;
-}
-message ListPatientAllowedTypesByOrganizationResponse {
-  repeated Type items = 1;
-  optional string next_cursor = 2;
-}
-
-message ListPatientVisibleCategoriesByOrganizationRequest {
-  string organization_id = 1;
-  int32 limit = 2;
-  string after = 3;
-}
-message ListPatientVisibleCategoriesByOrganizationResponse {
-  repeated Category items = 1;
   optional string next_cursor = 2;
 }

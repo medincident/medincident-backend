@@ -949,230 +949,6 @@ func (x *ListActiveTypesByOrganizationResponse) GetNextCursor() string {
 	return ""
 }
 
-type ListPatientAllowedTypesByOrganizationRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *ListPatientAllowedTypesByOrganizationRequest) Reset() {
-	*x = ListPatientAllowedTypesByOrganizationRequest{}
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPatientAllowedTypesByOrganizationRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPatientAllowedTypesByOrganizationRequest) ProtoMessage() {}
-
-func (x *ListPatientAllowedTypesByOrganizationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPatientAllowedTypesByOrganizationRequest.ProtoReflect.Descriptor instead.
-func (*ListPatientAllowedTypesByOrganizationRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *ListPatientAllowedTypesByOrganizationRequest) GetOrganizationId() string {
-	if x != nil {
-		return x.OrganizationId
-	}
-	return ""
-}
-
-func (x *ListPatientAllowedTypesByOrganizationRequest) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
-	}
-	return 0
-}
-
-func (x *ListPatientAllowedTypesByOrganizationRequest) GetAfter() string {
-	if x != nil {
-		return x.After
-	}
-	return ""
-}
-
-type ListPatientAllowedTypesByOrganizationResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*Type                `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListPatientAllowedTypesByOrganizationResponse) Reset() {
-	*x = ListPatientAllowedTypesByOrganizationResponse{}
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPatientAllowedTypesByOrganizationResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPatientAllowedTypesByOrganizationResponse) ProtoMessage() {}
-
-func (x *ListPatientAllowedTypesByOrganizationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPatientAllowedTypesByOrganizationResponse.ProtoReflect.Descriptor instead.
-func (*ListPatientAllowedTypesByOrganizationResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *ListPatientAllowedTypesByOrganizationResponse) GetItems() []*Type {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *ListPatientAllowedTypesByOrganizationResponse) GetNextCursor() string {
-	if x != nil && x.NextCursor != nil {
-		return *x.NextCursor
-	}
-	return ""
-}
-
-type ListPatientVisibleCategoriesByOrganizationRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationRequest) Reset() {
-	*x = ListPatientVisibleCategoriesByOrganizationRequest{}
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPatientVisibleCategoriesByOrganizationRequest) ProtoMessage() {}
-
-func (x *ListPatientVisibleCategoriesByOrganizationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPatientVisibleCategoriesByOrganizationRequest.ProtoReflect.Descriptor instead.
-func (*ListPatientVisibleCategoriesByOrganizationRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetOrganizationId() string {
-	if x != nil {
-		return x.OrganizationId
-	}
-	return ""
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
-	}
-	return 0
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationRequest) GetAfter() string {
-	if x != nil {
-		return x.After
-	}
-	return ""
-}
-
-type ListPatientVisibleCategoriesByOrganizationResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*Category            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationResponse) Reset() {
-	*x = ListPatientVisibleCategoriesByOrganizationResponse{}
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListPatientVisibleCategoriesByOrganizationResponse) ProtoMessage() {}
-
-func (x *ListPatientVisibleCategoriesByOrganizationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListPatientVisibleCategoriesByOrganizationResponse.ProtoReflect.Descriptor instead.
-func (*ListPatientVisibleCategoriesByOrganizationResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationResponse) GetItems() []*Category {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *ListPatientVisibleCategoriesByOrganizationResponse) GetNextCursor() string {
-	if x != nil && x.NextCursor != nil {
-		return *x.NextCursor
-	}
-	return ""
-}
-
 var File_query_incident_classifier_v1_classifier_proto protoreflect.FileDescriptor
 
 const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
@@ -1253,25 +1029,7 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"\x83\x01\n" +
-	",ListPatientAllowedTypesByOrganizationRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\x9f\x01\n" +
-	"-ListPatientAllowedTypesByOrganizationResponse\x128\n" +
-	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\x12$\n" +
-	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
-	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"\x88\x01\n" +
-	"1ListPatientVisibleCategoriesByOrganizationRequest\x12'\n" +
-	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\xa8\x01\n" +
-	"2ListPatientVisibleCategoriesByOrganizationResponse\x12<\n" +
-	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\x12$\n" +
-	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
-	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor2\x8d\x18\n" +
+	"\f_next_cursor2\xdb\x11\n" +
 	"\x1eIncidentClassifierQueryService\x12\x8d\x02\n" +
 	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"\x98\x01\x92AqJo\n" +
 	"\x03404\x12h\n" +
@@ -1300,15 +1058,7 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"\xc0\x01\x92A|Jz\n" +
 	"\x03400\x12s\n" +
 	"qValidation failed. Error codes:\n" +
-	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02;\x129/v1/organizations/{organization_id}/incident-types:active\x12\x8c\x03\n" +
-	"%ListPatientAllowedTypesByOrganization\x12J.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest\x1aK.query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse\"\xc9\x01\x92A|Jz\n" +
-	"\x03400\x12s\n" +
-	"qValidation failed. Error codes:\n" +
-	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02D\x12B/v1/organizations/{organization_id}/incident-types:patient-allowed\x12\xa0\x03\n" +
-	"*ListPatientVisibleCategoriesByOrganization\x12O.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest\x1aP.query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse\"\xce\x01\x92A|Jz\n" +
-	"\x03400\x12s\n" +
-	"qValidation failed. Error codes:\n" +
-	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02I\x12G/v1/organizations/{organization_id}/incident-categories:patient-visibleB\x87\x05\x92A\xe3\x02RI\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02;\x129/v1/organizations/{organization_id}/incident-types:activeB\x87\x05\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -1338,28 +1088,24 @@ func file_query_incident_classifier_v1_classifier_proto_rawDescGZIP() []byte {
 	return file_query_incident_classifier_v1_classifier_proto_rawDescData
 }
 
-var file_query_incident_classifier_v1_classifier_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_query_incident_classifier_v1_classifier_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_query_incident_classifier_v1_classifier_proto_goTypes = []any{
-	(*Category)(nil),                                           // 0: query.incident.classifier.v1.Category
-	(*Type)(nil),                                               // 1: query.incident.classifier.v1.Type
-	(*GetCategoryRequest)(nil),                                 // 2: query.incident.classifier.v1.GetCategoryRequest
-	(*GetCategoryResponse)(nil),                                // 3: query.incident.classifier.v1.GetCategoryResponse
-	(*ListCategoriesByOrganizationRequest)(nil),                // 4: query.incident.classifier.v1.ListCategoriesByOrganizationRequest
-	(*ListCategoriesByOrganizationResponse)(nil),               // 5: query.incident.classifier.v1.ListCategoriesByOrganizationResponse
-	(*ListActiveRootCategoriesRequest)(nil),                    // 6: query.incident.classifier.v1.ListActiveRootCategoriesRequest
-	(*ListActiveRootCategoriesResponse)(nil),                   // 7: query.incident.classifier.v1.ListActiveRootCategoriesResponse
-	(*ListCategorySubtreeRequest)(nil),                         // 8: query.incident.classifier.v1.ListCategorySubtreeRequest
-	(*ListCategorySubtreeResponse)(nil),                        // 9: query.incident.classifier.v1.ListCategorySubtreeResponse
-	(*GetTypeRequest)(nil),                                     // 10: query.incident.classifier.v1.GetTypeRequest
-	(*GetTypeResponse)(nil),                                    // 11: query.incident.classifier.v1.GetTypeResponse
-	(*ListTypesByCategoryRequest)(nil),                         // 12: query.incident.classifier.v1.ListTypesByCategoryRequest
-	(*ListTypesByCategoryResponse)(nil),                        // 13: query.incident.classifier.v1.ListTypesByCategoryResponse
-	(*ListActiveTypesByOrganizationRequest)(nil),               // 14: query.incident.classifier.v1.ListActiveTypesByOrganizationRequest
-	(*ListActiveTypesByOrganizationResponse)(nil),              // 15: query.incident.classifier.v1.ListActiveTypesByOrganizationResponse
-	(*ListPatientAllowedTypesByOrganizationRequest)(nil),       // 16: query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest
-	(*ListPatientAllowedTypesByOrganizationResponse)(nil),      // 17: query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse
-	(*ListPatientVisibleCategoriesByOrganizationRequest)(nil),  // 18: query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest
-	(*ListPatientVisibleCategoriesByOrganizationResponse)(nil), // 19: query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse
+	(*Category)(nil),                              // 0: query.incident.classifier.v1.Category
+	(*Type)(nil),                                  // 1: query.incident.classifier.v1.Type
+	(*GetCategoryRequest)(nil),                    // 2: query.incident.classifier.v1.GetCategoryRequest
+	(*GetCategoryResponse)(nil),                   // 3: query.incident.classifier.v1.GetCategoryResponse
+	(*ListCategoriesByOrganizationRequest)(nil),   // 4: query.incident.classifier.v1.ListCategoriesByOrganizationRequest
+	(*ListCategoriesByOrganizationResponse)(nil),  // 5: query.incident.classifier.v1.ListCategoriesByOrganizationResponse
+	(*ListActiveRootCategoriesRequest)(nil),       // 6: query.incident.classifier.v1.ListActiveRootCategoriesRequest
+	(*ListActiveRootCategoriesResponse)(nil),      // 7: query.incident.classifier.v1.ListActiveRootCategoriesResponse
+	(*ListCategorySubtreeRequest)(nil),            // 8: query.incident.classifier.v1.ListCategorySubtreeRequest
+	(*ListCategorySubtreeResponse)(nil),           // 9: query.incident.classifier.v1.ListCategorySubtreeResponse
+	(*GetTypeRequest)(nil),                        // 10: query.incident.classifier.v1.GetTypeRequest
+	(*GetTypeResponse)(nil),                       // 11: query.incident.classifier.v1.GetTypeResponse
+	(*ListTypesByCategoryRequest)(nil),            // 12: query.incident.classifier.v1.ListTypesByCategoryRequest
+	(*ListTypesByCategoryResponse)(nil),           // 13: query.incident.classifier.v1.ListTypesByCategoryResponse
+	(*ListActiveTypesByOrganizationRequest)(nil),  // 14: query.incident.classifier.v1.ListActiveTypesByOrganizationRequest
+	(*ListActiveTypesByOrganizationResponse)(nil), // 15: query.incident.classifier.v1.ListActiveTypesByOrganizationResponse
 }
 var file_query_incident_classifier_v1_classifier_proto_depIdxs = []int32{
 	0,  // 0: query.incident.classifier.v1.GetCategoryResponse.category:type_name -> query.incident.classifier.v1.Category
@@ -1369,31 +1115,25 @@ var file_query_incident_classifier_v1_classifier_proto_depIdxs = []int32{
 	1,  // 4: query.incident.classifier.v1.GetTypeResponse.type:type_name -> query.incident.classifier.v1.Type
 	1,  // 5: query.incident.classifier.v1.ListTypesByCategoryResponse.items:type_name -> query.incident.classifier.v1.Type
 	1,  // 6: query.incident.classifier.v1.ListActiveTypesByOrganizationResponse.items:type_name -> query.incident.classifier.v1.Type
-	1,  // 7: query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse.items:type_name -> query.incident.classifier.v1.Type
-	0,  // 8: query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse.items:type_name -> query.incident.classifier.v1.Category
-	2,  // 9: query.incident.classifier.v1.IncidentClassifierQueryService.GetCategory:input_type -> query.incident.classifier.v1.GetCategoryRequest
-	4,  // 10: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategoriesByOrganization:input_type -> query.incident.classifier.v1.ListCategoriesByOrganizationRequest
-	6,  // 11: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveRootCategories:input_type -> query.incident.classifier.v1.ListActiveRootCategoriesRequest
-	8,  // 12: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategorySubtree:input_type -> query.incident.classifier.v1.ListCategorySubtreeRequest
-	10, // 13: query.incident.classifier.v1.IncidentClassifierQueryService.GetType:input_type -> query.incident.classifier.v1.GetTypeRequest
-	12, // 14: query.incident.classifier.v1.IncidentClassifierQueryService.ListTypesByCategory:input_type -> query.incident.classifier.v1.ListTypesByCategoryRequest
-	14, // 15: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveTypesByOrganization:input_type -> query.incident.classifier.v1.ListActiveTypesByOrganizationRequest
-	16, // 16: query.incident.classifier.v1.IncidentClassifierQueryService.ListPatientAllowedTypesByOrganization:input_type -> query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationRequest
-	18, // 17: query.incident.classifier.v1.IncidentClassifierQueryService.ListPatientVisibleCategoriesByOrganization:input_type -> query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationRequest
-	3,  // 18: query.incident.classifier.v1.IncidentClassifierQueryService.GetCategory:output_type -> query.incident.classifier.v1.GetCategoryResponse
-	5,  // 19: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategoriesByOrganization:output_type -> query.incident.classifier.v1.ListCategoriesByOrganizationResponse
-	7,  // 20: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveRootCategories:output_type -> query.incident.classifier.v1.ListActiveRootCategoriesResponse
-	9,  // 21: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategorySubtree:output_type -> query.incident.classifier.v1.ListCategorySubtreeResponse
-	11, // 22: query.incident.classifier.v1.IncidentClassifierQueryService.GetType:output_type -> query.incident.classifier.v1.GetTypeResponse
-	13, // 23: query.incident.classifier.v1.IncidentClassifierQueryService.ListTypesByCategory:output_type -> query.incident.classifier.v1.ListTypesByCategoryResponse
-	15, // 24: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveTypesByOrganization:output_type -> query.incident.classifier.v1.ListActiveTypesByOrganizationResponse
-	17, // 25: query.incident.classifier.v1.IncidentClassifierQueryService.ListPatientAllowedTypesByOrganization:output_type -> query.incident.classifier.v1.ListPatientAllowedTypesByOrganizationResponse
-	19, // 26: query.incident.classifier.v1.IncidentClassifierQueryService.ListPatientVisibleCategoriesByOrganization:output_type -> query.incident.classifier.v1.ListPatientVisibleCategoriesByOrganizationResponse
-	18, // [18:27] is the sub-list for method output_type
-	9,  // [9:18] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	2,  // 7: query.incident.classifier.v1.IncidentClassifierQueryService.GetCategory:input_type -> query.incident.classifier.v1.GetCategoryRequest
+	4,  // 8: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategoriesByOrganization:input_type -> query.incident.classifier.v1.ListCategoriesByOrganizationRequest
+	6,  // 9: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveRootCategories:input_type -> query.incident.classifier.v1.ListActiveRootCategoriesRequest
+	8,  // 10: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategorySubtree:input_type -> query.incident.classifier.v1.ListCategorySubtreeRequest
+	10, // 11: query.incident.classifier.v1.IncidentClassifierQueryService.GetType:input_type -> query.incident.classifier.v1.GetTypeRequest
+	12, // 12: query.incident.classifier.v1.IncidentClassifierQueryService.ListTypesByCategory:input_type -> query.incident.classifier.v1.ListTypesByCategoryRequest
+	14, // 13: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveTypesByOrganization:input_type -> query.incident.classifier.v1.ListActiveTypesByOrganizationRequest
+	3,  // 14: query.incident.classifier.v1.IncidentClassifierQueryService.GetCategory:output_type -> query.incident.classifier.v1.GetCategoryResponse
+	5,  // 15: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategoriesByOrganization:output_type -> query.incident.classifier.v1.ListCategoriesByOrganizationResponse
+	7,  // 16: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveRootCategories:output_type -> query.incident.classifier.v1.ListActiveRootCategoriesResponse
+	9,  // 17: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategorySubtree:output_type -> query.incident.classifier.v1.ListCategorySubtreeResponse
+	11, // 18: query.incident.classifier.v1.IncidentClassifierQueryService.GetType:output_type -> query.incident.classifier.v1.GetTypeResponse
+	13, // 19: query.incident.classifier.v1.IncidentClassifierQueryService.ListTypesByCategory:output_type -> query.incident.classifier.v1.ListTypesByCategoryResponse
+	15, // 20: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveTypesByOrganization:output_type -> query.incident.classifier.v1.ListActiveTypesByOrganizationResponse
+	14, // [14:21] is the sub-list for method output_type
+	7,  // [7:14] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_query_incident_classifier_v1_classifier_proto_init() }
@@ -1407,15 +1147,13 @@ func file_query_incident_classifier_v1_classifier_proto_init() {
 	file_query_incident_classifier_v1_classifier_proto_msgTypes[7].OneofWrappers = []any{}
 	file_query_incident_classifier_v1_classifier_proto_msgTypes[13].OneofWrappers = []any{}
 	file_query_incident_classifier_v1_classifier_proto_msgTypes[15].OneofWrappers = []any{}
-	file_query_incident_classifier_v1_classifier_proto_msgTypes[17].OneofWrappers = []any{}
-	file_query_incident_classifier_v1_classifier_proto_msgTypes[19].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_incident_classifier_v1_classifier_proto_rawDesc), len(file_query_incident_classifier_v1_classifier_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   20,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

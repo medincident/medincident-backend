@@ -225,63 +225,6 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 	}, nil
 }
 
-// ListPatientAllowedTypesByOrganization returns the active types that
-// patients of the given org are permitted to use when filing an incident.
-func (h *IncidentClassifierQueryHandler) ListPatientAllowedTypesByOrganization(
-	ctx context.Context,
-	req *classifierqueryv1.ListPatientAllowedTypesByOrganizationRequest,
-) (*classifierqueryv1.ListPatientAllowedTypesByOrganizationResponse, error) {
-	callerID, err := grpcmw.CallerID(ctx)
-	if err != nil {
-		return nil, err
-	}
-	caller := authz.Caller{ZitadelUserID: callerID}
-	id, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
-	result, err := h.reader.ListPatientAllowedTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit: int(req.GetLimit()),
-		After: afterPtr(req.GetAfter()),
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &classifierqueryv1.ListPatientAllowedTypesByOrganizationResponse{
-		Items:      typesToProto(result.Items),
-		NextCursor: result.NextCursor,
-	}, nil
-}
-
-// ListPatientVisibleCategoriesByOrganization returns the active categories
-// of the given org whose subtree contains at least one patient-allowed
-// active type — i.e. the navigation tree a patient may see.
-func (h *IncidentClassifierQueryHandler) ListPatientVisibleCategoriesByOrganization(
-	ctx context.Context,
-	req *classifierqueryv1.ListPatientVisibleCategoriesByOrganizationRequest,
-) (*classifierqueryv1.ListPatientVisibleCategoriesByOrganizationResponse, error) {
-	callerID, err := grpcmw.CallerID(ctx)
-	if err != nil {
-		return nil, err
-	}
-	caller := authz.Caller{ZitadelUserID: callerID}
-	id, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
-	result, err := h.reader.ListPatientVisibleCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit: int(req.GetLimit()),
-		After: afterPtr(req.GetAfter()),
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &classifierqueryv1.ListPatientVisibleCategoriesByOrganizationResponse{
-		Items:      categoriesToProto(result.Items),
-		NextCursor: result.NextCursor,
-	}, nil
-}
-
 // parseCategoryID parses a category UUID.
 func parseCategoryID(raw string) (uuid.UUID, error) {
 	id, err := uuid.Parse(raw)
