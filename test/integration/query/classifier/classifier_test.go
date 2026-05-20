@@ -16,6 +16,7 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
 	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
 	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
@@ -227,9 +228,13 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 		return nil
 	}))
 
+	// patientCaller is authenticated but is not a system admin or org member,
+	// so it exercises the patient branch of unified reader methods.
+	patientCaller := authz.Caller{ZitadelUserID: "patient-test-user"}
+
 	reader := classifierread.NewReader(testDB, authzSvc, &logger)
 
-	allowedTypes, err := reader.ListPatientAllowedTypesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+	allowedTypes, err := reader.ListActiveTypesByOrganization(ctx, patientCaller, orgID, classifierread.ListQuery{})
 	require.NoError(t, err)
 	allowedIDs := make(map[uuid.UUID]bool, len(allowedTypes.Items))
 	for _, tp := range allowedTypes.Items {
@@ -242,7 +247,7 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 	require.False(t, allowedIDs[internalOnlyID], "non-allowed type must be excluded")
 	require.False(t, allowedIDs[adminOnlyTypeID], "non-allowed type must be excluded")
 
-	visibleCats, err := reader.ListPatientVisibleCategoriesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+	visibleCats, err := reader.ListCategoriesByOrganization(ctx, patientCaller, orgID, classifierread.ListQuery{})
 	require.NoError(t, err)
 	visibleIDs := make(map[uuid.UUID]bool, len(visibleCats.Items))
 	for _, c := range visibleCats.Items {

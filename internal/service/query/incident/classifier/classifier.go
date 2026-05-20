@@ -536,18 +536,39 @@ func (r *Reader) GetType(
 // Authorization: authz.ReaderOf.Category(categoryID).
 //
 // See: docs/services/incident/Classifier.md
+// ListTypesByCategory paginates incident types under a category.
+// Employees (ReaderOf.Category) receive all types.
+// Authenticated non-employees (patients) receive only active,
+// patient-allowed types.
+//
+// See: docs/services/incident/Classifier.md
 func (r *Reader) ListTypesByCategory(
 	ctx context.Context,
 	caller authz.Caller,
 	categoryID uuid.UUID,
 	q ListQuery,
 ) (TypeListResult, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
+		return TypeListResult{}, err
+	}
 	if err := q.normalize(); err != nil {
 		return TypeListResult{}, err
 	}
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(categoryID)); err != nil {
+	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(categoryID))
+	if err != nil {
 		return TypeListResult{}, err
 	}
+	if isEmployee {
+		return r.listTypesByCategoryEmployee(ctx, categoryID, q)
+	}
+	return r.listTypesByCategoryPatient(ctx, categoryID, q)
+}
+
+func (r *Reader) listTypesByCategoryEmployee(
+	ctx context.Context,
+	categoryID uuid.UUID,
+	q ListQuery,
+) (TypeListResult, error) {
 	sqlBuf := selectType + ` WHERE category_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, categoryID)
@@ -597,8 +618,64 @@ func (r *Reader) ListTypesByCategory(
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListActiveTypesByOrganization returns every active type for one org.
-// Authorization: authz.ReaderOf.Organization(orgID).
+func (r *Reader) listTypesByCategoryPatient(
+	ctx context.Context,
+	categoryID uuid.UUID,
+	q ListQuery,
+) (TypeListResult, error) {
+	sqlBuf := selectType + ` WHERE category_id = ? AND is_active = TRUE AND is_allowed_for_patients = TRUE`
+	args := make([]any, 0, 4)
+	args = append(args, categoryID)
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return TypeListResult{}, oops.In("reader.incident.classifier.type").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
+	if err != nil {
+		return TypeListResult{}, oops.In("reader.incident.classifier.type").
+			Code(ErrCodeTypeLoadFailed).
+			With("category_id", categoryID).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]TypeView, 0, q.Limit+1)
+	for rows.Next() {
+		var v TypeView
+		if err := scanType(rows, &v); err != nil {
+			return TypeListResult{}, oops.In("reader.incident.classifier.type").
+				Code(ErrCodeTypeLoadFailed).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return TypeListResult{}, oops.In("reader.incident.classifier.type").
+			Code(ErrCodeTypeLoadFailed).
+			Wrap(err)
+	}
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
+}
+
+// ListActiveTypesByOrganization returns active incident types for one org.
+// Employees (ReaderOf.Organization) receive all active types.
+// Authenticated non-employees (patients) receive only active,
+// patient-allowed types.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) ListActiveTypesByOrganization(
@@ -607,12 +684,27 @@ func (r *Reader) ListActiveTypesByOrganization(
 	orgID uuid.UUID,
 	q ListQuery,
 ) (TypeListResult, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
+		return TypeListResult{}, err
+	}
 	if err := q.normalize(); err != nil {
 		return TypeListResult{}, err
 	}
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID))
+	if err != nil {
 		return TypeListResult{}, err
 	}
+	if isEmployee {
+		return r.listActiveTypesByOrgEmployee(ctx, orgID, q)
+	}
+	return r.listActiveTypesByOrgPatient(ctx, orgID, q)
+}
+
+func (r *Reader) listActiveTypesByOrgEmployee(
+	ctx context.Context,
+	orgID uuid.UUID,
+	q ListQuery,
+) (TypeListResult, error) {
 	sqlBuf := selectType + ` WHERE organization_id = ? AND is_active = TRUE`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
@@ -662,29 +754,12 @@ func (r *Reader) ListActiveTypesByOrganization(
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListPatientAllowedTypesByOrganization returns every type in the org that
-// is both active AND allowed for patient submission. This is the flat menu
-// of incident types a patient may pick from when filing an incident.
-// Authorization: authz.Authenticated — patients are not organization
-// members, so membership is not required, but the endpoint is not public.
-//
-// See: docs/services/incident/Classifier.md
-func (r *Reader) ListPatientAllowedTypesByOrganization(
+func (r *Reader) listActiveTypesByOrgPatient(
 	ctx context.Context,
-	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
 ) (TypeListResult, error) {
-	if err := q.normalize(); err != nil {
-		return TypeListResult{}, err
-	}
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
-		return TypeListResult{}, err
-	}
-	sqlBuf := selectType + `
-		 WHERE organization_id = ?
-		   AND is_active = TRUE
-		   AND is_allowed_for_patients = TRUE`
+	sqlBuf := selectType + ` WHERE organization_id = ? AND is_active = TRUE AND is_allowed_for_patients = TRUE`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
