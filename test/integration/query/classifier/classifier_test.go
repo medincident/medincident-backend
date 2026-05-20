@@ -16,7 +16,6 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/medincident/medincident-backend/internal/model"
-	"github.com/medincident/medincident-backend/internal/service/authz"
 	classifierread "github.com/medincident/medincident-backend/internal/service/query/incident/classifier"
 	qprojector "github.com/medincident/medincident-backend/internal/service/query/projector"
 	classifierv1 "github.com/medincident/medincident-backend/pkg/event/incident/classifier/v1"
@@ -163,11 +162,26 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 	require.Len(t, byCat.Items, 1)
 }
 
-// TestReader_PatientAllowed_Types_And_VisibleCategories seeds a fixture
-// containing every interesting combination of (category active?, type
-// active?, type allowed-for-patients?) and verifies that each patient-mode
-// reader method honours its own contract.
-func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
+// TestReader_UnifiedPatientFiltering seeds a fixture containing every
+// interesting combination of (category active?, type active?, type
+// allowed-for-patients?) and verifies that all 5 list methods honour their
+// contracts for both the employee caller (sysadminCaller) and the patient
+// caller (patientCaller).
+//
+// Fixture:
+//
+//	Categories (org-level):
+//	  surgicalID   — active, root
+//	  wardFallsID  — active, parent=surgicalID
+//	  archivedID   — inactive, parent=surgicalID
+//	  adminOnlyID  — active, root
+//
+//	Types:
+//	  allowedFallID   in wardFallsID  — active, is_allowed_for_patients=true
+//	  internalOnlyID  in wardFallsID  — active, is_allowed_for_patients=false
+//	  wouldAllowID    in archivedID   — active, is_allowed_for_patients=true
+//	  adminOnlyTypeID in adminOnlyID  — active, is_allowed_for_patients=false
+func TestReader_UnifiedPatientFiltering(t *testing.T) {
 	resetProjections(t)
 	ctx := context.Background()
 	logger := zerolog.Nop()
@@ -228,34 +242,149 @@ func TestReader_PatientAllowed_Types_And_VisibleCategories(t *testing.T) {
 		return nil
 	}))
 
-	// patientCaller is authenticated but is not a system admin or org member,
-	// so it exercises the patient branch of unified reader methods.
-	patientCaller := authz.Caller{ZitadelUserID: "patient-test-user"}
-
 	reader := classifierread.NewReader(testDB, authzSvc, &logger)
 
-	allowedTypes, err := reader.ListActiveTypesByOrganization(ctx, patientCaller, orgID, classifierread.ListQuery{})
-	require.NoError(t, err)
-	allowedIDs := make(map[uuid.UUID]bool, len(allowedTypes.Items))
-	for _, tp := range allowedTypes.Items {
-		allowedIDs[tp.ID] = true
-		require.True(t, tp.IsActive)
-		require.True(t, tp.IsAllowedForPatients)
-	}
-	require.True(t, allowedIDs[allowedFallID], "patient list must include the active+allowed type")
-	require.True(t, allowedIDs[wouldAllowID], "list filters by type-level flags only; ancestor activity is the visibility-tree's concern")
-	require.False(t, allowedIDs[internalOnlyID], "non-allowed type must be excluded")
-	require.False(t, allowedIDs[adminOnlyTypeID], "non-allowed type must be excluded")
+	// -------------------------------------------------------------------------
+	// Patient caller: filtered views
+	// -------------------------------------------------------------------------
 
-	visibleCats, err := reader.ListCategoriesByOrganization(ctx, patientCaller, orgID, classifierread.ListQuery{})
-	require.NoError(t, err)
-	visibleIDs := make(map[uuid.UUID]bool, len(visibleCats.Items))
-	for _, c := range visibleCats.Items {
-		visibleIDs[c.ID] = true
-		require.True(t, c.IsActive, "patient-visible categories must themselves be active")
+	t.Run("patient/ListActiveTypesByOrganization", func(t *testing.T) {
+		result, err := reader.ListActiveTypesByOrganization(ctx, patientCaller, orgID, classifierread.ListQuery{})
+		require.NoError(t, err)
+		ids := typeIDs(result.Items)
+		// Active + patient-allowed types regardless of category activity.
+		require.True(t, ids[allowedFallID], "active+allowed type in active category must be included")
+		require.True(t, ids[wouldAllowID], "active+allowed type in inactive category must be included (type-level filter only)")
+		require.False(t, ids[internalOnlyID], "non-allowed type must be excluded")
+		require.False(t, ids[adminOnlyTypeID], "non-allowed type must be excluded")
+		for _, tp := range result.Items {
+			require.True(t, tp.IsActive)
+			require.True(t, tp.IsAllowedForPatients)
+		}
+	})
+
+	t.Run("patient/ListCategoriesByOrganization", func(t *testing.T) {
+		result, err := reader.ListCategoriesByOrganization(ctx, patientCaller, orgID, classifierread.ListQuery{})
+		require.NoError(t, err)
+		ids := categoryIDs(result.Items)
+		// Active categories whose subtree contains at least one active+patient-allowed type.
+		require.True(t, ids[surgicalID], "ancestor of an allowed type must be visible")
+		require.True(t, ids[wardFallsID], "direct parent of an allowed type must be visible")
+		require.False(t, ids[archivedID], "inactive category must be excluded")
+		require.False(t, ids[adminOnlyID], "category whose subtree has no allowed type must be excluded")
+		for _, c := range result.Items {
+			require.True(t, c.IsActive, "all returned categories must be active")
+		}
+	})
+
+	t.Run("patient/ListActiveRootCategories", func(t *testing.T) {
+		result, err := reader.ListActiveRootCategories(ctx, patientCaller, orgID, classifierread.ListQuery{})
+		require.NoError(t, err)
+		ids := categoryIDs(result.Items)
+		// Active roots whose subtree contains at least one active+patient-allowed type.
+		require.True(t, ids[surgicalID], "root with allowed types in subtree must be included")
+		require.False(t, ids[adminOnlyID], "root with no allowed types in subtree must be excluded")
+		require.False(t, ids[wardFallsID], "non-root must not appear")
+		require.False(t, ids[archivedID], "inactive category must be excluded")
+	})
+
+	t.Run("patient/ListTypesByCategory", func(t *testing.T) {
+		result, err := reader.ListTypesByCategory(ctx, patientCaller, wardFallsID, classifierread.ListQuery{})
+		require.NoError(t, err)
+		ids := typeIDs(result.Items)
+		require.True(t, ids[allowedFallID], "active+allowed type must be included")
+		require.False(t, ids[internalOnlyID], "non-allowed type must be excluded")
+	})
+
+	t.Run("patient/ListCategorySubtree", func(t *testing.T) {
+		result, err := reader.ListCategorySubtree(ctx, patientCaller, surgicalID)
+		require.NoError(t, err)
+		ids := categoryIDsSlice(result)
+		// 3-CTE walk: down from surgicalID (active only in recursive part),
+		// direct = wardFallsID (has allowedFallID), visible = wardFallsID + surgicalID (ancestor).
+		// archivedID is inactive so the recursive descent skips it.
+		require.True(t, ids[surgicalID], "root must be included as an ancestor of wardFallsID")
+		require.True(t, ids[wardFallsID], "direct parent of an allowed type must be included")
+		require.False(t, ids[archivedID], "inactive category must be excluded from patient subtree walk")
+		require.False(t, ids[adminOnlyID], "category outside subtree must not appear")
+	})
+
+	// -------------------------------------------------------------------------
+	// Employee caller (sysadmin): unfiltered views
+	// -------------------------------------------------------------------------
+
+	t.Run("employee/ListActiveTypesByOrganization", func(t *testing.T) {
+		result, err := reader.ListActiveTypesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+		require.NoError(t, err)
+		ids := typeIDs(result.Items)
+		// All 4 types are active; employee sees all without patient filter.
+		require.True(t, ids[allowedFallID])
+		require.True(t, ids[internalOnlyID])
+		require.True(t, ids[wouldAllowID])
+		require.True(t, ids[adminOnlyTypeID])
+	})
+
+	t.Run("employee/ListCategoriesByOrganization", func(t *testing.T) {
+		result, err := reader.ListCategoriesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+		require.NoError(t, err)
+		ids := categoryIDs(result.Items)
+		// Employee sees all 4 categories regardless of active status.
+		require.True(t, ids[surgicalID])
+		require.True(t, ids[wardFallsID])
+		require.True(t, ids[archivedID])
+		require.True(t, ids[adminOnlyID])
+	})
+
+	t.Run("employee/ListActiveRootCategories", func(t *testing.T) {
+		result, err := reader.ListActiveRootCategories(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+		require.NoError(t, err)
+		ids := categoryIDs(result.Items)
+		// Both active roots visible to employee.
+		require.True(t, ids[surgicalID])
+		require.True(t, ids[adminOnlyID])
+		require.False(t, ids[wardFallsID], "non-root must not appear")
+		require.False(t, ids[archivedID], "inactive must not appear in active-root list")
+	})
+
+	t.Run("employee/ListTypesByCategory", func(t *testing.T) {
+		result, err := reader.ListTypesByCategory(ctx, sysadminCaller, wardFallsID, classifierread.ListQuery{})
+		require.NoError(t, err)
+		ids := typeIDs(result.Items)
+		require.True(t, ids[allowedFallID])
+		require.True(t, ids[internalOnlyID])
+	})
+
+	t.Run("employee/ListCategorySubtree", func(t *testing.T) {
+		result, err := reader.ListCategorySubtree(ctx, sysadminCaller, surgicalID)
+		require.NoError(t, err)
+		ids := categoryIDsSlice(result)
+		// Employee sees full subtree including inactive archivedID.
+		require.True(t, ids[surgicalID])
+		require.True(t, ids[wardFallsID])
+		require.True(t, ids[archivedID])
+		require.False(t, ids[adminOnlyID], "category outside subtree must not appear")
+	})
+}
+
+// categoryIDs returns a set of IDs from a CategoryListResult items slice.
+func categoryIDs(items []classifierread.CategoryView) map[uuid.UUID]bool {
+	m := make(map[uuid.UUID]bool, len(items))
+	for _, c := range items {
+		m[c.ID] = true
 	}
-	require.True(t, visibleIDs[surgicalID], "ancestor of an allowed type must be visible")
-	require.True(t, visibleIDs[wardFallsID], "direct parent of an allowed type must be visible")
-	require.False(t, visibleIDs[archivedID], "inactive ancestor must be excluded")
-	require.False(t, visibleIDs[adminOnlyID], "category whose subtree has no allowed type must be excluded")
+	return m
+}
+
+// categoryIDsSlice returns a set of IDs from a []CategoryView slice.
+func categoryIDsSlice(items []classifierread.CategoryView) map[uuid.UUID]bool {
+	return categoryIDs(items)
+}
+
+// typeIDs returns a set of IDs from a TypeListResult items slice.
+func typeIDs(items []classifierread.TypeView) map[uuid.UUID]bool {
+	m := make(map[uuid.UUID]bool, len(items))
+	for _, tp := range items {
+		m[tp.ID] = true
+	}
+	return m
 }
