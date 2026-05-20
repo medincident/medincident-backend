@@ -34,6 +34,7 @@ import (
 	cmdorgv1 "github.com/medincident/medincident-backend/pkg/command/orgstructure/v1"
 	cmdrequestclassifierv1 "github.com/medincident/medincident-backend/pkg/command/request/classifier/v1"
 	cmdrequestv1 "github.com/medincident/medincident-backend/pkg/command/request/v1"
+	qanalyticsv1 "github.com/medincident/medincident-backend/pkg/query/analytics/v1"
 	qannouncementv1 "github.com/medincident/medincident-backend/pkg/query/announcement/v1"
 	qclassifierv1 "github.com/medincident/medincident-backend/pkg/query/incident/classifier/v1"
 	qincidentv1 "github.com/medincident/medincident-backend/pkg/query/incident/v1"
@@ -213,6 +214,7 @@ func buildGatewayMux(ctx context.Context, commandConn, queryConn *grpc.ClientCon
 		qrequestv1.RegisterServiceRequestQueryServiceHandler(ctx, mux, queryConn),
 		qannouncementv1.RegisterAnnouncementQueryServiceHandler(ctx, mux, queryConn),
 		qselfv1.RegisterSelfQueryServiceHandler(ctx, mux, queryConn),
+		qanalyticsv1.RegisterAnalyticsQueryServiceHandler(ctx, mux, queryConn),
 	}
 	if err := errors.Join(errs...); err != nil {
 		return nil, oops.In("gateway").Code(ErrCodeGatewayRegisterFailed).Wrap(err)
