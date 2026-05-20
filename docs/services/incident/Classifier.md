@@ -336,39 +336,17 @@
 
 ## Query-методы
 
-| Метод | Права |
-|---|---|
-| `ListCategoriesByOrganization` | ReaderOf.Organization |
-| `ListActiveRootCategories` | ReaderOf.Organization |
-| `ListCategorySubtree` | ReaderOf.Organization |
-| `GetCategory` | ReaderOf.Category |
-| `ListTypesByCategory` | ReaderOf.Organization |
-| `ListActiveTypesByOrganization` | ReaderOf.Organization |
-| `GetType` | ReaderOf.IncidentType |
-| `ListPatientAllowedTypesByOrganization` | Authenticated |
-| `ListPatientVisibleCategoriesByOrganization` | Authenticated |
+Все list-методы принимают любого аутентифицированного вызывающего (`Authenticated`). Сотрудники организации (`ReaderOf.Organization` / `ReaderOf.Category`) получают полный набор данных. Пациенты (аутентифицированные, но не являющиеся сотрудниками) автоматически получают отфильтрованный результат: только активные категории, в поддереве которых есть хотя бы один активный тип с `is_allowed_for_patients=true`, и только такие типы. Переключение между режимами происходит внутри сервиса через `authz.Satisfies` — `permission_denied` для пациентов не возникает.
 
-Для пациентов (patient-facing): `ListPatientAllowedTypesByOrganization` и `ListPatientVisibleCategoriesByOrganization` — `Authenticated` (только `is_allowed_for_patients=true` типы).
-
-### ListCategoriesByOrganization
-
-#### Ошибки
-
-| Код | HTTP | Описание |
+| Метод | Права | Примечание |
 |---|---|---|
-| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
-
-### ListActiveRootCategories
-
-#### Ошибки
-
-| Код | HTTP | Описание |
-|---|---|---|
-| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
-
-### ListCategorySubtree
+| `GetCategory` | ReaderOf.Category | Только сотрудники |
+| `ListCategoriesByOrganization` | Authenticated | Пациенты видят только patient-visible категории |
+| `ListActiveRootCategories` | Authenticated | Пациенты видят только активные корни с patient-allowed типами в поддереве |
+| `ListCategorySubtree` | Authenticated | Пациенты видят только активные узлы поддерева с patient-allowed типами |
+| `GetType` | ReaderOf.IncidentType | Только сотрудники |
+| `ListTypesByCategory` | Authenticated | Пациенты видят только активные типы с `is_allowed_for_patients=true` |
+| `ListActiveTypesByOrganization` | Authenticated | Пациенты видят только типы с `is_allowed_for_patients=true` |
 
 ### GetCategory
 
@@ -380,24 +358,33 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_category_not_found` | 404 | Категория не найдена |
+| `permission_denied` | 403 | Нет прав доступа |
 
-### ListTypesByCategory
+### ListCategoriesByOrganization
 
 #### Ошибки
 
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |
 
-### ListActiveTypesByOrganization
+### ListActiveRootCategories
 
 #### Ошибки
 
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |
+
+### ListCategorySubtree
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |
 
 ### GetType
 
@@ -409,19 +396,22 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_type_not_found` | 404 | Тип не найден |
+| `permission_denied` | 403 | Нет прав доступа |
 
-### ListPatientAllowedTypesByOrganization
-
-#### Ошибки
-
-| Код | HTTP | Описание |
-|---|---|---|
-| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-
-### ListPatientVisibleCategoriesByOrganization
+### ListTypesByCategory
 
 #### Ошибки
 
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |
+
+### ListActiveTypesByOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |

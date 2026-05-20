@@ -109,7 +109,9 @@ func (r *Reader) GetCategory(
 }
 
 // ListCategoriesByOrganization paginates categories for one org.
-// Authorization: authz.ReaderOf.Organization(orgID).
+// Employees (ReaderOf.Organization) receive all categories.
+// Authenticated non-employees (patients) receive only active categories
+// whose subtree contains at least one active, patient-allowed type.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) ListCategoriesByOrganization(
@@ -118,12 +120,27 @@ func (r *Reader) ListCategoriesByOrganization(
 	orgID uuid.UUID,
 	q ListQuery,
 ) (CategoryListResult, error) {
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
 		return CategoryListResult{}, err
 	}
 	if err := q.normalize(); err != nil {
 		return CategoryListResult{}, err
 	}
+	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID))
+	if err != nil {
+		return CategoryListResult{}, err
+	}
+	if isEmployee {
+		return r.listCategoriesByOrgEmployee(ctx, orgID, q)
+	}
+	return r.listPatientVisibleCategories(ctx, orgID, q, false)
+}
+
+func (r *Reader) listCategoriesByOrgEmployee(
+	ctx context.Context,
+	orgID uuid.UUID,
+	q ListQuery,
+) (CategoryListResult, error) {
 	sqlBuf := selectCategory + ` WHERE organization_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
@@ -173,9 +190,103 @@ func (r *Reader) ListCategoriesByOrganization(
 	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListActiveRootCategories returns top-level active categories for an
-// organization (rows whose parent_category_id IS NULL). Authorization:
-// authz.ReaderOf.Organization(orgID).
+// listPatientVisibleCategories returns categories the patient may see: active
+// categories whose subtree (following active ancestors up) contains at least
+// one active, patient-allowed type. When rootOnly is true only top-level
+// categories (parent_category_id IS NULL) are returned.
+func (r *Reader) listPatientVisibleCategories(
+	ctx context.Context,
+	orgID uuid.UUID,
+	q ListQuery,
+	rootOnly bool,
+) (CategoryListResult, error) {
+	cursorClause := ""
+	args := []any{orgID, orgID, orgID, orgID}
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return CategoryListResult{}, oops.In("reader.incident.classifier.category").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		cursorClause = ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	args = append(args, q.Limit+1)
+
+	rootClause := ""
+	if rootOnly {
+		rootClause = ` AND parent_category_id IS NULL`
+	}
+
+	query := `
+		WITH RECURSIVE
+		  direct AS (
+		    SELECT DISTINCT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN projections.incident_types t ON t.category_id = c.id
+		     WHERE c.organization_id = ?
+		       AND t.organization_id = ?
+		       AND c.is_active = TRUE
+		       AND t.is_active = TRUE
+		       AND t.is_allowed_for_patients = TRUE
+		  ),
+		  visible(id, parent_category_id) AS (
+		    SELECT id, parent_category_id FROM direct
+		    UNION
+		    SELECT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN visible v ON v.parent_category_id = c.id
+		     WHERE c.organization_id = ?
+		       AND c.is_active = TRUE
+		  )
+		SELECT id, organization_id, parent_category_id, name, description,
+		       is_active, created_at, updated_at
+		  FROM projections.incident_categories
+		 WHERE id IN (SELECT id FROM visible)
+		   AND organization_id = ?` +
+		rootClause +
+		cursorClause +
+		` ORDER BY updated_at DESC, id DESC
+		 LIMIT ?`
+
+	rows, err := r.db.WithContext(ctx).Raw(query, args...).Rows()
+	if err != nil {
+		return CategoryListResult{}, oops.In("reader.incident.classifier.category").
+			Code(ErrCodeCategoryLoadFailed).
+			With("organization_id", orgID).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]CategoryView, 0, q.Limit+1)
+	for rows.Next() {
+		var v CategoryView
+		if err := scanCategory(rows, &v); err != nil {
+			return CategoryListResult{}, oops.In("reader.incident.classifier.category").
+				Code(ErrCodeCategoryLoadFailed).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return CategoryListResult{}, oops.In("reader.incident.classifier.category").
+			Code(ErrCodeCategoryLoadFailed).
+			Wrap(err)
+	}
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil
+}
+
+// ListActiveRootCategories returns top-level active categories for an org.
+// Employees receive all active roots. Patients receive only roots whose
+// subtree contains at least one active, patient-allowed type.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) ListActiveRootCategories(
@@ -184,12 +295,27 @@ func (r *Reader) ListActiveRootCategories(
 	orgID uuid.UUID,
 	q ListQuery,
 ) (CategoryListResult, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
+		return CategoryListResult{}, err
+	}
 	if err := q.normalize(); err != nil {
 		return CategoryListResult{}, err
 	}
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID))
+	if err != nil {
 		return CategoryListResult{}, err
 	}
+	if isEmployee {
+		return r.listActiveRootCategoriesEmployee(ctx, orgID, q)
+	}
+	return r.listPatientVisibleCategories(ctx, orgID, q, true)
+}
+
+func (r *Reader) listActiveRootCategoriesEmployee(
+	ctx context.Context,
+	orgID uuid.UUID,
+	q ListQuery,
+) (CategoryListResult, error) {
 	sqlBuf := selectCategory + `
 		 WHERE organization_id = ?
 		   AND parent_category_id IS NULL
@@ -242,10 +368,10 @@ func (r *Reader) ListActiveRootCategories(
 	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListCategorySubtree returns every descendant of the given root
-// (inclusive), flattened, using a recursive CTE. Authorization:
-// authz.ReaderOf.Category(rootID) — the root category's org scopes
-// the whole subtree.
+// ListCategorySubtree returns every descendant of rootID (inclusive).
+// Employees receive the full subtree regardless of active/patient status.
+// Patients receive only active categories in the subtree whose descendant
+// subtree contains at least one active, patient-allowed type.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) ListCategorySubtree(
@@ -253,9 +379,20 @@ func (r *Reader) ListCategorySubtree(
 	caller authz.Caller,
 	rootID uuid.UUID,
 ) ([]CategoryView, error) {
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(rootID)); err != nil {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
 		return nil, err
 	}
+	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(rootID))
+	if err != nil {
+		return nil, err
+	}
+	if isEmployee {
+		return r.listCategorySubtreeEmployee(ctx, rootID)
+	}
+	return r.listCategorySubtreePatient(ctx, rootID)
+}
+
+func (r *Reader) listCategorySubtreeEmployee(ctx context.Context, rootID uuid.UUID) ([]CategoryView, error) {
 	const query = `
 		WITH RECURSIVE tree AS (
 		  SELECT id, organization_id, parent_category_id, name, description,
@@ -271,6 +408,73 @@ func (r *Reader) ListCategorySubtree(
 		SELECT id, organization_id, parent_category_id, name, description,
 		       is_active, created_at, updated_at
 		  FROM tree
+		 ORDER BY created_at ASC, id ASC`
+	rows, err := r.db.WithContext(ctx).Raw(query, rootID).Rows()
+	if err != nil {
+		return nil, oops.In("reader.incident.classifier.category").
+			Code(ErrCodeCategoryLoadFailed).
+			With("root_category_id", rootID).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]CategoryView, 0)
+	for rows.Next() {
+		var v CategoryView
+		if err := scanCategory(rows, &v); err != nil {
+			return nil, oops.In("reader.incident.classifier.category").
+				Code(ErrCodeCategoryLoadFailed).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, oops.In("reader.incident.classifier.category").
+			Code(ErrCodeCategoryLoadFailed).
+			Wrap(err)
+	}
+	return out, nil
+}
+
+// listCategorySubtreePatient walks down from rootID collecting only active
+// categories that have at least one active patient-allowed type in their
+// own descendant subtree. The CTE walks DOWN first (subtree), then marks
+// directly-qualifying categories (direct), then walks UP within the subtree
+// to include their ancestors (visible).
+func (r *Reader) listCategorySubtreePatient(ctx context.Context, rootID uuid.UUID) ([]CategoryView, error) {
+	const query = `
+		WITH RECURSIVE
+		  subtree AS (
+		    SELECT id, parent_category_id
+		      FROM projections.incident_categories
+		     WHERE id = ?
+		    UNION ALL
+		    SELECT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN subtree s ON c.parent_category_id = s.id
+		     WHERE c.is_active = TRUE
+		  ),
+		  direct AS (
+		    SELECT DISTINCT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN projections.incident_types t ON t.category_id = c.id
+		     WHERE c.id IN (SELECT id FROM subtree)
+		       AND c.is_active = TRUE
+		       AND t.is_active = TRUE
+		       AND t.is_allowed_for_patients = TRUE
+		  ),
+		  visible(id, parent_category_id) AS (
+		    SELECT id, parent_category_id FROM direct
+		    UNION
+		    SELECT c.id, c.parent_category_id
+		      FROM projections.incident_categories c
+		      JOIN visible v ON v.parent_category_id = c.id
+		     WHERE c.id IN (SELECT id FROM subtree)
+		       AND c.is_active = TRUE
+		  )
+		SELECT id, organization_id, parent_category_id, name, description,
+		       is_active, created_at, updated_at
+		  FROM projections.incident_categories
+		 WHERE id IN (SELECT id FROM visible)
 		 ORDER BY created_at ASC, id ASC`
 	rows, err := r.db.WithContext(ctx).Raw(query, rootID).Rows()
 	if err != nil {
@@ -328,8 +532,10 @@ func (r *Reader) GetType(
 	return &out, nil
 }
 
-// ListTypesByCategory returns every type under one category.
-// Authorization: authz.ReaderOf.Category(categoryID).
+// ListTypesByCategory paginates incident types under a category.
+// Employees (ReaderOf.Category) receive all types.
+// Authenticated non-employees (patients) receive only active,
+// patient-allowed types.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) ListTypesByCategory(
@@ -338,12 +544,27 @@ func (r *Reader) ListTypesByCategory(
 	categoryID uuid.UUID,
 	q ListQuery,
 ) (TypeListResult, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
+		return TypeListResult{}, err
+	}
 	if err := q.normalize(); err != nil {
 		return TypeListResult{}, err
 	}
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(categoryID)); err != nil {
+	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(categoryID))
+	if err != nil {
 		return TypeListResult{}, err
 	}
+	if isEmployee {
+		return r.listTypesByCategoryEmployee(ctx, categoryID, q)
+	}
+	return r.listTypesByCategoryPatient(ctx, categoryID, q)
+}
+
+func (r *Reader) listTypesByCategoryEmployee(
+	ctx context.Context,
+	categoryID uuid.UUID,
+	q ListQuery,
+) (TypeListResult, error) {
 	sqlBuf := selectType + ` WHERE category_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, categoryID)
@@ -393,8 +614,64 @@ func (r *Reader) ListTypesByCategory(
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListActiveTypesByOrganization returns every active type for one org.
-// Authorization: authz.ReaderOf.Organization(orgID).
+func (r *Reader) listTypesByCategoryPatient(
+	ctx context.Context,
+	categoryID uuid.UUID,
+	q ListQuery,
+) (TypeListResult, error) {
+	sqlBuf := selectType + ` WHERE category_id = ? AND is_active = TRUE AND is_allowed_for_patients = TRUE`
+	args := make([]any, 0, 4)
+	args = append(args, categoryID)
+	if q.After != nil {
+		c, err := cursor.Decode(*q.After)
+		if err != nil {
+			return TypeListResult{}, oops.In("reader.incident.classifier.type").
+				Code(ErrCodeListBadCursor).
+				Public("Invalid pagination cursor.").
+				Wrap(err)
+		}
+		sqlBuf += ` AND (updated_at, id) < (?, ?)`
+		args = append(args, c.Time(), c.I)
+	}
+	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	args = append(args, q.Limit+1)
+	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
+	if err != nil {
+		return TypeListResult{}, oops.In("reader.incident.classifier.type").
+			Code(ErrCodeTypeLoadFailed).
+			With("category_id", categoryID).
+			Wrap(err)
+	}
+	defer func() { _ = rows.Close() }()
+	out := make([]TypeView, 0, q.Limit+1)
+	for rows.Next() {
+		var v TypeView
+		if err := scanType(rows, &v); err != nil {
+			return TypeListResult{}, oops.In("reader.incident.classifier.type").
+				Code(ErrCodeTypeLoadFailed).
+				Wrap(err)
+		}
+		out = append(out, v)
+	}
+	if err := rows.Err(); err != nil {
+		return TypeListResult{}, oops.In("reader.incident.classifier.type").
+			Code(ErrCodeTypeLoadFailed).
+			Wrap(err)
+	}
+	var nextCursor *string
+	if len(out) > q.Limit {
+		out = out[:q.Limit]
+		last := out[len(out)-1]
+		s := cursor.Encode(last.UpdatedAt, last.ID.String())
+		nextCursor = &s
+	}
+	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
+}
+
+// ListActiveTypesByOrganization returns active incident types for one org.
+// Employees (ReaderOf.Organization) receive all active types.
+// Authenticated non-employees (patients) receive only active,
+// patient-allowed types.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) ListActiveTypesByOrganization(
@@ -403,12 +680,27 @@ func (r *Reader) ListActiveTypesByOrganization(
 	orgID uuid.UUID,
 	q ListQuery,
 ) (TypeListResult, error) {
+	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
+		return TypeListResult{}, err
+	}
 	if err := q.normalize(); err != nil {
 		return TypeListResult{}, err
 	}
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
+	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID))
+	if err != nil {
 		return TypeListResult{}, err
 	}
+	if isEmployee {
+		return r.listActiveTypesByOrgEmployee(ctx, orgID, q)
+	}
+	return r.listActiveTypesByOrgPatient(ctx, orgID, q)
+}
+
+func (r *Reader) listActiveTypesByOrgEmployee(
+	ctx context.Context,
+	orgID uuid.UUID,
+	q ListQuery,
+) (TypeListResult, error) {
 	sqlBuf := selectType + ` WHERE organization_id = ? AND is_active = TRUE`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
@@ -458,29 +750,12 @@ func (r *Reader) ListActiveTypesByOrganization(
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListPatientAllowedTypesByOrganization returns every type in the org that
-// is both active AND allowed for patient submission. This is the flat menu
-// of incident types a patient may pick from when filing an incident.
-// Authorization: authz.Authenticated — patients are not organization
-// members, so membership is not required, but the endpoint is not public.
-//
-// See: docs/services/incident/Classifier.md
-func (r *Reader) ListPatientAllowedTypesByOrganization(
+func (r *Reader) listActiveTypesByOrgPatient(
 	ctx context.Context,
-	caller authz.Caller,
 	orgID uuid.UUID,
 	q ListQuery,
 ) (TypeListResult, error) {
-	if err := q.normalize(); err != nil {
-		return TypeListResult{}, err
-	}
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
-		return TypeListResult{}, err
-	}
-	sqlBuf := selectType + `
-		 WHERE organization_id = ?
-		   AND is_active = TRUE
-		   AND is_allowed_for_patients = TRUE`
+	sqlBuf := selectType + ` WHERE organization_id = ? AND is_active = TRUE AND is_allowed_for_patients = TRUE`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
 	if q.After != nil {
@@ -527,108 +802,4 @@ func (r *Reader) ListPatientAllowedTypesByOrganization(
 		nextCursor = &s
 	}
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
-}
-
-// ListPatientVisibleCategoriesByOrganization returns every category in the
-// org that a patient may see when navigating the classifier. A category is
-// patient-visible iff it is active AND it (or any of its descendants)
-// directly contains at least one type that is active AND allowed for
-// patients. Empty subtrees (categories whose every leaf type is unavailable
-// to patients) are excluded so the patient never sees a dead-end branch.
-// Authorization: authz.Authenticated — same rationale as
-// ListPatientAllowedTypesByOrganization.
-//
-// See: docs/services/incident/Classifier.md
-func (r *Reader) ListPatientVisibleCategoriesByOrganization(
-	ctx context.Context,
-	caller authz.Caller,
-	orgID uuid.UUID,
-	q ListQuery,
-) (CategoryListResult, error) {
-	if err := q.normalize(); err != nil {
-		return CategoryListResult{}, err
-	}
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
-		return CategoryListResult{}, err
-	}
-	// Defense in depth: every CTE step and the final SELECT carry an
-	// explicit organization_id guard. Projections have no FKs, so a
-	// cross-org parent_category_id pointer (data-projection bug) would
-	// otherwise let the recursive walk wander into another org's tree.
-	cursorClause := ""
-	args := []any{orgID, orgID, orgID, orgID}
-	if q.After != nil {
-		c, err := cursor.Decode(*q.After)
-		if err != nil {
-			return CategoryListResult{}, oops.In("reader.incident.classifier.category").
-				Code(ErrCodeListBadCursor).
-				Public("Invalid pagination cursor.").
-				Wrap(err)
-		}
-		cursorClause = ` AND (updated_at, id) < (?, ?)`
-		args = append(args, c.Time(), c.I)
-	}
-	args = append(args, q.Limit+1)
-	query := `
-		WITH RECURSIVE
-		  -- Categories that directly own at least one patient-allowed active type.
-		  direct AS (
-		    SELECT DISTINCT c.id, c.parent_category_id
-		      FROM projections.incident_categories c
-		      JOIN projections.incident_types t ON t.category_id = c.id
-		     WHERE c.organization_id = ?
-		       AND t.organization_id = ?
-		       AND c.is_active = TRUE
-		       AND t.is_active = TRUE
-		       AND t.is_allowed_for_patients = TRUE
-		  ),
-		  -- Walk up: include every active ancestor on the path to the root.
-		  visible(id, parent_category_id) AS (
-		    SELECT id, parent_category_id FROM direct
-		    UNION
-		    SELECT c.id, c.parent_category_id
-		      FROM projections.incident_categories c
-		      JOIN visible v ON v.parent_category_id = c.id
-		     WHERE c.organization_id = ?
-		       AND c.is_active = TRUE
-		  )
-		SELECT id, organization_id, parent_category_id, name, description,
-		       is_active, created_at, updated_at
-		  FROM projections.incident_categories
-		 WHERE id IN (SELECT id FROM visible)
-		   AND organization_id = ?` +
-		cursorClause +
-		` ORDER BY updated_at DESC, id DESC
-		 LIMIT ?`
-	rows, err := r.db.WithContext(ctx).Raw(query, args...).Rows()
-	if err != nil {
-		return CategoryListResult{}, oops.In("reader.incident.classifier.category").
-			Code(ErrCodeCategoryLoadFailed).
-			With("organization_id", orgID).
-			Wrap(err)
-	}
-	defer func() { _ = rows.Close() }()
-	out := make([]CategoryView, 0, q.Limit+1)
-	for rows.Next() {
-		var v CategoryView
-		if err := scanCategory(rows, &v); err != nil {
-			return CategoryListResult{}, oops.In("reader.incident.classifier.category").
-				Code(ErrCodeCategoryLoadFailed).
-				Wrap(err)
-		}
-		out = append(out, v)
-	}
-	if err := rows.Err(); err != nil {
-		return CategoryListResult{}, oops.In("reader.incident.classifier.category").
-			Code(ErrCodeCategoryLoadFailed).
-			Wrap(err)
-	}
-	var nextCursor *string
-	if len(out) > q.Limit {
-		out = out[:q.Limit]
-		last := out[len(out)-1]
-		s := cursor.Encode(last.UpdatedAt, last.ID.String())
-		nextCursor = &s
-	}
-	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil
 }

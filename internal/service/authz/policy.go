@@ -630,3 +630,42 @@ func (a *Authz) Require(ctx context.Context, callerID string, p Policy) error {
 	b = p.with(b)
 	return b.Errorf("permission denied")
 }
+
+// Satisfies reports whether callerID satisfies policy p without raising a
+// permission_denied error on denial. Denial returns (false, nil). DB errors
+// return (false, err). Use it as a boolean probe where the outcome controls
+// branching rather than stopping execution.
+func (a *Authz) Satisfies(ctx context.Context, callerID string, p Policy) (bool, error) {
+	if p == nil {
+		return false, oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Errorf("nil policy")
+	}
+	if _, ok := p.(authenticatedPolicy); ok {
+		return callerID != "", nil
+	}
+	bc := &branchCtx{callerID: callerID}
+	branches := p.branches(bc)
+	if len(branches) == 0 {
+		return false, oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Errorf("policy produced no branches")
+	}
+	if bc.hasZeroScope() {
+		return false, oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Errorf("policy scope is zero uuid")
+	}
+	query := "SELECT EXISTS(" + strings.Join(branches, " UNION ALL ") + ")"
+	var ok bool
+	if err := a.db.WithContext(ctx).Raw(query, bc.args...).Scan(&ok).Error; err != nil {
+		return false, oops.In("service.authz").
+			Code(ErrCodeAuthzCheckFailed).
+			With("caller_id", callerID).
+			Wrap(err)
+	}
+	return ok, nil
+}

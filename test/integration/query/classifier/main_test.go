@@ -24,6 +24,10 @@ const sysadminZitadelID = "sysadmin"
 
 var sysadminCaller = authz.Caller{ZitadelUserID: sysadminZitadelID}
 
+// patientCaller is authenticated but has no row in domain.system_admins
+// or any membership table, so it always takes the patient branch.
+var patientCaller = authz.Caller{ZitadelUserID: "patient-test-user"}
+
 var (
 	testDB   *gorm.DB
 	authzSvc *authz.Authz

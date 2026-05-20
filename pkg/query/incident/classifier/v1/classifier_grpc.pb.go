@@ -19,15 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IncidentClassifierQueryService_GetCategory_FullMethodName                                = "/query.incident.classifier.v1.IncidentClassifierQueryService/GetCategory"
-	IncidentClassifierQueryService_ListCategoriesByOrganization_FullMethodName               = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization"
-	IncidentClassifierQueryService_ListActiveRootCategories_FullMethodName                   = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories"
-	IncidentClassifierQueryService_ListCategorySubtree_FullMethodName                        = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategorySubtree"
-	IncidentClassifierQueryService_GetType_FullMethodName                                    = "/query.incident.classifier.v1.IncidentClassifierQueryService/GetType"
-	IncidentClassifierQueryService_ListTypesByCategory_FullMethodName                        = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByCategory"
-	IncidentClassifierQueryService_ListActiveTypesByOrganization_FullMethodName              = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization"
-	IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_FullMethodName      = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientAllowedTypesByOrganization"
-	IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_FullMethodName = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListPatientVisibleCategoriesByOrganization"
+	IncidentClassifierQueryService_GetCategory_FullMethodName                   = "/query.incident.classifier.v1.IncidentClassifierQueryService/GetCategory"
+	IncidentClassifierQueryService_ListCategoriesByOrganization_FullMethodName  = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization"
+	IncidentClassifierQueryService_ListActiveRootCategories_FullMethodName      = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories"
+	IncidentClassifierQueryService_ListCategorySubtree_FullMethodName           = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategorySubtree"
+	IncidentClassifierQueryService_GetType_FullMethodName                       = "/query.incident.classifier.v1.IncidentClassifierQueryService/GetType"
+	IncidentClassifierQueryService_ListTypesByCategory_FullMethodName           = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByCategory"
+	IncidentClassifierQueryService_ListActiveTypesByOrganization_FullMethodName = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization"
 )
 
 // IncidentClassifierQueryServiceClient is the client API for IncidentClassifierQueryService service.
@@ -46,11 +44,6 @@ type IncidentClassifierQueryServiceClient interface {
 	GetType(ctx context.Context, in *GetTypeRequest, opts ...grpc.CallOption) (*GetTypeResponse, error)
 	ListTypesByCategory(ctx context.Context, in *ListTypesByCategoryRequest, opts ...grpc.CallOption) (*ListTypesByCategoryResponse, error)
 	ListActiveTypesByOrganization(ctx context.Context, in *ListActiveTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListActiveTypesByOrganizationResponse, error)
-	// Patient-facing reads. These are scoped to one organisation and return
-	// only the slice of the classifier that a patient may see when filing
-	// an incident.
-	ListPatientAllowedTypesByOrganization(ctx context.Context, in *ListPatientAllowedTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListPatientAllowedTypesByOrganizationResponse, error)
-	ListPatientVisibleCategoriesByOrganization(ctx context.Context, in *ListPatientVisibleCategoriesByOrganizationRequest, opts ...grpc.CallOption) (*ListPatientVisibleCategoriesByOrganizationResponse, error)
 }
 
 type incidentClassifierQueryServiceClient struct {
@@ -131,26 +124,6 @@ func (c *incidentClassifierQueryServiceClient) ListActiveTypesByOrganization(ctx
 	return out, nil
 }
 
-func (c *incidentClassifierQueryServiceClient) ListPatientAllowedTypesByOrganization(ctx context.Context, in *ListPatientAllowedTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListPatientAllowedTypesByOrganizationResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListPatientAllowedTypesByOrganizationResponse)
-	err := c.cc.Invoke(ctx, IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *incidentClassifierQueryServiceClient) ListPatientVisibleCategoriesByOrganization(ctx context.Context, in *ListPatientVisibleCategoriesByOrganizationRequest, opts ...grpc.CallOption) (*ListPatientVisibleCategoriesByOrganizationResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListPatientVisibleCategoriesByOrganizationResponse)
-	err := c.cc.Invoke(ctx, IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // IncidentClassifierQueryServiceServer is the server API for IncidentClassifierQueryService service.
 // All implementations must embed UnimplementedIncidentClassifierQueryServiceServer
 // for forward compatibility.
@@ -167,11 +140,6 @@ type IncidentClassifierQueryServiceServer interface {
 	GetType(context.Context, *GetTypeRequest) (*GetTypeResponse, error)
 	ListTypesByCategory(context.Context, *ListTypesByCategoryRequest) (*ListTypesByCategoryResponse, error)
 	ListActiveTypesByOrganization(context.Context, *ListActiveTypesByOrganizationRequest) (*ListActiveTypesByOrganizationResponse, error)
-	// Patient-facing reads. These are scoped to one organisation and return
-	// only the slice of the classifier that a patient may see when filing
-	// an incident.
-	ListPatientAllowedTypesByOrganization(context.Context, *ListPatientAllowedTypesByOrganizationRequest) (*ListPatientAllowedTypesByOrganizationResponse, error)
-	ListPatientVisibleCategoriesByOrganization(context.Context, *ListPatientVisibleCategoriesByOrganizationRequest) (*ListPatientVisibleCategoriesByOrganizationResponse, error)
 	mustEmbedUnimplementedIncidentClassifierQueryServiceServer()
 }
 
@@ -202,12 +170,6 @@ func (UnimplementedIncidentClassifierQueryServiceServer) ListTypesByCategory(con
 }
 func (UnimplementedIncidentClassifierQueryServiceServer) ListActiveTypesByOrganization(context.Context, *ListActiveTypesByOrganizationRequest) (*ListActiveTypesByOrganizationResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListActiveTypesByOrganization not implemented")
-}
-func (UnimplementedIncidentClassifierQueryServiceServer) ListPatientAllowedTypesByOrganization(context.Context, *ListPatientAllowedTypesByOrganizationRequest) (*ListPatientAllowedTypesByOrganizationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListPatientAllowedTypesByOrganization not implemented")
-}
-func (UnimplementedIncidentClassifierQueryServiceServer) ListPatientVisibleCategoriesByOrganization(context.Context, *ListPatientVisibleCategoriesByOrganizationRequest) (*ListPatientVisibleCategoriesByOrganizationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListPatientVisibleCategoriesByOrganization not implemented")
 }
 func (UnimplementedIncidentClassifierQueryServiceServer) mustEmbedUnimplementedIncidentClassifierQueryServiceServer() {
 }
@@ -357,42 +319,6 @@ func _IncidentClassifierQueryService_ListActiveTypesByOrganization_Handler(srv i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListPatientAllowedTypesByOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IncidentClassifierQueryServiceServer).ListPatientAllowedTypesByOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncidentClassifierQueryServiceServer).ListPatientAllowedTypesByOrganization(ctx, req.(*ListPatientAllowedTypesByOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListPatientVisibleCategoriesByOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IncidentClassifierQueryServiceServer).ListPatientVisibleCategoriesByOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncidentClassifierQueryServiceServer).ListPatientVisibleCategoriesByOrganization(ctx, req.(*ListPatientVisibleCategoriesByOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // IncidentClassifierQueryService_ServiceDesc is the grpc.ServiceDesc for IncidentClassifierQueryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -427,14 +353,6 @@ var IncidentClassifierQueryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListActiveTypesByOrganization",
 			Handler:    _IncidentClassifierQueryService_ListActiveTypesByOrganization_Handler,
-		},
-		{
-			MethodName: "ListPatientAllowedTypesByOrganization",
-			Handler:    _IncidentClassifierQueryService_ListPatientAllowedTypesByOrganization_Handler,
-		},
-		{
-			MethodName: "ListPatientVisibleCategoriesByOrganization",
-			Handler:    _IncidentClassifierQueryService_ListPatientVisibleCategoriesByOrganization_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
