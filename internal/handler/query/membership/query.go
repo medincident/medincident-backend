@@ -96,7 +96,7 @@ func (h *MembershipQueryHandler) ListEmployeesByDepartment(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.empReader.ListByDepartment(ctx, caller, id, memberread.ListQuery{
+	result, err := h.empReader.ListByDepartment(ctx, caller, id, req.GetIncludeDeactivated(), memberread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	}, memberread.EmployeeFilter{
@@ -127,7 +127,7 @@ func (h *MembershipQueryHandler) ListEmployeesByClinic(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.empReader.ListByClinic(ctx, caller, id, memberread.ListQuery{
+	result, err := h.empReader.ListByClinic(ctx, caller, id, req.GetIncludeDeactivated(), memberread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	}, memberread.EmployeeFilter{
@@ -158,7 +158,7 @@ func (h *MembershipQueryHandler) ListEmployeesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.empReader.ListByOrganization(ctx, caller, id, memberread.ListQuery{
+	result, err := h.empReader.ListByOrganization(ctx, caller, id, req.GetIncludeDeactivated(), memberread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	}, memberread.EmployeeFilter{
