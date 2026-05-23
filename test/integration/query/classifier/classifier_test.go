@@ -366,6 +366,72 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 	})
 }
 
+// TestReader_IncludeDeactivated_RequiresAdmin seeds an inactive category and
+// verifies that:
+//   - sysadmin with includeDeactivated=true sees the inactive category.
+//   - patientCaller with includeDeactivated=true receives permission_denied
+//     for both ListCategoriesByOrganization and ListTypesByOrganization.
+func TestReader_IncludeDeactivated_RequiresAdmin(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+
+	now := time.Now().UTC().Truncate(time.Second)
+	orgID := uuid.Must(uuid.NewV7())
+	catID := uuid.Must(uuid.NewV7())
+	typeID := uuid.Must(uuid.NewV7())
+
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := qprojector.CategoryCreated(tx, catID.String(), now, &classifierv1.IncidentCategoryCreated{
+			OrganizationId: orgID.String(),
+			Name:           "Archived Category",
+			IsActive:       false,
+			CreatedAt:      timestamppb.New(now),
+		}); err != nil {
+			return err
+		}
+		return qprojector.TypeCreated(tx, typeID.String(), now, &classifierv1.IncidentTypeCreated{
+			OrganizationId: orgID.String(),
+			CategoryId:     catID.String(),
+			Name:           "Archived Type",
+			IsActive:       false,
+			CreatedAt:      timestamppb.New(now),
+		})
+	}))
+
+	reader := classifierread.NewReader(testDB, authzSvc, &logger)
+
+	// Admin sees inactive category with includeDeactivated=true.
+	cats, err := reader.ListCategoriesByOrganization(ctx, sysadminCaller, orgID, true, classifierread.ListQuery{})
+	require.NoError(t, err)
+	require.Len(t, cats.Items, 1)
+	require.Equal(t, catID, cats.Items[0].ID)
+
+	// Admin sees nothing with includeDeactivated=false.
+	cats, err = reader.ListCategoriesByOrganization(ctx, sysadminCaller, orgID, false, classifierread.ListQuery{})
+	require.NoError(t, err)
+	require.Empty(t, cats.Items)
+
+	// Admin sees inactive type with includeDeactivated=true.
+	types, err := reader.ListTypesByOrganization(ctx, sysadminCaller, orgID, true, classifierread.ListQuery{})
+	require.NoError(t, err)
+	require.Len(t, types.Items, 1)
+	require.Equal(t, typeID, types.Items[0].ID)
+
+	// Admin sees nothing with includeDeactivated=false.
+	types, err = reader.ListTypesByOrganization(ctx, sysadminCaller, orgID, false, classifierread.ListQuery{})
+	require.NoError(t, err)
+	require.Empty(t, types.Items)
+
+	// patientCaller with includeDeactivated=true is denied for categories.
+	_, err = reader.ListCategoriesByOrganization(ctx, patientCaller, orgID, true, classifierread.ListQuery{})
+	require.Error(t, err)
+
+	// patientCaller with includeDeactivated=true is denied for types.
+	_, err = reader.ListTypesByOrganization(ctx, patientCaller, orgID, true, classifierread.ListQuery{})
+	require.Error(t, err)
+}
+
 // categoryIDs returns a set of IDs from a CategoryListResult items slice.
 func categoryIDs(items []classifierread.CategoryView) map[uuid.UUID]bool {
 	m := make(map[uuid.UUID]bool, len(items))
