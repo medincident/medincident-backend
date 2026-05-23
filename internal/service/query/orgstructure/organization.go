@@ -112,7 +112,10 @@ func (r *OrganizationReader) Get(ctx context.Context, caller authz.Caller, id uu
 	}
 	if !out.IsActive {
 		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.SystemAdmin)
-		if err != nil || !ok {
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
 			return nil, oops.In("reader.orgstructure.organization").
 				Code(ErrCodeOrganizationNotFound).
 				Public("Organization not found.").

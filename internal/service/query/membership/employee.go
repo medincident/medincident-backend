@@ -127,7 +127,10 @@ func (r *EmployeeReader) Get(
 	if out.TerminatedAt != nil {
 		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
 			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Employee(id)))
-		if err != nil || !ok {
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
 			return nil, oops.In("reader.membership.employee").
 				Code(ErrCodeEmployeeNotFound).
 				Public("Employee not found.").
@@ -289,15 +292,14 @@ func (r *EmployeeReader) ListByDepartment(
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(deptID)); err != nil {
 		return EmployeeListResult{}, err
 	}
-	if includeDeactivated {
+	wantTerminated := includeDeactivated || filter.IncludeTerminated
+	if wantTerminated {
 		if err := r.authz.Require(ctx, caller.ZitadelUserID,
 			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Department(deptID))); err != nil {
 			return EmployeeListResult{}, err
 		}
-		filter.IncludeTerminated = true
-	} else {
-		filter.IncludeTerminated = false
 	}
+	filter.IncludeTerminated = wantTerminated
 	return r.listByField(ctx, "department_id", deptID, q, filter)
 }
 
@@ -318,15 +320,14 @@ func (r *EmployeeReader) ListByClinic(
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
 		return EmployeeListResult{}, err
 	}
-	if includeDeactivated {
+	wantTerminated := includeDeactivated || filter.IncludeTerminated
+	if wantTerminated {
 		if err := r.authz.Require(ctx, caller.ZitadelUserID,
 			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Clinic(clinicID))); err != nil {
 			return EmployeeListResult{}, err
 		}
-		filter.IncludeTerminated = true
-	} else {
-		filter.IncludeTerminated = false
 	}
+	filter.IncludeTerminated = wantTerminated
 	return r.listByField(ctx, "clinic_id", clinicID, q, filter)
 }
 
@@ -347,15 +348,14 @@ func (r *EmployeeReader) ListByOrganization(
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return EmployeeListResult{}, err
 	}
-	if includeDeactivated {
+	wantTerminated := includeDeactivated || filter.IncludeTerminated
+	if wantTerminated {
 		if err := r.authz.Require(ctx, caller.ZitadelUserID,
 			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Organization(orgID))); err != nil {
 			return EmployeeListResult{}, err
 		}
-		filter.IncludeTerminated = true
-	} else {
-		filter.IncludeTerminated = false
 	}
+	filter.IncludeTerminated = wantTerminated
 	return r.listByField(ctx, "organization_id", orgID, q, filter)
 }
 

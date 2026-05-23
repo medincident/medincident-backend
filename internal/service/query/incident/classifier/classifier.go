@@ -109,7 +109,10 @@ func (r *Reader) GetCategory(
 	if !out.IsActive {
 		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
 			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Category(id)))
-		if err != nil || !ok {
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
 			return nil, oops.In("reader.incident.classifier.category").
 				Code(ErrCodeCategoryNotFound).
 				Public("Incident category not found.").
@@ -571,7 +574,10 @@ func (r *Reader) GetType(
 	if !out.IsActive {
 		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
 			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.IncidentType(id)))
-		if err != nil || !ok {
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
 			return nil, oops.In("reader.incident.classifier.type").
 				Code(ErrCodeTypeNotFound).
 				Public("Incident type not found.").

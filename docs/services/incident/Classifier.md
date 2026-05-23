@@ -350,14 +350,16 @@
 
 ### Параметр include_deactivated
 
-Методы `GetCategory`, `ListCategoriesByOrganization`, `ListRootCategories`, `GetType` и `ListTypesByOrganization` поддерживают параметр `include_deactivated bool` (по умолчанию `false`).
+Методы `ListCategoriesByOrganization`, `ListRootCategories` и `ListTypesByOrganization` поддерживают параметр `include_deactivated bool` (по умолчанию `false`).
 
 - `include_deactivated=false` (по умолчанию): возвращаются только активные записи. Пациентам всегда возвращается только активное подмножество независимо от значения флага.
 - `include_deactivated=true`: возвращаются все записи, включая деактивированные. Требует `SystemAdmin` или `OrgAdminOf` соответствующей организации. Без нужных прав возвращается `permission_denied`.
 
 **Поведение Get-методов для деактивированных записей:**
+
+`GetCategory` и `GetType` не принимают параметр `include_deactivated`. Видимость деактивированных записей определяется автоматически по роли вызывающего:
 - Не-администратор: деактивированная запись возвращается как `*_not_found` (неотличимо от отсутствующей).
-- Администратор с `include_deactivated=true`: возвращается фактическая запись.
+- Администратор: возвращается фактическая запись.
 
 ### GetCategory
 
@@ -368,7 +370,7 @@
 
 | Код | HTTP | Описание |
 |---|---|---|
-| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
+| `permission_denied` | 403 | Нет прав доступа |
 | `incident_category_not_found` | 404 | Категория не найдена или деактивирована (для не-администратора) |
 
 ### ListCategoriesByOrganization
@@ -408,7 +410,7 @@
 
 | Код | HTTP | Описание |
 |---|---|---|
-| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
+| `permission_denied` | 403 | Нет прав доступа |
 | `incident_type_not_found` | 404 | Тип не найден или деактивирован (для не-администратора) |
 
 ### ListTypesByCategory

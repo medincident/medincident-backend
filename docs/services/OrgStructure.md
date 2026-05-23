@@ -412,14 +412,16 @@
 
 ### Параметр include_deactivated
 
-Методы `GetOrganization`, `ListOrganizations`, `SearchOrganizations`, `GetClinic`, `ListClinicsByOrganization`, `GetDepartment` и `ListDepartmentsByClinic` поддерживают параметр `include_deactivated bool` (по умолчанию `false`).
+Методы `ListOrganizations`, `SearchOrganizations`, `ListClinicsByOrganization` и `ListDepartmentsByClinic` поддерживают параметр `include_deactivated bool` (по умолчанию `false`).
 
 - `include_deactivated=false` (по умолчанию): возвращаются только активные записи.
 - `include_deactivated=true`: возвращаются все записи, включая деактивированные. Для организаций требует `SystemAdmin`; для клиник и отделов — `SystemAdmin` или `OrgAdminOf` соответствующей организации. Без нужных прав возвращается `permission_denied`.
 
 **Поведение Get-методов для деактивированных записей:**
+
+`GetOrganization`, `GetClinic`, `GetDepartment` не принимают параметр `include_deactivated`. Видимость деактивированных записей определяется автоматически по роли вызывающего:
 - Не-администратор: деактивированная запись возвращается как `*_not_found` (неотличимо от отсутствующей).
-- Администратор с `include_deactivated=true`: возвращается фактическая запись.
+- Администратор: возвращается фактическая запись.
 
 ### ListOrganizations
 
@@ -445,7 +447,6 @@
 
 | Код | HTTP | Описание |
 |---|---|---|
-| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав SystemAdmin) |
 | `organization_not_found` | 404 | Организация не найдена или деактивирована (для не-администратора) |
 
 ### GetClinic
@@ -454,7 +455,7 @@
 
 | Код | HTTP | Описание |
 |---|---|---|
-| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
+| `permission_denied` | 403 | Нет прав доступа |
 | `clinic_not_found` | 404 | Клиника не найдена или деактивирована (для не-администратора) |
 
 ### GetDepartment
@@ -463,7 +464,7 @@
 
 | Код | HTTP | Описание |
 |---|---|---|
-| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
+| `permission_denied` | 403 | Нет прав доступа |
 | `department_not_found` | 404 | Отдел не найден или деактивирован (для не-администратора) |
 
 ### ListClinicsByOrganization

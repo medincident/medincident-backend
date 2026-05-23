@@ -87,7 +87,10 @@ func (r *DepartmentReader) Get(
 	if !out.IsActive {
 		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
 			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Department(id)))
-		if err != nil || !ok {
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
 			return nil, oops.In("reader.orgstructure.department").
 				Code(ErrCodeDepartmentNotFound).
 				Public("Department not found.").
