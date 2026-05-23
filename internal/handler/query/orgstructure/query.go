@@ -260,7 +260,7 @@ func (h *OrgStructureQueryHandler) ListDepartmentsByClinic(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.deptReader.ListByClinic(ctx, caller, clinicID, orgread.ListQuery{
+	result, err := h.deptReader.ListByClinic(ctx, caller, clinicID, req.GetIncludeDeactivated(), orgread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})

@@ -50,7 +50,9 @@ type DepartmentListResult struct {
 
 // Get returns the DepartmentDetails for the given id. Authorization:
 // authz.ReaderOf.Department(id) — system admin, organization admin
-// of the owning org, or any employee of the owning org.
+// of the owning org, or any employee of the owning org. Deactivated
+// departments are returned only to org-admins and system admins;
+// non-admins receive department_not_found.
 //
 // See: docs/services/OrgStructure.md
 func (r *DepartmentReader) Get(
@@ -82,6 +84,17 @@ func (r *DepartmentReader) Get(
 			With("department_id", id).
 			Wrap(err)
 	}
+	if !out.IsActive {
+		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Department(id)))
+		if err != nil || !ok {
+			return nil, oops.In("reader.orgstructure.department").
+				Code(ErrCodeDepartmentNotFound).
+				Public("Department not found.").
+				With("department_id", id).
+				Errorf("not found")
+		}
+	}
 	return &out, nil
 }
 
@@ -112,16 +125,17 @@ func (r *DepartmentReader) CountByClinic(
 
 // ListByClinic returns up to q.Limit departments belonging to the
 // given clinic, ordered most-recently-updated first. Authorization:
-// authz.ReaderOf.Clinic(clinicID). Pagination bounds are normalized
-// first so a malformed Limit cannot trigger a gratuitous authz
-// DB round-trip — matching the validate→authorize order used on the
-// command side.
+// authz.ReaderOf.Clinic(clinicID). When includeDeactivated is true an
+// additional admin check is performed; inactive departments are excluded
+// by default. Pagination bounds are normalized first so a malformed
+// Limit cannot trigger a gratuitous authz DB round-trip.
 //
 // See: docs/services/OrgStructure.md
 func (r *DepartmentReader) ListByClinic(
 	ctx context.Context,
 	caller authz.Caller,
 	clinicID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (DepartmentListResult, error) {
 	if err := q.normalize(); err != nil {
@@ -132,11 +146,20 @@ func (r *DepartmentReader) ListByClinic(
 	); err != nil {
 		return DepartmentListResult{}, err
 	}
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Clinic(clinicID))); err != nil {
+			return DepartmentListResult{}, err
+		}
+	}
 	sqlBuf := `SELECT id, clinic_id, name, is_active, updated_at
 		  FROM projections.departments
 		 WHERE clinic_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, clinicID)
+	if !includeDeactivated {
+		sqlBuf += ` AND is_active = TRUE`
+	}
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
 		if err != nil {
