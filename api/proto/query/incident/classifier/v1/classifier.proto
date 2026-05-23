@@ -77,7 +77,7 @@ service IncidentClassifierQueryService {
       }
       responses: {
         key: "403"
-        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires organization admin or system admin role."}
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -90,7 +90,7 @@ service IncidentClassifierQueryService {
       }
       responses: {
         key: "403"
-        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires organization admin or system admin role."}
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -122,7 +122,7 @@ service IncidentClassifierQueryService {
       }
       responses: {
         key: "403"
-        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires organization admin or system admin role."}
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -135,7 +135,7 @@ service IncidentClassifierQueryService {
       }
       responses: {
         key: "403"
-        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires organization admin or system admin role."}
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
