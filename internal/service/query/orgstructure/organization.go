@@ -10,6 +10,7 @@ import (
 	"github.com/samber/oops"
 
 	"github.com/medincident/medincident-backend/internal/cursor"
+	"github.com/medincident/medincident-backend/internal/service/authz"
 	"github.com/medincident/medincident-backend/internal/util/like"
 )
 
@@ -68,11 +69,13 @@ type OrganizationListResult struct {
 	NextCursor *string
 }
 
-// Get returns the OrganizationDetails for the given id. Returns an
-// oops error with code organization_not_found when the row is absent.
+// Get returns the OrganizationDetails for the given id. When the record
+// is inactive and caller is not a system admin, the method returns
+// organization_not_found so that deactivated organizations are invisible
+// to non-admin callers.
 //
 // See: docs/services/OrgStructure.md
-func (r *OrganizationReader) Get(ctx context.Context, id uuid.UUID) (*OrganizationDetails, error) {
+func (r *OrganizationReader) Get(ctx context.Context, caller authz.Caller, id uuid.UUID) (*OrganizationDetails, error) {
 	var (
 		out      OrganizationDetails
 		addrText string
@@ -106,18 +109,39 @@ func (r *OrganizationReader) Get(ctx context.Context, id uuid.UUID) (*Organizati
 	if lon != nil && lat != nil {
 		out.LegalAddress.Point = &PointView{Longitude: *lon, Latitude: *lat}
 	}
+	if !out.IsActive {
+		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.SystemAdmin)
+		if err != nil || !ok {
+			return nil, oops.In("reader.orgstructure.organization").
+				Code(ErrCodeOrganizationNotFound).
+				Public("Organization not found.").
+				With("organization_id", id).
+				Errorf("not found")
+		}
+	}
 	return &out, nil
 }
 
 // List returns up to q.Limit organizations, ordered most-recently-updated first.
+// When includeDeactivated is true the caller must satisfy authz.SystemAdmin;
+// otherwise only active organizations are returned.
 //
 // See: docs/services/OrgStructure.md
-func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (OrganizationListResult, error) {
+func (r *OrganizationReader) List(ctx context.Context, caller authz.Caller, includeDeactivated bool, q ListQuery) (OrganizationListResult, error) {
 	if err := q.normalize(); err != nil {
 		return OrganizationListResult{}, err
 	}
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.SystemAdmin); err != nil {
+			return OrganizationListResult{}, err
+		}
+	}
 	sqlBuf := `SELECT id, name, is_active, updated_at FROM projections.organizations`
+	clauses := make([]string, 0, 2)
 	args := make([]any, 0, 3)
+	if !includeDeactivated {
+		clauses = append(clauses, `is_active = TRUE`)
+	}
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
 		if err != nil {
@@ -126,8 +150,15 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (Organizatio
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		sqlBuf += ` WHERE (updated_at, id) < (?, ?)`
+		clauses = append(clauses, `(updated_at, id) < (?, ?)`)
 		args = append(args, c.Time(), c.I)
+	}
+	for i, c := range clauses {
+		if i == 0 {
+			sqlBuf += ` WHERE ` + c
+		} else {
+			sqlBuf += ` AND ` + c
+		}
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -164,8 +195,11 @@ func (r *OrganizationReader) List(ctx context.Context, q ListQuery) (Organizatio
 // query is length-capped BEFORE any DB round-trip; the pattern is
 // always bound positionally so users cannot inject SQL.
 //
+// When includeDeactivated is true the caller must satisfy authz.SystemAdmin;
+// otherwise only active organizations are returned.
+//
 // See: docs/services/OrgStructure.md
-func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQuery) (OrganizationListResult, error) {
+func (r *OrganizationReader) Search(ctx context.Context, caller authz.Caller, query string, includeDeactivated bool, q ListQuery) (OrganizationListResult, error) {
 	if len(query) > organizationSearchMaxQueryLength {
 		return OrganizationListResult{}, oops.In("reader.orgstructure.organization").
 			Code(ErrCodeOrganizationSearchQueryTooLong).
@@ -177,8 +211,16 @@ func (r *OrganizationReader) Search(ctx context.Context, query string, q ListQue
 	if err := q.normalize(); err != nil {
 		return OrganizationListResult{}, err
 	}
-	clauses := make([]string, 0, 2)
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.SystemAdmin); err != nil {
+			return OrganizationListResult{}, err
+		}
+	}
+	clauses := make([]string, 0, 3)
 	args := make([]any, 0, 4)
+	if !includeDeactivated {
+		clauses = append(clauses, `is_active = TRUE`)
+	}
 	if query != "" {
 		clauses = append(clauses, `COALESCE(name, '') ILIKE ?`)
 		args = append(args, "%"+like.EscapePattern(query)+"%")
