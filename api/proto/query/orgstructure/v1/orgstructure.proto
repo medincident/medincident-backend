@@ -73,6 +73,10 @@ service OrgStructureQueryService {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
       }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
+      }
     };
   }
   rpc CountOrganizations(CountOrganizationsRequest) returns (CountOrganizationsResponse) {
@@ -90,6 +94,10 @@ service OrgStructureQueryService {
       responses: {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -109,6 +117,10 @@ service OrgStructureQueryService {
       responses: {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -137,6 +149,10 @@ service OrgStructureQueryService {
       responses: {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -237,6 +253,7 @@ message ListOrganizationsRequest {
   // response. Omit or leave empty to start from the first page. An
   // invalid cursor is rejected with a domain error.
   string after = 2;
+  bool include_deactivated = 3;
 }
 message ListOrganizationsResponse {
   repeated OrganizationListItem items = 1;
@@ -252,6 +269,7 @@ message SearchOrganizationsRequest {
   string query = 1;
   int32 limit = 2;
   string after = 3;
+  bool include_deactivated = 4;
 }
 message SearchOrganizationsResponse {
   repeated OrganizationListItem items = 1;
@@ -269,6 +287,7 @@ message ListClinicsByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
   string after = 3;
+  bool include_deactivated = 4;
 }
 message ListClinicsByOrganizationResponse {
   repeated ClinicListItem items = 1;
@@ -293,6 +312,7 @@ message ListDepartmentsByClinicRequest {
   string clinic_id = 1;
   int32 limit = 2;
   string after = 3;
+  bool include_deactivated = 4;
 }
 message ListDepartmentsByClinicResponse {
   repeated DepartmentListItem items = 1;
