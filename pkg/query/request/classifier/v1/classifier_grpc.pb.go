@@ -19,9 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	RequestClassifierQueryService_GetRequestType_FullMethodName                       = "/query.request.classifier.v1.RequestClassifierQueryService/GetRequestType"
-	RequestClassifierQueryService_ListRequestTypesByOrganization_FullMethodName       = "/query.request.classifier.v1.RequestClassifierQueryService/ListRequestTypesByOrganization"
-	RequestClassifierQueryService_ListActiveRequestTypesByOrganization_FullMethodName = "/query.request.classifier.v1.RequestClassifierQueryService/ListActiveRequestTypesByOrganization"
+	RequestClassifierQueryService_GetRequestType_FullMethodName                 = "/query.request.classifier.v1.RequestClassifierQueryService/GetRequestType"
+	RequestClassifierQueryService_ListRequestTypesByOrganization_FullMethodName = "/query.request.classifier.v1.RequestClassifierQueryService/ListRequestTypesByOrganization"
 )
 
 // RequestClassifierQueryServiceClient is the client API for RequestClassifierQueryService service.
@@ -30,7 +29,6 @@ const (
 type RequestClassifierQueryServiceClient interface {
 	GetRequestType(ctx context.Context, in *GetRequestTypeRequest, opts ...grpc.CallOption) (*GetRequestTypeResponse, error)
 	ListRequestTypesByOrganization(ctx context.Context, in *ListRequestTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListRequestTypesByOrganizationResponse, error)
-	ListActiveRequestTypesByOrganization(ctx context.Context, in *ListActiveRequestTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListActiveRequestTypesByOrganizationResponse, error)
 }
 
 type requestClassifierQueryServiceClient struct {
@@ -61,23 +59,12 @@ func (c *requestClassifierQueryServiceClient) ListRequestTypesByOrganization(ctx
 	return out, nil
 }
 
-func (c *requestClassifierQueryServiceClient) ListActiveRequestTypesByOrganization(ctx context.Context, in *ListActiveRequestTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListActiveRequestTypesByOrganizationResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListActiveRequestTypesByOrganizationResponse)
-	err := c.cc.Invoke(ctx, RequestClassifierQueryService_ListActiveRequestTypesByOrganization_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // RequestClassifierQueryServiceServer is the server API for RequestClassifierQueryService service.
 // All implementations must embed UnimplementedRequestClassifierQueryServiceServer
 // for forward compatibility.
 type RequestClassifierQueryServiceServer interface {
 	GetRequestType(context.Context, *GetRequestTypeRequest) (*GetRequestTypeResponse, error)
 	ListRequestTypesByOrganization(context.Context, *ListRequestTypesByOrganizationRequest) (*ListRequestTypesByOrganizationResponse, error)
-	ListActiveRequestTypesByOrganization(context.Context, *ListActiveRequestTypesByOrganizationRequest) (*ListActiveRequestTypesByOrganizationResponse, error)
 	mustEmbedUnimplementedRequestClassifierQueryServiceServer()
 }
 
@@ -93,9 +80,6 @@ func (UnimplementedRequestClassifierQueryServiceServer) GetRequestType(context.C
 }
 func (UnimplementedRequestClassifierQueryServiceServer) ListRequestTypesByOrganization(context.Context, *ListRequestTypesByOrganizationRequest) (*ListRequestTypesByOrganizationResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListRequestTypesByOrganization not implemented")
-}
-func (UnimplementedRequestClassifierQueryServiceServer) ListActiveRequestTypesByOrganization(context.Context, *ListActiveRequestTypesByOrganizationRequest) (*ListActiveRequestTypesByOrganizationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListActiveRequestTypesByOrganization not implemented")
 }
 func (UnimplementedRequestClassifierQueryServiceServer) mustEmbedUnimplementedRequestClassifierQueryServiceServer() {
 }
@@ -155,24 +139,6 @@ func _RequestClassifierQueryService_ListRequestTypesByOrganization_Handler(srv i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _RequestClassifierQueryService_ListActiveRequestTypesByOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListActiveRequestTypesByOrganizationRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(RequestClassifierQueryServiceServer).ListActiveRequestTypesByOrganization(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: RequestClassifierQueryService_ListActiveRequestTypesByOrganization_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RequestClassifierQueryServiceServer).ListActiveRequestTypesByOrganization(ctx, req.(*ListActiveRequestTypesByOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // RequestClassifierQueryService_ServiceDesc is the grpc.ServiceDesc for RequestClassifierQueryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -187,10 +153,6 @@ var RequestClassifierQueryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListRequestTypesByOrganization",
 			Handler:    _RequestClassifierQueryService_ListRequestTypesByOrganization_Handler,
-		},
-		{
-			MethodName: "ListActiveRequestTypesByOrganization",
-			Handler:    _RequestClassifierQueryService_ListActiveRequestTypesByOrganization_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

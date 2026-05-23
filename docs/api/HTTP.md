@@ -5767,6 +5767,7 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 |categoryId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
 |after|query|string|false|none|
+|includeDeactivated|query|boolean|false|none|
 
 > Example responses
 
@@ -5799,7 +5800,8 @@ curl -X GET /v1/incident-categories/{categoryId}/types \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -5988,9 +5990,9 @@ curl -X GET /v1/incident-types/{id} \
 This operation does not require authentication
 </aside>
 
-## IncidentClassifierQueryService_ListCategoriesByOrganization
+## IncidentClassifierQueryService_ListRootCategories
 
-<a id="opIdIncidentClassifierQueryService_ListCategoriesByOrganization"></a>
+<a id="opIdIncidentClassifierQueryService_ListRootCategories"></a>
 
 > Code samples
 
@@ -6003,6 +6005,71 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 
 `GET /v1/organizations/{organizationId}/incident-categories`
 
+<h3 id="incidentclassifierqueryservice_listrootcategories-parameters">Parameters</h3>
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|organizationId|path|string|true|none|
+|limit|query|integer(int32)|false|none|
+|after|query|string|false|none|
+|includeDeactivated|query|boolean|false|none|
+
+> Example responses
+
+> 200 Response
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+```
+
+<h3 id="incidentclassifierqueryservice_listrootcategories-responses">Responses</h3>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListRootCategoriesResponse](#schemav1listrootcategoriesresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
+- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
+|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
+
+<h3 id="incidentclassifierqueryservice_listrootcategories-responseschema">Response Schema</h3>
+
+<aside class="success">
+This operation does not require authentication
+</aside>
+
+## IncidentClassifierQueryService_ListCategoriesByOrganization
+
+<a id="opIdIncidentClassifierQueryService_ListCategoriesByOrganization"></a>
+
+> Code samples
+
+```shell
+# You can also use wget
+curl -X GET /v1/organizations/{organizationId}/incident-categories:all \
+  -H 'Accept: application/json'
+
+```
+
+`GET /v1/organizations/{organizationId}/incident-categories:all`
+
 <h3 id="incidentclassifierqueryservice_listcategoriesbyorganization-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
@@ -6010,6 +6077,7 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
 |after|query|string|false|none|
+|includeDeactivated|query|boolean|false|none|
 
 > Example responses
 
@@ -6041,7 +6109,8 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -6051,91 +6120,29 @@ curl -X GET /v1/organizations/{organizationId}/incident-categories \
 This operation does not require authentication
 </aside>
 
-## IncidentClassifierQueryService_ListActiveRootCategories
+## IncidentClassifierQueryService_ListTypesByOrganization
 
-<a id="opIdIncidentClassifierQueryService_ListActiveRootCategories"></a>
+<a id="opIdIncidentClassifierQueryService_ListTypesByOrganization"></a>
 
 > Code samples
 
 ```shell
 # You can also use wget
-curl -X GET /v1/organizations/{organizationId}/incident-categories:roots \
+curl -X GET /v1/organizations/{organizationId}/incident-types \
   -H 'Accept: application/json'
 
 ```
 
-`GET /v1/organizations/{organizationId}/incident-categories:roots`
+`GET /v1/organizations/{organizationId}/incident-types`
 
-<h3 id="incidentclassifierqueryservice_listactiverootcategories-parameters">Parameters</h3>
+<h3 id="incidentclassifierqueryservice_listtypesbyorganization-parameters">Parameters</h3>
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
 |after|query|string|false|none|
-
-> Example responses
-
-> 200 Response
-
-```json
-{
-  "items": [
-    {
-      "id": "string",
-      "organizationId": "string",
-      "parentCategoryId": "string",
-      "name": "string",
-      "description": "string",
-      "isActive": true,
-      "createdAt": "string",
-      "updatedAt": "string"
-    }
-  ],
-  "nextCursor": "string"
-}
-```
-
-<h3 id="incidentclassifierqueryservice_listactiverootcategories-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveRootCategoriesResponse](#schemav1listactiverootcategoriesresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
-- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="incidentclassifierqueryservice_listactiverootcategories-responseschema">Response Schema</h3>
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## IncidentClassifierQueryService_ListActiveTypesByOrganization
-
-<a id="opIdIncidentClassifierQueryService_ListActiveTypesByOrganization"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X GET /v1/organizations/{organizationId}/incident-types:active \
-  -H 'Accept: application/json'
-
-```
-
-`GET /v1/organizations/{organizationId}/incident-types:active`
-
-<h3 id="incidentclassifierqueryservice_listactivetypesbyorganization-parameters">Parameters</h3>
-
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|organizationId|path|string|true|none|
-|limit|query|integer(int32)|false|none|
-|after|query|string|false|none|
+|includeDeactivated|query|boolean|false|none|
 
 > Example responses
 
@@ -6160,19 +6167,20 @@ curl -X GET /v1/organizations/{organizationId}/incident-types:active \
 }
 ```
 
-<h3 id="incidentclassifierqueryservice_listactivetypesbyorganization-responses">Responses</h3>
+<h3 id="incidentclassifierqueryservice_listtypesbyorganization-responses">Responses</h3>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveTypesByOrganizationResponse](#schemav1listactivetypesbyorganizationresponse)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListTypesByOrganizationResponse](#schemav1listtypesbyorganizationresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
-<h3 id="incidentclassifierqueryservice_listactivetypesbyorganization-responseschema">Response Schema</h3>
+<h3 id="incidentclassifierqueryservice_listtypesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -6826,6 +6834,7 @@ curl -X GET /v1/clinics/{clinicId}/employees \
 |includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
 |onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
 |position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+|includeDeactivated|query|boolean|false|When false (default), only active employees are returned. Set true|
 
 #### Detailed descriptions
 
@@ -6837,6 +6846,9 @@ hidden. Set true to include offboarded employees.
 
 **position**: Optional exact-match filter on employee_cards.position. Trimmed
 before comparison; all-whitespace is treated as unset.
+
+**includeDeactivated**: When false (default), only active employees are returned. Set true
+to include deactivated employees. Requires org-admin or system-admin.
 
 > Example responses
 
@@ -6876,7 +6888,8 @@ before comparison; all-whitespace is treated as unset.
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -7140,6 +7153,7 @@ curl -X GET /v1/departments/{departmentId}/employees \
 |includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
 |onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
 |position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+|includeDeactivated|query|boolean|false|When false (default), only active employees are returned. Set true|
 
 #### Detailed descriptions
 
@@ -7151,6 +7165,9 @@ hidden. Set true to include offboarded employees.
 
 **position**: Optional exact-match filter on employee_cards.position. Trimmed
 before comparison; all-whitespace is treated as unset.
+
+**includeDeactivated**: When false (default), only active employees are returned. Set true
+to include deactivated employees. Requires org-admin or system-admin.
 
 > Example responses
 
@@ -7190,7 +7207,8 @@ before comparison; all-whitespace is treated as unset.
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -8116,6 +8134,7 @@ curl -X GET /v1/organizations/{organizationId}/employees \
 |includeTerminated|query|boolean|false|When false (default), rows with terminated_at IS NOT NULL are|
 |onVacation|query|boolean|false|When true, restrict to employees currently on an active vacation|
 |position|query|string|false|Optional exact-match filter on employee_cards.position. Trimmed|
+|includeDeactivated|query|boolean|false|When false (default), only active employees are returned. Set true|
 
 #### Detailed descriptions
 
@@ -8127,6 +8146,9 @@ hidden. Set true to include offboarded employees.
 
 **position**: Optional exact-match filter on employee_cards.position. Trimmed
 before comparison; all-whitespace is treated as unset.
+
+**includeDeactivated**: When false (default), only active employees are returned. Set true
+to include deactivated employees. Requires org-admin or system-admin.
 
 > Example responses
 
@@ -8166,7 +8188,8 @@ before comparison; all-whitespace is treated as unset.
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `membership_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -8571,6 +8594,7 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 |clinicId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
 |after|query|string|false|none|
+|includeDeactivated|query|boolean|false|none|
 
 > Example responses
 
@@ -8598,7 +8622,8 @@ curl -X GET /v1/clinics/{clinicId}/departments \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -8801,6 +8826,7 @@ curl -X GET /v1/organizations \
 |---|---|---|---|---|
 |limit|query|integer(int32)|false|none|
 |after|query|string|false|Opaque pagination cursor returned as next_cursor from a previous|
+|includeDeactivated|query|boolean|false|none|
 
 #### Detailed descriptions
 
@@ -8833,7 +8859,8 @@ invalid cursor is rejected with a domain error.
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -8929,6 +8956,7 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
 |after|query|string|false|none|
+|includeDeactivated|query|boolean|false|none|
 
 > Example responses
 
@@ -8956,7 +8984,8 @@ curl -X GET /v1/organizations/{organizationId}/clinics \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -9080,6 +9109,7 @@ curl -X GET /v1/organizations:search \
 |query|query|string|false|none|
 |limit|query|integer(int32)|false|none|
 |after|query|string|false|none|
+|includeDeactivated|query|boolean|false|none|
 
 > Example responses
 
@@ -9106,7 +9136,8 @@ curl -X GET /v1/organizations:search \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
@@ -9140,6 +9171,7 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 |organizationId|path|string|true|none|
 |limit|query|integer(int32)|false|none|
 |after|query|string|false|none|
+|includeDeactivated|query|boolean|false|none|
 
 > Example responses
 
@@ -9170,73 +9202,12 @@ curl -X GET /v1/organizations/{organizationId}/request-types \
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
 - `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
+|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied. Error codes:
+- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.|Inline|
 |500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
 |default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
 
 <h3 id="requestclassifierqueryservice_listrequesttypesbyorganization-responseschema">Response Schema</h3>
-
-<aside class="success">
-This operation does not require authentication
-</aside>
-
-## RequestClassifierQueryService_ListActiveRequestTypesByOrganization
-
-<a id="opIdRequestClassifierQueryService_ListActiveRequestTypesByOrganization"></a>
-
-> Code samples
-
-```shell
-# You can also use wget
-curl -X GET /v1/organizations/{organizationId}/request-types:active \
-  -H 'Accept: application/json'
-
-```
-
-`GET /v1/organizations/{organizationId}/request-types:active`
-
-<h3 id="requestclassifierqueryservice_listactiverequesttypesbyorganization-parameters">Parameters</h3>
-
-|Name|In|Type|Required|Description|
-|---|---|---|---|---|
-|organizationId|path|string|true|none|
-|limit|query|integer(int32)|false|none|
-|after|query|string|false|none|
-
-> Example responses
-
-> 200 Response
-
-```json
-{
-  "items": [
-    {
-      "id": "string",
-      "organizationId": "string",
-      "name": "string",
-      "description": "string",
-      "isActive": true,
-      "createdAt": "string",
-      "updatedAt": "string"
-    }
-  ],
-  "nextCursor": "string"
-}
-```
-
-<h3 id="requestclassifierqueryservice_listactiverequesttypesbyorganization-responses">Responses</h3>
-
-|Status|Meaning|Description|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|A successful response.|[v1ListActiveRequestTypesByOrganizationResponse](#schemav1listactiverequesttypesbyorganizationresponse)|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Validation failed. Error codes:
-- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.|Inline|
-|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthenticated — missing or invalid token.|[v1ErrorResponse](#schemav1errorresponse)|
-|403|[Forbidden](https://tools.ietf.org/html/rfc7231#section-6.5.3)|Permission denied.|[v1ErrorResponse](#schemav1errorresponse)|
-|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Unexpected server error.|[v1ErrorResponse](#schemav1errorresponse)|
-|default|Default|An unexpected error response.|[v1ErrorResponse](#schemav1errorresponse)|
-
-<h3 id="requestclassifierqueryservice_listactiverequesttypesbyorganization-responseschema">Response Schema</h3>
 
 <aside class="success">
 This operation does not require authentication
@@ -14375,105 +14346,6 @@ patient_status, description and timestamps are populated.
 |reopenedFromIncidentId|string|false|none|none|
 |patientStatus|[v1PatientStatus](#schemav1patientstatus)|false|none|PatientStatus is the simplified four-value status surfaced to patients.<br><br> - PATIENT_STATUS_PENDING: buffer pending<br> - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress<br> - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected<br> - PATIENT_STATUS_CANCELLED: patient cancelled|
 
-<h2 id="tocS_v1ListActiveRequestTypesByOrganizationResponse">v1ListActiveRequestTypesByOrganizationResponse</h2>
-<!-- backwards compatibility -->
-<a id="schemav1listactiverequesttypesbyorganizationresponse"></a>
-<a id="schema_v1ListActiveRequestTypesByOrganizationResponse"></a>
-<a id="tocSv1listactiverequesttypesbyorganizationresponse"></a>
-<a id="tocsv1listactiverequesttypesbyorganizationresponse"></a>
-
-```json
-{
-  "items": [
-    {
-      "id": "string",
-      "organizationId": "string",
-      "name": "string",
-      "description": "string",
-      "isActive": true,
-      "createdAt": "string",
-      "updatedAt": "string"
-    }
-  ],
-  "nextCursor": "string"
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|items|[[v1RequestType](#schemav1requesttype)]|false|none|none|
-|nextCursor|string|false|none|none|
-
-<h2 id="tocS_v1ListActiveRootCategoriesResponse">v1ListActiveRootCategoriesResponse</h2>
-<!-- backwards compatibility -->
-<a id="schemav1listactiverootcategoriesresponse"></a>
-<a id="schema_v1ListActiveRootCategoriesResponse"></a>
-<a id="tocSv1listactiverootcategoriesresponse"></a>
-<a id="tocsv1listactiverootcategoriesresponse"></a>
-
-```json
-{
-  "items": [
-    {
-      "id": "string",
-      "organizationId": "string",
-      "parentCategoryId": "string",
-      "name": "string",
-      "description": "string",
-      "isActive": true,
-      "createdAt": "string",
-      "updatedAt": "string"
-    }
-  ],
-  "nextCursor": "string"
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
-|nextCursor|string|false|none|none|
-
-<h2 id="tocS_v1ListActiveTypesByOrganizationResponse">v1ListActiveTypesByOrganizationResponse</h2>
-<!-- backwards compatibility -->
-<a id="schemav1listactivetypesbyorganizationresponse"></a>
-<a id="schema_v1ListActiveTypesByOrganizationResponse"></a>
-<a id="tocSv1listactivetypesbyorganizationresponse"></a>
-<a id="tocsv1listactivetypesbyorganizationresponse"></a>
-
-```json
-{
-  "items": [
-    {
-      "id": "string",
-      "organizationId": "string",
-      "categoryId": "string",
-      "name": "string",
-      "description": "string",
-      "isActive": true,
-      "createdAt": "string",
-      "updatedAt": "string",
-      "isAllowedForPatients": true
-    }
-  ],
-  "nextCursor": "string"
-}
-
-```
-
-### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
-|nextCursor|string|false|none|none|
-
 <h2 id="tocS_v1ListAnnouncementsForClinicResponse">v1ListAnnouncementsForClinicResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1listannouncementsforclinicresponse"></a>
@@ -15548,6 +15420,39 @@ the full result is always returned.
 |items|[[v1RequestType](#schemav1requesttype)]|false|none|none|
 |nextCursor|string|false|none|none|
 
+<h2 id="tocS_v1ListRootCategoriesResponse">v1ListRootCategoriesResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listrootcategoriesresponse"></a>
+<a id="schema_v1ListRootCategoriesResponse"></a>
+<a id="tocSv1listrootcategoriesresponse"></a>
+<a id="tocsv1listrootcategoriesresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "parentCategoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[v1Category](#schemav1category)]|false|none|[Category mirrors projections.incident_categories row.]|
+|nextCursor|string|false|none|none|
+
 <h2 id="tocS_v1ListServiceRequestsByIncidentResponse">v1ListServiceRequestsByIncidentResponse</h2>
 <!-- backwards compatibility -->
 <a id="schemav1listservicerequestsbyincidentresponse"></a>
@@ -15669,6 +15574,40 @@ the full result is always returned.
 <a id="schema_v1ListTypesByCategoryResponse"></a>
 <a id="tocSv1listtypesbycategoryresponse"></a>
 <a id="tocsv1listtypesbycategoryresponse"></a>
+
+```json
+{
+  "items": [
+    {
+      "id": "string",
+      "organizationId": "string",
+      "categoryId": "string",
+      "name": "string",
+      "description": "string",
+      "isActive": true,
+      "createdAt": "string",
+      "updatedAt": "string",
+      "isAllowedForPatients": true
+    }
+  ],
+  "nextCursor": "string"
+}
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|items|[[classifierV1Type](#schemaclassifierv1type)]|false|none|[Type mirrors projections.incident_types row.]|
+|nextCursor|string|false|none|none|
+
+<h2 id="tocS_v1ListTypesByOrganizationResponse">v1ListTypesByOrganizationResponse</h2>
+<!-- backwards compatibility -->
+<a id="schemav1listtypesbyorganizationresponse"></a>
+<a id="schema_v1ListTypesByOrganizationResponse"></a>
+<a id="tocSv1listtypesbyorganizationresponse"></a>
+<a id="tocsv1listtypesbyorganizationresponse"></a>
 
 ```json
 {

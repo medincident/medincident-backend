@@ -19,13 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	IncidentClassifierQueryService_GetCategory_FullMethodName                   = "/query.incident.classifier.v1.IncidentClassifierQueryService/GetCategory"
-	IncidentClassifierQueryService_ListCategoriesByOrganization_FullMethodName  = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization"
-	IncidentClassifierQueryService_ListActiveRootCategories_FullMethodName      = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories"
-	IncidentClassifierQueryService_ListCategorySubtree_FullMethodName           = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategorySubtree"
-	IncidentClassifierQueryService_GetType_FullMethodName                       = "/query.incident.classifier.v1.IncidentClassifierQueryService/GetType"
-	IncidentClassifierQueryService_ListTypesByCategory_FullMethodName           = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByCategory"
-	IncidentClassifierQueryService_ListActiveTypesByOrganization_FullMethodName = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization"
+	IncidentClassifierQueryService_GetCategory_FullMethodName                  = "/query.incident.classifier.v1.IncidentClassifierQueryService/GetCategory"
+	IncidentClassifierQueryService_ListRootCategories_FullMethodName           = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListRootCategories"
+	IncidentClassifierQueryService_ListCategoriesByOrganization_FullMethodName = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization"
+	IncidentClassifierQueryService_ListCategorySubtree_FullMethodName          = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategorySubtree"
+	IncidentClassifierQueryService_GetType_FullMethodName                      = "/query.incident.classifier.v1.IncidentClassifierQueryService/GetType"
+	IncidentClassifierQueryService_ListTypesByCategory_FullMethodName          = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByCategory"
+	IncidentClassifierQueryService_ListTypesByOrganization_FullMethodName      = "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByOrganization"
 )
 
 // IncidentClassifierQueryServiceClient is the client API for IncidentClassifierQueryService service.
@@ -38,12 +38,12 @@ const (
 // CTEs in the reader; the RPC surface stays flat.
 type IncidentClassifierQueryServiceClient interface {
 	GetCategory(ctx context.Context, in *GetCategoryRequest, opts ...grpc.CallOption) (*GetCategoryResponse, error)
+	ListRootCategories(ctx context.Context, in *ListRootCategoriesRequest, opts ...grpc.CallOption) (*ListRootCategoriesResponse, error)
 	ListCategoriesByOrganization(ctx context.Context, in *ListCategoriesByOrganizationRequest, opts ...grpc.CallOption) (*ListCategoriesByOrganizationResponse, error)
-	ListActiveRootCategories(ctx context.Context, in *ListActiveRootCategoriesRequest, opts ...grpc.CallOption) (*ListActiveRootCategoriesResponse, error)
 	ListCategorySubtree(ctx context.Context, in *ListCategorySubtreeRequest, opts ...grpc.CallOption) (*ListCategorySubtreeResponse, error)
 	GetType(ctx context.Context, in *GetTypeRequest, opts ...grpc.CallOption) (*GetTypeResponse, error)
 	ListTypesByCategory(ctx context.Context, in *ListTypesByCategoryRequest, opts ...grpc.CallOption) (*ListTypesByCategoryResponse, error)
-	ListActiveTypesByOrganization(ctx context.Context, in *ListActiveTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListActiveTypesByOrganizationResponse, error)
+	ListTypesByOrganization(ctx context.Context, in *ListTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListTypesByOrganizationResponse, error)
 }
 
 type incidentClassifierQueryServiceClient struct {
@@ -64,20 +64,20 @@ func (c *incidentClassifierQueryServiceClient) GetCategory(ctx context.Context, 
 	return out, nil
 }
 
-func (c *incidentClassifierQueryServiceClient) ListCategoriesByOrganization(ctx context.Context, in *ListCategoriesByOrganizationRequest, opts ...grpc.CallOption) (*ListCategoriesByOrganizationResponse, error) {
+func (c *incidentClassifierQueryServiceClient) ListRootCategories(ctx context.Context, in *ListRootCategoriesRequest, opts ...grpc.CallOption) (*ListRootCategoriesResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListCategoriesByOrganizationResponse)
-	err := c.cc.Invoke(ctx, IncidentClassifierQueryService_ListCategoriesByOrganization_FullMethodName, in, out, cOpts...)
+	out := new(ListRootCategoriesResponse)
+	err := c.cc.Invoke(ctx, IncidentClassifierQueryService_ListRootCategories_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *incidentClassifierQueryServiceClient) ListActiveRootCategories(ctx context.Context, in *ListActiveRootCategoriesRequest, opts ...grpc.CallOption) (*ListActiveRootCategoriesResponse, error) {
+func (c *incidentClassifierQueryServiceClient) ListCategoriesByOrganization(ctx context.Context, in *ListCategoriesByOrganizationRequest, opts ...grpc.CallOption) (*ListCategoriesByOrganizationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListActiveRootCategoriesResponse)
-	err := c.cc.Invoke(ctx, IncidentClassifierQueryService_ListActiveRootCategories_FullMethodName, in, out, cOpts...)
+	out := new(ListCategoriesByOrganizationResponse)
+	err := c.cc.Invoke(ctx, IncidentClassifierQueryService_ListCategoriesByOrganization_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -114,10 +114,10 @@ func (c *incidentClassifierQueryServiceClient) ListTypesByCategory(ctx context.C
 	return out, nil
 }
 
-func (c *incidentClassifierQueryServiceClient) ListActiveTypesByOrganization(ctx context.Context, in *ListActiveTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListActiveTypesByOrganizationResponse, error) {
+func (c *incidentClassifierQueryServiceClient) ListTypesByOrganization(ctx context.Context, in *ListTypesByOrganizationRequest, opts ...grpc.CallOption) (*ListTypesByOrganizationResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListActiveTypesByOrganizationResponse)
-	err := c.cc.Invoke(ctx, IncidentClassifierQueryService_ListActiveTypesByOrganization_FullMethodName, in, out, cOpts...)
+	out := new(ListTypesByOrganizationResponse)
+	err := c.cc.Invoke(ctx, IncidentClassifierQueryService_ListTypesByOrganization_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -134,12 +134,12 @@ func (c *incidentClassifierQueryServiceClient) ListActiveTypesByOrganization(ctx
 // CTEs in the reader; the RPC surface stays flat.
 type IncidentClassifierQueryServiceServer interface {
 	GetCategory(context.Context, *GetCategoryRequest) (*GetCategoryResponse, error)
+	ListRootCategories(context.Context, *ListRootCategoriesRequest) (*ListRootCategoriesResponse, error)
 	ListCategoriesByOrganization(context.Context, *ListCategoriesByOrganizationRequest) (*ListCategoriesByOrganizationResponse, error)
-	ListActiveRootCategories(context.Context, *ListActiveRootCategoriesRequest) (*ListActiveRootCategoriesResponse, error)
 	ListCategorySubtree(context.Context, *ListCategorySubtreeRequest) (*ListCategorySubtreeResponse, error)
 	GetType(context.Context, *GetTypeRequest) (*GetTypeResponse, error)
 	ListTypesByCategory(context.Context, *ListTypesByCategoryRequest) (*ListTypesByCategoryResponse, error)
-	ListActiveTypesByOrganization(context.Context, *ListActiveTypesByOrganizationRequest) (*ListActiveTypesByOrganizationResponse, error)
+	ListTypesByOrganization(context.Context, *ListTypesByOrganizationRequest) (*ListTypesByOrganizationResponse, error)
 	mustEmbedUnimplementedIncidentClassifierQueryServiceServer()
 }
 
@@ -153,11 +153,11 @@ type UnimplementedIncidentClassifierQueryServiceServer struct{}
 func (UnimplementedIncidentClassifierQueryServiceServer) GetCategory(context.Context, *GetCategoryRequest) (*GetCategoryResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetCategory not implemented")
 }
+func (UnimplementedIncidentClassifierQueryServiceServer) ListRootCategories(context.Context, *ListRootCategoriesRequest) (*ListRootCategoriesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListRootCategories not implemented")
+}
 func (UnimplementedIncidentClassifierQueryServiceServer) ListCategoriesByOrganization(context.Context, *ListCategoriesByOrganizationRequest) (*ListCategoriesByOrganizationResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListCategoriesByOrganization not implemented")
-}
-func (UnimplementedIncidentClassifierQueryServiceServer) ListActiveRootCategories(context.Context, *ListActiveRootCategoriesRequest) (*ListActiveRootCategoriesResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListActiveRootCategories not implemented")
 }
 func (UnimplementedIncidentClassifierQueryServiceServer) ListCategorySubtree(context.Context, *ListCategorySubtreeRequest) (*ListCategorySubtreeResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListCategorySubtree not implemented")
@@ -168,8 +168,8 @@ func (UnimplementedIncidentClassifierQueryServiceServer) GetType(context.Context
 func (UnimplementedIncidentClassifierQueryServiceServer) ListTypesByCategory(context.Context, *ListTypesByCategoryRequest) (*ListTypesByCategoryResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListTypesByCategory not implemented")
 }
-func (UnimplementedIncidentClassifierQueryServiceServer) ListActiveTypesByOrganization(context.Context, *ListActiveTypesByOrganizationRequest) (*ListActiveTypesByOrganizationResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListActiveTypesByOrganization not implemented")
+func (UnimplementedIncidentClassifierQueryServiceServer) ListTypesByOrganization(context.Context, *ListTypesByOrganizationRequest) (*ListTypesByOrganizationResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListTypesByOrganization not implemented")
 }
 func (UnimplementedIncidentClassifierQueryServiceServer) mustEmbedUnimplementedIncidentClassifierQueryServiceServer() {
 }
@@ -211,6 +211,24 @@ func _IncidentClassifierQueryService_GetCategory_Handler(srv interface{}, ctx co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _IncidentClassifierQueryService_ListRootCategories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRootCategoriesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(IncidentClassifierQueryServiceServer).ListRootCategories(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: IncidentClassifierQueryService_ListRootCategories_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(IncidentClassifierQueryServiceServer).ListRootCategories(ctx, req.(*ListRootCategoriesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _IncidentClassifierQueryService_ListCategoriesByOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListCategoriesByOrganizationRequest)
 	if err := dec(in); err != nil {
@@ -225,24 +243,6 @@ func _IncidentClassifierQueryService_ListCategoriesByOrganization_Handler(srv in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(IncidentClassifierQueryServiceServer).ListCategoriesByOrganization(ctx, req.(*ListCategoriesByOrganizationRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _IncidentClassifierQueryService_ListActiveRootCategories_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListActiveRootCategoriesRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(IncidentClassifierQueryServiceServer).ListActiveRootCategories(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: IncidentClassifierQueryService_ListActiveRootCategories_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncidentClassifierQueryServiceServer).ListActiveRootCategories(ctx, req.(*ListActiveRootCategoriesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -301,20 +301,20 @@ func _IncidentClassifierQueryService_ListTypesByCategory_Handler(srv interface{}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _IncidentClassifierQueryService_ListActiveTypesByOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListActiveTypesByOrganizationRequest)
+func _IncidentClassifierQueryService_ListTypesByOrganization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTypesByOrganizationRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(IncidentClassifierQueryServiceServer).ListActiveTypesByOrganization(ctx, in)
+		return srv.(IncidentClassifierQueryServiceServer).ListTypesByOrganization(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: IncidentClassifierQueryService_ListActiveTypesByOrganization_FullMethodName,
+		FullMethod: IncidentClassifierQueryService_ListTypesByOrganization_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(IncidentClassifierQueryServiceServer).ListActiveTypesByOrganization(ctx, req.(*ListActiveTypesByOrganizationRequest))
+		return srv.(IncidentClassifierQueryServiceServer).ListTypesByOrganization(ctx, req.(*ListTypesByOrganizationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -331,12 +331,12 @@ var IncidentClassifierQueryService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _IncidentClassifierQueryService_GetCategory_Handler,
 		},
 		{
-			MethodName: "ListCategoriesByOrganization",
-			Handler:    _IncidentClassifierQueryService_ListCategoriesByOrganization_Handler,
+			MethodName: "ListRootCategories",
+			Handler:    _IncidentClassifierQueryService_ListRootCategories_Handler,
 		},
 		{
-			MethodName: "ListActiveRootCategories",
-			Handler:    _IncidentClassifierQueryService_ListActiveRootCategories_Handler,
+			MethodName: "ListCategoriesByOrganization",
+			Handler:    _IncidentClassifierQueryService_ListCategoriesByOrganization_Handler,
 		},
 		{
 			MethodName: "ListCategorySubtree",
@@ -351,8 +351,8 @@ var IncidentClassifierQueryService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _IncidentClassifierQueryService_ListTypesByCategory_Handler,
 		},
 		{
-			MethodName: "ListActiveTypesByOrganization",
-			Handler:    _IncidentClassifierQueryService_ListActiveTypesByOrganization_Handler,
+			MethodName: "ListTypesByOrganization",
+			Handler:    _IncidentClassifierQueryService_ListTypesByOrganization_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -937,10 +937,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -974,6 +972,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -1184,10 +1188,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -1242,6 +1244,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "description": "When false (default), only active employees are returned. Set true\nto include deactivated employees. Requires org-admin or system-admin.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -2178,10 +2187,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -2236,6 +2243,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "description": "When false (default), only active employees are returned. Set true\nto include deactivated employees. Requires org-admin or system-admin.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -3789,10 +3803,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -3826,6 +3838,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -5394,10 +5412,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -5426,6 +5442,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -6310,10 +6332,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -6347,6 +6367,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -6959,10 +6985,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -7017,6 +7041,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "description": "When false (default), only active employees are returned. Set true\nto include deactivated employees. Requires org-admin or system-admin.",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -7528,12 +7559,12 @@
     },
     "/v1/organizations/{organizationId}/incident-categories": {
       "get": {
-        "operationId": "IncidentClassifierQueryService_ListCategoriesByOrganization",
+        "operationId": "IncidentClassifierQueryService_ListRootCategories",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1ListCategoriesByOrganizationResponse"
+              "$ref": "#/definitions/v1ListRootCategoriesResponse"
             }
           },
           "400": {
@@ -7547,10 +7578,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -7584,6 +7613,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -7664,14 +7699,14 @@
         ]
       }
     },
-    "/v1/organizations/{organizationId}/incident-categories:roots": {
+    "/v1/organizations/{organizationId}/incident-categories:all": {
       "get": {
-        "operationId": "IncidentClassifierQueryService_ListActiveRootCategories",
+        "operationId": "IncidentClassifierQueryService_ListCategoriesByOrganization",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1ListActiveRootCategoriesResponse"
+              "$ref": "#/definitions/v1ListCategoriesByOrganizationResponse"
             }
           },
           "400": {
@@ -7685,10 +7720,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -7722,6 +7755,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -7729,14 +7768,14 @@
         ]
       }
     },
-    "/v1/organizations/{organizationId}/incident-types:active": {
+    "/v1/organizations/{organizationId}/incident-types": {
       "get": {
-        "operationId": "IncidentClassifierQueryService_ListActiveTypesByOrganization",
+        "operationId": "IncidentClassifierQueryService_ListTypesByOrganization",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1ListActiveTypesByOrganizationResponse"
+              "$ref": "#/definitions/v1ListTypesByOrganizationResponse"
             }
           },
           "400": {
@@ -7750,10 +7789,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -7787,6 +7824,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -7881,10 +7924,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -7918,6 +7959,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -7986,71 +8033,6 @@
         ],
         "tags": [
           "RequestClassifierCommandService"
-        ]
-      }
-    },
-    "/v1/organizations/{organizationId}/request-types:active": {
-      "get": {
-        "operationId": "RequestClassifierQueryService_ListActiveRequestTypesByOrganization",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListActiveRequestTypesByOrganizationResponse"
-            }
-          },
-          "400": {
-            "description": "Validation failed. Error codes:\n- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed.",
-            "schema": {}
-          },
-          "401": {
-            "description": "Unauthenticated — missing or invalid token.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
-          },
-          "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Unexpected server error.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "organizationId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "after",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "RequestClassifierQueryService"
         ]
       }
     },
@@ -8236,10 +8218,8 @@
             }
           },
           "403": {
-            "description": "Permission denied.",
-            "schema": {
-              "$ref": "#/definitions/v1ErrorResponse"
-            }
+            "description": "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.",
+            "schema": {}
           },
           "500": {
             "description": "Unexpected server error.",
@@ -8273,6 +8253,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "includeDeactivated",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -12539,51 +12525,6 @@
       },
       "description": "IncidentView is the unified payload. For patients only id, status,\npatient_status, description and timestamps are populated."
     },
-    "v1ListActiveRequestTypesByOrganizationResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1RequestType"
-          }
-        },
-        "nextCursor": {
-          "type": "string"
-        }
-      }
-    },
-    "v1ListActiveRootCategoriesResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/v1Category"
-          }
-        },
-        "nextCursor": {
-          "type": "string"
-        }
-      }
-    },
-    "v1ListActiveTypesByOrganizationResponse": {
-      "type": "object",
-      "properties": {
-        "items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/classifierV1Type"
-          }
-        },
-        "nextCursor": {
-          "type": "string"
-        }
-      }
-    },
     "v1ListAnnouncementsForClinicResponse": {
       "type": "object",
       "properties": {
@@ -12985,6 +12926,21 @@
         }
       }
     },
+    "v1ListRootCategoriesResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Category"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
     "v1ListServiceRequestsByIncidentResponse": {
       "type": "object",
       "properties": {
@@ -13031,6 +12987,21 @@
       }
     },
     "v1ListTypesByCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/classifierV1Type"
+          }
+        },
+        "nextCursor": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListTypesByOrganizationResponse": {
       "type": "object",
       "properties": {
         "items": {

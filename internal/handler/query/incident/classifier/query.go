@@ -102,33 +102,6 @@ func (h *IncidentClassifierQueryHandler) ListCategoriesByOrganization(
 	}, nil
 }
 
-// ListActiveRootCategories returns active roots.
-func (h *IncidentClassifierQueryHandler) ListActiveRootCategories(
-	ctx context.Context,
-	req *classifierqueryv1.ListActiveRootCategoriesRequest,
-) (*classifierqueryv1.ListActiveRootCategoriesResponse, error) {
-	callerID, err := grpcmw.CallerID(ctx)
-	if err != nil {
-		return nil, err
-	}
-	caller := authz.Caller{ZitadelUserID: callerID}
-	id, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
-	result, err := h.reader.ListActiveRootCategories(ctx, caller, id, classifierread.ListQuery{
-		Limit: int(req.GetLimit()),
-		After: afterPtr(req.GetAfter()),
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &classifierqueryv1.ListActiveRootCategoriesResponse{
-		Items:      categoriesToProto(result.Items),
-		NextCursor: result.NextCursor,
-	}, nil
-}
-
 // ListCategorySubtree returns a flattened subtree.
 func (h *IncidentClassifierQueryHandler) ListCategorySubtree(
 	ctx context.Context,
@@ -193,33 +166,6 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 		return nil, err
 	}
 	return &classifierqueryv1.ListTypesByCategoryResponse{
-		Items:      typesToProto(result.Items),
-		NextCursor: result.NextCursor,
-	}, nil
-}
-
-// ListActiveTypesByOrganization returns active types for an org.
-func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
-	ctx context.Context,
-	req *classifierqueryv1.ListActiveTypesByOrganizationRequest,
-) (*classifierqueryv1.ListActiveTypesByOrganizationResponse, error) {
-	callerID, err := grpcmw.CallerID(ctx)
-	if err != nil {
-		return nil, err
-	}
-	caller := authz.Caller{ZitadelUserID: callerID}
-	id, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
-	result, err := h.reader.ListActiveTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit: int(req.GetLimit()),
-		After: afterPtr(req.GetAfter()),
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &classifierqueryv1.ListActiveTypesByOrganizationResponse{
 		Items:      typesToProto(result.Items),
 		NextCursor: result.NextCursor,
 	}, nil

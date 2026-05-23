@@ -714,9 +714,10 @@ type ListOrganizationsRequest struct {
 	// Opaque pagination cursor returned as next_cursor from a previous
 	// response. Omit or leave empty to start from the first page. An
 	// invalid cursor is rejected with a domain error.
-	After         string `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	After              string `protobuf:"bytes,2,opt,name=after,proto3" json:"after,omitempty"`
+	IncludeDeactivated bool   `protobuf:"varint,3,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListOrganizationsRequest) Reset() {
@@ -761,6 +762,13 @@ func (x *ListOrganizationsRequest) GetAfter() string {
 		return x.After
 	}
 	return ""
+}
+
+func (x *ListOrganizationsRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
 }
 
 type ListOrganizationsResponse struct {
@@ -896,12 +904,13 @@ func (x *CountOrganizationsResponse) GetTotal() int64 {
 }
 
 type SearchOrganizationsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Query              string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	Limit              int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	After              string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	IncludeDeactivated bool                   `protobuf:"varint,4,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *SearchOrganizationsRequest) Reset() {
@@ -953,6 +962,13 @@ func (x *SearchOrganizationsRequest) GetAfter() string {
 		return x.After
 	}
 	return ""
+}
+
+func (x *SearchOrganizationsRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
 }
 
 type SearchOrganizationsResponse struct {
@@ -1096,12 +1112,13 @@ func (x *GetClinicResponse) GetClinic() *Clinic {
 }
 
 type ListClinicsByOrganizationRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId     string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit              int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	After              string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	IncludeDeactivated bool                   `protobuf:"varint,4,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListClinicsByOrganizationRequest) Reset() {
@@ -1153,6 +1170,13 @@ func (x *ListClinicsByOrganizationRequest) GetAfter() string {
 		return x.After
 	}
 	return ""
+}
+
+func (x *ListClinicsByOrganizationRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
 }
 
 type ListClinicsByOrganizationResponse struct {
@@ -1384,12 +1408,13 @@ func (x *GetDepartmentResponse) GetDepartment() *Department {
 }
 
 type ListDepartmentsByClinicRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ClinicId      string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	ClinicId           string                 `protobuf:"bytes,1,opt,name=clinic_id,json=clinicId,proto3" json:"clinic_id,omitempty"`
+	Limit              int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	After              string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	IncludeDeactivated bool                   `protobuf:"varint,4,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListDepartmentsByClinicRequest) Reset() {
@@ -1441,6 +1466,13 @@ func (x *ListDepartmentsByClinicRequest) GetAfter() string {
 		return x.After
 	}
 	return ""
+}
+
+func (x *ListDepartmentsByClinicRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
 }
 
 type ListDepartmentsByClinicResponse struct {
@@ -1647,10 +1679,11 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x16GetOrganizationRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"b\n" +
 	"\x17GetOrganizationResponse\x12G\n" +
-	"\forganization\x18\x01 \x01(\v2#.query.orgstructure.v1.OrganizationR\forganization\"F\n" +
+	"\forganization\x18\x01 \x01(\v2#.query.orgstructure.v1.OrganizationR\forganization\"w\n" +
 	"\x18ListOrganizationsRequest\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x02 \x01(\tR\x05after\"\x94\x01\n" +
+	"\x05after\x18\x02 \x01(\tR\x05after\x12/\n" +
+	"\x13include_deactivated\x18\x03 \x01(\bR\x12includeDeactivated\"\x94\x01\n" +
 	"\x19ListOrganizationsResponse\x12A\n" +
 	"\x05items\x18\x01 \x03(\v2+.query.orgstructure.v1.OrganizationListItemR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
@@ -1658,11 +1691,12 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\f_next_cursor\"\x1b\n" +
 	"\x19CountOrganizationsRequest\"2\n" +
 	"\x1aCountOrganizationsResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total\"^\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\"\x8f\x01\n" +
 	"\x1aSearchOrganizationsRequest\x12\x14\n" +
 	"\x05query\x18\x01 \x01(\tR\x05query\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\x96\x01\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12/\n" +
+	"\x13include_deactivated\x18\x04 \x01(\bR\x12includeDeactivated\"\x96\x01\n" +
 	"\x1bSearchOrganizationsResponse\x12A\n" +
 	"\x05items\x18\x01 \x03(\v2+.query.orgstructure.v1.OrganizationListItemR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
@@ -1671,11 +1705,12 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x10GetClinicRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"J\n" +
 	"\x11GetClinicResponse\x125\n" +
-	"\x06clinic\x18\x01 \x01(\v2\x1d.query.orgstructure.v1.ClinicR\x06clinic\"w\n" +
+	"\x06clinic\x18\x01 \x01(\v2\x1d.query.orgstructure.v1.ClinicR\x06clinic\"\xa8\x01\n" +
 	" ListClinicsByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\x96\x01\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12/\n" +
+	"\x13include_deactivated\x18\x04 \x01(\bR\x12includeDeactivated\"\x96\x01\n" +
 	"!ListClinicsByOrganizationResponse\x12;\n" +
 	"\x05items\x18\x01 \x03(\v2%.query.orgstructure.v1.ClinicListItemR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
@@ -1690,11 +1725,12 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x15GetDepartmentResponse\x12A\n" +
 	"\n" +
 	"department\x18\x01 \x01(\v2!.query.orgstructure.v1.DepartmentR\n" +
-	"department\"i\n" +
+	"department\"\x9a\x01\n" +
 	"\x1eListDepartmentsByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\x98\x01\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12/\n" +
+	"\x13include_deactivated\x18\x04 \x01(\bR\x12includeDeactivated\"\x98\x01\n" +
 	"\x1fListDepartmentsByClinicResponse\x12?\n" +
 	"\x05items\x18\x01 \x03(\v2).query.orgstructure.v1.DepartmentListItemR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
@@ -1703,32 +1739,41 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\x1fCountDepartmentsByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\"8\n" +
 	" CountDepartmentsByClinicResponse\x12\x14\n" +
-	"\x05total\x18\x01 \x01(\x03R\x05total2\xfb\x15\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total2\xbb\x1a\n" +
 	"\x18OrgStructureQueryService\x12\x84\x02\n" +
 	"\x0fGetOrganization\x12-.query.orgstructure.v1.GetOrganizationRequest\x1a..query.orgstructure.v1.GetOrganizationResponse\"\x91\x01\x92ApJn\n" +
 	"\x03404\x12g\n" +
 	"eNot found. Error codes:\n" +
-	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/organizations/{id}\x12\x8a\x02\n" +
-	"\x11ListOrganizations\x12/.query.orgstructure.v1.ListOrganizationsRequest\x1a0.query.orgstructure.v1.ListOrganizationsResponse\"\x91\x01\x92AuJs\n" +
+	"- `organization_not_found` — organization with the given ID does not exist.\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/organizations/{id}\x12\x9a\x03\n" +
+	"\x11ListOrganizations\x12/.query.orgstructure.v1.ListOrganizationsRequest\x1a0.query.orgstructure.v1.ListOrganizationsResponse\"\xa1\x02\x92A\x84\x02Js\n" +
 	"\x03400\x12l\n" +
 	"jValidation failed. Error codes:\n" +
-	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/organizations\x12\x85\x02\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02\x13\x12\x11/v1/organizations\x12\x85\x02\n" +
 	"\x12CountOrganizations\x120.query.orgstructure.v1.CountOrganizationsRequest\x1a1.query.orgstructure.v1.CountOrganizationsResponse\"\x89\x01\x92AgJe\n" +
 	"\x03500\x12^\n" +
 	"\\Internal server error. Error codes:\n" +
-	"- `organization_count_failed` — database query failed.\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/organizations:count\x12\x97\x02\n" +
-	"\x13SearchOrganizations\x121.query.orgstructure.v1.SearchOrganizationsRequest\x1a2.query.orgstructure.v1.SearchOrganizationsResponse\"\x98\x01\x92AuJs\n" +
+	"- `organization_count_failed` — database query failed.\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/organizations:count\x12\xa7\x03\n" +
+	"\x13SearchOrganizations\x121.query.orgstructure.v1.SearchOrganizationsRequest\x1a2.query.orgstructure.v1.SearchOrganizationsResponse\"\xa8\x02\x92A\x84\x02Js\n" +
 	"\x03400\x12l\n" +
 	"jValidation failed. Error codes:\n" +
-	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/organizations:search\x12\xdf\x01\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02\x1a\x12\x18/v1/organizations:search\x12\xdf\x01\n" +
 	"\tGetClinic\x12'.query.orgstructure.v1.GetClinicRequest\x1a(.query.orgstructure.v1.GetClinicResponse\"\x7f\x92AdJb\n" +
 	"\x03404\x12[\n" +
 	"YNot found. Error codes:\n" +
-	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/clinics/{id}\x12\xbc\x02\n" +
-	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"\xab\x01\x92AuJs\n" +
+	"- `clinic_not_found` — clinic with the given ID does not exist.\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/clinics/{id}\x12\xcc\x03\n" +
+	"\x19ListClinicsByOrganization\x127.query.orgstructure.v1.ListClinicsByOrganizationRequest\x1a8.query.orgstructure.v1.ListClinicsByOrganizationResponse\"\xbb\x02\x92A\x84\x02Js\n" +
 	"\x03400\x12l\n" +
 	"jValidation failed. Error codes:\n" +
-	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02-\x12+/v1/organizations/{organization_id}/clinics\x12\xb1\x02\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02-\x12+/v1/organizations/{organization_id}/clinics\x12\xb1\x02\n" +
 	"\x1aCountClinicsByOrganization\x128.query.orgstructure.v1.CountClinicsByOrganizationRequest\x1a9.query.orgstructure.v1.CountClinicsByOrganizationResponse\"\x9d\x01\x92AaJ_\n" +
 	"\x03500\x12X\n" +
 	"VInternal server error. Error codes:\n" +
@@ -1736,11 +1781,14 @@ const file_query_orgstructure_v1_orgstructure_proto_rawDesc = "" +
 	"\rGetDepartment\x12+.query.orgstructure.v1.GetDepartmentRequest\x1a,.query.orgstructure.v1.GetDepartmentResponse\"\x8b\x01\x92AlJj\n" +
 	"\x03404\x12c\n" +
 	"aNot found. Error codes:\n" +
-	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/departments/{id}\x12\xae\x02\n" +
-	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"\xa3\x01\x92AuJs\n" +
+	"- `department_not_found` — department with the given ID does not exist.\x82\xd3\xe4\x93\x02\x16\x12\x14/v1/departments/{id}\x12\xbe\x03\n" +
+	"\x17ListDepartmentsByClinic\x125.query.orgstructure.v1.ListDepartmentsByClinicRequest\x1a6.query.orgstructure.v1.ListDepartmentsByClinicResponse\"\xb3\x02\x92A\x84\x02Js\n" +
 	"\x03400\x12l\n" +
 	"jValidation failed. Error codes:\n" +
-	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02%\x12#/v1/clinics/{clinic_id}/departments\x12\xa7\x02\n" +
+	"- `orgstructure_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02%\x12#/v1/clinics/{clinic_id}/departments\x12\xa7\x02\n" +
 	"\x18CountDepartmentsByClinic\x126.query.orgstructure.v1.CountDepartmentsByClinicRequest\x1a7.query.orgstructure.v1.CountDepartmentsByClinicResponse\"\x99\x01\x92AeJc\n" +
 	"\x03500\x12\\\n" +
 	"ZInternal server error. Error codes:\n" +

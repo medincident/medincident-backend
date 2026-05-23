@@ -74,6 +74,59 @@ func local_request_IncidentClassifierQueryService_GetCategory_0(ctx context.Cont
 	return msg, metadata, err
 }
 
+var filter_IncidentClassifierQueryService_ListRootCategories_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
+func request_IncidentClassifierQueryService_ListRootCategories_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListRootCategoriesRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListRootCategories_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.ListRootCategories(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_IncidentClassifierQueryService_ListRootCategories_0(ctx context.Context, marshaler runtime.Marshaler, server IncidentClassifierQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq ListRootCategoriesRequest
+		metadata runtime.ServerMetadata
+		err      error
+	)
+	val, ok := pathParams["organization_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
+	}
+	protoReq.OrganizationId, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListRootCategories_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.ListRootCategories(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 var filter_IncidentClassifierQueryService_ListCategoriesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
 func request_IncidentClassifierQueryService_ListCategoriesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
@@ -124,59 +177,6 @@ func local_request_IncidentClassifierQueryService_ListCategoriesByOrganization_0
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.ListCategoriesByOrganization(ctx, &protoReq)
-	return msg, metadata, err
-}
-
-var filter_IncidentClassifierQueryService_ListActiveRootCategories_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
-
-func request_IncidentClassifierQueryService_ListActiveRootCategories_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq ListActiveRootCategoriesRequest
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
-	val, ok := pathParams["organization_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
-	}
-	protoReq.OrganizationId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
-	}
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListActiveRootCategories_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	msg, err := client.ListActiveRootCategories(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
-	return msg, metadata, err
-}
-
-func local_request_IncidentClassifierQueryService_ListActiveRootCategories_0(ctx context.Context, marshaler runtime.Marshaler, server IncidentClassifierQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var (
-		protoReq ListActiveRootCategoriesRequest
-		metadata runtime.ServerMetadata
-		err      error
-	)
-	val, ok := pathParams["organization_id"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "organization_id")
-	}
-	protoReq.OrganizationId, err = runtime.String(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "organization_id", err)
-	}
-	if err := req.ParseForm(); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListActiveRootCategories_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	msg, err := server.ListActiveRootCategories(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -311,11 +311,11 @@ func local_request_IncidentClassifierQueryService_ListTypesByCategory_0(ctx cont
 	return msg, metadata, err
 }
 
-var filter_IncidentClassifierQueryService_ListActiveTypesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+var filter_IncidentClassifierQueryService_ListTypesByOrganization_0 = &utilities.DoubleArray{Encoding: map[string]int{"organization_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
 
-func request_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_IncidentClassifierQueryService_ListTypesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, client IncidentClassifierQueryServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListActiveTypesByOrganizationRequest
+		protoReq ListTypesByOrganizationRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -333,16 +333,16 @@ func request_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(ctx 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListActiveTypesByOrganization_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListTypesByOrganization_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := client.ListActiveTypesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListTypesByOrganization(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, server IncidentClassifierQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_IncidentClassifierQueryService_ListTypesByOrganization_0(ctx context.Context, marshaler runtime.Marshaler, server IncidentClassifierQueryServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListActiveTypesByOrganizationRequest
+		protoReq ListTypesByOrganizationRequest
 		metadata runtime.ServerMetadata
 		err      error
 	)
@@ -357,10 +357,10 @@ func local_request_IncidentClassifierQueryService_ListActiveTypesByOrganization_
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListActiveTypesByOrganization_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_IncidentClassifierQueryService_ListTypesByOrganization_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := server.ListActiveTypesByOrganization(ctx, &protoReq)
+	msg, err := server.ListTypesByOrganization(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -390,13 +390,33 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		}
 		forward_IncidentClassifierQueryService_GetCategory_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListRootCategories_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListRootCategories", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_IncidentClassifierQueryService_ListRootCategories_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_IncidentClassifierQueryService_ListRootCategories_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListCategoriesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:all"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -409,26 +429,6 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 			return
 		}
 		forward_IncidentClassifierQueryService_ListCategoriesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListActiveRootCategories_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		var stream runtime.ServerTransportStream
-		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:roots"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := local_request_IncidentClassifierQueryService_ListActiveRootCategories_0(annotatedContext, inboundMarshaler, server, req, pathParams)
-		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_IncidentClassifierQueryService_ListActiveRootCategories_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListCategorySubtree_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -490,25 +490,25 @@ func RegisterIncidentClassifierQueryServiceHandlerServer(ctx context.Context, mu
 		}
 		forward_IncidentClassifierQueryService_ListTypesByCategory_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListActiveTypesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListTypesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types:active"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_IncidentClassifierQueryService_ListTypesByOrganization_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_IncidentClassifierQueryService_ListTypesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -567,11 +567,28 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		}
 		forward_IncidentClassifierQueryService_GetCategory_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
+	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListRootCategories_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListRootCategories", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_IncidentClassifierQueryService_ListRootCategories_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_IncidentClassifierQueryService_ListRootCategories_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
 	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListCategoriesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListCategoriesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:all"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -583,23 +600,6 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 			return
 		}
 		forward_IncidentClassifierQueryService_ListCategoriesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
-	})
-	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListActiveRootCategories_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
-		ctx, cancel := context.WithCancel(req.Context())
-		defer cancel()
-		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveRootCategories", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-categories:roots"))
-		if err != nil {
-			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		resp, md, err := request_IncidentClassifierQueryService_ListActiveRootCategories_0(annotatedContext, inboundMarshaler, client, req, pathParams)
-		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
-		if err != nil {
-			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
-			return
-		}
-		forward_IncidentClassifierQueryService_ListActiveRootCategories_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListCategorySubtree_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -652,42 +652,42 @@ func RegisterIncidentClassifierQueryServiceHandlerClient(ctx context.Context, mu
 		}
 		forward_IncidentClassifierQueryService_ListTypesByCategory_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListActiveTypesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_IncidentClassifierQueryService_ListTypesByOrganization_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListActiveTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types:active"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/query.incident.classifier.v1.IncidentClassifierQueryService/ListTypesByOrganization", runtime.WithHTTPPathPattern("/v1/organizations/{organization_id}/incident-types"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_IncidentClassifierQueryService_ListTypesByOrganization_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_IncidentClassifierQueryService_ListActiveTypesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_IncidentClassifierQueryService_ListTypesByOrganization_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
 }
 
 var (
-	pattern_IncidentClassifierQueryService_GetCategory_0                   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "id"}, ""))
-	pattern_IncidentClassifierQueryService_ListCategoriesByOrganization_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, ""))
-	pattern_IncidentClassifierQueryService_ListActiveRootCategories_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, "roots"))
-	pattern_IncidentClassifierQueryService_ListCategorySubtree_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "root_category_id"}, "subtree"))
-	pattern_IncidentClassifierQueryService_GetType_0                       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-types", "id"}, ""))
-	pattern_IncidentClassifierQueryService_ListTypesByCategory_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "types"}, ""))
-	pattern_IncidentClassifierQueryService_ListActiveTypesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-types"}, "active"))
+	pattern_IncidentClassifierQueryService_GetCategory_0                  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "id"}, ""))
+	pattern_IncidentClassifierQueryService_ListRootCategories_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, ""))
+	pattern_IncidentClassifierQueryService_ListCategoriesByOrganization_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-categories"}, "all"))
+	pattern_IncidentClassifierQueryService_ListCategorySubtree_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-categories", "root_category_id"}, "subtree"))
+	pattern_IncidentClassifierQueryService_GetType_0                      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "incident-types", "id"}, ""))
+	pattern_IncidentClassifierQueryService_ListTypesByCategory_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "incident-categories", "category_id", "types"}, ""))
+	pattern_IncidentClassifierQueryService_ListTypesByOrganization_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "organizations", "organization_id", "incident-types"}, ""))
 )
 
 var (
-	forward_IncidentClassifierQueryService_GetCategory_0                   = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListCategoriesByOrganization_0  = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListActiveRootCategories_0      = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListCategorySubtree_0           = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_GetType_0                       = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListTypesByCategory_0           = runtime.ForwardResponseMessage
-	forward_IncidentClassifierQueryService_ListActiveTypesByOrganization_0 = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_GetCategory_0                  = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListRootCategories_0           = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListCategoriesByOrganization_0 = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListCategorySubtree_0          = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_GetType_0                      = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListTypesByCategory_0          = runtime.ForwardResponseMessage
+	forward_IncidentClassifierQueryService_ListTypesByOrganization_0      = runtime.ForwardResponseMessage
 )
