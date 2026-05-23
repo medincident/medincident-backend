@@ -100,7 +100,7 @@ func (h *RequestClassifierQueryHandler) ListRequestTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.reader.ListRequestTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+	result, err := h.reader.ListRequestTypesByOrganization(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})

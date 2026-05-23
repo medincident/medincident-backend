@@ -47,7 +47,9 @@ func scanRequestType(scanner interface {
 }
 
 // GetRequestType returns one request type by id. Authorization:
-// authz.ReaderOf.RequestType(id).
+// authz.ReaderOf.RequestType(id). Deactivated request types are
+// returned only to org-admins and system admins; non-admins receive
+// request_type_not_found.
 //
 // See: docs/services/request/Classifier.md
 func (r *Reader) GetRequestType(
@@ -73,17 +75,31 @@ func (r *Reader) GetRequestType(
 			With("request_type_id", id).
 			Wrap(err)
 	}
+	if !out.IsActive {
+		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.RequestType(id)))
+		if err != nil || !ok {
+			return nil, oops.In("reader.request.classifier").
+				Code(ErrCodeRequestTypeNotFound).
+				Public("Request type not found.").
+				With("request_type_id", id).
+				Errorf("not found")
+		}
+	}
 	return &out, nil
 }
 
 // ListRequestTypesByOrganization paginates request types for one org.
-// Authorization: authz.ReaderOf.Organization(orgID).
+// Authorization: authz.ReaderOf.Organization(orgID). When
+// includeDeactivated is true an additional admin check is performed;
+// inactive types are excluded by default.
 //
 // See: docs/services/request/Classifier.md
 func (r *Reader) ListRequestTypesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (RequestTypeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
@@ -91,75 +107,19 @@ func (r *Reader) ListRequestTypesByOrganization(
 	}
 	if err := q.normalize(); err != nil {
 		return RequestTypeListResult{}, err
+	}
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Organization(orgID))); err != nil {
+			return RequestTypeListResult{}, err
+		}
 	}
 	sqlBuf := selectRequestType + ` WHERE organization_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
-	if q.After != nil {
-		c, err := cursor.Decode(*q.After)
-		if err != nil {
-			return RequestTypeListResult{}, oops.In("reader.request.classifier").
-				Code(ErrCodeListBadCursor).
-				Public("Invalid pagination cursor.").
-				Wrap(err)
-		}
-		sqlBuf += ` AND (updated_at, id) < (?, ?)`
-		args = append(args, c.Time(), c.I)
+	if !includeDeactivated {
+		sqlBuf += ` AND is_active = TRUE`
 	}
-	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
-	args = append(args, q.Limit+1)
-	rows, err := r.db.WithContext(ctx).Raw(sqlBuf, args...).Rows()
-	if err != nil {
-		return RequestTypeListResult{}, oops.In("reader.request.classifier").
-			Code(ErrCodeRequestTypeLoadFailed).
-			With("organization_id", orgID).
-			Wrap(err)
-	}
-	defer func() { _ = rows.Close() }()
-	out := make([]RequestTypeView, 0, q.Limit+1)
-	for rows.Next() {
-		var v RequestTypeView
-		if err := scanRequestType(rows, &v); err != nil {
-			return RequestTypeListResult{}, oops.In("reader.request.classifier").
-				Code(ErrCodeRequestTypeLoadFailed).
-				Wrap(err)
-		}
-		out = append(out, v)
-	}
-	if err := rows.Err(); err != nil {
-		return RequestTypeListResult{}, oops.In("reader.request.classifier").
-			Code(ErrCodeRequestTypeLoadFailed).
-			Wrap(err)
-	}
-	var nextCursor *string
-	if len(out) > q.Limit {
-		out = out[:q.Limit]
-		last := out[len(out)-1]
-		s := cursor.Encode(last.UpdatedAt, last.ID.String())
-		nextCursor = &s
-	}
-	return RequestTypeListResult{Items: out, NextCursor: nextCursor}, nil
-}
-
-// ListActiveRequestTypesByOrganization returns every active request
-// type for one org. Authorization: authz.ReaderOf.Organization(orgID).
-//
-// See: docs/services/request/Classifier.md
-func (r *Reader) ListActiveRequestTypesByOrganization(
-	ctx context.Context,
-	caller authz.Caller,
-	orgID uuid.UUID,
-	q ListQuery,
-) (RequestTypeListResult, error) {
-	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
-		return RequestTypeListResult{}, err
-	}
-	if err := q.normalize(); err != nil {
-		return RequestTypeListResult{}, err
-	}
-	sqlBuf := selectRequestType + ` WHERE organization_id = ? AND is_active = TRUE`
-	args := make([]any, 0, 4)
-	args = append(args, orgID)
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
 		if err != nil {
