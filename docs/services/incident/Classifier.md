@@ -342,11 +342,22 @@
 |---|---|---|
 | `GetCategory` | ReaderOf.Category | Только сотрудники |
 | `ListCategoriesByOrganization` | Authenticated | Пациенты видят только patient-visible категории |
-| `ListActiveRootCategories` | Authenticated | Пациенты видят только активные корни с patient-allowed типами в поддереве |
+| `ListRootCategories` | Authenticated | Пациенты видят только активные корни с patient-allowed типами в поддереве |
 | `ListCategorySubtree` | Authenticated | Пациенты видят только активные узлы поддерева с patient-allowed типами |
 | `GetType` | ReaderOf.IncidentType | Только сотрудники |
 | `ListTypesByCategory` | Authenticated | Пациенты видят только активные типы с `is_allowed_for_patients=true` |
-| `ListActiveTypesByOrganization` | Authenticated | Пациенты видят только типы с `is_allowed_for_patients=true` |
+| `ListTypesByOrganization` | Authenticated | Пациенты видят только типы с `is_allowed_for_patients=true` |
+
+### Параметр include_deactivated
+
+Методы `GetCategory`, `ListCategoriesByOrganization`, `ListRootCategories`, `GetType` и `ListTypesByOrganization` поддерживают параметр `include_deactivated bool` (по умолчанию `false`).
+
+- `include_deactivated=false` (по умолчанию): возвращаются только активные записи. Пациентам всегда возвращается только активное подмножество независимо от значения флага.
+- `include_deactivated=true`: возвращаются все записи, включая деактивированные. Требует `SystemAdmin` или `OrgAdminOf` соответствующей организации. Без нужных прав возвращается `permission_denied`.
+
+**Поведение Get-методов для деактивированных записей:**
+- Не-администратор: деактивированная запись возвращается как `*_not_found` (неотличимо от отсутствующей).
+- Администратор с `include_deactivated=true`: возвращается фактическая запись.
 
 ### GetCategory
 
@@ -357,8 +368,8 @@
 
 | Код | HTTP | Описание |
 |---|---|---|
-| `incident_category_not_found` | 404 | Категория не найдена |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
+| `incident_category_not_found` | 404 | Категория не найдена или деактивирована (для не-администратора) |
 
 ### ListCategoriesByOrganization
 
@@ -367,16 +378,18 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
 
-### ListActiveRootCategories
+### ListRootCategories
+
+Заменяет удалённый метод `ListActiveRootCategories`. Возвращает корневые категории (без родителя) организации. По умолчанию (`include_deactivated=false`) — только активные.
 
 #### Ошибки
 
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
 
 ### ListCategorySubtree
 
@@ -395,8 +408,8 @@
 
 | Код | HTTP | Описание |
 |---|---|---|
-| `incident_type_not_found` | 404 | Тип не найден |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
+| `incident_type_not_found` | 404 | Тип не найден или деактивирован (для не-администратора) |
 
 ### ListTypesByCategory
 
@@ -407,11 +420,13 @@
 | `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
 | `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |
 
-### ListActiveTypesByOrganization
+### ListTypesByOrganization
+
+Заменяет удалённый метод `ListActiveTypesByOrganization`. Возвращает все типы инцидентов организации. По умолчанию (`include_deactivated=false`) — только активные.
 
 #### Ошибки
 
 | Код | HTTP | Описание |
 |---|---|---|
 | `incident_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа (не аутентифицирован) |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |

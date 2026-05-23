@@ -148,7 +148,19 @@
 |---|---|---|
 | `GetRequestType` | `GET /v1/request-types/{id}` | ReaderOf.RequestType |
 | `ListRequestTypesByOrganization` | `GET /v1/organizations/{organization_id}/request-types` | ReaderOf.Organization |
-| `ListActiveRequestTypesByOrganization` | `GET /v1/organizations/{organization_id}/request-types:active` | ReaderOf.Organization |
+
+> **Удалённый метод:** `ListActiveRequestTypesByOrganization` (`GET /v1/organizations/{organization_id}/request-types:active`) удалён. Вместо него используйте `ListRequestTypesByOrganization` с `include_deactivated=false` (по умолчанию).
+
+### Параметр include_deactivated
+
+Методы `GetRequestType` и `ListRequestTypesByOrganization` поддерживают параметр `include_deactivated bool` (по умолчанию `false`).
+
+- `include_deactivated=false` (по умолчанию): возвращаются только активные типы.
+- `include_deactivated=true`: возвращаются все типы, включая деактивированные. Требует `SystemAdmin` или `OrgAdminOf` соответствующей организации. Без нужных прав возвращается `permission_denied`.
+
+**Поведение GetRequestType для деактивированного типа:**
+- Не-администратор: деактивированный тип возвращается как `request_type_not_found` (неотличимо от отсутствующего).
+- Администратор с `include_deactivated=true`: возвращается фактическая запись.
 
 ### GetRequestType
 
@@ -157,8 +169,8 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
-| `permission_denied` | 403 | Недостаточно прав |
-| `request_type_not_found` | 404 | Тип не найден |
+| `permission_denied` | 403 | Недостаточно прав (include_deactivated=true без прав администратора) |
+| `request_type_not_found` | 404 | Тип не найден или деактивирован (для не-администратора) |
 
 ### ListRequestTypesByOrganization
 
@@ -167,13 +179,4 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `request_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Недостаточно прав |
-
-### ListActiveRequestTypesByOrganization
-
-#### Ошибки
-
-| Код | HTTP | Описание |
-|---|---|---|
-| `request_classifier_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Недостаточно прав |
+| `permission_denied` | 403 | Недостаточно прав (include_deactivated=true без прав администратора) |
