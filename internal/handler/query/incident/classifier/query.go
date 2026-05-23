@@ -89,7 +89,7 @@ func (h *IncidentClassifierQueryHandler) ListCategoriesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.reader.ListCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
+	result, err := h.reader.ListCategoriesByOrganization(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
@@ -97,6 +97,33 @@ func (h *IncidentClassifierQueryHandler) ListCategoriesByOrganization(
 		return nil, err
 	}
 	return &classifierqueryv1.ListCategoriesByOrganizationResponse{
+		Items:      categoriesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
+}
+
+// ListRootCategories returns top-level categories for an org.
+func (h *IncidentClassifierQueryHandler) ListRootCategories(
+	ctx context.Context,
+	req *classifierqueryv1.ListRootCategoriesRequest,
+) (*classifierqueryv1.ListRootCategoriesResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	id, err := parseOrganizationID(req.GetOrganizationId())
+	if err != nil {
+		return nil, err
+	}
+	result, err := h.reader.ListRootCategories(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &classifierqueryv1.ListRootCategoriesResponse{
 		Items:      categoriesToProto(result.Items),
 		NextCursor: result.NextCursor,
 	}, nil
@@ -158,7 +185,7 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.reader.ListTypesByCategory(ctx, caller, id, classifierread.ListQuery{
+	result, err := h.reader.ListTypesByCategory(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
@@ -166,6 +193,33 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 		return nil, err
 	}
 	return &classifierqueryv1.ListTypesByCategoryResponse{
+		Items:      typesToProto(result.Items),
+		NextCursor: result.NextCursor,
+	}, nil
+}
+
+// ListTypesByOrganization returns incident types for one org.
+func (h *IncidentClassifierQueryHandler) ListTypesByOrganization(
+	ctx context.Context,
+	req *classifierqueryv1.ListTypesByOrganizationRequest,
+) (*classifierqueryv1.ListTypesByOrganizationResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	id, err := parseOrganizationID(req.GetOrganizationId())
+	if err != nil {
+		return nil, err
+	}
+	result, err := h.reader.ListTypesByOrganization(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
+		Limit: int(req.GetLimit()),
+		After: afterPtr(req.GetAfter()),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &classifierqueryv1.ListTypesByOrganizationResponse{
 		Items:      typesToProto(result.Items),
 		NextCursor: result.NextCursor,
 	}, nil

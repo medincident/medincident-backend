@@ -79,7 +79,8 @@ func scanType(scanner interface {
 }
 
 // GetCategory returns one incident category by id. Authorization:
-// authz.ReaderOf.Category(id).
+// authz.ReaderOf.Category(id). Deactivated categories are visible only to
+// SystemAdmin and OrgAdminOf.Category.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) GetCategory(
@@ -105,11 +106,23 @@ func (r *Reader) GetCategory(
 			With("category_id", id).
 			Wrap(err)
 	}
+	if !out.IsActive {
+		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Category(id)))
+		if err != nil || !ok {
+			return nil, oops.In("reader.incident.classifier.category").
+				Code(ErrCodeCategoryNotFound).
+				Public("Incident category not found.").
+				With("category_id", id).
+				Errorf("not found")
+		}
+	}
 	return &out, nil
 }
 
 // ListCategoriesByOrganization paginates categories for one org.
-// Employees (ReaderOf.Organization) receive all categories.
+// Employees (ReaderOf.Organization) receive all categories; when
+// includeDeactivated=false only active categories are returned.
 // Authenticated non-employees (patients) receive only active categories
 // whose subtree contains at least one active, patient-allowed type.
 //
@@ -118,6 +131,7 @@ func (r *Reader) ListCategoriesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (CategoryListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
@@ -126,12 +140,18 @@ func (r *Reader) ListCategoriesByOrganization(
 	if err := q.normalize(); err != nil {
 		return CategoryListResult{}, err
 	}
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Organization(orgID))); err != nil {
+			return CategoryListResult{}, err
+		}
+	}
 	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID))
 	if err != nil {
 		return CategoryListResult{}, err
 	}
 	if isEmployee {
-		return r.listCategoriesByOrgEmployee(ctx, orgID, q)
+		return r.listCategoriesByOrgEmployee(ctx, orgID, includeDeactivated, q)
 	}
 	return r.listPatientVisibleCategories(ctx, orgID, q, false)
 }
@@ -139,11 +159,15 @@ func (r *Reader) ListCategoriesByOrganization(
 func (r *Reader) listCategoriesByOrgEmployee(
 	ctx context.Context,
 	orgID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (CategoryListResult, error) {
 	sqlBuf := selectCategory + ` WHERE organization_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
+	if !includeDeactivated {
+		sqlBuf += ` AND is_active = TRUE`
+	}
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
 		if err != nil {
@@ -284,15 +308,18 @@ func (r *Reader) listPatientVisibleCategories(
 	return CategoryListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListActiveRootCategories returns top-level active categories for an org.
-// Employees receive all active roots. Patients receive only roots whose
-// subtree contains at least one active, patient-allowed type.
+// ListRootCategories returns top-level categories for an org.
+// Employees receive active roots by default; when includeDeactivated=true
+// (requires SystemAdmin or OrgAdmin) all roots are returned.
+// Patients always receive only active roots whose subtree contains at least
+// one active, patient-allowed type.
 //
 // See: docs/services/incident/Classifier.md
-func (r *Reader) ListActiveRootCategories(
+func (r *Reader) ListRootCategories(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (CategoryListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
@@ -301,27 +328,38 @@ func (r *Reader) ListActiveRootCategories(
 	if err := q.normalize(); err != nil {
 		return CategoryListResult{}, err
 	}
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Organization(orgID))); err != nil {
+			return CategoryListResult{}, err
+		}
+	}
 	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID))
 	if err != nil {
 		return CategoryListResult{}, err
 	}
 	if isEmployee {
-		return r.listActiveRootCategoriesEmployee(ctx, orgID, q)
+		return r.listRootCategoriesEmployee(ctx, orgID, includeDeactivated, q)
 	}
+	// patients always see only active roots — include_deactivated=true would have
+	// been blocked by the admin check above; reaching here means includeDeactivated=false.
 	return r.listPatientVisibleCategories(ctx, orgID, q, true)
 }
 
-func (r *Reader) listActiveRootCategoriesEmployee(
+func (r *Reader) listRootCategoriesEmployee(
 	ctx context.Context,
 	orgID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (CategoryListResult, error) {
 	sqlBuf := selectCategory + `
 		 WHERE organization_id = ?
-		   AND parent_category_id IS NULL
-		   AND is_active = TRUE`
+		   AND parent_category_id IS NULL`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
+	if !includeDeactivated {
+		sqlBuf += ` AND is_active = TRUE`
+	}
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
 		if err != nil {
@@ -503,7 +541,8 @@ func (r *Reader) listCategorySubtreePatient(ctx context.Context, rootID uuid.UUI
 }
 
 // GetType returns one incident type by id. Authorization:
-// authz.ReaderOf.IncidentType(id).
+// authz.ReaderOf.IncidentType(id). Deactivated types are visible only to
+// SystemAdmin and OrgAdminOf.IncidentType.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) GetType(
@@ -529,19 +568,31 @@ func (r *Reader) GetType(
 			With("type_id", id).
 			Wrap(err)
 	}
+	if !out.IsActive {
+		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.IncidentType(id)))
+		if err != nil || !ok {
+			return nil, oops.In("reader.incident.classifier.type").
+				Code(ErrCodeTypeNotFound).
+				Public("Incident type not found.").
+				With("type_id", id).
+				Errorf("not found")
+		}
+	}
 	return &out, nil
 }
 
 // ListTypesByCategory paginates incident types under a category.
-// Employees (ReaderOf.Category) receive all types.
-// Authenticated non-employees (patients) receive only active,
-// patient-allowed types.
+// Employees (ReaderOf.Category) receive all types; when includeDeactivated=false
+// only active types are returned. Authenticated non-employees (patients) receive
+// only active, patient-allowed types.
 //
 // See: docs/services/incident/Classifier.md
 func (r *Reader) ListTypesByCategory(
 	ctx context.Context,
 	caller authz.Caller,
 	categoryID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (TypeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
@@ -550,12 +601,18 @@ func (r *Reader) ListTypesByCategory(
 	if err := q.normalize(); err != nil {
 		return TypeListResult{}, err
 	}
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Category(categoryID))); err != nil {
+			return TypeListResult{}, err
+		}
+	}
 	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Category(categoryID))
 	if err != nil {
 		return TypeListResult{}, err
 	}
 	if isEmployee {
-		return r.listTypesByCategoryEmployee(ctx, categoryID, q)
+		return r.listTypesByCategoryEmployee(ctx, categoryID, includeDeactivated, q)
 	}
 	return r.listTypesByCategoryPatient(ctx, categoryID, q)
 }
@@ -563,11 +620,15 @@ func (r *Reader) ListTypesByCategory(
 func (r *Reader) listTypesByCategoryEmployee(
 	ctx context.Context,
 	categoryID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (TypeListResult, error) {
 	sqlBuf := selectType + ` WHERE category_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, categoryID)
+	if !includeDeactivated {
+		sqlBuf += ` AND is_active = TRUE`
+	}
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
 		if err != nil {
@@ -668,16 +729,17 @@ func (r *Reader) listTypesByCategoryPatient(
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-// ListActiveTypesByOrganization returns active incident types for one org.
-// Employees (ReaderOf.Organization) receive all active types.
-// Authenticated non-employees (patients) receive only active,
-// patient-allowed types.
+// ListTypesByOrganization paginates incident types for one org.
+// Employees (ReaderOf.Organization) receive all types; when includeDeactivated=false
+// only active types are returned. Authenticated non-employees (patients) receive
+// only active, patient-allowed types.
 //
 // See: docs/services/incident/Classifier.md
-func (r *Reader) ListActiveTypesByOrganization(
+func (r *Reader) ListTypesByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (TypeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.Authenticated); err != nil {
@@ -686,24 +748,35 @@ func (r *Reader) ListActiveTypesByOrganization(
 	if err := q.normalize(); err != nil {
 		return TypeListResult{}, err
 	}
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Organization(orgID))); err != nil {
+			return TypeListResult{}, err
+		}
+	}
 	isEmployee, err := r.authz.Satisfies(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID))
 	if err != nil {
 		return TypeListResult{}, err
 	}
 	if isEmployee {
-		return r.listActiveTypesByOrgEmployee(ctx, orgID, q)
+		return r.listTypesByOrgEmployee(ctx, orgID, includeDeactivated, q)
 	}
-	return r.listActiveTypesByOrgPatient(ctx, orgID, q)
+	// patients always see only active, patient-allowed types
+	return r.listTypesByOrgPatient(ctx, orgID, q)
 }
 
-func (r *Reader) listActiveTypesByOrgEmployee(
+func (r *Reader) listTypesByOrgEmployee(
 	ctx context.Context,
 	orgID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (TypeListResult, error) {
-	sqlBuf := selectType + ` WHERE organization_id = ? AND is_active = TRUE`
+	sqlBuf := selectType + ` WHERE organization_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, orgID)
+	if !includeDeactivated {
+		sqlBuf += ` AND is_active = TRUE`
+	}
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
 		if err != nil {
@@ -750,7 +823,7 @@ func (r *Reader) listActiveTypesByOrgEmployee(
 	return TypeListResult{Items: out, NextCursor: nextCursor}, nil
 }
 
-func (r *Reader) listActiveTypesByOrgPatient(
+func (r *Reader) listTypesByOrgPatient(
 	ctx context.Context,
 	orgID uuid.UUID,
 	q ListQuery,
