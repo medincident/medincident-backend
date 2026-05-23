@@ -100,7 +100,7 @@ func TestEmployeeReader_Get_AndListByDepartment(t *testing.T) {
 	require.NotNil(t, got.Position)
 	require.Equal(t, "Nurse", *got.Position)
 
-	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{})
+	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, false, memberread.ListQuery{}, memberread.EmployeeFilter{})
 	require.NoError(t, err)
 	require.Len(t, list.Items, 1)
 	require.Equal(t, empID, list.Items[0].EmployeeID)
@@ -171,7 +171,7 @@ func TestEmployeeReader_EmployeeFilters(t *testing.T) {
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
 
 	// Default: terminated hidden → only the active employee.
-	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{})
+	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, false, memberread.ListQuery{}, memberread.EmployeeFilter{})
 	require.NoError(t, err)
 	require.Len(t, list.Items, 1)
 	require.Equal(t, activeID, list.Items[0].EmployeeID)
@@ -185,7 +185,7 @@ func TestEmployeeReader_EmployeeFilters(t *testing.T) {
 	require.Equal(t, int64(2), total)
 
 	// OnVacation=true → only the active employee (term has no active vacation).
-	list, err = reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{OnVacation: true})
+	list, err = reader.ListByDepartment(ctx, sysadminCaller, deptID, false, memberread.ListQuery{}, memberread.EmployeeFilter{OnVacation: true})
 	require.NoError(t, err)
 	require.Len(t, list.Items, 1)
 	require.Equal(t, activeID, list.Items[0].EmployeeID)
