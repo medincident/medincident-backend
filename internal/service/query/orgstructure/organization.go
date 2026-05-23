@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -153,12 +154,8 @@ func (r *OrganizationReader) List(ctx context.Context, caller authz.Caller, incl
 		clauses = append(clauses, `(updated_at, id) < (?, ?)`)
 		args = append(args, c.Time(), c.I)
 	}
-	for i, c := range clauses {
-		if i == 0 {
-			sqlBuf += ` WHERE ` + c
-		} else {
-			sqlBuf += ` AND ` + c
-		}
+	if len(clauses) > 0 {
+		sqlBuf += ` WHERE ` + strings.Join(clauses, ` AND `)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
@@ -237,12 +234,8 @@ func (r *OrganizationReader) Search(ctx context.Context, caller authz.Caller, qu
 		args = append(args, c.Time(), c.I)
 	}
 	sqlBuf := `SELECT id, name, is_active, updated_at FROM projections.organizations`
-	for i, c := range clauses {
-		if i == 0 {
-			sqlBuf += ` WHERE ` + c
-		} else {
-			sqlBuf += ` AND ` + c
-		}
+	if len(clauses) > 0 {
+		sqlBuf += ` WHERE ` + strings.Join(clauses, ` AND `)
 	}
 	sqlBuf += ` ORDER BY updated_at DESC, id DESC LIMIT ?`
 	args = append(args, q.Limit+1)
