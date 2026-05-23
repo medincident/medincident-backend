@@ -22,7 +22,7 @@ import (
 )
 
 // TestReader_Category_Get_And_Subtree seeds a three-level tree and
-// verifies Get/ListActiveRootCategories/ListCategorySubtree.
+// verifies Get/ListRootCategories/ListCategorySubtree.
 func TestReader_Category_Get_And_Subtree(t *testing.T) {
 	resetProjections(t)
 	ctx := context.Background()
@@ -91,7 +91,7 @@ func TestReader_Category_Get_And_Subtree(t *testing.T) {
 	require.NotNil(t, got.ParentCategoryID)
 	require.Equal(t, rootID, *got.ParentCategoryID)
 
-	roots, err := reader.ListActiveRootCategories(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+	roots, err := reader.ListRootCategories(ctx, sysadminCaller, orgID, false, classifierread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, roots.Items, 1)
 	require.Equal(t, rootID, roots.Items[0].ID)
@@ -105,9 +105,9 @@ func TestReader_Category_Get_And_Subtree(t *testing.T) {
 	require.Equal(t, grandID, subtree[2].ID)
 }
 
-// TestReader_Type_Get_And_ListActiveTypesByOrganization covers the
+// TestReader_Type_Get_And_ListTypesByOrganization covers the
 // type-reader paths.
-func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
+func TestReader_Type_Get_And_ListTypesByOrganization(t *testing.T) {
 	resetProjections(t)
 	ctx := context.Background()
 	logger := zerolog.Nop()
@@ -152,12 +152,12 @@ func TestReader_Type_Get_And_ListActiveTypesByOrganization(t *testing.T) {
 	// Newly-created types start with patient submission disabled.
 	require.False(t, got.IsAllowedForPatients)
 
-	active, err := reader.ListActiveTypesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+	active, err := reader.ListTypesByOrganization(ctx, sysadminCaller, orgID, false, classifierread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, active.Items, 1)
 	require.Equal(t, typeID, active.Items[0].ID)
 
-	byCat, err := reader.ListTypesByCategory(ctx, sysadminCaller, catID, classifierread.ListQuery{})
+	byCat, err := reader.ListTypesByCategory(ctx, sysadminCaller, catID, false, classifierread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, byCat.Items, 1)
 }
@@ -248,8 +248,8 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 	// Patient caller: filtered views
 	// -------------------------------------------------------------------------
 
-	t.Run("patient/ListActiveTypesByOrganization", func(t *testing.T) {
-		result, err := reader.ListActiveTypesByOrganization(ctx, patientCaller, orgID, classifierread.ListQuery{})
+	t.Run("patient/ListTypesByOrganization", func(t *testing.T) {
+		result, err := reader.ListTypesByOrganization(ctx, patientCaller, orgID, false, classifierread.ListQuery{})
 		require.NoError(t, err)
 		ids := typeIDs(result.Items)
 		// Active + patient-allowed types regardless of category activity.
@@ -264,7 +264,7 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 	})
 
 	t.Run("patient/ListCategoriesByOrganization", func(t *testing.T) {
-		result, err := reader.ListCategoriesByOrganization(ctx, patientCaller, orgID, classifierread.ListQuery{})
+		result, err := reader.ListCategoriesByOrganization(ctx, patientCaller, orgID, false, classifierread.ListQuery{})
 		require.NoError(t, err)
 		ids := categoryIDs(result.Items)
 		// Active categories whose subtree contains at least one active+patient-allowed type.
@@ -277,8 +277,8 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 		}
 	})
 
-	t.Run("patient/ListActiveRootCategories", func(t *testing.T) {
-		result, err := reader.ListActiveRootCategories(ctx, patientCaller, orgID, classifierread.ListQuery{})
+	t.Run("patient/ListRootCategories", func(t *testing.T) {
+		result, err := reader.ListRootCategories(ctx, patientCaller, orgID, false, classifierread.ListQuery{})
 		require.NoError(t, err)
 		ids := categoryIDs(result.Items)
 		// Active roots whose subtree contains at least one active+patient-allowed type.
@@ -289,7 +289,7 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 	})
 
 	t.Run("patient/ListTypesByCategory", func(t *testing.T) {
-		result, err := reader.ListTypesByCategory(ctx, patientCaller, wardFallsID, classifierread.ListQuery{})
+		result, err := reader.ListTypesByCategory(ctx, patientCaller, wardFallsID, false, classifierread.ListQuery{})
 		require.NoError(t, err)
 		ids := typeIDs(result.Items)
 		require.True(t, ids[allowedFallID], "active+allowed type must be included")
@@ -313,8 +313,8 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 	// Employee caller (sysadmin): unfiltered views
 	// -------------------------------------------------------------------------
 
-	t.Run("employee/ListActiveTypesByOrganization", func(t *testing.T) {
-		result, err := reader.ListActiveTypesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+	t.Run("employee/ListTypesByOrganization", func(t *testing.T) {
+		result, err := reader.ListTypesByOrganization(ctx, sysadminCaller, orgID, false, classifierread.ListQuery{})
 		require.NoError(t, err)
 		ids := typeIDs(result.Items)
 		// All 4 types are active; employee sees all without patient filter.
@@ -325,18 +325,18 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 	})
 
 	t.Run("employee/ListCategoriesByOrganization", func(t *testing.T) {
-		result, err := reader.ListCategoriesByOrganization(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+		result, err := reader.ListCategoriesByOrganization(ctx, sysadminCaller, orgID, true, classifierread.ListQuery{})
 		require.NoError(t, err)
 		ids := categoryIDs(result.Items)
-		// Employee sees all 4 categories regardless of active status.
+		// Admin with includeDeactivated=true sees all 4 categories.
 		require.True(t, ids[surgicalID])
 		require.True(t, ids[wardFallsID])
 		require.True(t, ids[archivedID])
 		require.True(t, ids[adminOnlyID])
 	})
 
-	t.Run("employee/ListActiveRootCategories", func(t *testing.T) {
-		result, err := reader.ListActiveRootCategories(ctx, sysadminCaller, orgID, classifierread.ListQuery{})
+	t.Run("employee/ListRootCategories", func(t *testing.T) {
+		result, err := reader.ListRootCategories(ctx, sysadminCaller, orgID, false, classifierread.ListQuery{})
 		require.NoError(t, err)
 		ids := categoryIDs(result.Items)
 		// Both active roots visible to employee.
@@ -347,7 +347,7 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 	})
 
 	t.Run("employee/ListTypesByCategory", func(t *testing.T) {
-		result, err := reader.ListTypesByCategory(ctx, sysadminCaller, wardFallsID, classifierread.ListQuery{})
+		result, err := reader.ListTypesByCategory(ctx, sysadminCaller, wardFallsID, false, classifierread.ListQuery{})
 		require.NoError(t, err)
 		ids := typeIDs(result.Items)
 		require.True(t, ids[allowedFallID])
@@ -364,6 +364,72 @@ func TestReader_UnifiedPatientFiltering(t *testing.T) {
 		require.True(t, ids[archivedID])
 		require.False(t, ids[adminOnlyID], "category outside subtree must not appear")
 	})
+}
+
+// TestReader_IncludeDeactivated_RequiresAdmin seeds an inactive category and
+// verifies that:
+//   - sysadmin with includeDeactivated=true sees the inactive category.
+//   - patientCaller with includeDeactivated=true receives permission_denied
+//     for both ListCategoriesByOrganization and ListTypesByOrganization.
+func TestReader_IncludeDeactivated_RequiresAdmin(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+
+	now := time.Now().UTC().Truncate(time.Second)
+	orgID := uuid.Must(uuid.NewV7())
+	catID := uuid.Must(uuid.NewV7())
+	typeID := uuid.Must(uuid.NewV7())
+
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := qprojector.CategoryCreated(tx, catID.String(), now, &classifierv1.IncidentCategoryCreated{
+			OrganizationId: orgID.String(),
+			Name:           "Archived Category",
+			IsActive:       false,
+			CreatedAt:      timestamppb.New(now),
+		}); err != nil {
+			return err
+		}
+		return qprojector.TypeCreated(tx, typeID.String(), now, &classifierv1.IncidentTypeCreated{
+			OrganizationId: orgID.String(),
+			CategoryId:     catID.String(),
+			Name:           "Archived Type",
+			IsActive:       false,
+			CreatedAt:      timestamppb.New(now),
+		})
+	}))
+
+	reader := classifierread.NewReader(testDB, authzSvc, &logger)
+
+	// Admin sees inactive category with includeDeactivated=true.
+	cats, err := reader.ListCategoriesByOrganization(ctx, sysadminCaller, orgID, true, classifierread.ListQuery{})
+	require.NoError(t, err)
+	require.Len(t, cats.Items, 1)
+	require.Equal(t, catID, cats.Items[0].ID)
+
+	// Admin sees nothing with includeDeactivated=false.
+	cats, err = reader.ListCategoriesByOrganization(ctx, sysadminCaller, orgID, false, classifierread.ListQuery{})
+	require.NoError(t, err)
+	require.Empty(t, cats.Items)
+
+	// Admin sees inactive type with includeDeactivated=true.
+	types, err := reader.ListTypesByOrganization(ctx, sysadminCaller, orgID, true, classifierread.ListQuery{})
+	require.NoError(t, err)
+	require.Len(t, types.Items, 1)
+	require.Equal(t, typeID, types.Items[0].ID)
+
+	// Admin sees nothing with includeDeactivated=false.
+	types, err = reader.ListTypesByOrganization(ctx, sysadminCaller, orgID, false, classifierread.ListQuery{})
+	require.NoError(t, err)
+	require.Empty(t, types.Items)
+
+	// patientCaller with includeDeactivated=true is denied for categories.
+	_, err = reader.ListCategoriesByOrganization(ctx, patientCaller, orgID, true, classifierread.ListQuery{})
+	require.Error(t, err)
+
+	// patientCaller with includeDeactivated=true is denied for types.
+	_, err = reader.ListTypesByOrganization(ctx, patientCaller, orgID, true, classifierread.ListQuery{})
+	require.Error(t, err)
 }
 
 // categoryIDs returns a set of IDs from a CategoryListResult items slice.

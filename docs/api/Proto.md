@@ -387,16 +387,16 @@
     - [GetCategoryResponse](#query-incident-classifier-v1-GetCategoryResponse)
     - [GetTypeRequest](#query-incident-classifier-v1-GetTypeRequest)
     - [GetTypeResponse](#query-incident-classifier-v1-GetTypeResponse)
-    - [ListActiveRootCategoriesRequest](#query-incident-classifier-v1-ListActiveRootCategoriesRequest)
-    - [ListActiveRootCategoriesResponse](#query-incident-classifier-v1-ListActiveRootCategoriesResponse)
-    - [ListActiveTypesByOrganizationRequest](#query-incident-classifier-v1-ListActiveTypesByOrganizationRequest)
-    - [ListActiveTypesByOrganizationResponse](#query-incident-classifier-v1-ListActiveTypesByOrganizationResponse)
     - [ListCategoriesByOrganizationRequest](#query-incident-classifier-v1-ListCategoriesByOrganizationRequest)
     - [ListCategoriesByOrganizationResponse](#query-incident-classifier-v1-ListCategoriesByOrganizationResponse)
     - [ListCategorySubtreeRequest](#query-incident-classifier-v1-ListCategorySubtreeRequest)
     - [ListCategorySubtreeResponse](#query-incident-classifier-v1-ListCategorySubtreeResponse)
+    - [ListRootCategoriesRequest](#query-incident-classifier-v1-ListRootCategoriesRequest)
+    - [ListRootCategoriesResponse](#query-incident-classifier-v1-ListRootCategoriesResponse)
     - [ListTypesByCategoryRequest](#query-incident-classifier-v1-ListTypesByCategoryRequest)
     - [ListTypesByCategoryResponse](#query-incident-classifier-v1-ListTypesByCategoryResponse)
+    - [ListTypesByOrganizationRequest](#query-incident-classifier-v1-ListTypesByOrganizationRequest)
+    - [ListTypesByOrganizationResponse](#query-incident-classifier-v1-ListTypesByOrganizationResponse)
     - [Type](#query-incident-classifier-v1-Type)
 
     - [IncidentClassifierQueryService](#query-incident-classifier-v1-IncidentClassifierQueryService)
@@ -522,8 +522,6 @@
 - [query/request/classifier/v1/classifier.proto](#query_request_classifier_v1_classifier-proto)
     - [GetRequestTypeRequest](#query-request-classifier-v1-GetRequestTypeRequest)
     - [GetRequestTypeResponse](#query-request-classifier-v1-GetRequestTypeResponse)
-    - [ListActiveRequestTypesByOrganizationRequest](#query-request-classifier-v1-ListActiveRequestTypesByOrganizationRequest)
-    - [ListActiveRequestTypesByOrganizationResponse](#query-request-classifier-v1-ListActiveRequestTypesByOrganizationResponse)
     - [ListRequestTypesByOrganizationRequest](#query-request-classifier-v1-ListRequestTypesByOrganizationRequest)
     - [ListRequestTypesByOrganizationResponse](#query-request-classifier-v1-ListRequestTypesByOrganizationResponse)
     - [RequestType](#query-request-classifier-v1-RequestType)
@@ -5947,72 +5945,6 @@ Category mirrors projections.incident_categories row.
 
 
 
-<a name="query-incident-classifier-v1-ListActiveRootCategoriesRequest"></a>
-
-### ListActiveRootCategoriesRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| organization_id | [string](#string) |  |  |
-| limit | [int32](#int32) |  |  |
-| after | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="query-incident-classifier-v1-ListActiveRootCategoriesResponse"></a>
-
-### ListActiveRootCategoriesResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| items | [Category](#query-incident-classifier-v1-Category) | repeated |  |
-| next_cursor | [string](#string) | optional |  |
-
-
-
-
-
-
-<a name="query-incident-classifier-v1-ListActiveTypesByOrganizationRequest"></a>
-
-### ListActiveTypesByOrganizationRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| organization_id | [string](#string) |  |  |
-| limit | [int32](#int32) |  |  |
-| after | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="query-incident-classifier-v1-ListActiveTypesByOrganizationResponse"></a>
-
-### ListActiveTypesByOrganizationResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| items | [Type](#query-incident-classifier-v1-Type) | repeated |  |
-| next_cursor | [string](#string) | optional |  |
-
-
-
-
-
-
 <a name="query-incident-classifier-v1-ListCategoriesByOrganizationRequest"></a>
 
 ### ListCategoriesByOrganizationRequest
@@ -6024,6 +5956,7 @@ Category mirrors projections.incident_categories row.
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | after | [string](#string) |  |  |
+| include_deactivated | [bool](#bool) |  |  |
 
 
 
@@ -6078,6 +6011,40 @@ the full result is always returned.
 
 
 
+<a name="query-incident-classifier-v1-ListRootCategoriesRequest"></a>
+
+### ListRootCategoriesRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
+| include_deactivated | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="query-incident-classifier-v1-ListRootCategoriesResponse"></a>
+
+### ListRootCategoriesResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [Category](#query-incident-classifier-v1-Category) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
+
+
+
+
+
+
 <a name="query-incident-classifier-v1-ListTypesByCategoryRequest"></a>
 
 ### ListTypesByCategoryRequest
@@ -6089,6 +6056,7 @@ the full result is always returned.
 | category_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | after | [string](#string) |  |  |
+| include_deactivated | [bool](#bool) |  |  |
 
 
 
@@ -6098,6 +6066,40 @@ the full result is always returned.
 <a name="query-incident-classifier-v1-ListTypesByCategoryResponse"></a>
 
 ### ListTypesByCategoryResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| items | [Type](#query-incident-classifier-v1-Type) | repeated |  |
+| next_cursor | [string](#string) | optional |  |
+
+
+
+
+
+
+<a name="query-incident-classifier-v1-ListTypesByOrganizationRequest"></a>
+
+### ListTypesByOrganizationRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| organization_id | [string](#string) |  |  |
+| limit | [int32](#int32) |  |  |
+| after | [string](#string) |  |  |
+| include_deactivated | [bool](#bool) |  |  |
+
+
+
+
+
+
+<a name="query-incident-classifier-v1-ListTypesByOrganizationResponse"></a>
+
+### ListTypesByOrganizationResponse
 
 
 
@@ -6151,12 +6153,12 @@ CTEs in the reader; the RPC surface stays flat.
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
 | GetCategory | [GetCategoryRequest](#query-incident-classifier-v1-GetCategoryRequest) | [GetCategoryResponse](#query-incident-classifier-v1-GetCategoryResponse) |  |
+| ListRootCategories | [ListRootCategoriesRequest](#query-incident-classifier-v1-ListRootCategoriesRequest) | [ListRootCategoriesResponse](#query-incident-classifier-v1-ListRootCategoriesResponse) |  |
 | ListCategoriesByOrganization | [ListCategoriesByOrganizationRequest](#query-incident-classifier-v1-ListCategoriesByOrganizationRequest) | [ListCategoriesByOrganizationResponse](#query-incident-classifier-v1-ListCategoriesByOrganizationResponse) |  |
-| ListActiveRootCategories | [ListActiveRootCategoriesRequest](#query-incident-classifier-v1-ListActiveRootCategoriesRequest) | [ListActiveRootCategoriesResponse](#query-incident-classifier-v1-ListActiveRootCategoriesResponse) |  |
 | ListCategorySubtree | [ListCategorySubtreeRequest](#query-incident-classifier-v1-ListCategorySubtreeRequest) | [ListCategorySubtreeResponse](#query-incident-classifier-v1-ListCategorySubtreeResponse) |  |
 | GetType | [GetTypeRequest](#query-incident-classifier-v1-GetTypeRequest) | [GetTypeResponse](#query-incident-classifier-v1-GetTypeResponse) |  |
 | ListTypesByCategory | [ListTypesByCategoryRequest](#query-incident-classifier-v1-ListTypesByCategoryRequest) | [ListTypesByCategoryResponse](#query-incident-classifier-v1-ListTypesByCategoryResponse) |  |
-| ListActiveTypesByOrganization | [ListActiveTypesByOrganizationRequest](#query-incident-classifier-v1-ListActiveTypesByOrganizationRequest) | [ListActiveTypesByOrganizationResponse](#query-incident-classifier-v1-ListActiveTypesByOrganizationResponse) |  |
+| ListTypesByOrganization | [ListTypesByOrganizationRequest](#query-incident-classifier-v1-ListTypesByOrganizationRequest) | [ListTypesByOrganizationResponse](#query-incident-classifier-v1-ListTypesByOrganizationResponse) |  |
 
 
 
@@ -7156,6 +7158,7 @@ when the backing column is NULL.
 | include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
 | on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
 | position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
+| include_deactivated | [bool](#bool) |  | When false (default), only active employees are returned. Set true to include deactivated employees. Requires org-admin or system-admin. |
 
 
 
@@ -7192,6 +7195,7 @@ when the backing column is NULL.
 | include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
 | on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
 | position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
+| include_deactivated | [bool](#bool) |  | When false (default), only active employees are returned. Set true to include deactivated employees. Requires org-admin or system-admin. |
 
 
 
@@ -7228,6 +7232,7 @@ when the backing column is NULL.
 | include_terminated | [bool](#bool) |  | When false (default), rows with terminated_at IS NOT NULL are hidden. Set true to include offboarded employees. |
 | on_vacation | [bool](#bool) |  | When true, restrict to employees currently on an active vacation (current_vacation_ends_at IS NOT NULL AND &gt; now()). |
 | position | [string](#string) | optional | Optional exact-match filter on employee_cards.position. Trimmed before comparison; all-whitespace is treated as unset. |
+| include_deactivated | [bool](#bool) |  | When false (default), only active employees are returned. Set true to include deactivated employees. Requires org-admin or system-admin. |
 
 
 
@@ -7866,6 +7871,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | after | [string](#string) |  |  |
+| include_deactivated | [bool](#bool) |  |  |
 
 
 
@@ -7899,6 +7905,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | clinic_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | after | [string](#string) |  |  |
+| include_deactivated | [bool](#bool) |  |  |
 
 
 
@@ -7931,6 +7938,7 @@ DepartmentListItem is the minimal shape returned by list endpoints.
 | ----- | ---- | ----- | ----------- |
 | limit | [int32](#int32) |  |  |
 | after | [string](#string) |  | Opaque pagination cursor returned as next_cursor from a previous response. Omit or leave empty to start from the first page. An invalid cursor is rejected with a domain error. |
+| include_deactivated | [bool](#bool) |  |  |
 
 
 
@@ -8020,6 +8028,7 @@ projection row has neither longitude nor latitude.
 | query | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | after | [string](#string) |  |  |
+| include_deactivated | [bool](#bool) |  |  |
 
 
 
@@ -8108,39 +8117,6 @@ projections. List endpoints use cursor-based keyset pagination.
 
 
 
-<a name="query-request-classifier-v1-ListActiveRequestTypesByOrganizationRequest"></a>
-
-### ListActiveRequestTypesByOrganizationRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| organization_id | [string](#string) |  |  |
-| limit | [int32](#int32) |  |  |
-| after | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="query-request-classifier-v1-ListActiveRequestTypesByOrganizationResponse"></a>
-
-### ListActiveRequestTypesByOrganizationResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| items | [RequestType](#query-request-classifier-v1-RequestType) | repeated |  |
-| next_cursor | [string](#string) | optional |  |
-
-
-
-
-
-
 <a name="query-request-classifier-v1-ListRequestTypesByOrganizationRequest"></a>
 
 ### ListRequestTypesByOrganizationRequest
@@ -8152,6 +8128,7 @@ projections. List endpoints use cursor-based keyset pagination.
 | organization_id | [string](#string) |  |  |
 | limit | [int32](#int32) |  |  |
 | after | [string](#string) |  |  |
+| include_deactivated | [bool](#bool) |  |  |
 
 
 
@@ -8210,7 +8187,6 @@ projections. List endpoints use cursor-based keyset pagination.
 | ----------- | ------------ | ------------- | ------------|
 | GetRequestType | [GetRequestTypeRequest](#query-request-classifier-v1-GetRequestTypeRequest) | [GetRequestTypeResponse](#query-request-classifier-v1-GetRequestTypeResponse) |  |
 | ListRequestTypesByOrganization | [ListRequestTypesByOrganizationRequest](#query-request-classifier-v1-ListRequestTypesByOrganizationRequest) | [ListRequestTypesByOrganizationResponse](#query-request-classifier-v1-ListRequestTypesByOrganizationResponse) |  |
-| ListActiveRequestTypesByOrganization | [ListActiveRequestTypesByOrganizationRequest](#query-request-classifier-v1-ListActiveRequestTypesByOrganizationRequest) | [ListActiveRequestTypesByOrganizationResponse](#query-request-classifier-v1-ListActiveRequestTypesByOrganizationResponse) |  |
 
 
 

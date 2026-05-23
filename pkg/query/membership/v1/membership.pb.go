@@ -577,9 +577,12 @@ type ListEmployeesByDepartmentRequest struct {
 	OnVacation bool `protobuf:"varint,5,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
 	// Optional exact-match filter on employee_cards.position. Trimmed
 	// before comparison; all-whitespace is treated as unset.
-	Position      *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Position *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
+	// When false (default), only active employees are returned. Set true
+	// to include deactivated employees. Requires org-admin or system-admin.
+	IncludeDeactivated bool `protobuf:"varint,7,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListEmployeesByDepartmentRequest) Reset() {
@@ -654,6 +657,13 @@ func (x *ListEmployeesByDepartmentRequest) GetPosition() string {
 	return ""
 }
 
+func (x *ListEmployeesByDepartmentRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
+}
+
 type ListEmployeesByDepartmentResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -719,9 +729,12 @@ type ListEmployeesByClinicRequest struct {
 	OnVacation bool `protobuf:"varint,5,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
 	// Optional exact-match filter on employee_cards.position. Trimmed
 	// before comparison; all-whitespace is treated as unset.
-	Position      *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Position *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
+	// When false (default), only active employees are returned. Set true
+	// to include deactivated employees. Requires org-admin or system-admin.
+	IncludeDeactivated bool `protobuf:"varint,7,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListEmployeesByClinicRequest) Reset() {
@@ -796,6 +809,13 @@ func (x *ListEmployeesByClinicRequest) GetPosition() string {
 	return ""
 }
 
+func (x *ListEmployeesByClinicRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
+}
+
 type ListEmployeesByClinicResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*EmployeeCardView    `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -861,9 +881,12 @@ type ListEmployeesByOrganizationRequest struct {
 	OnVacation bool `protobuf:"varint,5,opt,name=on_vacation,json=onVacation,proto3" json:"on_vacation,omitempty"`
 	// Optional exact-match filter on employee_cards.position. Trimmed
 	// before comparison; all-whitespace is treated as unset.
-	Position      *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Position *string `protobuf:"bytes,6,opt,name=position,proto3,oneof" json:"position,omitempty"`
+	// When false (default), only active employees are returned. Set true
+	// to include deactivated employees. Requires org-admin or system-admin.
+	IncludeDeactivated bool `protobuf:"varint,7,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListEmployeesByOrganizationRequest) Reset() {
@@ -936,6 +959,13 @@ func (x *ListEmployeesByOrganizationRequest) GetPosition() string {
 		return *x.Position
 	}
 	return ""
+}
+
+func (x *ListEmployeesByOrganizationRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
 }
 
 type ListEmployeesByOrganizationResponse struct {
@@ -3333,7 +3363,7 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"\x16\n" +
 	"\x14GetMyEmployeeRequest\"Z\n" +
 	"\x15GetMyEmployeeResponse\x12A\n" +
-	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"\xf1\x01\n" +
+	"\bemployee\x18\x01 \x01(\v2%.query.membership.v1.EmployeeCardViewR\bemployee\"\xa2\x02\n" +
 	" ListEmployeesByDepartmentRequest\x12#\n" +
 	"\rdepartment_id\x18\x01 \x01(\tR\fdepartmentId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
@@ -3341,13 +3371,14 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
 	"\von_vacation\x18\x05 \x01(\bR\n" +
 	"onVacation\x12\x1f\n" +
-	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01\x12/\n" +
+	"\x13include_deactivated\x18\a \x01(\bR\x12includeDeactivatedB\v\n" +
 	"\t_position\"\x96\x01\n" +
 	"!ListEmployeesByDepartmentResponse\x12;\n" +
 	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"\xe5\x01\n" +
+	"\f_next_cursor\"\x96\x02\n" +
 	"\x1cListEmployeesByClinicRequest\x12\x1b\n" +
 	"\tclinic_id\x18\x01 \x01(\tR\bclinicId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
@@ -3355,13 +3386,14 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
 	"\von_vacation\x18\x05 \x01(\bR\n" +
 	"onVacation\x12\x1f\n" +
-	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01\x12/\n" +
+	"\x13include_deactivated\x18\a \x01(\bR\x12includeDeactivatedB\v\n" +
 	"\t_position\"\x92\x01\n" +
 	"\x1dListEmployeesByClinicResponse\x12;\n" +
 	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"\xf7\x01\n" +
+	"\f_next_cursor\"\xa8\x02\n" +
 	"\"ListEmployeesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
@@ -3369,7 +3401,8 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\x12include_terminated\x18\x04 \x01(\bR\x11includeTerminated\x12\x1f\n" +
 	"\von_vacation\x18\x05 \x01(\bR\n" +
 	"onVacation\x12\x1f\n" +
-	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01B\v\n" +
+	"\bposition\x18\x06 \x01(\tH\x00R\bposition\x88\x01\x01\x12/\n" +
+	"\x13include_deactivated\x18\a \x01(\bR\x12includeDeactivatedB\v\n" +
 	"\t_position\"\x98\x01\n" +
 	"#ListEmployeesByOrganizationResponse\x12;\n" +
 	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12$\n" +
@@ -3552,7 +3585,7 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"(ListCandidatesForDeptResponsibleResponse\x12;\n" +
 	"\x05items\x18\x01 \x03(\v2%.query.membership.v1.EmployeeCardViewR\x05items\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor2\xaaC\n" +
+	"nextCursor2\xdaF\n" +
 	"\x16MembershipQueryService\x12\xed\x01\n" +
 	"\vGetEmployee\x12'.query.membership.v1.GetEmployeeRequest\x1a(.query.membership.v1.GetEmployeeResponse\"\x8a\x01\x92AmJk\n" +
 	"\x03404\x12d\n" +
@@ -3561,19 +3594,28 @@ const file_query_membership_v1_membership_proto_rawDesc = "" +
 	"\rGetMyEmployee\x12).query.membership.v1.GetMyEmployeeRequest\x1a*.query.membership.v1.GetMyEmployeeResponse\"\x8c\x01\x92AqJo\n" +
 	"\x03404\x12h\n" +
 	"fNot found. Error codes:\n" +
-	"- `employee_card_not_found` — the authenticated user has no employee record.\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/employees/me\x12\xb4\x02\n" +
-	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"\xa7\x01\x92AsJq\n" +
+	"- `employee_card_not_found` — the authenticated user has no employee record.\x82\xd3\xe4\x93\x02\x12\x12\x10/v1/employees/me\x12\xc4\x03\n" +
+	"\x19ListEmployeesByDepartment\x125.query.membership.v1.ListEmployeesByDepartmentRequest\x1a6.query.membership.v1.ListEmployeesByDepartmentResponse\"\xb7\x02\x92A\x82\x02Jq\n" +
 	"\x03400\x12j\n" +
 	"hValidation failed. Error codes:\n" +
-	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02+\x12)/v1/departments/{department_id}/employees\x12\xa0\x02\n" +
-	"\x15ListEmployeesByClinic\x121.query.membership.v1.ListEmployeesByClinicRequest\x1a2.query.membership.v1.ListEmployeesByClinicResponse\"\x9f\x01\x92AsJq\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02+\x12)/v1/departments/{department_id}/employees\x12\xb0\x03\n" +
+	"\x15ListEmployeesByClinic\x121.query.membership.v1.ListEmployeesByClinicRequest\x1a2.query.membership.v1.ListEmployeesByClinicResponse\"\xaf\x02\x92A\x82\x02Jq\n" +
 	"\x03400\x12j\n" +
 	"hValidation failed. Error codes:\n" +
-	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02#\x12!/v1/clinics/{clinic_id}/employees\x12\xbe\x02\n" +
-	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\"\xab\x01\x92AsJq\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02#\x12!/v1/clinics/{clinic_id}/employees\x12\xce\x03\n" +
+	"\x1bListEmployeesByOrganization\x127.query.membership.v1.ListEmployeesByOrganizationRequest\x1a8.query.membership.v1.ListEmployeesByOrganizationResponse\"\xbb\x02\x92A\x82\x02Jq\n" +
 	"\x03400\x12j\n" +
 	"hValidation failed. Error codes:\n" +
-	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xb2\x02\n" +
+	"- `membership_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02/\x12-/v1/organizations/{organization_id}/employees\x12\xb2\x02\n" +
 	"\x1aCountEmployeesByDepartment\x126.query.membership.v1.CountEmployeesByDepartmentRequest\x1a7.query.membership.v1.CountEmployeesByDepartmentResponse\"\xa2\x01\x92AhJf\n" +
 	"\x03500\x12_\n" +
 	"]Internal server error. Error codes:\n" +

@@ -83,6 +83,10 @@ service MembershipQueryService {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
       }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
+      }
     };
   }
   rpc ListEmployeesByClinic(ListEmployeesByClinicRequest) returns (ListEmployeesByClinicResponse) {
@@ -92,6 +96,10 @@ service MembershipQueryService {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
       }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
+      }
     };
   }
   rpc ListEmployeesByOrganization(ListEmployeesByOrganizationRequest) returns (ListEmployeesByOrganizationResponse) {
@@ -100,6 +108,10 @@ service MembershipQueryService {
       responses: {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `membership_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -382,6 +394,9 @@ message ListEmployeesByDepartmentRequest {
   // Optional exact-match filter on employee_cards.position. Trimmed
   // before comparison; all-whitespace is treated as unset.
   optional string position = 6;
+  // When false (default), only active employees are returned. Set true
+  // to include deactivated employees. Requires org-admin or system-admin.
+  bool include_deactivated = 7;
 }
 message ListEmployeesByDepartmentResponse {
   repeated EmployeeCardView items = 1;
@@ -401,6 +416,9 @@ message ListEmployeesByClinicRequest {
   // Optional exact-match filter on employee_cards.position. Trimmed
   // before comparison; all-whitespace is treated as unset.
   optional string position = 6;
+  // When false (default), only active employees are returned. Set true
+  // to include deactivated employees. Requires org-admin or system-admin.
+  bool include_deactivated = 7;
 }
 message ListEmployeesByClinicResponse {
   repeated EmployeeCardView items = 1;
@@ -420,6 +438,9 @@ message ListEmployeesByOrganizationRequest {
   // Optional exact-match filter on employee_cards.position. Trimmed
   // before comparison; all-whitespace is treated as unset.
   optional string position = 6;
+  // When false (default), only active employees are returned. Set true
+  // to include deactivated employees. Requires org-admin or system-admin.
+  bool include_deactivated = 7;
 }
 message ListEmployeesByOrganizationResponse {
   repeated EmployeeCardView items = 1;

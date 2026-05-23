@@ -52,8 +52,8 @@ func TestOrganizationReader_Get_ReturnsViewSeededByProjector(t *testing.T) {
 		})
 	}))
 
-	reader := orgread.NewOrganizationReader(testDB, &logger)
-	view, err := reader.Get(ctx, orgID)
+	reader := orgread.NewOrganizationReader(testDB, authzSvc, &logger)
+	view, err := reader.Get(ctx, sysadminCaller, orgID)
 	require.NoError(t, err)
 	require.Equal(t, orgID, view.ID)
 	require.Equal(t, "Acme Clinics", view.Name)
@@ -70,8 +70,8 @@ func TestOrganizationReader_Get_NotFound(t *testing.T) {
 	resetProjections(t)
 	logger := zerolog.Nop()
 
-	reader := orgread.NewOrganizationReader(testDB, &logger)
-	_, err := reader.Get(context.Background(), uuid.Must(uuid.NewV7()))
+	reader := orgread.NewOrganizationReader(testDB, authzSvc, &logger)
+	_, err := reader.Get(context.Background(), sysadminCaller, uuid.Must(uuid.NewV7()))
 	require.Error(t, err)
 }
 
@@ -105,8 +105,8 @@ func TestOrganizationReader_List_And_Count(t *testing.T) {
 		}))
 	}
 
-	reader := orgread.NewOrganizationReader(testDB, &logger)
-	items, err := reader.List(ctx, orgread.ListQuery{Limit: 10})
+	reader := orgread.NewOrganizationReader(testDB, authzSvc, &logger)
+	items, err := reader.List(ctx, sysadminCaller, false, orgread.ListQuery{Limit: 10})
 	require.NoError(t, err)
 	require.Len(t, items.Items, 3)
 	// Most-recently created first: reverse of insertion order.
@@ -146,8 +146,8 @@ func TestOrganizationReader_Search_FiltersByNameSubstring(t *testing.T) {
 		}))
 	}
 
-	reader := orgread.NewOrganizationReader(testDB, &logger)
-	items, err := reader.Search(ctx, "acme", orgread.ListQuery{})
+	reader := orgread.NewOrganizationReader(testDB, authzSvc, &logger)
+	items, err := reader.Search(ctx, sysadminCaller, "acme", false, orgread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, items.Items, 2)
 	got := map[uuid.UUID]string{items.Items[0].ID: items.Items[0].Name, items.Items[1].ID: items.Items[1].Name}
@@ -199,7 +199,7 @@ func TestClinicReader_Get_And_ListByOrganization(t *testing.T) {
 	require.Equal(t, "Downtown Clinic", got.Name)
 	require.Equal(t, "1 City Plaza", got.PhysicalAddress.Text)
 
-	list, err := reader.ListByOrganization(ctx, sysadminCaller, orgID, orgread.ListQuery{})
+	list, err := reader.ListByOrganization(ctx, sysadminCaller, orgID, false, orgread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, list.Items, 1)
 	require.Equal(t, clinicID, list.Items[0].ID)
@@ -249,7 +249,7 @@ func TestDepartmentReader_Get_And_ListByClinic(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "Radiology", got.Name)
 
-	list, err := reader.ListByClinic(ctx, sysadminCaller, clinicID, orgread.ListQuery{})
+	list, err := reader.ListByClinic(ctx, sysadminCaller, clinicID, false, orgread.ListQuery{})
 	require.NoError(t, err)
 	require.Len(t, list.Items, 1)
 }

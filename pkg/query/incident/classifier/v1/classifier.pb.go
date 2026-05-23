@@ -322,18 +322,139 @@ func (x *GetCategoryResponse) GetCategory() *Category {
 	return nil
 }
 
+type ListRootCategoriesRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId     string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit              int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	After              string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	IncludeDeactivated bool                   `protobuf:"varint,4,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *ListRootCategoriesRequest) Reset() {
+	*x = ListRootCategoriesRequest{}
+	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRootCategoriesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRootCategoriesRequest) ProtoMessage() {}
+
+func (x *ListRootCategoriesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRootCategoriesRequest.ProtoReflect.Descriptor instead.
+func (*ListRootCategoriesRequest) Descriptor() ([]byte, []int) {
+	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListRootCategoriesRequest) GetOrganizationId() string {
+	if x != nil {
+		return x.OrganizationId
+	}
+	return ""
+}
+
+func (x *ListRootCategoriesRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+func (x *ListRootCategoriesRequest) GetAfter() string {
+	if x != nil {
+		return x.After
+	}
+	return ""
+}
+
+func (x *ListRootCategoriesRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
+}
+
+type ListRootCategoriesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Items         []*Category            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListRootCategoriesResponse) Reset() {
+	*x = ListRootCategoriesResponse{}
+	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRootCategoriesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRootCategoriesResponse) ProtoMessage() {}
+
+func (x *ListRootCategoriesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRootCategoriesResponse.ProtoReflect.Descriptor instead.
+func (*ListRootCategoriesResponse) Descriptor() ([]byte, []int) {
+	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListRootCategoriesResponse) GetItems() []*Category {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *ListRootCategoriesResponse) GetNextCursor() string {
+	if x != nil && x.NextCursor != nil {
+		return *x.NextCursor
+	}
+	return ""
+}
+
 type ListCategoriesByOrganizationRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId     string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit              int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	After              string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	IncludeDeactivated bool                   `protobuf:"varint,4,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListCategoriesByOrganizationRequest) Reset() {
 	*x = ListCategoriesByOrganizationRequest{}
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[4]
+	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -345,7 +466,7 @@ func (x *ListCategoriesByOrganizationRequest) String() string {
 func (*ListCategoriesByOrganizationRequest) ProtoMessage() {}
 
 func (x *ListCategoriesByOrganizationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[4]
+	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -358,7 +479,7 @@ func (x *ListCategoriesByOrganizationRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use ListCategoriesByOrganizationRequest.ProtoReflect.Descriptor instead.
 func (*ListCategoriesByOrganizationRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{4}
+	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ListCategoriesByOrganizationRequest) GetOrganizationId() string {
@@ -382,6 +503,13 @@ func (x *ListCategoriesByOrganizationRequest) GetAfter() string {
 	return ""
 }
 
+func (x *ListCategoriesByOrganizationRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
+}
+
 type ListCategoriesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Category            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
@@ -392,7 +520,7 @@ type ListCategoriesByOrganizationResponse struct {
 
 func (x *ListCategoriesByOrganizationResponse) Reset() {
 	*x = ListCategoriesByOrganizationResponse{}
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[5]
+	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -404,7 +532,7 @@ func (x *ListCategoriesByOrganizationResponse) String() string {
 func (*ListCategoriesByOrganizationResponse) ProtoMessage() {}
 
 func (x *ListCategoriesByOrganizationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[5]
+	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -417,7 +545,7 @@ func (x *ListCategoriesByOrganizationResponse) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use ListCategoriesByOrganizationResponse.ProtoReflect.Descriptor instead.
 func (*ListCategoriesByOrganizationResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{5}
+	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *ListCategoriesByOrganizationResponse) GetItems() []*Category {
@@ -428,118 +556,6 @@ func (x *ListCategoriesByOrganizationResponse) GetItems() []*Category {
 }
 
 func (x *ListCategoriesByOrganizationResponse) GetNextCursor() string {
-	if x != nil && x.NextCursor != nil {
-		return *x.NextCursor
-	}
-	return ""
-}
-
-type ListActiveRootCategoriesRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *ListActiveRootCategoriesRequest) Reset() {
-	*x = ListActiveRootCategoriesRequest{}
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListActiveRootCategoriesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListActiveRootCategoriesRequest) ProtoMessage() {}
-
-func (x *ListActiveRootCategoriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListActiveRootCategoriesRequest.ProtoReflect.Descriptor instead.
-func (*ListActiveRootCategoriesRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *ListActiveRootCategoriesRequest) GetOrganizationId() string {
-	if x != nil {
-		return x.OrganizationId
-	}
-	return ""
-}
-
-func (x *ListActiveRootCategoriesRequest) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
-	}
-	return 0
-}
-
-func (x *ListActiveRootCategoriesRequest) GetAfter() string {
-	if x != nil {
-		return x.After
-	}
-	return ""
-}
-
-type ListActiveRootCategoriesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Items         []*Category            `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
-	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListActiveRootCategoriesResponse) Reset() {
-	*x = ListActiveRootCategoriesResponse{}
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListActiveRootCategoriesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListActiveRootCategoriesResponse) ProtoMessage() {}
-
-func (x *ListActiveRootCategoriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListActiveRootCategoriesResponse.ProtoReflect.Descriptor instead.
-func (*ListActiveRootCategoriesResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *ListActiveRootCategoriesResponse) GetItems() []*Category {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *ListActiveRootCategoriesResponse) GetNextCursor() string {
 	if x != nil && x.NextCursor != nil {
 		return *x.NextCursor
 	}
@@ -726,12 +742,13 @@ func (x *GetTypeResponse) GetType() *Type {
 }
 
 type ListTypesByCategoryRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CategoryId    string                 `protobuf:"bytes,1,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After         string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	CategoryId         string                 `protobuf:"bytes,1,opt,name=category_id,json=categoryId,proto3" json:"category_id,omitempty"`
+	Limit              int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	After              string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	IncludeDeactivated bool                   `protobuf:"varint,4,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *ListTypesByCategoryRequest) Reset() {
@@ -783,6 +800,13 @@ func (x *ListTypesByCategoryRequest) GetAfter() string {
 		return x.After
 	}
 	return ""
+}
+
+func (x *ListTypesByCategoryRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
 }
 
 type ListTypesByCategoryResponse struct {
@@ -837,29 +861,30 @@ func (x *ListTypesByCategoryResponse) GetNextCursor() string {
 	return ""
 }
 
-type ListActiveTypesByOrganizationRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
-	Limit          int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	After          string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+type ListTypesByOrganizationRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	OrganizationId     string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
+	Limit              int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	After              string                 `protobuf:"bytes,3,opt,name=after,proto3" json:"after,omitempty"`
+	IncludeDeactivated bool                   `protobuf:"varint,4,opt,name=include_deactivated,json=includeDeactivated,proto3" json:"include_deactivated,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
-func (x *ListActiveTypesByOrganizationRequest) Reset() {
-	*x = ListActiveTypesByOrganizationRequest{}
+func (x *ListTypesByOrganizationRequest) Reset() {
+	*x = ListTypesByOrganizationRequest{}
 	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListActiveTypesByOrganizationRequest) String() string {
+func (x *ListTypesByOrganizationRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListActiveTypesByOrganizationRequest) ProtoMessage() {}
+func (*ListTypesByOrganizationRequest) ProtoMessage() {}
 
-func (x *ListActiveTypesByOrganizationRequest) ProtoReflect() protoreflect.Message {
+func (x *ListTypesByOrganizationRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -871,33 +896,40 @@ func (x *ListActiveTypesByOrganizationRequest) ProtoReflect() protoreflect.Messa
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListActiveTypesByOrganizationRequest.ProtoReflect.Descriptor instead.
-func (*ListActiveTypesByOrganizationRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListTypesByOrganizationRequest.ProtoReflect.Descriptor instead.
+func (*ListTypesByOrganizationRequest) Descriptor() ([]byte, []int) {
 	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{14}
 }
 
-func (x *ListActiveTypesByOrganizationRequest) GetOrganizationId() string {
+func (x *ListTypesByOrganizationRequest) GetOrganizationId() string {
 	if x != nil {
 		return x.OrganizationId
 	}
 	return ""
 }
 
-func (x *ListActiveTypesByOrganizationRequest) GetLimit() int32 {
+func (x *ListTypesByOrganizationRequest) GetLimit() int32 {
 	if x != nil {
 		return x.Limit
 	}
 	return 0
 }
 
-func (x *ListActiveTypesByOrganizationRequest) GetAfter() string {
+func (x *ListTypesByOrganizationRequest) GetAfter() string {
 	if x != nil {
 		return x.After
 	}
 	return ""
 }
 
-type ListActiveTypesByOrganizationResponse struct {
+func (x *ListTypesByOrganizationRequest) GetIncludeDeactivated() bool {
+	if x != nil {
+		return x.IncludeDeactivated
+	}
+	return false
+}
+
+type ListTypesByOrganizationResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         []*Type                `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
 	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
@@ -905,20 +937,20 @@ type ListActiveTypesByOrganizationResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListActiveTypesByOrganizationResponse) Reset() {
-	*x = ListActiveTypesByOrganizationResponse{}
+func (x *ListTypesByOrganizationResponse) Reset() {
+	*x = ListTypesByOrganizationResponse{}
 	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListActiveTypesByOrganizationResponse) String() string {
+func (x *ListTypesByOrganizationResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListActiveTypesByOrganizationResponse) ProtoMessage() {}
+func (*ListTypesByOrganizationResponse) ProtoMessage() {}
 
-func (x *ListActiveTypesByOrganizationResponse) ProtoReflect() protoreflect.Message {
+func (x *ListTypesByOrganizationResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_query_incident_classifier_v1_classifier_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -930,19 +962,19 @@ func (x *ListActiveTypesByOrganizationResponse) ProtoReflect() protoreflect.Mess
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListActiveTypesByOrganizationResponse.ProtoReflect.Descriptor instead.
-func (*ListActiveTypesByOrganizationResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListTypesByOrganizationResponse.ProtoReflect.Descriptor instead.
+func (*ListTypesByOrganizationResponse) Descriptor() ([]byte, []int) {
 	return file_query_incident_classifier_v1_classifier_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *ListActiveTypesByOrganizationResponse) GetItems() []*Type {
+func (x *ListTypesByOrganizationResponse) GetItems() []*Type {
 	if x != nil {
 		return x.Items
 	}
 	return nil
 }
 
-func (x *ListActiveTypesByOrganizationResponse) GetNextCursor() string {
+func (x *ListTypesByOrganizationResponse) GetNextCursor() string {
 	if x != nil && x.NextCursor != nil {
 		return *x.NextCursor
 	}
@@ -984,21 +1016,23 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x12GetCategoryRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"Y\n" +
 	"\x13GetCategoryResponse\x12B\n" +
-	"\bcategory\x18\x01 \x01(\v2&.query.incident.classifier.v1.CategoryR\bcategory\"z\n" +
-	"#ListCategoriesByOrganizationRequest\x12'\n" +
+	"\bcategory\x18\x01 \x01(\v2&.query.incident.classifier.v1.CategoryR\bcategory\"\xa1\x01\n" +
+	"\x19ListRootCategoriesRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\x9a\x01\n" +
-	"$ListCategoriesByOrganizationResponse\x12<\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12/\n" +
+	"\x13include_deactivated\x18\x04 \x01(\bR\x12includeDeactivated\"\x90\x01\n" +
+	"\x1aListRootCategoriesResponse\x12<\n" +
 	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"v\n" +
-	"\x1fListActiveRootCategoriesRequest\x12'\n" +
+	"\f_next_cursor\"\xab\x01\n" +
+	"#ListCategoriesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\x96\x01\n" +
-	" ListActiveRootCategoriesResponse\x12<\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12/\n" +
+	"\x13include_deactivated\x18\x04 \x01(\bR\x12includeDeactivated\"\x9a\x01\n" +
+	"$ListCategoriesByOrganizationResponse\x12<\n" +
 	"\x05items\x18\x01 \x03(\v2&.query.incident.classifier.v1.CategoryR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
@@ -1010,39 +1044,47 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\x0eGetTypeRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"I\n" +
 	"\x0fGetTypeResponse\x126\n" +
-	"\x04type\x18\x01 \x01(\v2\".query.incident.classifier.v1.TypeR\x04type\"i\n" +
+	"\x04type\x18\x01 \x01(\v2\".query.incident.classifier.v1.TypeR\x04type\"\x9a\x01\n" +
 	"\x1aListTypesByCategoryRequest\x12\x1f\n" +
 	"\vcategory_id\x18\x01 \x01(\tR\n" +
 	"categoryId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\x8d\x01\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12/\n" +
+	"\x13include_deactivated\x18\x04 \x01(\bR\x12includeDeactivated\"\x8d\x01\n" +
 	"\x1bListTypesByCategoryResponse\x128\n" +
 	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"{\n" +
-	"$ListActiveTypesByOrganizationRequest\x12'\n" +
+	"\f_next_cursor\"\xa6\x01\n" +
+	"\x1eListTypesByOrganizationRequest\x12'\n" +
 	"\x0forganization_id\x18\x01 \x01(\tR\x0eorganizationId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\x12\x14\n" +
-	"\x05after\x18\x03 \x01(\tR\x05after\"\x97\x01\n" +
-	"%ListActiveTypesByOrganizationResponse\x128\n" +
+	"\x05after\x18\x03 \x01(\tR\x05after\x12/\n" +
+	"\x13include_deactivated\x18\x04 \x01(\bR\x12includeDeactivated\"\x91\x01\n" +
+	"\x1fListTypesByOrganizationResponse\x128\n" +
 	"\x05items\x18\x01 \x03(\v2\".query.incident.classifier.v1.TypeR\x05items\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor2\xdb\x11\n" +
+	"\f_next_cursor2\xee\x15\n" +
 	"\x1eIncidentClassifierQueryService\x12\x8d\x02\n" +
 	"\vGetCategory\x120.query.incident.classifier.v1.GetCategoryRequest\x1a1.query.incident.classifier.v1.GetCategoryResponse\"\x98\x01\x92AqJo\n" +
 	"\x03404\x12h\n" +
 	"fNot found. Error codes:\n" +
-	"- `incident_category_not_found` — category with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/incident-categories/{id}\x12\xe6\x02\n" +
-	"\x1cListCategoriesByOrganization\x12A.query.incident.classifier.v1.ListCategoriesByOrganizationRequest\x1aB.query.incident.classifier.v1.ListCategoriesByOrganizationResponse\"\xbe\x01\x92A|Jz\n" +
+	"- `incident_category_not_found` — category with the given ID does not exist.\x82\xd3\xe4\x93\x02\x1e\x12\x1c/v1/incident-categories/{id}\x12\xd8\x03\n" +
+	"\x12ListRootCategories\x127.query.incident.classifier.v1.ListRootCategoriesRequest\x1a8.query.incident.classifier.v1.ListRootCategoriesResponse\"\xce\x02\x92A\x8b\x02Jz\n" +
 	"\x03400\x12s\n" +
 	"qValidation failed. Error codes:\n" +
-	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x029\x127/v1/organizations/{organization_id}/incident-categories\x12\xe0\x02\n" +
-	"\x18ListActiveRootCategories\x12=.query.incident.classifier.v1.ListActiveRootCategoriesRequest\x1a>.query.incident.classifier.v1.ListActiveRootCategoriesResponse\"\xc4\x01\x92A|Jz\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x029\x127/v1/organizations/{organization_id}/incident-categories\x12\xfa\x03\n" +
+	"\x1cListCategoriesByOrganization\x12A.query.incident.classifier.v1.ListCategoriesByOrganizationRequest\x1aB.query.incident.classifier.v1.ListCategoriesByOrganizationResponse\"\xd2\x02\x92A\x8b\x02Jz\n" +
 	"\x03400\x12s\n" +
 	"qValidation failed. Error codes:\n" +
-	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02?\x12=/v1/organizations/{organization_id}/incident-categories:roots\x12\xb5\x02\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02=\x12;/v1/organizations/{organization_id}/incident-categories:all\x12\xb5\x02\n" +
 	"\x13ListCategorySubtree\x128.query.incident.classifier.v1.ListCategorySubtreeRequest\x1a9.query.incident.classifier.v1.ListCategorySubtreeResponse\"\xa8\x01\x92AkJi\n" +
 	"\x03500\x12b\n" +
 	"`Internal server error. Error codes:\n" +
@@ -1050,15 +1092,21 @@ const file_query_incident_classifier_v1_classifier_proto_rawDesc = "" +
 	"\aGetType\x12,.query.incident.classifier.v1.GetTypeRequest\x1a-.query.incident.classifier.v1.GetTypeResponse\"\x8b\x01\x92AiJg\n" +
 	"\x03404\x12`\n" +
 	"^Not found. Error codes:\n" +
-	"- `incident_type_not_found` — type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/incident-types/{id}\x12\xbf\x02\n" +
-	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"\xb2\x01\x92A|Jz\n" +
+	"- `incident_type_not_found` — type with the given ID does not exist.\x82\xd3\xe4\x93\x02\x19\x12\x17/v1/incident-types/{id}\x12\xcf\x03\n" +
+	"\x13ListTypesByCategory\x128.query.incident.classifier.v1.ListTypesByCategoryRequest\x1a9.query.incident.classifier.v1.ListTypesByCategoryResponse\"\xc2\x02\x92A\x8b\x02Jz\n" +
 	"\x03400\x12s\n" +
 	"qValidation failed. Error codes:\n" +
-	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02-\x12+/v1/incident-categories/{category_id}/types\x12\xeb\x02\n" +
-	"\x1dListActiveTypesByOrganization\x12B.query.incident.classifier.v1.ListActiveTypesByOrganizationRequest\x1aC.query.incident.classifier.v1.ListActiveTypesByOrganizationResponse\"\xc0\x01\x92A|Jz\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x02-\x12+/v1/incident-categories/{category_id}/types\x12\xe2\x03\n" +
+	"\x17ListTypesByOrganization\x12<.query.incident.classifier.v1.ListTypesByOrganizationRequest\x1a=.query.incident.classifier.v1.ListTypesByOrganizationResponse\"\xc9\x02\x92A\x8b\x02Jz\n" +
 	"\x03400\x12s\n" +
 	"qValidation failed. Error codes:\n" +
-	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.\x82\xd3\xe4\x93\x02;\x129/v1/organizations/{organization_id}/incident-types:activeB\x87\x05\x92A\xe3\x02RI\n" +
+	"- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed.J\x8c\x01\n" +
+	"\x03403\x12\x84\x01\n" +
+	"\x81\x01Permission denied. Error codes:\n" +
+	"- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges.\x82\xd3\xe4\x93\x024\x122/v1/organizations/{organization_id}/incident-typesB\x87\x05\x92A\xe3\x02RI\n" +
 	"\x03400\x12B\n" +
 	"#Validation failed or invalid input.\x12\x1b\n" +
 	"\x19\x1a\x17.error.v1.ErrorResponseRS\n" +
@@ -1090,45 +1138,45 @@ func file_query_incident_classifier_v1_classifier_proto_rawDescGZIP() []byte {
 
 var file_query_incident_classifier_v1_classifier_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_query_incident_classifier_v1_classifier_proto_goTypes = []any{
-	(*Category)(nil),                              // 0: query.incident.classifier.v1.Category
-	(*Type)(nil),                                  // 1: query.incident.classifier.v1.Type
-	(*GetCategoryRequest)(nil),                    // 2: query.incident.classifier.v1.GetCategoryRequest
-	(*GetCategoryResponse)(nil),                   // 3: query.incident.classifier.v1.GetCategoryResponse
-	(*ListCategoriesByOrganizationRequest)(nil),   // 4: query.incident.classifier.v1.ListCategoriesByOrganizationRequest
-	(*ListCategoriesByOrganizationResponse)(nil),  // 5: query.incident.classifier.v1.ListCategoriesByOrganizationResponse
-	(*ListActiveRootCategoriesRequest)(nil),       // 6: query.incident.classifier.v1.ListActiveRootCategoriesRequest
-	(*ListActiveRootCategoriesResponse)(nil),      // 7: query.incident.classifier.v1.ListActiveRootCategoriesResponse
-	(*ListCategorySubtreeRequest)(nil),            // 8: query.incident.classifier.v1.ListCategorySubtreeRequest
-	(*ListCategorySubtreeResponse)(nil),           // 9: query.incident.classifier.v1.ListCategorySubtreeResponse
-	(*GetTypeRequest)(nil),                        // 10: query.incident.classifier.v1.GetTypeRequest
-	(*GetTypeResponse)(nil),                       // 11: query.incident.classifier.v1.GetTypeResponse
-	(*ListTypesByCategoryRequest)(nil),            // 12: query.incident.classifier.v1.ListTypesByCategoryRequest
-	(*ListTypesByCategoryResponse)(nil),           // 13: query.incident.classifier.v1.ListTypesByCategoryResponse
-	(*ListActiveTypesByOrganizationRequest)(nil),  // 14: query.incident.classifier.v1.ListActiveTypesByOrganizationRequest
-	(*ListActiveTypesByOrganizationResponse)(nil), // 15: query.incident.classifier.v1.ListActiveTypesByOrganizationResponse
+	(*Category)(nil),                             // 0: query.incident.classifier.v1.Category
+	(*Type)(nil),                                 // 1: query.incident.classifier.v1.Type
+	(*GetCategoryRequest)(nil),                   // 2: query.incident.classifier.v1.GetCategoryRequest
+	(*GetCategoryResponse)(nil),                  // 3: query.incident.classifier.v1.GetCategoryResponse
+	(*ListRootCategoriesRequest)(nil),            // 4: query.incident.classifier.v1.ListRootCategoriesRequest
+	(*ListRootCategoriesResponse)(nil),           // 5: query.incident.classifier.v1.ListRootCategoriesResponse
+	(*ListCategoriesByOrganizationRequest)(nil),  // 6: query.incident.classifier.v1.ListCategoriesByOrganizationRequest
+	(*ListCategoriesByOrganizationResponse)(nil), // 7: query.incident.classifier.v1.ListCategoriesByOrganizationResponse
+	(*ListCategorySubtreeRequest)(nil),           // 8: query.incident.classifier.v1.ListCategorySubtreeRequest
+	(*ListCategorySubtreeResponse)(nil),          // 9: query.incident.classifier.v1.ListCategorySubtreeResponse
+	(*GetTypeRequest)(nil),                       // 10: query.incident.classifier.v1.GetTypeRequest
+	(*GetTypeResponse)(nil),                      // 11: query.incident.classifier.v1.GetTypeResponse
+	(*ListTypesByCategoryRequest)(nil),           // 12: query.incident.classifier.v1.ListTypesByCategoryRequest
+	(*ListTypesByCategoryResponse)(nil),          // 13: query.incident.classifier.v1.ListTypesByCategoryResponse
+	(*ListTypesByOrganizationRequest)(nil),       // 14: query.incident.classifier.v1.ListTypesByOrganizationRequest
+	(*ListTypesByOrganizationResponse)(nil),      // 15: query.incident.classifier.v1.ListTypesByOrganizationResponse
 }
 var file_query_incident_classifier_v1_classifier_proto_depIdxs = []int32{
 	0,  // 0: query.incident.classifier.v1.GetCategoryResponse.category:type_name -> query.incident.classifier.v1.Category
-	0,  // 1: query.incident.classifier.v1.ListCategoriesByOrganizationResponse.items:type_name -> query.incident.classifier.v1.Category
-	0,  // 2: query.incident.classifier.v1.ListActiveRootCategoriesResponse.items:type_name -> query.incident.classifier.v1.Category
+	0,  // 1: query.incident.classifier.v1.ListRootCategoriesResponse.items:type_name -> query.incident.classifier.v1.Category
+	0,  // 2: query.incident.classifier.v1.ListCategoriesByOrganizationResponse.items:type_name -> query.incident.classifier.v1.Category
 	0,  // 3: query.incident.classifier.v1.ListCategorySubtreeResponse.items:type_name -> query.incident.classifier.v1.Category
 	1,  // 4: query.incident.classifier.v1.GetTypeResponse.type:type_name -> query.incident.classifier.v1.Type
 	1,  // 5: query.incident.classifier.v1.ListTypesByCategoryResponse.items:type_name -> query.incident.classifier.v1.Type
-	1,  // 6: query.incident.classifier.v1.ListActiveTypesByOrganizationResponse.items:type_name -> query.incident.classifier.v1.Type
+	1,  // 6: query.incident.classifier.v1.ListTypesByOrganizationResponse.items:type_name -> query.incident.classifier.v1.Type
 	2,  // 7: query.incident.classifier.v1.IncidentClassifierQueryService.GetCategory:input_type -> query.incident.classifier.v1.GetCategoryRequest
-	4,  // 8: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategoriesByOrganization:input_type -> query.incident.classifier.v1.ListCategoriesByOrganizationRequest
-	6,  // 9: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveRootCategories:input_type -> query.incident.classifier.v1.ListActiveRootCategoriesRequest
+	4,  // 8: query.incident.classifier.v1.IncidentClassifierQueryService.ListRootCategories:input_type -> query.incident.classifier.v1.ListRootCategoriesRequest
+	6,  // 9: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategoriesByOrganization:input_type -> query.incident.classifier.v1.ListCategoriesByOrganizationRequest
 	8,  // 10: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategorySubtree:input_type -> query.incident.classifier.v1.ListCategorySubtreeRequest
 	10, // 11: query.incident.classifier.v1.IncidentClassifierQueryService.GetType:input_type -> query.incident.classifier.v1.GetTypeRequest
 	12, // 12: query.incident.classifier.v1.IncidentClassifierQueryService.ListTypesByCategory:input_type -> query.incident.classifier.v1.ListTypesByCategoryRequest
-	14, // 13: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveTypesByOrganization:input_type -> query.incident.classifier.v1.ListActiveTypesByOrganizationRequest
+	14, // 13: query.incident.classifier.v1.IncidentClassifierQueryService.ListTypesByOrganization:input_type -> query.incident.classifier.v1.ListTypesByOrganizationRequest
 	3,  // 14: query.incident.classifier.v1.IncidentClassifierQueryService.GetCategory:output_type -> query.incident.classifier.v1.GetCategoryResponse
-	5,  // 15: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategoriesByOrganization:output_type -> query.incident.classifier.v1.ListCategoriesByOrganizationResponse
-	7,  // 16: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveRootCategories:output_type -> query.incident.classifier.v1.ListActiveRootCategoriesResponse
+	5,  // 15: query.incident.classifier.v1.IncidentClassifierQueryService.ListRootCategories:output_type -> query.incident.classifier.v1.ListRootCategoriesResponse
+	7,  // 16: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategoriesByOrganization:output_type -> query.incident.classifier.v1.ListCategoriesByOrganizationResponse
 	9,  // 17: query.incident.classifier.v1.IncidentClassifierQueryService.ListCategorySubtree:output_type -> query.incident.classifier.v1.ListCategorySubtreeResponse
 	11, // 18: query.incident.classifier.v1.IncidentClassifierQueryService.GetType:output_type -> query.incident.classifier.v1.GetTypeResponse
 	13, // 19: query.incident.classifier.v1.IncidentClassifierQueryService.ListTypesByCategory:output_type -> query.incident.classifier.v1.ListTypesByCategoryResponse
-	15, // 20: query.incident.classifier.v1.IncidentClassifierQueryService.ListActiveTypesByOrganization:output_type -> query.incident.classifier.v1.ListActiveTypesByOrganizationResponse
+	15, // 20: query.incident.classifier.v1.IncidentClassifierQueryService.ListTypesByOrganization:output_type -> query.incident.classifier.v1.ListTypesByOrganizationResponse
 	14, // [14:21] is the sub-list for method output_type
 	7,  // [7:14] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name

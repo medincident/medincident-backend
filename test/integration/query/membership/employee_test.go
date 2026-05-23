@@ -100,7 +100,7 @@ func TestEmployeeReader_Get_AndListByDepartment(t *testing.T) {
 	require.NotNil(t, got.Position)
 	require.Equal(t, "Nurse", *got.Position)
 
-	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{})
+	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, false, memberread.ListQuery{}, memberread.EmployeeFilter{})
 	require.NoError(t, err)
 	require.Len(t, list.Items, 1)
 	require.Equal(t, empID, list.Items[0].EmployeeID)
@@ -171,7 +171,7 @@ func TestEmployeeReader_EmployeeFilters(t *testing.T) {
 	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
 
 	// Default: terminated hidden → only the active employee.
-	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{})
+	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, false, memberread.ListQuery{}, memberread.EmployeeFilter{})
 	require.NoError(t, err)
 	require.Len(t, list.Items, 1)
 	require.Equal(t, activeID, list.Items[0].EmployeeID)
@@ -185,7 +185,7 @@ func TestEmployeeReader_EmployeeFilters(t *testing.T) {
 	require.Equal(t, int64(2), total)
 
 	// OnVacation=true → only the active employee (term has no active vacation).
-	list, err = reader.ListByDepartment(ctx, sysadminCaller, deptID, memberread.ListQuery{}, memberread.EmployeeFilter{OnVacation: true})
+	list, err = reader.ListByDepartment(ctx, sysadminCaller, deptID, false, memberread.ListQuery{}, memberread.EmployeeFilter{OnVacation: true})
 	require.NoError(t, err)
 	require.Len(t, list.Items, 1)
 	require.Equal(t, activeID, list.Items[0].EmployeeID)
@@ -356,4 +356,64 @@ func TestEmployeeReader_GetForSelf_NotFound(t *testing.T) {
 	_, err := reader.GetForSelf(ctx, authz.Caller{ZitadelUserID: "no-such-zitadel-id"})
 	require.Error(t, err)
 	require.Equal(t, memberread.ErrCodeEmployeeNotFound, codeOf(t, err))
+}
+
+// TestEmployeeReader_IncludeDeactivated_ShowsTerminated verifies that
+// passing includeDeactivated=true in ListByDepartment exposes terminated
+// employees (those with terminated_at IS NOT NULL) to the system admin,
+// while the default (false) hides them. It also verifies that a caller
+// with no roles receives permission_denied when passing
+// includeDeactivated=true.
+func TestEmployeeReader_IncludeDeactivated_ShowsTerminated(t *testing.T) {
+	resetProjections(t)
+	ctx := context.Background()
+	logger := zerolog.Nop()
+
+	now := time.Now().UTC().Truncate(time.Second)
+	orgID, _, deptID := seedOrgClinicDept(t, ctx, now)
+
+	activeID := uuid.Must(uuid.NewV7())
+	termID := uuid.Must(uuid.NewV7())
+
+	require.NoError(t, testDB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		if err := qprojector.EmployeeHired(tx, activeID.String(), now, &empv1.EmployeeHired{
+			ZitadelUserId:  "zit-active",
+			OrganizationId: orgID.String(),
+			DepartmentId:   deptID.String(),
+			HiredAt:        timestamppb.New(now),
+		}); err != nil {
+			return err
+		}
+		if err := qprojector.EmployeeHired(tx, termID.String(), now, &empv1.EmployeeHired{
+			ZitadelUserId:  "zit-term",
+			OrganizationId: orgID.String(),
+			DepartmentId:   deptID.String(),
+			HiredAt:        timestamppb.New(now),
+		}); err != nil {
+			return err
+		}
+		return qprojector.EmployeeTerminated(tx, termID.String(), now, &empv1.EmployeeTerminated{
+			OrganizationId: orgID.String(),
+			DepartmentId:   deptID.String(),
+			TerminatedAt:   timestamppb.New(now),
+		})
+	}))
+
+	reader := memberread.NewEmployeeReader(testDB, authzSvc, &logger)
+
+	// Default (includeDeactivated=false): only the active employee.
+	list, err := reader.ListByDepartment(ctx, sysadminCaller, deptID, false, memberread.ListQuery{}, memberread.EmployeeFilter{})
+	require.NoError(t, err)
+	require.Len(t, list.Items, 1)
+	require.Equal(t, activeID, list.Items[0].EmployeeID)
+
+	// includeDeactivated=true (admin): both employees.
+	list, err = reader.ListByDepartment(ctx, sysadminCaller, deptID, true, memberread.ListQuery{}, memberread.EmployeeFilter{})
+	require.NoError(t, err)
+	require.Len(t, list.Items, 2)
+
+	// No-roles caller with includeDeactivated=true: permission denied.
+	noRoles := authz.Caller{ZitadelUserID: "nonadmin-include-deactivated"}
+	_, err = reader.ListByDepartment(ctx, noRoles, deptID, true, memberread.ListQuery{}, memberread.EmployeeFilter{})
+	require.Error(t, err)
 }

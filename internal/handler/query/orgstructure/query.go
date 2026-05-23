@@ -50,11 +50,16 @@ func (h *OrgStructureQueryHandler) GetOrganization(
 	ctx context.Context,
 	req *orgqueryv1.GetOrganizationRequest,
 ) (*orgqueryv1.GetOrganizationResponse, error) {
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
 	id, err := parseOrganizationID(req.GetId())
 	if err != nil {
 		return nil, err
 	}
-	view, err := h.orgReader.Get(ctx, id)
+	view, err := h.orgReader.Get(ctx, caller, id)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +73,12 @@ func (h *OrgStructureQueryHandler) ListOrganizations(
 	ctx context.Context,
 	req *orgqueryv1.ListOrganizationsRequest,
 ) (*orgqueryv1.ListOrganizationsResponse, error) {
-	result, err := h.orgReader.List(ctx, orgread.ListQuery{
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	result, err := h.orgReader.List(ctx, caller, req.GetIncludeDeactivated(), orgread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
@@ -91,14 +101,19 @@ func (h *OrgStructureQueryHandler) ListOrganizations(
 
 // SearchOrganizations returns organizations whose name matches the
 // given case-insensitive substring. Empty query degenerates to
-// ListOrganizations semantics. Authorization mirrors ListOrganizations
-// — organizations are the public catalog of the platform, so any
-// authenticated caller may search them.
+// ListOrganizations semantics. When include_deactivated is true the
+// caller must be a system admin; otherwise only active organizations
+// are searched.
 func (h *OrgStructureQueryHandler) SearchOrganizations(
 	ctx context.Context,
 	req *orgqueryv1.SearchOrganizationsRequest,
 ) (*orgqueryv1.SearchOrganizationsResponse, error) {
-	result, err := h.orgReader.Search(ctx, strings.TrimSpace(req.GetQuery()), orgread.ListQuery{
+	callerID, err := grpcmw.CallerID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	caller := authz.Caller{ZitadelUserID: callerID}
+	result, err := h.orgReader.Search(ctx, caller, strings.TrimSpace(req.GetQuery()), req.GetIncludeDeactivated(), orgread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
@@ -166,7 +181,7 @@ func (h *OrgStructureQueryHandler) ListClinicsByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.clinReader.ListByOrganization(ctx, caller, orgID, orgread.ListQuery{
+	result, err := h.clinReader.ListByOrganization(ctx, caller, orgID, req.GetIncludeDeactivated(), orgread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
@@ -245,7 +260,7 @@ func (h *OrgStructureQueryHandler) ListDepartmentsByClinic(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.deptReader.ListByClinic(ctx, caller, clinicID, orgread.ListQuery{
+	result, err := h.deptReader.ListByClinic(ctx, caller, clinicID, req.GetIncludeDeactivated(), orgread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})

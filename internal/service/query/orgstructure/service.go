@@ -28,22 +28,24 @@ import (
 )
 
 // OrganizationReader exposes read methods for the Organization
-// projection. Organizations are public to any authenticated caller, so
-// this reader takes no *authz.Authz — authentication is enforced by
-// the gRPC interceptor chain upstream.
+// projection. Organizations are a public catalog for any authenticated
+// caller; the authz dependency is used only when include_deactivated=true
+// is requested (org-admin or system-admin check).
 type OrganizationReader struct {
 	db     *gorm.DB
+	authz  *authz.Authz
 	logger *zerolog.Logger
 }
 
 // NewOrganizationReader returns an OrganizationReader bound to the
-// given gorm DB.
+// given gorm DB and authorization service.
 //
 // Organizations are a public catalog for authenticated callers.
-// OrganizationReader performs no authorization/scope check; authentication
-// is enforced upstream by the gRPC interceptor chain (see AGENTS.md § Authorization model).
-func NewOrganizationReader(db *gorm.DB, logger *zerolog.Logger) *OrganizationReader {
-	return &OrganizationReader{db: db, logger: logger}
+// Authentication is enforced upstream by the gRPC interceptor chain
+// (see AGENTS.md § Authorization model). The authz parameter is only
+// consulted when include_deactivated=true is requested.
+func NewOrganizationReader(db *gorm.DB, az *authz.Authz, logger *zerolog.Logger) *OrganizationReader {
+	return &OrganizationReader{db: db, authz: az, logger: logger}
 }
 
 // ClinicReader exposes read methods for the Clinic projection. Reads

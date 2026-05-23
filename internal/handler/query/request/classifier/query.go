@@ -100,7 +100,7 @@ func (h *RequestClassifierQueryHandler) ListRequestTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.reader.ListRequestTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+	result, err := h.reader.ListRequestTypesByOrganization(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
@@ -108,34 +108,6 @@ func (h *RequestClassifierQueryHandler) ListRequestTypesByOrganization(
 		return nil, err
 	}
 	return &classifierqueryv1.ListRequestTypesByOrganizationResponse{
-		Items:      requestTypesToProto(result.Items),
-		NextCursor: result.NextCursor,
-	}, nil
-}
-
-// ListActiveRequestTypesByOrganization returns active request types
-// for an org.
-func (h *RequestClassifierQueryHandler) ListActiveRequestTypesByOrganization(
-	ctx context.Context,
-	req *classifierqueryv1.ListActiveRequestTypesByOrganizationRequest,
-) (*classifierqueryv1.ListActiveRequestTypesByOrganizationResponse, error) {
-	callerID, err := grpcmw.CallerID(ctx)
-	if err != nil {
-		return nil, err
-	}
-	caller := authz.Caller{ZitadelUserID: callerID}
-	id, err := parseOrganizationID(req.GetOrganizationId())
-	if err != nil {
-		return nil, err
-	}
-	result, err := h.reader.ListActiveRequestTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
-		Limit: int(req.GetLimit()),
-		After: afterPtr(req.GetAfter()),
-	})
-	if err != nil {
-		return nil, err
-	}
-	return &classifierqueryv1.ListActiveRequestTypesByOrganizationResponse{
 		Items:      requestTypesToProto(result.Items),
 		NextCursor: result.NextCursor,
 	}, nil

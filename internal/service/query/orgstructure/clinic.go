@@ -51,7 +51,9 @@ type ClinicListResult struct {
 
 // Get returns the ClinicDetails for the given id. Authorization:
 // authz.ReaderOf.Clinic(id) — system admin, organization admin of the
-// owning org, or any employee of the owning org.
+// owning org, or any employee of the owning org. Deactivated clinics
+// are returned only to org-admins and system admins; non-admins receive
+// clinic_not_found.
 //
 // See: docs/services/OrgStructure.md
 func (r *ClinicReader) Get(
@@ -91,6 +93,20 @@ func (r *ClinicReader) Get(
 			With("clinic_id", id).
 			Wrap(err)
 	}
+	if !out.IsActive {
+		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Clinic(id)))
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
+			return nil, oops.In("reader.orgstructure.clinic").
+				Code(ErrCodeClinicNotFound).
+				Public("Clinic not found.").
+				With("clinic_id", id).
+				Errorf("not found")
+		}
+	}
 	out.PhysicalAddress = AddressView{Text: addrText}
 	if lon != nil && lat != nil {
 		out.PhysicalAddress.Point = &PointView{Longitude: *lon, Latitude: *lat}
@@ -128,16 +144,17 @@ func (r *ClinicReader) CountByOrganization(
 
 // ListByOrganization returns up to q.Limit clinics belonging to the
 // given organization, ordered most-recently-updated first. Authorization:
-// authz.ReaderOf.Organization(organizationID). Pagination bounds are
-// normalized first so a malformed Limit cannot trigger a gratuitous
-// authz DB round-trip — matching the validate→authorize order used on
-// the command side.
+// authz.ReaderOf.Organization(organizationID). When includeDeactivated
+// is true an additional admin check is performed; inactive clinics are
+// excluded by default. Pagination bounds are normalized first so a
+// malformed Limit cannot trigger a gratuitous authz DB round-trip.
 //
 // See: docs/services/OrgStructure.md
 func (r *ClinicReader) ListByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	organizationID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 ) (ClinicListResult, error) {
 	if err := q.normalize(); err != nil {
@@ -148,11 +165,20 @@ func (r *ClinicReader) ListByOrganization(
 	); err != nil {
 		return ClinicListResult{}, err
 	}
+	if includeDeactivated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Organization(organizationID))); err != nil {
+			return ClinicListResult{}, err
+		}
+	}
 	sqlBuf := `SELECT id, organization_id, name, is_active, updated_at
 		  FROM projections.clinics
 		 WHERE organization_id = ?`
 	args := make([]any, 0, 4)
 	args = append(args, organizationID)
+	if !includeDeactivated {
+		sqlBuf += ` AND is_active = TRUE`
+	}
 	if q.After != nil {
 		c, err := cursor.Decode(*q.After)
 		if err != nil {

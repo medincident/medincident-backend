@@ -774,6 +774,19 @@
 
 ## Query-методы
 
+### Параметр include_deactivated
+
+Методы `ListEmployeesByDepartment`, `ListEmployeesByClinic` и `ListEmployeesByOrganization` поддерживают параметр `include_deactivated bool` (по умолчанию `false`). Сотрудник считается деактивированным, если `terminated_at IS NOT NULL`.
+
+- `include_deactivated=false` (по умолчанию): возвращаются только активные (не уволенные) сотрудники.
+- `include_deactivated=true`: возвращаются все сотрудники, включая уволенных. Требует `SystemAdmin` или `OrgAdminOf` соответствующей организации. Без нужных прав возвращается `permission_denied`.
+
+**Поведение GetEmployee для деактивированного сотрудника:**
+
+`GetEmployee` не принимает параметр `include_deactivated`. Видимость деактивированных записей определяется автоматически по роли вызывающего:
+- Не-администратор: деактивированный сотрудник возвращается как `employee_card_not_found` (неотличимо от отсутствующего).
+- Администратор: возвращается фактическая карточка.
+
 ### GetEmployee
 
 **HTTP:** `GET /v1/employees/{id}`
@@ -788,7 +801,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `permission_denied` | 403 | Нет прав доступа |
-| `employee_card_not_found` | 404 | Карточка сотрудника не найдена |
+| `employee_card_not_found` | 404 | Карточка сотрудника не найдена или сотрудник уволен (для не-администратора) |
 
 ---
 
@@ -825,7 +838,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `membership_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
 
 ---
 
@@ -843,7 +856,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `membership_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
 
 ---
 
@@ -861,7 +874,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `membership_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
 
 ---
 

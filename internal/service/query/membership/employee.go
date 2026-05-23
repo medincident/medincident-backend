@@ -94,6 +94,8 @@ type EmployeeListResult struct {
 // Get returns the employee_card row for the given id. Authorization:
 // authz.ReaderOf.Employee(id) — system admin, organization admin of
 // the employee's org, or any employee of the same organization.
+// Terminated employees (terminated_at IS NOT NULL) are returned only
+// to org-admins and system admins; non-admins receive employee_card_not_found.
 //
 // See: docs/services/Membership.md
 func (r *EmployeeReader) Get(
@@ -121,6 +123,20 @@ func (r *EmployeeReader) Get(
 			Code(ErrCodeEmployeeLoadFailed).
 			With("employee_id", id).
 			Wrap(err)
+	}
+	if out.TerminatedAt != nil {
+		ok, err := r.authz.Satisfies(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Employee(id)))
+		if err != nil {
+			return nil, err
+		}
+		if !ok {
+			return nil, oops.In("reader.membership.employee").
+				Code(ErrCodeEmployeeNotFound).
+				Public("Employee not found.").
+				With("employee_id", id).
+				Errorf("not found")
+		}
 	}
 	return &out, nil
 }
@@ -260,53 +276,86 @@ func (r *EmployeeReader) listByField(
 }
 
 // ListByDepartment returns cards under a department. Authorization:
-// authz.ReaderOf.Department(deptID).
+// authz.ReaderOf.Department(deptID). When includeDeactivated is true
+// an additional admin check is performed and terminated employees are
+// included; terminated employees are hidden by default.
 //
 // See: docs/services/Membership.md
 func (r *EmployeeReader) ListByDepartment(
 	ctx context.Context,
 	caller authz.Caller,
 	deptID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 	filter EmployeeFilter,
 ) (EmployeeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Department(deptID)); err != nil {
 		return EmployeeListResult{}, err
 	}
+	wantTerminated := includeDeactivated || filter.IncludeTerminated
+	if wantTerminated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Department(deptID))); err != nil {
+			return EmployeeListResult{}, err
+		}
+	}
+	filter.IncludeTerminated = wantTerminated
 	return r.listByField(ctx, "department_id", deptID, q, filter)
 }
 
 // ListByClinic returns cards under a clinic. Authorization:
-// authz.ReaderOf.Clinic(clinicID).
+// authz.ReaderOf.Clinic(clinicID). When includeDeactivated is true
+// an additional admin check is performed and terminated employees are
+// included; terminated employees are hidden by default.
 //
 // See: docs/services/Membership.md
 func (r *EmployeeReader) ListByClinic(
 	ctx context.Context,
 	caller authz.Caller,
 	clinicID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 	filter EmployeeFilter,
 ) (EmployeeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Clinic(clinicID)); err != nil {
 		return EmployeeListResult{}, err
 	}
+	wantTerminated := includeDeactivated || filter.IncludeTerminated
+	if wantTerminated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Clinic(clinicID))); err != nil {
+			return EmployeeListResult{}, err
+		}
+	}
+	filter.IncludeTerminated = wantTerminated
 	return r.listByField(ctx, "clinic_id", clinicID, q, filter)
 }
 
 // ListByOrganization returns cards under an organization. Authorization:
-// authz.ReaderOf.Organization(orgID).
+// authz.ReaderOf.Organization(orgID). When includeDeactivated is true
+// an additional admin check is performed and terminated employees are
+// included; terminated employees are hidden by default.
 //
 // See: docs/services/Membership.md
 func (r *EmployeeReader) ListByOrganization(
 	ctx context.Context,
 	caller authz.Caller,
 	orgID uuid.UUID,
+	includeDeactivated bool,
 	q ListQuery,
 	filter EmployeeFilter,
 ) (EmployeeListResult, error) {
 	if err := r.authz.Require(ctx, caller.ZitadelUserID, authz.ReaderOf.Organization(orgID)); err != nil {
 		return EmployeeListResult{}, err
 	}
+	wantTerminated := includeDeactivated || filter.IncludeTerminated
+	if wantTerminated {
+		if err := r.authz.Require(ctx, caller.ZitadelUserID,
+			authz.AnyOf(authz.SystemAdmin, authz.OrgAdminOf.Organization(orgID))); err != nil {
+			return EmployeeListResult{}, err
+		}
+	}
+	filter.IncludeTerminated = wantTerminated
 	return r.listByField(ctx, "organization_id", orgID, q, filter)
 }
 

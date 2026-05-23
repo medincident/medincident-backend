@@ -72,14 +72,9 @@ service RequestClassifierQueryService {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
       }
-    };
-  }
-  rpc ListActiveRequestTypesByOrganization(ListActiveRequestTypesByOrganizationRequest) returns (ListActiveRequestTypesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/organizations/{organization_id}/request-types:active"};
-    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
-        key: "400"
-        value: {description: "Validation failed. Error codes:\n- `request_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -106,18 +101,9 @@ message ListRequestTypesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
   string after = 3;
+  bool include_deactivated = 4;
 }
 message ListRequestTypesByOrganizationResponse {
-  repeated RequestType items = 1;
-  optional string next_cursor = 2;
-}
-
-message ListActiveRequestTypesByOrganizationRequest {
-  string organization_id = 1;
-  int32 limit = 2;
-  string after = 3;
-}
-message ListActiveRequestTypesByOrganizationResponse {
   repeated RequestType items = 1;
   optional string next_cursor = 2;
 }

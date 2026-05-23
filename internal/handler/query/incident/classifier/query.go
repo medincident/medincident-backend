@@ -89,7 +89,7 @@ func (h *IncidentClassifierQueryHandler) ListCategoriesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.reader.ListCategoriesByOrganization(ctx, caller, id, classifierread.ListQuery{
+	result, err := h.reader.ListCategoriesByOrganization(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
@@ -102,11 +102,11 @@ func (h *IncidentClassifierQueryHandler) ListCategoriesByOrganization(
 	}, nil
 }
 
-// ListActiveRootCategories returns active roots.
-func (h *IncidentClassifierQueryHandler) ListActiveRootCategories(
+// ListRootCategories returns top-level categories for an org.
+func (h *IncidentClassifierQueryHandler) ListRootCategories(
 	ctx context.Context,
-	req *classifierqueryv1.ListActiveRootCategoriesRequest,
-) (*classifierqueryv1.ListActiveRootCategoriesResponse, error) {
+	req *classifierqueryv1.ListRootCategoriesRequest,
+) (*classifierqueryv1.ListRootCategoriesResponse, error) {
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
@@ -116,14 +116,14 @@ func (h *IncidentClassifierQueryHandler) ListActiveRootCategories(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.reader.ListActiveRootCategories(ctx, caller, id, classifierread.ListQuery{
+	result, err := h.reader.ListRootCategories(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListActiveRootCategoriesResponse{
+	return &classifierqueryv1.ListRootCategoriesResponse{
 		Items:      categoriesToProto(result.Items),
 		NextCursor: result.NextCursor,
 	}, nil
@@ -185,7 +185,7 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.reader.ListTypesByCategory(ctx, caller, id, classifierread.ListQuery{
+	result, err := h.reader.ListTypesByCategory(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
@@ -198,11 +198,11 @@ func (h *IncidentClassifierQueryHandler) ListTypesByCategory(
 	}, nil
 }
 
-// ListActiveTypesByOrganization returns active types for an org.
-func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
+// ListTypesByOrganization returns incident types for one org.
+func (h *IncidentClassifierQueryHandler) ListTypesByOrganization(
 	ctx context.Context,
-	req *classifierqueryv1.ListActiveTypesByOrganizationRequest,
-) (*classifierqueryv1.ListActiveTypesByOrganizationResponse, error) {
+	req *classifierqueryv1.ListTypesByOrganizationRequest,
+) (*classifierqueryv1.ListTypesByOrganizationResponse, error) {
 	callerID, err := grpcmw.CallerID(ctx)
 	if err != nil {
 		return nil, err
@@ -212,14 +212,14 @@ func (h *IncidentClassifierQueryHandler) ListActiveTypesByOrganization(
 	if err != nil {
 		return nil, err
 	}
-	result, err := h.reader.ListActiveTypesByOrganization(ctx, caller, id, classifierread.ListQuery{
+	result, err := h.reader.ListTypesByOrganization(ctx, caller, id, req.GetIncludeDeactivated(), classifierread.ListQuery{
 		Limit: int(req.GetLimit()),
 		After: afterPtr(req.GetAfter()),
 	})
 	if err != nil {
 		return nil, err
 	}
-	return &classifierqueryv1.ListActiveTypesByOrganizationResponse{
+	return &classifierqueryv1.ListTypesByOrganizationResponse{
 		Items:      typesToProto(result.Items),
 		NextCursor: result.NextCursor,
 	}, nil

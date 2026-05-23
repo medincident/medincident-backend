@@ -401,6 +401,7 @@
 | Метод | Права |
 |---|---|
 | `ListOrganizations` | Authenticated |
+| `SearchOrganizations` | Authenticated |
 | `GetOrganization` | Authenticated |
 | `ListClinicsByOrganization` | ReaderOf.Organization |
 | `CountClinicsByOrganization` | ReaderOf.Organization |
@@ -409,14 +410,18 @@
 | `CountDepartmentsByClinic` | ReaderOf.Clinic |
 | `GetDepartment` | ReaderOf.Department |
 
-### Ошибки
+### Параметр include_deactivated
 
-| Метод | Код | HTTP | Описание |
-|---|---|---|---|
-| Все | `permission_denied` | 403 | Нет прав доступа |
-| `GetOrganization` | `organization_not_found` | 404 | Организация не найдена |
-| `GetClinic` | `clinic_not_found` | 404 | Клиника не найдена |
-| `GetDepartment` | `department_not_found` | 404 | Отдел не найден |
+Методы `ListOrganizations`, `SearchOrganizations`, `ListClinicsByOrganization` и `ListDepartmentsByClinic` поддерживают параметр `include_deactivated bool` (по умолчанию `false`).
+
+- `include_deactivated=false` (по умолчанию): возвращаются только активные записи.
+- `include_deactivated=true`: возвращаются все записи, включая деактивированные. Для организаций требует `SystemAdmin`; для клиник и отделов — `SystemAdmin` или `OrgAdminOf` соответствующей организации. Без нужных прав возвращается `permission_denied`.
+
+**Поведение Get-методов для деактивированных записей:**
+
+`GetOrganization`, `GetClinic`, `GetDepartment` не принимают параметр `include_deactivated`. Видимость деактивированных записей определяется автоматически по роли вызывающего:
+- Не-администратор: деактивированная запись возвращается как `*_not_found` (неотличимо от отсутствующей).
+- Администратор: возвращается фактическая запись.
 
 ### ListOrganizations
 
@@ -425,7 +430,42 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `orgstructure_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав SystemAdmin) |
+
+### SearchOrganizations
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `orgstructure_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав SystemAdmin) |
+
+### GetOrganization
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `organization_not_found` | 404 | Организация не найдена или деактивирована (для не-администратора) |
+
+### GetClinic
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
 | `permission_denied` | 403 | Нет прав доступа |
+| `clinic_not_found` | 404 | Клиника не найдена или деактивирована (для не-администратора) |
+
+### GetDepartment
+
+#### Ошибки
+
+| Код | HTTP | Описание |
+|---|---|---|
+| `permission_denied` | 403 | Нет прав доступа |
+| `department_not_found` | 404 | Отдел не найден или деактивирован (для не-администратора) |
 
 ### ListClinicsByOrganization
 
@@ -434,7 +474,7 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `orgstructure_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |
 
 ### ListDepartmentsByClinic
 
@@ -443,4 +483,4 @@
 | Код | HTTP | Описание |
 |---|---|---|
 | `orgstructure_bad_cursor` | 400 | Недопустимый или некорректный курсор пагинации |
-| `permission_denied` | 403 | Нет прав доступа |
+| `permission_denied` | 403 | Нет прав доступа (include_deactivated=true без прав администратора) |

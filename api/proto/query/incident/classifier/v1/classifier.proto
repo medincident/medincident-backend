@@ -68,21 +68,29 @@ service IncidentClassifierQueryService {
       }
     };
   }
-  rpc ListCategoriesByOrganization(ListCategoriesByOrganizationRequest) returns (ListCategoriesByOrganizationResponse) {
+  rpc ListRootCategories(ListRootCategoriesRequest) returns (ListRootCategoriesResponse) {
     option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
       }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
+      }
     };
   }
-  rpc ListActiveRootCategories(ListActiveRootCategoriesRequest) returns (ListActiveRootCategoriesResponse) {
-    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories:roots"};
+  rpc ListCategoriesByOrganization(ListCategoriesByOrganizationRequest) returns (ListCategoriesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-categories:all"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -112,14 +120,22 @@ service IncidentClassifierQueryService {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
       }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
+      }
     };
   }
-  rpc ListActiveTypesByOrganization(ListActiveTypesByOrganizationRequest) returns (ListActiveTypesByOrganizationResponse) {
-    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-types:active"};
+  rpc ListTypesByOrganization(ListTypesByOrganizationRequest) returns (ListTypesByOrganizationResponse) {
+    option (google.api.http) = {get: "/v1/organizations/{organization_id}/incident-types"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       responses: {
         key: "400"
         value: {description: "Validation failed. Error codes:\n- `incident_classifier_bad_cursor` — pagination cursor is invalid or malformed."}
+      }
+      responses: {
+        key: "403"
+        value: {description: "Permission denied. Error codes:\n- `permission_denied` — include_deactivated=true requires org-admin or system-admin privileges."}
       }
     };
   }
@@ -157,22 +173,24 @@ message GetCategoryResponse {
   Category category = 1;
 }
 
-message ListCategoriesByOrganizationRequest {
+message ListRootCategoriesRequest {
   string organization_id = 1;
   int32 limit = 2;
   string after = 3;
+  bool include_deactivated = 4;
 }
-message ListCategoriesByOrganizationResponse {
+message ListRootCategoriesResponse {
   repeated Category items = 1;
   optional string next_cursor = 2;
 }
 
-message ListActiveRootCategoriesRequest {
+message ListCategoriesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
   string after = 3;
+  bool include_deactivated = 4;
 }
-message ListActiveRootCategoriesResponse {
+message ListCategoriesByOrganizationResponse {
   repeated Category items = 1;
   optional string next_cursor = 2;
 }
@@ -199,18 +217,20 @@ message ListTypesByCategoryRequest {
   string category_id = 1;
   int32 limit = 2;
   string after = 3;
+  bool include_deactivated = 4;
 }
 message ListTypesByCategoryResponse {
   repeated Type items = 1;
   optional string next_cursor = 2;
 }
 
-message ListActiveTypesByOrganizationRequest {
+message ListTypesByOrganizationRequest {
   string organization_id = 1;
   int32 limit = 2;
   string after = 3;
+  bool include_deactivated = 4;
 }
-message ListActiveTypesByOrganizationResponse {
+message ListTypesByOrganizationResponse {
   repeated Type items = 1;
   optional string next_cursor = 2;
 }

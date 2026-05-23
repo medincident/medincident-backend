@@ -171,7 +171,7 @@ func main() {
 
 	az := authz.New(db)
 
-	orgReader := orgread.NewOrganizationReader(db, logger)
+	orgReader := orgread.NewOrganizationReader(db, az, logger)
 	clinReader := orgread.NewClinicReader(db, az, logger)
 	deptReader := orgread.NewDepartmentReader(db, az, logger)
 	empReader := membershipread.NewEmployeeReader(db, az, logger)
