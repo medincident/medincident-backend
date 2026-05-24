@@ -51,12 +51,12 @@ func PatientIncidentBufferCreated(
 	if err := tx.Exec(`
 		INSERT INTO projections.patient_incident_buffer (
 			id, organization_id, patient_zitadel_user_id,
-			category_id, type_id, description, occurred_at,
+			category_id, type_id, description, summary, priority, occurred_at,
 			status, published_incident_id, created_at, updated_at
-		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?)
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?)
 		ON CONFLICT DO NOTHING`,
 		id, orgID, ev.GetPatientZitadelUserId(),
-		catID, typeID, ev.GetDescription(), occAt,
+		catID, typeID, ev.GetDescription(), ev.GetSummary(), ev.GetPriority(), occAt,
 		ev.GetStatus(), createdAt, createdAt,
 	).Error; err != nil {
 		return wrapIncidentBuffer(err, "insert buffer", id)
@@ -101,13 +101,29 @@ func PatientIncidentBufferUpdated(
 		pubIncID = null.StringFrom(sv.GetValue())
 	}
 
+	var summaryVal *string
+	if sv := ev.GetSummary(); sv != nil {
+		s := sv.GetValue()
+		summaryVal = &s
+	}
+	var priorityVal *string
+	if sv := ev.GetPriority(); sv != nil {
+		s := sv.GetValue()
+		priorityVal = &s
+	}
+
 	if err := tx.Exec(`
 		UPDATE projections.patient_incident_buffer
 		   SET category_id = ?, type_id = ?, description = ?, occurred_at = ?,
-		       status = ?, published_incident_id = ?, updated_at = ?
+		       status = ?, published_incident_id = ?,
+		       summary  = COALESCE(?, summary),
+		       priority = COALESCE(?::domain.buffer_priority, priority),
+		       updated_at = ?
 		 WHERE id = ?`,
 		catID, typeID, ev.GetDescription(), occAt,
-		ev.GetStatus(), pubIncID, updatedAt, id,
+		ev.GetStatus(), pubIncID,
+		summaryVal, priorityVal,
+		updatedAt, id,
 	).Error; err != nil {
 		return wrapIncidentBuffer(err, "update buffer", id)
 	}

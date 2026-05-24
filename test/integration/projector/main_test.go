@@ -106,7 +106,8 @@ func resetProjections(t *testing.T) {
 		                 projections.org_heads,
 		                 projections.system_admins,
 		                 projections.incident_categories,
-		                 projections.incident_types
+		                 projections.incident_types,
+		                 projections.patient_incident_buffer
 		         CASCADE`,
 	}
 	for _, q := range stmts {

@@ -343,6 +343,14 @@ func incidentToProto(v *queryincident.IncidentView) *incidentqueryv1.IncidentVie
 		s := v.ReopenedFromIncidentID.UUID.String()
 		out.ReopenedFromIncidentId = &s
 	}
+	if v.PatientBuffer != nil {
+		out.PatientBuffer = &incidentqueryv1.PatientBufferInfo{
+			BufferId:    v.PatientBuffer.BufferID.String(),
+			Description: v.PatientBuffer.Description,
+			Summary:     v.PatientBuffer.Summary,
+			Priority:    string(v.PatientBuffer.Priority),
+		}
+	}
 	return out
 }
 
