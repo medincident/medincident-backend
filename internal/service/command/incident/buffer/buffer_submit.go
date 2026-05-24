@@ -26,7 +26,9 @@ type SubmitPayload struct {
 	OrganizationID string  `validate:"required,uuid"`
 	CategoryID     *string `validate:"omitnil,uuid"`
 	TypeID         *string `validate:"omitnil,uuid"`
-	Description    *string `validate:"omitnil,no_extra_ws,min=1,max=10000"`
+	Description    string  `validate:"required,no_extra_ws,min=1,max=10000"`
+	Summary        string  `validate:"required,no_extra_ws,min=1,max=10000"`
+	Priority       string  `validate:"required,oneof=normal high"`
 	OccurredAt     *string
 }
 
@@ -43,7 +45,7 @@ type SubmitResult struct {
 // Authorization: any authenticated caller (Authenticated policy).
 //
 // See: docs/services/incident/Buffer.md
-func (s *BufferService) Submit(ctx context.Context, cmd SubmitCommand) (SubmitResult, error) {
+func (s *BufferService) Submit(ctx context.Context, cmd SubmitCommand) (SubmitResult, error) { //nolint:gocritic // hugeParam: Command is passed by value across the whole service layer for consistency.
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return SubmitResult{}, err
 	}
@@ -103,12 +105,12 @@ func (s *BufferService) Submit(ctx context.Context, cmd SubmitCommand) (SubmitRe
 			PatientZitadelUserID: cmd.Caller.ZitadelUserID,
 			CategoryID:           categoryID,
 			TypeID:               typeID,
+			Description:          strings.TrimSpace(cmd.Payload.Description),
+			Summary:              strings.TrimSpace(cmd.Payload.Summary),
+			Priority:             model.BufferPriority(cmd.Payload.Priority),
 			Status:               model.BufferStatusPending,
 			CreatedAt:            now,
 			UpdatedAt:            now,
-		}
-		if cmd.Payload.Description != nil {
-			b.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 		}
 		if hasOccurred {
 			b.OccurredAt = null.TimeFrom(occurredTime)
@@ -134,7 +136,9 @@ func buildPatientIncidentBufferCreatedEnvelope(b *model.PatientIncidentBuffer) (
 		BufferId:             b.ID.String(),
 		OrganizationId:       b.OrganizationID.String(),
 		PatientZitadelUserId: b.PatientZitadelUserID,
-		Description:          b.Description.ValueOrZero(),
+		Description:          b.Description,
+		Summary:              b.Summary,
+		Priority:             string(b.Priority),
 		Status:               string(b.Status),
 		CreatedAt:            timestamppb.New(b.CreatedAt),
 	}

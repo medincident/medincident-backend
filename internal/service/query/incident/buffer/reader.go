@@ -53,7 +53,9 @@ type BufferEntryView struct {
 	PatientZitadelUserID string
 	CategoryID           uuid.NullUUID
 	TypeID               uuid.NullUUID
-	Description          null.String
+	Description          string
+	Summary              string
+	Priority             model.BufferPriority
 	OccurredAt           null.Time
 	Status               model.BufferStatus
 	PublishedIncidentID  uuid.NullUUID
@@ -65,14 +67,14 @@ type BufferEntryView struct {
 }
 
 const bufferSelect = `id, organization_id, patient_zitadel_user_id,
-	category_id, type_id, description, occurred_at, status, published_incident_id,
+	category_id, type_id, description, summary, priority, occurred_at, status, published_incident_id,
 	created_at, updated_at`
 
 func scanBuffer(row interface{ Scan(...any) error }, v *BufferEntryView) error {
 	return row.Scan(
 		&v.ID, &v.OrganizationID, &v.PatientZitadelUserID,
-		&v.CategoryID, &v.TypeID, &v.Description, &v.OccurredAt,
-		&v.Status, &v.PublishedIncidentID, &v.CreatedAt, &v.UpdatedAt,
+		&v.CategoryID, &v.TypeID, &v.Description, &v.Summary, &v.Priority,
+		&v.OccurredAt, &v.Status, &v.PublishedIncidentID, &v.CreatedAt, &v.UpdatedAt,
 	)
 }
 

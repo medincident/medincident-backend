@@ -151,6 +151,12 @@ enum BufferStatus {
   BUFFER_STATUS_CANCELLED = 4;
 }
 
+enum BufferPriority {
+  BUFFER_PRIORITY_UNSPECIFIED = 0;
+  BUFFER_PRIORITY_NORMAL = 1;
+  BUFFER_PRIORITY_HIGH = 2;
+}
+
 // PatientStatus is the simplified four-value status surfaced to patients.
 enum PatientStatus {
   PATIENT_STATUS_UNSPECIFIED = 0;
@@ -158,6 +164,15 @@ enum PatientStatus {
   PATIENT_STATUS_ACCEPTED = 2; // dispatcher accepted; incident pending/in_progress
   PATIENT_STATUS_CLOSED = 3; // done / rejected / buffer rejected
   PATIENT_STATUS_CANCELLED = 4; // patient cancelled
+}
+
+// PatientBufferInfo is embedded in IncidentView when the incident was
+// created from a patient buffer submission.
+message PatientBufferInfo {
+  string buffer_id = 1;
+  string description = 2;
+  string summary = 3;
+  string priority = 4; // "normal" | "high"
 }
 
 message RegistrarView {
@@ -191,6 +206,7 @@ message IncidentView {
   optional string reopened_from_incident_id = 17;
   // Populated only for patient callers.
   optional PatientStatus patient_status = 18;
+  optional PatientBufferInfo patient_buffer = 19;
 }
 
 message BufferEntryView {
@@ -199,7 +215,7 @@ message BufferEntryView {
   string patient_zitadel_user_id = 3;
   optional string category_id = 4;
   optional string type_id = 5;
-  optional string description = 6;
+  string description = 6;
   optional string occurred_at = 7;
   BufferStatus status = 8;
   optional string published_incident_id = 9;
@@ -207,6 +223,8 @@ message BufferEntryView {
   string updated_at = 11;
   // Populated only for patient callers.
   optional PatientStatus patient_status = 12;
+  string summary = 13;
+  string priority = 14; // "normal" | "high"
 }
 
 message ActorView {

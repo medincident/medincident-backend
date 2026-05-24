@@ -24,13 +24,64 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type BufferPriority int32
+
+const (
+	BufferPriority_BUFFER_PRIORITY_UNSPECIFIED BufferPriority = 0
+	BufferPriority_BUFFER_PRIORITY_NORMAL      BufferPriority = 1
+	BufferPriority_BUFFER_PRIORITY_HIGH        BufferPriority = 2
+)
+
+// Enum value maps for BufferPriority.
+var (
+	BufferPriority_name = map[int32]string{
+		0: "BUFFER_PRIORITY_UNSPECIFIED",
+		1: "BUFFER_PRIORITY_NORMAL",
+		2: "BUFFER_PRIORITY_HIGH",
+	}
+	BufferPriority_value = map[string]int32{
+		"BUFFER_PRIORITY_UNSPECIFIED": 0,
+		"BUFFER_PRIORITY_NORMAL":      1,
+		"BUFFER_PRIORITY_HIGH":        2,
+	}
+)
+
+func (x BufferPriority) Enum() *BufferPriority {
+	p := new(BufferPriority)
+	*p = x
+	return p
+}
+
+func (x BufferPriority) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (BufferPriority) Descriptor() protoreflect.EnumDescriptor {
+	return file_command_incident_buffer_v1_buffer_proto_enumTypes[0].Descriptor()
+}
+
+func (BufferPriority) Type() protoreflect.EnumType {
+	return &file_command_incident_buffer_v1_buffer_proto_enumTypes[0]
+}
+
+func (x BufferPriority) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use BufferPriority.Descriptor instead.
+func (BufferPriority) EnumDescriptor() ([]byte, []int) {
+	return file_command_incident_buffer_v1_buffer_proto_rawDescGZIP(), []int{0}
+}
+
 type SubmitPatientIncidentRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	CategoryId     *string                `protobuf:"bytes,2,opt,name=category_id,json=categoryId,proto3,oneof" json:"category_id,omitempty"`
 	TypeId         *string                `protobuf:"bytes,3,opt,name=type_id,json=typeId,proto3,oneof" json:"type_id,omitempty"`
-	Description    *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Description    string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	OccurredAt     *string                `protobuf:"bytes,5,opt,name=occurred_at,json=occurredAt,proto3,oneof" json:"occurred_at,omitempty"` // RFC3339Nano
+	Summary        string                 `protobuf:"bytes,6,opt,name=summary,proto3" json:"summary,omitempty"`
+	Priority       BufferPriority         `protobuf:"varint,7,opt,name=priority,proto3,enum=command.incident.buffer.v1.BufferPriority" json:"priority,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -87,8 +138,8 @@ func (x *SubmitPatientIncidentRequest) GetTypeId() string {
 }
 
 func (x *SubmitPatientIncidentRequest) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -98,6 +149,20 @@ func (x *SubmitPatientIncidentRequest) GetOccurredAt() string {
 		return *x.OccurredAt
 	}
 	return ""
+}
+
+func (x *SubmitPatientIncidentRequest) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *SubmitPatientIncidentRequest) GetPriority() BufferPriority {
+	if x != nil {
+		return x.Priority
+	}
+	return BufferPriority_BUFFER_PRIORITY_UNSPECIFIED
 }
 
 type SubmitPatientIncidentResponse struct {
@@ -151,6 +216,8 @@ type UpdatePatientIncidentRequest struct {
 	TypeId        *string                `protobuf:"bytes,3,opt,name=type_id,json=typeId,proto3,oneof" json:"type_id,omitempty"`
 	Description   *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	OccurredAt    *string                `protobuf:"bytes,5,opt,name=occurred_at,json=occurredAt,proto3,oneof" json:"occurred_at,omitempty"`
+	Summary       *string                `protobuf:"bytes,6,opt,name=summary,proto3,oneof" json:"summary,omitempty"`
+	Priority      *BufferPriority        `protobuf:"varint,7,opt,name=priority,proto3,enum=command.incident.buffer.v1.BufferPriority,oneof" json:"priority,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -218,6 +285,20 @@ func (x *UpdatePatientIncidentRequest) GetOccurredAt() string {
 		return *x.OccurredAt
 	}
 	return ""
+}
+
+func (x *UpdatePatientIncidentRequest) GetSummary() string {
+	if x != nil && x.Summary != nil {
+		return *x.Summary
+	}
+	return ""
+}
+
+func (x *UpdatePatientIncidentRequest) GetPriority() BufferPriority {
+	if x != nil && x.Priority != nil {
+		return *x.Priority
+	}
+	return BufferPriority_BUFFER_PRIORITY_UNSPECIFIED
 }
 
 type UpdatePatientIncidentResponse struct {
@@ -540,22 +621,23 @@ var File_command_incident_buffer_v1_buffer_proto protoreflect.FileDescriptor
 
 const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\n" +
-	"'command/incident/buffer/v1/buffer.proto\x12\x1acommand.incident.buffer.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x99\x02\n" +
+	"'command/incident/buffer/v1/buffer.proto\x12\x1acommand.incident.buffer.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xf5\x02\n" +
 	"\x1cSubmitPatientIncidentRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12$\n" +
 	"\vcategory_id\x18\x02 \x01(\tH\x00R\n" +
 	"categoryId\x88\x01\x01\x12\x1c\n" +
 	"\atype_id\x18\x03 \x01(\tH\x01R\x06typeId\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tH\x02R\vdescription\x88\x01\x01\x12$\n" +
-	"\voccurred_at\x18\x05 \x01(\tH\x03R\n" +
-	"occurredAt\x88\x01\x01B\x0e\n" +
+	"\vdescription\x18\x04 \x01(\tB\x03\xe0A\x02R\vdescription\x12$\n" +
+	"\voccurred_at\x18\x05 \x01(\tH\x02R\n" +
+	"occurredAt\x88\x01\x01\x12\x1d\n" +
+	"\asummary\x18\x06 \x01(\tB\x03\xe0A\x02R\asummary\x12K\n" +
+	"\bpriority\x18\a \x01(\x0e2*.command.incident.buffer.v1.BufferPriorityB\x03\xe0A\x02R\bpriorityB\x0e\n" +
 	"\f_category_idB\n" +
 	"\n" +
 	"\b_type_idB\x0e\n" +
-	"\f_descriptionB\x0e\n" +
 	"\f_occurred_at\"<\n" +
 	"\x1dSubmitPatientIncidentResponse\x12\x1b\n" +
-	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\"\x8d\x02\n" +
+	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\"\x92\x03\n" +
 	"\x1cUpdatePatientIncidentRequest\x12 \n" +
 	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\x12$\n" +
 	"\vcategory_id\x18\x02 \x01(\tH\x00R\n" +
@@ -563,12 +645,17 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\atype_id\x18\x03 \x01(\tH\x01R\x06typeId\x88\x01\x01\x12%\n" +
 	"\vdescription\x18\x04 \x01(\tH\x02R\vdescription\x88\x01\x01\x12$\n" +
 	"\voccurred_at\x18\x05 \x01(\tH\x03R\n" +
-	"occurredAt\x88\x01\x01B\x0e\n" +
+	"occurredAt\x88\x01\x01\x12\x1d\n" +
+	"\asummary\x18\x06 \x01(\tH\x04R\asummary\x88\x01\x01\x12K\n" +
+	"\bpriority\x18\a \x01(\x0e2*.command.incident.buffer.v1.BufferPriorityH\x05R\bpriority\x88\x01\x01B\x0e\n" +
 	"\f_category_idB\n" +
 	"\n" +
 	"\b_type_idB\x0e\n" +
 	"\f_descriptionB\x0e\n" +
-	"\f_occurred_at\"\x1f\n" +
+	"\f_occurred_atB\n" +
+	"\n" +
+	"\b_summaryB\v\n" +
+	"\t_priority\"\x1f\n" +
 	"\x1dUpdatePatientIncidentResponse\"@\n" +
 	"\x1cCancelPatientIncidentRequest\x12 \n" +
 	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\"\x1f\n" +
@@ -586,7 +673,11 @@ const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"incidentId\"@\n" +
 	"\x1cRejectPatientIncidentRequest\x12 \n" +
 	"\tbuffer_id\x18\x01 \x01(\tB\x03\xe0A\x02R\bbufferId\"\x1f\n" +
-	"\x1dRejectPatientIncidentResponse2\xd3\x1b\n" +
+	"\x1dRejectPatientIncidentResponse*g\n" +
+	"\x0eBufferPriority\x12\x1f\n" +
+	"\x1bBUFFER_PRIORITY_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16BUFFER_PRIORITY_NORMAL\x10\x01\x12\x18\n" +
+	"\x14BUFFER_PRIORITY_HIGH\x10\x022\xd3\x1b\n" +
 	"\x1cIncidentBufferCommandService\x12\xe9\x05\n" +
 	"\x15SubmitPatientIncident\x128.command.incident.buffer.v1.SubmitPatientIncidentRequest\x1a9.command.incident.buffer.v1.SubmitPatientIncidentResponse\"\xda\x04\x92A\xb6\x04J~\n" +
 	"\x03400\x12w\n" +
@@ -673,35 +764,39 @@ func file_command_incident_buffer_v1_buffer_proto_rawDescGZIP() []byte {
 	return file_command_incident_buffer_v1_buffer_proto_rawDescData
 }
 
+var file_command_incident_buffer_v1_buffer_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_command_incident_buffer_v1_buffer_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_command_incident_buffer_v1_buffer_proto_goTypes = []any{
-	(*SubmitPatientIncidentRequest)(nil),   // 0: command.incident.buffer.v1.SubmitPatientIncidentRequest
-	(*SubmitPatientIncidentResponse)(nil),  // 1: command.incident.buffer.v1.SubmitPatientIncidentResponse
-	(*UpdatePatientIncidentRequest)(nil),   // 2: command.incident.buffer.v1.UpdatePatientIncidentRequest
-	(*UpdatePatientIncidentResponse)(nil),  // 3: command.incident.buffer.v1.UpdatePatientIncidentResponse
-	(*CancelPatientIncidentRequest)(nil),   // 4: command.incident.buffer.v1.CancelPatientIncidentRequest
-	(*CancelPatientIncidentResponse)(nil),  // 5: command.incident.buffer.v1.CancelPatientIncidentResponse
-	(*PublishPatientIncidentRequest)(nil),  // 6: command.incident.buffer.v1.PublishPatientIncidentRequest
-	(*PublishPatientIncidentResponse)(nil), // 7: command.incident.buffer.v1.PublishPatientIncidentResponse
-	(*RejectPatientIncidentRequest)(nil),   // 8: command.incident.buffer.v1.RejectPatientIncidentRequest
-	(*RejectPatientIncidentResponse)(nil),  // 9: command.incident.buffer.v1.RejectPatientIncidentResponse
+	(BufferPriority)(0),                    // 0: command.incident.buffer.v1.BufferPriority
+	(*SubmitPatientIncidentRequest)(nil),   // 1: command.incident.buffer.v1.SubmitPatientIncidentRequest
+	(*SubmitPatientIncidentResponse)(nil),  // 2: command.incident.buffer.v1.SubmitPatientIncidentResponse
+	(*UpdatePatientIncidentRequest)(nil),   // 3: command.incident.buffer.v1.UpdatePatientIncidentRequest
+	(*UpdatePatientIncidentResponse)(nil),  // 4: command.incident.buffer.v1.UpdatePatientIncidentResponse
+	(*CancelPatientIncidentRequest)(nil),   // 5: command.incident.buffer.v1.CancelPatientIncidentRequest
+	(*CancelPatientIncidentResponse)(nil),  // 6: command.incident.buffer.v1.CancelPatientIncidentResponse
+	(*PublishPatientIncidentRequest)(nil),  // 7: command.incident.buffer.v1.PublishPatientIncidentRequest
+	(*PublishPatientIncidentResponse)(nil), // 8: command.incident.buffer.v1.PublishPatientIncidentResponse
+	(*RejectPatientIncidentRequest)(nil),   // 9: command.incident.buffer.v1.RejectPatientIncidentRequest
+	(*RejectPatientIncidentResponse)(nil),  // 10: command.incident.buffer.v1.RejectPatientIncidentResponse
 }
 var file_command_incident_buffer_v1_buffer_proto_depIdxs = []int32{
-	0, // 0: command.incident.buffer.v1.IncidentBufferCommandService.SubmitPatientIncident:input_type -> command.incident.buffer.v1.SubmitPatientIncidentRequest
-	2, // 1: command.incident.buffer.v1.IncidentBufferCommandService.UpdatePatientIncident:input_type -> command.incident.buffer.v1.UpdatePatientIncidentRequest
-	4, // 2: command.incident.buffer.v1.IncidentBufferCommandService.CancelPatientIncident:input_type -> command.incident.buffer.v1.CancelPatientIncidentRequest
-	6, // 3: command.incident.buffer.v1.IncidentBufferCommandService.PublishPatientIncident:input_type -> command.incident.buffer.v1.PublishPatientIncidentRequest
-	8, // 4: command.incident.buffer.v1.IncidentBufferCommandService.RejectPatientIncident:input_type -> command.incident.buffer.v1.RejectPatientIncidentRequest
-	1, // 5: command.incident.buffer.v1.IncidentBufferCommandService.SubmitPatientIncident:output_type -> command.incident.buffer.v1.SubmitPatientIncidentResponse
-	3, // 6: command.incident.buffer.v1.IncidentBufferCommandService.UpdatePatientIncident:output_type -> command.incident.buffer.v1.UpdatePatientIncidentResponse
-	5, // 7: command.incident.buffer.v1.IncidentBufferCommandService.CancelPatientIncident:output_type -> command.incident.buffer.v1.CancelPatientIncidentResponse
-	7, // 8: command.incident.buffer.v1.IncidentBufferCommandService.PublishPatientIncident:output_type -> command.incident.buffer.v1.PublishPatientIncidentResponse
-	9, // 9: command.incident.buffer.v1.IncidentBufferCommandService.RejectPatientIncident:output_type -> command.incident.buffer.v1.RejectPatientIncidentResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: command.incident.buffer.v1.SubmitPatientIncidentRequest.priority:type_name -> command.incident.buffer.v1.BufferPriority
+	0,  // 1: command.incident.buffer.v1.UpdatePatientIncidentRequest.priority:type_name -> command.incident.buffer.v1.BufferPriority
+	1,  // 2: command.incident.buffer.v1.IncidentBufferCommandService.SubmitPatientIncident:input_type -> command.incident.buffer.v1.SubmitPatientIncidentRequest
+	3,  // 3: command.incident.buffer.v1.IncidentBufferCommandService.UpdatePatientIncident:input_type -> command.incident.buffer.v1.UpdatePatientIncidentRequest
+	5,  // 4: command.incident.buffer.v1.IncidentBufferCommandService.CancelPatientIncident:input_type -> command.incident.buffer.v1.CancelPatientIncidentRequest
+	7,  // 5: command.incident.buffer.v1.IncidentBufferCommandService.PublishPatientIncident:input_type -> command.incident.buffer.v1.PublishPatientIncidentRequest
+	9,  // 6: command.incident.buffer.v1.IncidentBufferCommandService.RejectPatientIncident:input_type -> command.incident.buffer.v1.RejectPatientIncidentRequest
+	2,  // 7: command.incident.buffer.v1.IncidentBufferCommandService.SubmitPatientIncident:output_type -> command.incident.buffer.v1.SubmitPatientIncidentResponse
+	4,  // 8: command.incident.buffer.v1.IncidentBufferCommandService.UpdatePatientIncident:output_type -> command.incident.buffer.v1.UpdatePatientIncidentResponse
+	6,  // 9: command.incident.buffer.v1.IncidentBufferCommandService.CancelPatientIncident:output_type -> command.incident.buffer.v1.CancelPatientIncidentResponse
+	8,  // 10: command.incident.buffer.v1.IncidentBufferCommandService.PublishPatientIncident:output_type -> command.incident.buffer.v1.PublishPatientIncidentResponse
+	10, // 11: command.incident.buffer.v1.IncidentBufferCommandService.RejectPatientIncident:output_type -> command.incident.buffer.v1.RejectPatientIncidentResponse
+	7,  // [7:12] is the sub-list for method output_type
+	2,  // [2:7] is the sub-list for method input_type
+	2,  // [2:2] is the sub-list for extension type_name
+	2,  // [2:2] is the sub-list for extension extendee
+	0,  // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_command_incident_buffer_v1_buffer_proto_init() }
@@ -717,13 +812,14 @@ func file_command_incident_buffer_v1_buffer_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_command_incident_buffer_v1_buffer_proto_rawDesc), len(file_command_incident_buffer_v1_buffer_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_command_incident_buffer_v1_buffer_proto_goTypes,
 		DependencyIndexes: file_command_incident_buffer_v1_buffer_proto_depIdxs,
+		EnumInfos:         file_command_incident_buffer_v1_buffer_proto_enumTypes,
 		MessageInfos:      file_command_incident_buffer_v1_buffer_proto_msgTypes,
 	}.Build()
 	File_command_incident_buffer_v1_buffer_proto = out.File

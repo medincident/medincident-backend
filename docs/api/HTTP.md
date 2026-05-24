@@ -319,7 +319,9 @@ curl -X POST /v1/patient-incidents \
   "categoryId": "string",
   "typeId": "string",
   "description": "string",
-  "occurredAt": "string"
+  "occurredAt": "string",
+  "summary": "string",
+  "priority": "BUFFER_PRIORITY_UNSPECIFIED"
 }
 ```
 
@@ -386,7 +388,9 @@ curl -X PUT /v1/patient-incidents/{bufferId} \
   "categoryId": "string",
   "typeId": "string",
   "description": "string",
-  "occurredAt": "string"
+  "occurredAt": "string",
+  "summary": "string",
+  "priority": "BUFFER_PRIORITY_UNSPECIFIED"
 }
 ```
 
@@ -6240,7 +6244,13 @@ curl -X GET /v1/query/incidents/{id} \
     "sourcePatientZitadelUserId": "string",
     "sourceBufferId": "string",
     "reopenedFromIncidentId": "string",
-    "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+    "patientBuffer": {
+      "bufferId": "string",
+      "description": "string",
+      "summary": "string",
+      "priority": "string"
+    }
   }
 }
 ```
@@ -6391,7 +6401,13 @@ curl -X GET /v1/query/incidents:mine \
       "sourcePatientZitadelUserId": "string",
       "sourceBufferId": "string",
       "reopenedFromIncidentId": "string",
-      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+      "patientBuffer": {
+        "bufferId": "string",
+        "description": "string",
+        "summary": "string",
+        "priority": "string"
+      }
     }
   ],
   "nextCursor": "string"
@@ -6495,7 +6511,13 @@ curl -X GET /v1/query/organizations/{organizationId}/incidents \
       "sourcePatientZitadelUserId": "string",
       "sourceBufferId": "string",
       "reopenedFromIncidentId": "string",
-      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+      "patientBuffer": {
+        "bufferId": "string",
+        "description": "string",
+        "summary": "string",
+        "priority": "string"
+      }
     }
   ],
   "nextCursor": "string"
@@ -6573,7 +6595,9 @@ curl -X GET /v1/query/organizations/{organizationId}/patient-incidents \
       "publishedIncidentId": "string",
       "createdAt": "string",
       "updatedAt": "string",
-      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+      "summary": "string",
+      "priority": "string"
     }
   ],
   "nextCursor": "string"
@@ -6637,7 +6661,9 @@ curl -X GET /v1/query/patient-incidents/{id} \
     "publishedIncidentId": "string",
     "createdAt": "string",
     "updatedAt": "string",
-    "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+    "summary": "string",
+    "priority": "string"
   }
 }
 ```
@@ -6702,7 +6728,9 @@ curl -X GET /v1/query/patient-incidents:mine \
       "publishedIncidentId": "string",
       "createdAt": "string",
       "updatedAt": "string",
-      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+      "summary": "string",
+      "priority": "string"
     }
   ],
   "nextCursor": "string"
@@ -10171,7 +10199,9 @@ This operation does not require authentication
   "categoryId": "string",
   "typeId": "string",
   "description": "string",
-  "occurredAt": "string"
+  "occurredAt": "string",
+  "summary": "string",
+  "priority": "BUFFER_PRIORITY_UNSPECIFIED"
 }
 
 ```
@@ -10184,6 +10214,8 @@ This operation does not require authentication
 |typeId|string|false|none|none|
 |description|string|false|none|none|
 |occurredAt|string|false|none|none|
+|summary|string|false|none|none|
+|priority|[v1BufferPriority](#schemav1bufferpriority)|false|none|none|
 
 <h2 id="tocS_IncidentClassifierCommandServiceCreateIncidentCategoryBody">IncidentClassifierCommandServiceCreateIncidentCategoryBody</h2>
 <!-- backwards compatibility -->
@@ -11814,7 +11846,9 @@ projection row has neither longitude nor latitude.
   "publishedIncidentId": "string",
   "createdAt": "string",
   "updatedAt": "string",
-  "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+  "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+  "summary": "string",
+  "priority": "string"
 }
 
 ```
@@ -11835,6 +11869,34 @@ projection row has neither longitude nor latitude.
 |createdAt|string|false|none|none|
 |updatedAt|string|false|none|none|
 |patientStatus|[v1PatientStatus](#schemav1patientstatus)|false|none|PatientStatus is the simplified four-value status surfaced to patients.<br><br> - PATIENT_STATUS_PENDING: buffer pending<br> - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress<br> - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected<br> - PATIENT_STATUS_CANCELLED: patient cancelled|
+|summary|string|false|none|none|
+|priority|string|false|none|none|
+
+<h2 id="tocS_v1BufferPriority">v1BufferPriority</h2>
+<!-- backwards compatibility -->
+<a id="schemav1bufferpriority"></a>
+<a id="schema_v1BufferPriority"></a>
+<a id="tocSv1bufferpriority"></a>
+<a id="tocsv1bufferpriority"></a>
+
+```json
+"BUFFER_PRIORITY_UNSPECIFIED"
+
+```
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|*anonymous*|string|false|none|none|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|*anonymous*|BUFFER_PRIORITY_UNSPECIFIED|
+|*anonymous*|BUFFER_PRIORITY_NORMAL|
+|*anonymous*|BUFFER_PRIORITY_HIGH|
 
 <h2 id="tocS_v1BufferStatus">v1BufferStatus</h2>
 <!-- backwards compatibility -->
@@ -13069,7 +13131,9 @@ ErrorResponse
     "publishedIncidentId": "string",
     "createdAt": "string",
     "updatedAt": "string",
-    "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+    "summary": "string",
+    "priority": "string"
   }
 }
 
@@ -13454,7 +13518,13 @@ ErrorResponse
     "sourcePatientZitadelUserId": "string",
     "sourceBufferId": "string",
     "reopenedFromIncidentId": "string",
-    "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+    "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+    "patientBuffer": {
+      "bufferId": "string",
+      "description": "string",
+      "summary": "string",
+      "priority": "string"
+    }
   }
 }
 
@@ -14315,7 +14385,13 @@ ErrorResponse
   "sourcePatientZitadelUserId": "string",
   "sourceBufferId": "string",
   "reopenedFromIncidentId": "string",
-  "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+  "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+  "patientBuffer": {
+    "bufferId": "string",
+    "description": "string",
+    "summary": "string",
+    "priority": "string"
+  }
 }
 
 ```
@@ -14345,6 +14421,7 @@ patient_status, description and timestamps are populated.
 |sourceBufferId|string|false|none|none|
 |reopenedFromIncidentId|string|false|none|none|
 |patientStatus|[v1PatientStatus](#schemav1patientstatus)|false|none|PatientStatus is the simplified four-value status surfaced to patients.<br><br> - PATIENT_STATUS_PENDING: buffer pending<br> - PATIENT_STATUS_ACCEPTED: dispatcher accepted; incident pending/in_progress<br> - PATIENT_STATUS_CLOSED: done / rejected / buffer rejected<br> - PATIENT_STATUS_CANCELLED: patient cancelled|
+|patientBuffer|[v1PatientBufferInfo](#schemav1patientbufferinfo)|false|none|PatientBufferInfo is embedded in IncidentView when the incident was<br>created from a patient buffer submission.|
 
 <h2 id="tocS_v1ListAnnouncementsForClinicResponse">v1ListAnnouncementsForClinicResponse</h2>
 <!-- backwards compatibility -->
@@ -14485,7 +14562,9 @@ patient_status, description and timestamps are populated.
       "publishedIncidentId": "string",
       "createdAt": "string",
       "updatedAt": "string",
-      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+      "summary": "string",
+      "priority": "string"
     }
   ],
   "nextCursor": "string"
@@ -15049,7 +15128,13 @@ the full result is always returned.
       "sourcePatientZitadelUserId": "string",
       "sourceBufferId": "string",
       "reopenedFromIncidentId": "string",
-      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+      "patientBuffer": {
+        "bufferId": "string",
+        "description": "string",
+        "summary": "string",
+        "priority": "string"
+      }
     }
   ],
   "nextCursor": "string"
@@ -15086,7 +15171,9 @@ the full result is always returned.
       "publishedIncidentId": "string",
       "createdAt": "string",
       "updatedAt": "string",
-      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+      "summary": "string",
+      "priority": "string"
     }
   ],
   "nextCursor": "string"
@@ -15136,7 +15223,13 @@ the full result is always returned.
       "sourcePatientZitadelUserId": "string",
       "sourceBufferId": "string",
       "reopenedFromIncidentId": "string",
-      "patientStatus": "PATIENT_STATUS_UNSPECIFIED"
+      "patientStatus": "PATIENT_STATUS_UNSPECIFIED",
+      "patientBuffer": {
+        "bufferId": "string",
+        "description": "string",
+        "summary": "string",
+        "priority": "string"
+      }
     }
   ],
   "nextCursor": "string"
@@ -15796,6 +15889,35 @@ OrganizationListItem is the minimal shape returned by list endpoints.
 |departmentsTotal|string(int64)|false|none|none|
 |employeesOnVacation|string(int64)|false|none|none|
 |vacationsScheduled|string(int64)|false|none|none|
+
+<h2 id="tocS_v1PatientBufferInfo">v1PatientBufferInfo</h2>
+<!-- backwards compatibility -->
+<a id="schemav1patientbufferinfo"></a>
+<a id="schema_v1PatientBufferInfo"></a>
+<a id="tocSv1patientbufferinfo"></a>
+<a id="tocsv1patientbufferinfo"></a>
+
+```json
+{
+  "bufferId": "string",
+  "description": "string",
+  "summary": "string",
+  "priority": "string"
+}
+
+```
+
+PatientBufferInfo is embedded in IncidentView when the incident was
+created from a patient buffer submission.
+
+### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|bufferId|string|false|none|none|
+|description|string|false|none|none|
+|summary|string|false|none|none|
+|priority|string|false|none|none|
 
 <h2 id="tocS_v1PatientBufferStatusBreakdown">v1PatientBufferStatusBreakdown</h2>
 <!-- backwards compatibility -->
@@ -16737,7 +16859,9 @@ calls to render a name or email.
   "categoryId": "string",
   "typeId": "string",
   "description": "string",
-  "occurredAt": "string"
+  "occurredAt": "string",
+  "summary": "string",
+  "priority": "BUFFER_PRIORITY_UNSPECIFIED"
 }
 
 ```
@@ -16749,8 +16873,10 @@ calls to render a name or email.
 |organizationId|string|true|none|none|
 |categoryId|string|false|none|none|
 |typeId|string|false|none|none|
-|description|string|false|none|none|
+|description|string|true|none|none|
 |occurredAt|string|false|none|none|
+|summary|string|true|none|none|
+|priority|[v1BufferPriority](#schemav1bufferpriority)|true|none|none|
 
 <h2 id="tocS_v1SubmitPatientIncidentResponse">v1SubmitPatientIncidentResponse</h2>
 <!-- backwards compatibility -->

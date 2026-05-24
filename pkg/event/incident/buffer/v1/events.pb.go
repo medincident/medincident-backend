@@ -36,6 +36,8 @@ type PatientIncidentBufferCreated struct {
 	OccurredAt           *timestamppb.Timestamp  `protobuf:"bytes,7,opt,name=occurred_at,json=occurredAt,proto3" json:"occurred_at,omitempty"`
 	Status               string                  `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
 	CreatedAt            *timestamppb.Timestamp  `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Summary              string                  `protobuf:"bytes,10,opt,name=summary,proto3" json:"summary,omitempty"`
+	Priority             string                  `protobuf:"bytes,11,opt,name=priority,proto3" json:"priority,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -133,6 +135,20 @@ func (x *PatientIncidentBufferCreated) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *PatientIncidentBufferCreated) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *PatientIncidentBufferCreated) GetPriority() string {
+	if x != nil {
+		return x.Priority
+	}
+	return ""
+}
+
 // PatientIncidentBufferUpdated — subject: medincident.event.patient_incident_buffer.v1.updated
 type PatientIncidentBufferUpdated struct {
 	state               protoimpl.MessageState  `protogen:"open.v1"`
@@ -144,6 +160,8 @@ type PatientIncidentBufferUpdated struct {
 	Status              string                  `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
 	PublishedIncidentId *wrapperspb.StringValue `protobuf:"bytes,7,opt,name=published_incident_id,json=publishedIncidentId,proto3" json:"published_incident_id,omitempty"`
 	UpdatedAt           *timestamppb.Timestamp  `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Summary             *wrapperspb.StringValue `protobuf:"bytes,9,opt,name=summary,proto3" json:"summary,omitempty"`
+	Priority            *wrapperspb.StringValue `protobuf:"bytes,10,opt,name=priority,proto3" json:"priority,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -234,11 +252,25 @@ func (x *PatientIncidentBufferUpdated) GetUpdatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *PatientIncidentBufferUpdated) GetSummary() *wrapperspb.StringValue {
+	if x != nil {
+		return x.Summary
+	}
+	return nil
+}
+
+func (x *PatientIncidentBufferUpdated) GetPriority() *wrapperspb.StringValue {
+	if x != nil {
+		return x.Priority
+	}
+	return nil
+}
+
 var File_event_incident_buffer_v1_events_proto protoreflect.FileDescriptor
 
 const file_event_incident_buffer_v1_events_proto_rawDesc = "" +
 	"\n" +
-	"%event/incident/buffer/v1/events.proto\x12\x18event.incident.buffer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xc3\x03\n" +
+	"%event/incident/buffer/v1/events.proto\x12\x18event.incident.buffer.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xf9\x03\n" +
 	"\x1cPatientIncidentBufferCreated\x12\x1b\n" +
 	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x125\n" +
@@ -251,7 +283,10 @@ const file_event_incident_buffer_v1_events_proto_rawDesc = "" +
 	"occurredAt\x12\x16\n" +
 	"\x06status\x18\b \x01(\tR\x06status\x129\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xb5\x03\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x18\n" +
+	"\asummary\x18\n" +
+	" \x01(\tR\asummary\x12\x1a\n" +
+	"\bpriority\x18\v \x01(\tR\bpriority\"\xa7\x04\n" +
 	"\x1cPatientIncidentBufferUpdated\x12\x1b\n" +
 	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\x12=\n" +
 	"\vcategory_id\x18\x02 \x01(\v2\x1c.google.protobuf.StringValueR\n" +
@@ -263,7 +298,10 @@ const file_event_incident_buffer_v1_events_proto_rawDesc = "" +
 	"\x06status\x18\x06 \x01(\tR\x06status\x12P\n" +
 	"\x15published_incident_id\x18\a \x01(\v2\x1c.google.protobuf.StringValueR\x13publishedIncidentId\x129\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\x80\x02\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x126\n" +
+	"\asummary\x18\t \x01(\v2\x1c.google.protobuf.StringValueR\asummary\x128\n" +
+	"\bpriority\x18\n" +
+	" \x01(\v2\x1c.google.protobuf.StringValueR\bpriorityB\x80\x02\n" +
 	"\x1ccom.event.incident.buffer.v1B\vEventsProtoP\x01ZPgithub.com/medincident/medincident-backend/pkg/event/incident/buffer/v1;bufferv1\xa2\x02\x03EIB\xaa\x02\x18Event.Incident.Buffer.V1\xca\x02\x18Event\\Incident\\Buffer\\V1\xe2\x02$Event\\Incident\\Buffer\\V1\\GPBMetadata\xea\x02\x1bEvent::Incident::Buffer::V1b\x06proto3"
 
 var (
@@ -286,20 +324,22 @@ var file_event_incident_buffer_v1_events_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),        // 3: google.protobuf.Timestamp
 }
 var file_event_incident_buffer_v1_events_proto_depIdxs = []int32{
-	2, // 0: event.incident.buffer.v1.PatientIncidentBufferCreated.category_id:type_name -> google.protobuf.StringValue
-	2, // 1: event.incident.buffer.v1.PatientIncidentBufferCreated.type_id:type_name -> google.protobuf.StringValue
-	3, // 2: event.incident.buffer.v1.PatientIncidentBufferCreated.occurred_at:type_name -> google.protobuf.Timestamp
-	3, // 3: event.incident.buffer.v1.PatientIncidentBufferCreated.created_at:type_name -> google.protobuf.Timestamp
-	2, // 4: event.incident.buffer.v1.PatientIncidentBufferUpdated.category_id:type_name -> google.protobuf.StringValue
-	2, // 5: event.incident.buffer.v1.PatientIncidentBufferUpdated.type_id:type_name -> google.protobuf.StringValue
-	3, // 6: event.incident.buffer.v1.PatientIncidentBufferUpdated.occurred_at:type_name -> google.protobuf.Timestamp
-	2, // 7: event.incident.buffer.v1.PatientIncidentBufferUpdated.published_incident_id:type_name -> google.protobuf.StringValue
-	3, // 8: event.incident.buffer.v1.PatientIncidentBufferUpdated.updated_at:type_name -> google.protobuf.Timestamp
-	9, // [9:9] is the sub-list for method output_type
-	9, // [9:9] is the sub-list for method input_type
-	9, // [9:9] is the sub-list for extension type_name
-	9, // [9:9] is the sub-list for extension extendee
-	0, // [0:9] is the sub-list for field type_name
+	2,  // 0: event.incident.buffer.v1.PatientIncidentBufferCreated.category_id:type_name -> google.protobuf.StringValue
+	2,  // 1: event.incident.buffer.v1.PatientIncidentBufferCreated.type_id:type_name -> google.protobuf.StringValue
+	3,  // 2: event.incident.buffer.v1.PatientIncidentBufferCreated.occurred_at:type_name -> google.protobuf.Timestamp
+	3,  // 3: event.incident.buffer.v1.PatientIncidentBufferCreated.created_at:type_name -> google.protobuf.Timestamp
+	2,  // 4: event.incident.buffer.v1.PatientIncidentBufferUpdated.category_id:type_name -> google.protobuf.StringValue
+	2,  // 5: event.incident.buffer.v1.PatientIncidentBufferUpdated.type_id:type_name -> google.protobuf.StringValue
+	3,  // 6: event.incident.buffer.v1.PatientIncidentBufferUpdated.occurred_at:type_name -> google.protobuf.Timestamp
+	2,  // 7: event.incident.buffer.v1.PatientIncidentBufferUpdated.published_incident_id:type_name -> google.protobuf.StringValue
+	3,  // 8: event.incident.buffer.v1.PatientIncidentBufferUpdated.updated_at:type_name -> google.protobuf.Timestamp
+	2,  // 9: event.incident.buffer.v1.PatientIncidentBufferUpdated.summary:type_name -> google.protobuf.StringValue
+	2,  // 10: event.incident.buffer.v1.PatientIncidentBufferUpdated.priority:type_name -> google.protobuf.StringValue
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_event_incident_buffer_v1_events_proto_init() }

@@ -139,7 +139,7 @@ func (s *BufferService) Publish(
 		}
 
 		// Description: dispatcher-supplied if present, else patient's text.
-		desc := b.Description
+		desc := null.StringFrom(b.Description)
 		if cmd.Payload.Description != nil {
 			desc = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
 		}
@@ -154,7 +154,7 @@ func (s *BufferService) Publish(
 			Status:                     model.IncidentStatusPending,
 			Priority:                   model.IncidentPriorityNormal,
 			Description:                desc,
-			PatientOriginalDescription: b.Description,
+			PatientOriginalDescription: null.StringFrom(b.Description),
 			OccurredAt:                 occurredAtOrNow(b.OccurredAt, now),
 			RegistrarEmployeeID:        dispatcherEmp.ID,
 			SourcePatientZitadelUserID: null.StringFrom(b.PatientZitadelUserID),
@@ -184,7 +184,7 @@ func (s *BufferService) Publish(
 		if err := tx.Save(b).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
 		}
-		bufEnv, err := buildPatientIncidentBufferUpdatedEnvelope(b)
+		bufEnv, err := buildPatientIncidentBufferUpdatedEnvelope(b, false, false)
 		if err != nil {
 			return err
 		}

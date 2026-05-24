@@ -173,6 +173,9 @@ func bufferToProto(v *bufferread.BufferEntryView) *incidentqueryv1.BufferEntryVi
 		Id:                   v.ID.String(),
 		OrganizationId:       v.OrganizationID.String(),
 		PatientZitadelUserId: v.PatientZitadelUserID,
+		Description:          v.Description,
+		Summary:              v.Summary,
+		Priority:             string(v.Priority),
 		Status:               modelBufStatusToProto(v.Status),
 		CreatedAt:            v.CreatedAt.UTC().Format(time.RFC3339Nano),
 		UpdatedAt:            v.UpdatedAt.UTC().Format(time.RFC3339Nano),
@@ -184,10 +187,6 @@ func bufferToProto(v *bufferread.BufferEntryView) *incidentqueryv1.BufferEntryVi
 	if v.TypeID.Valid {
 		s := v.TypeID.UUID.String()
 		out.TypeId = &s
-	}
-	if v.Description.Valid {
-		s := v.Description.String
-		out.Description = &s
 	}
 	if v.OccurredAt.Valid {
 		s := v.OccurredAt.Time.UTC().Format(time.RFC3339Nano)

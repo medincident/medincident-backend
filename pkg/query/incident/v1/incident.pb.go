@@ -192,6 +192,55 @@ func (BufferStatus) EnumDescriptor() ([]byte, []int) {
 	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{2}
 }
 
+type BufferPriority int32
+
+const (
+	BufferPriority_BUFFER_PRIORITY_UNSPECIFIED BufferPriority = 0
+	BufferPriority_BUFFER_PRIORITY_NORMAL      BufferPriority = 1
+	BufferPriority_BUFFER_PRIORITY_HIGH        BufferPriority = 2
+)
+
+// Enum value maps for BufferPriority.
+var (
+	BufferPriority_name = map[int32]string{
+		0: "BUFFER_PRIORITY_UNSPECIFIED",
+		1: "BUFFER_PRIORITY_NORMAL",
+		2: "BUFFER_PRIORITY_HIGH",
+	}
+	BufferPriority_value = map[string]int32{
+		"BUFFER_PRIORITY_UNSPECIFIED": 0,
+		"BUFFER_PRIORITY_NORMAL":      1,
+		"BUFFER_PRIORITY_HIGH":        2,
+	}
+)
+
+func (x BufferPriority) Enum() *BufferPriority {
+	p := new(BufferPriority)
+	*p = x
+	return p
+}
+
+func (x BufferPriority) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (BufferPriority) Descriptor() protoreflect.EnumDescriptor {
+	return file_query_incident_v1_incident_proto_enumTypes[3].Descriptor()
+}
+
+func (BufferPriority) Type() protoreflect.EnumType {
+	return &file_query_incident_v1_incident_proto_enumTypes[3]
+}
+
+func (x BufferPriority) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use BufferPriority.Descriptor instead.
+func (BufferPriority) EnumDescriptor() ([]byte, []int) {
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{3}
+}
+
 // PatientStatus is the simplified four-value status surfaced to patients.
 type PatientStatus int32
 
@@ -232,11 +281,11 @@ func (x PatientStatus) String() string {
 }
 
 func (PatientStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_query_incident_v1_incident_proto_enumTypes[3].Descriptor()
+	return file_query_incident_v1_incident_proto_enumTypes[4].Descriptor()
 }
 
 func (PatientStatus) Type() protoreflect.EnumType {
-	return &file_query_incident_v1_incident_proto_enumTypes[3]
+	return &file_query_incident_v1_incident_proto_enumTypes[4]
 }
 
 func (x PatientStatus) Number() protoreflect.EnumNumber {
@@ -245,7 +294,77 @@ func (x PatientStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PatientStatus.Descriptor instead.
 func (PatientStatus) EnumDescriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{3}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{4}
+}
+
+// PatientBufferInfo is embedded in IncidentView when the incident was
+// created from a patient buffer submission.
+type PatientBufferInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BufferId      string                 `protobuf:"bytes,1,opt,name=buffer_id,json=bufferId,proto3" json:"buffer_id,omitempty"`
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Summary       string                 `protobuf:"bytes,3,opt,name=summary,proto3" json:"summary,omitempty"`
+	Priority      string                 `protobuf:"bytes,4,opt,name=priority,proto3" json:"priority,omitempty"` // "normal" | "high"
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PatientBufferInfo) Reset() {
+	*x = PatientBufferInfo{}
+	mi := &file_query_incident_v1_incident_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PatientBufferInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PatientBufferInfo) ProtoMessage() {}
+
+func (x *PatientBufferInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_query_incident_v1_incident_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PatientBufferInfo.ProtoReflect.Descriptor instead.
+func (*PatientBufferInfo) Descriptor() ([]byte, []int) {
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *PatientBufferInfo) GetBufferId() string {
+	if x != nil {
+		return x.BufferId
+	}
+	return ""
+}
+
+func (x *PatientBufferInfo) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *PatientBufferInfo) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *PatientBufferInfo) GetPriority() string {
+	if x != nil {
+		return x.Priority
+	}
+	return ""
 }
 
 type RegistrarView struct {
@@ -262,7 +381,7 @@ type RegistrarView struct {
 
 func (x *RegistrarView) Reset() {
 	*x = RegistrarView{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[0]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -274,7 +393,7 @@ func (x *RegistrarView) String() string {
 func (*RegistrarView) ProtoMessage() {}
 
 func (x *RegistrarView) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[0]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -287,7 +406,7 @@ func (x *RegistrarView) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegistrarView.ProtoReflect.Descriptor instead.
 func (*RegistrarView) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{0}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *RegistrarView) GetEmployeeId() string {
@@ -354,14 +473,15 @@ type IncidentView struct {
 	SourceBufferId             *string                `protobuf:"bytes,16,opt,name=source_buffer_id,json=sourceBufferId,proto3,oneof" json:"source_buffer_id,omitempty"`
 	ReopenedFromIncidentId     *string                `protobuf:"bytes,17,opt,name=reopened_from_incident_id,json=reopenedFromIncidentId,proto3,oneof" json:"reopened_from_incident_id,omitempty"`
 	// Populated only for patient callers.
-	PatientStatus *PatientStatus `protobuf:"varint,18,opt,name=patient_status,json=patientStatus,proto3,enum=query.incident.v1.PatientStatus,oneof" json:"patient_status,omitempty"`
+	PatientStatus *PatientStatus     `protobuf:"varint,18,opt,name=patient_status,json=patientStatus,proto3,enum=query.incident.v1.PatientStatus,oneof" json:"patient_status,omitempty"`
+	PatientBuffer *PatientBufferInfo `protobuf:"bytes,19,opt,name=patient_buffer,json=patientBuffer,proto3,oneof" json:"patient_buffer,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *IncidentView) Reset() {
 	*x = IncidentView{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[1]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -373,7 +493,7 @@ func (x *IncidentView) String() string {
 func (*IncidentView) ProtoMessage() {}
 
 func (x *IncidentView) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[1]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -386,7 +506,7 @@ func (x *IncidentView) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IncidentView.ProtoReflect.Descriptor instead.
 func (*IncidentView) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{1}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *IncidentView) GetId() string {
@@ -515,6 +635,13 @@ func (x *IncidentView) GetPatientStatus() PatientStatus {
 	return PatientStatus_PATIENT_STATUS_UNSPECIFIED
 }
 
+func (x *IncidentView) GetPatientBuffer() *PatientBufferInfo {
+	if x != nil {
+		return x.PatientBuffer
+	}
+	return nil
+}
+
 type BufferEntryView struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	Id                   string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -522,7 +649,7 @@ type BufferEntryView struct {
 	PatientZitadelUserId string                 `protobuf:"bytes,3,opt,name=patient_zitadel_user_id,json=patientZitadelUserId,proto3" json:"patient_zitadel_user_id,omitempty"`
 	CategoryId           *string                `protobuf:"bytes,4,opt,name=category_id,json=categoryId,proto3,oneof" json:"category_id,omitempty"`
 	TypeId               *string                `protobuf:"bytes,5,opt,name=type_id,json=typeId,proto3,oneof" json:"type_id,omitempty"`
-	Description          *string                `protobuf:"bytes,6,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Description          string                 `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
 	OccurredAt           *string                `protobuf:"bytes,7,opt,name=occurred_at,json=occurredAt,proto3,oneof" json:"occurred_at,omitempty"`
 	Status               BufferStatus           `protobuf:"varint,8,opt,name=status,proto3,enum=query.incident.v1.BufferStatus" json:"status,omitempty"`
 	PublishedIncidentId  *string                `protobuf:"bytes,9,opt,name=published_incident_id,json=publishedIncidentId,proto3,oneof" json:"published_incident_id,omitempty"`
@@ -530,13 +657,15 @@ type BufferEntryView struct {
 	UpdatedAt            string                 `protobuf:"bytes,11,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	// Populated only for patient callers.
 	PatientStatus *PatientStatus `protobuf:"varint,12,opt,name=patient_status,json=patientStatus,proto3,enum=query.incident.v1.PatientStatus,oneof" json:"patient_status,omitempty"`
+	Summary       string         `protobuf:"bytes,13,opt,name=summary,proto3" json:"summary,omitempty"`
+	Priority      string         `protobuf:"bytes,14,opt,name=priority,proto3" json:"priority,omitempty"` // "normal" | "high"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *BufferEntryView) Reset() {
 	*x = BufferEntryView{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[2]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -548,7 +677,7 @@ func (x *BufferEntryView) String() string {
 func (*BufferEntryView) ProtoMessage() {}
 
 func (x *BufferEntryView) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[2]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -561,7 +690,7 @@ func (x *BufferEntryView) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BufferEntryView.ProtoReflect.Descriptor instead.
 func (*BufferEntryView) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{2}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *BufferEntryView) GetId() string {
@@ -600,8 +729,8 @@ func (x *BufferEntryView) GetTypeId() string {
 }
 
 func (x *BufferEntryView) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -648,6 +777,20 @@ func (x *BufferEntryView) GetPatientStatus() PatientStatus {
 	return PatientStatus_PATIENT_STATUS_UNSPECIFIED
 }
 
+func (x *BufferEntryView) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
+func (x *BufferEntryView) GetPriority() string {
+	if x != nil {
+		return x.Priority
+	}
+	return ""
+}
+
 type ActorView struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	EmployeeId    *string                `protobuf:"bytes,1,opt,name=employee_id,json=employeeId,proto3,oneof" json:"employee_id,omitempty"`
@@ -658,7 +801,7 @@ type ActorView struct {
 
 func (x *ActorView) Reset() {
 	*x = ActorView{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[3]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -670,7 +813,7 @@ func (x *ActorView) String() string {
 func (*ActorView) ProtoMessage() {}
 
 func (x *ActorView) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[3]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -683,7 +826,7 @@ func (x *ActorView) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ActorView.ProtoReflect.Descriptor instead.
 func (*ActorView) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{3}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ActorView) GetEmployeeId() string {
@@ -713,7 +856,7 @@ type StatusHistoryEntry struct {
 
 func (x *StatusHistoryEntry) Reset() {
 	*x = StatusHistoryEntry{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[4]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -725,7 +868,7 @@ func (x *StatusHistoryEntry) String() string {
 func (*StatusHistoryEntry) ProtoMessage() {}
 
 func (x *StatusHistoryEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[4]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -738,7 +881,7 @@ func (x *StatusHistoryEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StatusHistoryEntry.ProtoReflect.Descriptor instead.
 func (*StatusHistoryEntry) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{4}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *StatusHistoryEntry) GetId() string {
@@ -789,7 +932,7 @@ type PriorityHistoryEntry struct {
 
 func (x *PriorityHistoryEntry) Reset() {
 	*x = PriorityHistoryEntry{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[5]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -801,7 +944,7 @@ func (x *PriorityHistoryEntry) String() string {
 func (*PriorityHistoryEntry) ProtoMessage() {}
 
 func (x *PriorityHistoryEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[5]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -814,7 +957,7 @@ func (x *PriorityHistoryEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PriorityHistoryEntry.ProtoReflect.Descriptor instead.
 func (*PriorityHistoryEntry) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{5}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *PriorityHistoryEntry) GetId() string {
@@ -861,7 +1004,7 @@ type GetIncidentRequest struct {
 
 func (x *GetIncidentRequest) Reset() {
 	*x = GetIncidentRequest{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[6]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -873,7 +1016,7 @@ func (x *GetIncidentRequest) String() string {
 func (*GetIncidentRequest) ProtoMessage() {}
 
 func (x *GetIncidentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[6]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -886,7 +1029,7 @@ func (x *GetIncidentRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetIncidentRequest.ProtoReflect.Descriptor instead.
 func (*GetIncidentRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{6}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetIncidentRequest) GetId() string {
@@ -905,7 +1048,7 @@ type GetIncidentResponse struct {
 
 func (x *GetIncidentResponse) Reset() {
 	*x = GetIncidentResponse{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[7]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -917,7 +1060,7 @@ func (x *GetIncidentResponse) String() string {
 func (*GetIncidentResponse) ProtoMessage() {}
 
 func (x *GetIncidentResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[7]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -930,7 +1073,7 @@ func (x *GetIncidentResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetIncidentResponse.ProtoReflect.Descriptor instead.
 func (*GetIncidentResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{7}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetIncidentResponse) GetIncident() *IncidentView {
@@ -959,7 +1102,7 @@ type ListIncidentsRequest struct {
 
 func (x *ListIncidentsRequest) Reset() {
 	*x = ListIncidentsRequest{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[8]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -971,7 +1114,7 @@ func (x *ListIncidentsRequest) String() string {
 func (*ListIncidentsRequest) ProtoMessage() {}
 
 func (x *ListIncidentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[8]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -984,7 +1127,7 @@ func (x *ListIncidentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListIncidentsRequest.ProtoReflect.Descriptor instead.
 func (*ListIncidentsRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{8}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListIncidentsRequest) GetOrganizationId() string {
@@ -1074,7 +1217,7 @@ type ListIncidentsResponse struct {
 
 func (x *ListIncidentsResponse) Reset() {
 	*x = ListIncidentsResponse{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[9]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1086,7 +1229,7 @@ func (x *ListIncidentsResponse) String() string {
 func (*ListIncidentsResponse) ProtoMessage() {}
 
 func (x *ListIncidentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[9]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1099,7 +1242,7 @@ func (x *ListIncidentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListIncidentsResponse.ProtoReflect.Descriptor instead.
 func (*ListIncidentsResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{9}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ListIncidentsResponse) GetItems() []*IncidentView {
@@ -1126,7 +1269,7 @@ type ListMyIncidentsRequest struct {
 
 func (x *ListMyIncidentsRequest) Reset() {
 	*x = ListMyIncidentsRequest{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[10]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1138,7 +1281,7 @@ func (x *ListMyIncidentsRequest) String() string {
 func (*ListMyIncidentsRequest) ProtoMessage() {}
 
 func (x *ListMyIncidentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[10]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1151,7 +1294,7 @@ func (x *ListMyIncidentsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyIncidentsRequest.ProtoReflect.Descriptor instead.
 func (*ListMyIncidentsRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{10}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *ListMyIncidentsRequest) GetLimit() int32 {
@@ -1178,7 +1321,7 @@ type ListMyIncidentsResponse struct {
 
 func (x *ListMyIncidentsResponse) Reset() {
 	*x = ListMyIncidentsResponse{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[11]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1190,7 +1333,7 @@ func (x *ListMyIncidentsResponse) String() string {
 func (*ListMyIncidentsResponse) ProtoMessage() {}
 
 func (x *ListMyIncidentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[11]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1203,7 +1346,7 @@ func (x *ListMyIncidentsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyIncidentsResponse.ProtoReflect.Descriptor instead.
 func (*ListMyIncidentsResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{11}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ListMyIncidentsResponse) GetItems() []*IncidentView {
@@ -1229,7 +1372,7 @@ type GetIncidentHistoryRequest struct {
 
 func (x *GetIncidentHistoryRequest) Reset() {
 	*x = GetIncidentHistoryRequest{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[12]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1241,7 +1384,7 @@ func (x *GetIncidentHistoryRequest) String() string {
 func (*GetIncidentHistoryRequest) ProtoMessage() {}
 
 func (x *GetIncidentHistoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[12]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1254,7 +1397,7 @@ func (x *GetIncidentHistoryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetIncidentHistoryRequest.ProtoReflect.Descriptor instead.
 func (*GetIncidentHistoryRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{12}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetIncidentHistoryRequest) GetIncidentId() string {
@@ -1274,7 +1417,7 @@ type GetIncidentHistoryResponse struct {
 
 func (x *GetIncidentHistoryResponse) Reset() {
 	*x = GetIncidentHistoryResponse{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[13]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1286,7 +1429,7 @@ func (x *GetIncidentHistoryResponse) String() string {
 func (*GetIncidentHistoryResponse) ProtoMessage() {}
 
 func (x *GetIncidentHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[13]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1299,7 +1442,7 @@ func (x *GetIncidentHistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetIncidentHistoryResponse.ProtoReflect.Descriptor instead.
 func (*GetIncidentHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{13}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *GetIncidentHistoryResponse) GetStatusHistory() []*StatusHistoryEntry {
@@ -1325,7 +1468,7 @@ type GetBufferEntryRequest struct {
 
 func (x *GetBufferEntryRequest) Reset() {
 	*x = GetBufferEntryRequest{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[14]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1337,7 +1480,7 @@ func (x *GetBufferEntryRequest) String() string {
 func (*GetBufferEntryRequest) ProtoMessage() {}
 
 func (x *GetBufferEntryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[14]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1350,7 +1493,7 @@ func (x *GetBufferEntryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBufferEntryRequest.ProtoReflect.Descriptor instead.
 func (*GetBufferEntryRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{14}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GetBufferEntryRequest) GetId() string {
@@ -1369,7 +1512,7 @@ type GetBufferEntryResponse struct {
 
 func (x *GetBufferEntryResponse) Reset() {
 	*x = GetBufferEntryResponse{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[15]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1381,7 +1524,7 @@ func (x *GetBufferEntryResponse) String() string {
 func (*GetBufferEntryResponse) ProtoMessage() {}
 
 func (x *GetBufferEntryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[15]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1394,7 +1537,7 @@ func (x *GetBufferEntryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetBufferEntryResponse.ProtoReflect.Descriptor instead.
 func (*GetBufferEntryResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{15}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *GetBufferEntryResponse) GetEntry() *BufferEntryView {
@@ -1416,7 +1559,7 @@ type ListBufferEntriesRequest struct {
 
 func (x *ListBufferEntriesRequest) Reset() {
 	*x = ListBufferEntriesRequest{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[16]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1428,7 +1571,7 @@ func (x *ListBufferEntriesRequest) String() string {
 func (*ListBufferEntriesRequest) ProtoMessage() {}
 
 func (x *ListBufferEntriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[16]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1441,7 +1584,7 @@ func (x *ListBufferEntriesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBufferEntriesRequest.ProtoReflect.Descriptor instead.
 func (*ListBufferEntriesRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{16}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ListBufferEntriesRequest) GetOrganizationId() string {
@@ -1482,7 +1625,7 @@ type ListBufferEntriesResponse struct {
 
 func (x *ListBufferEntriesResponse) Reset() {
 	*x = ListBufferEntriesResponse{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[17]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1494,7 +1637,7 @@ func (x *ListBufferEntriesResponse) String() string {
 func (*ListBufferEntriesResponse) ProtoMessage() {}
 
 func (x *ListBufferEntriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[17]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1507,7 +1650,7 @@ func (x *ListBufferEntriesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListBufferEntriesResponse.ProtoReflect.Descriptor instead.
 func (*ListBufferEntriesResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{17}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ListBufferEntriesResponse) GetItems() []*BufferEntryView {
@@ -1534,7 +1677,7 @@ type ListMyBufferEntriesRequest struct {
 
 func (x *ListMyBufferEntriesRequest) Reset() {
 	*x = ListMyBufferEntriesRequest{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[18]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1546,7 +1689,7 @@ func (x *ListMyBufferEntriesRequest) String() string {
 func (*ListMyBufferEntriesRequest) ProtoMessage() {}
 
 func (x *ListMyBufferEntriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[18]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1559,7 +1702,7 @@ func (x *ListMyBufferEntriesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyBufferEntriesRequest.ProtoReflect.Descriptor instead.
 func (*ListMyBufferEntriesRequest) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{18}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ListMyBufferEntriesRequest) GetLimit() int32 {
@@ -1586,7 +1729,7 @@ type ListMyBufferEntriesResponse struct {
 
 func (x *ListMyBufferEntriesResponse) Reset() {
 	*x = ListMyBufferEntriesResponse{}
-	mi := &file_query_incident_v1_incident_proto_msgTypes[19]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1598,7 +1741,7 @@ func (x *ListMyBufferEntriesResponse) String() string {
 func (*ListMyBufferEntriesResponse) ProtoMessage() {}
 
 func (x *ListMyBufferEntriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_query_incident_v1_incident_proto_msgTypes[19]
+	mi := &file_query_incident_v1_incident_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1611,7 +1754,7 @@ func (x *ListMyBufferEntriesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyBufferEntriesResponse.ProtoReflect.Descriptor instead.
 func (*ListMyBufferEntriesResponse) Descriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{19}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListMyBufferEntriesResponse) GetItems() []*BufferEntryView {
@@ -1632,7 +1775,12 @@ var File_query_incident_v1_incident_proto protoreflect.FileDescriptor
 
 const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\n" +
-	" query/incident/v1/incident.proto\x12\x11query.incident.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xec\x01\n" +
+	" query/incident/v1/incident.proto\x12\x11query.incident.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x88\x01\n" +
+	"\x11PatientBufferInfo\x12\x1b\n" +
+	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x18\n" +
+	"\asummary\x18\x03 \x01(\tR\asummary\x12\x1a\n" +
+	"\bpriority\x18\x04 \x01(\tR\bpriority\"\xec\x01\n" +
 	"\rRegistrarView\x12\x1f\n" +
 	"\vemployee_id\x18\x01 \x01(\tR\n" +
 	"employeeId\x12!\n" +
@@ -1641,7 +1789,7 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x0forganization_id\x18\x04 \x01(\tR\x0eorganizationId\x12\x1b\n" +
 	"\tclinic_id\x18\x05 \x01(\tR\bclinicId\x12#\n" +
 	"\rdepartment_id\x18\x06 \x01(\tR\fdepartmentIdB\v\n" +
-	"\t_position\"\xe8\b\n" +
+	"\t_position\"\xcd\t\n" +
 	"\fIncidentView\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12,\n" +
 	"\x0forganization_id\x18\x02 \x01(\tH\x00R\x0eorganizationId\x88\x01\x01\x12 \n" +
@@ -1666,7 +1814,8 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x10source_buffer_id\x18\x10 \x01(\tH\tR\x0esourceBufferId\x88\x01\x01\x12>\n" +
 	"\x19reopened_from_incident_id\x18\x11 \x01(\tH\n" +
 	"R\x16reopenedFromIncidentId\x88\x01\x01\x12L\n" +
-	"\x0epatient_status\x18\x12 \x01(\x0e2 .query.incident.v1.PatientStatusH\vR\rpatientStatus\x88\x01\x01B\x12\n" +
+	"\x0epatient_status\x18\x12 \x01(\x0e2 .query.incident.v1.PatientStatusH\vR\rpatientStatus\x88\x01\x01\x12P\n" +
+	"\x0epatient_buffer\x18\x13 \x01(\v2$.query.incident.v1.PatientBufferInfoH\fR\rpatientBuffer\x88\x01\x01B\x12\n" +
 	"\x10_organization_idB\f\n" +
 	"\n" +
 	"_clinic_idB\x10\n" +
@@ -1681,29 +1830,31 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x1f_source_patient_zitadel_user_idB\x13\n" +
 	"\x11_source_buffer_idB\x1c\n" +
 	"\x1a_reopened_from_incident_idB\x11\n" +
-	"\x0f_patient_status\"\xf9\x04\n" +
+	"\x0f_patient_statusB\x11\n" +
+	"\x0f_patient_buffer\"\x9a\x05\n" +
 	"\x0fBufferEntryView\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12'\n" +
 	"\x0forganization_id\x18\x02 \x01(\tR\x0eorganizationId\x125\n" +
 	"\x17patient_zitadel_user_id\x18\x03 \x01(\tR\x14patientZitadelUserId\x12$\n" +
 	"\vcategory_id\x18\x04 \x01(\tH\x00R\n" +
 	"categoryId\x88\x01\x01\x12\x1c\n" +
-	"\atype_id\x18\x05 \x01(\tH\x01R\x06typeId\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x06 \x01(\tH\x02R\vdescription\x88\x01\x01\x12$\n" +
-	"\voccurred_at\x18\a \x01(\tH\x03R\n" +
+	"\atype_id\x18\x05 \x01(\tH\x01R\x06typeId\x88\x01\x01\x12 \n" +
+	"\vdescription\x18\x06 \x01(\tR\vdescription\x12$\n" +
+	"\voccurred_at\x18\a \x01(\tH\x02R\n" +
 	"occurredAt\x88\x01\x01\x127\n" +
 	"\x06status\x18\b \x01(\x0e2\x1f.query.incident.v1.BufferStatusR\x06status\x127\n" +
-	"\x15published_incident_id\x18\t \x01(\tH\x04R\x13publishedIncidentId\x88\x01\x01\x12\x1d\n" +
+	"\x15published_incident_id\x18\t \x01(\tH\x03R\x13publishedIncidentId\x88\x01\x01\x12\x1d\n" +
 	"\n" +
 	"created_at\x18\n" +
 	" \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\v \x01(\tR\tupdatedAt\x12L\n" +
-	"\x0epatient_status\x18\f \x01(\x0e2 .query.incident.v1.PatientStatusH\x05R\rpatientStatus\x88\x01\x01B\x0e\n" +
+	"\x0epatient_status\x18\f \x01(\x0e2 .query.incident.v1.PatientStatusH\x04R\rpatientStatus\x88\x01\x01\x12\x18\n" +
+	"\asummary\x18\r \x01(\tR\asummary\x12\x1a\n" +
+	"\bpriority\x18\x0e \x01(\tR\bpriorityB\x0e\n" +
 	"\f_category_idB\n" +
 	"\n" +
 	"\b_type_idB\x0e\n" +
-	"\f_descriptionB\x0e\n" +
 	"\f_occurred_atB\x18\n" +
 	"\x16_published_incident_idB\x11\n" +
 	"\x0f_patient_status\"z\n" +
@@ -1817,7 +1968,11 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x15BUFFER_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17BUFFER_STATUS_PUBLISHED\x10\x02\x12\x1a\n" +
 	"\x16BUFFER_STATUS_REJECTED\x10\x03\x12\x1b\n" +
-	"\x17BUFFER_STATUS_CANCELLED\x10\x04*\xa1\x01\n" +
+	"\x17BUFFER_STATUS_CANCELLED\x10\x04*g\n" +
+	"\x0eBufferPriority\x12\x1f\n" +
+	"\x1bBUFFER_PRIORITY_UNSPECIFIED\x10\x00\x12\x1a\n" +
+	"\x16BUFFER_PRIORITY_NORMAL\x10\x01\x12\x18\n" +
+	"\x14BUFFER_PRIORITY_HIGH\x10\x02*\xa1\x01\n" +
 	"\rPatientStatus\x12\x1e\n" +
 	"\x1aPATIENT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16PATIENT_STATUS_PENDING\x10\x01\x12\x1b\n" +
@@ -1882,77 +2037,80 @@ func file_query_incident_v1_incident_proto_rawDescGZIP() []byte {
 	return file_query_incident_v1_incident_proto_rawDescData
 }
 
-var file_query_incident_v1_incident_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_query_incident_v1_incident_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_query_incident_v1_incident_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_query_incident_v1_incident_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_query_incident_v1_incident_proto_goTypes = []any{
 	(IncidentStatus)(0),                 // 0: query.incident.v1.IncidentStatus
 	(IncidentPriority)(0),               // 1: query.incident.v1.IncidentPriority
 	(BufferStatus)(0),                   // 2: query.incident.v1.BufferStatus
-	(PatientStatus)(0),                  // 3: query.incident.v1.PatientStatus
-	(*RegistrarView)(nil),               // 4: query.incident.v1.RegistrarView
-	(*IncidentView)(nil),                // 5: query.incident.v1.IncidentView
-	(*BufferEntryView)(nil),             // 6: query.incident.v1.BufferEntryView
-	(*ActorView)(nil),                   // 7: query.incident.v1.ActorView
-	(*StatusHistoryEntry)(nil),          // 8: query.incident.v1.StatusHistoryEntry
-	(*PriorityHistoryEntry)(nil),        // 9: query.incident.v1.PriorityHistoryEntry
-	(*GetIncidentRequest)(nil),          // 10: query.incident.v1.GetIncidentRequest
-	(*GetIncidentResponse)(nil),         // 11: query.incident.v1.GetIncidentResponse
-	(*ListIncidentsRequest)(nil),        // 12: query.incident.v1.ListIncidentsRequest
-	(*ListIncidentsResponse)(nil),       // 13: query.incident.v1.ListIncidentsResponse
-	(*ListMyIncidentsRequest)(nil),      // 14: query.incident.v1.ListMyIncidentsRequest
-	(*ListMyIncidentsResponse)(nil),     // 15: query.incident.v1.ListMyIncidentsResponse
-	(*GetIncidentHistoryRequest)(nil),   // 16: query.incident.v1.GetIncidentHistoryRequest
-	(*GetIncidentHistoryResponse)(nil),  // 17: query.incident.v1.GetIncidentHistoryResponse
-	(*GetBufferEntryRequest)(nil),       // 18: query.incident.v1.GetBufferEntryRequest
-	(*GetBufferEntryResponse)(nil),      // 19: query.incident.v1.GetBufferEntryResponse
-	(*ListBufferEntriesRequest)(nil),    // 20: query.incident.v1.ListBufferEntriesRequest
-	(*ListBufferEntriesResponse)(nil),   // 21: query.incident.v1.ListBufferEntriesResponse
-	(*ListMyBufferEntriesRequest)(nil),  // 22: query.incident.v1.ListMyBufferEntriesRequest
-	(*ListMyBufferEntriesResponse)(nil), // 23: query.incident.v1.ListMyBufferEntriesResponse
+	(BufferPriority)(0),                 // 3: query.incident.v1.BufferPriority
+	(PatientStatus)(0),                  // 4: query.incident.v1.PatientStatus
+	(*PatientBufferInfo)(nil),           // 5: query.incident.v1.PatientBufferInfo
+	(*RegistrarView)(nil),               // 6: query.incident.v1.RegistrarView
+	(*IncidentView)(nil),                // 7: query.incident.v1.IncidentView
+	(*BufferEntryView)(nil),             // 8: query.incident.v1.BufferEntryView
+	(*ActorView)(nil),                   // 9: query.incident.v1.ActorView
+	(*StatusHistoryEntry)(nil),          // 10: query.incident.v1.StatusHistoryEntry
+	(*PriorityHistoryEntry)(nil),        // 11: query.incident.v1.PriorityHistoryEntry
+	(*GetIncidentRequest)(nil),          // 12: query.incident.v1.GetIncidentRequest
+	(*GetIncidentResponse)(nil),         // 13: query.incident.v1.GetIncidentResponse
+	(*ListIncidentsRequest)(nil),        // 14: query.incident.v1.ListIncidentsRequest
+	(*ListIncidentsResponse)(nil),       // 15: query.incident.v1.ListIncidentsResponse
+	(*ListMyIncidentsRequest)(nil),      // 16: query.incident.v1.ListMyIncidentsRequest
+	(*ListMyIncidentsResponse)(nil),     // 17: query.incident.v1.ListMyIncidentsResponse
+	(*GetIncidentHistoryRequest)(nil),   // 18: query.incident.v1.GetIncidentHistoryRequest
+	(*GetIncidentHistoryResponse)(nil),  // 19: query.incident.v1.GetIncidentHistoryResponse
+	(*GetBufferEntryRequest)(nil),       // 20: query.incident.v1.GetBufferEntryRequest
+	(*GetBufferEntryResponse)(nil),      // 21: query.incident.v1.GetBufferEntryResponse
+	(*ListBufferEntriesRequest)(nil),    // 22: query.incident.v1.ListBufferEntriesRequest
+	(*ListBufferEntriesResponse)(nil),   // 23: query.incident.v1.ListBufferEntriesResponse
+	(*ListMyBufferEntriesRequest)(nil),  // 24: query.incident.v1.ListMyBufferEntriesRequest
+	(*ListMyBufferEntriesResponse)(nil), // 25: query.incident.v1.ListMyBufferEntriesResponse
 }
 var file_query_incident_v1_incident_proto_depIdxs = []int32{
 	0,  // 0: query.incident.v1.IncidentView.status:type_name -> query.incident.v1.IncidentStatus
 	1,  // 1: query.incident.v1.IncidentView.priority:type_name -> query.incident.v1.IncidentPriority
-	4,  // 2: query.incident.v1.IncidentView.registrar:type_name -> query.incident.v1.RegistrarView
-	3,  // 3: query.incident.v1.IncidentView.patient_status:type_name -> query.incident.v1.PatientStatus
-	2,  // 4: query.incident.v1.BufferEntryView.status:type_name -> query.incident.v1.BufferStatus
-	3,  // 5: query.incident.v1.BufferEntryView.patient_status:type_name -> query.incident.v1.PatientStatus
-	0,  // 6: query.incident.v1.StatusHistoryEntry.old_status:type_name -> query.incident.v1.IncidentStatus
-	0,  // 7: query.incident.v1.StatusHistoryEntry.new_status:type_name -> query.incident.v1.IncidentStatus
-	7,  // 8: query.incident.v1.StatusHistoryEntry.actor:type_name -> query.incident.v1.ActorView
-	1,  // 9: query.incident.v1.PriorityHistoryEntry.old_priority:type_name -> query.incident.v1.IncidentPriority
-	1,  // 10: query.incident.v1.PriorityHistoryEntry.new_priority:type_name -> query.incident.v1.IncidentPriority
-	7,  // 11: query.incident.v1.PriorityHistoryEntry.actor:type_name -> query.incident.v1.ActorView
-	5,  // 12: query.incident.v1.GetIncidentResponse.incident:type_name -> query.incident.v1.IncidentView
-	0,  // 13: query.incident.v1.ListIncidentsRequest.statuses:type_name -> query.incident.v1.IncidentStatus
-	1,  // 14: query.incident.v1.ListIncidentsRequest.priorities:type_name -> query.incident.v1.IncidentPriority
-	5,  // 15: query.incident.v1.ListIncidentsResponse.items:type_name -> query.incident.v1.IncidentView
-	5,  // 16: query.incident.v1.ListMyIncidentsResponse.items:type_name -> query.incident.v1.IncidentView
-	8,  // 17: query.incident.v1.GetIncidentHistoryResponse.status_history:type_name -> query.incident.v1.StatusHistoryEntry
-	9,  // 18: query.incident.v1.GetIncidentHistoryResponse.priority_history:type_name -> query.incident.v1.PriorityHistoryEntry
-	6,  // 19: query.incident.v1.GetBufferEntryResponse.entry:type_name -> query.incident.v1.BufferEntryView
-	2,  // 20: query.incident.v1.ListBufferEntriesRequest.statuses:type_name -> query.incident.v1.BufferStatus
-	6,  // 21: query.incident.v1.ListBufferEntriesResponse.items:type_name -> query.incident.v1.BufferEntryView
-	6,  // 22: query.incident.v1.ListMyBufferEntriesResponse.items:type_name -> query.incident.v1.BufferEntryView
-	10, // 23: query.incident.v1.IncidentQueryService.GetIncident:input_type -> query.incident.v1.GetIncidentRequest
-	12, // 24: query.incident.v1.IncidentQueryService.ListIncidents:input_type -> query.incident.v1.ListIncidentsRequest
-	14, // 25: query.incident.v1.IncidentQueryService.ListMyIncidents:input_type -> query.incident.v1.ListMyIncidentsRequest
-	16, // 26: query.incident.v1.IncidentQueryService.GetIncidentHistory:input_type -> query.incident.v1.GetIncidentHistoryRequest
-	18, // 27: query.incident.v1.IncidentQueryService.GetBufferEntry:input_type -> query.incident.v1.GetBufferEntryRequest
-	20, // 28: query.incident.v1.IncidentQueryService.ListBufferEntries:input_type -> query.incident.v1.ListBufferEntriesRequest
-	22, // 29: query.incident.v1.IncidentQueryService.ListMyBufferEntries:input_type -> query.incident.v1.ListMyBufferEntriesRequest
-	11, // 30: query.incident.v1.IncidentQueryService.GetIncident:output_type -> query.incident.v1.GetIncidentResponse
-	13, // 31: query.incident.v1.IncidentQueryService.ListIncidents:output_type -> query.incident.v1.ListIncidentsResponse
-	15, // 32: query.incident.v1.IncidentQueryService.ListMyIncidents:output_type -> query.incident.v1.ListMyIncidentsResponse
-	17, // 33: query.incident.v1.IncidentQueryService.GetIncidentHistory:output_type -> query.incident.v1.GetIncidentHistoryResponse
-	19, // 34: query.incident.v1.IncidentQueryService.GetBufferEntry:output_type -> query.incident.v1.GetBufferEntryResponse
-	21, // 35: query.incident.v1.IncidentQueryService.ListBufferEntries:output_type -> query.incident.v1.ListBufferEntriesResponse
-	23, // 36: query.incident.v1.IncidentQueryService.ListMyBufferEntries:output_type -> query.incident.v1.ListMyBufferEntriesResponse
-	30, // [30:37] is the sub-list for method output_type
-	23, // [23:30] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	6,  // 2: query.incident.v1.IncidentView.registrar:type_name -> query.incident.v1.RegistrarView
+	4,  // 3: query.incident.v1.IncidentView.patient_status:type_name -> query.incident.v1.PatientStatus
+	5,  // 4: query.incident.v1.IncidentView.patient_buffer:type_name -> query.incident.v1.PatientBufferInfo
+	2,  // 5: query.incident.v1.BufferEntryView.status:type_name -> query.incident.v1.BufferStatus
+	4,  // 6: query.incident.v1.BufferEntryView.patient_status:type_name -> query.incident.v1.PatientStatus
+	0,  // 7: query.incident.v1.StatusHistoryEntry.old_status:type_name -> query.incident.v1.IncidentStatus
+	0,  // 8: query.incident.v1.StatusHistoryEntry.new_status:type_name -> query.incident.v1.IncidentStatus
+	9,  // 9: query.incident.v1.StatusHistoryEntry.actor:type_name -> query.incident.v1.ActorView
+	1,  // 10: query.incident.v1.PriorityHistoryEntry.old_priority:type_name -> query.incident.v1.IncidentPriority
+	1,  // 11: query.incident.v1.PriorityHistoryEntry.new_priority:type_name -> query.incident.v1.IncidentPriority
+	9,  // 12: query.incident.v1.PriorityHistoryEntry.actor:type_name -> query.incident.v1.ActorView
+	7,  // 13: query.incident.v1.GetIncidentResponse.incident:type_name -> query.incident.v1.IncidentView
+	0,  // 14: query.incident.v1.ListIncidentsRequest.statuses:type_name -> query.incident.v1.IncidentStatus
+	1,  // 15: query.incident.v1.ListIncidentsRequest.priorities:type_name -> query.incident.v1.IncidentPriority
+	7,  // 16: query.incident.v1.ListIncidentsResponse.items:type_name -> query.incident.v1.IncidentView
+	7,  // 17: query.incident.v1.ListMyIncidentsResponse.items:type_name -> query.incident.v1.IncidentView
+	10, // 18: query.incident.v1.GetIncidentHistoryResponse.status_history:type_name -> query.incident.v1.StatusHistoryEntry
+	11, // 19: query.incident.v1.GetIncidentHistoryResponse.priority_history:type_name -> query.incident.v1.PriorityHistoryEntry
+	8,  // 20: query.incident.v1.GetBufferEntryResponse.entry:type_name -> query.incident.v1.BufferEntryView
+	2,  // 21: query.incident.v1.ListBufferEntriesRequest.statuses:type_name -> query.incident.v1.BufferStatus
+	8,  // 22: query.incident.v1.ListBufferEntriesResponse.items:type_name -> query.incident.v1.BufferEntryView
+	8,  // 23: query.incident.v1.ListMyBufferEntriesResponse.items:type_name -> query.incident.v1.BufferEntryView
+	12, // 24: query.incident.v1.IncidentQueryService.GetIncident:input_type -> query.incident.v1.GetIncidentRequest
+	14, // 25: query.incident.v1.IncidentQueryService.ListIncidents:input_type -> query.incident.v1.ListIncidentsRequest
+	16, // 26: query.incident.v1.IncidentQueryService.ListMyIncidents:input_type -> query.incident.v1.ListMyIncidentsRequest
+	18, // 27: query.incident.v1.IncidentQueryService.GetIncidentHistory:input_type -> query.incident.v1.GetIncidentHistoryRequest
+	20, // 28: query.incident.v1.IncidentQueryService.GetBufferEntry:input_type -> query.incident.v1.GetBufferEntryRequest
+	22, // 29: query.incident.v1.IncidentQueryService.ListBufferEntries:input_type -> query.incident.v1.ListBufferEntriesRequest
+	24, // 30: query.incident.v1.IncidentQueryService.ListMyBufferEntries:input_type -> query.incident.v1.ListMyBufferEntriesRequest
+	13, // 31: query.incident.v1.IncidentQueryService.GetIncident:output_type -> query.incident.v1.GetIncidentResponse
+	15, // 32: query.incident.v1.IncidentQueryService.ListIncidents:output_type -> query.incident.v1.ListIncidentsResponse
+	17, // 33: query.incident.v1.IncidentQueryService.ListMyIncidents:output_type -> query.incident.v1.ListMyIncidentsResponse
+	19, // 34: query.incident.v1.IncidentQueryService.GetIncidentHistory:output_type -> query.incident.v1.GetIncidentHistoryResponse
+	21, // 35: query.incident.v1.IncidentQueryService.GetBufferEntry:output_type -> query.incident.v1.GetBufferEntryResponse
+	23, // 36: query.incident.v1.IncidentQueryService.ListBufferEntries:output_type -> query.incident.v1.ListBufferEntriesResponse
+	25, // 37: query.incident.v1.IncidentQueryService.ListMyBufferEntries:output_type -> query.incident.v1.ListMyBufferEntriesResponse
+	31, // [31:38] is the sub-list for method output_type
+	24, // [24:31] is the sub-list for method input_type
+	24, // [24:24] is the sub-list for extension type_name
+	24, // [24:24] is the sub-list for extension extendee
+	0,  // [0:24] is the sub-list for field type_name
 }
 
 func init() { file_query_incident_v1_incident_proto_init() }
@@ -1960,22 +2118,22 @@ func file_query_incident_v1_incident_proto_init() {
 	if File_query_incident_v1_incident_proto != nil {
 		return
 	}
-	file_query_incident_v1_incident_proto_msgTypes[0].OneofWrappers = []any{}
 	file_query_incident_v1_incident_proto_msgTypes[1].OneofWrappers = []any{}
 	file_query_incident_v1_incident_proto_msgTypes[2].OneofWrappers = []any{}
 	file_query_incident_v1_incident_proto_msgTypes[3].OneofWrappers = []any{}
-	file_query_incident_v1_incident_proto_msgTypes[8].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[4].OneofWrappers = []any{}
 	file_query_incident_v1_incident_proto_msgTypes[9].OneofWrappers = []any{}
-	file_query_incident_v1_incident_proto_msgTypes[11].OneofWrappers = []any{}
-	file_query_incident_v1_incident_proto_msgTypes[17].OneofWrappers = []any{}
-	file_query_incident_v1_incident_proto_msgTypes[19].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[10].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[12].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[18].OneofWrappers = []any{}
+	file_query_incident_v1_incident_proto_msgTypes[20].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_incident_v1_incident_proto_rawDesc), len(file_query_incident_v1_incident_proto_rawDesc)),
-			NumEnums:      4,
-			NumMessages:   20,
+			NumEnums:      5,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

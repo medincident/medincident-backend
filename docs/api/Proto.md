@@ -37,6 +37,8 @@
     - [UpdatePatientIncidentRequest](#command-incident-buffer-v1-UpdatePatientIncidentRequest)
     - [UpdatePatientIncidentResponse](#command-incident-buffer-v1-UpdatePatientIncidentResponse)
 
+    - [BufferPriority](#command-incident-buffer-v1-BufferPriority)
+
     - [IncidentBufferCommandService](#command-incident-buffer-v1-IncidentBufferCommandService)
 
 - [command/incident/classifier/v1/incident_classifier.proto](#command_incident_classifier_v1_incident_classifier-proto)
@@ -419,10 +421,12 @@
     - [ListMyBufferEntriesResponse](#query-incident-v1-ListMyBufferEntriesResponse)
     - [ListMyIncidentsRequest](#query-incident-v1-ListMyIncidentsRequest)
     - [ListMyIncidentsResponse](#query-incident-v1-ListMyIncidentsResponse)
+    - [PatientBufferInfo](#query-incident-v1-PatientBufferInfo)
     - [PriorityHistoryEntry](#query-incident-v1-PriorityHistoryEntry)
     - [RegistrarView](#query-incident-v1-RegistrarView)
     - [StatusHistoryEntry](#query-incident-v1-StatusHistoryEntry)
 
+    - [BufferPriority](#query-incident-v1-BufferPriority)
     - [BufferStatus](#query-incident-v1-BufferStatus)
     - [IncidentPriority](#query-incident-v1-IncidentPriority)
     - [IncidentStatus](#query-incident-v1-IncidentStatus)
@@ -950,8 +954,10 @@ AnnouncementCommandService is the write-side contract for announcements.
 | organization_id | [string](#string) |  |  |
 | category_id | [string](#string) | optional |  |
 | type_id | [string](#string) | optional |  |
-| description | [string](#string) | optional |  |
+| description | [string](#string) |  |  |
 | occurred_at | [string](#string) | optional | RFC3339Nano |
+| summary | [string](#string) |  |  |
+| priority | [BufferPriority](#command-incident-buffer-v1-BufferPriority) |  |  |
 
 
 
@@ -986,6 +992,8 @@ AnnouncementCommandService is the write-side contract for announcements.
 | type_id | [string](#string) | optional |  |
 | description | [string](#string) | optional |  |
 | occurred_at | [string](#string) | optional |  |
+| summary | [string](#string) | optional |  |
+| priority | [BufferPriority](#command-incident-buffer-v1-BufferPriority) | optional |  |
 
 
 
@@ -1001,6 +1009,19 @@ AnnouncementCommandService is the write-side contract for announcements.
 
 
 
+
+
+
+<a name="command-incident-buffer-v1-BufferPriority"></a>
+
+### BufferPriority
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| BUFFER_PRIORITY_UNSPECIFIED | 0 |  |
+| BUFFER_PRIORITY_NORMAL | 1 |  |
+| BUFFER_PRIORITY_HIGH | 2 |  |
 
 
 
@@ -3981,6 +4002,8 @@ aggregate_id = buffer UUID
 | occurred_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
 | status | [string](#string) |  |  |
 | created_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| summary | [string](#string) |  |  |
+| priority | [string](#string) |  |  |
 
 
 
@@ -4003,6 +4026,8 @@ PatientIncidentBufferUpdated — subject: medincident.event.patient_incident_buf
 | status | [string](#string) |  |  |
 | published_incident_id | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
 | updated_at | [google.protobuf.Timestamp](#google-protobuf-Timestamp) |  |  |
+| summary | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
+| priority | [google.protobuf.StringValue](#google-protobuf-StringValue) |  |  |
 
 
 
@@ -6200,13 +6225,15 @@ CTEs in the reader; the RPC surface stays flat.
 | patient_zitadel_user_id | [string](#string) |  |  |
 | category_id | [string](#string) | optional |  |
 | type_id | [string](#string) | optional |  |
-| description | [string](#string) | optional |  |
+| description | [string](#string) |  |  |
 | occurred_at | [string](#string) | optional |  |
 | status | [BufferStatus](#query-incident-v1-BufferStatus) |  |  |
 | published_incident_id | [string](#string) | optional |  |
 | created_at | [string](#string) |  |  |
 | updated_at | [string](#string) |  |  |
 | patient_status | [PatientStatus](#query-incident-v1-PatientStatus) | optional | Populated only for patient callers. |
+| summary | [string](#string) |  |  |
+| priority | [string](#string) |  | &#34;normal&#34; | &#34;high&#34; |
 
 
 
@@ -6331,6 +6358,7 @@ patient_status, description and timestamps are populated.
 | source_buffer_id | [string](#string) | optional |  |
 | reopened_from_incident_id | [string](#string) | optional |  |
 | patient_status | [PatientStatus](#query-incident-v1-PatientStatus) | optional | Populated only for patient callers. |
+| patient_buffer | [PatientBufferInfo](#query-incident-v1-PatientBufferInfo) | optional |  |
 
 
 
@@ -6476,6 +6504,25 @@ patient_status, description and timestamps are populated.
 
 
 
+<a name="query-incident-v1-PatientBufferInfo"></a>
+
+### PatientBufferInfo
+PatientBufferInfo is embedded in IncidentView when the incident was
+created from a patient buffer submission.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| buffer_id | [string](#string) |  |  |
+| description | [string](#string) |  |  |
+| summary | [string](#string) |  |  |
+| priority | [string](#string) |  | &#34;normal&#34; | &#34;high&#34; |
+
+
+
+
+
+
 <a name="query-incident-v1-PriorityHistoryEntry"></a>
 
 ### PriorityHistoryEntry
@@ -6533,6 +6580,19 @@ patient_status, description and timestamps are populated.
 
 
 
+
+
+
+<a name="query-incident-v1-BufferPriority"></a>
+
+### BufferPriority
+
+
+| Name | Number | Description |
+| ---- | ------ | ----------- |
+| BUFFER_PRIORITY_UNSPECIFIED | 0 |  |
+| BUFFER_PRIORITY_NORMAL | 1 |  |
+| BUFFER_PRIORITY_HIGH | 2 |  |
 
 
 
