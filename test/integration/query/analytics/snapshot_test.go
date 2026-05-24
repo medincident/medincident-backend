@@ -200,8 +200,8 @@ func TestGetSnapshot_IncludePatientBuffer_True_ReturnsBufferEntries(t *testing.T
 
 	for range 2 {
 		_, err = raw.Exec(
-			`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, status, created_at)
-			 VALUES ($1, $2, $3, 'pending', now())`,
+			`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, description, summary, priority, status, created_at)
+			 VALUES ($1, $2, $3, 'жалоба', 'жалоба', 'normal', 'pending', now())`,
 			uuidNew(), orgID, uuidNew(),
 		)
 		require.NoError(t, err)
@@ -227,8 +227,8 @@ func TestGetSnapshot_IncludePatientBuffer_False_ExcludesBuffer(t *testing.T) {
 
 	for range 2 {
 		_, err = raw.Exec(
-			`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, status, created_at)
-			 VALUES ($1, $2, $3, 'pending', now())`,
+			`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, description, summary, priority, status, created_at)
+			 VALUES ($1, $2, $3, 'жалоба', 'жалоба', 'normal', 'pending', now())`,
 			uuidNew(), orgID, uuidNew(),
 		)
 		require.NoError(t, err)
