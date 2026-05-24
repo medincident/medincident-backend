@@ -28,7 +28,7 @@
 | `type_id` | string (UUID) | omitempty, uuid |
 | `description` | string | required, min=1, max=10000 |
 | `summary` | string | required, min=1, max=10000 — AI-формализованный текст обращения |
-| `priority` | string (`normal` \| `high`) | required — приоритет, выставляемый AI-сервисом |
+| `priority` | BufferPriority (`BUFFER_PRIORITY_NORMAL` \| `BUFFER_PRIORITY_HIGH`) | required — приоритет, выставляемый AI-сервисом |
 | `occurred_at` | string (RFC3339Nano) | omitempty |
 
 ### Инварианты
@@ -70,7 +70,7 @@
 | `type_id` | string (UUID) | omitempty, uuid |
 | `description` | string | omitempty, min=1, max=10000 |
 | `summary` | string | omitempty, min=1, max=10000 — обновлённый AI-текст |
-| `priority` | string (`normal` \| `high`) | omitempty — обновлённый приоритет AI |
+| `priority` | BufferPriority (`BUFFER_PRIORITY_NORMAL` \| `BUFFER_PRIORITY_HIGH`) | omitempty — обновлённый приоритет AI |
 | `occurred_at` | string (RFC3339Nano) | omitempty |
 
 ### Инварианты
