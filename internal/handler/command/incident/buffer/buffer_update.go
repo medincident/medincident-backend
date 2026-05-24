@@ -18,10 +18,7 @@ func (h *BufferHandler) UpdatePatientIncident(
 	}
 	var priority *string
 	if req.Priority != nil {
-		p, err := protoBufferPriorityToString(*req.Priority)
-		if err != nil {
-			return nil, err
-		}
+		p := protoBufferPriorityToString(*req.Priority)
 		priority = &p
 	}
 	if err := h.svc.Update(ctx, buffersvc.UpdateCommand{

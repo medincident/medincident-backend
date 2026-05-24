@@ -78,7 +78,7 @@ type SubmitPatientIncidentRequest struct {
 	OrganizationId string                 `protobuf:"bytes,1,opt,name=organization_id,json=organizationId,proto3" json:"organization_id,omitempty"`
 	CategoryId     *string                `protobuf:"bytes,2,opt,name=category_id,json=categoryId,proto3,oneof" json:"category_id,omitempty"`
 	TypeId         *string                `protobuf:"bytes,3,opt,name=type_id,json=typeId,proto3,oneof" json:"type_id,omitempty"`
-	Description    string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Description    *string                `protobuf:"bytes,4,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	OccurredAt     *string                `protobuf:"bytes,5,opt,name=occurred_at,json=occurredAt,proto3,oneof" json:"occurred_at,omitempty"` // RFC3339Nano
 	Summary        string                 `protobuf:"bytes,6,opt,name=summary,proto3" json:"summary,omitempty"`
 	Priority       BufferPriority         `protobuf:"varint,7,opt,name=priority,proto3,enum=command.incident.buffer.v1.BufferPriority" json:"priority,omitempty"`
@@ -138,8 +138,8 @@ func (x *SubmitPatientIncidentRequest) GetTypeId() string {
 }
 
 func (x *SubmitPatientIncidentRequest) GetDescription() string {
-	if x != nil {
-		return x.Description
+	if x != nil && x.Description != nil {
+		return *x.Description
 	}
 	return ""
 }
@@ -621,20 +621,21 @@ var File_command_incident_buffer_v1_buffer_proto protoreflect.FileDescriptor
 
 const file_command_incident_buffer_v1_buffer_proto_rawDesc = "" +
 	"\n" +
-	"'command/incident/buffer/v1/buffer.proto\x12\x1acommand.incident.buffer.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xf5\x02\n" +
+	"'command/incident/buffer/v1/buffer.proto\x12\x1acommand.incident.buffer.v1\x1a\x14error/v1/error.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x8a\x03\n" +
 	"\x1cSubmitPatientIncidentRequest\x12,\n" +
 	"\x0forganization_id\x18\x01 \x01(\tB\x03\xe0A\x02R\x0eorganizationId\x12$\n" +
 	"\vcategory_id\x18\x02 \x01(\tH\x00R\n" +
 	"categoryId\x88\x01\x01\x12\x1c\n" +
-	"\atype_id\x18\x03 \x01(\tH\x01R\x06typeId\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tB\x03\xe0A\x02R\vdescription\x12$\n" +
-	"\voccurred_at\x18\x05 \x01(\tH\x02R\n" +
+	"\atype_id\x18\x03 \x01(\tH\x01R\x06typeId\x88\x01\x01\x12*\n" +
+	"\vdescription\x18\x04 \x01(\tB\x03\xe0A\x02H\x02R\vdescription\x88\x01\x01\x12$\n" +
+	"\voccurred_at\x18\x05 \x01(\tH\x03R\n" +
 	"occurredAt\x88\x01\x01\x12\x1d\n" +
 	"\asummary\x18\x06 \x01(\tB\x03\xe0A\x02R\asummary\x12K\n" +
 	"\bpriority\x18\a \x01(\x0e2*.command.incident.buffer.v1.BufferPriorityB\x03\xe0A\x02R\bpriorityB\x0e\n" +
 	"\f_category_idB\n" +
 	"\n" +
 	"\b_type_idB\x0e\n" +
+	"\f_descriptionB\x0e\n" +
 	"\f_occurred_at\"<\n" +
 	"\x1dSubmitPatientIncidentResponse\x12\x1b\n" +
 	"\tbuffer_id\x18\x01 \x01(\tR\bbufferId\"\x92\x03\n" +

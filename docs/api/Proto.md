@@ -426,7 +426,6 @@
     - [RegistrarView](#query-incident-v1-RegistrarView)
     - [StatusHistoryEntry](#query-incident-v1-StatusHistoryEntry)
 
-    - [BufferPriority](#query-incident-v1-BufferPriority)
     - [BufferStatus](#query-incident-v1-BufferStatus)
     - [IncidentPriority](#query-incident-v1-IncidentPriority)
     - [IncidentStatus](#query-incident-v1-IncidentStatus)
@@ -954,7 +953,7 @@ AnnouncementCommandService is the write-side contract for announcements.
 | organization_id | [string](#string) |  |  |
 | category_id | [string](#string) | optional |  |
 | type_id | [string](#string) | optional |  |
-| description | [string](#string) |  |  |
+| description | [string](#string) | optional |  |
 | occurred_at | [string](#string) | optional | RFC3339Nano |
 | summary | [string](#string) |  |  |
 | priority | [BufferPriority](#command-incident-buffer-v1-BufferPriority) |  |  |
@@ -6233,7 +6232,7 @@ CTEs in the reader; the RPC surface stays flat.
 | updated_at | [string](#string) |  |  |
 | patient_status | [PatientStatus](#query-incident-v1-PatientStatus) | optional | Populated only for patient callers. |
 | summary | [string](#string) |  |  |
-| priority | [string](#string) |  | &#34;normal&#34; | &#34;high&#34; |
+| priority | [string](#string) |  | &#34;normal&#34; or &#34;high&#34; |
 
 
 
@@ -6516,7 +6515,7 @@ created from a patient buffer submission.
 | buffer_id | [string](#string) |  |  |
 | description | [string](#string) |  |  |
 | summary | [string](#string) |  |  |
-| priority | [string](#string) |  | &#34;normal&#34; | &#34;high&#34; |
+| priority | [string](#string) |  | &#34;normal&#34; or &#34;high&#34; |
 
 
 
@@ -6580,19 +6579,6 @@ created from a patient buffer submission.
 
 
 
-
-
-
-<a name="query-incident-v1-BufferPriority"></a>
-
-### BufferPriority
-
-
-| Name | Number | Description |
-| ---- | ------ | ----------- |
-| BUFFER_PRIORITY_UNSPECIFIED | 0 |  |
-| BUFFER_PRIORITY_NORMAL | 1 |  |
-| BUFFER_PRIORITY_HIGH | 2 |  |
 
 
 

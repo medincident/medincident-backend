@@ -319,7 +319,7 @@ func scanIncident(row interface{ Scan(...any) error }, v *IncidentView) error {
 	); err != nil {
 		return err
 	}
-	if v.SourceBufferID.Valid {
+	if v.SourceBufferID.Valid && pbDesc.Valid {
 		v.PatientBuffer = &PatientBufferInfo{
 			BufferID:    v.SourceBufferID.UUID,
 			Description: pbDesc.String,

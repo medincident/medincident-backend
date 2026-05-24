@@ -16,10 +16,6 @@ func (h *BufferHandler) SubmitPatientIncident(
 	if err != nil {
 		return nil, err
 	}
-	priority, err := protoBufferPriorityToString(req.GetPriority())
-	if err != nil {
-		return nil, err
-	}
 	res, err := h.svc.Submit(ctx, buffersvc.SubmitCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: buffersvc.SubmitPayload{
@@ -28,7 +24,7 @@ func (h *BufferHandler) SubmitPatientIncident(
 			TypeID:         req.TypeId,
 			Description:    req.GetDescription(),
 			Summary:        req.GetSummary(),
-			Priority:       priority,
+			Priority:       protoBufferPriorityToString(req.GetPriority()),
 			OccurredAt:     req.OccurredAt,
 		},
 	})

@@ -192,55 +192,6 @@ func (BufferStatus) EnumDescriptor() ([]byte, []int) {
 	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{2}
 }
 
-type BufferPriority int32
-
-const (
-	BufferPriority_BUFFER_PRIORITY_UNSPECIFIED BufferPriority = 0
-	BufferPriority_BUFFER_PRIORITY_NORMAL      BufferPriority = 1
-	BufferPriority_BUFFER_PRIORITY_HIGH        BufferPriority = 2
-)
-
-// Enum value maps for BufferPriority.
-var (
-	BufferPriority_name = map[int32]string{
-		0: "BUFFER_PRIORITY_UNSPECIFIED",
-		1: "BUFFER_PRIORITY_NORMAL",
-		2: "BUFFER_PRIORITY_HIGH",
-	}
-	BufferPriority_value = map[string]int32{
-		"BUFFER_PRIORITY_UNSPECIFIED": 0,
-		"BUFFER_PRIORITY_NORMAL":      1,
-		"BUFFER_PRIORITY_HIGH":        2,
-	}
-)
-
-func (x BufferPriority) Enum() *BufferPriority {
-	p := new(BufferPriority)
-	*p = x
-	return p
-}
-
-func (x BufferPriority) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (BufferPriority) Descriptor() protoreflect.EnumDescriptor {
-	return file_query_incident_v1_incident_proto_enumTypes[3].Descriptor()
-}
-
-func (BufferPriority) Type() protoreflect.EnumType {
-	return &file_query_incident_v1_incident_proto_enumTypes[3]
-}
-
-func (x BufferPriority) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use BufferPriority.Descriptor instead.
-func (BufferPriority) EnumDescriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{3}
-}
-
 // PatientStatus is the simplified four-value status surfaced to patients.
 type PatientStatus int32
 
@@ -281,11 +232,11 @@ func (x PatientStatus) String() string {
 }
 
 func (PatientStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_query_incident_v1_incident_proto_enumTypes[4].Descriptor()
+	return file_query_incident_v1_incident_proto_enumTypes[3].Descriptor()
 }
 
 func (PatientStatus) Type() protoreflect.EnumType {
-	return &file_query_incident_v1_incident_proto_enumTypes[4]
+	return &file_query_incident_v1_incident_proto_enumTypes[3]
 }
 
 func (x PatientStatus) Number() protoreflect.EnumNumber {
@@ -294,7 +245,7 @@ func (x PatientStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use PatientStatus.Descriptor instead.
 func (PatientStatus) EnumDescriptor() ([]byte, []int) {
-	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{4}
+	return file_query_incident_v1_incident_proto_rawDescGZIP(), []int{3}
 }
 
 // PatientBufferInfo is embedded in IncidentView when the incident was
@@ -304,7 +255,7 @@ type PatientBufferInfo struct {
 	BufferId      string                 `protobuf:"bytes,1,opt,name=buffer_id,json=bufferId,proto3" json:"buffer_id,omitempty"`
 	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	Summary       string                 `protobuf:"bytes,3,opt,name=summary,proto3" json:"summary,omitempty"`
-	Priority      string                 `protobuf:"bytes,4,opt,name=priority,proto3" json:"priority,omitempty"` // "normal" | "high"
+	Priority      string                 `protobuf:"bytes,4,opt,name=priority,proto3" json:"priority,omitempty"` // "normal" or "high"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -658,7 +609,7 @@ type BufferEntryView struct {
 	// Populated only for patient callers.
 	PatientStatus *PatientStatus `protobuf:"varint,12,opt,name=patient_status,json=patientStatus,proto3,enum=query.incident.v1.PatientStatus,oneof" json:"patient_status,omitempty"`
 	Summary       string         `protobuf:"bytes,13,opt,name=summary,proto3" json:"summary,omitempty"`
-	Priority      string         `protobuf:"bytes,14,opt,name=priority,proto3" json:"priority,omitempty"` // "normal" | "high"
+	Priority      string         `protobuf:"bytes,14,opt,name=priority,proto3" json:"priority,omitempty"` // "normal" or "high"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1968,11 +1919,7 @@ const file_query_incident_v1_incident_proto_rawDesc = "" +
 	"\x15BUFFER_STATUS_PENDING\x10\x01\x12\x1b\n" +
 	"\x17BUFFER_STATUS_PUBLISHED\x10\x02\x12\x1a\n" +
 	"\x16BUFFER_STATUS_REJECTED\x10\x03\x12\x1b\n" +
-	"\x17BUFFER_STATUS_CANCELLED\x10\x04*g\n" +
-	"\x0eBufferPriority\x12\x1f\n" +
-	"\x1bBUFFER_PRIORITY_UNSPECIFIED\x10\x00\x12\x1a\n" +
-	"\x16BUFFER_PRIORITY_NORMAL\x10\x01\x12\x18\n" +
-	"\x14BUFFER_PRIORITY_HIGH\x10\x02*\xa1\x01\n" +
+	"\x17BUFFER_STATUS_CANCELLED\x10\x04*\xa1\x01\n" +
 	"\rPatientStatus\x12\x1e\n" +
 	"\x1aPATIENT_STATUS_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16PATIENT_STATUS_PENDING\x10\x01\x12\x1b\n" +
@@ -2037,75 +1984,74 @@ func file_query_incident_v1_incident_proto_rawDescGZIP() []byte {
 	return file_query_incident_v1_incident_proto_rawDescData
 }
 
-var file_query_incident_v1_incident_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_query_incident_v1_incident_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
 var file_query_incident_v1_incident_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_query_incident_v1_incident_proto_goTypes = []any{
 	(IncidentStatus)(0),                 // 0: query.incident.v1.IncidentStatus
 	(IncidentPriority)(0),               // 1: query.incident.v1.IncidentPriority
 	(BufferStatus)(0),                   // 2: query.incident.v1.BufferStatus
-	(BufferPriority)(0),                 // 3: query.incident.v1.BufferPriority
-	(PatientStatus)(0),                  // 4: query.incident.v1.PatientStatus
-	(*PatientBufferInfo)(nil),           // 5: query.incident.v1.PatientBufferInfo
-	(*RegistrarView)(nil),               // 6: query.incident.v1.RegistrarView
-	(*IncidentView)(nil),                // 7: query.incident.v1.IncidentView
-	(*BufferEntryView)(nil),             // 8: query.incident.v1.BufferEntryView
-	(*ActorView)(nil),                   // 9: query.incident.v1.ActorView
-	(*StatusHistoryEntry)(nil),          // 10: query.incident.v1.StatusHistoryEntry
-	(*PriorityHistoryEntry)(nil),        // 11: query.incident.v1.PriorityHistoryEntry
-	(*GetIncidentRequest)(nil),          // 12: query.incident.v1.GetIncidentRequest
-	(*GetIncidentResponse)(nil),         // 13: query.incident.v1.GetIncidentResponse
-	(*ListIncidentsRequest)(nil),        // 14: query.incident.v1.ListIncidentsRequest
-	(*ListIncidentsResponse)(nil),       // 15: query.incident.v1.ListIncidentsResponse
-	(*ListMyIncidentsRequest)(nil),      // 16: query.incident.v1.ListMyIncidentsRequest
-	(*ListMyIncidentsResponse)(nil),     // 17: query.incident.v1.ListMyIncidentsResponse
-	(*GetIncidentHistoryRequest)(nil),   // 18: query.incident.v1.GetIncidentHistoryRequest
-	(*GetIncidentHistoryResponse)(nil),  // 19: query.incident.v1.GetIncidentHistoryResponse
-	(*GetBufferEntryRequest)(nil),       // 20: query.incident.v1.GetBufferEntryRequest
-	(*GetBufferEntryResponse)(nil),      // 21: query.incident.v1.GetBufferEntryResponse
-	(*ListBufferEntriesRequest)(nil),    // 22: query.incident.v1.ListBufferEntriesRequest
-	(*ListBufferEntriesResponse)(nil),   // 23: query.incident.v1.ListBufferEntriesResponse
-	(*ListMyBufferEntriesRequest)(nil),  // 24: query.incident.v1.ListMyBufferEntriesRequest
-	(*ListMyBufferEntriesResponse)(nil), // 25: query.incident.v1.ListMyBufferEntriesResponse
+	(PatientStatus)(0),                  // 3: query.incident.v1.PatientStatus
+	(*PatientBufferInfo)(nil),           // 4: query.incident.v1.PatientBufferInfo
+	(*RegistrarView)(nil),               // 5: query.incident.v1.RegistrarView
+	(*IncidentView)(nil),                // 6: query.incident.v1.IncidentView
+	(*BufferEntryView)(nil),             // 7: query.incident.v1.BufferEntryView
+	(*ActorView)(nil),                   // 8: query.incident.v1.ActorView
+	(*StatusHistoryEntry)(nil),          // 9: query.incident.v1.StatusHistoryEntry
+	(*PriorityHistoryEntry)(nil),        // 10: query.incident.v1.PriorityHistoryEntry
+	(*GetIncidentRequest)(nil),          // 11: query.incident.v1.GetIncidentRequest
+	(*GetIncidentResponse)(nil),         // 12: query.incident.v1.GetIncidentResponse
+	(*ListIncidentsRequest)(nil),        // 13: query.incident.v1.ListIncidentsRequest
+	(*ListIncidentsResponse)(nil),       // 14: query.incident.v1.ListIncidentsResponse
+	(*ListMyIncidentsRequest)(nil),      // 15: query.incident.v1.ListMyIncidentsRequest
+	(*ListMyIncidentsResponse)(nil),     // 16: query.incident.v1.ListMyIncidentsResponse
+	(*GetIncidentHistoryRequest)(nil),   // 17: query.incident.v1.GetIncidentHistoryRequest
+	(*GetIncidentHistoryResponse)(nil),  // 18: query.incident.v1.GetIncidentHistoryResponse
+	(*GetBufferEntryRequest)(nil),       // 19: query.incident.v1.GetBufferEntryRequest
+	(*GetBufferEntryResponse)(nil),      // 20: query.incident.v1.GetBufferEntryResponse
+	(*ListBufferEntriesRequest)(nil),    // 21: query.incident.v1.ListBufferEntriesRequest
+	(*ListBufferEntriesResponse)(nil),   // 22: query.incident.v1.ListBufferEntriesResponse
+	(*ListMyBufferEntriesRequest)(nil),  // 23: query.incident.v1.ListMyBufferEntriesRequest
+	(*ListMyBufferEntriesResponse)(nil), // 24: query.incident.v1.ListMyBufferEntriesResponse
 }
 var file_query_incident_v1_incident_proto_depIdxs = []int32{
 	0,  // 0: query.incident.v1.IncidentView.status:type_name -> query.incident.v1.IncidentStatus
 	1,  // 1: query.incident.v1.IncidentView.priority:type_name -> query.incident.v1.IncidentPriority
-	6,  // 2: query.incident.v1.IncidentView.registrar:type_name -> query.incident.v1.RegistrarView
-	4,  // 3: query.incident.v1.IncidentView.patient_status:type_name -> query.incident.v1.PatientStatus
-	5,  // 4: query.incident.v1.IncidentView.patient_buffer:type_name -> query.incident.v1.PatientBufferInfo
+	5,  // 2: query.incident.v1.IncidentView.registrar:type_name -> query.incident.v1.RegistrarView
+	3,  // 3: query.incident.v1.IncidentView.patient_status:type_name -> query.incident.v1.PatientStatus
+	4,  // 4: query.incident.v1.IncidentView.patient_buffer:type_name -> query.incident.v1.PatientBufferInfo
 	2,  // 5: query.incident.v1.BufferEntryView.status:type_name -> query.incident.v1.BufferStatus
-	4,  // 6: query.incident.v1.BufferEntryView.patient_status:type_name -> query.incident.v1.PatientStatus
+	3,  // 6: query.incident.v1.BufferEntryView.patient_status:type_name -> query.incident.v1.PatientStatus
 	0,  // 7: query.incident.v1.StatusHistoryEntry.old_status:type_name -> query.incident.v1.IncidentStatus
 	0,  // 8: query.incident.v1.StatusHistoryEntry.new_status:type_name -> query.incident.v1.IncidentStatus
-	9,  // 9: query.incident.v1.StatusHistoryEntry.actor:type_name -> query.incident.v1.ActorView
+	8,  // 9: query.incident.v1.StatusHistoryEntry.actor:type_name -> query.incident.v1.ActorView
 	1,  // 10: query.incident.v1.PriorityHistoryEntry.old_priority:type_name -> query.incident.v1.IncidentPriority
 	1,  // 11: query.incident.v1.PriorityHistoryEntry.new_priority:type_name -> query.incident.v1.IncidentPriority
-	9,  // 12: query.incident.v1.PriorityHistoryEntry.actor:type_name -> query.incident.v1.ActorView
-	7,  // 13: query.incident.v1.GetIncidentResponse.incident:type_name -> query.incident.v1.IncidentView
+	8,  // 12: query.incident.v1.PriorityHistoryEntry.actor:type_name -> query.incident.v1.ActorView
+	6,  // 13: query.incident.v1.GetIncidentResponse.incident:type_name -> query.incident.v1.IncidentView
 	0,  // 14: query.incident.v1.ListIncidentsRequest.statuses:type_name -> query.incident.v1.IncidentStatus
 	1,  // 15: query.incident.v1.ListIncidentsRequest.priorities:type_name -> query.incident.v1.IncidentPriority
-	7,  // 16: query.incident.v1.ListIncidentsResponse.items:type_name -> query.incident.v1.IncidentView
-	7,  // 17: query.incident.v1.ListMyIncidentsResponse.items:type_name -> query.incident.v1.IncidentView
-	10, // 18: query.incident.v1.GetIncidentHistoryResponse.status_history:type_name -> query.incident.v1.StatusHistoryEntry
-	11, // 19: query.incident.v1.GetIncidentHistoryResponse.priority_history:type_name -> query.incident.v1.PriorityHistoryEntry
-	8,  // 20: query.incident.v1.GetBufferEntryResponse.entry:type_name -> query.incident.v1.BufferEntryView
+	6,  // 16: query.incident.v1.ListIncidentsResponse.items:type_name -> query.incident.v1.IncidentView
+	6,  // 17: query.incident.v1.ListMyIncidentsResponse.items:type_name -> query.incident.v1.IncidentView
+	9,  // 18: query.incident.v1.GetIncidentHistoryResponse.status_history:type_name -> query.incident.v1.StatusHistoryEntry
+	10, // 19: query.incident.v1.GetIncidentHistoryResponse.priority_history:type_name -> query.incident.v1.PriorityHistoryEntry
+	7,  // 20: query.incident.v1.GetBufferEntryResponse.entry:type_name -> query.incident.v1.BufferEntryView
 	2,  // 21: query.incident.v1.ListBufferEntriesRequest.statuses:type_name -> query.incident.v1.BufferStatus
-	8,  // 22: query.incident.v1.ListBufferEntriesResponse.items:type_name -> query.incident.v1.BufferEntryView
-	8,  // 23: query.incident.v1.ListMyBufferEntriesResponse.items:type_name -> query.incident.v1.BufferEntryView
-	12, // 24: query.incident.v1.IncidentQueryService.GetIncident:input_type -> query.incident.v1.GetIncidentRequest
-	14, // 25: query.incident.v1.IncidentQueryService.ListIncidents:input_type -> query.incident.v1.ListIncidentsRequest
-	16, // 26: query.incident.v1.IncidentQueryService.ListMyIncidents:input_type -> query.incident.v1.ListMyIncidentsRequest
-	18, // 27: query.incident.v1.IncidentQueryService.GetIncidentHistory:input_type -> query.incident.v1.GetIncidentHistoryRequest
-	20, // 28: query.incident.v1.IncidentQueryService.GetBufferEntry:input_type -> query.incident.v1.GetBufferEntryRequest
-	22, // 29: query.incident.v1.IncidentQueryService.ListBufferEntries:input_type -> query.incident.v1.ListBufferEntriesRequest
-	24, // 30: query.incident.v1.IncidentQueryService.ListMyBufferEntries:input_type -> query.incident.v1.ListMyBufferEntriesRequest
-	13, // 31: query.incident.v1.IncidentQueryService.GetIncident:output_type -> query.incident.v1.GetIncidentResponse
-	15, // 32: query.incident.v1.IncidentQueryService.ListIncidents:output_type -> query.incident.v1.ListIncidentsResponse
-	17, // 33: query.incident.v1.IncidentQueryService.ListMyIncidents:output_type -> query.incident.v1.ListMyIncidentsResponse
-	19, // 34: query.incident.v1.IncidentQueryService.GetIncidentHistory:output_type -> query.incident.v1.GetIncidentHistoryResponse
-	21, // 35: query.incident.v1.IncidentQueryService.GetBufferEntry:output_type -> query.incident.v1.GetBufferEntryResponse
-	23, // 36: query.incident.v1.IncidentQueryService.ListBufferEntries:output_type -> query.incident.v1.ListBufferEntriesResponse
-	25, // 37: query.incident.v1.IncidentQueryService.ListMyBufferEntries:output_type -> query.incident.v1.ListMyBufferEntriesResponse
+	7,  // 22: query.incident.v1.ListBufferEntriesResponse.items:type_name -> query.incident.v1.BufferEntryView
+	7,  // 23: query.incident.v1.ListMyBufferEntriesResponse.items:type_name -> query.incident.v1.BufferEntryView
+	11, // 24: query.incident.v1.IncidentQueryService.GetIncident:input_type -> query.incident.v1.GetIncidentRequest
+	13, // 25: query.incident.v1.IncidentQueryService.ListIncidents:input_type -> query.incident.v1.ListIncidentsRequest
+	15, // 26: query.incident.v1.IncidentQueryService.ListMyIncidents:input_type -> query.incident.v1.ListMyIncidentsRequest
+	17, // 27: query.incident.v1.IncidentQueryService.GetIncidentHistory:input_type -> query.incident.v1.GetIncidentHistoryRequest
+	19, // 28: query.incident.v1.IncidentQueryService.GetBufferEntry:input_type -> query.incident.v1.GetBufferEntryRequest
+	21, // 29: query.incident.v1.IncidentQueryService.ListBufferEntries:input_type -> query.incident.v1.ListBufferEntriesRequest
+	23, // 30: query.incident.v1.IncidentQueryService.ListMyBufferEntries:input_type -> query.incident.v1.ListMyBufferEntriesRequest
+	12, // 31: query.incident.v1.IncidentQueryService.GetIncident:output_type -> query.incident.v1.GetIncidentResponse
+	14, // 32: query.incident.v1.IncidentQueryService.ListIncidents:output_type -> query.incident.v1.ListIncidentsResponse
+	16, // 33: query.incident.v1.IncidentQueryService.ListMyIncidents:output_type -> query.incident.v1.ListMyIncidentsResponse
+	18, // 34: query.incident.v1.IncidentQueryService.GetIncidentHistory:output_type -> query.incident.v1.GetIncidentHistoryResponse
+	20, // 35: query.incident.v1.IncidentQueryService.GetBufferEntry:output_type -> query.incident.v1.GetBufferEntryResponse
+	22, // 36: query.incident.v1.IncidentQueryService.ListBufferEntries:output_type -> query.incident.v1.ListBufferEntriesResponse
+	24, // 37: query.incident.v1.IncidentQueryService.ListMyBufferEntries:output_type -> query.incident.v1.ListMyBufferEntriesResponse
 	31, // [31:38] is the sub-list for method output_type
 	24, // [24:31] is the sub-list for method input_type
 	24, // [24:24] is the sub-list for extension type_name
@@ -2132,7 +2078,7 @@ func file_query_incident_v1_incident_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_query_incident_v1_incident_proto_rawDesc), len(file_query_incident_v1_incident_proto_rawDesc)),
-			NumEnums:      5,
+			NumEnums:      4,
 			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,

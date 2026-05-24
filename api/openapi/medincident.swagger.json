@@ -11430,7 +11430,7 @@
         },
         "priority": {
           "type": "string",
-          "title": "\"normal\" | \"high\""
+          "title": "\"normal\" or \"high\""
         }
       }
     },
@@ -13146,7 +13146,7 @@
         },
         "priority": {
           "type": "string",
-          "title": "\"normal\" | \"high\""
+          "title": "\"normal\" or \"high\""
         }
       },
       "description": "PatientBufferInfo is embedded in IncidentView when the incident was\ncreated from a patient buffer submission."

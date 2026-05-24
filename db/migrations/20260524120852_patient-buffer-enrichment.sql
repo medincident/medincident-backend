@@ -10,6 +10,8 @@ ALTER TABLE domain.patient_incident_buffer
     ADD COLUMN summary  TEXT                  NOT NULL DEFAULT '',
     ADD COLUMN priority domain.buffer_priority NOT NULL DEFAULT 'normal';
 
+UPDATE domain.patient_incident_buffer SET summary = description;
+
 ALTER TABLE domain.patient_incident_buffer ALTER COLUMN summary  DROP DEFAULT;
 ALTER TABLE domain.patient_incident_buffer ALTER COLUMN priority DROP DEFAULT;
 
@@ -20,6 +22,8 @@ ALTER TABLE projections.patient_incident_buffer ALTER COLUMN description SET NOT
 ALTER TABLE projections.patient_incident_buffer
     ADD COLUMN summary  TEXT                  NOT NULL DEFAULT '',
     ADD COLUMN priority domain.buffer_priority NOT NULL DEFAULT 'normal';
+
+UPDATE projections.patient_incident_buffer SET summary = description;
 
 ALTER TABLE projections.patient_incident_buffer ALTER COLUMN summary  DROP DEFAULT;
 ALTER TABLE projections.patient_incident_buffer ALTER COLUMN priority DROP DEFAULT;

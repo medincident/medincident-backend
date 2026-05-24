@@ -163,7 +163,7 @@ message SubmitPatientIncidentRequest {
   string organization_id = 1 [(google.api.field_behavior) = REQUIRED];
   optional string category_id = 2;
   optional string type_id = 3;
-  string description = 4 [(google.api.field_behavior) = REQUIRED];
+  optional string description = 4 [(google.api.field_behavior) = REQUIRED];
   optional string occurred_at = 5; // RFC3339Nano
   string summary = 6 [(google.api.field_behavior) = REQUIRED];
   BufferPriority priority = 7 [(google.api.field_behavior) = REQUIRED];
