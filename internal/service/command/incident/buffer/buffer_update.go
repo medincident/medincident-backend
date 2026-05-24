@@ -26,6 +26,8 @@ type UpdatePayload struct {
 	CategoryID  *string `validate:"omitnil,uuid"`
 	TypeID      *string `validate:"omitnil,uuid"`
 	Description *string `validate:"omitnil,no_extra_ws,min=1,max=10000"`
+	Summary     *string `validate:"omitnil,no_extra_ws,min=1,max=10000"`
+	Priority    *string `validate:"omitnil,oneof=normal high"`
 	OccurredAt  *string
 }
 
@@ -39,7 +41,7 @@ type UpdateCommand struct {
 // the current value (no clear-to-null semantics).
 //
 // See: docs/services/incident/Buffer.md
-func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
+func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error { //nolint:gocritic // hugeParam: Command is passed by value across the whole service layer for consistency.
 	if err := validation.Struct(cmd.Payload); err != nil {
 		return err
 	}
@@ -89,8 +91,16 @@ func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 		if err := validatePatientCategoryType(tx, b.OrganizationID, b.CategoryID, b.TypeID); err != nil {
 			return err
 		}
+		summaryChanged := cmd.Payload.Summary != nil
+		priorityChanged := cmd.Payload.Priority != nil
 		if cmd.Payload.Description != nil {
-			b.Description = null.StringFrom(strings.TrimSpace(*cmd.Payload.Description))
+			b.Description = strings.TrimSpace(*cmd.Payload.Description)
+		}
+		if cmd.Payload.Summary != nil {
+			b.Summary = strings.TrimSpace(*cmd.Payload.Summary)
+		}
+		if cmd.Payload.Priority != nil {
+			b.Priority = model.BufferPriority(*cmd.Payload.Priority)
 		}
 		if occurred != nil {
 			b.OccurredAt = *occurred
@@ -100,7 +110,7 @@ func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 		if err := tx.Save(b).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
 		}
-		env, err := buildPatientIncidentBufferUpdatedEnvelope(b)
+		env, err := buildPatientIncidentBufferUpdatedEnvelope(b, summaryChanged, priorityChanged)
 		if err != nil {
 			return err
 		}
@@ -108,10 +118,10 @@ func (s *BufferService) Update(ctx context.Context, cmd UpdateCommand) error {
 	})
 }
 
-func buildPatientIncidentBufferUpdatedEnvelope(b *model.PatientIncidentBuffer) (*eventv1.Envelope, error) {
+func buildPatientIncidentBufferUpdatedEnvelope(b *model.PatientIncidentBuffer, summaryChanged, priorityChanged bool) (*eventv1.Envelope, error) {
 	msg := &bufferv1.PatientIncidentBufferUpdated{
 		BufferId:    b.ID.String(),
-		Description: b.Description.ValueOrZero(),
+		Description: b.Description,
 		Status:      string(b.Status),
 		UpdatedAt:   timestamppb.New(b.UpdatedAt),
 	}
@@ -126,6 +136,12 @@ func buildPatientIncidentBufferUpdatedEnvelope(b *model.PatientIncidentBuffer) (
 	}
 	if b.PublishedIncidentID.Valid {
 		msg.PublishedIncidentId = wrapperspb.String(b.PublishedIncidentID.UUID.String())
+	}
+	if summaryChanged {
+		msg.Summary = wrapperspb.String(b.Summary)
+	}
+	if priorityChanged {
+		msg.Priority = wrapperspb.String(string(b.Priority))
 	}
 	payload, err := anypb.New(msg)
 	if err != nil {

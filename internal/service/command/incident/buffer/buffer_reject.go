@@ -63,7 +63,7 @@ func (s *BufferService) Reject(ctx context.Context, cmd RejectCommand) error {
 		if err := tx.Save(b).Error; err != nil {
 			return oops.In(scope).Code(ErrCodeBufferSaveFailed).Wrap(err)
 		}
-		env, err := buildPatientIncidentBufferUpdatedEnvelope(b)
+		env, err := buildPatientIncidentBufferUpdatedEnvelope(b, false, false)
 		if err != nil {
 			return err
 		}

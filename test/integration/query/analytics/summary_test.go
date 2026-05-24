@@ -89,15 +89,15 @@ func TestGetSummary_PatientBufferRates(t *testing.T) {
 
 	for range 2 {
 		_, err = raw.Exec(
-			`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, status, created_at)
-			 VALUES ($1, $2, $3, 'published', now())`,
+			`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, description, summary, priority, status, created_at)
+			 VALUES ($1, $2, $3, 'жалоба', 'жалоба', 'normal', 'published', now())`,
 			uuidNew(), orgID, uuidNew(),
 		)
 		require.NoError(t, err)
 	}
 	_, err = raw.Exec(
-		`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, status, created_at)
-		 VALUES ($1, $2, $3, 'rejected', now())`,
+		`INSERT INTO domain.patient_incident_buffer (id, organization_id, patient_zitadel_user_id, description, summary, priority, status, created_at)
+		 VALUES ($1, $2, $3, 'жалоба', 'жалоба', 'normal', 'rejected', now())`,
 		uuidNew(), orgID, uuidNew(),
 	)
 	require.NoError(t, err)

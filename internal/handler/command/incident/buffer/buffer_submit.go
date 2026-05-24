@@ -22,7 +22,9 @@ func (h *BufferHandler) SubmitPatientIncident(
 			OrganizationID: req.GetOrganizationId(),
 			CategoryID:     req.CategoryId,
 			TypeID:         req.TypeId,
-			Description:    req.Description,
+			Description:    req.GetDescription(),
+			Summary:        req.GetSummary(),
+			Priority:       protoBufferPriorityToString(req.GetPriority()),
 			OccurredAt:     req.OccurredAt,
 		},
 	})

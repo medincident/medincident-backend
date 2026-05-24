@@ -64,12 +64,13 @@ func TestBufferFlow_SubmitAndRead(t *testing.T) {
 	seedUser(t, patientID, "Пациент Тестовый")
 	patient := authz.Caller{ZitadelUserID: patientID}
 
-	desc := "Болит голова"
 	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller: patient,
 		Payload: buffercmd.SubmitPayload{
 			OrganizationID: bw.orgID.String(),
-			Description:    &desc,
+			Description:    "Болит голова",
+			Summary:        "Головная боль",
+			Priority:       "normal",
 		},
 	})
 	require.NoError(t, err)
@@ -93,10 +94,14 @@ func TestBufferFlow_UpdateDescription(t *testing.T) {
 	seedUser(t, patientID, "Пациент Тестовый")
 	patient := authz.Caller{ZitadelUserID: patientID}
 
-	desc := "Первичная жалоба пациента"
 	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
-		Caller:  patient,
-		Payload: buffercmd.SubmitPayload{OrganizationID: bw.orgID.String(), Description: &desc},
+		Caller: patient,
+		Payload: buffercmd.SubmitPayload{
+			OrganizationID: bw.orgID.String(),
+			Description:    "Первичная жалоба пациента",
+			Summary:        "Первичная жалоба",
+			Priority:       "normal",
+		},
 	})
 	require.NoError(t, err)
 
@@ -127,8 +132,13 @@ func TestBufferFlow_PatientCancel(t *testing.T) {
 	patient := authz.Caller{ZitadelUserID: patientID}
 
 	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
-		Caller:  patient,
-		Payload: buffercmd.SubmitPayload{OrganizationID: bw.orgID.String()},
+		Caller: patient,
+		Payload: buffercmd.SubmitPayload{
+			OrganizationID: bw.orgID.String(),
+			Description:    "Жалоба пациента",
+			Summary:        "Жалоба",
+			Priority:       "normal",
+		},
 	})
 	require.NoError(t, err)
 
@@ -157,12 +167,13 @@ func TestBufferFlow_PublishCreatesIncident(t *testing.T) {
 	patient := authz.Caller{ZitadelUserID: patientID}
 
 	occAt := time.Now().Add(-2 * time.Hour).Format(time.RFC3339Nano)
-	desc := "Жалоба пациента на боли в груди"
 	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
 		Caller: patient,
 		Payload: buffercmd.SubmitPayload{
 			OrganizationID: bw.orgID.String(),
-			Description:    &desc,
+			Description:    "Жалоба пациента на боли в груди",
+			Summary:        "Боли в груди",
+			Priority:       "high",
 			OccurredAt:     &occAt,
 		},
 	})
@@ -214,8 +225,13 @@ func TestBufferFlow_PublishThenCloseUpdatesIncidentStatus(t *testing.T) {
 	patient := authz.Caller{ZitadelUserID: patientID}
 
 	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
-		Caller:  patient,
-		Payload: buffercmd.SubmitPayload{OrganizationID: bw.orgID.String()},
+		Caller: patient,
+		Payload: buffercmd.SubmitPayload{
+			OrganizationID: bw.orgID.String(),
+			Description:    "Жалоба пациента",
+			Summary:        "Жалоба",
+			Priority:       "normal",
+		},
 	})
 	require.NoError(t, err)
 
@@ -266,8 +282,13 @@ func TestBufferFlow_RejectSetsStatusRejected(t *testing.T) {
 	patient := authz.Caller{ZitadelUserID: patientID}
 
 	res, err := bufferSvc.Submit(ctx, buffercmd.SubmitCommand{
-		Caller:  patient,
-		Payload: buffercmd.SubmitPayload{OrganizationID: bw.orgID.String()},
+		Caller: patient,
+		Payload: buffercmd.SubmitPayload{
+			OrganizationID: bw.orgID.String(),
+			Description:    "Жалоба пациента",
+			Summary:        "Жалоба",
+			Priority:       "normal",
+		},
 	})
 	require.NoError(t, err)
 

@@ -160,6 +160,15 @@ enum PatientStatus {
   PATIENT_STATUS_CANCELLED = 4; // patient cancelled
 }
 
+// PatientBufferInfo is embedded in IncidentView when the incident was
+// created from a patient buffer submission.
+message PatientBufferInfo {
+  string buffer_id = 1;
+  string description = 2;
+  string summary = 3;
+  string priority = 4; // "normal" or "high"
+}
+
 message RegistrarView {
   string employee_id = 1;
   string display_name = 2;
@@ -191,6 +200,7 @@ message IncidentView {
   optional string reopened_from_incident_id = 17;
   // Populated only for patient callers.
   optional PatientStatus patient_status = 18;
+  optional PatientBufferInfo patient_buffer = 19;
 }
 
 message BufferEntryView {
@@ -199,7 +209,7 @@ message BufferEntryView {
   string patient_zitadel_user_id = 3;
   optional string category_id = 4;
   optional string type_id = 5;
-  optional string description = 6;
+  string description = 6;
   optional string occurred_at = 7;
   BufferStatus status = 8;
   optional string published_incident_id = 9;
@@ -207,6 +217,8 @@ message BufferEntryView {
   string updated_at = 11;
   // Populated only for patient callers.
   optional PatientStatus patient_status = 12;
+  string summary = 13;
+  string priority = 14; // "normal" or "high"
 }
 
 message ActorView {

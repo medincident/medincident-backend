@@ -16,6 +16,11 @@ func (h *BufferHandler) UpdatePatientIncident(
 	if err != nil {
 		return nil, err
 	}
+	var priority *string
+	if req.Priority != nil {
+		p := protoBufferPriorityToString(*req.Priority)
+		priority = &p
+	}
 	if err := h.svc.Update(ctx, buffersvc.UpdateCommand{
 		Caller: authz.Caller{ZitadelUserID: callerID},
 		Payload: buffersvc.UpdatePayload{
@@ -23,6 +28,8 @@ func (h *BufferHandler) UpdatePatientIncident(
 			CategoryID:  req.CategoryId,
 			TypeID:      req.TypeId,
 			Description: req.Description,
+			Summary:     req.Summary,
+			Priority:    priority,
 			OccurredAt:  req.OccurredAt,
 		},
 	}); err != nil {

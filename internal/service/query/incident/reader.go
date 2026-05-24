@@ -255,6 +255,15 @@ func wrapRead(err error, action string) error {
 		With("action", action).Wrap(err)
 }
 
+// PatientBufferInfo holds the originating buffer fields joined from
+// projections.patient_incident_buffer when source_buffer_id is set.
+type PatientBufferInfo struct {
+	BufferID    uuid.UUID
+	Description string
+	Summary     string
+	Priority    model.BufferPriority
+}
+
 // IncidentView is the projection row returned to handlers.
 type IncidentView struct {
 	ID                         uuid.UUID
@@ -279,20 +288,26 @@ type IncidentView struct {
 	ReopenedFromIncidentID     uuid.NullUUID
 	CreatedAt                  time.Time
 	UpdatedAt                  time.Time
+	PatientBuffer              *PatientBufferInfo
 	// PatientPerspective is true when the caller is being served as a patient
 	// (non-employee) — handlers redact accordingly.
 	PatientPerspective bool
 }
 
-const selectColumns = `id, organization_id, clinic_id, department_id, category_id, type_id,
-	status, priority, description, patient_original_description, occurred_at,
-	registrar_employee_id, registrar_display_name, registrar_position,
-	registrar_organization_id, registrar_clinic_id, registrar_department_id,
-	source_patient_zitadel_user_id, source_buffer_id, reopened_from_incident_id,
-	created_at, updated_at`
+const selectColumns = `i.id, i.organization_id, i.clinic_id, i.department_id, i.category_id, i.type_id,
+	i.status, i.priority, i.description, i.patient_original_description, i.occurred_at,
+	i.registrar_employee_id, i.registrar_display_name, i.registrar_position,
+	i.registrar_organization_id, i.registrar_clinic_id, i.registrar_department_id,
+	i.source_patient_zitadel_user_id, i.source_buffer_id, i.reopened_from_incident_id,
+	i.created_at, i.updated_at,
+	b.description, b.summary, b.priority`
+
+const selectFrom = `FROM projections.incidents i
+	LEFT JOIN projections.patient_incident_buffer b ON b.id = i.source_buffer_id`
 
 func scanIncident(row interface{ Scan(...any) error }, v *IncidentView) error {
-	return row.Scan(
+	var pbDesc, pbSummary, pbPriority null.String
+	if err := row.Scan(
 		&v.ID, &v.OrganizationID, &v.ClinicID, &v.DepartmentID,
 		&v.CategoryID, &v.TypeID, &v.Status, &v.Priority,
 		&v.Description, &v.PatientOriginalDescription, &v.OccurredAt,
@@ -300,7 +315,19 @@ func scanIncident(row interface{ Scan(...any) error }, v *IncidentView) error {
 		&v.RegistrarOrganizationID, &v.RegistrarClinicID, &v.RegistrarDepartmentID,
 		&v.SourcePatientZitadelUserID, &v.SourceBufferID, &v.ReopenedFromIncidentID,
 		&v.CreatedAt, &v.UpdatedAt,
-	)
+		&pbDesc, &pbSummary, &pbPriority,
+	); err != nil {
+		return err
+	}
+	if v.SourceBufferID.Valid && pbDesc.Valid {
+		v.PatientBuffer = &PatientBufferInfo{
+			BufferID:    v.SourceBufferID.UUID,
+			Description: pbDesc.String,
+			Summary:     pbSummary.String,
+			Priority:    model.BufferPriority(pbPriority.String),
+		}
+	}
+	return nil
 }
 
 // GetIncident loads one incident if the caller is allowed to see it.
@@ -321,10 +348,10 @@ func (r *Reader) GetIncident(ctx context.Context, callerID string, id uuid.UUID)
 func (r *Reader) getIncidentForCaller(
 	ctx context.Context, cc *callerContext, id uuid.UUID,
 ) (*IncidentView, error) {
-	where, args := r.visibilityClause(cc, "")
+	where, args := r.visibilityClause(cc, "i.")
 	args = append([]any{id}, args...)
-	q := `SELECT ` + selectColumns + ` FROM projections.incidents
-		WHERE id = ? AND (` + where + `) LIMIT 1`
+	q := `SELECT ` + selectColumns + ` ` + selectFrom + `
+		WHERE i.id = ? AND (` + where + `) LIMIT 1`
 	var v IncidentView
 	row := r.db.WithContext(ctx).Raw(q, args...).Row()
 	if err := scanIncident(row, &v); err != nil {
@@ -426,48 +453,48 @@ func (r *Reader) ListIncidents(
 	if err != nil {
 		return IncidentListResult{}, err
 	}
-	where, visArgs := r.visibilityClause(cc, "")
-	conds := []string{"organization_id = ?", where}
+	where, visArgs := r.visibilityClause(cc, "i.")
+	conds := []string{"i.organization_id = ?", where}
 	args := make([]any, 0, len(visArgs)+12)
 	args = append(args, orgID)
 	args = append(args, visArgs...)
 
 	if len(f.Statuses) > 0 {
 		ph := strings.TrimSuffix(strings.Repeat("?,", len(f.Statuses)), ",")
-		conds = append(conds, "status IN ("+ph+")")
+		conds = append(conds, "i.status IN ("+ph+")")
 		for _, s := range f.Statuses {
 			args = append(args, s)
 		}
 	}
 	if len(f.Priorities) > 0 {
 		ph := strings.TrimSuffix(strings.Repeat("?,", len(f.Priorities)), ",")
-		conds = append(conds, "priority IN ("+ph+")")
+		conds = append(conds, "i.priority IN ("+ph+")")
 		for _, p := range f.Priorities {
 			args = append(args, p)
 		}
 	}
 	if f.ClinicID.Valid {
-		conds = append(conds, "clinic_id = ?")
+		conds = append(conds, "i.clinic_id = ?")
 		args = append(args, f.ClinicID.UUID)
 	}
 	if f.DepartmentID.Valid {
-		conds = append(conds, "department_id = ?")
+		conds = append(conds, "i.department_id = ?")
 		args = append(args, f.DepartmentID.UUID)
 	}
 	if f.CategoryID.Valid {
-		conds = append(conds, "category_id = ?")
+		conds = append(conds, "i.category_id = ?")
 		args = append(args, f.CategoryID.UUID)
 	}
 	if f.TypeID.Valid {
-		conds = append(conds, "type_id = ?")
+		conds = append(conds, "i.type_id = ?")
 		args = append(args, f.TypeID.UUID)
 	}
 	if f.OccurredFrom != nil {
-		conds = append(conds, "occurred_at >= ?")
+		conds = append(conds, "i.occurred_at >= ?")
 		args = append(args, *f.OccurredFrom)
 	}
 	if f.OccurredTo != nil {
-		conds = append(conds, "occurred_at <= ?")
+		conds = append(conds, "i.occurred_at <= ?")
 		args = append(args, *f.OccurredTo)
 	}
 	limit := normLimit(f.Limit)
@@ -479,13 +506,13 @@ func (r *Reader) ListIncidents(
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		conds = append(conds, "(updated_at, id) < (?, ?)")
+		conds = append(conds, "(i.updated_at, i.id) < (?, ?)")
 		args = append(args, c.Time(), c.I)
 	}
 	args = append(args, limit+1)
 
-	q := `SELECT ` + selectColumns + ` FROM projections.incidents WHERE ` +
-		strings.Join(conds, " AND ") + ` ORDER BY updated_at DESC, id DESC LIMIT ?`
+	q := `SELECT ` + selectColumns + ` ` + selectFrom + ` WHERE ` +
+		strings.Join(conds, " AND ") + ` ORDER BY i.updated_at DESC, i.id DESC LIMIT ?`
 	rows, err := r.db.WithContext(ctx).Raw(q, args...).Rows()
 	if err != nil {
 		return IncidentListResult{}, wrapRead(err, "list incidents")
@@ -529,10 +556,10 @@ func (r *Reader) ListMyIncidents(
 	conds := []string{}
 	args := []any{}
 	if cc.employeeID.Valid {
-		conds = append(conds, "registrar_employee_id = ?")
+		conds = append(conds, "i.registrar_employee_id = ?")
 		args = append(args, cc.employeeID.UUID)
 	}
-	conds = append(conds, "source_patient_zitadel_user_id = ?")
+	conds = append(conds, "i.source_patient_zitadel_user_id = ?")
 	args = append(args, callerID)
 
 	cursorConds := ""
@@ -544,14 +571,14 @@ func (r *Reader) ListMyIncidents(
 				Public("Invalid pagination cursor.").
 				Wrap(err)
 		}
-		cursorConds = ` AND (updated_at, id) < (?, ?)`
+		cursorConds = ` AND (i.updated_at, i.id) < (?, ?)`
 		args = append(args, c.Time(), c.I)
 	}
 	args = append(args, limit+1)
 
-	q := `SELECT ` + selectColumns + ` FROM projections.incidents WHERE (` +
+	q := `SELECT ` + selectColumns + ` ` + selectFrom + ` WHERE (` +
 		strings.Join(conds, " OR ") + `)` + cursorConds +
-		` ORDER BY updated_at DESC, id DESC LIMIT ?`
+		` ORDER BY i.updated_at DESC, i.id DESC LIMIT ?`
 
 	rows, err := r.db.WithContext(ctx).Raw(q, args...).Rows()
 	if err != nil {

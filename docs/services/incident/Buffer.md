@@ -26,13 +26,18 @@
 | `organization_id` | string (UUID) | required, uuid |
 | `category_id` | string (UUID) | omitempty, uuid |
 | `type_id` | string (UUID) | omitempty, uuid |
-| `description` | string | omitempty, max=10000 |
+| `description` | string | required, min=1, max=10000 |
+| `summary` | string | required, min=1, max=10000 — AI-формализованный текст обращения |
+| `priority` | BufferPriority (`BUFFER_PRIORITY_NORMAL` \| `BUFFER_PRIORITY_HIGH`) | required — приоритет, выставляемый AI-сервисом |
 | `occurred_at` | string (RFC3339Nano) | omitempty |
 
 ### Инварианты
 
 - Тип инцидента должен иметь флаг `is_allowed_for_patients=true`.
 - Начальный статус заявки — `pending`.
+- `description` — исходный текст обращения пациента (обязателен).
+- `summary` — формализованный вариант текста, генерируется AI-сервисом (обязателен).
+- `priority` — оценка AI-сервиса; диспетчер видит её, но устанавливает приоритет НС самостоятельно через `UpdatePriority`.
 
 ### Ошибки
 
@@ -63,13 +68,16 @@
 | `buffer_id` | string (UUID) | required, uuid |
 | `category_id` | string (UUID) | omitempty, uuid |
 | `type_id` | string (UUID) | omitempty, uuid |
-| `description` | string | omitempty, max=10000 |
+| `description` | string | omitempty, min=1, max=10000 |
+| `summary` | string | omitempty, min=1, max=10000 — обновлённый AI-текст |
+| `priority` | BufferPriority (`BUFFER_PRIORITY_NORMAL` \| `BUFFER_PRIORITY_HIGH`) | omitempty — обновлённый приоритет AI |
 | `occurred_at` | string (RFC3339Nano) | omitempty |
 
 ### Инварианты
 
 - Доступно только для заявок в статусе `pending`.
 - Тип инцидента должен иметь флаг `is_allowed_for_patients=true`.
+- Все поля независимо обновляемы; `nil` оставляет текущее значение без изменений.
 
 ### Ошибки
 
@@ -172,6 +180,40 @@
 |---|---|---|
 | `validation_failed` | 400 | Ошибка валидации |
 | `permission_denied` | 403 | Нет прав доступа |
+
+---
+
+## BufferEntryView — поля ответа
+
+| Поле | Тип | Описание |
+|---|---|---|
+| `id` | string (UUID) | Идентификатор буфера |
+| `organization_id` | string (UUID) | Организация |
+| `patient_zitadel_user_id` | string | Zitadel ID пациента |
+| `category_id` | string (UUID)? | Категория |
+| `type_id` | string (UUID)? | Тип |
+| `description` | string | Исходный текст обращения (всегда непустой) |
+| `summary` | string | AI-формализованный текст (всегда непустой) |
+| `priority` | string (`normal` \| `high`) | AI-приоритет |
+| `occurred_at` | string (RFC3339Nano)? | Время инцидента |
+| `status` | BufferStatus | Статус заявки |
+| `published_incident_id` | string (UUID)? | ID созданного инцидента (при `published`) |
+| `created_at` | string (RFC3339Nano) | Время создания |
+| `updated_at` | string (RFC3339Nano) | Время обновления |
+| `patient_status` | PatientStatus? | Только для пациента-владельца |
+
+## Данные буфера в ответе инцидента
+
+Если инцидент создан из буфера (`source_buffer_id` заполнен), в ответе `GetIncident` / `ListIncidents` / `ListMyIncidents` присутствует поле `patient_buffer`:
+
+| Поле | Тип | Описание |
+|---|---|---|
+| `buffer_id` | string (UUID) | ID буфера-источника |
+| `description` | string | Исходный текст обращения |
+| `summary` | string | AI-формализованный текст |
+| `priority` | string (`normal` \| `high`) | AI-приоритет из буфера |
+
+Диспетчер видит `patient_buffer.priority` как AI-оценку, но устанавливает приоритет НС самостоятельно через `UpdatePriority`.
 
 ---
 

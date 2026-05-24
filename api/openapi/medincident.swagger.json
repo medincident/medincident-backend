@@ -10605,6 +10605,12 @@
         },
         "occurredAt": {
           "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "priority": {
+          "$ref": "#/definitions/v1BufferPriority"
         }
       }
     },
@@ -11418,8 +11424,24 @@
         "patientStatus": {
           "$ref": "#/definitions/v1PatientStatus",
           "description": "Populated only for patient callers."
+        },
+        "summary": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "string",
+          "title": "\"normal\" or \"high\""
         }
       }
+    },
+    "v1BufferPriority": {
+      "type": "string",
+      "enum": [
+        "BUFFER_PRIORITY_UNSPECIFIED",
+        "BUFFER_PRIORITY_NORMAL",
+        "BUFFER_PRIORITY_HIGH"
+      ],
+      "default": "BUFFER_PRIORITY_UNSPECIFIED"
     },
     "v1BufferStatus": {
       "type": "string",
@@ -12521,6 +12543,9 @@
         "patientStatus": {
           "$ref": "#/definitions/v1PatientStatus",
           "description": "Populated only for patient callers."
+        },
+        "patientBuffer": {
+          "$ref": "#/definitions/v1PatientBufferInfo"
         }
       },
       "description": "IncidentView is the unified payload. For patients only id, status,\npatient_status, description and timestamps are populated."
@@ -13107,6 +13132,25 @@
         }
       }
     },
+    "v1PatientBufferInfo": {
+      "type": "object",
+      "properties": {
+        "bufferId": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "string",
+          "title": "\"normal\" or \"high\""
+        }
+      },
+      "description": "PatientBufferInfo is embedded in IncidentView when the incident was\ncreated from a patient buffer submission."
+    },
     "v1PatientBufferStatusBreakdown": {
       "type": "object",
       "properties": {
@@ -13610,10 +13654,19 @@
         "occurredAt": {
           "type": "string",
           "title": "RFC3339Nano"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "priority": {
+          "$ref": "#/definitions/v1BufferPriority"
         }
       },
       "required": [
-        "organizationId"
+        "organizationId",
+        "description",
+        "summary",
+        "priority"
       ]
     },
     "v1SubmitPatientIncidentResponse": {

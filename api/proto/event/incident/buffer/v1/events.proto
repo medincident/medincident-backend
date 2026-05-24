@@ -17,6 +17,8 @@ message PatientIncidentBufferCreated {
   google.protobuf.Timestamp occurred_at = 7;
   string status = 8;
   google.protobuf.Timestamp created_at = 9;
+  string summary = 10;
+  string priority = 11;
 }
 
 // PatientIncidentBufferUpdated — subject: medincident.event.patient_incident_buffer.v1.updated
@@ -29,4 +31,6 @@ message PatientIncidentBufferUpdated {
   string status = 6;
   google.protobuf.StringValue published_incident_id = 7;
   google.protobuf.Timestamp updated_at = 8;
+  google.protobuf.StringValue summary = 9;
+  google.protobuf.StringValue priority = 10;
 }
